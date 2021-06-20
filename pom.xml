@@ -3,24 +3,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.ruyi</groupId>
-    <artifactId>ruyi-parent</artifactId>
+    <groupId>io.dynamic-thread-pool</groupId>
+    <artifactId>dtp-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
-    <name>ruyi</name>
+    <name>${project.artifactId}</name>
     <description>动态线程池，附带监控报警功能</description>
 
     <properties>
         <java.version>1.8</java.version>
         <revision>1.0.0-SNAPSHOT</revision>
 
+        <okhttp3.version>3.8.1</okhttp3.version>
+        <hutool-core.version>5.4.7</hutool-core.version>
+        <fastjson.version>1.2.75</fastjson.version>
+
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
     </properties>
 
     <modules>
-        <module>ruyi-spring-boot-starter</module>
-        <module>server</module>
+        <module>dtp-spring-boot-starter</module>
+        <module>dtp-server</module>
     </modules>
 
     <dependencyManagement>
@@ -31,6 +35,25 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>logging-interceptor</artifactId>
+                <version>${okhttp3.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-core</artifactId>
+                <version>${hutool-core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -48,14 +71,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
     </build>

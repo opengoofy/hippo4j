@@ -1,0 +1,9 @@
+server:
+  port: 6691
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dynamic-thread-pool
+    username: root
+    password: root

@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.ruyi</groupId>
-        <artifactId>ruyi-parent</artifactId>
+        <groupId>io.dynamic-thread-pool</groupId>
+        <artifactId>dtp-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>server</artifactId>
+    <artifactId>dtp-server</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -24,6 +24,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
