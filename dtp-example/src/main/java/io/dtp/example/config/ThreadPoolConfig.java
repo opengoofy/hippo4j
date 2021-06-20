@@ -15,7 +15,7 @@ public class ThreadPoolConfig {
 
     @Bean
     public DynamicThreadPoolWrap messageCenterConsumeThreadPool() {
-        return new DynamicThreadPoolWrap("message-consume");
+        return new DynamicThreadPoolWrap("common", "message", "message-consume");
     }
 
 }

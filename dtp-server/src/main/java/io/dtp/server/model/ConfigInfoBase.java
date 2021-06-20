@@ -16,14 +16,14 @@ public class ConfigInfoBase implements Serializable {
     private static final long serialVersionUID = -1892597426099265730L;
 
     /**
-     * DataId
+     * TpId
      */
-    private String dataId;
+    private String tpId;
 
     /**
-     * GroupId
+     * ItemId
      */
-    private String groupId;
+    private String itemId;
 
     /**
      * 内容

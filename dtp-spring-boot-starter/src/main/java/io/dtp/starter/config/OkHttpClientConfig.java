@@ -1,5 +1,6 @@
 package io.dtp.starter.config;
 
+import io.dtp.starter.toolkit.HttpClientUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
@@ -35,6 +36,11 @@ public class OkHttpClientConfig {
                 .build();
         supportHttps(build);
         return build.build();
+    }
+
+    @Bean
+    public HttpClientUtil httpClientUtil() {
+        return new HttpClientUtil();
     }
 
     /**

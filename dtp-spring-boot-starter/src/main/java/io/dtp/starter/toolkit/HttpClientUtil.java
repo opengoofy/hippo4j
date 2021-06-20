@@ -16,7 +16,6 @@ import java.util.Map;
  * @date 2021/6/10 13:30
  */
 @Slf4j
-@Component
 public class HttpClientUtil {
 
     @Autowired

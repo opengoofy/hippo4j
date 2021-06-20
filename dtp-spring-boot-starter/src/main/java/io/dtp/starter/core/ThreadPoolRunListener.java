@@ -55,7 +55,7 @@ public class ThreadPoolRunListener implements ApplicationRunner {
     }
 
     private String buildUrl() {
-        return "http://127.0.0.1/v1/cs/configs";
+        return "http://127.0.0.1:6691/v1/cs/configs";
     }
 
     private String buildOnlyId(DynamicThreadPoolWrap poolWrap) {

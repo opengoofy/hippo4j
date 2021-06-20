@@ -19,6 +19,7 @@ public class ConfigServiceImpl implements ConfigService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenant) {
         ConfigAllInfo configAllInfo = jdbcTemplate.queryForObject(
                 "select * from config_info where tp_id = ? and item_id = ? and tenant_id = ?",

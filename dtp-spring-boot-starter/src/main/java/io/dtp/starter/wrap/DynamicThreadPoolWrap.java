@@ -27,19 +27,25 @@ public class DynamicThreadPoolWrap {
     /**
      * 首选服务端线程池, 为空使用默认线程池 {@link CommonThreadPool#getInstance(String)}
      *
+     * @param tenant
+     * @param itemId
      * @param threadPoolId
      */
-    public DynamicThreadPoolWrap(String threadPoolId) {
+    public DynamicThreadPoolWrap(String tenant, String itemId, String threadPoolId) {
+        this.tenant = tenant;
+        this.itemId = itemId;
         this.tpId = threadPoolId;
     }
 
     /**
      * 首选服务端线程池, 为空使用 threadPoolExecutor
      *
+     * @param tenant
+     * @param itemId
      * @param threadPoolId
      * @param threadPoolExecutor
      */
-    public DynamicThreadPoolWrap(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
+    public DynamicThreadPoolWrap(String tenant, String itemId, String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
         this.tpId = threadPoolId;
         this.pool = threadPoolExecutor;
     }

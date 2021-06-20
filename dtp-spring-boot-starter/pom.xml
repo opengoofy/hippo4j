@@ -33,7 +33,6 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>logging-interceptor</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
