@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.dynamic-thread-pool</groupId>
-    <artifactId>dtp-parent</artifactId>
+    <groupId>io.dynamic-threadpool</groupId>
+    <artifactId>parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
@@ -23,9 +23,9 @@
     </properties>
 
     <modules>
-        <module>dtp-server</module>
-        <module>dtp-example</module>
-        <module>dtp-spring-boot-starter</module>
+        <module>server</module>
+        <module>example</module>
+        <module>dynamic-threadpool-spring-boot-starter</module>
     </modules>
 
     <dependencyManagement>
@@ -53,8 +53,14 @@
 
             <dependency>
                 <groupId>cn.hutool</groupId>
-                <artifactId>hutool-core</artifactId>
+                <artifactId>hutool-all</artifactId>
                 <version>${hutool-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.12.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

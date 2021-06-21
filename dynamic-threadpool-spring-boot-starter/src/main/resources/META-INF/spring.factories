@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.dynamic.threadpool.starter.config.CommonConfiguration, \
+  io.dynamic.threadpool.starter.config.OkHttpClientConfig
