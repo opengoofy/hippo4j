@@ -18,6 +18,7 @@
         <okhttp3.version>3.8.1</okhttp3.version>
         <hutool-core.version>5.4.7</hutool-core.version>
         <fastjson.version>1.2.75</fastjson.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
 
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
     </properties>
@@ -60,7 +61,13 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.12.0</version>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.dynamic-threadpool</groupId>
+                <artifactId>common</artifactId>
+                <version>${revision}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

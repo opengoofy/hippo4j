@@ -1,0 +1,5 @@
+spring:
+  threadpool:
+    dynamic:
+      namespace: common
+      itemId: message-center

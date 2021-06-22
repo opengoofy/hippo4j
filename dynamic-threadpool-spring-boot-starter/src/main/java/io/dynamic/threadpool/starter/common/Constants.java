@@ -8,11 +8,13 @@ package io.dynamic.threadpool.starter.common;
  */
 public class Constants {
 
-    public static final String DEFAULT_GROUP = "DEFAULT_GROUP";
+    public static final String TP_ID = "tpId";
 
-    public static final String DATA_ID = "dataId";
-
-    public static final String GROUP_ID = "group";
+    public static final String ITEM_ID = "itemId";
 
     public static final String DEFAULT_NAMESPACE_ID = "public";
+
+    public static final String NULL = "";
+
+    public static final String ENCODE = "UTF-8";
 }

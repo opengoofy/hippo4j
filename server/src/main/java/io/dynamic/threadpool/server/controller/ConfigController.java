@@ -29,9 +29,9 @@ public class ConfigController {
     public ConfigInfoBase detailConfigInfo(
             @RequestParam("tdId") String tdId,
             @RequestParam("itemId") String itemId,
-            @RequestParam(value = "tenant", required = false, defaultValue = "") String tenant) {
+            @RequestParam(value = "namespace", required = false, defaultValue = "") String namespace) {
 
-        return configService.findConfigAllInfo(tdId, itemId, tenant);
+        return configService.findConfigAllInfo(tdId, itemId, namespace);
     }
 
     @SneakyThrows

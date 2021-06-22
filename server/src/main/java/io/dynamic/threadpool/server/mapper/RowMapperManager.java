@@ -22,7 +22,7 @@ public final class RowMapperManager {
             ConfigAllInfo configAllInfo = new ConfigAllInfo();
             configAllInfo.setTpId(rs.getString("tp_id"));
             configAllInfo.setItemId(rs.getString("item_id"));
-            configAllInfo.setTenant(rs.getString("tenant_id"));
+            configAllInfo.setNamespace(rs.getString("namespace"));
             configAllInfo.setContent(rs.getString("content"));
             configAllInfo.setCoreSize(rs.getInt("core_size"));
             configAllInfo.setMaxSize(rs.getInt("max_size"));

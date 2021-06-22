@@ -1,6 +1,6 @@
 package io.dynamic.threadpool.example.config;
 
-import io.dtp.starter.wrap.DynamicThreadPoolWrap;
+import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +15,7 @@ public class ThreadPoolConfig {
 
     @Bean
     public DynamicThreadPoolWrap messageCenterConsumeThreadPool() {
-        return new DynamicThreadPoolWrap("common", "message", "message-consume");
+        return new DynamicThreadPoolWrap("message-consume");
     }
 
 }

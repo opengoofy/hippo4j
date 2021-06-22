@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Data
 public class DynamicThreadPoolWrap {
 
-    private String tenant;
+    private String namespace;
 
     private String itemId;
 
@@ -27,25 +27,19 @@ public class DynamicThreadPoolWrap {
     /**
      * 首选服务端线程池, 为空使用默认线程池 {@link CommonThreadPool#getInstance(String)}
      *
-     * @param tenant
-     * @param itemId
      * @param threadPoolId
      */
-    public DynamicThreadPoolWrap(String tenant, String itemId, String threadPoolId) {
-        this(tenant, itemId, threadPoolId, null);
+    public DynamicThreadPoolWrap(String threadPoolId) {
+        this(threadPoolId, null);
     }
 
     /**
      * 首选服务端线程池, 为空使用 threadPoolExecutor
      *
-     * @param tenant
-     * @param itemId
      * @param threadPoolId
      * @param threadPoolExecutor
      */
-    public DynamicThreadPoolWrap(String tenant, String itemId, String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
-        this.tenant = tenant;
-        this.itemId = itemId;
+    public DynamicThreadPoolWrap(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
         this.tpId = threadPoolId;
         this.pool = threadPoolExecutor;
     }

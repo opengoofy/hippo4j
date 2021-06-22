@@ -1,6 +1,5 @@
 package io.dynamic.threadpool.starter.config;
 
-import io.dynamic.threadpool.starter.core.ThreadPoolRunListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,8 +17,4 @@ public class CommonConfiguration {
         return new ApplicationContextHolder();
     }
 
-    @Bean
-    public ThreadPoolRunListener threadPoolRunListener() {
-        return new ThreadPoolRunListener();
-    }
 }

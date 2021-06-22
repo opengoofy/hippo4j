@@ -15,15 +15,15 @@ public class GlobalThreadPoolManage {
 
     private static final Map<String, DynamicThreadPoolWrap> EXECUTOR_MAP = new ConcurrentHashMap();
 
-    public static DynamicThreadPoolWrap getExecutorService(String name) {
-        return EXECUTOR_MAP.get(name);
+    public static DynamicThreadPoolWrap getExecutorService(String tpId) {
+        return EXECUTOR_MAP.get(tpId);
     }
 
-    public static void register(String name, DynamicThreadPoolWrap executor) {
-        EXECUTOR_MAP.put(name, executor);
+    public static void register(String tpId, DynamicThreadPoolWrap executor) {
+        EXECUTOR_MAP.put(tpId, executor);
     }
 
-    public static void remove(String name) {
-        EXECUTOR_MAP.remove(name);
+    public static void remove(String tpId) {
+        EXECUTOR_MAP.remove(tpId);
     }
 }

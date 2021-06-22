@@ -20,10 +20,10 @@ public class ConfigServiceImpl implements ConfigService {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenant) {
+    public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String namespace) {
         ConfigAllInfo configAllInfo = jdbcTemplate.queryForObject(
-                "select * from config_info where tp_id = ? and item_id = ? and tenant_id = ?",
-                new Object[]{tpId, itemId, tenant},
+                "select * from config_info where tp_id = ? and item_id = ? and namespace = ?",
+                new Object[]{tpId, itemId, namespace},
                 RowMapperManager.CONFIG_ALL_INFO_ROW_MAPPER);
 
         return configAllInfo;

@@ -15,8 +15,8 @@ public interface ConfigService {
      *
      * @param tpId    tpId
      * @param itemId itemId
-     * @param tenant  tenant
+     * @param namespace  namespace
      * @return 全部配置信息
      */
-    ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenant);
+    ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String namespace);
 }
