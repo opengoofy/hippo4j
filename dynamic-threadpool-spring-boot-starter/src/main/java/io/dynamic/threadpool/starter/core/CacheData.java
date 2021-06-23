@@ -17,9 +17,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Slf4j
 public class CacheData {
 
-    private volatile String md5;
+    public volatile String md5;
 
-    private volatile String content;
+    public volatile String content;
 
     public final String tpId;
 
@@ -81,5 +81,9 @@ public class CacheData {
 
     public String getMd5() {
         return this.md5;
+    }
+
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
     }
 }

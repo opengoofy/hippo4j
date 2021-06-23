@@ -1,13 +1,17 @@
-package io.dynamic.threadpool.starter.core;
+package io.dynamic.threadpool.starter.listener;
 
+import com.alibaba.fastjson.JSON;
 import io.dynamic.threadpool.starter.common.CommonThreadPool;
+import io.dynamic.threadpool.starter.common.Constants;
 import io.dynamic.threadpool.starter.config.ApplicationContextHolder;
 import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
+import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
 import io.dynamic.threadpool.starter.model.PoolParameterInfo;
+import io.dynamic.threadpool.starter.remote.HttpAgent;
+import io.dynamic.threadpool.starter.remote.ServerHttpAgent;
 import io.dynamic.threadpool.starter.toolkit.BlockingQueueUtil;
-import io.dynamic.threadpool.starter.toolkit.HttpClientUtil;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.dynamict.hreadpool.common.web.base.Result;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
@@ -25,9 +29,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class ThreadPoolRunListener implements ApplicationRunner {
 
-    @Autowired
-    private HttpClientUtil httpClientUtil;
-
     private final DynamicThreadPoolProperties dynamicThreadPoolProperties;
 
     public ThreadPoolRunListener(DynamicThreadPoolProperties properties) {
@@ -40,13 +41,15 @@ public class ThreadPoolRunListener implements ApplicationRunner {
                 ApplicationContextHolder.getBeansOfType(DynamicThreadPoolWrap.class);
 
         executorMap.forEach((key, val) -> {
-            Map<String, Object> queryStrMap = new HashMap(16);
-            queryStrMap.put("tdId", val.getTpId());
+            Map<String, String> queryStrMap = new HashMap(3);
+            queryStrMap.put("tpId", val.getTpId());
             queryStrMap.put("itemId", dynamicThreadPoolProperties.getItemId());
             queryStrMap.put("namespace", dynamicThreadPoolProperties.getNamespace());
 
-            PoolParameterInfo ppi = httpClientUtil.restApiGet(buildUrl(), queryStrMap, PoolParameterInfo.class);
-            if (ppi != null) {
+            PoolParameterInfo ppi = null;
+            HttpAgent httpAgent = new ServerHttpAgent(dynamicThreadPoolProperties);
+            Result result = httpAgent.httpGet(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 3000L);
+            if (result.isSuccess() && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
                 // 使用相关参数创建线程池
                 TimeUnit unit = TimeUnit.SECONDS;
                 BlockingQueue workQueue = BlockingQueueUtil.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
@@ -58,10 +61,6 @@ public class ThreadPoolRunListener implements ApplicationRunner {
 
             GlobalThreadPoolManage.register(val.getTpId(), val);
         });
-    }
-
-    private String buildUrl() {
-        return "http://127.0.0.1:6691/v1/cs/configs";
     }
 
 }

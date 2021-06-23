@@ -1,4 +1,6 @@
-package io.dynamic.threadpool.starter.http;
+package io.dynamic.threadpool.starter.remote;
+
+import io.dynamict.hreadpool.common.web.base.Result;
 
 import java.util.Map;
 
@@ -35,12 +37,11 @@ public interface HttpAgent {
      * @param path
      * @param headers
      * @param paramValues
-     * @param encoding
      * @param readTimeoutMs
      * @return
      */
-    String httpGet(String path, Map<String, String> headers, Map<String, String> paramValues,
-                   String encoding, long readTimeoutMs);
+    Result httpGet(String path, Map<String, String> headers, Map<String, String> paramValues,
+                   long readTimeoutMs);
 
     /**
      * 发起 Http Post 请求
@@ -48,12 +49,11 @@ public interface HttpAgent {
      * @param path
      * @param headers
      * @param paramValues
-     * @param encoding
      * @param readTimeoutMs
      * @return
      */
-    String httpPost(String path, Map<String, String> headers, Map<String, String> paramValues,
-                    String encoding, long readTimeoutMs);
+    Result httpPost(String path, Map<String, String> headers, Map<String, String> paramValues,
+                    long readTimeoutMs);
 
     /**
      * 发起 Http Delete 请求
@@ -61,10 +61,9 @@ public interface HttpAgent {
      * @param path
      * @param headers
      * @param paramValues
-     * @param encoding
      * @param readTimeoutMs
      * @return
      */
-    String httpDelete(String path, Map<String, String> headers, Map<String, String> paramValues,
-                      String encoding, long readTimeoutMs);
+    Result httpDelete(String path, Map<String, String> headers, Map<String, String> paramValues,
+                      long readTimeoutMs);
 }

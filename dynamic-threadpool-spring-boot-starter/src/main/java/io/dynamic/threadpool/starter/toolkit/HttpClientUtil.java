@@ -5,9 +5,10 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Http 客户端工具类
@@ -48,7 +49,7 @@ public class HttpClientUtil {
      * @param queryString 查询字符串
      * @return
      */
-    public String get(String url, Map<String, Object> queryString) {
+    public String get(String url, Map<String, String> queryString) {
         String fullUrl = buildUrl(url, queryString);
         return get(fullUrl);
     }
@@ -74,7 +75,7 @@ public class HttpClientUtil {
      * @param <T>
      * @return
      */
-    public <T> T restApiGet(String url, Map<String, Object> queryString, Class<T> clazz) {
+    public <T> T restApiGet(String url, Map<String, String> queryString, Class<T> clazz) {
         String fullUrl = buildUrl(url, queryString);
         String resp = get(fullUrl);
         return JSON.parseObject(resp, clazz);
@@ -116,7 +117,7 @@ public class HttpClientUtil {
      * @param queryString
      * @return
      */
-    public String buildUrl(String url, Map<String, Object> queryString) {
+    public String buildUrl(String url, Map<String, String> queryString) {
         if (null == queryString) {
             return url;
         }
@@ -124,7 +125,7 @@ public class HttpClientUtil {
         StringBuilder builder = new StringBuilder(url);
         boolean isFirst = true;
 
-        for (Map.Entry<String, Object> entry : queryString.entrySet()) {
+        for (Map.Entry<String, String> entry : queryString.entrySet()) {
             String key = entry.getKey();
             if (key != null && entry.getValue() != null) {
                 if (isFirst) {
@@ -167,6 +168,52 @@ public class HttpClientUtil {
             throw new RuntimeException(msg);
         }
         return resp.body().bytes();
+    }
+
+    @SneakyThrows
+    public <T> T restApiGetByThreadPool(String url, Map<String, String> headers, Map<String, String> paramValues, Long readTimeoutMs, Class<T> clazz) {
+        String buildUrl = buildUrl(url, paramValues);
+        Request.Builder builder = new Request.Builder().get();
+
+        if (!CollectionUtils.isEmpty(headers)) {
+            builder.headers(Headers.of(headers));
+        }
+
+        Request request = builder.url(buildUrl).build();
+
+        Call call = okHttpClient.newCall(request);
+        call.timeout().timeout(readTimeoutMs, TimeUnit.MILLISECONDS);
+
+        Response resp = call.execute();
+        if (resp.code() != HTTP_OK_CODE) {
+            String msg = String.format("HttpGet 响应 code 异常. [code] %s [url] %s", resp.code(), url);
+            log.error(msg);
+            throw new RuntimeException(msg);
+        }
+
+        return JSON.parseObject(resp.body().string(), clazz);
+    }
+
+    @SneakyThrows
+    public <T> T restApiPostByThreadPool(String url, Map<String, String> headers, Map<String, String> paramValues, Long readTimeoutMs, Class<T> clazz) {
+        String buildUrl = buildUrl(url, paramValues);
+
+        Request request = new Request.Builder()
+                .url(buildUrl)
+                .headers(Headers.of(headers))
+                .post(RequestBody.create(jsonMediaType, ""))
+                .build();
+
+        Call call = okHttpClient.newCall(request);
+        call.timeout().timeout(readTimeoutMs, TimeUnit.MILLISECONDS);
+
+        Response resp = call.execute();
+        if (resp.code() != HTTP_OK_CODE) {
+            String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s.", resp.code(), url);
+            log.error(msg);
+            throw new RuntimeException(msg);
+        }
+        return JSON.parseObject(resp.body().string(), clazz);
     }
 
 }

@@ -1,8 +1,8 @@
 package io.dynamic.threadpool.starter.core;
 
 import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
-import io.dynamic.threadpool.starter.http.HttpAgent;
-import io.dynamic.threadpool.starter.http.ServerHttpAgent;
+import io.dynamic.threadpool.starter.remote.HttpAgent;
+import io.dynamic.threadpool.starter.remote.ServerHttpAgent;
 import io.dynamic.threadpool.starter.listener.ClientWorker;
 import io.dynamic.threadpool.starter.listener.Listener;
 
@@ -26,7 +26,16 @@ public class ThreadPoolConfigService implements ConfigService {
     }
 
     @Override
-    public void addListener(String tpId, Listener listener) {
-        clientWorker.addTenantListeners(tpId, Arrays.asList(listener));
+    public void addListener(String namespace, String itemId, String tpId, Listener listener) {
+        clientWorker.addTenantListeners(namespace, itemId, tpId, Arrays.asList(listener));
+    }
+
+    @Override
+    public String getServerStatus() {
+        if (clientWorker.isHealthServer()) {
+            return "UP";
+        } else {
+            return "DOWN";
+        }
     }
 }

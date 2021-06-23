@@ -8,8 +8,8 @@
     },
     {
       "name": "spring.dynamic.thread-pool.enabled",
-      "type": "java.lang.Boolean",
-      "defaultValue": false,
+      "type": "java.lang.String",
+      "defaultValue": "false",
       "description": "dynamic thread-pool enabled."
     },
     {
