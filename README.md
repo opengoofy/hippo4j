@@ -11,6 +11,8 @@
 
 <img src="https://img.shields.io/badge/JDK-1.8-violet.svg" />
 
+<img src="https://img.shields.io/badge/release-v1.0.0-green.svg" />
+
 <img src="https://img.shields.io/github/stars/longtai94/dynamic-thread-pool.svg" />
 
 </p>
