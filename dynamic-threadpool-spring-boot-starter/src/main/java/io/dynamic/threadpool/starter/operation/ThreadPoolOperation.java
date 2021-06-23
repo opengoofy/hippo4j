@@ -21,7 +21,7 @@ public class ThreadPoolOperation {
         Listener configListener = new Listener() {
             @Override
             public void receiveConfigInfo(String config) {
-                threadPoolSubscribeCallback.callback(tpId, config);
+                threadPoolSubscribeCallback.callback(config);
             }
 
             @Override

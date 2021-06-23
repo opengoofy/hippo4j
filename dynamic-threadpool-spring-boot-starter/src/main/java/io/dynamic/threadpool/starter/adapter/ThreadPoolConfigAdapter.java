@@ -31,7 +31,7 @@ public class ThreadPoolConfigAdapter extends ConfigAdapter {
             new ThreadPoolExecutor.DiscardOldestPolicy());
 
     public void subscribeConfig(List<String> tpIds) {
-        tpIds.forEach(each -> threadPoolOperation.subscribeConfig(each, executorService, (tpId, config) -> callbackConfig(tpId, config)));
+        tpIds.forEach(each -> threadPoolOperation.subscribeConfig(each, executorService, config -> callbackConfig(config)));
     }
 
 }

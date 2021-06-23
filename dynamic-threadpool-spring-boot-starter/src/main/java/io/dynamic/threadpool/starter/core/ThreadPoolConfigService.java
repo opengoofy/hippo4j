@@ -1,5 +1,8 @@
 package io.dynamic.threadpool.starter.core;
 
+import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
+import io.dynamic.threadpool.starter.http.HttpAgent;
+import io.dynamic.threadpool.starter.http.ServerHttpAgent;
 import io.dynamic.threadpool.starter.listener.ClientWorker;
 import io.dynamic.threadpool.starter.listener.Listener;
 
@@ -13,10 +16,13 @@ import java.util.Arrays;
  */
 public class ThreadPoolConfigService implements ConfigService {
 
+    private final HttpAgent httpAgent;
+
     private final ClientWorker clientWorker;
 
-    public ThreadPoolConfigService() {
-        clientWorker = new ClientWorker();
+    public ThreadPoolConfigService(DynamicThreadPoolProperties properties) {
+        httpAgent = new ServerHttpAgent(properties);
+        clientWorker = new ClientWorker(httpAgent);
     }
 
     @Override

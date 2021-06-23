@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -29,8 +28,11 @@ public class ThreadPoolRunListener implements ApplicationRunner {
     @Autowired
     private HttpClientUtil httpClientUtil;
 
-    @Resource
-    private DynamicThreadPoolProperties dynamicThreadPoolProperties;
+    private final DynamicThreadPoolProperties dynamicThreadPoolProperties;
+
+    public ThreadPoolRunListener(DynamicThreadPoolProperties properties) {
+        this.dynamicThreadPoolProperties = properties;
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

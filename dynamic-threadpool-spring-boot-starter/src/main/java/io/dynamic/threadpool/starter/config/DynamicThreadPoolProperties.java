@@ -17,7 +17,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = DynamicThreadPoolProperties.PREFIX)
 public class DynamicThreadPoolProperties {
 
-    public static final String PREFIX = "spring.threadpool.dynamic";
+    public static final String PREFIX = "spring.dynamic.thread-pool";
+
+    /**
+     * 服务地址
+     */
+    private String serverAddr;
 
     /**
      * 命名空间

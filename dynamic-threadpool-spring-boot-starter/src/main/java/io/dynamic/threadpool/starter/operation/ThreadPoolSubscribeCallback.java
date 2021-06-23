@@ -11,8 +11,7 @@ public interface ThreadPoolSubscribeCallback {
     /**
      * 回调函数
      *
-     * @param tpId
      * @param config
      */
-    void callback(String tpId, String config);
+    void callback(String config);
 }

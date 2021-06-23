@@ -15,9 +15,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class ThreadPoolDynamicRefresh {
 
-    public static void refreshDynamicPool(String tpId, String content) {
+    public static void refreshDynamicPool(String content) {
         PoolParameterInfo parameter = JSON.parseObject(content, PoolParameterInfo.class);
-        refreshDynamicPool(tpId, parameter.getCoreSize(), parameter.getMaxSize(), parameter.getCapacity(), parameter.getKeepAliveTime());
+        refreshDynamicPool(parameter.getTpId(), parameter.getCoreSize(), parameter.getMaxSize(), parameter.getCapacity(), parameter.getKeepAliveTime());
     }
 
     public static void refreshDynamicPool(String threadPoolId, Integer coreSize, Integer maxSize, Integer capacity, Integer keepAliveTime) {

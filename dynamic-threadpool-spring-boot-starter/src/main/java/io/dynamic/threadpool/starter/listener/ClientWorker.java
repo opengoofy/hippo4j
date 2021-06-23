@@ -1,6 +1,7 @@
 package io.dynamic.threadpool.starter.listener;
 
 import io.dynamic.threadpool.starter.core.CacheData;
+import io.dynamic.threadpool.starter.http.HttpAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
@@ -22,6 +23,8 @@ public class ClientWorker {
 
     private double currentLongingTaskCount = 0;
 
+    private final HttpAgent agent;
+
     private final ScheduledExecutorService executor;
 
     private final ScheduledExecutorService executorService;
@@ -29,7 +32,9 @@ public class ClientWorker {
     private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap(16);
 
     @SuppressWarnings("all")
-    public ClientWorker() {
+    public ClientWorker(HttpAgent httpAgent) {
+        this.agent = httpAgent;
+
         this.executor = Executors.newScheduledThreadPool(1, r -> {
             Thread t = new Thread(r);
             t.setName("io.dynamic.threadPool.client.Worker.executor");
@@ -111,7 +116,6 @@ public class ClientWorker {
             for (CacheData each : cacheDataList) {
                 each.checkListenerMd5();
             }
-
         }
     }
 

@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.dynamic-threadpool</groupId>
         <artifactId>parent</artifactId>
-        <version>${revision}</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>dynamic-threadpool-spring-boot-starter</artifactId>
@@ -43,6 +43,12 @@
         <dependency>
             <groupId>io.dynamic-threadpool</groupId>
             <artifactId>common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

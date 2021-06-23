@@ -29,12 +29,12 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     public ConfigService configService() {
-        return new ThreadPoolConfigService();
+        return new ThreadPoolConfigService(properties);
     }
 
     @Bean
     public ThreadPoolRunListener threadPoolRunListener() {
-        return new ThreadPoolRunListener();
+        return new ThreadPoolRunListener(properties);
     }
 
     @Bean

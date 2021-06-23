@@ -5,11 +5,11 @@
 
     <groupId>io.dynamic-threadpool</groupId>
     <artifactId>parent</artifactId>
-    <version>${revision}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>动态线程池，附带监控报警功能</description>
+    <description>🔥 强大的动态线程池，附带监控报警功能</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -24,6 +24,7 @@
     </properties>
 
     <modules>
+        <module>common</module>
         <module>server</module>
         <module>example</module>
         <module>dynamic-threadpool-spring-boot-starter</module>
@@ -67,7 +68,7 @@
             <dependency>
                 <groupId>io.dynamic-threadpool</groupId>
                 <artifactId>common</artifactId>
-                <version>${revision}</version>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -80,12 +81,51 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>release_user</id>
+            <name>Release Deploy</name>
+            <url>http://localhost:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot_user</id>
+            <name>Snapshot Deploy</name>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!--<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.1.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

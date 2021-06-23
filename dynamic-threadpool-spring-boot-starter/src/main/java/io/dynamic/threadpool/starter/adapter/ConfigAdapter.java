@@ -13,10 +13,9 @@ public class ConfigAdapter {
     /**
      * 回调修改线程池配置
      *
-     * @param tpId
      * @param config
      */
-    public void callbackConfig(String tpId, String config) {
-        ThreadPoolDynamicRefresh.refreshDynamicPool(tpId, config);
+    public void callbackConfig(String config) {
+        ThreadPoolDynamicRefresh.refreshDynamicPool(config);
     }
 }
