@@ -9,6 +9,8 @@
   <img src="https://img.shields.io/badge/公众号-龙台的技术笔记-yellow.svg" />
 </a>
 
+<img src="https://img.shields.io/badge/JDK-1.8-violet.svg" />
+
 <img src="https://img.shields.io/github/stars/longtai94/dynamic-thread-pool.svg" />
 
 </p>
