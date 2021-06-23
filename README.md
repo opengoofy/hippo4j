@@ -6,7 +6,7 @@
 <img src="https://img.shields.io/badge/程序员-龙台-blue.svg" />
 
 <a target="_blank" href="http://mp.weixin.qq.com/s?__biz=Mzg4NDU0Mjk5OQ==&mid=100007311&idx=1&sn=d325c1a509d6ee89469a1134ac0a8cf5&chksm=4fb7c6f778c04fe111e9cf52723675b8e8cbbbf9e848741a5d9c20620ff6c778b6613e021a34&scene=18#wechat_redirect">
-  <img src="https://img.shields.io/badge/公众号-龙台的技术笔记-yellow.svg" />
+  <img src="https://img.shields.io/badge/公众号-龙台 blog-yellow.svg" />
 </a>
 
 <img src="https://img.shields.io/badge/JDK-1.8-violet.svg" />
