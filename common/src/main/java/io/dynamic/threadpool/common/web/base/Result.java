@@ -1,4 +1,4 @@
-package io.dynamict.hreadpool.common.web.base;
+package io.dynamic.threadpool.common.web.base;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

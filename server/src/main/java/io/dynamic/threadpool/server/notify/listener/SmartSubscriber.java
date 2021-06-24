@@ -1,6 +1,6 @@
 package io.dynamic.threadpool.server.notify.listener;
 
-import io.dynamic.threadpool.server.notify.Event;
+import io.dynamic.threadpool.server.event.Event;
 
 import java.util.List;
 

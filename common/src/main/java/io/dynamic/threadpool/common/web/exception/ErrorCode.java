@@ -1,4 +1,4 @@
-package io.dynamict.hreadpool.common.web.exception;
+package io.dynamic.threadpool.common.web.exception;
 
 /**
  * 异常码

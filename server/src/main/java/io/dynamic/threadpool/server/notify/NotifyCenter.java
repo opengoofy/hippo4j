@@ -1,11 +1,16 @@
 package io.dynamic.threadpool.server.notify;
 
+import io.dynamic.threadpool.server.event.Event;
+import io.dynamic.threadpool.server.event.SlowEvent;
 import io.dynamic.threadpool.server.notify.listener.SmartSubscriber;
 import io.dynamic.threadpool.server.notify.listener.Subscriber;
 import io.dynamic.threadpool.server.toolkit.ClassUtil;
 import io.dynamic.threadpool.server.toolkit.MapUtil;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 
@@ -15,17 +20,47 @@ import java.util.function.BiFunction;
  * @author chen.ma
  * @date 2021/6/23 18:58
  */
+@Slf4j
 public class NotifyCenter {
 
     private static final NotifyCenter INSTANCE = new NotifyCenter();
 
     public static int ringBufferSize = 16384;
 
+    public static int shareBufferSize = 1024;
+
     private DefaultSharePublisher sharePublisher;
+
+    private static Class<? extends EventPublisher> clazz = null;
 
     private static BiFunction<Class<? extends Event>, Integer, EventPublisher> publisherFactory = null;
 
     private final Map<String, EventPublisher> publisherMap = new ConcurrentHashMap(16);
+
+    static {
+        final ServiceLoader<EventPublisher> loader = ServiceLoader.load(EventPublisher.class);
+        Iterator<EventPublisher> iterator = loader.iterator();
+
+        if (iterator.hasNext()) {
+            clazz = iterator.next().getClass();
+        } else {
+            clazz = DefaultPublisher.class;
+        }
+
+        publisherFactory = (cls, buffer) -> {
+            try {
+                EventPublisher publisher = clazz.newInstance();
+                publisher.init(cls, buffer);
+                return publisher;
+            } catch (Throwable ex) {
+                log.error("Service class newInstance has error : {}", ex);
+                throw new RuntimeException(ex);
+            }
+        };
+
+        INSTANCE.sharePublisher = new DefaultSharePublisher();
+        INSTANCE.sharePublisher.init(SlowEvent.class, shareBufferSize);
+    }
 
     public static <T> void registerSubscriber(final Subscriber consumer) {
         if (consumer instanceof SmartSubscriber) {
@@ -52,11 +87,33 @@ public class NotifyCenter {
 
         final String topic = ClassUtil.getCanonicalName(subscribeType);
         synchronized (NotifyCenter.class) {
-            // MapUtils.computeIfAbsent is a unsafe method.
             MapUtil.computeIfAbsent(INSTANCE.publisherMap, topic, publisherFactory, subscribeType, ringBufferSize);
         }
         EventPublisher publisher = INSTANCE.publisherMap.get(topic);
         publisher.addSubscriber(consumer);
     }
 
+    public static boolean publishEvent(final Event event) {
+        try {
+            return publishEvent(event.getClass(), event);
+        } catch (Throwable ex) {
+            log.error("There was an exception to the message publishing : {}", ex);
+            return false;
+        }
+    }
+
+    private static boolean publishEvent(final Class<? extends Event> eventType, final Event event) {
+        if (ClassUtil.isAssignableFrom(SlowEvent.class, eventType)) {
+            return INSTANCE.sharePublisher.publish(event);
+        }
+
+        final String topic = ClassUtil.getCanonicalName(eventType);
+
+        EventPublisher publisher = INSTANCE.publisherMap.get(topic);
+        if (publisher != null) {
+            return publisher.publish(event);
+        }
+        log.warn("There are no [{}] publishers for this event, please register", topic);
+        return false;
+    }
 }

@@ -3,18 +3,18 @@ package io.dynamic.threadpool.starter.listener;
 import com.alibaba.fastjson.JSON;
 import io.dynamic.threadpool.starter.common.CommonThreadPool;
 import io.dynamic.threadpool.starter.common.Constants;
-import io.dynamic.threadpool.starter.config.ApplicationContextHolder;
+import io.dynamic.threadpool.common.config.ApplicationContextHolder;
 import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
 import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
-import io.dynamic.threadpool.starter.model.PoolParameterInfo;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
 import io.dynamic.threadpool.starter.remote.ServerHttpAgent;
 import io.dynamic.threadpool.starter.toolkit.BlockingQueueUtil;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
-import io.dynamict.hreadpool.common.web.base.Result;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import io.dynamic.threadpool.common.model.PoolParameterInfo;
+import io.dynamic.threadpool.common.web.base.Result;
+import org.springframework.core.annotation.Order;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * @author chen.ma
  * @date 2021/6/20 16:34
  */
-public class ThreadPoolRunListener implements ApplicationRunner {
+public class ThreadPoolRunListener {
 
     private final DynamicThreadPoolProperties dynamicThreadPoolProperties;
 
@@ -35,8 +35,9 @@ public class ThreadPoolRunListener implements ApplicationRunner {
         this.dynamicThreadPoolProperties = properties;
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+    @Order(1024)
+    @PostConstruct
+    public void run() {
         Map<String, DynamicThreadPoolWrap> executorMap =
                 ApplicationContextHolder.getBeansOfType(DynamicThreadPoolWrap.class);
 
@@ -59,7 +60,7 @@ public class ThreadPoolRunListener implements ApplicationRunner {
                 val.setPool(CommonThreadPool.getInstance(val.getTpId()));
             }
 
-            GlobalThreadPoolManage.register(val.getTpId(), val);
+            GlobalThreadPoolManage.register(val.getTpId(), ppi, val);
         });
     }
 

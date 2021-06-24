@@ -1,11 +1,12 @@
 package io.dynamic.threadpool.starter.listener;
 
 import com.alibaba.fastjson.JSON;
+import io.dynamic.threadpool.common.model.PoolParameterInfo;
+import io.dynamic.threadpool.common.toolkit.ContentUtil;
+import io.dynamic.threadpool.common.web.base.Result;
 import io.dynamic.threadpool.starter.common.Constants;
 import io.dynamic.threadpool.starter.core.CacheData;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
-import io.dynamict.hreadpool.common.model.GlobalRemotePoolInfo;
-import io.dynamict.hreadpool.common.web.base.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -15,6 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import static io.dynamic.threadpool.starter.common.Constants.LINE_SEPARATOR;
+import static io.dynamic.threadpool.starter.common.Constants.WORD_SEPARATOR;
 
 /**
  * 客户端监听
@@ -98,61 +102,82 @@ public class ClientWorker {
         @Override
         public void run() {
             List<CacheData> cacheDataList = new ArrayList();
+            cacheMap.forEach((key, val) -> cacheDataList.add(val));
 
-            List<String> changedTpIds = checkUpdateTpIds(cacheDataList);
+            List<String> changedTpIds = checkUpdateDataIds(cacheDataList);
             if (!CollectionUtils.isEmpty(cacheDataList)) {
                 log.info("[dynamic threadPool] tpIds changed :: {}", changedTpIds);
-            }
+            } else {
+                for (String each : changedTpIds) {
+                    String[] keys = each.split(",");
+                    String namespace = keys[0];
+                    String itemId = keys[1];
+                    String tpId = keys[2];
 
-            for (String each : changedTpIds) {
-                String[] keys = each.split(",");
-                String namespace = keys[0];
-                String itemId = keys[1];
-                String tpId = keys[2];
+                    try {
+                        String content = getServerConfig(namespace, itemId, tpId, 3000L);
+                        CacheData cacheData = cacheMap.get(tpId);
+                        cacheData.setContent(content);
+                        cacheDataList.add(cacheData);
+                        log.info("[data-received] namespace :: {}, itemId :: {}, tpId :: {}, md5 :: {}, content :: {}",
+                                namespace, itemId, tpId, cacheData.getMd5(), content);
+                    } catch (Exception ex) {
+                        // ignore
+                    }
+                }
 
-                try {
-                    String content = getServerConfig(namespace, itemId, tpId, 3000L);
-                    CacheData cacheData = cacheMap.get(tpId);
-                    cacheData.setContent(content);
-                    cacheDataList.add(cacheData);
-                    log.info("[data-received] namespace :: {}, itemId :: {}, tpId :: {}, md5 :: {}, content :: {}",
-                            namespace, itemId, tpId, cacheData.getMd5(), content);
-                } catch (Exception ex) {
-                    // ignore
+                for (CacheData each : cacheDataList) {
+                    each.checkListenerMd5();
                 }
             }
 
-            for (CacheData each : cacheDataList) {
-                each.checkListenerMd5();
-            }
+            executorService.execute(this);
         }
+    }
+
+    /**
+     * 转换入参
+     *
+     * @param cacheDataList
+     * @return
+     */
+    private List<String> checkUpdateDataIds(List<CacheData> cacheDataList) {
+        StringBuilder sb = new StringBuilder();
+        for (CacheData cacheData : cacheDataList) {
+            sb.append(cacheData.tpId).append(WORD_SEPARATOR);
+            sb.append(cacheData.itemId).append(WORD_SEPARATOR);
+            sb.append(cacheData.getMd5()).append(WORD_SEPARATOR);
+            sb.append(cacheData.namespace).append(LINE_SEPARATOR);
+        }
+
+        return checkUpdateTpIds(sb.toString());
     }
 
     /**
      * 检查修改的线程池 ID
      *
-     * @param cacheDataList
+     * @param probeUpdateString
      * @return
      */
-    public List<String> checkUpdateTpIds(List<CacheData> cacheDataList) {
+    public List<String> checkUpdateTpIds(String probeUpdateString) {
         Map<String, String> params = new HashMap(2);
-        params.put(Constants.PROBE_MODIFY_REQUEST, JSON.toJSONString(cacheDataList));
+        params.put(Constants.PROBE_MODIFY_REQUEST, probeUpdateString);
         Map<String, String> headers = new HashMap(2);
         headers.put(Constants.LONG_PULLING_TIMEOUT, "" + timeout);
 
-        if (StringUtils.isEmpty(cacheDataList)) {
+        if (StringUtils.isEmpty(probeUpdateString)) {
             return Collections.emptyList();
         }
 
         try {
             long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
             Result result = agent.httpPost(Constants.LISTENER_PATH, headers, params, readTimeoutMs);
-            if (result.isSuccess()) {
+            if (result == null || result.isFail()) {
+                setHealthServer(false);
+                log.warn("[check-update] get changed dataId error, code: {}", result == null ? "error" : result.getCode());
+            } else {
                 setHealthServer(true);
                 return parseUpdateDataIdResponse(result.getData().toString());
-            } else {
-                setHealthServer(false);
-                log.error("[check-update] get changed dataId error, code: {}", result.getCode());
             }
         } catch (Exception ex) {
             setHealthServer(false);
@@ -226,12 +251,12 @@ public class ClientWorker {
             return cacheData;
         }
 
-        cacheData = new CacheData(tpId);
+        cacheData = new CacheData(namespace, itemId, tpId);
         CacheData lastCacheData = cacheMap.putIfAbsent(tpId, cacheData);
         if (lastCacheData == null) {
             String serverConfig = getServerConfig(namespace, itemId, tpId, 3000L);
-            GlobalRemotePoolInfo poolInfo = JSON.parseObject(serverConfig, GlobalRemotePoolInfo.class);
-            cacheData.setContent(poolInfo.getContent());
+            PoolParameterInfo poolInfo = JSON.parseObject(serverConfig, PoolParameterInfo.class);
+            cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
 
             int taskId = cacheMap.size() / Constants.CONFIG_LONG_POLL_TIMEOUT;
             cacheData.setTaskId(taskId);

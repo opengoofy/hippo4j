@@ -1,11 +1,15 @@
 package io.dynamic.threadpool.server.controller;
 
 import io.dynamic.threadpool.server.constant.Constants;
+import io.dynamic.threadpool.server.event.ConfigDataChangeEvent;
+import io.dynamic.threadpool.server.model.ConfigAllInfo;
 import io.dynamic.threadpool.server.model.ConfigInfoBase;
+import io.dynamic.threadpool.server.service.ConfigChangePublisher;
 import io.dynamic.threadpool.server.service.ConfigService;
 import io.dynamic.threadpool.server.service.ConfigServletInner;
-import io.dynamict.hreadpool.common.web.base.Result;
-import io.dynamict.hreadpool.common.web.base.Results;
+import io.dynamic.threadpool.server.toolkit.Md5ConfigUtil;
+import io.dynamic.threadpool.common.web.base.Result;
+import io.dynamic.threadpool.common.web.base.Results;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -14,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
+import java.sql.Timestamp;
+import java.util.Map;
 
 /**
  * 服务端配置控制器
@@ -40,6 +46,17 @@ public class ConfigController {
         return Results.success(configService.findConfigAllInfo(tpId, itemId, namespace));
     }
 
+    @PostMapping
+    public Result<Boolean> publishConfig(HttpServletRequest request, @RequestBody ConfigAllInfo config) {
+        configService.insertOrUpdate(config);
+
+        long gmtModified = new Timestamp(System.currentTimeMillis()).getTime();
+        ConfigChangePublisher
+                .notifyConfigChange(new ConfigDataChangeEvent(config.getNamespace(), config.getItemId(), config.getTpId(), gmtModified));
+
+        return Results.success(true);
+    }
+
     @SneakyThrows
     @PostMapping("/listener")
     public void listener(HttpServletRequest request, HttpServletResponse response) {
@@ -52,7 +69,14 @@ public class ConfigController {
 
         probeModify = URLDecoder.decode(probeModify, Constants.ENCODE);
 
-        configServletInner.doPollingConfig(request, response, null, probeModify.length());
+        Map<String, String> clientMd5Map;
+        try {
+            clientMd5Map = Md5ConfigUtil.getClientMd5Map(probeModify);
+        } catch (Throwable e) {
+            throw new IllegalArgumentException("invalid probeModify");
+        }
+
+        configServletInner.doPollingConfig(request, response, clientMd5Map, probeModify.length());
     }
 
 }

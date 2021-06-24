@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.model;
+package io.dynamic.threadpool.common.model;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @date 2021/6/16 23:18
  */
 @Data
-public class PoolParameterInfo implements Serializable {
+public class PoolParameterInfo implements PoolParameter, Serializable {
 
     private static final long serialVersionUID = -7123935122108553864L;
 
@@ -59,4 +59,20 @@ public class PoolParameterInfo implements Serializable {
      * 线程存活时长
      */
     private Integer keepAliveTime;
+
+    /**
+     * 是否告警
+     */
+    private Integer isAlarm;
+
+    /**
+     * 容量告警
+     */
+    private Integer capacityAlarm;
+
+    /**
+     * 活跃度告警
+     */
+    private Integer livenessAlarm;
+
 }

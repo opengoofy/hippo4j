@@ -1,7 +1,5 @@
 package io.dynamic.threadpool.server.event;
 
-import io.dynamic.threadpool.server.notify.Event;
-
 /**
  * Local Data Change Event.
  *
@@ -9,4 +7,10 @@ import io.dynamic.threadpool.server.notify.Event;
  * @date 2021/6/23 19:13
  */
 public class LocalDataChangeEvent extends Event {
+
+    public final String groupKey;
+
+    public LocalDataChangeEvent(String groupKey) {
+        this.groupKey = groupKey;
+    }
 }

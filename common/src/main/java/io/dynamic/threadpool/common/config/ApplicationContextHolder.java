@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.config;
+package io.dynamic.threadpool.common.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

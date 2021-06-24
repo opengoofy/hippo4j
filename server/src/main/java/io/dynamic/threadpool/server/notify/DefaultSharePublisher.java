@@ -1,6 +1,8 @@
 package io.dynamic.threadpool.server.notify;
 
 import cn.hutool.core.collection.ConcurrentHashSet;
+import io.dynamic.threadpool.server.event.Event;
+import io.dynamic.threadpool.server.event.SlowEvent;
 import io.dynamic.threadpool.server.notify.listener.Subscriber;
 
 import java.util.Map;
@@ -15,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author chen.ma
  * @date 2021/6/23 19:05
  */
-public class DefaultSharePublisher {
+public class DefaultSharePublisher extends DefaultPublisher {
 
     private final Map<Class<? extends SlowEvent>, Set<Subscriber>> subMappings = new ConcurrentHashMap();
 

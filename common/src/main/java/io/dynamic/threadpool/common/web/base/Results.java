@@ -1,7 +1,7 @@
-package io.dynamict.hreadpool.common.web.base;
+package io.dynamic.threadpool.common.web.base;
 
-import io.dynamict.hreadpool.common.web.exception.ErrorCode;
-import io.dynamict.hreadpool.common.web.exception.ServiceException;
+import io.dynamic.threadpool.common.web.exception.ErrorCode;
+import io.dynamic.threadpool.common.web.exception.ServiceException;
 
 /**
  * Result 工具类

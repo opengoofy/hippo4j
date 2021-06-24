@@ -16,6 +16,11 @@ public class ConfigInfoBase implements Serializable {
     private static final long serialVersionUID = -1892597426099265730L;
 
     /**
+     * namespace
+     */
+    private String namespace;
+
+    /**
      * TpId
      */
     private String tpId;

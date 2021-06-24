@@ -1,7 +1,7 @@
 package io.dynamic.threadpool.server.toolkit;
 
 import cn.hutool.core.thread.ThreadFactoryBuilder;
-import io.dynamict.hreadpool.common.executor.ExecutorFactory;
+import io.dynamic.threadpool.common.executor.ExecutorFactory;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;

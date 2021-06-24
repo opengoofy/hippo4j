@@ -1,4 +1,4 @@
-package io.dynamict.hreadpool.common.executor;
+package io.dynamic.threadpool.common.executor;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

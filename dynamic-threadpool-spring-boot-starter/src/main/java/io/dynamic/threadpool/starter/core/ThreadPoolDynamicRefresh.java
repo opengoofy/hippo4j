@@ -1,7 +1,7 @@
 package io.dynamic.threadpool.starter.core;
 
 import com.alibaba.fastjson.JSON;
-import io.dynamic.threadpool.starter.model.PoolParameterInfo;
+import io.dynamic.threadpool.common.model.PoolParameterInfo;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 import lombok.extern.slf4j.Slf4j;
 

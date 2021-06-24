@@ -1,4 +1,6 @@
-package io.dynamict.hreadpool.common.toolkit;
+package io.dynamic.threadpool.common.toolkit;
+
+import io.dynamic.threadpool.common.model.PoolParameter;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -52,5 +54,15 @@ public class Md5Util {
         }
 
         return new String(out);
+    }
+
+    /**
+     * 获取 ThreadPool 相关内容 Md5 值
+     *
+     * @param config
+     * @return
+     */
+    public static String getTpContentMd5(PoolParameter config) {
+        return Md5Util.md5Hex(ContentUtil.getPoolContent(config), "UTF-8");
     }
 }

@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.config;
+package io.dynamic.threadpool.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

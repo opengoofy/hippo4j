@@ -1,4 +1,4 @@
-package io.dynamict.hreadpool.common.executor;
+package io.dynamic.threadpool.common.executor;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Thread Pool Manager.
@@ -21,8 +22,18 @@ public class ThreadPoolManager {
 
     private static final ThreadPoolManager INSTANCE = new ThreadPoolManager();
 
+    private static final AtomicBoolean CLOSED = new AtomicBoolean(false);
+
     public static ThreadPoolManager getInstance() {
         return INSTANCE;
+    }
+
+    static {
+        INSTANCE.init();
+    }
+
+    private void init() {
+        resourcesManager = new ConcurrentHashMap<String, Map<String, Set<ExecutorService>>>(8);
     }
 
     public void register(String namespace, String group, ExecutorService executor) {

@@ -1,6 +1,8 @@
 package io.dynamic.threadpool.server.notify.listener;
 
-import io.dynamic.threadpool.server.notify.Event;
+import io.dynamic.threadpool.server.event.Event;
+
+import java.util.concurrent.Executor;
 
 /**
  * An abstract subscriber class for subscriber interface.
@@ -24,4 +26,7 @@ public abstract class Subscriber<T extends Event> {
      */
     public abstract Class<? extends Event> subscribeType();
 
+    public Executor executor() {
+        return null;
+    }
 }

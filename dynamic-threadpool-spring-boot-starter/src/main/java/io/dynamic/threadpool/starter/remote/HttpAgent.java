@@ -1,6 +1,6 @@
 package io.dynamic.threadpool.starter.remote;
 
-import io.dynamict.hreadpool.common.web.base.Result;
+import io.dynamic.threadpool.common.web.base.Result;
 
 import java.util.Map;
 

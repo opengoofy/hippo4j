@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.server.notify;
+package io.dynamic.threadpool.server.event;
 
 /**
  * Slow Event.

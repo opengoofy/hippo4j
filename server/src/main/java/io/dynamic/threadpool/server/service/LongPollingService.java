@@ -1,20 +1,22 @@
 package io.dynamic.threadpool.server.service;
 
+import com.alibaba.fastjson.JSON;
 import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
-import io.dynamic.threadpool.server.notify.Event;
+import io.dynamic.threadpool.server.event.Event;
 import io.dynamic.threadpool.server.notify.NotifyCenter;
 import io.dynamic.threadpool.server.notify.listener.Subscriber;
 import io.dynamic.threadpool.server.toolkit.ConfigExecutor;
+import io.dynamic.threadpool.server.toolkit.Md5ConfigUtil;
 import io.dynamic.threadpool.server.toolkit.RequestUtil;
+import io.dynamic.threadpool.common.web.base.Results;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
@@ -34,8 +36,6 @@ public class LongPollingService {
 
     public static final String LONG_POLLING_HEADER = "Long-Pulling-Timeout";
 
-    public static final String LONG_POLLING_NO_HANG_UP_HEADER = "Long-Pulling-Timeout-No-Hangup";
-
     public static final String CLIENT_APPNAME_HEADER = "Client-AppName";
 
     private Map<String, Long> retainIps = new ConcurrentHashMap();
@@ -54,7 +54,7 @@ public class LongPollingService {
                 } else {
                     if (event instanceof LocalDataChangeEvent) {
                         LocalDataChangeEvent evt = (LocalDataChangeEvent) event;
-                        // ConfigExecutor.executeLongPolling(new DataChangeTask(evt.groupKey, evt.isBeta, evt.betaIps));
+                        ConfigExecutor.executeLongPolling(new DataChangeTask(evt.groupKey));
                     }
                 }
             }
@@ -78,24 +78,28 @@ public class LongPollingService {
 
         final String groupKey;
 
-        final long changeTime = System.currentTimeMillis();
-
-        final boolean isBeta;
-
-        final List<String> betaIps;
-
-        DataChangeTask(String groupKey, boolean isBeta, List<String> betaIps) {
+        DataChangeTask(String groupKey) {
             this.groupKey = groupKey;
-            this.isBeta = isBeta;
-            this.betaIps = betaIps;
         }
 
         @Override
         public void run() {
+            try {
+                for (Iterator<ClientLongPolling> iter = allSubs.iterator(); iter.hasNext(); ) {
+                    ClientLongPolling clientSub = iter.next();
+
+                    if (clientSub.clientMd5Map.containsKey(groupKey)) {
+                        getRetainIps().put(clientSub.ip, System.currentTimeMillis());
+                        iter.remove();
+                        clientSub.sendResponse(Arrays.asList(groupKey));
+                    }
+                }
+            } catch (Exception ex) {
+                log.error("Data change error :: {}", ex.getMessage(), ex);
+            }
 
         }
     }
-
 
     public static boolean isSupportLongPolling(HttpServletRequest req) {
         return null != req.getHeader(LONG_POLLING_HEADER);
@@ -112,7 +116,6 @@ public class LongPollingService {
     public void addLongPollingClient(HttpServletRequest req, HttpServletResponse rsp, Map<String, String> clientMd5Map,
                                      int probeRequestSize) {
         String str = req.getHeader(LONG_POLLING_HEADER);
-        String noHangUpFlag = req.getHeader(LONG_POLLING_NO_HANG_UP_HEADER);
         String appName = req.getHeader(CLIENT_APPNAME_HEADER);
         int delayTime = SwitchService.getSwitchInteger(SwitchService.FIXED_DELAY_TIME, 500);
 
@@ -120,7 +123,11 @@ public class LongPollingService {
         if (isFixedPolling()) {
             timeout = Math.max(10000, getFixedPollingInterval());
         } else {
-
+            List<String> changedGroups = Md5ConfigUtil.compareMd5(req, clientMd5Map);
+            if (changedGroups.size() > 0) {
+                generateResponse(rsp, changedGroups);
+                return;
+            }
         }
 
         String ip = RequestUtil.getRemoteIp(req);
@@ -164,11 +171,22 @@ public class LongPollingService {
         @Override
         public void run() {
             asyncTimeoutFuture = ConfigExecutor.scheduleLongPolling(() -> {
-                getRetainIps().put(ClientLongPolling.this.ip, System.currentTimeMillis());
-                allSubs.remove(ClientLongPolling.this);
+                try {
+                    getRetainIps().put(ClientLongPolling.this.ip, System.currentTimeMillis());
+                    allSubs.remove(ClientLongPolling.this);
 
-                if (isFixedPolling()) {
-
+                    if (isFixedPolling()) {
+                        List<String> changedGroups = Md5ConfigUtil.compareMd5((HttpServletRequest) asyncContext.getRequest(), clientMd5Map);
+                        if (changedGroups.size() > 0) {
+                            sendResponse(changedGroups);
+                        } else {
+                            sendResponse(null);
+                        }
+                    } else {
+                        sendResponse(null);
+                    }
+                } catch (Exception ex) {
+                    log.error("Long polling error :: {}", ex.getMessage(), ex);
                 }
 
             }, timeoutTime, TimeUnit.MILLISECONDS);
@@ -176,9 +194,64 @@ public class LongPollingService {
             allSubs.add(this);
         }
 
+        private void sendResponse(List<String> changedGroups) {
+
+            // Cancel time out task.
+            if (null != asyncTimeoutFuture) {
+                asyncTimeoutFuture.cancel(false);
+            }
+            generateResponse(changedGroups);
+        }
+
+        private void generateResponse(List<String> changedGroups) {
+            if (null == changedGroups) {
+                // Tell web container to send http response.
+                asyncContext.complete();
+                return;
+            }
+
+            HttpServletResponse response = (HttpServletResponse) asyncContext.getResponse();
+
+            try {
+                String respString = JSON.toJSONString(Results.success(changedGroups));
+
+                // Disable cache.
+                response.setHeader("Pragma", "no-cache");
+                response.setDateHeader("Expires", 0);
+                response.setHeader("Cache-Control", "no-cache,no-store");
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(respString);
+                asyncContext.complete();
+            } catch (Exception ex) {
+                log.error(ex.toString(), ex);
+                asyncContext.complete();
+            }
+        }
+
     }
 
     public Map<String, Long> getRetainIps() {
         return retainIps;
+    }
+
+    /**
+     * 回写响应
+     *
+     * @param response
+     * @param changedGroups
+     */
+    private void generateResponse(HttpServletResponse response, List<String> changedGroups) {
+        if (!CollectionUtils.isEmpty(changedGroups)) {
+            try {
+                final String respString = JSON.toJSONString(Results.success(changedGroups));
+                response.setHeader("Pragma", "no-cache");
+                response.setDateHeader("Expires", 0);
+                response.setHeader("Cache-Control", "no-cache,no-store");
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(respString);
+            } catch (Exception ex) {
+                log.error(ex.toString(), ex);
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-package io.dynamict.hreadpool.common.model;
+package io.dynamic.threadpool.common.model;
 
 import lombok.Getter;
 import lombok.Setter;

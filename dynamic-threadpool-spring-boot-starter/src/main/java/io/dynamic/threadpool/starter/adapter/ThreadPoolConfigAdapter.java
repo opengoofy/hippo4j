@@ -1,10 +1,11 @@
 package io.dynamic.threadpool.starter.adapter;
 
 import cn.hutool.core.thread.ThreadFactoryBuilder;
-import io.dynamic.threadpool.starter.config.ApplicationContextHolder;
+import io.dynamic.threadpool.common.config.ApplicationContextHolder;
 import io.dynamic.threadpool.starter.operation.ThreadPoolOperation;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class ThreadPoolConfigAdapter extends ConfigAdapter {
             new ThreadFactoryBuilder().setNamePrefix("threadPool-config").build(),
             new ThreadPoolExecutor.DiscardOldestPolicy());
 
+    @Order(1025)
     @PostConstruct
     public void subscribeConfig() {
         Map<String, DynamicThreadPoolWrap> executorMap =
