@@ -8,9 +8,7 @@ import io.dynamic.threadpool.server.toolkit.ClassUtil;
 import io.dynamic.threadpool.server.toolkit.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 
@@ -33,23 +31,16 @@ public class NotifyCenter {
 
     private static Class<? extends EventPublisher> clazz = null;
 
+    private static EventPublisher eventPublisher = new DefaultPublisher();
+
     private static BiFunction<Class<? extends Event>, Integer, EventPublisher> publisherFactory = null;
 
     private final Map<String, EventPublisher> publisherMap = new ConcurrentHashMap(16);
 
     static {
-        final ServiceLoader<EventPublisher> loader = ServiceLoader.load(EventPublisher.class);
-        Iterator<EventPublisher> iterator = loader.iterator();
-
-        if (iterator.hasNext()) {
-            clazz = iterator.next().getClass();
-        } else {
-            clazz = DefaultPublisher.class;
-        }
-
         publisherFactory = (cls, buffer) -> {
             try {
-                EventPublisher publisher = clazz.newInstance();
+                EventPublisher publisher = eventPublisher;
                 publisher.init(cls, buffer);
                 return publisher;
             } catch (Throwable ex) {
@@ -62,7 +53,7 @@ public class NotifyCenter {
         INSTANCE.sharePublisher.init(SlowEvent.class, shareBufferSize);
     }
 
-    public static <T> void registerSubscriber(final Subscriber consumer) {
+    public static void registerSubscriber(final Subscriber consumer) {
         if (consumer instanceof SmartSubscriber) {
             for (Class<? extends Event> subscribeType : ((SmartSubscriber) consumer).subscribeTypes()) {
                 if (ClassUtil.isAssignableFrom(SlowEvent.class, subscribeType)) {
@@ -84,7 +75,6 @@ public class NotifyCenter {
     }
 
     private static void addSubscriber(final Subscriber consumer, Class<? extends Event> subscribeType) {
-
         final String topic = ClassUtil.getCanonicalName(subscribeType);
         synchronized (NotifyCenter.class) {
             MapUtil.computeIfAbsent(INSTANCE.publisherMap, topic, publisherFactory, subscribeType, ringBufferSize);
@@ -115,5 +105,17 @@ public class NotifyCenter {
         }
         log.warn("There are no [{}] publishers for this event, please register", topic);
         return false;
+    }
+
+    public static EventPublisher registerToPublisher(final Class<? extends Event> eventType, final int queueMaxSize) {
+        if (ClassUtil.isAssignableFrom(SlowEvent.class, eventType)) {
+            return INSTANCE.sharePublisher;
+        }
+
+        final String topic = ClassUtil.getCanonicalName(eventType);
+        synchronized (NotifyCenter.class) {
+            MapUtil.computeIfAbsent(INSTANCE.publisherMap, topic, publisherFactory, eventType, queueMaxSize);
+        }
+        return INSTANCE.publisherMap.get(topic);
     }
 }

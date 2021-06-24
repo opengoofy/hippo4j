@@ -8,9 +8,6 @@ package io.dynamic.threadpool.server.toolkit;
  */
 public class SimpleReadWriteLock {
 
-    /**
-     * Try read lock.
-     */
     public synchronized boolean tryReadLock() {
         if (isWriteLocked()) {
             return false;
@@ -20,16 +17,10 @@ public class SimpleReadWriteLock {
         }
     }
 
-    /**
-     * Release the read lock.
-     */
     public synchronized void releaseReadLock() {
         status--;
     }
 
-    /**
-     * Try write lock.
-     */
     public synchronized boolean tryWriteLock() {
         if (!isFree()) {
             return false;
@@ -51,9 +42,5 @@ public class SimpleReadWriteLock {
         return status == 0;
     }
 
-    /**
-     * Zero means no lock; Negative Numbers mean write locks; Positive Numbers mean read locks, and the numeric value
-     * represents the number of read locks.
-     */
     private int status = 0;
 }

@@ -45,7 +45,6 @@ public class Md5Util {
 
     public static String encodeHexString(byte[] bytes) {
         int l = bytes.length;
-
         char[] out = new char[l << 1];
 
         for (int i = 0, j = 0; i < l; i++) {
@@ -56,12 +55,6 @@ public class Md5Util {
         return new String(out);
     }
 
-    /**
-     * 获取 ThreadPool 相关内容 Md5 值
-     *
-     * @param config
-     * @return
-     */
     public static String getTpContentMd5(PoolParameter config) {
         return Md5Util.md5Hex(ContentUtil.getPoolContent(config), "UTF-8");
     }

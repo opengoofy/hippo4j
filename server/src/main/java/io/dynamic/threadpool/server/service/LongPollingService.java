@@ -1,14 +1,14 @@
 package io.dynamic.threadpool.server.service;
 
 import com.alibaba.fastjson.JSON;
-import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
+import io.dynamic.threadpool.common.web.base.Results;
 import io.dynamic.threadpool.server.event.Event;
+import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
 import io.dynamic.threadpool.server.notify.NotifyCenter;
 import io.dynamic.threadpool.server.notify.listener.Subscriber;
 import io.dynamic.threadpool.server.toolkit.ConfigExecutor;
 import io.dynamic.threadpool.server.toolkit.Md5ConfigUtil;
 import io.dynamic.threadpool.server.toolkit.RequestUtil;
-import io.dynamic.threadpool.common.web.base.Results;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -45,6 +45,8 @@ public class LongPollingService {
 
         ConfigExecutor.scheduleLongPolling(new StatTask(), 0L, 10L, TimeUnit.SECONDS);
 
+        NotifyCenter.registerToPublisher(LocalDataChangeEvent.class, NotifyCenter.ringBufferSize);
+
         NotifyCenter.registerSubscriber(new Subscriber() {
 
             @Override
@@ -74,6 +76,8 @@ public class LongPollingService {
         }
     }
 
+    final Queue<ClientLongPolling> allSubs;
+
     class DataChangeTask implements Runnable {
 
         final String groupKey;
@@ -97,7 +101,6 @@ public class LongPollingService {
             } catch (Exception ex) {
                 log.error("Data change error :: {}", ex.getMessage(), ex);
             }
-
         }
     }
 
@@ -137,8 +140,6 @@ public class LongPollingService {
 
         ConfigExecutor.executeLongPolling(new ClientLongPolling(asyncContext, clientMd5Map, ip, probeRequestSize, timeout, appName));
     }
-
-    final Queue<ClientLongPolling> allSubs;
 
     class ClientLongPolling implements Runnable {
 

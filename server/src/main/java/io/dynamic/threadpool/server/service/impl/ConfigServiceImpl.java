@@ -1,5 +1,7 @@
 package io.dynamic.threadpool.server.service.impl;
 
+import io.dynamic.threadpool.common.toolkit.ContentUtil;
+import io.dynamic.threadpool.common.toolkit.Md5Util;
 import io.dynamic.threadpool.server.mapper.RowMapperManager;
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
 import io.dynamic.threadpool.server.service.ConfigService;
@@ -30,7 +32,7 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String namespace) {
         ConfigAllInfo configAllInfo = jdbcTemplate.queryForObject(
-                "select * from config_info where tp_id = ? and item_id = ? and namespace = ?",
+                "select * from config_info where tp_id = ? and item_id = ? and tenant_id = ?",
                 new Object[]{tpId, itemId, namespace},
                 RowMapperManager.CONFIG_ALL_INFO_ROW_MAPPER);
 
@@ -47,7 +49,8 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     private Long addConfigInfo(ConfigAllInfo config) {
-        final String sql = "INSERT INTO `config_info` (`tenant_id`, `item_id`, `tp_id`, `core_size`, `max_size`, `queue_type`, `capacity`, `keep_alive_time`, `content`, `md5`, `is_alarm`, `capacity_alarm`, `liveness_alarm`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        final String sql = "INSERT INTO `config_info` (`tenant_id`, `item_id`, `tp_id`, `core_size`, `max_size`, `queue_type`, `capacity`, `keep_alive_time`, `content`, `md5`, `is_alarm`, `capacity_alarm`, `liveness_alarm`) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         try {
@@ -82,10 +85,12 @@ public class ConfigServiceImpl implements ConfigService {
 
     private void updateConfigInfo(ConfigAllInfo config) {
         try {
+            String poolContent = ContentUtil.getPoolContent(config);
+            String md5 = Md5Util.md5Hex(poolContent, "UTF-8");
             jdbcTemplate.update("update config_info set core_size = ?, max_size = ?, queue_type = ?, capacity = ?, keep_alive_time = ?, content = ?, md5 = ?, is_alarm = ?, capacity_alarm = ?, liveness_alarm = ? " +
-                            "where tenant_id = ?, item_id = ?, tp_id = ?",
+                            "where tenant_id = ? and item_id = ? and tp_id = ?",
                     config.getCoreSize(), config.getMaxSize(), config.getQueueType(), config.getCapacity(), config.getKeepAliveTime(),
-                    config.getContent(), Md5ConfigUtil.getTpContentMd5(config), config.getIsAlarm(), config.getCapacityAlarm(),
+                    poolContent, md5, config.getIsAlarm(), config.getCapacityAlarm(),
                     config.getLivenessAlarm(), config.getNamespace(), config.getItemId(), config.getTpId());
         } catch (Exception ex) {
             log.error("[db-error] message :: {}", ex.getMessage(), ex);

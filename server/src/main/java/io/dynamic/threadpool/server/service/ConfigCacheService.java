@@ -3,8 +3,10 @@ package io.dynamic.threadpool.server.service;
 import io.dynamic.threadpool.common.config.ApplicationContextHolder;
 import io.dynamic.threadpool.common.toolkit.Md5Util;
 import io.dynamic.threadpool.server.constant.Constants;
+import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
 import io.dynamic.threadpool.server.model.CacheItem;
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
+import io.dynamic.threadpool.server.notify.NotifyCenter;
 import org.springframework.util.StringUtils;
 
 import java.util.Objects;
@@ -56,4 +58,22 @@ public class ConfigCacheService {
         return (cacheItem != null) ? cacheItem.md5 : Constants.NULL;
     }
 
+    public static void updateMd5(String groupKey, String md5, long lastModifiedTs) {
+        CacheItem cache = makeSure(groupKey);
+        if (cache.md5 == null || !cache.md5.equals(md5)) {
+            cache.md5 = md5;
+            cache.lastModifiedTs = lastModifiedTs;
+            NotifyCenter.publishEvent(new LocalDataChangeEvent(groupKey));
+        }
+    }
+
+    static CacheItem makeSure(final String groupKey) {
+        CacheItem item = CACHE.get(groupKey);
+        if (null != item) {
+            return item;
+        }
+        CacheItem tmp = new CacheItem(groupKey);
+        item = CACHE.putIfAbsent(groupKey, tmp);
+        return (null == item) ? tmp : item;
+    }
 }

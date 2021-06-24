@@ -1,15 +1,15 @@
 package io.dynamic.threadpool.server.controller;
 
+import io.dynamic.threadpool.common.web.base.Result;
+import io.dynamic.threadpool.common.web.base.Results;
 import io.dynamic.threadpool.server.constant.Constants;
-import io.dynamic.threadpool.server.event.ConfigDataChangeEvent;
+import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
 import io.dynamic.threadpool.server.model.ConfigInfoBase;
 import io.dynamic.threadpool.server.service.ConfigChangePublisher;
 import io.dynamic.threadpool.server.service.ConfigService;
 import io.dynamic.threadpool.server.service.ConfigServletInner;
 import io.dynamic.threadpool.server.toolkit.Md5ConfigUtil;
-import io.dynamic.threadpool.common.web.base.Result;
-import io.dynamic.threadpool.common.web.base.Results;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -51,8 +51,11 @@ public class ConfigController {
         configService.insertOrUpdate(config);
 
         long gmtModified = new Timestamp(System.currentTimeMillis()).getTime();
+        /*ConfigChangePublisher
+                .notifyConfigChange(new ConfigDataChangeEvent(config.getNamespace(), config.getItemId(), config.getTpId(), gmtModified));*/
+
         ConfigChangePublisher
-                .notifyConfigChange(new ConfigDataChangeEvent(config.getNamespace(), config.getItemId(), config.getTpId(), gmtModified));
+                .notifyConfigChange(new LocalDataChangeEvent(""));
 
         return Results.success(true);
     }

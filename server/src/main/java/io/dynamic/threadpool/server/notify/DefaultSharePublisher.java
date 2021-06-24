@@ -33,7 +33,7 @@ public class DefaultSharePublisher extends DefaultPublisher {
         try {
             Set<Subscriber> sets = subMappings.get(subSlowEventType);
             if (sets == null) {
-                Set<Subscriber> newSet = new ConcurrentHashSet<Subscriber>();
+                Set<Subscriber> newSet = new ConcurrentHashSet();
                 newSet.add(subscriber);
                 subMappings.put(subSlowEventType, newSet);
                 return;

@@ -18,8 +18,6 @@ public class RequestUtil {
 
     private static final String X_FORWARDED_FOR_SPLIT_SYMBOL = ",";
 
-    public static final String CLIENT_APPNAME_HEADER = "Client-AppName";
-
     public static String getRemoteIp(HttpServletRequest request) {
         String xForwardedFor = request.getHeader(X_FORWARDED_FOR);
         if (!StringUtils.isEmpty(xForwardedFor)) {

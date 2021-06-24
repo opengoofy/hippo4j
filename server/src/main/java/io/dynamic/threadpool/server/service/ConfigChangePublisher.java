@@ -1,6 +1,6 @@
 package io.dynamic.threadpool.server.service;
 
-import io.dynamic.threadpool.server.event.ConfigDataChangeEvent;
+import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
 import io.dynamic.threadpool.server.notify.NotifyCenter;
 
 /**
@@ -14,9 +14,10 @@ public class ConfigChangePublisher {
     /**
      * Notify ConfigChange.
      *
-     * @param event ConfigDataChangeEvent instance.
+     * @param event
      */
-    public static void notifyConfigChange(ConfigDataChangeEvent event) {
+    public static void notifyConfigChange(LocalDataChangeEvent event) {
         NotifyCenter.publishEvent(event);
     }
+
 }

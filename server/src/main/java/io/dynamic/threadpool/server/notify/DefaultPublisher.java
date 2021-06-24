@@ -127,15 +127,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     }
 
     void receiveEvent(Event event) {
-        final long currentEventSequence = event.sequence();
-
         for (Subscriber subscriber : subscribers) {
-            /*if (subscriber.ignoreExpireEvent() && lastEventSequence > currentEventSequence) {
-                LOGGER.debug("[NotifyCenter] the {} is unacceptable to this subscriber, because had expire",
-                        event.getClass());
-                continue;
-            }*/
-
             notifySubscriber(subscriber, event);
         }
     }

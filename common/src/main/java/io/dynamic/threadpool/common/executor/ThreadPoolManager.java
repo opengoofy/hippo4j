@@ -42,6 +42,7 @@ public class ThreadPoolManager {
                 lockers.put(namespace, new Object());
             }
         }
+
         final Object monitor = lockers.get(namespace);
         synchronized (monitor) {
             Map<String, Set<ExecutorService>> map = resourcesManager.get(namespace);
