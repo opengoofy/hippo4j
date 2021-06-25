@@ -1,8 +1,9 @@
 package io.dynamic.threadpool.server.controller;
 
+import io.dynamic.threadpool.common.constant.Constants;
+import io.dynamic.threadpool.common.toolkit.ContentUtil;
 import io.dynamic.threadpool.common.web.base.Result;
 import io.dynamic.threadpool.common.web.base.Results;
-import io.dynamic.threadpool.server.constant.Constants;
 import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
 import io.dynamic.threadpool.server.model.ConfigInfoBase;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
-import java.sql.Timestamp;
 import java.util.Map;
 
 /**
@@ -49,13 +49,8 @@ public class ConfigController {
     @PostMapping
     public Result<Boolean> publishConfig(HttpServletRequest request, @RequestBody ConfigAllInfo config) {
         configService.insertOrUpdate(config);
-
-        long gmtModified = new Timestamp(System.currentTimeMillis()).getTime();
-        /*ConfigChangePublisher
-                .notifyConfigChange(new ConfigDataChangeEvent(config.getNamespace(), config.getItemId(), config.getTpId(), gmtModified));*/
-
         ConfigChangePublisher
-                .notifyConfigChange(new LocalDataChangeEvent(""));
+                .notifyConfigChange(new LocalDataChangeEvent(ContentUtil.getGroupKey(config)));
 
         return Results.success(true);
     }

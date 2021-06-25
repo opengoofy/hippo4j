@@ -1,5 +1,6 @@
 package io.dynamic.threadpool.server.toolkit;
 
+import io.dynamic.threadpool.common.toolkit.GroupKey;
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
 import io.dynamic.threadpool.server.service.ConfigCacheService;
 import io.dynamic.threadpool.common.toolkit.Md5Util;
@@ -101,34 +102,22 @@ public class Md5ConfigUtil {
 
     public static String getKey(String dataId, String group) {
         StringBuilder sb = new StringBuilder();
-        urlEncode(dataId, sb);
+        GroupKey.urlEncode(dataId, sb);
         sb.append('+');
-        urlEncode(group, sb);
+        GroupKey.urlEncode(group, sb);
         return sb.toString();
     }
 
     public static String getKey(String dataId, String group, String tenant) {
         StringBuilder sb = new StringBuilder();
-        urlEncode(dataId, sb);
+        GroupKey.urlEncode(dataId, sb);
         sb.append('+');
-        urlEncode(group, sb);
+        GroupKey.urlEncode(group, sb);
         if (!StringUtils.isEmpty(tenant)) {
             sb.append('+');
-            urlEncode(tenant, sb);
+            GroupKey.urlEncode(tenant, sb);
         }
         return sb.toString();
     }
 
-    static void urlEncode(String str, StringBuilder sb) {
-        for (int idx = 0; idx < str.length(); ++idx) {
-            char c = str.charAt(idx);
-            if ('+' == c) {
-                sb.append("%2B");
-            } else if ('%' == c) {
-                sb.append("%25");
-            } else {
-                sb.append(c);
-            }
-        }
-    }
 }

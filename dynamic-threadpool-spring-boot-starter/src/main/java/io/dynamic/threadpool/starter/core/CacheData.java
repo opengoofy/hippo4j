@@ -2,7 +2,7 @@ package io.dynamic.threadpool.starter.core;
 
 import io.dynamic.threadpool.common.toolkit.ContentUtil;
 import io.dynamic.threadpool.common.toolkit.Md5Util;
-import io.dynamic.threadpool.starter.common.Constants;
+import io.dynamic.threadpool.common.constant.Constants;
 import io.dynamic.threadpool.starter.listener.Listener;
 import io.dynamic.threadpool.starter.wrap.ManagerListenerWrap;
 import lombok.extern.slf4j.Slf4j;

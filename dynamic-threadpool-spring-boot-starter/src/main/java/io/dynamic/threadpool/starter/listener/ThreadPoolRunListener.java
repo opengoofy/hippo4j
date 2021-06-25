@@ -2,7 +2,7 @@ package io.dynamic.threadpool.starter.listener;
 
 import com.alibaba.fastjson.JSON;
 import io.dynamic.threadpool.starter.common.CommonThreadPool;
-import io.dynamic.threadpool.starter.common.Constants;
+import io.dynamic.threadpool.common.constant.Constants;
 import io.dynamic.threadpool.common.config.ApplicationContextHolder;
 import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
 import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;

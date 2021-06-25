@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.common;
+package io.dynamic.threadpool.common.constant;
 
 /**
  * Constants
@@ -35,4 +35,9 @@ public class Constants {
     public static final String PROBE_MODIFY_REQUEST = "Listening-Configs";
 
     public static final String LONG_PULLING_TIMEOUT = "Long-Pulling-Timeout";
+
+    public static final String LISTENING_CONFIGS = "Listening-Configs";
+
+    public static final String GROUP_KEY_DELIMITER = "+";
+
 }

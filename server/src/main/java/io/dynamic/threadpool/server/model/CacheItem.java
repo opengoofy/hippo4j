@@ -1,6 +1,6 @@
 package io.dynamic.threadpool.server.model;
 
-import io.dynamic.threadpool.server.constant.Constants;
+import io.dynamic.threadpool.common.constant.Constants;
 import io.dynamic.threadpool.server.toolkit.SimpleReadWriteLock;
 import io.dynamic.threadpool.server.toolkit.SingletonRepository;
 import lombok.Getter;

@@ -18,4 +18,9 @@ public class ThreadPoolConfig {
         return new DynamicThreadPoolWrap("message-consume");
     }
 
+    @Bean
+    public DynamicThreadPoolWrap messageCenterProduceThreadPool() {
+        return new DynamicThreadPoolWrap("message-produce");
+    }
+
 }

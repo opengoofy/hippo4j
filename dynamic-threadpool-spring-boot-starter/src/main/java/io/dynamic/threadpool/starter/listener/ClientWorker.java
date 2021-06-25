@@ -1,24 +1,28 @@
 package io.dynamic.threadpool.starter.listener;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
+import io.dynamic.threadpool.common.constant.Constants;
 import io.dynamic.threadpool.common.model.PoolParameterInfo;
 import io.dynamic.threadpool.common.toolkit.ContentUtil;
+import io.dynamic.threadpool.common.toolkit.GroupKey;
 import io.dynamic.threadpool.common.web.base.Result;
-import io.dynamic.threadpool.starter.common.Constants;
 import io.dynamic.threadpool.starter.core.CacheData;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
-import static io.dynamic.threadpool.starter.common.Constants.LINE_SEPARATOR;
-import static io.dynamic.threadpool.starter.common.Constants.WORD_SEPARATOR;
+import static io.dynamic.threadpool.common.constant.Constants.LINE_SEPARATOR;
+import static io.dynamic.threadpool.common.constant.Constants.WORD_SEPARATOR;
 
 /**
  * 客户端监听
@@ -102,25 +106,27 @@ public class ClientWorker {
         @Override
         public void run() {
             List<CacheData> cacheDataList = new ArrayList();
-            cacheMap.forEach((key, val) -> cacheDataList.add(val));
+            List<CacheData> queryCacheDataList = cacheMap.entrySet()
+                    .stream().map(each -> each.getValue()).collect(Collectors.toList());
 
-            List<String> changedTpIds = checkUpdateDataIds(cacheDataList);
-            if (!CollectionUtils.isEmpty(cacheDataList)) {
+            List<String> changedTpIds = checkUpdateDataIds(queryCacheDataList);
+            if (CollectionUtils.isEmpty(changedTpIds)) {
                 log.info("[dynamic threadPool] tpIds changed :: {}", changedTpIds);
             } else {
                 for (String each : changedTpIds) {
-                    String[] keys = each.split(",");
-                    String namespace = keys[0];
+                    String[] keys = StrUtil.split(each, Constants.GROUP_KEY_DELIMITER);
+                    String tpId = keys[0];
                     String itemId = keys[1];
-                    String tpId = keys[2];
+                    String namespace = keys[2];
 
                     try {
                         String content = getServerConfig(namespace, itemId, tpId, 3000L);
                         CacheData cacheData = cacheMap.get(tpId);
-                        cacheData.setContent(content);
+                        String poolContent = ContentUtil.getPoolContent(JSON.parseObject(content, PoolParameterInfo.class));
+                        cacheData.setContent(poolContent);
                         cacheDataList.add(cacheData);
-                        log.info("[data-received] namespace :: {}, itemId :: {}, tpId :: {}, md5 :: {}, content :: {}",
-                                namespace, itemId, tpId, cacheData.getMd5(), content);
+                        log.info("[data-received] namespace :: {}, itemId :: {}, tpId :: {}, md5 :: {}",
+                                namespace, itemId, tpId, cacheData.getMd5());
                     } catch (Exception ex) {
                         // ignore
                     }
@@ -219,7 +225,35 @@ public class ClientWorker {
      * @return
      */
     public List<String> parseUpdateDataIdResponse(String response) {
-        return null;
+        if (StringUtils.isEmpty(response)) {
+            return Collections.emptyList();
+        }
+
+        try {
+            response = URLDecoder.decode(response, "UTF-8");
+        } catch (Exception e) {
+            log.error("[polling-resp] decode modifiedDataIdsString error", e);
+        }
+
+        List<String> updateList = new LinkedList();
+        for (String dataIdAndGroup : response.split(LINE_SEPARATOR)) {
+            if (!StringUtils.isEmpty(dataIdAndGroup)) {
+                String[] keyArr = dataIdAndGroup.split(WORD_SEPARATOR);
+                String dataId = keyArr[0];
+                String group = keyArr[1];
+                if (keyArr.length == 2) {
+                    updateList.add(GroupKey.getKey(dataId, group));
+                    log.info("[{}] [polling-resp] config changed. dataId={}, group={}", dataId, group);
+                } else if (keyArr.length == 3) {
+                    String tenant = keyArr[2];
+                    updateList.add(GroupKey.getKeyTenant(dataId, group, tenant));
+                    log.info("[polling-resp] config changed. dataId={}, group={}, tenant={}", dataId, group, tenant);
+                } else {
+                    log.error("[{}] [polling-resp] invalid dataIdAndGroup error {}", dataIdAndGroup);
+                }
+            }
+        }
+        return updateList;
     }
 
     /**

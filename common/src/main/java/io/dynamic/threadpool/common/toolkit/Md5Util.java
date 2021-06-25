@@ -1,9 +1,16 @@
 package io.dynamic.threadpool.common.toolkit;
 
+import io.dynamic.threadpool.common.constant.Constants;
 import io.dynamic.threadpool.common.model.PoolParameter;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+
+import static io.dynamic.threadpool.common.constant.Constants.WORD_SEPARATOR;
 
 /**
  * MD5 Util.
@@ -58,4 +65,31 @@ public class Md5Util {
     public static String getTpContentMd5(PoolParameter config) {
         return Md5Util.md5Hex(ContentUtil.getPoolContent(config), "UTF-8");
     }
+
+    public static String compareMd5ResultString(List<String> changedGroupKeys) throws IOException {
+        if (null == changedGroupKeys) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String groupKey : changedGroupKeys) {
+            String[] dataIdGroupId = GroupKey.parseKey(groupKey);
+            sb.append(dataIdGroupId[0]);
+            sb.append(WORD_SEPARATOR);
+            sb.append(dataIdGroupId[1]);
+            // if have tenant, then set it
+            if (dataIdGroupId.length == 3) {
+                if (!StringUtils.isEmpty(dataIdGroupId[2])) {
+                    sb.append(WORD_SEPARATOR);
+                    sb.append(dataIdGroupId[2]);
+                }
+            }
+            sb.append(Constants.LINE_SEPARATOR);
+        }
+
+        // To encode WORD_SEPARATOR and LINE_SEPARATOR invisible characters, encoded value is %02 and %01
+        return URLEncoder.encode(sb.toString(), "UTF-8");
+    }
+
 }
