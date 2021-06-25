@@ -1,10 +1,10 @@
 package io.dynamic.threadpool.starter.toolkit;
 
+import io.dynamic.threadpool.common.enums.QueueTypeEnum;
 import io.dynamic.threadpool.starter.core.ResizableCapacityLinkedBlockIngQueue;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Objects;
+import java.util.concurrent.*;
 
 /**
  * 阻塞队列工具类
@@ -16,17 +16,20 @@ public class BlockingQueueUtil {
 
     public static BlockingQueue createBlockingQueue(Integer type, Integer capacity) {
         BlockingQueue blockingQueue = null;
-        switch (type) {
-            case 1:
-                blockingQueue = new ArrayBlockingQueue(capacity);
-                break;
-            case 2:
-                blockingQueue = new LinkedBlockingQueue(capacity);
-                break;
-            case 3:
-                blockingQueue = new ResizableCapacityLinkedBlockIngQueue(capacity);
-            default:
-                break;
+        if (Objects.equals(type, QueueTypeEnum.ARRAY_BLOCKING_QUEUE.type)) {
+            blockingQueue = new ArrayBlockingQueue(capacity);
+        } else if (Objects.equals(type, QueueTypeEnum.Linked_Blocking_QUEUE.type)) {
+            blockingQueue = new LinkedBlockingQueue(capacity);
+        } else if (Objects.equals(type, QueueTypeEnum.Linked_Blocking_Deque.type)) {
+            blockingQueue = new LinkedBlockingDeque(capacity);
+        } else if (Objects.equals(type, QueueTypeEnum.SynchronousQueue.type)) {
+            blockingQueue = new SynchronousQueue();
+        } else if (Objects.equals(type, QueueTypeEnum.LINKED_TRANSFER_QUEUE.type)) {
+            blockingQueue = new LinkedTransferQueue();
+        } else if (Objects.equals(type, QueueTypeEnum.PriorityBlockingQueue.type)) {
+            blockingQueue = new PriorityBlockingQueue(capacity);
+        } else if (Objects.equals(type, QueueTypeEnum.Resizable_LINKED_Blocking_QUEUE.type)) {
+            blockingQueue = new ResizableCapacityLinkedBlockIngQueue(capacity);
         }
         return blockingQueue;
     }

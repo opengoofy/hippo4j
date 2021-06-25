@@ -86,7 +86,7 @@ public class ClientWorker {
 
         if (longingTaskCount > currentLongingTaskCount) {
             for (int i = (int) currentLongingTaskCount; i < longingTaskCount; i++) {
-                executorService.execute(new LongPollingRunnable(i));
+                executorService.execute(new LongPollingRunnable());
             }
             currentLongingTaskCount = longingTaskCount;
         }
@@ -97,12 +97,6 @@ public class ClientWorker {
      */
     class LongPollingRunnable implements Runnable {
 
-        private final int taskId;
-
-        public LongPollingRunnable(int taskId) {
-            this.taskId = taskId;
-        }
-
         @Override
         public void run() {
             List<CacheData> cacheDataList = new ArrayList();
@@ -110,9 +104,8 @@ public class ClientWorker {
                     .stream().map(each -> each.getValue()).collect(Collectors.toList());
 
             List<String> changedTpIds = checkUpdateDataIds(queryCacheDataList);
-            if (CollectionUtils.isEmpty(changedTpIds)) {
+            if (!CollectionUtils.isEmpty(changedTpIds)) {
                 log.info("[dynamic threadPool] tpIds changed :: {}", changedTpIds);
-            } else {
                 for (String each : changedTpIds) {
                     String[] keys = StrUtil.split(each, Constants.GROUP_KEY_DELIMITER);
                     String tpId = keys[0];
