@@ -4,4 +4,4 @@ spring:
       enabled: true
       server-addr: http://localhost:6691
       namespace: common
-      item-id: message
+      item-id: message-center

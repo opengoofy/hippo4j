@@ -7,3 +7,9 @@ spring:
     url: jdbc:mysql://localhost:3306/dynamic-thread-pool
     username: root
     password: root
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0

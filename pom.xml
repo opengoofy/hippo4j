@@ -15,11 +15,13 @@
         <java.version>1.8</java.version>
         <revision>1.0.0-SNAPSHOT</revision>
 
+        <dozer.version>6.5.0</dozer.version>
         <okhttp3.version>3.8.1</okhttp3.version>
         <hutool-core.version>5.4.7</hutool-core.version>
         <fastjson.version>1.2.75</fastjson.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
 
+        <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
     </properties>
 
@@ -69,6 +71,18 @@
                 <groupId>io.dynamic-threadpool</groupId>
                 <artifactId>common</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.dozermapper</groupId>
+                <artifactId>dozer-core</artifactId>
+                <version>${dozer.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
