@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.server.service;
+package io.dynamic.threadpool.server.service.biz;
 
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
 

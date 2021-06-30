@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.server.service.impl;
+package io.dynamic.threadpool.server.service.biz.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -11,7 +11,7 @@ import io.dynamic.threadpool.server.model.biz.item.ItemQueryReqDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemRespDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemSaveReqDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemUpdateReqDTO;
-import io.dynamic.threadpool.server.service.ItemService;
+import io.dynamic.threadpool.server.service.biz.ItemService;
 import io.dynamic.threadpool.server.toolkit.BeanUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

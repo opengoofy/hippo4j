@@ -7,7 +7,7 @@ import io.dynamic.threadpool.common.web.base.Results;
 import io.dynamic.threadpool.server.model.biz.item.ItemQueryReqDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemRespDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemSaveReqDTO;
-import io.dynamic.threadpool.server.service.ItemService;
+import io.dynamic.threadpool.server.service.biz.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -8,7 +8,7 @@ import io.dynamic.threadpool.server.model.biz.tenant.TenantQueryReqDTO;
 import io.dynamic.threadpool.server.model.biz.tenant.TenantRespDTO;
 import io.dynamic.threadpool.server.model.biz.tenant.TenantSaveReqDTO;
 import io.dynamic.threadpool.server.model.biz.tenant.TenantUpdateReqDTO;
-import io.dynamic.threadpool.server.service.TenantService;
+import io.dynamic.threadpool.server.service.biz.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

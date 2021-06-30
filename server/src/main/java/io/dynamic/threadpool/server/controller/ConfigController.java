@@ -1,14 +1,11 @@
 package io.dynamic.threadpool.server.controller;
 
 import io.dynamic.threadpool.common.constant.Constants;
-import io.dynamic.threadpool.common.toolkit.ContentUtil;
 import io.dynamic.threadpool.common.web.base.Result;
 import io.dynamic.threadpool.common.web.base.Results;
-import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
 import io.dynamic.threadpool.server.model.ConfigInfoBase;
-import io.dynamic.threadpool.server.service.ConfigChangePublisher;
-import io.dynamic.threadpool.server.service.ConfigService;
+import io.dynamic.threadpool.server.service.biz.ConfigService;
 import io.dynamic.threadpool.server.service.ConfigServletInner;
 import io.dynamic.threadpool.server.toolkit.Md5ConfigUtil;
 import lombok.SneakyThrows;
@@ -47,11 +44,8 @@ public class ConfigController {
     }
 
     @PostMapping
-    public Result<Boolean> publishConfig(HttpServletRequest request, @RequestBody ConfigAllInfo config) {
+    public Result<Boolean> publishConfig(@RequestBody ConfigAllInfo config) {
         configService.insertOrUpdate(config);
-        ConfigChangePublisher
-                .notifyConfigChange(new LocalDataChangeEvent(ContentUtil.getGroupKey(config)));
-
         return Results.success(true);
     }
 

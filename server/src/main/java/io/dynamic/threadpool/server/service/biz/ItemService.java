@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.server.service;
+package io.dynamic.threadpool.server.service.biz;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.dynamic.threadpool.server.model.biz.item.ItemQueryReqDTO;

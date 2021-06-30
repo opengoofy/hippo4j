@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.server.service.impl;
+package io.dynamic.threadpool.server.service.biz.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,8 +15,8 @@ import io.dynamic.threadpool.server.model.biz.tenant.TenantQueryReqDTO;
 import io.dynamic.threadpool.server.model.biz.tenant.TenantRespDTO;
 import io.dynamic.threadpool.server.model.biz.tenant.TenantSaveReqDTO;
 import io.dynamic.threadpool.server.model.biz.tenant.TenantUpdateReqDTO;
-import io.dynamic.threadpool.server.service.ItemService;
-import io.dynamic.threadpool.server.service.TenantService;
+import io.dynamic.threadpool.server.service.biz.ItemService;
+import io.dynamic.threadpool.server.service.biz.TenantService;
 import io.dynamic.threadpool.server.toolkit.BeanUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,12 +1,16 @@
-package io.dynamic.threadpool.server.service.impl;
+package io.dynamic.threadpool.server.service.biz.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import io.dynamic.threadpool.common.toolkit.ContentUtil;
+import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
 import io.dynamic.threadpool.server.mapper.ConfigInfoMapper;
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
-import io.dynamic.threadpool.server.service.ConfigService;
+import io.dynamic.threadpool.server.service.ConfigChangePublisher;
+import io.dynamic.threadpool.server.service.biz.ConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +32,9 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String namespace) {
         LambdaQueryWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
-                .eq(ConfigAllInfo::getTpId, tpId)
-                .eq(ConfigAllInfo::getItemId, itemId)
-                .eq(ConfigAllInfo::getNamespace, namespace);
+                .eq(!StringUtils.isBlank(tpId), ConfigAllInfo::getTpId, tpId)
+                .eq(!StringUtils.isBlank(itemId), ConfigAllInfo::getItemId, itemId)
+                .eq(!StringUtils.isBlank(namespace), ConfigAllInfo::getNamespace, namespace);
         ConfigAllInfo configAllInfo = configInfoMapper.selectOne(wrapper);
         return configAllInfo;
     }
@@ -42,6 +46,9 @@ public class ConfigServiceImpl implements ConfigService {
         } catch (Exception ex) {
             updateConfigInfo(configAllInfo);
         }
+
+        ConfigChangePublisher
+                .notifyConfigChange(new LocalDataChangeEvent(ContentUtil.getGroupKey(configAllInfo)));
     }
 
     private Integer addConfigInfo(ConfigAllInfo config) {
