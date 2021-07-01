@@ -15,8 +15,6 @@ import io.dynamic.threadpool.server.model.biz.tenant.TenantQueryReqDTO;
 import io.dynamic.threadpool.server.model.biz.tenant.TenantRespDTO;
 import io.dynamic.threadpool.server.model.biz.tenant.TenantSaveReqDTO;
 import io.dynamic.threadpool.server.model.biz.tenant.TenantUpdateReqDTO;
-import io.dynamic.threadpool.server.service.biz.ItemService;
-import io.dynamic.threadpool.server.service.biz.TenantService;
 import io.dynamic.threadpool.server.toolkit.BeanUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,17 +83,17 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public void deleteNameSpaceById(String namespaceId) {
-        TenantInfo tenantInfo = new TenantInfo();
-        tenantInfo.setDelFlag(DelEnum.DELETE.getIntCode());
-
         ItemQueryReqDTO reqDTO = new ItemQueryReqDTO();
         reqDTO.setTenantId(namespaceId);
         List<ItemRespDTO> itemList = itemService.queryItem(reqDTO);
         if (CollectionUtils.isNotEmpty(itemList)) {
             throw new RuntimeException("业务线包含项目引用, 删除失败.");
         }
-        int updateResult = tenantInfoMapper.update(tenantInfo,
-                Wrappers.lambdaUpdate(TenantInfo.class).eq(TenantInfo::getTenantId, namespaceId));
+
+        int updateResult = tenantInfoMapper.update(new TenantInfo(),
+                Wrappers.lambdaUpdate(TenantInfo.class)
+                        .eq(TenantInfo::getTenantId, namespaceId)
+                        .set(TenantInfo::getDelFlag, DelEnum.DELETE.getIntCode()));
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("删除失败.");

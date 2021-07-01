@@ -16,17 +16,17 @@ public enum QueueTypeEnum {
     /**
      * {@link java.util.concurrent.LinkedBlockingQueue}
      */
-    Linked_Blocking_QUEUE(2),
+    LINKED_BLOCKING_QUEUE(2),
 
     /**
      * {@link java.util.concurrent.LinkedBlockingDeque}
      */
-    Linked_Blocking_Deque(3),
+    LINKED_BLOCKING_DEQUE(3),
 
     /**
      * {@link java.util.concurrent.SynchronousQueue}
      */
-    SynchronousQueue(4),
+    SYNCHRONOUS_QUEUE(4),
 
     /**
      * {@link java.util.concurrent.LinkedTransferQueue}
@@ -36,12 +36,12 @@ public enum QueueTypeEnum {
     /**
      * {@link java.util.concurrent.PriorityBlockingQueue}
      */
-    PriorityBlockingQueue(6),
+    PRIORITY_BLOCKING_QUEUE(6),
 
     /**
      * {@link "io.dynamic.threadpool.starter.core.ResizableCapacityLinkedBlockIngQueue"}
      */
-    Resizable_LINKED_Blocking_QUEUE(9);
+    RESIZABLE_LINKED_BLOCKING_QUEUE(9);
 
     public Integer type;
 

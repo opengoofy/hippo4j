@@ -4,12 +4,17 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/dynamic-thread-pool
+    url: jdbc:mysql://47.94.158.71:3306/dynamic-threadpool
     username: root
     password: root
+
+logging:
+  level:
+    com.baomidou.example.mapper: debug
 
 mybatis-plus:
   global-config:
     db-config:
+      logic-delete-field: delFlag
       logic-delete-value: 1
       logic-not-delete-value: 0

@@ -47,7 +47,7 @@ public class TenantController {
         return Results.success();
     }
 
-    @DeleteMapping("/item/delete/{namespaceId}")
+    @DeleteMapping("/namespace/delete/{namespaceId}")
     public Result deleteNameSpace(@PathVariable("namespaceId") String namespaceId) {
         tenantService.deleteNameSpaceById(namespaceId);
         return Results.success();

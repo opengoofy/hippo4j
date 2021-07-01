@@ -1,7 +1,6 @@
 package io.dynamic.threadpool.server.model;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.util.Date;
@@ -19,6 +18,7 @@ public class TenantInfo {
     /**
      * ID
      */
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -44,17 +44,19 @@ public class TenantInfo {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
     /**
      * 修改时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
     /**
      * 是否删除
      */
-    @TableLogic
+    @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
 
 }
