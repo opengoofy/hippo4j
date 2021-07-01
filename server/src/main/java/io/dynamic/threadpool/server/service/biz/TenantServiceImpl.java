@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.server.service.biz.impl;
+package io.dynamic.threadpool.server.service.biz;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;

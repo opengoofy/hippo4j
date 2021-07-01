@@ -27,10 +27,11 @@ public interface ItemService {
     /**
      * 根据 Id 获取项目
      *
+     * @param namespace
      * @param itemId
      * @return
      */
-    ItemRespDTO queryItemById(String itemId);
+    ItemRespDTO queryItemById(String namespace, String itemId);
 
     /**
      * 查询项目

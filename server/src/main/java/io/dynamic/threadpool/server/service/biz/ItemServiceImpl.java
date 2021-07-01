@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.server.service.biz.impl;
+package io.dynamic.threadpool.server.service.biz;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -11,7 +11,6 @@ import io.dynamic.threadpool.server.model.biz.item.ItemQueryReqDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemRespDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemSaveReqDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemUpdateReqDTO;
-import io.dynamic.threadpool.server.service.biz.ItemService;
 import io.dynamic.threadpool.server.toolkit.BeanUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -38,15 +37,17 @@ public class ItemServiceImpl implements ItemService {
                 .eq(!StringUtils.isEmpty(reqDTO.getItemName()), ItemInfo::getItemName, reqDTO.getItemName())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId())
                 .eq(!StringUtils.isEmpty(reqDTO.getOwner()), ItemInfo::getOwner, reqDTO.getOwner());
-        Page resultPage = itemInfoMapper.selectPage(reqDTO, wrapper);
+        Page<ItemInfo> resultPage = itemInfoMapper.selectPage(reqDTO, wrapper);
 
         return resultPage.convert(each -> BeanUtil.convert(each, ItemRespDTO.class));
     }
 
     @Override
-    public ItemRespDTO queryItemById(String itemId) {
+    public ItemRespDTO queryItemById(String namespace, String itemId) {
         LambdaQueryWrapper<ItemInfo> queryWrapper = Wrappers
-                .lambdaQuery(ItemInfo.class).eq(ItemInfo::getItemId, itemId);
+                .lambdaQuery(ItemInfo.class)
+                .eq(ItemInfo::getTenantId, namespace)
+                .eq(ItemInfo::getItemId, itemId);
         ItemInfo itemInfo = itemInfoMapper.selectOne(queryWrapper);
 
         ItemRespDTO result = BeanUtil.convert(itemInfo, ItemRespDTO.class);

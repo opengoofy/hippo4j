@@ -29,7 +29,7 @@ public class ThreadPoolController {
         return Results.success(threadPoolService.queryThreadPoolPage(reqDTO));
     }
 
-    @PostMapping("/thread/pool/query}")
+    @PostMapping("/thread/pool/query")
     public Result<ThreadPoolRespDTO> queryNameSpace(@RequestBody ThreadPoolQueryReqDTO reqDTO) {
         return Results.success(threadPoolService.getThreadPool(reqDTO));
     }

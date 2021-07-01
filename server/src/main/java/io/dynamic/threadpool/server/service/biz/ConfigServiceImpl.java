@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.server.service.biz.impl;
+package io.dynamic.threadpool.server.service.biz;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -10,7 +10,6 @@ import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
 import io.dynamic.threadpool.server.mapper.ConfigInfoMapper;
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
 import io.dynamic.threadpool.server.service.ConfigChangePublisher;
-import io.dynamic.threadpool.server.service.biz.ConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

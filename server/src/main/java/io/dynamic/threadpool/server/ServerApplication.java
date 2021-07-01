@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(
         scanBasePackages = {
-                "io.dynamic.threadpool.common.config", "io.dynamic.threadpool.server"
+                "io.dynamic.threadpool.server", "io.dynamic.threadpool.common.config"
         })
 @MapperScan("io.dynamic.threadpool.server.mapper")
 public class ServerApplication {
