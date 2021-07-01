@@ -5,6 +5,8 @@ import io.dynamic.threadpool.server.model.biz.threadpool.ThreadPoolQueryReqDTO;
 import io.dynamic.threadpool.server.model.biz.threadpool.ThreadPoolRespDTO;
 import io.dynamic.threadpool.server.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
 
+import java.util.List;
+
 /**
  * Thread Pool Service.
  *
@@ -28,6 +30,14 @@ public interface ThreadPoolService {
      * @return
      */
     ThreadPoolRespDTO getThreadPool(ThreadPoolQueryReqDTO reqDTO);
+
+    /**
+     * 根据 ItemId 获取线程池配置
+     *
+     * @param itemId
+     * @return
+     */
+    List<ThreadPoolRespDTO> getThreadPoolByItemId(String itemId);
 
     /**
      * 新增或修改线程池配置

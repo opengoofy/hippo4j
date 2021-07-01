@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Thread Pool Service Impl.
@@ -43,6 +44,13 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
     public ThreadPoolRespDTO getThreadPool(ThreadPoolQueryReqDTO reqDTO) {
         ConfigAllInfo configAllInfo = configService.findConfigAllInfo(reqDTO.getTpId(), reqDTO.getItemId(), reqDTO.getTenantId());
         return BeanUtil.convert(configAllInfo, ThreadPoolRespDTO.class);
+    }
+
+    @Override
+    public List<ThreadPoolRespDTO> getThreadPoolByItemId(String itemId) {
+        List<ConfigAllInfo> selectList = configInfoMapper
+                .selectList(Wrappers.lambdaUpdate(ConfigAllInfo.class).eq(ConfigAllInfo::getItemId, itemId));
+        return BeanUtil.convert(selectList, ThreadPoolRespDTO.class);
     }
 
     @Override

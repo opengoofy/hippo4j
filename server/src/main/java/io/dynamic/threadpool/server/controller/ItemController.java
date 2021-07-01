@@ -7,6 +7,7 @@ import io.dynamic.threadpool.common.web.base.Results;
 import io.dynamic.threadpool.server.model.biz.item.ItemQueryReqDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemRespDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemSaveReqDTO;
+import io.dynamic.threadpool.server.model.biz.item.ItemUpdateReqDTO;
 import io.dynamic.threadpool.server.service.biz.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,14 +42,14 @@ public class ItemController {
     }
 
     @PostMapping("/item/update")
-    public Result updateItem() {
-
+    public Result updateItem(ItemUpdateReqDTO reqDTO) {
+        itemService.updateItem(reqDTO);
         return Results.success();
     }
 
-    @DeleteMapping("/item/delete/{itemId}")
-    public Result deleteItem(@PathVariable("itemId") String itemId) {
-
+    @DeleteMapping("/item/delete/{namespace}/{itemId}")
+    public Result deleteItem(@PathVariable("namespace") String namespace, @PathVariable("itemId") String itemId) {
+        itemService.deleteItem(namespace, itemId);
         return Results.success();
     }
 }

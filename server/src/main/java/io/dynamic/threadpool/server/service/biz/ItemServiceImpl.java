@@ -2,17 +2,21 @@ package io.dynamic.threadpool.server.service.biz;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import io.dynamic.threadpool.server.enums.DelEnum;
 import io.dynamic.threadpool.server.mapper.ItemInfoMapper;
 import io.dynamic.threadpool.server.model.ItemInfo;
 import io.dynamic.threadpool.server.model.biz.item.ItemQueryReqDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemRespDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemSaveReqDTO;
 import io.dynamic.threadpool.server.model.biz.item.ItemUpdateReqDTO;
+import io.dynamic.threadpool.server.model.biz.threadpool.ThreadPoolRespDTO;
 import io.dynamic.threadpool.server.toolkit.BeanUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,6 +33,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Resource
     private ItemInfoMapper itemInfoMapper;
+
+    @Autowired
+    private ThreadPoolService threadPoolService;
 
     @Override
     public IPage<ItemRespDTO> queryItemPage(ItemQueryReqDTO reqDTO) {
@@ -83,6 +90,24 @@ public class ItemServiceImpl implements ItemService {
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("修改失败.");
+        }
+    }
+
+    @Override
+    public void deleteItem(String namespace, String itemId) {
+        List<ThreadPoolRespDTO> itemList = threadPoolService.getThreadPoolByItemId(itemId);
+        if (CollectionUtils.isNotEmpty(itemList)) {
+            throw new RuntimeException("项目包含线程池引用, 删除失败.");
+        }
+
+        int updateResult = itemInfoMapper.update(new ItemInfo(),
+                Wrappers.lambdaUpdate(ItemInfo.class)
+                        .eq(ItemInfo::getTenantId, namespace)
+                        .eq(ItemInfo::getItemId, itemId)
+                        .set(ItemInfo::getDelFlag, DelEnum.DELETE.getIntCode()));
+        boolean retBool = SqlHelper.retBool(updateResult);
+        if (!retBool) {
+            throw new RuntimeException("删除失败.");
         }
     }
 

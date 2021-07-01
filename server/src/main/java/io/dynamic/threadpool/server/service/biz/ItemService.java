@@ -49,10 +49,17 @@ public interface ItemService {
     void saveItem(ItemSaveReqDTO reqDTO);
 
     /**
-     * 新增项目
+     * 修改项目
      *
      * @param reqDTO
      */
     void updateItem(ItemUpdateReqDTO reqDTO);
 
+    /**
+     * 删除项目
+     *
+     * @param namespace
+     * @param itemId
+     */
+    void deleteItem(String namespace, String itemId);
 }
