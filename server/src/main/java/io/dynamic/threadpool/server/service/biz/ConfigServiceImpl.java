@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import io.dynamic.threadpool.common.toolkit.ContentUtil;
+import io.dynamic.threadpool.common.toolkit.Md5Util;
 import io.dynamic.threadpool.server.event.LocalDataChangeEvent;
 import io.dynamic.threadpool.server.mapper.ConfigInfoMapper;
 import io.dynamic.threadpool.server.model.ConfigAllInfo;
@@ -51,6 +52,8 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     private Integer addConfigInfo(ConfigAllInfo config) {
+        config.setContent(ContentUtil.getPoolContent(config));
+        config.setMd5(Md5Util.getTpContentMd5(config));
         try {
             if (SqlHelper.retBool(configInfoMapper.insert(config))) {
                 return config.getId();
@@ -68,6 +71,9 @@ public class ConfigServiceImpl implements ConfigService {
                 .eq(ConfigAllInfo::getItemId, config.getItemId())
                 .eq(ConfigAllInfo::getNamespace, config.getNamespace());
 
+        config.setGmtCreate(null);
+        config.setContent(ContentUtil.getPoolContent(config));
+        config.setMd5(Md5Util.getTpContentMd5(config));
         try {
             configInfoMapper.update(config, wrapper);
         } catch (Exception ex) {
