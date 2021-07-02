@@ -49,15 +49,19 @@
 
 项目不会强依赖某个不通用的中间件，比如配置中心：Nacos、Apollo、Consul... 有可能会将组件全部支持，自定义选择使用
 
+<br/>
+
 ## 本地部署
 
-项目数据库连接是作者个人 ECS Docker 搭建的 MySQL，防君子不防小人，大家直接使用即可
+目前动态线程池功能已经完成，大家可以直接把代码拉到本地运行
 
-启动 server 模块下 ServerApplication
+> 项目数据库连接是作者个人 ECS Docker 搭建的 MySQL，防君子不防小人，大家直接使用即可
 
-启动 example 模块下 ExampleApplication
+启动 server 模块下 ServerApplication 启动类
 
-可以通过调用接口修改线程池配置，并观察 example 控制台日志输出
+启动 example 模块下 ExampleApplication 启动类
+
+可以通过调用接口修改线程池配置
 
 修改请求如下，**在做示例时不要改动 namespace、itemId、tpId**
 
@@ -79,6 +83,6 @@ POST http://localhost:6691/v1/cs/configs
 }
 ```
 
-日志输出包括不限于此信息即为成功
+并观察 example 控制台日志输出，日志输出包括不限于此信息即为成功
 
 [🚀] Changed thread pool. coreSize :: x, maxSize :: x, queueType :: x, capacity :: x, keepAliveTime :: x
