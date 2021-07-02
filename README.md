@@ -48,3 +48,37 @@
 <br/>
 
 项目不会强依赖某个不通用的中间件，比如配置中心：Nacos、Apollo、Consul... 有可能会将组件全部支持，自定义选择使用
+
+## 本地部署
+
+项目数据库连接是作者个人 ECS Docker 搭建的 MySQL，防君子不防小人，大家直接使用即可
+
+启动 server 模块下 ServerApplication
+
+启动 example 模块下 ExampleApplication
+
+可以通过调用接口修改线程池配置，并观察 example 控制台日志输出
+
+修改请求如下，**在做示例时不要改动 namespace、itemId、tpId**
+
+POST http://localhost:6691/v1/cs/configs
+
+```json
+{
+    "namespace": "common",
+    "itemId": "message-center",
+    "tpId": "message-consume",
+    "coreSize": 3,
+    "maxSize": 10,
+    "queueType":9,
+    "capacity":1000,
+    "keepAliveTime" : 1000,
+    "isAlarm":2,
+    "capacityAlarm":80,
+    "livenessAlarm":80
+}
+```
+
+日志输出包括不限于此信息即为成功
+
+[🚀] Changed thread pool. coreSize :: x, maxSize :: x, queueType :: x, capacity :: x, keepAliveTime :: x

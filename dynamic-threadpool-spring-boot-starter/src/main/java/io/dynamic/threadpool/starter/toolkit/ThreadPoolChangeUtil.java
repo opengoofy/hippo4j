@@ -22,7 +22,7 @@ public class ThreadPoolChangeUtil {
         if (maxSize != null) {
             executor.setMaximumPoolSize(maxSize);
         }
-        if (capacity != null && Objects.equals(QueueTypeEnum.Resizable_LINKED_Blocking_QUEUE.type, queueType)) {
+        if (capacity != null && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.type, queueType)) {
             ResizableCapacityLinkedBlockIngQueue queue = (ResizableCapacityLinkedBlockIngQueue) executor.getQueue();
             queue.setCapacity(capacity);
         }
