@@ -9,8 +9,12 @@
      <img src="https://img.shields.io/badge/公众号-龙台 blog-yellow.svg" />
 </a>
 
-<a target="_blank" href="https://github.com/longtai94/dynamic-thread-pool/blob/develop/LICENSE">
-     <img src="https://img.shields.io/badge/⭐-github-blue.svg" />
+<a target="_blank" href="https://github.com/longtai94/dynamic-thread-pool">
+     <img src="https://img.shields.io/badge/⭐-github-orange.svg" />
+</a>
+
+<a href="https://github.com/longtai94/dynamic-thread-pool/blob/develop/LICENSE">
+    <img src="https://img.shields.io/github/license/longtai94/dynamic-thread-pool?color=42b883&style=flat-square" alt="LICENSE">
 </a>
 
 <img src="https://img.shields.io/badge/JDK-1.8-violet.svg" />
