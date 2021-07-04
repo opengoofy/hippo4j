@@ -1,17 +1,18 @@
 package io.dynamic.threadpool.starter.listener;
 
 import com.alibaba.fastjson.JSON;
-import io.dynamic.threadpool.starter.common.CommonThreadPool;
-import io.dynamic.threadpool.common.constant.Constants;
 import io.dynamic.threadpool.common.config.ApplicationContextHolder;
+import io.dynamic.threadpool.common.constant.Constants;
+import io.dynamic.threadpool.common.model.PoolParameterInfo;
+import io.dynamic.threadpool.common.web.base.Result;
+import io.dynamic.threadpool.starter.common.CommonThreadPool;
 import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
+import io.dynamic.threadpool.starter.core.DynamicThreadPoolBanner;
 import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
 import io.dynamic.threadpool.starter.remote.ServerHttpAgent;
 import io.dynamic.threadpool.starter.toolkit.BlockingQueueUtil;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
-import io.dynamic.threadpool.common.model.PoolParameterInfo;
-import io.dynamic.threadpool.common.web.base.Result;
 import org.springframework.core.annotation.Order;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +39,8 @@ public class ThreadPoolRunListener {
     @Order(1024)
     @PostConstruct
     public void run() {
+        DynamicThreadPoolBanner.printBanner();
+
         Map<String, DynamicThreadPoolWrap> executorMap =
                 ApplicationContextHolder.getBeansOfType(DynamicThreadPoolWrap.class);
 
@@ -63,5 +66,4 @@ public class ThreadPoolRunListener {
             GlobalThreadPoolManage.register(val.getTpId(), ppi, val);
         });
     }
-
 }
