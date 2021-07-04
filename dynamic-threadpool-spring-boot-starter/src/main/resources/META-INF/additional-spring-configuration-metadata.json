@@ -8,8 +8,8 @@
     },
     {
       "name": "spring.dynamic.thread-pool.enabled",
-      "type": "java.lang.String",
-      "defaultValue": "false",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
       "description": "dynamic thread-pool enabled."
     },
     {
@@ -22,6 +22,12 @@
       "name": "spring.dynamic.thread-pool.item-id",
       "type": "java.lang.String",
       "description": "dynamic thread-pool item-id."
+    },
+    {
+      "name": "spring.dynamic.thread-pool.banner",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "dynamic thread-pool banner."
     }
   ]
 }

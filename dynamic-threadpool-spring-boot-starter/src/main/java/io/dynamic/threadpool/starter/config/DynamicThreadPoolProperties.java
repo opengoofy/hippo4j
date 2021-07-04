@@ -37,5 +37,10 @@ public class DynamicThreadPoolProperties {
     /**
      * 是否开启动态线程池
      */
-    private String enabled;
+    private boolean enabled;
+
+    /**
+     * 是否开启 banner
+     */
+    private boolean banner;
 }

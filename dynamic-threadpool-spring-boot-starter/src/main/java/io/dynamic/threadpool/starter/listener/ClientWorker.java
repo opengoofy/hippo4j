@@ -9,6 +9,7 @@ import io.dynamic.threadpool.common.toolkit.GroupKey;
 import io.dynamic.threadpool.common.web.base.Result;
 import io.dynamic.threadpool.starter.core.CacheData;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -98,12 +99,19 @@ public class ClientWorker {
     class LongPollingRunnable implements Runnable {
 
         @Override
+        @SneakyThrows
         public void run() {
             List<CacheData> cacheDataList = new ArrayList();
             List<CacheData> queryCacheDataList = cacheMap.entrySet()
                     .stream().map(each -> each.getValue()).collect(Collectors.toList());
 
-            List<String> changedTpIds = checkUpdateDataIds(queryCacheDataList);
+            List<String> changedTpIds = null;
+            try {
+                changedTpIds = checkUpdateDataIds(queryCacheDataList);
+            } catch (Exception ex) {
+                log.error("[Long polling] Error. exception message :: {}, Thread sleep 30 s.", ex.getMessage(), ex);
+                Thread.sleep(30000);
+            }
             if (!CollectionUtils.isEmpty(changedTpIds)) {
                 log.info("[dynamic threadPool] tpIds changed :: {}", changedTpIds);
                 for (String each : changedTpIds) {
@@ -281,6 +289,7 @@ public class ClientWorker {
         cacheData = new CacheData(namespace, itemId, tpId);
         CacheData lastCacheData = cacheMap.putIfAbsent(tpId, cacheData);
         if (lastCacheData == null) {
+            // TODO 连接不到 server 端报错
             String serverConfig = getServerConfig(namespace, itemId, tpId, 3000L);
             PoolParameterInfo poolInfo = JSON.parseObject(serverConfig, PoolParameterInfo.class);
             cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
