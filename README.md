@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/公众号-龙台 blog-yellow.svg" />
 </a>
 
-<a href="https://github.com/doocs/jvm/blob/main/LICENSE"><img src="https://badgen.net/github/license/doocs/jvm?color=green" alt="license"></a>
+<a href="https://github.com/longtai94/dynamic-thread-pool/blob/develop/LICENSE"><img src="https://badgen.net/github/license/doocs/jvm?color=green" alt="license"></a>
 
 <a href="https://github.com/longtai94/dynamic-thread-pool"><img src="https://badgen.net/badge/⭐/GitHub/blue" alt="github"></a>
 
