@@ -246,7 +246,8 @@ public class LongPollingService {
     private void generateResponse(HttpServletResponse response, List<String> changedGroups) {
         if (!CollectionUtils.isEmpty(changedGroups)) {
             try {
-                final String respString = JSON.toJSONString(Results.success(changedGroups));
+                final String changedGroupKeStr = Md5ConfigUtil.compareMd5ResultString(changedGroups);
+                final String respString = JSON.toJSONString(Results.success(changedGroupKeStr));
                 response.setHeader("Pragma", "no-cache");
                 response.setDateHeader("Expires", 0);
                 response.setHeader("Cache-Control", "no-cache,no-store");

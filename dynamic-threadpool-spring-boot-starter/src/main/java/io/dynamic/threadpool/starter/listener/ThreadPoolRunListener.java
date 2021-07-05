@@ -67,7 +67,7 @@ public class ThreadPoolRunListener {
                     val.setPool(CommonThreadPool.getInstance(val.getTpId()));
                 }
             } catch (Exception ex) {
-                log.error(ex.getMessage(), ex);
+                log.error("[Init pool] Failed to initialize thread pool configuration. error message :: {}", ex.getMessage());
                 val.setPool(CommonThreadPool.getInstance(val.getTpId()));
             }
 

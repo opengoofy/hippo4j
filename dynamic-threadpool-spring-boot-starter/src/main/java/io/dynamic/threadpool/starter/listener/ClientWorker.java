@@ -98,20 +98,25 @@ public class ClientWorker {
      */
     class LongPollingRunnable implements Runnable {
 
+        @SneakyThrows
+        private void checkStatus() {
+            // 服务端状态不正常睡眠 30s
+            if (!isHealthServer) {
+                log.error("[Check config] Error. exception message, Thread sleep 30 s.");
+                Thread.sleep(30000);
+            }
+        }
+
         @Override
         @SneakyThrows
         public void run() {
+            checkStatus();
+
             List<CacheData> cacheDataList = new ArrayList();
             List<CacheData> queryCacheDataList = cacheMap.entrySet()
                     .stream().map(each -> each.getValue()).collect(Collectors.toList());
 
-            List<String> changedTpIds = null;
-            try {
-                changedTpIds = checkUpdateDataIds(queryCacheDataList);
-            } catch (Exception ex) {
-                log.error("[Long polling] Error. exception message :: {}, Thread sleep 30 s.", ex.getMessage(), ex);
-                Thread.sleep(30000);
-            }
+            List<String> changedTpIds = checkUpdateDataIds(queryCacheDataList);
             if (!CollectionUtils.isEmpty(changedTpIds)) {
                 log.info("[dynamic threadPool] tpIds changed :: {}", changedTpIds);
                 for (String each : changedTpIds) {
@@ -180,7 +185,6 @@ public class ClientWorker {
             long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
             Result result = agent.httpPost(Constants.LISTENER_PATH, headers, params, readTimeoutMs);
             if (result == null || result.isFail()) {
-                setHealthServer(false);
                 log.warn("[check-update] get changed dataId error, code: {}", result == null ? "error" : result.getCode());
             } else {
                 setHealthServer(true);
@@ -188,7 +192,7 @@ public class ClientWorker {
             }
         } catch (Exception ex) {
             setHealthServer(false);
-            log.error("[check-update] get changed dataId exception.", ex);
+            log.error("[check-update] get changed dataId exception. error message :: {}", ex.getMessage());
         }
 
         return Collections.emptyList();
@@ -235,6 +239,7 @@ public class ClientWorker {
         } catch (Exception e) {
             log.error("[polling-resp] decode modifiedDataIdsString error", e);
         }
+
 
         List<String> updateList = new LinkedList();
         for (String dataIdAndGroup : response.split(LINE_SEPARATOR)) {
@@ -289,10 +294,14 @@ public class ClientWorker {
         cacheData = new CacheData(namespace, itemId, tpId);
         CacheData lastCacheData = cacheMap.putIfAbsent(tpId, cacheData);
         if (lastCacheData == null) {
-            // TODO 连接不到 server 端报错
-            String serverConfig = getServerConfig(namespace, itemId, tpId, 3000L);
-            PoolParameterInfo poolInfo = JSON.parseObject(serverConfig, PoolParameterInfo.class);
-            cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
+            String serverConfig = null;
+            try {
+                serverConfig = getServerConfig(namespace, itemId, tpId, 3000L);
+                PoolParameterInfo poolInfo = JSON.parseObject(serverConfig, PoolParameterInfo.class);
+                cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
+            } catch (Exception ex) {
+                log.error("[Cache Data] Error. Service Unavailable :: {}", ex.getMessage());
+            }
 
             int taskId = cacheMap.size() / Constants.CONFIG_LONG_POLL_TIMEOUT;
             cacheData.setTaskId(taskId);

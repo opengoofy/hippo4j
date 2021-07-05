@@ -86,7 +86,10 @@ public class ItemServiceImpl implements ItemService {
     public void updateItem(ItemUpdateReqDTO reqDTO) {
         ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
         int updateResult = itemInfoMapper.update(itemInfo, Wrappers
-                .lambdaUpdate(ItemInfo.class).eq(ItemInfo::getItemId, reqDTO.getItemId()));
+                .lambdaUpdate(ItemInfo.class)
+                .eq(ItemInfo::getTenantId, reqDTO.getNamespace())
+                .eq(ItemInfo::getItemId, reqDTO.getItemId()));
+
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("修改失败.");
