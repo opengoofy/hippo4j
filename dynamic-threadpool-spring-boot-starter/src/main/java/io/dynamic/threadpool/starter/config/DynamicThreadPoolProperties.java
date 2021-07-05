@@ -42,5 +42,5 @@ public class DynamicThreadPoolProperties {
     /**
      * 是否开启 banner
      */
-    private boolean banner;
+    private boolean banner = true;
 }

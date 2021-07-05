@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.toolkit;
+package io.dynamic.threadpool.starter.handler;
 
 import io.dynamic.threadpool.common.enums.QueueTypeEnum;
 import io.dynamic.threadpool.starter.core.ResizableCapacityLinkedBlockIngQueue;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2021/6/25 17:19
  */
 @Slf4j
-public class ThreadPoolChangeUtil {
+public class ThreadPoolChangeHandler {
 
     public static void changePool(ThreadPoolExecutor executor, Integer coreSize, Integer maxSize, Integer queueType, Integer capacity, Integer keepAliveTime) {
         if (coreSize != null) {

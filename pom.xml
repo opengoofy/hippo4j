@@ -9,7 +9,15 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>🔥 强大的动态线程池，附带监控报警功能</description>
+    <url>https://github.com/longtai94/dynamic-thread-pool</url>
+    <description>🔥 强大的动态线程池，没有依赖任何中间件（未来也不打算依赖），附带监控线程池功能</description>
+
+    <developers>
+        <developer>
+            <name>chen.ma</name>
+            <url>https://github.com/longtai94</url>
+        </developer>
+    </developers>
 
     <properties>
         <java.version>1.8</java.version>
