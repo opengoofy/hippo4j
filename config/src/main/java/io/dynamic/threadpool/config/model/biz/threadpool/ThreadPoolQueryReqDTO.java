@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class ThreadPoolQueryReqDTO extends Page {
 
-    private String tenantId;
+    private String namespace;
 
     private String itemId;
 
