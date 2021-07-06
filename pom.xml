@@ -34,6 +34,7 @@
     </properties>
 
     <modules>
+        <module>alarm</module>
         <module>common</module>
         <module>server</module>
         <module>config</module>
