@@ -9,15 +9,11 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>common</artifactId>
+    <artifactId>dynamic-threadpool-common</artifactId>
     <packaging>jar</packaging>
 
-    <name>common</name>
-    <description>Demo project for Spring Boot</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
+    <name>${project.artifactId}</name>
+    <description>${project.artifactId}</description>
 
     <dependencies>
         <dependency>

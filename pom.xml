@@ -36,6 +36,8 @@
     <modules>
         <module>common</module>
         <module>server</module>
+        <module>config</module>
+        <module>registry</module>
         <module>example</module>
         <module>dynamic-threadpool-spring-boot-starter</module>
     </modules>
@@ -77,8 +79,20 @@
 
             <dependency>
                 <groupId>io.dynamic-threadpool</groupId>
-                <artifactId>common</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <artifactId>dynamic-threadpool-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.dynamic-threadpool</groupId>
+                <artifactId>dynamic-threadpool-config</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.dynamic-threadpool</groupId>
+                <artifactId>dynamic-threadpool-registry</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
