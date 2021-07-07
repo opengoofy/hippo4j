@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.config.controller;
+package io.dynamic.threadpool.console.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.dynamic.threadpool.common.constant.Constants;

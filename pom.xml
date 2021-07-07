@@ -36,6 +36,7 @@
     <modules>
         <module>alarm</module>
         <module>common</module>
+        <module>console</module>
         <module>server</module>
         <module>config</module>
         <module>registry</module>
@@ -87,6 +88,12 @@
             <dependency>
                 <groupId>io.dynamic-threadpool</groupId>
                 <artifactId>dynamic-threadpool-config</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.dynamic-threadpool</groupId>
+                <artifactId>dynamic-threadpool-console</artifactId>
                 <version>${revision}</version>
             </dependency>
 
