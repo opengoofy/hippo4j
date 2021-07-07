@@ -41,6 +41,7 @@
 
 根据目前的想法，美团技术文章中支持的特性，DTP（Dynamic Thread Pool）项目都会兼容进去，可能部分会因为作者技术有限，无法兼容
 
+
 比如：
 
 - 修改阻塞队列长度
@@ -56,6 +57,14 @@
 <br/>
 
 项目不会强依赖某个不通用的中间件，比如配置中心：Nacos、Apollo、Consul... 有可能会将组件全部支持，自定义选择使用
+
+<br/>
+
+<img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20210707112609388.png" alt="美团动态化线程池功能架构" style="zoom:50%;" />
+
+<br/>
+
+> 图片来源自美团技术博客
 
 <br/>
 
