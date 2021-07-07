@@ -27,7 +27,7 @@
 
 <br/>
 
-我有一个 IDEA，叫动态线程池监控，主意来源于美团技术公众号 [点击查看美团线程池文章](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
+我有一个 IDEA，动态线程池监控，主意来源于美团技术公众号 [点击查看美团线程池文章](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
 
 <br/>
 
@@ -99,7 +99,7 @@ POST http://localhost:6691/v1/cs/configs
     "queueType":9,
     "capacity":1000,
     "keepAliveTime" : 1000,
-    "isAlarm":2,
+    "isAlarm":1,
     "capacityAlarm":80,
     "livenessAlarm":80
 }
