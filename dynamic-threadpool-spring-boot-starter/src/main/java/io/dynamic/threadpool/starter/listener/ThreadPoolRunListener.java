@@ -43,9 +43,7 @@ public class ThreadPoolRunListener {
     public void run() {
         DynamicThreadPoolBanner.printBanner(properties.isBanner());
 
-        Map<String, DynamicThreadPoolWrap> executorMap =
-                ApplicationContextHolder.getBeansOfType(DynamicThreadPoolWrap.class);
-
+        Map<String, DynamicThreadPoolWrap> executorMap = ApplicationContextHolder.getBeansOfType(DynamicThreadPoolWrap.class);
         executorMap.forEach((key, val) -> {
             Map<String, String> queryStrMap = new HashMap(3);
             queryStrMap.put("tpId", val.getTpId());
@@ -55,6 +53,7 @@ public class ThreadPoolRunListener {
             PoolParameterInfo ppi = new PoolParameterInfo();
             HttpAgent httpAgent = new ServerHttpAgent(properties);
             Result result = null;
+
             try {
                 result = httpAgent.httpGet(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 3000L);
                 if (result.isSuccess() && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
