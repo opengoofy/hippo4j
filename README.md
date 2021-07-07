@@ -81,7 +81,7 @@
 
 <br/>
 
-修改请求如下，**在做示例时不要改动 namespace、itemId、tpId**
+修改请求如下，**在做示例时不要改动 tenantId、itemId、tpId**
 
 <br/>
 
@@ -91,7 +91,7 @@ POST http://localhost:6691/v1/cs/configs
 
 ```json
 {
-    "namespace": "common",
+    "tenantId": "common",
     "itemId": "message-center",
     "tpId": "message-consume",
     "coreSize": 3,

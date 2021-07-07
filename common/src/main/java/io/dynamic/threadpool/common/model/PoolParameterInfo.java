@@ -18,7 +18,7 @@ public class PoolParameterInfo implements PoolParameter, Serializable {
     /**
      * 命名空间
      */
-    private String namespace;
+    private String tenantId;
 
     /**
      * 项目 Id

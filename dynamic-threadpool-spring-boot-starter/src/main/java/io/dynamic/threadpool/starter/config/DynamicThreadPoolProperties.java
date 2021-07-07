@@ -25,12 +25,12 @@ public class DynamicThreadPoolProperties {
     private String serverAddr;
 
     /**
-     * 命名空间
+     * 租户 ID
      */
     private String namespace;
 
     /**
-     * 项目 Id
+     * 项目 ID
      */
     private String itemId;
 

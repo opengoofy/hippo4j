@@ -39,9 +39,9 @@ public class TenantServiceImpl implements TenantService {
     private TenantInfoMapper tenantInfoMapper;
 
     @Override
-    public TenantRespDTO getNameSpaceById(String namespaceId) {
+    public TenantRespDTO getTenantById(String tenantId) {
         LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers
-                .lambdaQuery(TenantInfo.class).eq(TenantInfo::getTenantId, namespaceId);
+                .lambdaQuery(TenantInfo.class).eq(TenantInfo::getTenantId, tenantId);
         TenantInfo tenantInfo = tenantInfoMapper.selectOne(queryWrapper);
 
         TenantRespDTO result = BeanUtil.convert(tenantInfo, TenantRespDTO.class);
@@ -49,7 +49,7 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public IPage<TenantRespDTO> queryNameSpacePage(TenantQueryReqDTO reqDTO) {
+    public IPage<TenantRespDTO> queryTenantPage(TenantQueryReqDTO reqDTO) {
         LambdaQueryWrapper<TenantInfo> wrapper = Wrappers.lambdaQuery(TenantInfo.class)
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), TenantInfo::getTenantId, reqDTO.getTenantId())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantName()), TenantInfo::getTenantName, reqDTO.getTenantName())
@@ -60,7 +60,7 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public void saveNameSpace(TenantSaveReqDTO reqDTO) {
+    public void saveTenant(TenantSaveReqDTO reqDTO) {
         TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
         int insertResult = tenantInfoMapper.insert(tenantInfo);
 
@@ -71,10 +71,10 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public void updateNameSpace(TenantUpdateReqDTO reqDTO) {
+    public void updateTenant(TenantUpdateReqDTO reqDTO) {
         TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
         int updateResult = tenantInfoMapper.update(tenantInfo, Wrappers
-                .lambdaUpdate(TenantInfo.class).eq(TenantInfo::getTenantId, reqDTO.getNamespaceId()));
+                .lambdaUpdate(TenantInfo.class).eq(TenantInfo::getTenantId, reqDTO.getTenantId()));
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("修改失败.");
@@ -82,9 +82,9 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public void deleteNameSpaceById(String namespaceId) {
+    public void deleteTenantById(String tenantId) {
         ItemQueryReqDTO reqDTO = new ItemQueryReqDTO();
-        reqDTO.setTenantId(namespaceId);
+        reqDTO.setTenantId(tenantId);
         List<ItemRespDTO> itemList = itemService.queryItem(reqDTO);
         if (CollectionUtils.isNotEmpty(itemList)) {
             throw new RuntimeException("业务线包含项目引用, 删除失败.");
@@ -92,7 +92,7 @@ public class TenantServiceImpl implements TenantService {
 
         int updateResult = tenantInfoMapper.update(new TenantInfo(),
                 Wrappers.lambdaUpdate(TenantInfo.class)
-                        .eq(TenantInfo::getTenantId, namespaceId)
+                        .eq(TenantInfo::getTenantId, tenantId)
                         .set(TenantInfo::getDelFlag, DelEnum.DELETE.getIntCode()));
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {

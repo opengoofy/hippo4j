@@ -50,10 +50,10 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemRespDTO queryItemById(String namespace, String itemId) {
+    public ItemRespDTO queryItemById(String tenantId, String itemId) {
         LambdaQueryWrapper<ItemInfo> queryWrapper = Wrappers
                 .lambdaQuery(ItemInfo.class)
-                .eq(ItemInfo::getTenantId, namespace)
+                .eq(ItemInfo::getTenantId, tenantId)
                 .eq(ItemInfo::getItemId, itemId);
         ItemInfo itemInfo = itemInfoMapper.selectOne(queryWrapper);
 
@@ -87,7 +87,7 @@ public class ItemServiceImpl implements ItemService {
         ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
         int updateResult = itemInfoMapper.update(itemInfo, Wrappers
                 .lambdaUpdate(ItemInfo.class)
-                .eq(ItemInfo::getTenantId, reqDTO.getNamespace())
+                .eq(ItemInfo::getTenantId, reqDTO.getTenantId())
                 .eq(ItemInfo::getItemId, reqDTO.getItemId()));
 
         boolean retBool = SqlHelper.retBool(updateResult);

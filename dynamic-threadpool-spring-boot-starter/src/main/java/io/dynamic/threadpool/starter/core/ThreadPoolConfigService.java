@@ -26,8 +26,8 @@ public class ThreadPoolConfigService implements ConfigService {
     }
 
     @Override
-    public void addListener(String namespace, String itemId, String tpId, Listener listener) {
-        clientWorker.addTenantListeners(namespace, itemId, tpId, Arrays.asList(listener));
+    public void addListener(String tenantId, String itemId, String tpId, Listener listener) {
+        clientWorker.addTenantListeners(tenantId, itemId, tpId, Arrays.asList(listener));
     }
 
     @Override

@@ -20,7 +20,7 @@ public class GlobalRemotePoolInfo implements Serializable {
     /**
      * 命名空间
      */
-    private String namespace;
+    private String tenantId;
 
     /**
      * 项目 ID

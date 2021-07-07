@@ -30,9 +30,9 @@ public class ItemController {
         return Results.success(itemService.queryItemPage(reqDTO));
     }
 
-    @GetMapping("/item/query/{namespace}/{itemId}")
-    public Result queryItemById(@PathVariable("namespace") String namespace, @PathVariable("itemId") String itemId) {
-        return Results.success(itemService.queryItemById(namespace, itemId));
+    @GetMapping("/item/query/{tenantId}/{itemId}")
+    public Result queryItemById(@PathVariable("tenantId") String tenantId, @PathVariable("itemId") String itemId) {
+        return Results.success(itemService.queryItemById(tenantId, itemId));
     }
 
     @PostMapping("/item/save")
@@ -47,9 +47,9 @@ public class ItemController {
         return Results.success();
     }
 
-    @DeleteMapping("/item/delete/{namespace}/{itemId}")
-    public Result deleteItem(@PathVariable("namespace") String namespace, @PathVariable("itemId") String itemId) {
-        itemService.deleteItem(namespace, itemId);
+    @DeleteMapping("/item/delete/{tenantId}/{itemId}")
+    public Result deleteItem(@PathVariable("tenantId") String tenantId, @PathVariable("itemId") String itemId) {
+        itemService.deleteItem(tenantId, itemId);
         return Results.success();
     }
 }

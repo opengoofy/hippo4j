@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
  */
 public class ConfigDataChangeEvent extends Event {
 
-    public final String namespace;
+    public final String tenantId;
 
     public final String itemId;
 
@@ -18,12 +18,12 @@ public class ConfigDataChangeEvent extends Event {
 
     public final long lastModifiedTs;
 
-    public ConfigDataChangeEvent(String namespace, String itemId, String tpId, Long gmtModified) {
-        if (StringUtils.isEmpty(namespace) || StringUtils.isEmpty(itemId) || StringUtils.isEmpty(tpId)) {
+    public ConfigDataChangeEvent(String tenantId, String itemId, String tpId, Long gmtModified) {
+        if (StringUtils.isEmpty(tenantId) || StringUtils.isEmpty(itemId) || StringUtils.isEmpty(tpId)) {
             throw new IllegalArgumentException("dataId is null or group is null");
         }
 
-        this.namespace = namespace;
+        this.tenantId = tenantId;
         this.itemId = itemId;
         this.tpId = tpId;
         this.lastModifiedTs = gmtModified;

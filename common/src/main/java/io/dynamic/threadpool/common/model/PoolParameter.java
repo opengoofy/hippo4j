@@ -9,11 +9,11 @@ package io.dynamic.threadpool.common.model;
 public interface PoolParameter {
 
     /**
-     * namespace
+     * tenantId
      *
      * @return
      */
-    String getNamespace();
+    String getTenantId();
 
     /**
      * itemId

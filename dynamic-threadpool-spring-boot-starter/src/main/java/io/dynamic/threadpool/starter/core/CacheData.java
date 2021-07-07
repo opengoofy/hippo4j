@@ -22,7 +22,7 @@ public class CacheData {
 
     public volatile String content;
 
-    public final String namespace;
+    public final String tenantId;
 
     public final String itemId;
 
@@ -34,8 +34,8 @@ public class CacheData {
 
     private final CopyOnWriteArrayList<ManagerListenerWrap> listeners;
 
-    public CacheData(String namespace, String itemId, String tpId) {
-        this.namespace = namespace;
+    public CacheData(String tenantId, String itemId, String tpId) {
+        this.tenantId = tenantId;
         this.itemId = itemId;
         this.tpId = tpId;
         this.content = ContentUtil.getPoolContent(GlobalThreadPoolManage.getPoolParameter(tpId));

@@ -14,7 +14,7 @@ public class TenantUpdateReqDTO {
     /**
      * 租户 ID
      */
-    private String namespaceId;
+    private String tenantId;
 
     /**
      * 租户名称

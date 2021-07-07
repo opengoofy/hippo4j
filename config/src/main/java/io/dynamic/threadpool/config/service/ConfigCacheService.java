@@ -67,7 +67,7 @@ public class ConfigCacheService {
         String[] split = groupKey.split("\\+");
         ConfigAllInfo config = configService.findConfigAllInfo(split[0], split[1], split[2]);
         if (config == null || StringUtils.isEmpty(config.getTpId())) {
-            String errorMessage = String.format("config is null. tpId :: %s, itemId :: %s, namespace :: %s", split[0], split[1], split[2]);
+            String errorMessage = String.format("config is null. tpId :: %s, itemId :: %s, tenantId :: %s", split[0], split[1], split[2]);
             throw new RuntimeException(errorMessage);
         }
 

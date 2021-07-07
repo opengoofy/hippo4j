@@ -1,5 +1,6 @@
 package io.dynamic.threadpool.config.model.biz.threadpool;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -16,7 +17,7 @@ public class ThreadPoolRespDTO {
     /**
      * 命名空间
      */
-    private String namespace;
+    private String tenantId;
 
     /**
      * 项目 Id
@@ -76,10 +77,12 @@ public class ThreadPoolRespDTO {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
      * 修改时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModified;
 }

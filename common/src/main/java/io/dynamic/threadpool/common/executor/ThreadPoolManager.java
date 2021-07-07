@@ -36,21 +36,21 @@ public class ThreadPoolManager {
         resourcesManager = new ConcurrentHashMap<String, Map<String, Set<ExecutorService>>>(8);
     }
 
-    public void register(String namespace, String group, ExecutorService executor) {
-        if (!resourcesManager.containsKey(namespace)) {
+    public void register(String tenantId, String group, ExecutorService executor) {
+        if (!resourcesManager.containsKey(tenantId)) {
             synchronized (this) {
-                lockers.put(namespace, new Object());
+                lockers.put(tenantId, new Object());
             }
         }
 
-        final Object monitor = lockers.get(namespace);
+        final Object monitor = lockers.get(tenantId);
         synchronized (monitor) {
-            Map<String, Set<ExecutorService>> map = resourcesManager.get(namespace);
+            Map<String, Set<ExecutorService>> map = resourcesManager.get(tenantId);
             if (map == null) {
                 map = new HashMap(8);
                 map.put(group, new HashSet());
                 map.get(group).add(executor);
-                resourcesManager.put(namespace, map);
+                resourcesManager.put(tenantId, map);
                 return;
             }
             if (!map.containsKey(group)) {
