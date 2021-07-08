@@ -118,7 +118,10 @@ public class ClientWorker {
 
             List<String> changedTpIds = checkUpdateDataIds(queryCacheDataList);
             if (!CollectionUtils.isEmpty(changedTpIds)) {
-                log.info("[dynamic threadPool] tpIds changed :: {}", changedTpIds);
+                /**
+                 * 考虑是否加入日志
+                 * log.info("[dynamic threadPool] tpIds changed :: {}", changedTpIds);
+                 */
                 for (String each : changedTpIds) {
                     String[] keys = StrUtil.split(each, Constants.GROUP_KEY_DELIMITER);
                     String tpId = keys[0];
@@ -131,8 +134,10 @@ public class ClientWorker {
                         String poolContent = ContentUtil.getPoolContent(JSON.parseObject(content, PoolParameterInfo.class));
                         cacheData.setContent(poolContent);
                         cacheDataList.add(cacheData);
-                        log.info("[data-received] namespace :: {}, itemId :: {}, tpId :: {}, md5 :: {}",
-                                namespace, itemId, tpId, cacheData.getMd5());
+                        /**
+                         * 考虑是否加入日志
+                         * log.info("[data-received] namespace :: {}, itemId :: {}, tpId :: {}, md5 :: {}", namespace, itemId, tpId, cacheData.getMd5());
+                         */
                     } catch (Exception ex) {
                         // ignore
                     }
@@ -184,9 +189,11 @@ public class ClientWorker {
         try {
             long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
             Result result = agent.httpPost(Constants.LISTENER_PATH, headers, params, readTimeoutMs);
-            if (result == null || result.isFail()) {
-                log.warn("[check-update] get changed dataId error, code: {}", result == null ? "error" : result.getCode());
-            } else {
+            /**
+             * 考虑是否加入错误日志
+             * log.warn("[check-update] get changed dataId error, code: {}", result == null ? "error" : result.getCode());
+             */
+            if (result != null && result.isSuccess()) {
                 setHealthServer(true);
                 return parseUpdateDataIdResponse(result.getData().toString());
             }

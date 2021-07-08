@@ -17,12 +17,14 @@ public class CommonThreadPool {
 
     public static ThreadPoolExecutor getInstance(String threadPoolId) {
         ThreadPoolExecutor poolExecutor = ThreadPoolBuilder.builder()
+                .isCustomPool(true)
                 .threadFactory(threadPoolId)
-                .poolThreadNum(3, 5)
+                .poolThreadSize(3, 5)
                 .keepAliveTime(1000L, TimeUnit.SECONDS)
                 .rejected(RejectedPolicies.runsOldestTaskPolicy())
                 .workQueue(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, 512)
                 .build();
         return poolExecutor;
     }
+
 }
