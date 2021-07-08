@@ -4,7 +4,6 @@ import io.dynamic.threadpool.common.model.PoolRunStateInfo;
 import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
 import io.dynamic.threadpool.starter.wrap.CustomThreadPoolExecutor;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
-import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -17,7 +16,6 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author chen.ma
  * @date 2021/7/7 19:37
  */
-@Component
 public class ThreadPoolRunStateHandler {
 
     private static InetAddress addr;
@@ -31,7 +29,7 @@ public class ThreadPoolRunStateHandler {
         }
     }
 
-    public PoolRunStateInfo getPoolRunState(String tpId) {
+    public static PoolRunStateInfo getPoolRunState(String tpId) {
         DynamicThreadPoolWrap executorService = GlobalThreadPoolManage.getExecutorService(tpId);
         ThreadPoolExecutor pool = executorService.getPool();
 
