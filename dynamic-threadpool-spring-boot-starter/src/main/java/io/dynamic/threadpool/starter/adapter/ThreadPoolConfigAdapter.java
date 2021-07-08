@@ -28,7 +28,7 @@ public class ThreadPoolConfigAdapter extends ConfigAdapter {
     private ThreadPoolOperation threadPoolOperation;
 
     private ExecutorService executorService = ThreadPoolBuilder.builder()
-            .poolThreadNum(2, 4)
+            .poolThreadSize(2, 4)
             .keepAliveTime(0L, TimeUnit.MILLISECONDS)
             .workQueue(QueueTypeEnum.ARRAY_BLOCKING_QUEUE, 1)
             .threadFactory("threadPool-config")

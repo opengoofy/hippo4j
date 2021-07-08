@@ -1,6 +1,7 @@
 package io.dynamic.threadpool.starter.toolkit.thread;
 
 import io.dynamic.threadpool.common.toolkit.Assert;
+import io.dynamic.threadpool.starter.wrap.CustomThreadPoolExecutor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +87,26 @@ public class AbstractBuildThreadPoolTemplate {
         return fastThreadPoolExecutor;
     }
 
+    /**
+     * 构建自定义线程池
+     *
+     * @param initParam
+     * @return
+     */
+    public static CustomThreadPoolExecutor buildCustomPool(ThreadPoolInitParam initParam) {
+        Assert.notNull(initParam);
+        CustomThreadPoolExecutor executorService =
+                new CustomThreadPoolExecutor(initParam.getCorePoolNum(),
+                        initParam.getMaxPoolNum(),
+                        initParam.getKeepAliveTime(),
+                        initParam.getTimeUnit(),
+                        initParam.getWorkQueue(),
+                        initParam.getThreadFactory(),
+                        initParam.rejectedExecutionHandler);
+
+        return executorService;
+    }
+
     @Data
     @Accessors(chain = true)
     public static class ThreadPoolInitParam {
@@ -131,9 +152,9 @@ public class AbstractBuildThreadPoolTemplate {
         private ThreadFactory threadFactory;
 
         public ThreadPoolInitParam(String threadNamePrefix, boolean isDaemon) {
-            this.threadFactory = new ThreadFactoryBuilder()
-                    .setNamePrefix(threadNamePrefix + "-")
-                    .setDaemon(isDaemon)
+            this.threadFactory = ThreadFactoryBuilder.builder()
+                    .prefix(threadNamePrefix)
+                    .daemon(isDaemon)
                     .build();
         }
     }

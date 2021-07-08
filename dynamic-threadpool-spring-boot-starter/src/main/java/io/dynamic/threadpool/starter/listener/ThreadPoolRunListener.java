@@ -12,6 +12,8 @@ import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
 import io.dynamic.threadpool.starter.remote.ServerHttpAgent;
 import io.dynamic.threadpool.starter.toolkit.BlockingQueueUtil;
+import io.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
+import io.dynamic.threadpool.starter.wrap.CustomThreadPoolExecutor;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -45,8 +47,9 @@ public class ThreadPoolRunListener {
 
         Map<String, DynamicThreadPoolWrap> executorMap = ApplicationContextHolder.getBeansOfType(DynamicThreadPoolWrap.class);
         executorMap.forEach((key, val) -> {
+            String tpId = val.getTpId();
             Map<String, String> queryStrMap = new HashMap(3);
-            queryStrMap.put("tpId", val.getTpId());
+            queryStrMap.put("tpId", tpId);
             queryStrMap.put("itemId", properties.getItemId());
             queryStrMap.put("namespace", properties.getNamespace());
 
@@ -56,18 +59,25 @@ public class ThreadPoolRunListener {
 
             try {
                 result = httpAgent.httpGet(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 3000L);
-                if (result.isSuccess() && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
+                if (result.isSuccess() && result.getData() != null && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
                     // 使用相关参数创建线程池
-                    TimeUnit unit = TimeUnit.SECONDS;
                     BlockingQueue workQueue = BlockingQueueUtil.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
-                    ThreadPoolExecutor resultTpe = new ThreadPoolExecutor(ppi.getCoreSize(), ppi.getMaxSize(), ppi.getKeepAliveTime(), unit, workQueue);
-                    val.setPool(resultTpe);
+                    ThreadPoolExecutor poolExecutor = ThreadPoolBuilder.builder()
+                            .isCustomPool(true)
+                            .poolThreadSize(ppi.getCoreSize(), ppi.getMaxSize())
+                            .keepAliveTime(ppi.getKeepAliveTime(), TimeUnit.SECONDS)
+                            .workQueue(workQueue)
+                            .threadFactory(tpId)
+                            .rejected(new CustomThreadPoolExecutor.AbortPolicy())
+                            .build();
+
+                    val.setPool(poolExecutor);
                 } else if (val.getPool() == null) {
-                    val.setPool(CommonThreadPool.getInstance(val.getTpId()));
+                    val.setPool(CommonThreadPool.getInstance(tpId));
                 }
             } catch (Exception ex) {
                 log.error("[Init pool] Failed to initialize thread pool configuration. error message :: {}", ex.getMessage());
-                val.setPool(CommonThreadPool.getInstance(val.getTpId()));
+                val.setPool(CommonThreadPool.getInstance(tpId));
             }
 
             GlobalThreadPoolManage.register(val.getTpId(), ppi, val);
