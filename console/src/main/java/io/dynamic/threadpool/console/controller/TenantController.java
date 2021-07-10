@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 业务控制器
+ * Tenant Controller.
  *
  * @author chen.ma
  * @date 2021/6/25 18:31
