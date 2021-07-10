@@ -1,7 +1,7 @@
 package io.dynamic.threadpool.starter.adapter;
 
 import io.dynamic.threadpool.common.config.ApplicationContextHolder;
-import io.dynamic.threadpool.common.enums.QueueTypeEnum;
+import io.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import io.dynamic.threadpool.starter.operation.ThreadPoolOperation;
 import io.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;

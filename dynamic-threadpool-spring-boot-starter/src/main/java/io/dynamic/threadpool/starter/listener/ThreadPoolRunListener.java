@@ -9,9 +9,9 @@ import io.dynamic.threadpool.starter.banner.DynamicThreadPoolBanner;
 import io.dynamic.threadpool.starter.common.CommonThreadPool;
 import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
 import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
+import io.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
 import io.dynamic.threadpool.starter.remote.ServerHttpAgent;
-import io.dynamic.threadpool.starter.toolkit.BlockingQueueUtil;
 import io.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
 import io.dynamic.threadpool.starter.wrap.CustomThreadPoolExecutor;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
@@ -61,7 +61,7 @@ public class ThreadPoolRunListener {
                 result = httpAgent.httpGet(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 3000L);
                 if (result.isSuccess() && result.getData() != null && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
                     // 使用相关参数创建线程池
-                    BlockingQueue workQueue = BlockingQueueUtil.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
+                    BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
                     ThreadPoolExecutor poolExecutor = ThreadPoolBuilder.builder()
                             .isCustomPool(true)
                             .poolThreadSize(ppi.getCoreSize(), ppi.getMaxSize())

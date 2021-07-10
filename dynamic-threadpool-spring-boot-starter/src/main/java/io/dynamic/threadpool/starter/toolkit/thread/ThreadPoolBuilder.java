@@ -1,10 +1,8 @@
 package io.dynamic.threadpool.starter.toolkit.thread;
 
 
-import io.dynamic.threadpool.common.enums.QueueTypeEnum;
 import io.dynamic.threadpool.common.toolkit.Assert;
 import io.dynamic.threadpool.starter.builder.Builder;
-import io.dynamic.threadpool.starter.toolkit.BlockingQueueUtil;
 
 import java.math.BigDecimal;
 import java.util.concurrent.*;
@@ -239,7 +237,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         // 快速消费线程池内置指定线程池
         if (!builder.isFastPool) {
             if (builder.workQueue == null) {
-                builder.workQueue = BlockingQueueUtil.createBlockingQueue(builder.queueType.type, builder.capacity);
+                builder.workQueue = QueueTypeEnum.createBlockingQueue(builder.queueType.type, builder.capacity);
             }
             initParam.setWorkQueue(builder.workQueue);
         }
