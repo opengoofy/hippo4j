@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.adapter;
+package io.dynamic.threadpool.starter.core;
 
 import io.dynamic.threadpool.starter.core.ThreadPoolDynamicRefresh;
 

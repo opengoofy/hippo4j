@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.banner;
+package io.dynamic.threadpool.starter.config;
 
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;

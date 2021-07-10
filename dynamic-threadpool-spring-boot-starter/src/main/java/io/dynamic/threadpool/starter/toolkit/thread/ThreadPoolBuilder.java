@@ -2,7 +2,6 @@ package io.dynamic.threadpool.starter.toolkit.thread;
 
 
 import io.dynamic.threadpool.common.toolkit.Assert;
-import io.dynamic.threadpool.starter.builder.Builder;
 
 import java.math.BigDecimal;
 import java.util.concurrent.*;

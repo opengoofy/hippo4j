@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.operation;
+package io.dynamic.threadpool.starter.core;
 
 /**
  * ThreadPoolSubscribeCallback.

@@ -1,6 +1,5 @@
 package io.dynamic.threadpool.starter.toolkit.thread;
 
-import io.dynamic.threadpool.starter.core.ResizableCapacityLinkedBlockIngQueue;
 import io.dynamic.threadpool.starter.spi.DynamicTpServiceLoader;
 import io.dynamic.threadpool.starter.spi.queue.CustomBlockingQueue;
 
@@ -48,7 +47,7 @@ public enum QueueTypeEnum {
     PRIORITY_BLOCKING_QUEUE(6),
 
     /**
-     * {@link "io.dynamic.threadpool.starter.core.ResizableCapacityLinkedBlockIngQueue"}
+     * {@link "io.dynamic.threadpool.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue"}
      */
     RESIZABLE_LINKED_BLOCKING_QUEUE(9);
 

@@ -1,13 +1,13 @@
 package io.dynamic.threadpool.starter.config;
 
 import io.dynamic.threadpool.common.config.CommonConfiguration;
-import io.dynamic.threadpool.starter.adapter.ThreadPoolConfigAdapter;
+import io.dynamic.threadpool.starter.core.ThreadPoolConfigAdapter;
 import io.dynamic.threadpool.starter.controller.PoolRunStateController;
 import io.dynamic.threadpool.starter.core.ConfigService;
 import io.dynamic.threadpool.starter.core.ThreadPoolConfigService;
 import io.dynamic.threadpool.starter.enable.DynamicThreadPoolMarkerConfiguration;
 import io.dynamic.threadpool.starter.listener.ThreadPoolRunListener;
-import io.dynamic.threadpool.starter.operation.ThreadPoolOperation;
+import io.dynamic.threadpool.starter.core.ThreadPoolOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;

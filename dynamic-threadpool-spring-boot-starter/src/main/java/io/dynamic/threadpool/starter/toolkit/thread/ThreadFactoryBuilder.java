@@ -1,7 +1,5 @@
 package io.dynamic.threadpool.starter.toolkit.thread;
 
-import io.dynamic.threadpool.starter.builder.Builder;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;

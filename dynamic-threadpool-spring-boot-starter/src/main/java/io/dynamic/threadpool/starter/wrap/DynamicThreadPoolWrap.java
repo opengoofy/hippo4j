@@ -1,6 +1,6 @@
 package io.dynamic.threadpool.starter.wrap;
 
-import io.dynamic.threadpool.starter.common.CommonThreadPool;
+import io.dynamic.threadpool.starter.config.CommonThreadPool;
 import lombok.Data;
 
 import java.util.concurrent.Callable;

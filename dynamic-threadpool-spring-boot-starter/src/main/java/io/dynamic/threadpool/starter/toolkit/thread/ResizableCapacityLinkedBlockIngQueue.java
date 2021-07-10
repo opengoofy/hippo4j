@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.core;
+package io.dynamic.threadpool.starter.toolkit.thread;
 
 import cn.hutool.core.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
