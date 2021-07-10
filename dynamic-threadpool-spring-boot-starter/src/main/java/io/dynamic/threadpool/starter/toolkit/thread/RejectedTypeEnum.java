@@ -72,9 +72,8 @@ public enum RejectedTypeEnum {
             Collection<CustomRejectedExecutionHandler> customRejectedExecutionHandlers = DynamicTpServiceLoader
                     .getSingletonServiceInstances(CustomRejectedExecutionHandler.class);
             Optional<RejectedExecutionHandler> customRejected = customRejectedExecutionHandlers.stream()
-                    .map(each -> each.generateRejected())
                     .filter(each -> Objects.equals(type, each.getType()))
-                    .map(each -> each.getRejectedExecutionHandler())
+                    .map(each -> each.generateRejected())
                     .findFirst();
 
             return customRejected.orElse(ABORT_POLICY.rejectedHandler);

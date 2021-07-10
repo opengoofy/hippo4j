@@ -1,9 +1,5 @@
 package io.dynamic.threadpool.starter.spi.rejected;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.concurrent.RejectedExecutionHandler;
 
 /**
@@ -15,20 +11,17 @@ import java.util.concurrent.RejectedExecutionHandler;
 public interface CustomRejectedExecutionHandler {
 
     /**
+     * 获取类型
+     *
+     * @return
+     */
+    Integer getType();
+
+    /**
      * 生成拒绝策略
      *
      * @return
      */
-    RejectedExecutionHandlerWrap generateRejected();
+    RejectedExecutionHandler generateRejected();
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    class RejectedExecutionHandlerWrap {
-
-        private Integer type;
-
-        private RejectedExecutionHandler rejectedExecutionHandler;
-
-    }
 }
