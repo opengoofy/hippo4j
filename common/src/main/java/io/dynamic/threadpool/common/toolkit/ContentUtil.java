@@ -40,6 +40,7 @@ public class ContentUtil {
         poolInfo.setIsAlarm(parameter.getIsAlarm());
         poolInfo.setCapacityAlarm(parameter.getCapacityAlarm());
         poolInfo.setLivenessAlarm(parameter.getLivenessAlarm());
+        poolInfo.setRejectedType(parameter.getRejectedType());
         return JSON.toJSONString(poolInfo);
     }
 

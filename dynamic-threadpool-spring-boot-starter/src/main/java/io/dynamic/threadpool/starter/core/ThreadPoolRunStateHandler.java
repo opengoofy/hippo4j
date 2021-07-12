@@ -1,7 +1,6 @@
-package io.dynamic.threadpool.starter.handler;
+package io.dynamic.threadpool.starter.core;
 
 import io.dynamic.threadpool.common.model.PoolRunStateInfo;
-import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
 import io.dynamic.threadpool.starter.wrap.CustomThreadPoolExecutor;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 
@@ -11,10 +10,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * 线程池运行状态组件.
+ * Thread Pool Run State Service.
  *
  * @author chen.ma
- * @date 2021/7/7 19:37
+ * @date 2021/7/12 21:25
  */
 public class ThreadPoolRunStateHandler {
 
@@ -87,5 +86,4 @@ public class ThreadPoolRunStateHandler {
     private static String divide(int num1, int num2) {
         return ((int) (Double.parseDouble(num1 + "") / Double.parseDouble(num2 + "") * 100)) + "%";
     }
-
 }

@@ -5,15 +5,15 @@ import io.dynamic.threadpool.common.config.ApplicationContextHolder;
 import io.dynamic.threadpool.common.constant.Constants;
 import io.dynamic.threadpool.common.model.PoolParameterInfo;
 import io.dynamic.threadpool.common.web.base.Result;
-import io.dynamic.threadpool.starter.config.DynamicThreadPoolBanner;
 import io.dynamic.threadpool.starter.config.CommonThreadPool;
+import io.dynamic.threadpool.starter.config.DynamicThreadPoolBanner;
 import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
 import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
-import io.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
 import io.dynamic.threadpool.starter.remote.ServerHttpAgent;
+import io.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
+import io.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
 import io.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
-import io.dynamic.threadpool.starter.wrap.CustomThreadPoolExecutor;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -68,7 +68,7 @@ public class ThreadPoolRunListener {
                             .keepAliveTime(ppi.getKeepAliveTime(), TimeUnit.SECONDS)
                             .workQueue(workQueue)
                             .threadFactory(tpId)
-                            .rejected(new CustomThreadPoolExecutor.AbortPolicy())
+                            .rejected(RejectedTypeEnum.createPolicy(ppi.getRejectedType()))
                             .build();
 
                     val.setPool(poolExecutor);

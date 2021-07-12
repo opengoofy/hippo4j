@@ -65,6 +65,11 @@ public class ConfigInfoBase implements Serializable {
     private Integer keepAliveTime;
 
     /**
+     * 拒绝策略类型
+     */
+    private Integer rejectedType;
+
+    /**
      * 是否告警
      */
     private Integer isAlarm;
