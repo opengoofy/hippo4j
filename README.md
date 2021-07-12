@@ -27,9 +27,7 @@
 
 <br/>
 
-我有一个 IDEA，动态线程池监控，主意来源于美团技术公众号 [点击查看美团线程池文章](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
-
-<br/>
+动态线程池监控，主意来源于美团技术公众号 [点击查看美团线程池文章](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
 
 看了文章后深受感触，再加上最近线上线程池的不可控以及不可逆等问题，想做出一个兼容性、功能性、易上手等特性集于一身的的开源项目。目标还是要有的，虽然过程可能会艰辛
 
@@ -60,11 +58,7 @@
 
 <br/>
 
-<img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20210707112609388.png" alt="美团动态化线程池功能架构" style="zoom:50%;" />
-
-<br/>
-
-> 图片来源自美团技术博客
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20210712090438970.png)
 
 <br/>
 
@@ -74,7 +68,7 @@
 
 <br/>
 
-> 项目数据库连接是作者个人 ECS Docker 搭建的 MySQL，防君子不防小人，大家直接使用即可
+> 项目中为远端数据库，作者个人 ECS Docker 搭建的 MySQL，大家直接使用即可
 
 <br/>
 
