@@ -98,15 +98,16 @@ POST http://localhost:6691/v1/cs/configs
 {
     "tenantId": "common",
     "itemId": "message-center",
-    "tpId": "message-consume",
-    "coreSize": 3,
-    "maxSize": 10,
-    "queueType":9,
-    "capacity":1000,
-    "keepAliveTime" : 1000,
-    "isAlarm":1,
-    "capacityAlarm":80,
-    "livenessAlarm":80
+    "tpId": "custom-pool",
+    "coreSize": 10,
+    "maxSize": 15,
+    "queueType": 9,
+    "capacity": 9,
+    "keepAliveTime": 100,
+    "rejectedType": 7,
+    "isAlarm": 2,
+    "capacityAlarm": 80,
+    "livenessAlarm": 80
 }
 ```
 
@@ -116,4 +117,4 @@ POST http://localhost:6691/v1/cs/configs
 
 <br/>
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20210715124311506.png)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20210715124650132.png)
