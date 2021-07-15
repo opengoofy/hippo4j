@@ -116,4 +116,4 @@ POST http://localhost:6691/v1/cs/configs
 
 <br/>
 
-[🚀] Changed thread pool. coreSize :: x, maxSize :: x, queueType :: x, capacity :: x, keepAliveTime :: x
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20210715124311506.png)
