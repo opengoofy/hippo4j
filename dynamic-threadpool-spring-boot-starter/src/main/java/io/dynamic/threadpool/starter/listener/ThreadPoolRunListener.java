@@ -16,6 +16,7 @@ import io.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
 import io.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import javax.annotation.PostConstruct;
@@ -40,8 +41,8 @@ public class ThreadPoolRunListener {
         this.properties = properties;
     }
 
-    @Order(1024)
     @PostConstruct
+    @Order(Ordered.LOWEST_PRECEDENCE - 1024)
     public void run() {
         DynamicThreadPoolBanner.printBanner(properties.isBanner());
 
