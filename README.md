@@ -1,5 +1,10 @@
+
+<div align=center>
+	<img src="https://images-machen.oss-cn-beijing.aliyuncs.com/Dynamic-Thread-Pool-Main.jpeg"  />
+</div>
+
 <p align="center">
-	<strong>ThreadPool, so easy.</strong>
+	<strong> :fire: &nbsp; 动态线程池系统，包含 <a href="https://github.com/longtai94/dynamic-thread-pool/tree/develop/server">Server</a> 端及 SpringBoot Client 端需引入的 <a href="https://github.com/longtai94/dynamic-thread-pool/tree/develop/dynamic-threadpool-spring-boot-starter">Starter</a>.</strong>
 </p>
 <p align="center">
 
@@ -17,9 +22,11 @@
     <img src="https://img.shields.io/github/license/longtai94/dynamic-thread-pool?color=42b883&style=flat-square" alt="LICENSE">
 </a>
 
-<img src="https://img.shields.io/badge/JDK-1.8-violet.svg" />
+<img src="https://img.shields.io/badge/JDK-1.8+-green?logo=appveyor" />
 
-<img src="https://img.shields.io/badge/release-v1.0.0-green.svg" />
+<img src="https://tokei.rs/b1/github/longtai94/dynamic-thread-pool?category=lines" />
+	
+<img src="https://img.shields.io/badge/release-v0.2.0-violet.svg" />
 
 <img src="https://img.shields.io/github/stars/longtai94/dynamic-thread-pool.svg" />
 
@@ -27,15 +34,15 @@
 
 <br/>
 
-动态线程池监控，主意来源于美团技术公众号 [点击查看美团线程池文章](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
+**动态线程池监控**，主意来源于美团技术公众号 [点击查看美团线程池文章](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
 
 <br/>
 
-看了文章后深受感触，再加上最近线上线程池的不可控以及不可逆等问题，想做出一个兼容性、功能性、易上手等特性集于一身的的开源项目。目标还是要有的，虽然过程可能会艰辛
+看了文章后深受感触，再加上最近线上线程池的不可控以及不可逆等问题，想做出一个 **兼容性、功能性、易上手等特性** 集于一身的的开源项目，目标还是要有的
 
 <br/>
 
-目前这个项目是由作者独立开发，时间在下班后、周六天等。具体什么时候能发布 1.0 版本不好说，需要看实际的开发情况
+目前项目由作者独立开发，时间在下班后、周六天等。具体什么时候能发布 1.0.0 版本不好说，需要看实际的开发情况
 
 <br/>
 
@@ -56,7 +63,7 @@
 
 <br/>
 
-项目不会强依赖某个不通用的中间件，比如配置中心：Nacos、Apollo、Consul... 有可能会将组件全部支持，自定义选择使用
+**项目不会强依赖某个不通用的中间件**，对于小体量的工程，越是轻便越会有人想要去了解以及使用
 
 <br/>
 
@@ -66,35 +73,25 @@
 
 ## 本地部署
 
-目前动态线程池功能已经完成，大家可以直接把代码拉到本地运行
+目前动态线程池功能已经完成，可以直接把代码拉到本地运行。项目中数据库是作者 ECS Docker 搭建，大家直接使用即可
 
 <br/>
 
-> 项目中为远端数据库，作者个人 ECS Docker 搭建的 MySQL，大家直接使用即可
+1. 启动 server 模块下 ServerApplication 启动类
 
 <br/>
 
-启动 server 模块下 ServerApplication 启动类
+2. 启动 example 模块下 ExampleApplication 启动类
 
 <br/>
 
-启动 example 模块下 ExampleApplication 启动类
-
-<br/>
-
-可以通过调用接口修改线程池配置
-
-<br/>
-
-修改请求如下，**在做示例时不要改动 tenantId、itemId、tpId**
-
-<br/>
-
-POST http://localhost:6691/v1/cs/configs
+3. 可以通过调用接口修改线程池配置。修改请求如下，**请求时勿动 tenantId、itemId、tpId**
 
 <br/>
 
 ```json
+POST http://localhost:6691/v1/cs/configs
+
 {
     "tenantId": "common",
     "itemId": "message-center",
