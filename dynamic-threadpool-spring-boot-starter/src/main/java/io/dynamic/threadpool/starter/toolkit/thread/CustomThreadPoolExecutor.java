@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.wrap;
+package io.dynamic.threadpool.starter.toolkit.thread;
 
 import lombok.Getter;
 
@@ -19,7 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2021/7/8 21:47
  */
 @Getter
-public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
+public final class CustomThreadPoolExecutor extends ThreadPoolExecutorTemplate {
 
     private final AtomicInteger regectCount = new AtomicInteger();
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));

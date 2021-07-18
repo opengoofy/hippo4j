@@ -1,7 +1,6 @@
 package io.dynamic.threadpool.starter.toolkit.thread;
 
 import io.dynamic.threadpool.common.toolkit.Assert;
-import io.dynamic.threadpool.starter.wrap.CustomThreadPoolExecutor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;

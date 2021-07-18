@@ -13,7 +13,7 @@ import java.util.Map;
 public interface HttpAgent {
 
     /**
-     * 开始获取 NacosIp 集合
+     * 开始获取服务集合
      */
     void start();
 

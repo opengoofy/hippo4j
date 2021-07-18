@@ -1,7 +1,7 @@
 package io.dynamic.threadpool.starter.core;
 
 import io.dynamic.threadpool.common.model.PoolRunStateInfo;
-import io.dynamic.threadpool.starter.wrap.CustomThreadPoolExecutor;
+import io.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 
 import java.net.InetAddress;
