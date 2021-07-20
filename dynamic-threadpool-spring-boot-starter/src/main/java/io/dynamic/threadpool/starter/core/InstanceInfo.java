@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.core.registry;
+package io.dynamic.threadpool.starter.core;
 
 /**
  * Instance Info.

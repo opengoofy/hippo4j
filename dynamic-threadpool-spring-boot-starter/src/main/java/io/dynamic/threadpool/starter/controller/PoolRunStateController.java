@@ -3,7 +3,7 @@ package io.dynamic.threadpool.starter.controller;
 import io.dynamic.threadpool.common.model.PoolRunStateInfo;
 import io.dynamic.threadpool.common.web.base.Result;
 import io.dynamic.threadpool.common.web.base.Results;
-import io.dynamic.threadpool.starter.core.ThreadPoolRunStateHandler;
+import io.dynamic.threadpool.starter.handler.ThreadPoolRunStateHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

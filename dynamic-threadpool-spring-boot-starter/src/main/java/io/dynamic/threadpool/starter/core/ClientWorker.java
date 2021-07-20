@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.listener;
+package io.dynamic.threadpool.starter.core;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
@@ -7,7 +7,6 @@ import io.dynamic.threadpool.common.model.PoolParameterInfo;
 import io.dynamic.threadpool.common.toolkit.ContentUtil;
 import io.dynamic.threadpool.common.toolkit.GroupKey;
 import io.dynamic.threadpool.common.web.base.Result;
-import io.dynamic.threadpool.starter.core.CacheData;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

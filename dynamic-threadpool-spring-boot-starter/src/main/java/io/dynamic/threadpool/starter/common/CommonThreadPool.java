@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.config;
+package io.dynamic.threadpool.starter.common;
 
 import io.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import io.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;

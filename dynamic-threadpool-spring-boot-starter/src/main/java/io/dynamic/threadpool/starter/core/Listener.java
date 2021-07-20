@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.listener;
+package io.dynamic.threadpool.starter.core;
 
 import java.util.concurrent.Executor;
 

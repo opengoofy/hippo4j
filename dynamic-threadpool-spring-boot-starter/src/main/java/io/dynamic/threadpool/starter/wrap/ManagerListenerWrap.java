@@ -1,6 +1,6 @@
 package io.dynamic.threadpool.starter.wrap;
 
-import io.dynamic.threadpool.starter.listener.Listener;
+import io.dynamic.threadpool.starter.core.Listener;
 import lombok.Getter;
 import lombok.Setter;
 

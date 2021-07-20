@@ -3,8 +3,6 @@ package io.dynamic.threadpool.starter.core;
 import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
 import io.dynamic.threadpool.starter.remote.HttpAgent;
 import io.dynamic.threadpool.starter.remote.ServerHttpAgent;
-import io.dynamic.threadpool.starter.listener.ClientWorker;
-import io.dynamic.threadpool.starter.listener.Listener;
 
 import java.util.Arrays;
 

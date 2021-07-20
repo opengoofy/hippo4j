@@ -1,6 +1,7 @@
-package io.dynamic.threadpool.starter.core;
+package io.dynamic.threadpool.starter.handler;
 
 import io.dynamic.threadpool.common.model.PoolRunStateInfo;
+import io.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
 import io.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 import io.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 
