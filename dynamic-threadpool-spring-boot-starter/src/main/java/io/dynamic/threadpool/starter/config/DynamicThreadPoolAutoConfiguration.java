@@ -1,13 +1,10 @@
 package io.dynamic.threadpool.starter.config;
 
-import io.dynamic.threadpool.common.config.CommonConfiguration;
-import io.dynamic.threadpool.starter.core.ThreadPoolConfigAdapter;
+import io.dynamic.threadpool.common.config.ApplicationContextHolder;
 import io.dynamic.threadpool.starter.controller.PoolRunStateController;
-import io.dynamic.threadpool.starter.core.ConfigService;
-import io.dynamic.threadpool.starter.core.ThreadPoolConfigService;
+import io.dynamic.threadpool.starter.core.*;
 import io.dynamic.threadpool.starter.enable.DynamicThreadPoolMarkerConfiguration;
-import io.dynamic.threadpool.starter.listener.ThreadPoolRunListener;
-import io.dynamic.threadpool.starter.core.ThreadPoolOperation;
+import io.dynamic.threadpool.starter.handler.ThreadPoolBannerHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -27,10 +24,20 @@ import org.springframework.context.annotation.Configuration;
 @AllArgsConstructor
 @EnableConfigurationProperties(DynamicThreadPoolProperties.class)
 @ConditionalOnBean(DynamicThreadPoolMarkerConfiguration.Marker.class)
-@ImportAutoConfiguration({OkHttpClientConfig.class, CommonConfiguration.class})
+@ImportAutoConfiguration(OkHttpClientConfig.class)
 public class DynamicThreadPoolAutoConfiguration {
 
     private final DynamicThreadPoolProperties properties;
+
+    @Bean
+    public ThreadPoolBannerHandler threadPoolBannerHandler() {
+        return new ThreadPoolBannerHandler(properties);
+    }
+
+    @Bean
+    public ApplicationContextHolder simpleApplicationContextHolder() {
+        return new ApplicationContextHolder();
+    }
 
     @Bean
     public ConfigService configService() {
@@ -56,5 +63,4 @@ public class DynamicThreadPoolAutoConfiguration {
     public PoolRunStateController poolRunStateController() {
         return new PoolRunStateController();
     }
-
 }
