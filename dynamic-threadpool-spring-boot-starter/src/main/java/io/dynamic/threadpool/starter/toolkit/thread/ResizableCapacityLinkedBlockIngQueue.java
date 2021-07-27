@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @date 2021/6/20 14:24
  */
 @Slf4j
-public class ResizableCapacityLinkedBlockIngQueue extends LinkedBlockingQueue {
+public class ResizableCapacityLinkedBlockIngQueue<E> extends LinkedBlockingQueue<E> {
 
     public ResizableCapacityLinkedBlockIngQueue(int capacity) {
         super(capacity);
