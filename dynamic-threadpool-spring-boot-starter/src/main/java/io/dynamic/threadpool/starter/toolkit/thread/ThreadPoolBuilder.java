@@ -235,7 +235,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
         // 快速消费线程池内置指定线程池
         if (!builder.isFastPool) {
-            if (builder.workQueue == null) {
+            if (builder.queueType != null) {
                 builder.workQueue = QueueTypeEnum.createBlockingQueue(builder.queueType.type, builder.capacity);
             }
             initParam.setWorkQueue(builder.workQueue);

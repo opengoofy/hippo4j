@@ -101,7 +101,7 @@ public class AbstractBuildThreadPoolTemplate {
                         initParam.getTimeUnit(),
                         initParam.getWorkQueue(),
                         initParam.getThreadFactory(),
-                        initParam.rejectedExecutionHandler);
+                        initParam.getRejectedExecutionHandler());
 
         return executorService;
     }
