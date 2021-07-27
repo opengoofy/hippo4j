@@ -52,6 +52,7 @@ public class ThreadPoolRunListener {
 
             PoolParameterInfo ppi = new PoolParameterInfo();
             HttpAgent httpAgent = new ServerHttpAgent(properties);
+            ThreadPoolExecutor poolExecutor = null;
             Result result = null;
 
             try {
@@ -59,7 +60,7 @@ public class ThreadPoolRunListener {
                 if (result.isSuccess() && result.getData() != null && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
                     // 使用相关参数创建线程池
                     BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
-                    ThreadPoolExecutor poolExecutor = ThreadPoolBuilder.builder()
+                    poolExecutor = ThreadPoolBuilder.builder()
                             .isCustomPool(true)
                             .poolThreadSize(ppi.getCoreSize(), ppi.getMaxSize())
                             .keepAliveTime(ppi.getKeepAliveTime(), TimeUnit.SECONDS)
@@ -73,8 +74,10 @@ public class ThreadPoolRunListener {
                     val.setPool(CommonThreadPool.getInstance(tpId));
                 }
             } catch (Exception ex) {
+                poolExecutor = val.getPool() != null ? val.getPool() : CommonThreadPool.getInstance(tpId);
+                val.setPool(poolExecutor);
+
                 log.error("[Init pool] Failed to initialize thread pool configuration. error message :: {}", ex.getMessage());
-                val.setPool(CommonThreadPool.getInstance(tpId));
             }
 
             GlobalThreadPoolManage.register(val.getTpId(), ppi, val);
