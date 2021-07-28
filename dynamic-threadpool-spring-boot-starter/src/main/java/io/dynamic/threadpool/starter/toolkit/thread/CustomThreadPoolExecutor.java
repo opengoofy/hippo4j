@@ -717,6 +717,15 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutorTemplate {
                 addWorker(null, true);
     }
 
+    void ensurePrestart() {
+        int wc = workerCountOf(ctl.get());
+        if (wc < corePoolSize) {
+            addWorker(null, true);
+        } else if (wc == 0) {
+            addWorker(null, false);
+        }
+    }
+
     @Override
     public int prestartAllCoreThreads() {
         int n = 0;

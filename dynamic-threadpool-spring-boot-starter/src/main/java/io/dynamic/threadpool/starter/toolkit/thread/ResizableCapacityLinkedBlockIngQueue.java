@@ -18,7 +18,7 @@ public class ResizableCapacityLinkedBlockIngQueue<E> extends LinkedBlockingQueue
         super(capacity);
     }
 
-    public boolean setCapacity(Integer capacity) {
+    public synchronized boolean setCapacity(Integer capacity) {
         boolean successFlag = true;
         try {
             ReflectUtil.setFieldValue(this, "capacity", capacity);
