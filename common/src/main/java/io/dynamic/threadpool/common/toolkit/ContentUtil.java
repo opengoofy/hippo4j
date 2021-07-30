@@ -13,34 +13,20 @@ import io.dynamic.threadpool.common.model.PoolParameterInfo;
  */
 public class ContentUtil {
 
-    /*public static String getPoolContent(PoolParameter parameter) {
-        StringBuilder stringBuilder = new StringBuilder();
-        String resultStr = stringBuilder.append(parameter.getCoreSize())
-                .append(parameter.getMaxSize())
-                .append(parameter.getQueueType())
-                .append(parameter.getCapacity())
-                .append(parameter.getKeepAliveTime())
-                .append(parameter.getIsAlarm())
-                .append(parameter.getCapacityAlarm())
-                .append(parameter.getLivenessAlarm())
-                .toString();
-        return resultStr;
-    }*/
-
     public static String getPoolContent(PoolParameter parameter) {
         PoolParameterInfo poolInfo = new PoolParameterInfo();
-        poolInfo.setTenantId(parameter.getTenantId());
-        poolInfo.setItemId(parameter.getItemId());
-        poolInfo.setTpId(parameter.getTpId());
-        poolInfo.setCoreSize(parameter.getCoreSize());
-        poolInfo.setMaxSize(parameter.getMaxSize());
-        poolInfo.setQueueType(parameter.getQueueType());
-        poolInfo.setCapacity(parameter.getCapacity());
-        poolInfo.setKeepAliveTime(parameter.getKeepAliveTime());
-        poolInfo.setIsAlarm(parameter.getIsAlarm());
-        poolInfo.setCapacityAlarm(parameter.getCapacityAlarm());
-        poolInfo.setLivenessAlarm(parameter.getLivenessAlarm());
-        poolInfo.setRejectedType(parameter.getRejectedType());
+        poolInfo.setTenantId(parameter.getTenantId())
+                .setItemId(parameter.getItemId())
+                .setTpId(parameter.getTpId())
+                .setCoreSize(parameter.getCoreSize())
+                .setMaxSize(parameter.getMaxSize())
+                .setQueueType(parameter.getQueueType())
+                .setCapacity(parameter.getCapacity())
+                .setKeepAliveTime(parameter.getKeepAliveTime())
+                .setIsAlarm(parameter.getIsAlarm())
+                .setCapacityAlarm(parameter.getCapacityAlarm())
+                .setLivenessAlarm(parameter.getLivenessAlarm())
+                .setRejectedType(parameter.getRejectedType());
         return JSON.toJSONString(poolInfo);
     }
 

@@ -33,7 +33,7 @@ public class ThreadPoolManager {
     }
 
     private void init() {
-        resourcesManager = new ConcurrentHashMap<String, Map<String, Set<ExecutorService>>>(8);
+        resourcesManager = new ConcurrentHashMap(8);
     }
 
     public void register(String tenantId, String group, ExecutorService executor) {

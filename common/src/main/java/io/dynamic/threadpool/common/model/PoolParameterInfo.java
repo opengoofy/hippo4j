@@ -1,6 +1,7 @@
 package io.dynamic.threadpool.common.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @date 2021/6/16 23:18
  */
 @Data
+@Accessors(chain = true)
 public class PoolParameterInfo implements PoolParameter, Serializable {
 
     private static final long serialVersionUID = -7123935122108553864L;

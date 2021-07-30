@@ -26,7 +26,7 @@ public class Constants {
 
     public static final String GENERAL_SPLIT_SYMBOL = ",";
 
-    public static final String LONGPOLLING_LINE_SEPARATOR = "\r\n";
+    public static final String LONG_POLLING_LINE_SEPARATOR = "\r\n";
 
     public static final String BASE_PATH = "/v1/cs";
 

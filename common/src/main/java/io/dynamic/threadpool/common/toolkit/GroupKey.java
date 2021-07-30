@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
  * @date 2021/6/24 21:12
  */
 public class GroupKey {
+
     public static String getKey(String dataId, String group) {
         return getKey(dataId, group, "");
     }
@@ -34,12 +35,6 @@ public class GroupKey {
         return sb.toString();
     }
 
-    /**
-     * Parse key.
-     *
-     * @param groupKey group key
-     * @return parsed key
-     */
     public static String[] parseKey(String groupKey) {
         StringBuilder sb = new StringBuilder();
         String dataId = null;
@@ -88,9 +83,6 @@ public class GroupKey {
         return new String[]{dataId, group, tenant};
     }
 
-    /**
-     * + -> %2B % -> %25.
-     */
     public static void urlEncode(String str, StringBuilder sb) {
         for (int idx = 0; idx < str.length(); ++idx) {
             char c = str.charAt(idx);
@@ -103,4 +95,5 @@ public class GroupKey {
             }
         }
     }
+
 }

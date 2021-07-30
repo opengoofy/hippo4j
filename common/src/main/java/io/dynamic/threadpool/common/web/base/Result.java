@@ -32,4 +32,5 @@ public class Result<T> implements Serializable {
     public boolean isFail() {
         return !isSuccess();
     }
+
 }

@@ -89,4 +89,5 @@ public class PoolRunStateInfo implements Serializable {
      * Host
      */
     private String host;
+
 }
