@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 /**
  * 动态线程池自动装配类
@@ -38,12 +39,13 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ApplicationContextHolder simpleApplicationContextHolder() {
+    public ApplicationContextHolder applicationContextHolder() {
         return new ApplicationContextHolder();
     }
 
     @Bean
-    public ConfigService configService(ApplicationContextHolder holder) {
+    @DependsOn("applicationContextHolder")
+    public ConfigService configService() {
         return new ThreadPoolConfigService(properties);
     }
 
