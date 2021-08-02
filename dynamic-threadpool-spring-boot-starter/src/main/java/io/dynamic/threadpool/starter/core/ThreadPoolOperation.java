@@ -1,7 +1,6 @@
 package io.dynamic.threadpool.starter.core;
 
 import io.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.Executor;
 
@@ -13,13 +12,13 @@ import java.util.concurrent.Executor;
  */
 public class ThreadPoolOperation {
 
-    @Autowired
-    private ConfigService configService;
+    private final ConfigService configService;
 
     private final DynamicThreadPoolProperties properties;
 
-    public ThreadPoolOperation(DynamicThreadPoolProperties properties) {
+    public ThreadPoolOperation(DynamicThreadPoolProperties properties, ConfigService configService) {
         this.properties = properties;
+        this.configService = configService;
     }
 
     public Listener subscribeConfig(String tpId, Executor executor, ThreadPoolSubscribeCallback threadPoolSubscribeCallback) {

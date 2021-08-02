@@ -2,7 +2,10 @@ package io.dynamic.threadpool.starter.config;
 
 import io.dynamic.threadpool.common.config.ApplicationContextHolder;
 import io.dynamic.threadpool.starter.controller.PoolRunStateController;
-import io.dynamic.threadpool.starter.core.*;
+import io.dynamic.threadpool.starter.core.ConfigService;
+import io.dynamic.threadpool.starter.core.ThreadPoolBeanPostProcessor;
+import io.dynamic.threadpool.starter.core.ThreadPoolConfigService;
+import io.dynamic.threadpool.starter.core.ThreadPoolOperation;
 import io.dynamic.threadpool.starter.enable.DynamicThreadPoolMarkerConfiguration;
 import io.dynamic.threadpool.starter.handler.ThreadPoolBannerHandler;
 import lombok.AllArgsConstructor;
@@ -22,9 +25,9 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @AllArgsConstructor
+@ImportAutoConfiguration(OkHttpClientConfig.class)
 @EnableConfigurationProperties(DynamicThreadPoolProperties.class)
 @ConditionalOnBean(DynamicThreadPoolMarkerConfiguration.Marker.class)
-@ImportAutoConfiguration(OkHttpClientConfig.class)
 public class DynamicThreadPoolAutoConfiguration {
 
     private final DynamicThreadPoolProperties properties;
@@ -40,27 +43,23 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ConfigService configService() {
+    public ConfigService configService(ApplicationContextHolder holder) {
         return new ThreadPoolConfigService(properties);
     }
 
     @Bean
-    public ThreadPoolRunListener threadPoolRunListener() {
-        return new ThreadPoolRunListener(properties);
+    public ThreadPoolOperation threadPoolOperation(ConfigService configService) {
+        return new ThreadPoolOperation(properties, configService);
     }
 
     @Bean
-    public ThreadPoolConfigAdapter threadPoolConfigAdapter() {
-        return new ThreadPoolConfigAdapter();
-    }
-
-    @Bean
-    public ThreadPoolOperation threadPoolOperation() {
-        return new ThreadPoolOperation(properties);
+    public ThreadPoolBeanPostProcessor threadPoolBeanPostProcessor(ThreadPoolOperation threadPoolOperation) {
+        return new ThreadPoolBeanPostProcessor(properties, threadPoolOperation);
     }
 
     @Bean
     public PoolRunStateController poolRunStateController() {
         return new PoolRunStateController();
     }
+
 }
