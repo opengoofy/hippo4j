@@ -32,6 +32,7 @@ public class ThreadPoolDynamicRefresh {
     public static void refreshDynamicPool(String threadPoolId, Integer coreSize, Integer maxSize, Integer queueType, Integer capacity, Integer keepAliveTime, Integer rejectedType) {
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getPool();
         printLog("[🔥] Original thread pool. ",
+                threadPoolId,
                 executor.getCorePoolSize(),
                 executor.getMaximumPoolSize(),
                 queueType,
@@ -43,6 +44,7 @@ public class ThreadPoolDynamicRefresh {
         ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getPool();
 
         printLog("[🚀] Changed thread pool. ",
+                threadPoolId,
                 afterExecutor.getCorePoolSize(),
                 afterExecutor.getMaximumPoolSize(),
                 queueType,
@@ -51,8 +53,8 @@ public class ThreadPoolDynamicRefresh {
                 rejectedType);
     }
 
-    private static void printLog(String prefixMsg, Integer coreSize, Integer maxSize, Integer queueType, Integer capacity, Long keepAliveTime, Integer rejectedType) {
-        log.info("{} coreSize :: {}, maxSize :: {}, queueType :: {}, capacity :: {}, keepAliveTime :: {}, rejectedType:: {}", prefixMsg, coreSize, maxSize, queueType, capacity, keepAliveTime, rejectedType);
+    private static void printLog(String tpId, String prefixMsg, Integer coreSize, Integer maxSize, Integer queueType, Integer capacity, Long keepAliveTime, Integer rejectedType) {
+        log.info("{} :: {}, coreSize :: {}, maxSize :: {}, queueType :: {}, capacity :: {}, keepAliveTime :: {}, rejectedType:: {}", tpId, prefixMsg, coreSize, maxSize, queueType, capacity, keepAliveTime, rejectedType);
     }
 
     public static void changePoolInfo(ThreadPoolExecutor executor, Integer coreSize, Integer maxSize, Integer queueType, Integer capacity, Integer keepAliveTime, Integer rejectedType) {
