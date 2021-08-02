@@ -1,7 +1,7 @@
 package io.dynamic.threadpool.starter.toolkit.thread;
 
 import io.dynamic.threadpool.starter.spi.DynamicTpServiceLoader;
-import io.dynamic.threadpool.starter.spi.queue.CustomBlockingQueue;
+import io.dynamic.threadpool.starter.spi.CustomBlockingQueue;
 
 import java.util.Collection;
 import java.util.Objects;

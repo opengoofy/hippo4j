@@ -1,4 +1,4 @@
-package io.dynamic.threadpool.starter.spi.rejected;
+package io.dynamic.threadpool.starter.spi;
 
 import java.util.concurrent.RejectedExecutionHandler;
 

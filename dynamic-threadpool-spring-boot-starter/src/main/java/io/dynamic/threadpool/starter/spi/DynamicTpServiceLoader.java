@@ -1,7 +1,5 @@
 package io.dynamic.threadpool.starter.spi;
 
-import io.dynamic.threadpool.starter.spi.exception.ServiceLoaderInstantiationException;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
