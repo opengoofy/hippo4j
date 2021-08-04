@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  io.dynamic.threadpool.starter.config.DynamicThreadPoolAutoConfiguration
+  com.github.dynamic.threadpool.starter.config.DynamicThreadPoolAutoConfiguration

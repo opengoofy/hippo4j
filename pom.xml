@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.dynamic-threadpool</groupId>
+    <groupId>com.github.dynamic-threadpool</groupId>
     <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -12,12 +12,16 @@
     <url>https://github.com/longtai94/dynamic-thread-pool</url>
     <description>🔥 强大的动态线程池，附带监控线程池功能（没有依赖任何中间件）</description>
 
-    <developers>
-        <developer>
-            <name>chen.ma</name>
-            <url>https://github.com/longtai94</url>
-        </developer>
-    </developers>
+    <modules>
+        <module>alarm</module>
+        <module>common</module>
+        <module>console</module>
+        <module>server</module>
+        <module>config</module>
+        <module>registry</module>
+        <module>example</module>
+        <module>dynamic-threadpool-spring-boot-starter</module>
+    </modules>
 
     <properties>
         <java.version>1.8</java.version>
@@ -32,17 +36,6 @@
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
     </properties>
-
-    <modules>
-        <module>alarm</module>
-        <module>common</module>
-        <module>console</module>
-        <module>server</module>
-        <module>config</module>
-        <module>registry</module>
-        <module>example</module>
-        <module>dynamic-threadpool-spring-boot-starter</module>
-    </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -80,25 +73,25 @@
             </dependency>
 
             <dependency>
-                <groupId>io.dynamic-threadpool</groupId>
+                <groupId>com.github.dynamic-threadpool</groupId>
                 <artifactId>dynamic-threadpool-common</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.dynamic-threadpool</groupId>
+                <groupId>com.github.dynamic-threadpool</groupId>
                 <artifactId>dynamic-threadpool-config</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.dynamic-threadpool</groupId>
+                <groupId>com.github.dynamic-threadpool</groupId>
                 <artifactId>dynamic-threadpool-console</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.dynamic-threadpool</groupId>
+                <groupId>com.github.dynamic-threadpool</groupId>
                 <artifactId>dynamic-threadpool-registry</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -117,26 +110,12 @@
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>release_user</id>
-            <name>Release Deploy</name>
-            <url>http://localhost:8081/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshot_user</id>
-            <name>Snapshot Deploy</name>
-            <url>http://localhost:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <developers>
+        <developer>
+            <name>chen.ma</name>
+            <url>https://github.com/longtai94</url>
+        </developer>
+    </developers>
 
     <build>
         <plugins>
@@ -144,32 +123,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-            <!--<plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.1.0</version>
-                <configuration>
-                    <updatePomFile>true</updatePomFile>
-                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>flatten.clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

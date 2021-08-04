@@ -1,0 +1,19 @@
+package com.github.dynamic.threadpool.starter.core;
+
+/**
+ * ConfigAdapter.
+ *
+ * @author chen.ma
+ * @date 2021/6/22 21:29
+ */
+public class ConfigAdapter {
+
+    /**
+     * 回调修改线程池配置
+     *
+     * @param config
+     */
+    public void callbackConfig(String config) {
+        ThreadPoolDynamicRefresh.refreshDynamicPool(config);
+    }
+}
