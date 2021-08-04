@@ -31,30 +31,25 @@ public class ThreadPoolDynamicRefresh {
 
     public static void refreshDynamicPool(String threadPoolId, Integer coreSize, Integer maxSize, Integer queueType, Integer capacity, Integer keepAliveTime, Integer rejectedType) {
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getPool();
-        printLog("[🔥] Original thread pool. ",
-                threadPoolId,
-                executor.getCorePoolSize(),
-                executor.getMaximumPoolSize(),
-                queueType,
-                (executor.getQueue().remainingCapacity() + executor.getQueue().size()),
-                executor.getKeepAliveTime(TimeUnit.MILLISECONDS),
-                rejectedType);
+
+        int originalCoreSize = executor.getCorePoolSize();
+        int originalMaximumPoolSize = executor.getMaximumPoolSize();
+        int originalQueryType = queueType;
+        int originalCapacity = executor.getQueue().remainingCapacity() + executor.getQueue().size();
+        long originalKeepAliveTime = executor.getKeepAliveTime(TimeUnit.MILLISECONDS);
+        int originalRejectedType = rejectedType;
 
         changePoolInfo(executor, coreSize, maxSize, queueType, capacity, keepAliveTime, rejectedType);
         ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getPool();
 
-        printLog("[🚀] Changed thread pool. ",
-                threadPoolId,
-                afterExecutor.getCorePoolSize(),
-                afterExecutor.getMaximumPoolSize(),
-                queueType,
-                (afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size()),
-                afterExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS),
-                rejectedType);
-    }
-
-    private static void printLog(String tpId, String prefixMsg, Integer coreSize, Integer maxSize, Integer queueType, Integer capacity, Long keepAliveTime, Integer rejectedType) {
-        log.info("{} :: {}, coreSize :: {}, maxSize :: {}, queueType :: {}, capacity :: {}, keepAliveTime :: {}, rejectedType:: {}", tpId, prefixMsg, coreSize, maxSize, queueType, capacity, keepAliveTime, rejectedType);
+        log.info("[🔥 {}] Changed thread pool. coreSize :: [{}], maxSize :: [{}], queueType :: [{}], capacity :: [{}], keepAliveTime :: [{}], rejectedType :: [{}]",
+                threadPoolId.toUpperCase(),
+                String.format("%s=>%s", originalCoreSize, afterExecutor.getCorePoolSize()),
+                String.format("%s=>%s", originalMaximumPoolSize, afterExecutor.getMaximumPoolSize()),
+                String.format("%s=>%s", originalQueryType, queueType),
+                String.format("%s=>%s", originalCapacity, (afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size())),
+                String.format("%s=>%s", originalKeepAliveTime, afterExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS)),
+                String.format("%s=>%s", originalRejectedType, rejectedType));
     }
 
     public static void changePoolInfo(ThreadPoolExecutor executor, Integer coreSize, Integer maxSize, Integer queueType, Integer capacity, Integer keepAliveTime, Integer rejectedType) {
@@ -83,4 +78,5 @@ public class ThreadPoolDynamicRefresh {
             executor.setRejectedExecutionHandler(RejectedTypeEnum.createPolicy(queueType));
         }
     }
+
 }
