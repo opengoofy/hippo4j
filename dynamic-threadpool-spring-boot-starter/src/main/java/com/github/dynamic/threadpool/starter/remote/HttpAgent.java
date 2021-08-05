@@ -32,19 +32,16 @@ public interface HttpAgent {
     String getEncode();
 
     /**
-     * 发起 Http Get 请求
+     * 发起 Http Get 请求 By Discovery
      *
-     * @param path
-     * @param headers
-     * @param paramValues
-     * @param readTimeoutMs
+     * @param url
+     * @param body
      * @return
      */
-    Result httpGet(String path, Map<String, String> headers, Map<String, String> paramValues,
-                   long readTimeoutMs);
+    Result httpPostByDiscovery(String url, Object body);
 
     /**
-     * 发起 Http Post 请求
+     * 发起 Http Get 请求 By 动态配置
      *
      * @param path
      * @param headers
@@ -52,11 +49,11 @@ public interface HttpAgent {
      * @param readTimeoutMs
      * @return
      */
-    Result httpPost(String path, Map<String, String> headers, Map<String, String> paramValues,
-                    long readTimeoutMs);
+    Result httpGetByConfig(String path, Map<String, String> headers, Map<String, String> paramValues,
+                           long readTimeoutMs);
 
     /**
-     * 发起 Http Delete 请求
+     * 发起 Http Post 请求 By 动态配置
      *
      * @param path
      * @param headers
@@ -64,6 +61,18 @@ public interface HttpAgent {
      * @param readTimeoutMs
      * @return
      */
-    Result httpDelete(String path, Map<String, String> headers, Map<String, String> paramValues,
-                      long readTimeoutMs);
+    Result httpPostByConfig(String path, Map<String, String> headers, Map<String, String> paramValues,
+                            long readTimeoutMs);
+
+    /**
+     * 发起 Http Delete 请求 By 动态配置
+     *
+     * @param path
+     * @param headers
+     * @param paramValues
+     * @param readTimeoutMs
+     * @return
+     */
+    Result httpDeleteByConfig(String path, Map<String, String> headers, Map<String, String> paramValues,
+                              long readTimeoutMs);
 }

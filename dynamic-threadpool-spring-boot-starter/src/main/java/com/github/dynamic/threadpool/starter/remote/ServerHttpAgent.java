@@ -1,9 +1,8 @@
 package com.github.dynamic.threadpool.starter.remote;
 
-import com.github.dynamic.threadpool.starter.toolkit.HttpClientUtil;
-import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
-import com.github.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
 import com.github.dynamic.threadpool.common.web.base.Result;
+import com.github.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
+import com.github.dynamic.threadpool.starter.toolkit.HttpClientUtil;
 
 import java.util.Map;
 
@@ -19,31 +18,17 @@ public class ServerHttpAgent implements HttpAgent {
 
     private final ServerListManager serverListManager;
 
-    private HttpClientUtil httpClientUtil = ApplicationContextHolder.getBean(HttpClientUtil.class);
+    private final HttpClientUtil httpClientUtil;
 
-    public ServerHttpAgent(DynamicThreadPoolProperties properties) {
+    public ServerHttpAgent(DynamicThreadPoolProperties properties, HttpClientUtil httpClientUtil) {
         this.dynamicThreadPoolProperties = properties;
+        this.httpClientUtil = httpClientUtil;
         this.serverListManager = new ServerListManager(dynamicThreadPoolProperties);
     }
 
     @Override
     public void start() {
 
-    }
-
-    @Override
-    public Result httpGet(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
-        return httpClientUtil.restApiGetByThreadPool(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
-    }
-
-    @Override
-    public Result httpPost(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
-        return httpClientUtil.restApiPostByThreadPool(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
-    }
-
-    @Override
-    public Result httpDelete(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
-        return null;
     }
 
     @Override
@@ -56,7 +41,28 @@ public class ServerHttpAgent implements HttpAgent {
         return null;
     }
 
+    @Override
+    public Result httpPostByDiscovery(String url, Object body) {
+        return httpClientUtil.restApiPost(url, body, Result.class);
+    }
+
+    @Override
+    public Result httpGetByConfig(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
+        return httpClientUtil.restApiGetByThreadPool(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
+    }
+
+    @Override
+    public Result httpPostByConfig(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
+        return httpClientUtil.restApiPostByThreadPool(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
+    }
+
+    @Override
+    public Result httpDeleteByConfig(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
+        return null;
+    }
+
     private String buildUrl(String path) {
         return serverListManager.getCurrentServerAddr() + path;
     }
+
 }

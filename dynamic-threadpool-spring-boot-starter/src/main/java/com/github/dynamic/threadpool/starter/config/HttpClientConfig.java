@@ -1,5 +1,7 @@
 package com.github.dynamic.threadpool.starter.config;
 
+import com.github.dynamic.threadpool.starter.remote.HttpAgent;
+import com.github.dynamic.threadpool.starter.remote.ServerHttpAgent;
 import com.github.dynamic.threadpool.starter.toolkit.HttpClientUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +15,13 @@ import javax.net.ssl.X509TrustManager;
 import java.util.concurrent.TimeUnit;
 
 /**
- * OkHttp3 bean
+ * Http Client Config.
  *
  * @author chen.ma
  * @date 2021/6/10 13:28
  */
 @Slf4j
-public class OkHttpClientConfig {
+public class HttpClientConfig {
 
     /**
      * 配置 OkHttpClient Bean
@@ -39,6 +41,11 @@ public class OkHttpClientConfig {
     @Bean
     public HttpClientUtil httpClientUtil() {
         return new HttpClientUtil();
+    }
+
+    @Bean
+    public HttpAgent httpAgent(DynamicThreadPoolProperties properties, HttpClientUtil httpClientUtil) {
+        return new ServerHttpAgent(properties, httpClientUtil);
     }
 
     /**

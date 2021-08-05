@@ -1,8 +1,6 @@
 package com.github.dynamic.threadpool.starter.core;
 
-import com.github.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
 import com.github.dynamic.threadpool.starter.remote.HttpAgent;
-import com.github.dynamic.threadpool.starter.remote.ServerHttpAgent;
 
 import java.util.Arrays;
 
@@ -18,8 +16,8 @@ public class ThreadPoolConfigService implements ConfigService {
 
     private final ClientWorker clientWorker;
 
-    public ThreadPoolConfigService(DynamicThreadPoolProperties properties) {
-        httpAgent = new ServerHttpAgent(properties);
+    public ThreadPoolConfigService(HttpAgent httpAgent) {
+        this.httpAgent = httpAgent;
         clientWorker = new ClientWorker(httpAgent);
     }
 

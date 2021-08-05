@@ -7,7 +7,6 @@ import com.github.dynamic.threadpool.common.web.base.Result;
 import com.github.dynamic.threadpool.starter.common.CommonThreadPool;
 import com.github.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
 import com.github.dynamic.threadpool.starter.remote.HttpAgent;
-import com.github.dynamic.threadpool.starter.remote.ServerHttpAgent;
 import com.github.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
@@ -36,8 +35,12 @@ public final class ThreadPoolBeanPostProcessor implements BeanPostProcessor {
 
     private final ThreadPoolOperation threadPoolOperation;
 
-    public ThreadPoolBeanPostProcessor(DynamicThreadPoolProperties properties, ThreadPoolOperation threadPoolOperation) {
+    private final HttpAgent httpAgent;
+
+    public ThreadPoolBeanPostProcessor(DynamicThreadPoolProperties properties, HttpAgent httpAgent,
+                                       ThreadPoolOperation threadPoolOperation) {
         this.properties = properties;
+        this.httpAgent = httpAgent;
         this.threadPoolOperation = threadPoolOperation;
     }
 
@@ -78,12 +81,11 @@ public final class ThreadPoolBeanPostProcessor implements BeanPostProcessor {
         queryStrMap.put("namespace", properties.getNamespace());
 
         PoolParameterInfo ppi = new PoolParameterInfo();
-        HttpAgent httpAgent = new ServerHttpAgent(properties);
         ThreadPoolExecutor poolExecutor = null;
         Result result = null;
 
         try {
-            result = httpAgent.httpGet(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 3000L);
+            result = httpAgent.httpGetByConfig(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 3000L);
             if (result.isSuccess() && result.getData() != null && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
                 // 使用相关参数创建线程池
                 BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());

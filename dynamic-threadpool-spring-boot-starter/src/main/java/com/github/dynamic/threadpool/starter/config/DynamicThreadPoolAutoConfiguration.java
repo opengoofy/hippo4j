@@ -1,13 +1,14 @@
 package com.github.dynamic.threadpool.starter.config;
 
-import com.github.dynamic.threadpool.starter.core.ThreadPoolBeanPostProcessor;
-import com.github.dynamic.threadpool.starter.core.ThreadPoolOperation;
-import com.github.dynamic.threadpool.starter.enable.DynamicThreadPoolMarkerConfiguration;
 import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
 import com.github.dynamic.threadpool.starter.controller.PoolRunStateController;
 import com.github.dynamic.threadpool.starter.core.ConfigService;
+import com.github.dynamic.threadpool.starter.core.ThreadPoolBeanPostProcessor;
 import com.github.dynamic.threadpool.starter.core.ThreadPoolConfigService;
+import com.github.dynamic.threadpool.starter.core.ThreadPoolOperation;
+import com.github.dynamic.threadpool.starter.enable.DynamicThreadPoolMarkerConfiguration;
 import com.github.dynamic.threadpool.starter.handler.ThreadPoolBannerHandler;
+import com.github.dynamic.threadpool.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -15,7 +16,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 /**
  * 动态线程池自动装配类
@@ -26,7 +26,7 @@ import org.springframework.context.annotation.DependsOn;
 @Slf4j
 @Configuration
 @AllArgsConstructor
-@ImportAutoConfiguration(OkHttpClientConfig.class)
+@ImportAutoConfiguration(HttpClientConfig.class)
 @EnableConfigurationProperties(DynamicThreadPoolProperties.class)
 @ConditionalOnBean(DynamicThreadPoolMarkerConfiguration.Marker.class)
 public class DynamicThreadPoolAutoConfiguration {
@@ -44,9 +44,9 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    @DependsOn("applicationContextHolder")
-    public ConfigService configService() {
-        return new ThreadPoolConfigService(properties);
+    @SuppressWarnings("all")
+    public ConfigService configService(HttpAgent httpAgent) {
+        return new ThreadPoolConfigService(httpAgent);
     }
 
     @Bean
@@ -55,8 +55,9 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ThreadPoolBeanPostProcessor threadPoolBeanPostProcessor(ThreadPoolOperation threadPoolOperation) {
-        return new ThreadPoolBeanPostProcessor(properties, threadPoolOperation);
+    @SuppressWarnings("all")
+    public ThreadPoolBeanPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent, ThreadPoolOperation threadPoolOperation) {
+        return new ThreadPoolBeanPostProcessor(properties, httpAgent, threadPoolOperation);
     }
 
     @Bean
