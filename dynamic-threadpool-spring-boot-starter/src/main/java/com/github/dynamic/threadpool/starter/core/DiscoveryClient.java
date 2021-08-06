@@ -23,7 +23,7 @@ public class DiscoveryClient {
 
     private final HttpAgent httpAgent;
 
-    private final InstanceInfo instanceInfo;
+    private final InstanceConfig instanceConfig;
 
     private volatile long lastSuccessfulHeartbeatTimestamp = -1;
 
@@ -31,9 +31,9 @@ public class DiscoveryClient {
 
     private String appPathIdentifier;
 
-    public DiscoveryClient(HttpAgent httpAgent) {
+    public DiscoveryClient(HttpAgent httpAgent, InstanceConfig instanceConfig) {
         this.httpAgent = httpAgent;
-        this.instanceInfo = null;
+        this.instanceConfig = instanceConfig;
         heartbeatExecutor = ThreadPoolBuilder.builder()
                 .poolThreadSize(1, 5)
                 .keepAliveTime(0, TimeUnit.SECONDS)
@@ -54,26 +54,17 @@ public class DiscoveryClient {
         initScheduledTasks();
     }
 
-    /**
-     * 初始化所有计划任务
-     */
     private void initScheduledTasks() {
         scheduler.schedule(new HeartbeatThread(), 30, TimeUnit.SECONDS);
-
     }
 
-    /**
-     * 注册实例到服务端
-     *
-     * @return
-     */
     boolean register() {
         log.info("{}{} :: registering service...", PREFIX, appPathIdentifier);
         String urlPath = "/apps/" + appPathIdentifier;
 
         Result registerResult = null;
         try {
-            registerResult = httpAgent.httpPostByDiscovery(urlPath, instanceInfo);
+            registerResult = httpAgent.httpPostByDiscovery(urlPath, instanceConfig);
         } catch (Exception ex) {
             log.warn("{} {} - registration failed :: {}.", PREFIX, appPathIdentifier, ex.getMessage(), ex);
             throw ex;
@@ -86,10 +77,6 @@ public class DiscoveryClient {
         return registerResult.isSuccess();
     }
 
-
-    /**
-     * 与 Server 端保持心跳续约
-     */
     public class HeartbeatThread implements Runnable {
 
         @Override
@@ -98,13 +85,9 @@ public class DiscoveryClient {
                 lastSuccessfulHeartbeatTimestamp = System.currentTimeMillis();
             }
         }
+
     }
 
-    /**
-     * 心跳续约
-     *
-     * @return
-     */
     boolean renew() {
 
         return true;
