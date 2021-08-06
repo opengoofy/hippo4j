@@ -8,7 +8,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * 线程池包装
+ * Dynamic ThreadPool Wrap.
  *
  * @author chen.ma
  * @date 2021/6/20 16:55

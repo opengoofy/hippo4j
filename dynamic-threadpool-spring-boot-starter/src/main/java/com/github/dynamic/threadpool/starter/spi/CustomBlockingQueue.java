@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.starter.spi;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * 自定义阻塞队列
+ * Custom BlockingQueue.
  *
  * @author chen.ma
  * @date 2021/7/11 00:51
@@ -11,14 +11,14 @@ import java.util.concurrent.BlockingQueue;
 public interface CustomBlockingQueue {
 
     /**
-     * 获取类型
+     * Gets the custom blocking queue type.
      *
      * @return
      */
     Integer getType();
 
     /**
-     * 生成阻塞队列
+     * Get custom blocking queue.
      *
      * @return
      */

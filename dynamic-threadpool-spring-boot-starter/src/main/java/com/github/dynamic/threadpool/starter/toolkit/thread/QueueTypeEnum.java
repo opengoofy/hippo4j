@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.concurrent.*;
 
 /**
- * 队列类型枚举
+ * Queue Type Enum.
  *
  * @author chen.ma
  * @date 2021/6/25 12:30
@@ -89,4 +89,5 @@ public enum QueueTypeEnum {
 
         return blockingQueue;
     }
+
 }

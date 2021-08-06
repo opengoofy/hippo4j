@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.starter.remote.HttpAgent;
 import java.util.Arrays;
 
 /**
- * 线程池配置服务
+ * ThreadPool Config Service.
  *
  * @author chen.ma
  * @date 2021/6/21 21:50
@@ -34,4 +34,5 @@ public class ThreadPoolConfigService implements ConfigService {
             return "DOWN";
         }
     }
+
 }

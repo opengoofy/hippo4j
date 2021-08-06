@@ -6,7 +6,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 
 /**
- * 线程池拒绝策略
+ * Rejected Policies.
  *
  * @author chen.ma
  * @date 2021/7/5 21:23
@@ -53,4 +53,5 @@ public class RejectedPolicies {
             }
         };
     }
+
 }

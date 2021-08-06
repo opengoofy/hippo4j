@@ -5,9 +5,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 快速执行任务而阻塞队列, 参考 Dubbo 重写队列 TaskQueue
- * <p>
- * 配合 {@link FastThreadPoolExecutor} 使用
+ * Task Queue.
  *
  * @author chen.ma
  * @date 2021/7/5 21:00
@@ -45,7 +43,7 @@ public class TaskQueue<R extends Runnable> extends LinkedBlockingQueue<Runnable>
 
     public boolean retryOffer(Runnable o, long timeout, TimeUnit unit) throws InterruptedException {
         if (executor.isShutdown()) {
-            throw new RejectedExecutionException("执行器已关闭!");
+            throw new RejectedExecutionException("Actuator closed!");
         }
         return super.offer(o, timeout, unit);
     }

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 线程池全局管理
+ * Global ThreadPool Manage.
  *
  * @author chen.ma
  * @date 2021/6/20 15:57
@@ -38,4 +38,5 @@ public class GlobalThreadPoolManage {
     public static void registerPoolParameter(String tpId, PoolParameter poolParameter) {
         POOL_PARAMETER.put(tpId, poolParameter);
     }
+
 }

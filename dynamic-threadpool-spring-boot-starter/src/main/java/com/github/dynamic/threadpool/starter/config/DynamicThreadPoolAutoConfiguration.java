@@ -3,14 +3,13 @@ package com.github.dynamic.threadpool.starter.config;
 import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
 import com.github.dynamic.threadpool.starter.controller.PoolRunStateController;
 import com.github.dynamic.threadpool.starter.core.ConfigService;
-import com.github.dynamic.threadpool.starter.core.ThreadPoolBeanPostProcessor;
+import com.github.dynamic.threadpool.starter.core.DynamicThreadPoolPostProcessor;
 import com.github.dynamic.threadpool.starter.core.ThreadPoolConfigService;
 import com.github.dynamic.threadpool.starter.core.ThreadPoolOperation;
-import com.github.dynamic.threadpool.starter.enable.DynamicThreadPoolMarkerConfiguration;
-import com.github.dynamic.threadpool.starter.handler.ThreadPoolBannerHandler;
+import com.github.dynamic.threadpool.starter.enable.MarkerConfiguration;
+import com.github.dynamic.threadpool.starter.handler.DynamicThreadPoolBannerHandler;
 import com.github.dynamic.threadpool.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,24 +17,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 动态线程池自动装配类
+ * DynamicTp Auto Configuration.
  *
  * @author chen.ma
  * @date 2021/6/22 09:20
  */
-@Slf4j
 @Configuration
 @AllArgsConstructor
-@ImportAutoConfiguration(HttpClientConfig.class)
-@EnableConfigurationProperties(DynamicThreadPoolProperties.class)
-@ConditionalOnBean(DynamicThreadPoolMarkerConfiguration.Marker.class)
+@EnableConfigurationProperties(BootstrapProperties.class)
+@ConditionalOnBean(MarkerConfiguration.Marker.class)
+@ImportAutoConfiguration({HttpClientConfig.class, DiscoveryConfig.class})
 public class DynamicThreadPoolAutoConfiguration {
 
-    private final DynamicThreadPoolProperties properties;
+    private final BootstrapProperties properties;
 
     @Bean
-    public ThreadPoolBannerHandler threadPoolBannerHandler() {
-        return new ThreadPoolBannerHandler(properties);
+    public DynamicThreadPoolBannerHandler threadPoolBannerHandler() {
+        return new DynamicThreadPoolBannerHandler(properties);
     }
 
     @Bean
@@ -56,8 +54,8 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public ThreadPoolBeanPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent, ThreadPoolOperation threadPoolOperation) {
-        return new ThreadPoolBeanPostProcessor(properties, httpAgent, threadPoolOperation);
+    public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent, ThreadPoolOperation threadPoolOperation) {
+        return new DynamicThreadPoolPostProcessor(properties, httpAgent, threadPoolOperation);
     }
 
     @Bean
@@ -66,3 +64,5 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
 }
+
+

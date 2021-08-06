@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Stream;
 
 /**
- * 拒绝策略类型枚举
+ * Reject policy type Enum.
  *
  * @author chen.ma
  * @date 2021/7/10 23:16

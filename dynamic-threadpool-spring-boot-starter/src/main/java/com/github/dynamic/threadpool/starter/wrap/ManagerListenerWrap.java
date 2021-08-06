@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 监听包装
+ * Manager Listener Wrap.
  *
  * @author chen.ma
  * @date 2021/6/22 17:47
@@ -14,12 +14,13 @@ import lombok.Setter;
 @Setter
 public class ManagerListenerWrap {
 
-    final Listener listener;
+    private String lastCallMd5;
 
-    String lastCallMd5;
+    final Listener listener;
 
     public ManagerListenerWrap(String md5, Listener listener) {
         this.lastCallMd5 = md5;
         this.listener = listener;
     }
+
 }

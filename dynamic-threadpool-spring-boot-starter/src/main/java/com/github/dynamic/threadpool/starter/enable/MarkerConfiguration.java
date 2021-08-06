@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021/7/8 23:30
  */
 @Configuration(proxyBeanMethods = false)
-public class DynamicThreadPoolMarkerConfiguration {
+public class MarkerConfiguration {
 
     @Bean
     public Marker dynamicThreadPoolMarkerBean() {
@@ -20,4 +20,5 @@ public class DynamicThreadPoolMarkerConfiguration {
     public class Marker {
 
     }
+
 }

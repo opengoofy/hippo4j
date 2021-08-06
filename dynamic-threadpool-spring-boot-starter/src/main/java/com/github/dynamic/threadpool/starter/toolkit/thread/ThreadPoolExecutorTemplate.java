@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.starter.toolkit.ArrayUtil;
 import java.util.concurrent.*;
 
 /**
- * 线程池创建模版
+ * ThreadPool Executor Template.
  *
  * @author chen.ma
  * @date 2021/7/5 21:59
@@ -62,4 +62,5 @@ public class ThreadPoolExecutorTemplate extends ThreadPoolExecutor {
             }
         };
     }
+
 }

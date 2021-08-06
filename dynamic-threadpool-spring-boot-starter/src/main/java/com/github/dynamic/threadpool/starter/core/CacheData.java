@@ -91,4 +91,5 @@ public class CacheData {
     public void setTaskId(Integer taskId) {
         this.taskId = taskId;
     }
+
 }

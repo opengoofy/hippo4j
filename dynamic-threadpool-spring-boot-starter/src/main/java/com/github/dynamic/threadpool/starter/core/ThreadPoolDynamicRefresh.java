@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 线程池动态刷新
+ * ThreadPool Dynamic Refresh.
  *
  * @author chen.ma
  * @date 2021/6/20 15:51

@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.starter.remote;
 
 import com.github.dynamic.threadpool.common.web.base.Result;
-import com.github.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
+import com.github.dynamic.threadpool.starter.config.BootstrapProperties;
 import com.github.dynamic.threadpool.starter.toolkit.HttpClientUtil;
 
 import java.util.Map;
@@ -14,13 +14,13 @@ import java.util.Map;
  */
 public class ServerHttpAgent implements HttpAgent {
 
-    private final DynamicThreadPoolProperties dynamicThreadPoolProperties;
+    private final BootstrapProperties dynamicThreadPoolProperties;
 
     private final ServerListManager serverListManager;
 
     private final HttpClientUtil httpClientUtil;
 
-    public ServerHttpAgent(DynamicThreadPoolProperties properties, HttpClientUtil httpClientUtil) {
+    public ServerHttpAgent(BootstrapProperties properties, HttpClientUtil httpClientUtil) {
         this.dynamicThreadPoolProperties = properties;
         this.httpClientUtil = httpClientUtil;
         this.serverListManager = new ServerListManager(dynamicThreadPoolProperties);

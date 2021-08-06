@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.starter.core;
 
 /**
- * 配置服务
+ * Config Service.
  *
  * @author chen.ma
  * @date 2021/6/21 21:49
@@ -24,4 +24,5 @@ public interface ConfigService {
      * @return
      */
     String getServerStatus();
+
 }

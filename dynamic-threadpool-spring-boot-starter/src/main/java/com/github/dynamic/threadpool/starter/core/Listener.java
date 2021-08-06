@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.starter.core;
 import java.util.concurrent.Executor;
 
 /**
- * 监听器
+ * Listener.
  *
  * @author chen.ma
  * @date 2021/6/22 20:20
@@ -23,4 +23,5 @@ public interface Listener {
      * @param configInfo
      */
     void receiveConfigInfo(String configInfo);
+
 }

@@ -4,7 +4,6 @@ import com.github.dynamic.threadpool.starter.remote.HttpAgent;
 import com.github.dynamic.threadpool.starter.remote.ServerHttpAgent;
 import com.github.dynamic.threadpool.starter.toolkit.HttpClientUtil;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 
@@ -20,14 +19,8 @@ import java.util.concurrent.TimeUnit;
  * @author chen.ma
  * @date 2021/6/10 13:28
  */
-@Slf4j
 public class HttpClientConfig {
 
-    /**
-     * 配置 OkHttpClient Bean
-     *
-     * @return
-     */
     @Bean
     public OkHttpClient okHttpClient() {
         OkHttpClient.Builder build = new OkHttpClient.Builder();
@@ -44,15 +37,10 @@ public class HttpClientConfig {
     }
 
     @Bean
-    public HttpAgent httpAgent(DynamicThreadPoolProperties properties, HttpClientUtil httpClientUtil) {
+    public HttpAgent httpAgent(BootstrapProperties properties, HttpClientUtil httpClientUtil) {
         return new ServerHttpAgent(properties, httpClientUtil);
     }
 
-    /**
-     * 支持 Https
-     *
-     * @param builder
-     */
     @SneakyThrows
     private void supportHttps(OkHttpClient.Builder builder) {
         final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {

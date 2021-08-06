@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.common.constant.Constants;
 import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
 import com.github.dynamic.threadpool.common.web.base.Result;
 import com.github.dynamic.threadpool.starter.common.CommonThreadPool;
-import com.github.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
+import com.github.dynamic.threadpool.starter.config.BootstrapProperties;
 import com.github.dynamic.threadpool.starter.remote.HttpAgent;
 import com.github.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
@@ -23,22 +23,22 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 线程池包装后置处理器
+ * Dynamic ThreadPool Post Processor.
  *
  * @author chen.ma
  * @date 2021/8/2 20:40
  */
 @Slf4j
-public final class ThreadPoolBeanPostProcessor implements BeanPostProcessor {
+public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
-    private final DynamicThreadPoolProperties properties;
+    private final BootstrapProperties properties;
 
     private final ThreadPoolOperation threadPoolOperation;
 
     private final HttpAgent httpAgent;
 
-    public ThreadPoolBeanPostProcessor(DynamicThreadPoolProperties properties, HttpAgent httpAgent,
-                                       ThreadPoolOperation threadPoolOperation) {
+    public DynamicThreadPoolPostProcessor(BootstrapProperties properties, HttpAgent httpAgent,
+                                          ThreadPoolOperation threadPoolOperation) {
         this.properties = properties;
         this.httpAgent = httpAgent;
         this.threadPoolOperation = threadPoolOperation;

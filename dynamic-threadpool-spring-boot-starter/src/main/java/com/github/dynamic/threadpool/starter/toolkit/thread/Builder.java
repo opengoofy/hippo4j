@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.starter.toolkit.thread;
 import java.io.Serializable;
 
 /**
- * 建造者模式接口定义
+ * Builder pattern interface definition.
  *
  * @author chen.ma
  * @date 2021/7/5 21:39

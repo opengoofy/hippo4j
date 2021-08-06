@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.starter.core;
 
 /**
- * ThreadPoolSubscribeCallback.
+ * ThreadPool Subscribe Callback.
  *
  * @author chen.ma
  * @date 2021/6/22 20:26
@@ -14,4 +14,5 @@ public interface ThreadPoolSubscribeCallback {
      * @param config
      */
     void callback(String config);
+
 }

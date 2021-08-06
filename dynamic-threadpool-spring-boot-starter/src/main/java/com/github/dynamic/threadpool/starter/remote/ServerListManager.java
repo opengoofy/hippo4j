@@ -1,6 +1,6 @@
 package com.github.dynamic.threadpool.starter.remote;
 
-import com.github.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
+import com.github.dynamic.threadpool.starter.config.BootstrapProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -27,9 +27,9 @@ public class ServerListManager {
 
     private Iterator<String> iterator;
 
-    private final DynamicThreadPoolProperties properties;
+    private final BootstrapProperties properties;
 
-    public ServerListManager(DynamicThreadPoolProperties dynamicThreadPoolProperties) {
+    public ServerListManager(BootstrapProperties dynamicThreadPoolProperties) {
         this.properties = dynamicThreadPoolProperties;
         serverAddrsStr = properties.getServerAddr();
 
@@ -121,6 +121,5 @@ public class ServerListManager {
             }
         }
     }
-
 
 }

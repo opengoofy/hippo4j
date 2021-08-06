@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.concurrent.*;
 
 /**
- * 线程池构造器
+ * ThreadPool Builder.
  *
  * @author chen.ma
  * @date 2021/6/28 17:29
@@ -243,4 +243,5 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
         return initParam;
     }
+
 }

@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 动态线程池配置
+ * Bootstrap Properties.
  *
  * @author chen.ma
  * @date 2021/6/22 09:14
@@ -14,28 +14,29 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Slf4j
 @Getter
 @Setter
-@ConfigurationProperties(prefix = DynamicThreadPoolProperties.PREFIX)
-public class DynamicThreadPoolProperties {
+@ConfigurationProperties(prefix = BootstrapProperties.PREFIX)
+public class BootstrapProperties {
 
     public static final String PREFIX = "spring.dynamic.thread-pool";
 
     /**
-     * 服务地址
+     * serverAddr
      */
     private String serverAddr;
 
     /**
-     * 租户 ID
+     * namespace
      */
     private String namespace;
 
     /**
-     * 项目 ID
+     * itemId
      */
     private String itemId;
 
     /**
-     * 是否开启 banner
+     * Enable banner
      */
     private boolean banner = true;
+
 }

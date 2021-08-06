@@ -9,7 +9,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
 /**
- * 抽象线程池模版构建
+ * Abstract Build ThreadPool Template.
  *
  * @author chen.ma
  * @date 2021/7/5 21:45
@@ -157,4 +157,5 @@ public class AbstractBuildThreadPoolTemplate {
                     .build();
         }
     }
+
 }

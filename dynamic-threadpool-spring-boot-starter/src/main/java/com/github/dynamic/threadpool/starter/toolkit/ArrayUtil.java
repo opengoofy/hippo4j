@@ -38,4 +38,5 @@ public class ArrayUtil {
         }
         return array.clone();
     }
+
 }

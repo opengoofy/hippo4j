@@ -25,7 +25,7 @@ import static com.github.dynamic.threadpool.common.constant.Constants.LINE_SEPAR
 import static com.github.dynamic.threadpool.common.constant.Constants.WORD_SEPARATOR;
 
 /**
- * 客户端监听
+ * Client Worker.
  *
  * @author chen.ma
  * @date 2021/6/20 18:34
@@ -76,9 +76,6 @@ public class ClientWorker {
         }, 1L, 10L, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * 检查配置信息
-     */
     public void checkConfigInfo() {
         int listenerSize = cacheMap.size();
         double perTaskConfigSize = 3000D;
@@ -92,9 +89,6 @@ public class ClientWorker {
         }
     }
 
-    /**
-     * 长轮训任务
-     */
     class LongPollingRunnable implements Runnable {
 
         @SneakyThrows
@@ -151,12 +145,6 @@ public class ClientWorker {
         }
     }
 
-    /**
-     * 转换入参
-     *
-     * @param cacheDataList
-     * @return
-     */
     private List<String> checkUpdateDataIds(List<CacheData> cacheDataList) {
         StringBuilder sb = new StringBuilder();
         for (CacheData cacheData : cacheDataList) {
@@ -169,12 +157,6 @@ public class ClientWorker {
         return checkUpdateTpIds(sb.toString());
     }
 
-    /**
-     * 检查修改的线程池 ID
-     *
-     * @param probeUpdateString
-     * @return
-     */
     public List<String> checkUpdateTpIds(String probeUpdateString) {
         Map<String, String> params = new HashMap(2);
         params.put(Constants.PROBE_MODIFY_REQUEST, probeUpdateString);
@@ -204,15 +186,6 @@ public class ClientWorker {
         return Collections.emptyList();
     }
 
-    /**
-     * 获取服务端配置
-     *
-     * @param namespace
-     * @param itemId
-     * @param tpId
-     * @param readTimeout
-     * @return
-     */
     public String getServerConfig(String namespace, String itemId, String tpId, long readTimeout) {
         Map<String, String> params = new HashMap(3);
         params.put("namespace", namespace);
@@ -229,12 +202,6 @@ public class ClientWorker {
         return Constants.NULL;
     }
 
-    /**
-     * Http 响应中获取变更的配置项
-     *
-     * @param response
-     * @return
-     */
     public List<String> parseUpdateDataIdResponse(String response) {
         if (StringUtils.isEmpty(response)) {
             return Collections.emptyList();
@@ -268,14 +235,6 @@ public class ClientWorker {
         return updateList;
     }
 
-    /**
-     * CacheData 添加 Listener
-     *
-     * @param namespace
-     * @param itemId
-     * @param tpId
-     * @param listeners
-     */
     public void addTenantListeners(String namespace, String itemId, String tpId, List<? extends Listener> listeners) {
         CacheData cacheData = addCacheDataIfAbsent(namespace, itemId, tpId);
         for (Listener listener : listeners) {
@@ -283,14 +242,6 @@ public class ClientWorker {
         }
     }
 
-    /**
-     * CacheData 不存在则添加
-     *
-     * @param namespace
-     * @param itemId
-     * @param tpId
-     * @return
-     */
     public CacheData addCacheDataIfAbsent(String namespace, String itemId, String tpId) {
         CacheData cacheData = cacheMap.get(tpId);
         if (cacheData != null) {
@@ -325,4 +276,5 @@ public class ClientWorker {
     private void setHealthServer(boolean isHealthServer) {
         this.isHealthServer = isHealthServer;
     }
+
 }

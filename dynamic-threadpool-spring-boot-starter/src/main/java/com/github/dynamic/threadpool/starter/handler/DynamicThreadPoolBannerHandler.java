@@ -1,6 +1,6 @@
 package com.github.dynamic.threadpool.starter.handler;
 
-import com.github.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
+import com.github.dynamic.threadpool.starter.config.BootstrapProperties;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +17,10 @@ import org.springframework.boot.ansi.AnsiStyle;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class ThreadPoolBannerHandler implements InitializingBean {
+public class DynamicThreadPoolBannerHandler implements InitializingBean {
 
     @NonNull
-    private final DynamicThreadPoolProperties properties;
+    private final BootstrapProperties properties;
 
     private final String DYNAMIC_THREAD_POOL = " :: Dynamic ThreadPool :: ";
 
@@ -53,7 +53,7 @@ public class ThreadPoolBannerHandler implements InitializingBean {
     }
 
     public static String getVersion() {
-        final Package pkg = ThreadPoolBannerHandler.class.getPackage();
+        final Package pkg = DynamicThreadPoolBannerHandler.class.getPackage();
         return pkg != null ? pkg.getImplementationVersion() : "";
     }
 

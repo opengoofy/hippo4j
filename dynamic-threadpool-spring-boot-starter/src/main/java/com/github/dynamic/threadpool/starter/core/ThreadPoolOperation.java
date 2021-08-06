@@ -1,11 +1,11 @@
 package com.github.dynamic.threadpool.starter.core;
 
-import com.github.dynamic.threadpool.starter.config.DynamicThreadPoolProperties;
+import com.github.dynamic.threadpool.starter.config.BootstrapProperties;
 
 import java.util.concurrent.Executor;
 
 /**
- * ThreadPoolOperation.
+ * ThreadPool Operation.
  *
  * @author chen.ma
  * @date 2021/6/22 20:25
@@ -14,9 +14,9 @@ public class ThreadPoolOperation {
 
     private final ConfigService configService;
 
-    private final DynamicThreadPoolProperties properties;
+    private final BootstrapProperties properties;
 
-    public ThreadPoolOperation(DynamicThreadPoolProperties properties, ConfigService configService) {
+    public ThreadPoolOperation(BootstrapProperties properties, ConfigService configService) {
         this.properties = properties;
         this.configService = configService;
     }
@@ -38,4 +38,5 @@ public class ThreadPoolOperation {
 
         return configListener;
     }
+
 }

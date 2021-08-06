@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 公共线程池生产者
+ * Common ThreadPool.
  *
  * @author chen.ma
  * @date 2021/6/16 22:35

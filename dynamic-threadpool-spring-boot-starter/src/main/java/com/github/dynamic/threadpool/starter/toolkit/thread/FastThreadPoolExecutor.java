@@ -9,9 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 快速执行任务线程池, 参考 Dubbo 线程模型 EagerThreadPoolExecutor
- * <p>
- * 配合 {@link TaskQueue}
+ * Fast ThreadPool Executor.
  *
  * @author chen.ma
  * @date 2021/7/5 21:00
