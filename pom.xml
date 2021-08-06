@@ -13,13 +13,13 @@
     <description>🔥 强大的动态线程池，附带监控线程池功能（没有依赖任何中间件）</description>
 
     <modules>
-        <module>alarm</module>
-        <module>common</module>
-        <module>console</module>
-        <module>server</module>
-        <module>config</module>
-        <module>registry</module>
-        <module>example</module>
+        <module>dynamic-threadpool-alarm</module>
+        <module>dynamic-threadpool-common</module>
+        <module>dynamic-threadpool-console</module>
+        <module>dynamic-threadpool-server</module>
+        <module>dynamic-threadpool-config</module>
+        <module>dynamic-threadpool-registry</module>
+        <module>dynamic-threadpool-example</module>
         <module>dynamic-threadpool-spring-boot-starter</module>
     </modules>
 
