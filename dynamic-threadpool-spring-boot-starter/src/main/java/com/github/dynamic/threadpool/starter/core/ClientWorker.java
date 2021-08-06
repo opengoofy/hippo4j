@@ -187,7 +187,7 @@ public class ClientWorker {
 
         try {
             long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
-            Result result = agent.httpPost(Constants.LISTENER_PATH, headers, params, readTimeoutMs);
+            Result result = agent.httpPostByConfig(Constants.LISTENER_PATH, headers, params, readTimeoutMs);
             /**
              * 考虑是否加入错误日志
              * log.warn("[check-update] get changed dataId error, code: {}", result == null ? "error" : result.getCode());
@@ -219,7 +219,7 @@ public class ClientWorker {
         params.put("itemId", itemId);
         params.put("tpId", tpId);
 
-        Result result = agent.httpGet(Constants.CONFIG_CONTROLLER_PATH, null, params, readTimeout);
+        Result result = agent.httpGetByConfig(Constants.CONFIG_CONTROLLER_PATH, null, params, readTimeout);
         if (result.isSuccess()) {
             return result.getData().toString();
         }
