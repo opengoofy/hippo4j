@@ -32,7 +32,7 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
     }
 
     private void printBanner() {
-        String banner = "\n___                       _      _____ ___ \n" +
+        String banner = "___                       _      _____ ___ \n" +
                 "|   \\ _  _ _ _  __ _ _ __ (_)__  |_   _| _ \\\n" +
                 "| |) | || | ' \\/ _` | '  \\| / _|   | | |  _/\n" +
                 "|___/ \\_, |_||_\\__,_|_|_|_|_\\__|   |_| |_|  \n" +
