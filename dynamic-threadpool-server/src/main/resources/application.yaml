@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://47.94.158.71:3306/dynamic-threadpool?characterEncoding=UTF-8
     username: root
     password: root
