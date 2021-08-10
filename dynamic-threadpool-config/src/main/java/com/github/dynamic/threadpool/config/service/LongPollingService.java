@@ -35,7 +35,11 @@ public class LongPollingService {
 
     private static final int FIXED_POLLING_INTERVAL_MS = 10000;
 
+    private static final String TRUE_STR = "true";
+
     public static final String LONG_POLLING_HEADER = "Long-Pulling-Timeout";
+
+    public static final String LONG_POLLING_NO_HANG_UP_HEADER = "Long-Pulling-Timeout-No-Hangup";
 
     public static final String CLIENT_APPNAME_HEADER = "Client-AppName";
 
@@ -122,15 +126,22 @@ public class LongPollingService {
                                      int probeRequestSize) {
         String str = req.getHeader(LONG_POLLING_HEADER);
         String appName = req.getHeader(CLIENT_APPNAME_HEADER);
+        String noHangUpFlag = req.getHeader(LongPollingService.LONG_POLLING_NO_HANG_UP_HEADER);
         int delayTime = SwitchService.getSwitchInteger(SwitchService.FIXED_DELAY_TIME, 500);
 
         long timeout = Math.max(10000, Long.parseLong(str) - delayTime);
         if (isFixedPolling()) {
             timeout = Math.max(10000, getFixedPollingInterval());
         } else {
+            long start = System.currentTimeMillis();
             List<String> changedGroups = Md5ConfigUtil.compareMd5(req, clientMd5Map);
             if (changedGroups.size() > 0) {
                 generateResponse(rsp, changedGroups);
+                return;
+            } else if (noHangUpFlag != null && noHangUpFlag.equalsIgnoreCase(TRUE_STR)) {
+                log.info("{}|{}|{}|{}|{}|{}|{}", System.currentTimeMillis() - start, "nohangup",
+                        RequestUtil.getRemoteIp(req), "polling", clientMd5Map.size(), probeRequestSize,
+                        changedGroups.size());
                 return;
             }
         }

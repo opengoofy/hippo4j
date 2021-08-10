@@ -29,6 +29,8 @@ public class CacheData {
 
     private int taskId;
 
+    private volatile boolean isInitializing = true;
+
     private volatile long localConfigLastModified;
 
     private final CopyOnWriteArrayList<ManagerListenerWrap> listeners;
@@ -90,6 +92,14 @@ public class CacheData {
 
     public void setTaskId(Integer taskId) {
         this.taskId = taskId;
+    }
+
+    public boolean isInitializing() {
+        return isInitializing;
+    }
+
+    public void setInitializing(boolean isInitializing) {
+        this.isInitializing = isInitializing;
     }
 
 }
