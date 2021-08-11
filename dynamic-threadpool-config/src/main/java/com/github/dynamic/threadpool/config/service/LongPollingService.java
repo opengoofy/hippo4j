@@ -133,15 +133,12 @@ public class LongPollingService {
         if (isFixedPolling()) {
             timeout = Math.max(10000, getFixedPollingInterval());
         } else {
-            long start = System.currentTimeMillis();
             List<String> changedGroups = Md5ConfigUtil.compareMd5(req, clientMd5Map);
             if (changedGroups.size() > 0) {
                 generateResponse(rsp, changedGroups);
                 return;
             } else if (noHangUpFlag != null && noHangUpFlag.equalsIgnoreCase(TRUE_STR)) {
-                log.info("{}|{}|{}|{}|{}|{}|{}", System.currentTimeMillis() - start, "nohangup",
-                        RequestUtil.getRemoteIp(req), "polling", clientMd5Map.size(), probeRequestSize,
-                        changedGroups.size());
+                log.info("New initializing cacheData added in.");
                 return;
             }
         }

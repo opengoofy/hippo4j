@@ -53,7 +53,7 @@ public class CacheData {
         ManagerListenerWrap managerListenerWrap = new ManagerListenerWrap(md5, listener);
 
         if (listeners.addIfAbsent(managerListenerWrap)) {
-            log.info("[add-listener] ok, tpId :: {}, cnt :: {}", tpId, listeners.size());
+            log.info("Add listener status :: ok, tpId :: {}, cnt :: {}", tpId, listeners.size());
         }
     }
 
