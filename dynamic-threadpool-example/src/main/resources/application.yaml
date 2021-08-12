@@ -1,4 +1,9 @@
+server:
+  port: 8088
+
 spring:
+  application:
+    name: dynamic-threadpool-example
   dynamic:
     thread-pool:
       server-addr: http://localhost:6691
