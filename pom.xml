@@ -28,6 +28,7 @@
         <revision>1.0.0-SNAPSHOT</revision>
 
         <dozer.version>6.5.0</dozer.version>
+        <guava.version>29.0-jre</guava.version>
         <okhttp3.version>3.8.1</okhttp3.version>
         <hutool-core.version>5.4.7</hutool-core.version>
         <fastjson.version>1.2.75</fastjson.version>
@@ -106,6 +107,12 @@
                 <groupId>com.github.dozermapper</groupId>
                 <artifactId>dozer-core</artifactId>
                 <version>${dozer.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
