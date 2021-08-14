@@ -1,6 +1,6 @@
 package com.github.dynamic.threadpool.common.web.base;
 
-import com.github.dynamic.threadpool.common.web.exception.ErrorCode;
+import com.github.dynamic.threadpool.common.web.exception.ErrorCodeEnum;
 import com.github.dynamic.threadpool.common.web.exception.ServiceException;
 
 /**
@@ -23,7 +23,7 @@ public final class Results {
     }
 
     public static <T> Result<T> failure(ServiceException serviceException) {
-        return new Result<T>().setCode(ErrorCode.SERVICE_ERROR.getCode())
+        return new Result<T>().setCode(ErrorCodeEnum.SERVICE_ERROR.getCode())
                 .setMessage(serviceException.getMessage());
     }
 
@@ -31,6 +31,12 @@ public final class Results {
         return new Result<T>()
                 .setCode(code)
                 .setMessage(message);
+    }
+
+    public static <T> Result<T> failure(ErrorCodeEnum errorCode) {
+        return new Result<T>()
+                .setCode(errorCode.getCode())
+                .setMessage(errorCode.getMessage());
     }
 
 }

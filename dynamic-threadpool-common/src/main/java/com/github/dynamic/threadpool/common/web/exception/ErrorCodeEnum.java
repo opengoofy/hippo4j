@@ -6,7 +6,7 @@ package com.github.dynamic.threadpool.common.web.exception;
  * @author chen.ma
  * @date 2021/3/19 16:07
  */
-public enum ErrorCode {
+public enum ErrorCodeEnum {
 
     UNKNOWN_ERROR {
         @Override
@@ -41,6 +41,18 @@ public enum ErrorCode {
         @Override
         public String getMessage() {
             return "服务异常";
+        }
+    },
+
+    NOT_FOUND {
+        @Override
+        public String getCode() {
+            return "404";
+        }
+
+        @Override
+        public String getMessage() {
+            return "未找到异常";
         }
     };
 
