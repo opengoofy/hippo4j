@@ -42,8 +42,8 @@ public class ServerHttpAgent implements HttpAgent {
     }
 
     @Override
-    public Result httpPostByDiscovery(String url, Object body) {
-        return httpClientUtil.restApiPost(url, body, Result.class);
+    public Result httpPostByDiscovery(String path, Object body) {
+        return httpClientUtil.restApiPost(buildUrl(path), body, Result.class);
     }
 
     @Override

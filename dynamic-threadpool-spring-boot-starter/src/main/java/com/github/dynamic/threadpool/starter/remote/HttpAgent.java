@@ -32,13 +32,13 @@ public interface HttpAgent {
     String getEncode();
 
     /**
-     * 发起 Http Get 请求 By Discovery
+     * 发起 Http Post 请求 By Discovery
      *
-     * @param url
+     * @param path
      * @param body
      * @return
      */
-    Result httpPostByDiscovery(String url, Object body);
+    Result httpPostByDiscovery(String path, Object body);
 
     /**
      * 发起 Http Get 请求 By 动态配置

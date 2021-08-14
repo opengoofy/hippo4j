@@ -44,4 +44,8 @@ public class Constants {
 
     public static final String GROUP_KEY_DELIMITER = "+";
 
+    public static final long EVICTION_INTERVAL_TIMER_IN_MS = 60 * 1000;
+
+    public static final int SCHEDULED_THREAD_CORE_NUM = 1;
+
 }
