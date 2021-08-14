@@ -41,14 +41,14 @@ public class LongPollingService {
 
     public static final String LONG_POLLING_NO_HANG_UP_HEADER = "Long-Pulling-Timeout-No-Hangup";
 
-    public static final String CLIENT_APPNAME_HEADER = "Client-AppName";
+    public static final String CLIENT_APP_NAME_HEADER = "Client-AppName";
 
     private Map<String, Long> retainIps = new ConcurrentHashMap();
 
     public LongPollingService() {
         allSubs = new ConcurrentLinkedQueue();
 
-        ConfigExecutor.scheduleLongPolling(new StatTask(), 0L, 10L, TimeUnit.SECONDS);
+        ConfigExecutor.scheduleLongPolling(new StatTask(), 0L, 30L, TimeUnit.SECONDS);
 
         NotifyCenter.registerToPublisher(LocalDataChangeEvent.class, NotifyCenter.ringBufferSize);
 
@@ -77,7 +77,7 @@ public class LongPollingService {
 
         @Override
         public void run() {
-            log.info("[long-pulling] client count " + allSubs.size());
+            log.info("Dynamic Thread Pool Long pulling client count :: {}", allSubs.size());
         }
     }
 
@@ -125,7 +125,7 @@ public class LongPollingService {
     public void addLongPollingClient(HttpServletRequest req, HttpServletResponse rsp, Map<String, String> clientMd5Map,
                                      int probeRequestSize) {
         String str = req.getHeader(LONG_POLLING_HEADER);
-        String appName = req.getHeader(CLIENT_APPNAME_HEADER);
+        String appName = req.getHeader(CLIENT_APP_NAME_HEADER);
         String noHangUpFlag = req.getHeader(LongPollingService.LONG_POLLING_NO_HANG_UP_HEADER);
         int delayTime = SwitchService.getSwitchInteger(SwitchService.FIXED_DELAY_TIME, 500);
 
