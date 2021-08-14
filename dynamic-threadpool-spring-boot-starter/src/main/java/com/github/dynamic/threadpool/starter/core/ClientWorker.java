@@ -50,7 +50,7 @@ public class ClientWorker {
 
         this.executor = Executors.newScheduledThreadPool(1, r -> {
             Thread t = new Thread(r);
-            t.setName("io.dynamic.threadPool.client.Worker.executor");
+            t.setName("client.worker.executor");
             t.setDaemon(true);
             return t;
         });
@@ -58,7 +58,7 @@ public class ClientWorker {
         int threadSize = Runtime.getRuntime().availableProcessors();
         this.executorService = Executors.newScheduledThreadPool(threadSize, r -> {
             Thread t = new Thread(r);
-            t.setName("io.dynamic.threadPool.client.Worker.longPolling.executor");
+            t.setName("client.long.polling.executor");
             t.setDaemon(true);
             return t;
         });

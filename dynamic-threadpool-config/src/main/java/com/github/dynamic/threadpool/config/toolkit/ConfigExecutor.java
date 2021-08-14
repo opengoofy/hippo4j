@@ -1,6 +1,5 @@
 package com.github.dynamic.threadpool.config.toolkit;
 
-import cn.hutool.core.thread.ThreadFactoryBuilder;
 import com.github.dynamic.threadpool.common.executor.ExecutorFactory;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,9 +16,7 @@ public class ConfigExecutor {
 
     private static final ScheduledExecutorService LONG_POLLING_EXECUTOR = ExecutorFactory.Managed
             .newSingleScheduledExecutorService("default group",
-                    ThreadFactoryBuilder.create()
-                            .setNamePrefix("io.dynamic.threadPool.config.LongPolling")
-                            .build());
+                    r -> new Thread(r, "long-polling"));
 
     public static void executeLongPolling(Runnable runnable) {
         LONG_POLLING_EXECUTOR.execute(runnable);
