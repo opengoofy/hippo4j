@@ -1,5 +1,7 @@
 package com.github.dynamic.threadpool.starter.toolkit.thread;
 
+import com.github.dynamic.threadpool.starter.alarm.ThreadPoolAlarm;
+import com.github.dynamic.threadpool.starter.alarm.ThreadPoolAlarmManage;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -46,11 +48,12 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
     private volatile boolean allowCoreThreadTimeOut;
     private volatile int corePoolSize;
     private volatile int maximumPoolSize;
+    private String threadPoolId;
 
     private final AccessControlContext acc;
+    private volatile ThreadPoolAlarm threadPoolAlarm;
     private volatile ThreadFactory threadFactory;
     private volatile RejectedExecutionHandler handler;
-
 
     private static final RejectedExecutionHandler DEFAULT_HANDLER = new ThreadPoolExecutor.AbortPolicy();
     private static final RuntimePermission SHUTDOWN_PERM = new RuntimePermission("modifyThread");
@@ -59,34 +62,10 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
                                     int maximumPoolSize,
                                     long keepAliveTime,
                                     TimeUnit unit,
-                                    BlockingQueue<Runnable> workQueue) {
-        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, Executors.defaultThreadFactory(), DEFAULT_HANDLER);
-    }
-
-    public CustomThreadPoolExecutor(int corePoolSize,
-                                    int maximumPoolSize,
-                                    long keepAliveTime,
-                                    TimeUnit unit,
-                                    BlockingQueue<Runnable> workQueue,
-                                    ThreadFactory threadFactory) {
-        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, DEFAULT_HANDLER);
-    }
-
-    public CustomThreadPoolExecutor(int corePoolSize,
-                                    int maximumPoolSize,
-                                    long keepAliveTime,
-                                    TimeUnit unit,
-                                    BlockingQueue<Runnable> workQueue,
-                                    RejectedExecutionHandler handler) {
-        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, Executors.defaultThreadFactory(), handler);
-    }
-
-    public CustomThreadPoolExecutor(int corePoolSize,
-                                    int maximumPoolSize,
-                                    long keepAliveTime,
-                                    TimeUnit unit,
                                     @NonNull BlockingQueue<Runnable> workQueue,
+                                    @NonNull String threadPoolId,
                                     @NonNull ThreadFactory threadFactory,
+                                    @NonNull ThreadPoolAlarm threadPoolAlarm,
                                     @NonNull RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
 
@@ -100,9 +79,11 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
         this.corePoolSize = corePoolSize;
         this.maximumPoolSize = maximumPoolSize;
         this.workQueue = workQueue;
+        this.threadPoolId = threadPoolId;
         this.keepAliveTime = unit.toNanos(keepAliveTime);
         this.threadFactory = threadFactory;
         this.handler = handler;
+        this.threadPoolAlarm = threadPoolAlarm;
         this.acc = System.getSecurityManager() == null ? null : AccessController.getContext();
     }
 
@@ -145,6 +126,18 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
 
     public Integer getRejectCount() {
         return rejectCount.get();
+    }
+
+    public ThreadPoolAlarm getThreadPoolAlarm() {
+        return this.threadPoolAlarm;
+    }
+
+    public void setThreadPoolAlarm(ThreadPoolAlarm threadPoolAlarm) {
+        this.threadPoolAlarm = threadPoolAlarm;
+    }
+
+    public String getThreadPoolId() {
+        return this.threadPoolId;
     }
 
     private final class Worker
@@ -316,6 +309,7 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
 
     final void reject(Runnable command) {
         rejectCount.incrementAndGet();
+        ThreadPoolAlarmManage.checkPoolRejectAlarm(this);
         handler.rejectedExecution(command, this);
     }
 
@@ -367,6 +361,8 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
                 }
             }
         }
+
+        ThreadPoolAlarmManage.checkPoolLivenessAlarm(core, this);
 
         boolean workerStarted = false;
         boolean workerAdded = false;
@@ -542,6 +538,7 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
             c = ctl.get();
         }
         if (isRunning(c) && workQueue.offer(command)) {
+            ThreadPoolAlarmManage.checkPoolCapacityAlarm(this);
             int recheck = ctl.get();
             if (!isRunning(recheck) && remove(command)) {
                 reject(command);

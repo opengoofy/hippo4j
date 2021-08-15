@@ -25,6 +25,8 @@ public class InstanceInfo {
 
     private String instanceId;
 
+    private String ipApplicationName;
+
     private volatile String vipAddress;
 
     private volatile String secureVipAddress;

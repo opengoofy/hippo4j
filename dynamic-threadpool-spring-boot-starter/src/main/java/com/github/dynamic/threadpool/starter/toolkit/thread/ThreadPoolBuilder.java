@@ -2,6 +2,7 @@ package com.github.dynamic.threadpool.starter.toolkit.thread;
 
 
 import com.github.dynamic.threadpool.common.toolkit.Assert;
+import com.github.dynamic.threadpool.starter.alarm.ThreadPoolAlarm;
 
 import java.math.BigDecimal;
 import java.util.concurrent.*;
@@ -73,6 +74,26 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
      * 线程名称前缀
      */
     private String threadNamePrefix;
+
+    /**
+     * 线程池 ID
+     */
+    private String threadPoolId;
+
+    /**
+     * 是否告警
+     */
+    private boolean isAlarm = false;
+
+    /**
+     * 容量告警
+     */
+    private Integer capacityAlarm;
+
+    /**
+     * 活跃度告警
+     */
+    private Integer livenessAlarm;
 
     /**
      * 计算公式：CPU 核数 / (1 - 阻塞系数 0.8)
@@ -163,6 +184,18 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
+    public ThreadPoolBuilder threadPoolId(String threadPoolId) {
+        this.threadPoolId = threadPoolId;
+        return this;
+    }
+
+    public ThreadPoolBuilder alarmConfig(int isAlarm, int capacityAlarm, int livenessAlarm) {
+        this.isAlarm = isAlarm == 1 ? true : false;
+        this.capacityAlarm = capacityAlarm;
+        this.livenessAlarm = livenessAlarm;
+        return this;
+    }
+
     /**
      * 构建
      *
@@ -222,7 +255,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
      * @return
      */
     private static AbstractBuildThreadPoolTemplate.ThreadPoolInitParam buildInitParam(ThreadPoolBuilder builder) {
-        Assert.notEmpty(builder.threadNamePrefix, "线程名称前缀不可为空或空的字符串.");
+        Assert.notEmpty(builder.threadNamePrefix, "The thread name prefix cannot be empty or an empty string.");
         AbstractBuildThreadPoolTemplate.ThreadPoolInitParam initParam =
                 new AbstractBuildThreadPoolTemplate.ThreadPoolInitParam(builder.threadNamePrefix, builder.isDaemon);
 
@@ -233,7 +266,12 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
                 .setRejectedExecutionHandler(builder.rejectedExecutionHandler)
                 .setTimeUnit(builder.timeUnit);
 
-        // 快速消费线程池内置指定线程池
+        if (builder.isCustomPool) {
+            initParam.setThreadPoolId(builder.threadPoolId);
+            ThreadPoolAlarm threadPoolAlarm = new ThreadPoolAlarm(builder.isAlarm, builder.capacityAlarm, builder.livenessAlarm);
+            initParam.setThreadPoolAlarm(threadPoolAlarm);
+        }
+
         if (!builder.isFastPool) {
             if (builder.queueType != null) {
                 builder.workQueue = QueueTypeEnum.createBlockingQueue(builder.queueType.type, builder.capacity);

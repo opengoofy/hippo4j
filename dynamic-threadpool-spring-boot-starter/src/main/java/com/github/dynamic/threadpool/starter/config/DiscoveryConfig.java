@@ -11,6 +11,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import java.net.InetAddress;
 
 import static com.github.dynamic.threadpool.starter.toolkit.CloudCommonIdUtil.getDefaultInstanceId;
+import static com.github.dynamic.threadpool.starter.toolkit.CloudCommonIdUtil.getIpApplicationName;
 
 /**
  * Dynamic Tp Discovery Config.
@@ -28,6 +29,7 @@ public class DiscoveryConfig {
     public InstanceInfo instanceConfig() {
         InstanceInfo instanceInfo = new InstanceInfo();
         instanceInfo.setInstanceId(getDefaultInstanceId(environment));
+        instanceInfo.setIpApplicationName(getIpApplicationName(environment));
         instanceInfo.setAppName(environment.getProperty("spring.application.name"));
         instanceInfo.setHostName(InetAddress.getLocalHost().getHostAddress());
 

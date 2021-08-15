@@ -7,6 +7,7 @@ import com.github.dynamic.threadpool.common.web.base.Result;
 import com.github.dynamic.threadpool.starter.common.CommonThreadPool;
 import com.github.dynamic.threadpool.starter.config.BootstrapProperties;
 import com.github.dynamic.threadpool.starter.remote.HttpAgent;
+import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 import com.github.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
@@ -81,7 +82,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         queryStrMap.put("namespace", properties.getNamespace());
 
         PoolParameterInfo ppi = new PoolParameterInfo();
-        ThreadPoolExecutor poolExecutor = null;
+        CustomThreadPoolExecutor poolExecutor = null;
         Result result = null;
 
         try {
@@ -89,13 +90,15 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             if (result.isSuccess() && result.getData() != null && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
                 // 使用相关参数创建线程池
                 BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
-                poolExecutor = ThreadPoolBuilder.builder()
+                poolExecutor = (CustomThreadPoolExecutor) ThreadPoolBuilder.builder()
                         .isCustomPool(true)
+                        .workQueue(workQueue)
+                        .threadPoolId(tpId)
+                        .threadFactory(tpId)
                         .poolThreadSize(ppi.getCoreSize(), ppi.getMaxSize())
                         .keepAliveTime(ppi.getKeepAliveTime(), TimeUnit.SECONDS)
-                        .workQueue(workQueue)
-                        .threadFactory(tpId)
                         .rejected(RejectedTypeEnum.createPolicy(ppi.getRejectedType()))
+                        .alarmConfig(ppi.getIsAlarm(), ppi.getCapacityAlarm(), ppi.getLivenessAlarm())
                         .build();
 
                 dynamicThreadPoolWrap.setPool(poolExecutor);

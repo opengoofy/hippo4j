@@ -17,12 +17,17 @@ public class CloudCommonIdUtil {
 
     @SneakyThrows
     public static String getDefaultInstanceId(PropertyResolver resolver) {
+        String namePart = getIpApplicationName(resolver);
+        String indexPart = resolver.getProperty("spring.application.instance_id", resolver.getProperty("server.port"));
+        return combineParts(namePart, SEPARATOR, indexPart);
+    }
+
+    @SneakyThrows
+    public static String getIpApplicationName(PropertyResolver resolver) {
         InetAddress host = InetAddress.getLocalHost();
         String hostname = host.getHostAddress();
         String appName = resolver.getProperty("spring.application.name");
-        String namePart = combineParts(hostname, SEPARATOR, appName);
-        String indexPart = resolver.getProperty("spring.application.instance_id", resolver.getProperty("server.port"));
-        return combineParts(namePart, SEPARATOR, indexPart);
+        return combineParts(hostname, SEPARATOR, appName);
     }
 
     public static String combineParts(String firstPart, String separator,

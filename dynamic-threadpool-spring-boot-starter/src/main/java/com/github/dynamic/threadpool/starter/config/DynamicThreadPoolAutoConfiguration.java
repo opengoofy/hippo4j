@@ -15,6 +15,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 /**
  * DynamicTp Auto Configuration.
@@ -24,9 +26,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @AllArgsConstructor
-@EnableConfigurationProperties(BootstrapProperties.class)
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
-@ImportAutoConfiguration({HttpClientConfig.class, DiscoveryConfig.class})
+@EnableConfigurationProperties(BootstrapProperties.class)
+@ImportAutoConfiguration({HttpClientConfig.class, DiscoveryConfig.class, MessageAlarmConfig.class})
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapProperties properties;
@@ -37,6 +39,7 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     public ApplicationContextHolder applicationContextHolder() {
         return new ApplicationContextHolder();
     }

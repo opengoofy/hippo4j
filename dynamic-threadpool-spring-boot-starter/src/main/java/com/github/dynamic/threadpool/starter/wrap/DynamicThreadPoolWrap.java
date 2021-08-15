@@ -1,11 +1,11 @@
 package com.github.dynamic.threadpool.starter.wrap;
 
 import com.github.dynamic.threadpool.starter.common.CommonThreadPool;
+import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 import lombok.Data;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Dynamic ThreadPool Wrap.
@@ -22,7 +22,7 @@ public class DynamicThreadPoolWrap {
 
     private String tpId;
 
-    private ThreadPoolExecutor pool;
+    private CustomThreadPoolExecutor pool;
 
     /**
      * 首选服务端线程池, 为空使用默认线程池 {@link CommonThreadPool#getInstance(String)}
@@ -39,7 +39,7 @@ public class DynamicThreadPoolWrap {
      * @param threadPoolId
      * @param threadPoolExecutor
      */
-    public DynamicThreadPoolWrap(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
+    public DynamicThreadPoolWrap(String threadPoolId, CustomThreadPoolExecutor threadPoolExecutor) {
         this.tpId = threadPoolId;
         this.pool = threadPoolExecutor;
     }

@@ -33,6 +33,8 @@
         <fastjson.version>1.2.75</fastjson.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
 
+        <dingtalk-sdk.version>1.0.1</dingtalk-sdk.version>
+
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
     </properties>
@@ -118,6 +120,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>alibaba-dingtalk-service-sdk</artifactId>
+                <version>${dingtalk-sdk.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
