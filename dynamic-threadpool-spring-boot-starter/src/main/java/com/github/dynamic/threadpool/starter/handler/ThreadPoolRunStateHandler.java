@@ -76,10 +76,10 @@ public class ThreadPoolRunStateHandler {
         stateInfo.setHost(addr.getHostAddress());
         stateInfo.setTpId(tpId);
 
-        int regectCount = pool instanceof CustomThreadPoolExecutor
-                ? ((CustomThreadPoolExecutor) pool).getRegectCount()
+        int rejectCount = pool instanceof CustomThreadPoolExecutor
+                ? ((CustomThreadPoolExecutor) pool).getRejectCount()
                 : -1;
-        stateInfo.setRegectCount(regectCount);
+        stateInfo.setRejectCount(rejectCount);
 
         return stateInfo;
     }

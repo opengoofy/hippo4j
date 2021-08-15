@@ -83,7 +83,7 @@ public class PoolRunStateInfo implements Serializable {
     /**
      * 拒绝策略发生次数
      */
-    private Integer regectCount;
+    private Integer rejectCount;
 
     /**
      * Host

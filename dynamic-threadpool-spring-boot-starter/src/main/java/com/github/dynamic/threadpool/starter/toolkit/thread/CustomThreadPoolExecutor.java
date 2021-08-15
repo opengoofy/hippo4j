@@ -23,7 +23,7 @@ import static com.github.dynamic.threadpool.common.constant.Constants.MAP_INITIA
  */
 public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
 
-    private final AtomicInteger regectCount = new AtomicInteger();
+    private final AtomicInteger rejectCount = new AtomicInteger();
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
 
     private static final int COUNT_BITS = Integer.SIZE - 3;
@@ -143,8 +143,8 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
         } while (!compareAndDecrementWorkerCount(ctl.get()));
     }
 
-    public Integer getRegectCount() {
-        return regectCount.get();
+    public Integer getRejectCount() {
+        return rejectCount.get();
     }
 
     private final class Worker
@@ -315,7 +315,7 @@ public final class CustomThreadPoolExecutor extends ThreadPoolExecutor {
     private static final boolean ONLY_ONE = true;
 
     final void reject(Runnable command) {
-        regectCount.incrementAndGet();
+        rejectCount.incrementAndGet();
         handler.rejectedExecution(command, this);
     }
 
