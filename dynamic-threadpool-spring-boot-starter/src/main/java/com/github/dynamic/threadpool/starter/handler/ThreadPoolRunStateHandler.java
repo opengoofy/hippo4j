@@ -1,9 +1,11 @@
 package com.github.dynamic.threadpool.starter.handler;
 
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 import com.github.dynamic.threadpool.common.model.PoolRunStateInfo;
 import com.github.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
+import com.github.dynamic.threadpool.starter.toolkit.CalculateUtil;
 import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
+import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -16,6 +18,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author chen.ma
  * @date 2021/7/12 21:25
  */
+@Slf4j
 public class ThreadPoolRunStateHandler {
 
     private static InetAddress addr;
@@ -23,9 +26,8 @@ public class ThreadPoolRunStateHandler {
     static {
         try {
             addr = InetAddress.getLocalHost();
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+        } catch (UnknownHostException ex) {
+            log.error("Local IP acquisition failed.", ex);
         }
     }
 
@@ -46,9 +48,9 @@ public class ThreadPoolRunStateHandler {
         // 线程池中执行任务总数量
         long completedTaskCount = pool.getCompletedTaskCount();
         // 当前负载
-        String currentLoad = divide(activeCount, maximumPoolSize);
+        String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "%";
         // 峰值负载
-        String peakLoad = divide(largestPoolSize, maximumPoolSize);
+        String peakLoad = CalculateUtil.divide(largestPoolSize, maximumPoolSize) + "%";
 
         BlockingQueue<Runnable> queue = pool.getQueue();
         // 队列类型
@@ -82,10 +84,6 @@ public class ThreadPoolRunStateHandler {
         stateInfo.setRejectCount(rejectCount);
 
         return stateInfo;
-    }
-
-    private static String divide(int num1, int num2) {
-        return ((int) (Double.parseDouble(num1 + "") / Double.parseDouble(num2 + "") * 100)) + "%";
     }
 
 }
