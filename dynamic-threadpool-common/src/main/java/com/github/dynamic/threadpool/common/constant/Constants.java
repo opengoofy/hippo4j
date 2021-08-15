@@ -48,4 +48,6 @@ public class Constants {
 
     public static final int SCHEDULED_THREAD_CORE_NUM = 1;
 
+    public static final int MAP_INITIAL_CAPACITY = 16;
+
 }
