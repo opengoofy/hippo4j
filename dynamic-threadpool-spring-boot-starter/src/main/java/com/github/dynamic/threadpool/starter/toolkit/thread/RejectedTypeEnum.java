@@ -3,6 +3,7 @@ package com.github.dynamic.threadpool.starter.toolkit.thread;
 import com.github.dynamic.threadpool.starter.spi.CustomRejectedExecutionHandler;
 import com.github.dynamic.threadpool.starter.spi.DynamicTpServiceLoader;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,7 +68,7 @@ public enum RejectedTypeEnum {
         DynamicTpServiceLoader.register(CustomRejectedExecutionHandler.class);
     }
 
-    public static RejectedExecutionHandler createPolicy(Integer type) {
+    public static RejectedExecutionHandler createPolicy(int type) {
         Optional<RejectedExecutionHandler> rejectedTypeEnum = Stream.of(RejectedTypeEnum.values())
                 .filter(each -> Objects.equals(type, each.type))
                 .map(each -> each.rejectedHandler)
@@ -86,6 +87,13 @@ public enum RejectedTypeEnum {
         });
 
         return resultRejected;
+    }
+
+    public static String getRejectedNameByType(int type) {
+        Optional<RejectedTypeEnum> rejectedTypeEnum = Arrays.stream(RejectedTypeEnum.values())
+                .filter(each -> each.type == type).findFirst();
+
+        return rejectedTypeEnum.map(each -> each.rejectedHandler.getClass().getSimpleName()).orElse("");
     }
 
 }

@@ -1,5 +1,6 @@
 package com.github.dynamic.threadpool.starter.alarm;
 
+import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
 import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 
 /**
@@ -11,10 +12,17 @@ import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExec
 public interface SendMessageService {
 
     /**
-     * sendMessage.
+     * Send alarm message.
      *
      * @param threadPoolExecutor
      */
-    void sendMessage(CustomThreadPoolExecutor threadPoolExecutor);
+    void sendAlarmMessage(CustomThreadPoolExecutor threadPoolExecutor);
+
+    /**
+     * Send change message.
+     *
+     * @param parameter
+     */
+    void sendChangeMessage(PoolParameterInfo parameter);
 
 }

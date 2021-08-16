@@ -1,6 +1,7 @@
 package com.github.dynamic.threadpool.starter.alarm;
 
 import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
+import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
 import com.github.dynamic.threadpool.starter.toolkit.CalculateUtil;
 import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 import com.github.dynamic.threadpool.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue;
@@ -22,7 +23,7 @@ public class ThreadPoolAlarmManage {
     }
 
     /**
-     * checkPoolCapacityAlarm.
+     * Check thread pool capacity alarm.
      *
      * @param threadPoolExecutor
      */
@@ -35,12 +36,12 @@ public class ThreadPoolAlarmManage {
         int capacity = queueSize + blockIngQueue.remainingCapacity();
         int divide = CalculateUtil.divide(queueSize, capacity);
         if (divide > threadPoolAlarm.getCapacityAlarm()) {
-            SEND_MESSAGE_SERVICE.sendMessage(threadPoolExecutor);
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
         }
     }
 
     /**
-     * checkPoolLivenessAlarm.
+     * Check thread pool activity alarm.
      *
      * @param isCore
      * @param threadPoolExecutor
@@ -53,17 +54,26 @@ public class ThreadPoolAlarmManage {
         int maximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
         int divide = CalculateUtil.divide(activeCount, maximumPoolSize);
         if (divide > threadPoolExecutor.getThreadPoolAlarm().getLivenessAlarm()) {
-            SEND_MESSAGE_SERVICE.sendMessage(threadPoolExecutor);
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
         }
     }
 
     /**
-     * checkPoolRejectAlarm.
+     * Check thread pool reject policy alarm.
      *
      * @param threadPoolExecutor
      */
     public static void checkPoolRejectAlarm(CustomThreadPoolExecutor threadPoolExecutor) {
-        SEND_MESSAGE_SERVICE.sendMessage(threadPoolExecutor);
+        SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
+    }
+
+    /**
+     * Send thread pool configuration change message.
+     *
+     * @param parameter
+     */
+    public static void sendPoolConfigChange(PoolParameterInfo parameter) {
+        SEND_MESSAGE_SERVICE.sendChangeMessage(parameter);
     }
 
 }

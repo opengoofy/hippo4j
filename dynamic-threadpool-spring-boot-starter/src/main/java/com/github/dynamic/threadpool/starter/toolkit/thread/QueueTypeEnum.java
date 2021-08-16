@@ -3,6 +3,7 @@ package com.github.dynamic.threadpool.starter.toolkit.thread;
 import com.github.dynamic.threadpool.starter.spi.DynamicTpServiceLoader;
 import com.github.dynamic.threadpool.starter.spi.CustomBlockingQueue;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,49 +20,52 @@ public enum QueueTypeEnum {
     /**
      * {@link java.util.concurrent.ArrayBlockingQueue}
      */
-    ARRAY_BLOCKING_QUEUE(1),
+    ARRAY_BLOCKING_QUEUE(1, "ArrayBlockingQueue"),
 
     /**
      * {@link java.util.concurrent.LinkedBlockingQueue}
      */
-    LINKED_BLOCKING_QUEUE(2),
+    LINKED_BLOCKING_QUEUE(2, "LinkedBlockingQueue"),
 
     /**
      * {@link java.util.concurrent.LinkedBlockingDeque}
      */
-    LINKED_BLOCKING_DEQUE(3),
+    LINKED_BLOCKING_DEQUE(3, "LinkedBlockingDeque"),
 
     /**
      * {@link java.util.concurrent.SynchronousQueue}
      */
-    SYNCHRONOUS_QUEUE(4),
+    SYNCHRONOUS_QUEUE(4, "SynchronousQueue"),
 
     /**
      * {@link java.util.concurrent.LinkedTransferQueue}
      */
-    LINKED_TRANSFER_QUEUE(5),
+    LINKED_TRANSFER_QUEUE(5, "LinkedTransferQueue"),
 
     /**
      * {@link java.util.concurrent.PriorityBlockingQueue}
      */
-    PRIORITY_BLOCKING_QUEUE(6),
+    PRIORITY_BLOCKING_QUEUE(6, "PriorityBlockingQueue"),
 
     /**
      * {@link "io.dynamic.threadpool.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue"}
      */
-    RESIZABLE_LINKED_BLOCKING_QUEUE(9);
+    RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockIngQueue");
 
     public Integer type;
 
-    QueueTypeEnum(int type) {
+    public String name;
+
+    QueueTypeEnum(int type, String name) {
         this.type = type;
+        this.name = name;
     }
 
     static {
         DynamicTpServiceLoader.register(CustomBlockingQueue.class);
     }
 
-    public static BlockingQueue createBlockingQueue(Integer type, Integer capacity) {
+    public static BlockingQueue createBlockingQueue(int type, Integer capacity) {
         BlockingQueue blockingQueue = null;
         if (Objects.equals(type, ARRAY_BLOCKING_QUEUE.type)) {
             blockingQueue = new ArrayBlockingQueue(capacity);
@@ -88,6 +92,14 @@ public enum QueueTypeEnum {
                 .orElse(new LinkedBlockingQueue(capacity)));
 
         return blockingQueue;
+    }
+
+    public static String getBlockingQueueNameByType(int type) {
+        Optional<QueueTypeEnum> queueTypeEnum = Arrays.stream(QueueTypeEnum.values())
+                .filter(each -> each.type == type)
+                .findFirst();
+
+        return queueTypeEnum.map(each -> each.name).orElse("");
     }
 
 }

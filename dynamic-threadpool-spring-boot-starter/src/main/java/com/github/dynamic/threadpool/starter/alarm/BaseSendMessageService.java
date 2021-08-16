@@ -1,9 +1,11 @@
 package com.github.dynamic.threadpool.starter.alarm;
 
 import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
+import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
 import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.Map;
  * @author chen.ma
  * @date 2021/8/15 15:34
  */
+@Slf4j
 @RequiredArgsConstructor
 public class BaseSendMessageService implements InitializingBean, SendMessageService {
 
@@ -25,12 +28,23 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
     private final List<SendMessageHandler> sendMessageHandlers = new ArrayList(4);
 
     @Override
-    public void sendMessage(CustomThreadPoolExecutor threadPoolExecutor) {
+    public void sendAlarmMessage(CustomThreadPoolExecutor threadPoolExecutor) {
         for (SendMessageHandler messageHandler : sendMessageHandlers) {
             try {
-                messageHandler.sendMessage(alarmConfigs, threadPoolExecutor);
+                messageHandler.sendAlarmMessage(alarmConfigs, threadPoolExecutor);
             } catch (Exception ex) {
-                // ignore
+                log.warn("Failed to send thread pool alarm notification.", ex);
+            }
+        }
+    }
+
+    @Override
+    public void sendChangeMessage(PoolParameterInfo parameter) {
+        for (SendMessageHandler messageHandler : sendMessageHandlers) {
+            try {
+                messageHandler.sendChangeMessage(alarmConfigs, parameter);
+            } catch (Exception ex) {
+                log.warn("Failed to send thread pool change notification.", ex);
             }
         }
     }
