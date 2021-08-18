@@ -9,12 +9,12 @@ package com.github.dynamic.threadpool.config.enums;
 public enum DelEnum {
 
     /**
-     * 正常状态
+     * Normal state
      */
     NORMAL("0"),
 
     /**
-     * 删除状态
+     * Deleted state
      */
     DELETE("1");
 

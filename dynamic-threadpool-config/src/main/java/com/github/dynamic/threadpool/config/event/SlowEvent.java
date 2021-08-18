@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.config.event;
 
 /**
- * Slow Event.
+ * Slow event.
  *
  * @author chen.ma
  * @date 2021/6/23 19:05

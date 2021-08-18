@@ -8,7 +8,7 @@ import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolSaveO
 import java.util.List;
 
 /**
- * Thread Pool Service.
+ * Thread pool service.
  *
  * @author chen.ma
  * @date 2021/6/30 21:26
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ThreadPoolService {
 
     /**
-     * 分页查询线程池
+     * Query thread pool page.
      *
      * @param reqDTO
      * @return
@@ -24,7 +24,7 @@ public interface ThreadPoolService {
     IPage<ThreadPoolRespDTO> queryThreadPoolPage(ThreadPoolQueryReqDTO reqDTO);
 
     /**
-     * 查询线程池配置
+     * Get thread pool.
      *
      * @param reqDTO
      * @return
@@ -32,7 +32,7 @@ public interface ThreadPoolService {
     ThreadPoolRespDTO getThreadPool(ThreadPoolQueryReqDTO reqDTO);
 
     /**
-     * 根据 ItemId 获取线程池配置
+     * Get thread pool by item id.
      *
      * @param itemId
      * @return
@@ -40,7 +40,7 @@ public interface ThreadPoolService {
     List<ThreadPoolRespDTO> getThreadPoolByItemId(String itemId);
 
     /**
-     * 新增或修改线程池配置
+     * Save or update thread pool config.
      *
      * @param reqDTO
      */

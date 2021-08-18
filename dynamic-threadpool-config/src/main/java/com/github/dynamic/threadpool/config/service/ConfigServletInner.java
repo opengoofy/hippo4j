@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- * Config Servlet Inner.
+ * Config servlet inner.
  *
  * @author chen.ma
  * @date 2021/6/22 23:13
@@ -26,4 +26,5 @@ public class ConfigServletInner {
         }
         return HttpServletResponse.SC_OK + "";
     }
+
 }

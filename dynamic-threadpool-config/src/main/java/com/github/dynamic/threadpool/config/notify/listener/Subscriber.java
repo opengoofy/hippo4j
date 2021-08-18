@@ -29,4 +29,5 @@ public abstract class Subscriber<T extends Event> {
     public Executor executor() {
         return null;
     }
+
 }

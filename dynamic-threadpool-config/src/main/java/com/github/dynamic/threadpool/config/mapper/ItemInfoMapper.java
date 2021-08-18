@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.config.model.ItemInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * Item Info Mapper.
+ * Item info mapper.
  *
  * @author chen.ma
  * @date 2021/6/29 21:53

@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 业务接口
+ * Tenant service impl.
  *
  * @author chen.ma
  * @date 2021/6/29 21:12
@@ -66,7 +66,7 @@ public class TenantServiceImpl implements TenantService {
 
         boolean retBool = SqlHelper.retBool(insertResult);
         if (!retBool) {
-            throw new RuntimeException("插入失败.");
+            throw new RuntimeException("Save Error.");
         }
     }
 
@@ -77,7 +77,7 @@ public class TenantServiceImpl implements TenantService {
                 .lambdaUpdate(TenantInfo.class).eq(TenantInfo::getTenantId, reqDTO.getTenantId()));
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
-            throw new RuntimeException("修改失败.");
+            throw new RuntimeException("Update Error.");
         }
     }
 
@@ -87,7 +87,7 @@ public class TenantServiceImpl implements TenantService {
         reqDTO.setTenantId(tenantId);
         List<ItemRespDTO> itemList = itemService.queryItem(reqDTO);
         if (CollectionUtils.isNotEmpty(itemList)) {
-            throw new RuntimeException("业务线包含项目引用, 删除失败.");
+            throw new RuntimeException("The line of business contains project references, and the deletion failed.");
         }
 
         int updateResult = tenantInfoMapper.update(new TenantInfo(),
@@ -96,7 +96,7 @@ public class TenantServiceImpl implements TenantService {
                         .set(TenantInfo::getDelFlag, DelEnum.DELETE.getIntCode()));
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
-            throw new RuntimeException("删除失败.");
+            throw new RuntimeException("Delete error.");
         }
     }
 }

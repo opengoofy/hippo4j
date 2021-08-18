@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Request Util.
+ * Request util.
  *
  * @author chen.ma
  * @date 2021/6/23 18:28
@@ -26,4 +26,5 @@ public class RequestUtil {
         String nginxHeader = request.getHeader(X_REAL_IP);
         return StringUtils.isEmpty(nginxHeader) ? request.getRemoteAddr() : nginxHeader;
     }
+
 }

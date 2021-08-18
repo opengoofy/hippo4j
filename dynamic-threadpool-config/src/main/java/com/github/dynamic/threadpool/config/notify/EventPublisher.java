@@ -11,12 +11,35 @@ import com.github.dynamic.threadpool.config.event.Event;
  */
 public interface EventPublisher {
 
+    /**
+     * Init.
+     *
+     * @param type
+     * @param bufferSize
+     */
     void init(Class<? extends Event> type, int bufferSize);
 
+    /**
+     * Add subscriber.
+     *
+     * @param subscriber
+     */
     void addSubscriber(Subscriber subscriber);
 
+    /**
+     * Publish.
+     *
+     * @param event
+     * @return
+     */
     boolean publish(Event event);
 
+    /**
+     * Notify subscriber.
+     *
+     * @param subscriber
+     * @param event
+     */
     void notifySubscriber(Subscriber subscriber, Event event);
 
 }

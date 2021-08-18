@@ -1,12 +1,14 @@
 package com.github.dynamic.threadpool.config.toolkit;
 
 /**
- * 简单读写锁.
+ * Simple read write lock.
  *
  * @author chen.ma
  * @date 2021/6/24 21:26
  */
 public class SimpleReadWriteLock {
+
+    private int status = 0;
 
     public synchronized boolean tryReadLock() {
         if (isWriteLocked()) {
@@ -42,5 +44,4 @@ public class SimpleReadWriteLock {
         return status == 0;
     }
 
-    private int status = 0;
 }

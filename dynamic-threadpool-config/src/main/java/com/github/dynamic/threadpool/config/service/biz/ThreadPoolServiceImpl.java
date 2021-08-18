@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Thread Pool Service Impl.
+ * Thread pool service impl.
  *
  * @author chen.ma
  * @date 2021/6/30 21:26
@@ -57,4 +57,5 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
     public void saveOrUpdateThreadPoolConfig(ThreadPoolSaveOrUpdateReqDTO reqDTO) {
         configService.insertOrUpdate(BeanUtil.convert(reqDTO, ConfigAllInfo.class));
     }
+
 }

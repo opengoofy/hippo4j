@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * 服务端配置接口实现
+ * Config service impl.
  *
  * @author chen.ma
  * @date 2021/6/20 15:21

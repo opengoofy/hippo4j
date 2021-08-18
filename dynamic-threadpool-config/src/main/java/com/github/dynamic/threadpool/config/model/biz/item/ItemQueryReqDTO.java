@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 
 /**
- * Item Query Req DTO.
+ * Item query req dto.
  *
  * @author chen.ma
  * @date 2021/6/29 22:28
@@ -12,11 +12,24 @@ import lombok.Data;
 @Data
 public class ItemQueryReqDTO extends Page {
 
+    /**
+     * tenantId
+     */
     private String tenantId;
 
+    /**
+     * itemId
+     */
     private String itemId;
 
+    /**
+     * itemName
+     */
     private String itemName;
 
+    /**
+     * owner
+     */
     private String owner;
+
 }

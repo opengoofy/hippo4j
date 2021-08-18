@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 项目出参
+ * Item resp dto.
  *
  * @author chen.ma
  * @date 2021/6/29 21:15
@@ -20,38 +20,38 @@ public class ItemRespDTO {
     private Integer id;
 
     /**
-     * 租户 ID
+     * tenantId
      */
     private String tenantId;
 
     /**
-     * 项目 ID
+     * itemId
      */
     private String itemId;
 
     /**
-     * 项目名称
+     * itemName
      */
     private String itemName;
 
     /**
-     * 项目介绍
+     * itemDesc
      */
     private String itemDesc;
 
     /**
-     * 项目负责人
+     * owner
      */
     private String owner;
 
     /**
-     * 创建时间
+     * gmtCreate
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
-     * 修改时间
+     * gmtModified
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModified;

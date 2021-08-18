@@ -7,7 +7,7 @@ import com.github.dynamic.threadpool.config.model.biz.tenant.TenantSaveReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantUpdateReqDTO;
 
 /**
- * 业务接口
+ * Tenant service.
  *
  * @author chen.ma
  * @date 2021/6/29 21:59
@@ -15,7 +15,7 @@ import com.github.dynamic.threadpool.config.model.biz.tenant.TenantUpdateReqDTO;
 public interface TenantService {
 
     /**
-     * 根据 Id 获取租户
+     * Get tenant by id.
      *
      * @param tenantIdId
      * @return
@@ -23,7 +23,7 @@ public interface TenantService {
     TenantRespDTO getTenantById(String tenantIdId);
 
     /**
-     * 分页查询租户
+     * Query tenant page.
      *
      * @param reqDTO
      * @return
@@ -31,21 +31,21 @@ public interface TenantService {
     IPage<TenantRespDTO> queryTenantPage(TenantQueryReqDTO reqDTO);
 
     /**
-     * 新增租户
+     * Save tenant.
      *
      * @param reqDTO
      */
     void saveTenant(TenantSaveReqDTO reqDTO);
 
     /**
-     * 修改租户
+     * Update tenant.
      *
      * @param reqDTO
      */
     void updateTenant(TenantUpdateReqDTO reqDTO);
 
     /**
-     * 根据 Id 删除租户
+     * Delete tenant by id.
      *
      * @param tenantId
      */

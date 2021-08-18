@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.config.model.biz.tenant;
 import lombok.Data;
 
 /**
- * Tenant Save Req DTO.
+ * Tenant save req dto.
  *
  * @author chen.ma
  * @date 2021/6/29 20:40
@@ -12,22 +12,22 @@ import lombok.Data;
 public class TenantUpdateReqDTO {
 
     /**
-     * 租户 ID
+     * tenantId
      */
     private String tenantId;
 
     /**
-     * 租户名称
+     * tenantName
      */
     private String tenantName;
 
     /**
-     * 租户简介
+     * tenantDesc
      */
     private String tenantDesc;
 
     /**
-     * 负责人
+     * owner
      */
     private String owner;
 

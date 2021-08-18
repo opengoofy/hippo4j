@@ -23,7 +23,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Item Service Impl.
+ * Item service impl.
  *
  * @author chen.ma
  * @date 2021/6/29 21:58
@@ -78,7 +78,7 @@ public class ItemServiceImpl implements ItemService {
 
         boolean retBool = SqlHelper.retBool(insertResult);
         if (!retBool) {
-            throw new RuntimeException("插入失败.");
+            throw new RuntimeException("Save error");
         }
     }
 
@@ -92,7 +92,7 @@ public class ItemServiceImpl implements ItemService {
 
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
-            throw new RuntimeException("修改失败.");
+            throw new RuntimeException("Update error.");
         }
     }
 
@@ -100,7 +100,7 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(String namespace, String itemId) {
         List<ThreadPoolRespDTO> itemList = threadPoolService.getThreadPoolByItemId(itemId);
         if (CollectionUtils.isNotEmpty(itemList)) {
-            throw new RuntimeException("项目包含线程池引用, 删除失败.");
+            throw new RuntimeException("The project contains a thread pool reference, and the deletion failed.");
         }
 
         int updateResult = itemInfoMapper.update(new ItemInfo(),
@@ -110,7 +110,7 @@ public class ItemServiceImpl implements ItemService {
                         .set(ItemInfo::getDelFlag, DelEnum.DELETE.getIntCode()));
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
-            throw new RuntimeException("删除失败.");
+            throw new RuntimeException("Delete error.");
         }
     }
 

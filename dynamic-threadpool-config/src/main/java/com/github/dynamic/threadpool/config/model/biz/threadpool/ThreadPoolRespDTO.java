@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Thread Pool Resp DTO.
+ * Thread pool resp dto.
  *
  * @author chen.ma
  * @date 2021/6/30 21:23
@@ -15,73 +15,73 @@ import java.util.Date;
 public class ThreadPoolRespDTO {
 
     /**
-     * 命名空间
+     * tenantId
      */
     private String tenantId;
 
     /**
-     * 项目 Id
+     * itemId
      */
     private String itemId;
 
     /**
-     * 线程池 Id
+     * tpId
      */
     private String tpId;
 
     /**
-     * 内容
+     * content
      */
     private String content;
 
     /**
-     * 核心线程数
+     * coreSize
      */
     private Integer coreSize;
 
     /**
-     * 最大线程数
+     * maxSize
      */
     private Integer maxSize;
 
     /**
-     * 队列类型
+     * queueType
      */
     private Integer queueType;
 
     /**
-     * 队列长度
+     * capacity
      */
     private Integer capacity;
 
     /**
-     * 线程存活时长
+     * keepAliveTime
      */
     private Integer keepAliveTime;
 
     /**
-     * 是否告警
+     * isAlarm
      */
     private Integer isAlarm;
 
     /**
-     * 容量告警
+     * capacityAlarm
      */
     private Integer capacityAlarm;
 
     /**
-     * 活跃度告警
+     * livenessAlarm
      */
     private Integer livenessAlarm;
 
     /**
-     * 创建时间
+     * gmtCreate
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
-     * 修改时间
+     * gmtModified
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModified;

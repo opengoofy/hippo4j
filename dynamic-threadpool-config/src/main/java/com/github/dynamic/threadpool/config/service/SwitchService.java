@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * SwitchService.
+ * Switch service.
  *
  * @author chen.ma
  * @date 2021/6/23 18:23
@@ -47,4 +47,5 @@ public class SwitchService {
         }
         return rtn;
     }
+
 }

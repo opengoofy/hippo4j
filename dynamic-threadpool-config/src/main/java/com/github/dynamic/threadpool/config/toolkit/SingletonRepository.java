@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.config.toolkit;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Singleton Repository.
+ * Singleton repository.
  *
  * @author chen.ma
  * @date 2021/6/24 21:28
@@ -37,4 +37,5 @@ public class SingletonRepository<T> {
 
         static SingletonRepository<String> cache = new SingletonRepository<String>();
     }
+
 }

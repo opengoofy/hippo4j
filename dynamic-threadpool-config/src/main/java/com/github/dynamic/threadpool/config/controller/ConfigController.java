@@ -19,7 +19,7 @@ import java.net.URLDecoder;
 import java.util.Map;
 
 /**
- * 服务端配置控制器
+ * Server configuration controller.
  *
  * @author chen.ma
  * @date 2021/6/20 13:53

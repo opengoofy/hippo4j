@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 
 /**
- * Unified Event Notify Center.
+ * Unified event notify center.
  *
  * @author chen.ma
  * @date 2021/6/23 18:58
@@ -44,7 +44,7 @@ public class NotifyCenter {
                 publisher.init(cls, buffer);
                 return publisher;
             } catch (Throwable ex) {
-                log.error("Service class newInstance has error : {}", ex);
+                log.error("Service class newInstance has error :: {}", ex);
                 throw new RuntimeException(ex);
             }
         };
@@ -87,7 +87,7 @@ public class NotifyCenter {
         try {
             return publishEvent(event.getClass(), event);
         } catch (Throwable ex) {
-            log.error("There was an exception to the message publishing : {}", ex);
+            log.error("There was an exception to the message publishing :: {}", ex);
             return false;
         }
     }
@@ -118,4 +118,5 @@ public class NotifyCenter {
         }
         return INSTANCE.publisherMap.get(topic);
     }
+
 }

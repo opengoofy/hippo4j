@@ -7,7 +7,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Config Executor.
+ * Config executor.
  *
  * @author chen.ma
  * @date 2021/6/23 18:33
@@ -29,4 +29,5 @@ public class ConfigExecutor {
     public static void scheduleLongPolling(Runnable runnable, long initialDelay, long period, TimeUnit unit) {
         LONG_POLLING_EXECUTOR.scheduleWithFixedDelay(runnable, initialDelay, period, unit);
     }
+
 }

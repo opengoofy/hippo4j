@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 公共配置.
+ * Common config.
  *
  * @author chen.ma
  * @date 2021/7/19 21:03

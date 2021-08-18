@@ -24,7 +24,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 长轮询服务
+ * Long polling service.
  *
  * @author chen.ma
  * @date 2021/6/22 23:14
@@ -206,7 +206,6 @@ public class LongPollingService {
         }
 
         private void sendResponse(List<String> changedGroups) {
-
             // Cancel time out task.
             if (null != asyncTimeoutFuture) {
                 asyncTimeoutFuture.cancel(false);
@@ -245,12 +244,6 @@ public class LongPollingService {
         return retainIps;
     }
 
-    /**
-     * 回写响应
-     *
-     * @param response
-     * @param changedGroups
-     */
     private void generateResponse(HttpServletResponse response, List<String> changedGroups) {
         if (!CollectionUtils.isEmpty(changedGroups)) {
             try {
@@ -266,4 +259,5 @@ public class LongPollingService {
             }
         }
     }
+
 }

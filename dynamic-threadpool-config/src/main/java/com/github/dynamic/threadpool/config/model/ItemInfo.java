@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Item Info.
+ * Item info.
  *
  * @author chen.ma
  * @date 2021/6/29 21:53
@@ -22,44 +22,44 @@ public class ItemInfo {
     private Integer id;
 
     /**
-     * 租户ID
+     * tenantId
      */
     private String tenantId;
 
     /**
-     * 项目ID
+     * itemId
      */
     private String itemId;
 
     /**
-     * 项目名称
+     * itemName
      */
     private String itemName;
 
     /**
-     * 项目简介
+     * itemDesc
      */
     private String itemDesc;
 
     /**
-     * 负责人
+     * owner
      */
     private String owner;
 
     /**
-     * 创建时间
+     * gmtCreate
      */
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
     /**
-     * 修改时间
+     * gmtModified
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
     /**
-     * 是否删除
+     * delFlag
      */
     @TableLogic
     @TableField(fill = FieldFill.INSERT)

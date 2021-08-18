@@ -19,7 +19,7 @@ import static com.github.dynamic.threadpool.common.constant.Constants.WORD_SEPAR
 
 
 /**
- * Md5 配置组件
+ * Md5 config util.
  *
  * @author chen.ma
  * @date 2021/6/21 18:32
@@ -31,7 +31,7 @@ public class Md5ConfigUtil {
     static final char LINE_SEPARATOR_CHAR = (char) 1;
 
     /**
-     * 获取 ThreadPool 相关内容 Md5 值
+     * Get thread pool content md5
      *
      * @param config
      * @return
@@ -41,7 +41,7 @@ public class Md5ConfigUtil {
     }
 
     /**
-     * 比较客户端 Md5 与服务端是否一致
+     * Compare whether the client Md5 is consistent with the server.
      *
      * @param request
      * @param clientMd5Map
@@ -149,4 +149,5 @@ public class Md5ConfigUtil {
 
         return URLEncoder.encode(sb.toString(), "UTF-8");
     }
+
 }

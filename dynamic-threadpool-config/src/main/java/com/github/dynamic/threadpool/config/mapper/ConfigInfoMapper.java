@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.config.model.ConfigAllInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * Config Info Mapper.
+ * Config info mapper.
  *
  * @author chen.ma
  * @date 2021/6/29 22:44

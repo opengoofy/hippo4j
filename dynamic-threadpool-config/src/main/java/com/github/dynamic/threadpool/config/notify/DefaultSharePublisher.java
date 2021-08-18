@@ -12,7 +12,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Default Share Publisher.
+ * Default share publisher.
  *
  * @author chen.ma
  * @date 2021/6/23 19:05
@@ -43,4 +43,5 @@ public class DefaultSharePublisher extends DefaultPublisher {
             lock.unlock();
         }
     }
+
 }

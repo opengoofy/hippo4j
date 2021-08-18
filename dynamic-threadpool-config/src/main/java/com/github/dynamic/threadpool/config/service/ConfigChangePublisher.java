@@ -4,7 +4,7 @@ import com.github.dynamic.threadpool.config.event.LocalDataChangeEvent;
 import com.github.dynamic.threadpool.config.notify.NotifyCenter;
 
 /**
- * Config Change Publisher.
+ * Config change publisher.
  *
  * @author chen.ma
  * @date 2021/6/24 23:34
@@ -12,7 +12,7 @@ import com.github.dynamic.threadpool.config.notify.NotifyCenter;
 public class ConfigChangePublisher {
 
     /**
-     * Notify ConfigChange.
+     * Notify configChange.
      *
      * @param event
      */

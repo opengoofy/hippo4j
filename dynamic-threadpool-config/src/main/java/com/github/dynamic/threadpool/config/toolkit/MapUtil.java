@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
- * Map Util.
+ * Map util.
  *
  * @author chen.ma
  * @date 2021/6/23 19:09
@@ -27,4 +27,5 @@ public class MapUtil {
         }
         return val;
     }
+
 }

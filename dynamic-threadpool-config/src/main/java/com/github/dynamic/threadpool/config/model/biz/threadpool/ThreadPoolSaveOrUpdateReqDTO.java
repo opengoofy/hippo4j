@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.config.model.biz.threadpool;
 import lombok.Data;
 
 /**
- * Thread Pool Save Or Update Req DTO.
+ * Thread pool save or update req dto.
  *
  * @author chen.ma
  * @date 2021/6/30 21:23
@@ -27,42 +27,42 @@ public class ThreadPoolSaveOrUpdateReqDTO {
     private String itemId;
 
     /**
-     * 核心线程数
+     * coreSize
      */
     private Integer coreSize;
 
     /**
-     * 最大线程数
+     * maxSize
      */
     private Integer maxSize;
 
     /**
-     * 队列类型
+     * queueType
      */
     private Integer queueType;
 
     /**
-     * 队列长度
+     * capacity
      */
     private Integer capacity;
 
     /**
-     * 线程存活时长
+     * keepAliveTime
      */
     private Integer keepAliveTime;
 
     /**
-     * 是否告警
+     * isAlarm
      */
     private Integer isAlarm;
 
     /**
-     * 容量告警
+     * capacityAlarm
      */
     private Integer capacityAlarm;
 
     /**
-     * 活跃度告警
+     * livenessAlarm
      */
     private Integer livenessAlarm;
 

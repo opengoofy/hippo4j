@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.config.model.biz.item;
 import lombok.Data;
 
 /**
- * Item Update Req DTO.
+ * Item update req dto.
  *
  * @author chen.ma
  * @date 2021/6/29 22:05

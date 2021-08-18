@@ -9,7 +9,7 @@ import com.github.dynamic.threadpool.config.model.biz.item.ItemUpdateReqDTO;
 import java.util.List;
 
 /**
- * Item Service.
+ * Item service.
  *
  * @author chen.ma
  * @date 2021/6/29 21:57
@@ -17,7 +17,7 @@ import java.util.List;
 public interface ItemService {
 
     /**
-     * 分页查询
+     * Query item page.
      *
      * @param reqDTO
      * @return
@@ -25,7 +25,7 @@ public interface ItemService {
     IPage<ItemRespDTO> queryItemPage(ItemQueryReqDTO reqDTO);
 
     /**
-     * 根据 Id 获取项目
+     * Query item by id.
      *
      * @param tenantId
      * @param itemId
@@ -34,7 +34,7 @@ public interface ItemService {
     ItemRespDTO queryItemById(String tenantId, String itemId);
 
     /**
-     * 查询项目
+     * Query item.
      *
      * @param reqDTO
      * @return
@@ -42,24 +42,25 @@ public interface ItemService {
     List<ItemRespDTO> queryItem(ItemQueryReqDTO reqDTO);
 
     /**
-     * 新增项目
+     * Save item.
      *
      * @param reqDTO
      */
     void saveItem(ItemSaveReqDTO reqDTO);
 
     /**
-     * 修改项目
+     * Update item.
      *
      * @param reqDTO
      */
     void updateItem(ItemUpdateReqDTO reqDTO);
 
     /**
-     * 删除项目
+     * Delete item.
      *
      * @param tenantId
      * @param itemId
      */
     void deleteItem(String tenantId, String itemId);
+
 }

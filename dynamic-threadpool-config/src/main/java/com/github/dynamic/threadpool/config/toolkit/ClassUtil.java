@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.config.toolkit;
 import java.util.Objects;
 
 /**
- * Class Util.
+ * Class util.
  *
  * @author chen.ma
  * @date 2021/6/23 19:03
@@ -19,4 +19,5 @@ public class ClassUtil {
         Objects.requireNonNull(cls, "cls");
         return cls.getCanonicalName();
     }
+
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Cache Item.
+ * Cache item.
  *
  * @author chen.ma
  * @date 2021/6/24 21:23
@@ -32,4 +32,5 @@ public class CacheItem {
         this.md5 = md5;
         this.groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
     }
+
 }

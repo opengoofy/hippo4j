@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.config.model;
 import lombok.Data;
 
 /**
- * 配置信息
+ * Config info.
  *
  * @author chen.ma
  * @date 2021/6/20 15:59

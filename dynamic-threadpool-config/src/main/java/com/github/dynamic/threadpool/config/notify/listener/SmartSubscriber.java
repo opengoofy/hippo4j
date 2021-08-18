@@ -12,5 +12,11 @@ import java.util.List;
  */
 public abstract class SmartSubscriber extends Subscriber {
 
+    /**
+     * Subscribe types.
+     *
+     * @return
+     */
     public abstract List<Class<? extends Event>> subscribeTypes();
+
 }

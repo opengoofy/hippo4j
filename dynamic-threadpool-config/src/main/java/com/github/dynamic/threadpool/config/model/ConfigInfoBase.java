@@ -8,7 +8,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 基础配置信息
+ * Config info base.
  *
  * @author chen.ma
  * @date 2021/6/20 14:05
@@ -40,47 +40,47 @@ public class ConfigInfoBase implements Serializable {
     private String itemId;
 
     /**
-     * 核心线程数
+     * coreSize
      */
     private Integer coreSize;
 
     /**
-     * 最大线程数
+     * maxSize
      */
     private Integer maxSize;
 
     /**
-     * 队列类型
+     * queueType
      */
     private Integer queueType;
 
     /**
-     * 队列长度
+     * capacity
      */
     private Integer capacity;
 
     /**
-     * 线程存活时长
+     * keepAliveTime
      */
     private Integer keepAliveTime;
 
     /**
-     * 拒绝策略类型
+     * rejectedType
      */
     private Integer rejectedType;
 
     /**
-     * 是否告警
+     * isAlarm
      */
     private Integer isAlarm;
 
     /**
-     * 容量告警
+     * capacityAlarm
      */
     private Integer capacityAlarm;
 
     /**
-     * 活跃度告警
+     * livenessAlarm
      */
     private Integer livenessAlarm;
 
@@ -91,8 +91,9 @@ public class ConfigInfoBase implements Serializable {
     private String md5;
 
     /**
-     * 内容
+     * content
      */
     @JSONField(serialize = false)
     private String content;
+
 }

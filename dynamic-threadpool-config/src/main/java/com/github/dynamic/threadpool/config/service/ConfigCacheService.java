@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Config Cache Service.
+ * Config cache service.
  *
  * @author chen.ma
  * @date 2021/6/24 21:19
@@ -31,8 +31,8 @@ public class ConfigCacheService {
     }
 
     /**
-     * 获取 Md5
-     * TODO：加入 IP, 不同 IP 的线程池区别改写
+     * Get Md5.
+     * TODO：Add IP, different IP thread pool rewrite
      * TODO：groupKey && Md5 Cache
      *
      * @param groupKey
@@ -92,4 +92,5 @@ public class ConfigCacheService {
         item = CACHE.putIfAbsent(groupKey, tmp);
         return (null == item) ? tmp : item;
     }
+
 }
