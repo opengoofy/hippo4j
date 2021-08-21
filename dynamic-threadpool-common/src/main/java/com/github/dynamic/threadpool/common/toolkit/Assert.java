@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * 断言工具类
+ * Assert.
  *
  * @author chen.ma
  * @date 2021/6/29 09:36

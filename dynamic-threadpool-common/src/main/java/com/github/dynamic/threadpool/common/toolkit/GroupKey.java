@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.common.toolkit;
 import org.springframework.util.StringUtils;
 
 /**
- * Group Key
+ * Group key.
  *
  * @author chen.ma
  * @date 2021/6/24 21:12

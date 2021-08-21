@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * 线程池参数
+ * Thread pool parameter info.
  *
  * @author chen.ma
  * @date 2021/6/16 23:18
@@ -18,67 +18,67 @@ public class PoolParameterInfo implements PoolParameter, Serializable {
     private static final long serialVersionUID = -7123935122108553864L;
 
     /**
-     * 命名空间
+     * tenantId
      */
     private String tenantId;
 
     /**
-     * 项目 Id
+     * itemId
      */
     private String itemId;
 
     /**
-     * 线程池 Id
+     * tpId
      */
     private String tpId;
 
     /**
-     * 内容
+     * content
      */
     private String content;
 
     /**
-     * 核心线程数
+     * coreSize
      */
     private Integer coreSize;
 
     /**
-     * 最大线程数
+     * maxSize
      */
     private Integer maxSize;
 
     /**
-     * 队列类型
+     * queueType
      */
     private Integer queueType;
 
     /**
-     * 队列长度
+     * capacity
      */
     private Integer capacity;
 
     /**
-     * 线程存活时长
+     * keepAliveTime
      */
     private Integer keepAliveTime;
 
     /**
-     * 拒绝策略类型
+     * rejectedType
      */
     private Integer rejectedType;
 
     /**
-     * 是否告警
+     * isAlarm
      */
     private Integer isAlarm;
 
     /**
-     * 容量告警
+     * capacityAlarm
      */
     private Integer capacityAlarm;
 
     /**
-     * 活跃度告警
+     * livenessAlarm
      */
     private Integer livenessAlarm;
 

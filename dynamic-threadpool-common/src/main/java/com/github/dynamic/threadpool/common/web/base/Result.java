@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * 全局返回对象
+ * Result.
  *
  * @author chen.ma
  * @date 2021/3/19 16:12

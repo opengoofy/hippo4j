@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
- * Pool Run State Info.
+ * Pool run state info.
  *
  * @author chen.ma
  * @date 2021/7/7 18:57
@@ -16,77 +16,77 @@ import java.io.Serializable;
 public class PoolRunStateInfo implements Serializable {
 
     /**
-     * 当前负载
+     * currentLoad
      */
     private String currentLoad;
 
     /**
-     * 峰值负载
+     * peakLoad
      */
     private String peakLoad;
 
     /**
-     * 线程池 ID
+     * tpId
      */
     private String tpId;
 
     /**
-     * 核心线程数
+     * coreSize
      */
     private Integer coreSize;
 
     /**
-     * 最大线程数
+     * maximumSize
      */
     private Integer maximumSize;
 
     /**
-     * 线程池当前线程数
+     * poolSize
      */
     private Integer poolSize;
 
     /**
-     * 活跃线程数
+     * activeSize
      */
     private Integer activeSize;
 
     /**
-     * 线程池中同时进入的最大线程数
+     * The maximum number of threads that enter the thread pool at the same time
      */
     private Integer largestPoolSize;
 
     /**
-     * 队列类型
+     * queueType
      */
     private String queueType;
 
     /**
-     * 队列容量
+     * queueCapacity
      */
     private Integer queueCapacity;
 
     /**
-     * 队列元素个数
+     * queueSize
      */
     private Integer queueSize;
 
     /**
-     * 队列剩余容量
+     * queueRemainingCapacity
      */
     private Integer queueRemainingCapacity;
 
     /**
-     * 线程池中执行任务总数量
+     * completedTaskCount
      */
     private Long completedTaskCount;
 
     /**
-     * 拒绝策略发生次数
+     * rejectCount
      */
     private Integer rejectCount;
 
     /**
-     * Host
+     * host
      */
     private String host;
 

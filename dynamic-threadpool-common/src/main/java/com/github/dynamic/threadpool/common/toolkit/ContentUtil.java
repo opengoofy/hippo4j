@@ -6,7 +6,7 @@ import com.github.dynamic.threadpool.common.model.PoolParameter;
 import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
 
 /**
- * Content Util.
+ * Content util.
  *
  * @author chen.ma
  * @date 2021/6/24 16:13
@@ -40,4 +40,5 @@ public class ContentUtil {
                 .toString();
         return resultStr;
     }
+
 }

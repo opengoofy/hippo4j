@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Instance Info.
+ * Instance info.
  *
  * @author chen.ma
  * @date 2021/7/13 22:10

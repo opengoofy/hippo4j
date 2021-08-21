@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContextAware;
 import java.util.Map;
 
 /**
- * 非 Spring 环境下获取 IOC 容器对象
+ * Application context holder.
  *
  * @author chen.ma
  * @date 2021/6/20 18:49
@@ -22,7 +22,7 @@ public class ApplicationContextHolder implements ApplicationContextAware {
     }
 
     /**
-     * 根据类型获取 IOC 容器 Bean
+     * Get ioc container bean by type.
      *
      * @param clazz
      * @param <T>
@@ -33,7 +33,7 @@ public class ApplicationContextHolder implements ApplicationContextAware {
     }
 
     /**
-     * 根据名称 & 类型获取 IOC 容器 Bean
+     * Get ioc container bean by name and type.
      *
      * @param name
      * @param clazz
@@ -45,7 +45,7 @@ public class ApplicationContextHolder implements ApplicationContextAware {
     }
 
     /**
-     * 根据类型获取一组 IOC 容器 Bean
+     * Get a set of ioc container beans by type.
      *
      * @param clazz
      * @param <T>

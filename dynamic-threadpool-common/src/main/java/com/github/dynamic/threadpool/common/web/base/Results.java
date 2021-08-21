@@ -4,7 +4,7 @@ import com.github.dynamic.threadpool.common.web.exception.ErrorCodeEnum;
 import com.github.dynamic.threadpool.common.web.exception.ServiceException;
 
 /**
- * Result 工具类
+ * Results.
  *
  * @author chen.ma
  * @date 2021/3/19 16:12

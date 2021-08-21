@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.common.constant;
 
 /**
- * Constants
+ * Constants.
  *
  * @author chen.ma
  * @date 2021/6/16 23:01

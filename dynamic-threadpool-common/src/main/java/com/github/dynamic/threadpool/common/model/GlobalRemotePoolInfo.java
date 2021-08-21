@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
- * 远程调用通用参数
+ * Global remote pool info.
  *
  * @author chen.ma
  * @date 2021/6/23 21:08
@@ -18,67 +18,67 @@ public class GlobalRemotePoolInfo implements Serializable {
     private static final long serialVersionUID = 5447003335557127308L;
 
     /**
-     * 命名空间
+     * tenantId
      */
     private String tenantId;
 
     /**
-     * 项目 ID
+     * itemId
      */
     private String itemId;
 
     /**
-     * 线程池标识
+     * tpId
      */
     private String tpId;
 
     /**
-     * 核心线程数
+     * coreSize
      */
     private Integer coreSize;
 
     /**
-     * 最大线程数
+     * maxSize
      */
     private Integer maxSize;
 
     /**
-     * 队列类型
+     * queueType
      */
     private Integer queueType;
 
     /**
-     * 队列长度
+     * capacity
      */
     private Integer capacity;
 
     /**
-     * 线程存活时长
+     * keepAliveTime
      */
     private Integer keepAliveTime;
 
     /**
-     * 是否告警
+     * isAlarm
      */
     private Integer isAlarm;
 
     /**
-     * 容量告警
+     * capacityAlarm
      */
     private Integer capacityAlarm;
 
     /**
-     * 活跃度告警
+     * livenessAlarm
      */
     private Integer livenessAlarm;
 
     /**
-     * MD5
+     * md5
      */
     private String md5;
 
     /**
-     * 内容
+     * content
      */
     private String content;
 

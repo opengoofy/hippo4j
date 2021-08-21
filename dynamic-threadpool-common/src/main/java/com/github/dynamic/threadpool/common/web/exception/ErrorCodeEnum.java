@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.common.web.exception;
 
 /**
- * 异常码
+ * Error code enum.
  *
  * @author chen.ma
  * @date 2021/3/19 16:07
@@ -16,7 +16,7 @@ public enum ErrorCodeEnum {
 
         @Override
         public String getMessage() {
-            return "未知错误";
+            return "UNKNOWN_ERROR";
         }
     },
 
@@ -28,7 +28,7 @@ public enum ErrorCodeEnum {
 
         @Override
         public String getMessage() {
-            return "参数错误";
+            return "VALIDATION_ERROR";
         }
     },
 
@@ -40,7 +40,7 @@ public enum ErrorCodeEnum {
 
         @Override
         public String getMessage() {
-            return "服务异常";
+            return "SERVICE_ERROR";
         }
     },
 
@@ -52,7 +52,7 @@ public enum ErrorCodeEnum {
 
         @Override
         public String getMessage() {
-            return "未找到异常";
+            return "NOT_FOUND";
         }
     };
 

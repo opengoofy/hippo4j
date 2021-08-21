@@ -5,7 +5,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * Executor Factory.
+ * Executor factory.
  *
  * @author chen.ma
  * @date 2021/6/23 18:35
@@ -24,4 +24,5 @@ public class ExecutorFactory {
             return executorService;
         }
     }
+
 }

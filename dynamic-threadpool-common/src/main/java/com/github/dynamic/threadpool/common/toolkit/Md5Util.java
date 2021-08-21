@@ -13,7 +13,7 @@ import java.util.List;
 import static com.github.dynamic.threadpool.common.constant.Constants.WORD_SEPARATOR;
 
 /**
- * MD5 Util.
+ * MD5 util.
  *
  * @author chen.ma
  * @date 2021/6/22 17:55

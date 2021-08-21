@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 业务系统业务逻辑相关异常
+ * Service exception.
  *
  * @author chen.ma
  * @date 2021/3/19 16:14

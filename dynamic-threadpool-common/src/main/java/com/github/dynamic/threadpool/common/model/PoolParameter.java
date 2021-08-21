@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.common.model;
 
 /**
- * Pool Parameter.
+ * Pool parameter.
  *
  * @author chen.ma
  * @date 2021/6/24 16:04
