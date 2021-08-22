@@ -9,7 +9,7 @@ import com.github.dynamic.threadpool.config.model.biz.item.ItemRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemSaveReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemUpdateReqDTO;
 import com.github.dynamic.threadpool.config.service.biz.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
  * @date 2021/6/29 21:42
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping(Constants.BASE_PATH + "/item")
 public class ItemController {
 
-    @Autowired
-    private ItemService itemService;
+    private final ItemService itemService;
 
     @PostMapping("/query/page")
     public Result<IPage<ItemRespDTO>> queryItemPage(@RequestBody ItemQueryReqDTO reqDTO) {
@@ -52,4 +52,5 @@ public class ItemController {
         itemService.deleteItem(tenantId, itemId);
         return Results.success();
     }
+
 }

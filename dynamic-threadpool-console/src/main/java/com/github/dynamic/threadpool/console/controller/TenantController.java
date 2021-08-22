@@ -9,21 +9,21 @@ import com.github.dynamic.threadpool.config.model.biz.tenant.TenantRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantSaveReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantUpdateReqDTO;
 import com.github.dynamic.threadpool.config.service.biz.TenantService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Tenant Controller.
+ * Tenant controller.
  *
  * @author chen.ma
  * @date 2021/6/25 18:31
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping(Constants.BASE_PATH + "/tenant")
 public class TenantController {
 
-    @Autowired
-    private TenantService tenantService;
+    private final TenantService tenantService;
 
     @PostMapping("/query/page")
     public Result<IPage<TenantRespDTO>> queryNameSpacePage(@RequestBody TenantQueryReqDTO reqDTO) {
@@ -52,4 +52,5 @@ public class TenantController {
         tenantService.deleteTenantById(tenantId);
         return Results.success();
     }
+
 }

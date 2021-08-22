@@ -8,21 +8,24 @@ import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolQuery
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
 import com.github.dynamic.threadpool.config.service.biz.ThreadPoolService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Thread Pool Controller.
+ * Thread pool controller.
  *
  * @author chen.ma
  * @date 2021/6/30 20:54
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping(Constants.BASE_PATH + "/thread")
 public class ThreadPoolController {
 
-    @Autowired
-    private ThreadPoolService threadPoolService;
+    private final ThreadPoolService threadPoolService;
 
     @PostMapping("/pool/query/page")
     public Result<IPage<ThreadPoolRespDTO>> queryNameSpacePage(@RequestBody ThreadPoolQueryReqDTO reqDTO) {
