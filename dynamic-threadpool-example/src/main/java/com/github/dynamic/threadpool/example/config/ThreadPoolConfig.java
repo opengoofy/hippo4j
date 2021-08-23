@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 线程池配置
+ * Thread pool config.
  *
  * @author chen.ma
  * @date 2021/6/20 17:16

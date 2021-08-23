@@ -26,7 +26,7 @@ public class RunStateHandlerTest {
     // @PostConstruct
     @SuppressWarnings("all")
     public void runStateHandlerTest() {
-        log.info("测试线程池运行时状态接口, 30s 后开始触发拒绝策略...");
+        log.info("Test thread pool runtime state interface, The rejection policy will be triggered after 30s...");
 
         ScheduledExecutorService scheduledThreadPool = Executors.newSingleThreadScheduledExecutor();
         scheduledThreadPool.scheduleAtFixedRate(() -> {
@@ -34,12 +34,12 @@ public class RunStateHandlerTest {
             ThreadPoolExecutor pool = executorService.getPool();
             try {
                 pool.execute(() -> {
-                    log.info("线程池名称 :: {}, 正在执行即将进入阻塞...", Thread.currentThread().getName());
+                    log.info("Thread pool name :: {}, Executing incoming blocking...", Thread.currentThread().getName());
                     try {
                         int maxRandom = 10;
                         int temp = 2;
                         Random random = new Random();
-                        // 这里为了赋值线程池 completedTaskCount
+                        // Assignment thread pool completedTaskCount
                         if (random.nextInt(maxRandom) % temp == 0) {
                             Thread.sleep(10241024);
                         } else {
@@ -55,4 +55,5 @@ public class RunStateHandlerTest {
 
         }, 5, 2, TimeUnit.SECONDS);
     }
+
 }

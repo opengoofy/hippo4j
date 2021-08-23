@@ -33,7 +33,7 @@ public class AlarmSendMessageTest {
             try {
                 poolExecutor.execute(() -> ThreadUtil.sleep(10240124));
             } catch (Exception ex) {
-                log.error("抛出拒绝策略", ex.getMessage());
+                log.error("Throw reject policy.", ex.getMessage());
             }
         }, 3, 1, TimeUnit.SECONDS);
     }
