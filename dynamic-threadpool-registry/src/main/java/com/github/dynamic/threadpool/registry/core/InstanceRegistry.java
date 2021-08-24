@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.common.model.InstanceInfo;
 import java.util.List;
 
 /**
- * Instance Registry.
+ * Instance registry.
  *
  * @author chen.ma
  * @date 2021/8/8 22:31
@@ -13,7 +13,7 @@ import java.util.List;
 public interface InstanceRegistry<T> {
 
     /**
-     * list Instance.
+     * List instance.
      *
      * @param appName
      * @return
@@ -21,14 +21,14 @@ public interface InstanceRegistry<T> {
     List<Lease<T>> listInstance(String appName);
 
     /**
-     * register.
+     * Register.
      *
      * @param info
      */
     void register(T info);
 
     /**
-     * renew.
+     * Renew.
      *
      * @param instanceRenew
      * @return

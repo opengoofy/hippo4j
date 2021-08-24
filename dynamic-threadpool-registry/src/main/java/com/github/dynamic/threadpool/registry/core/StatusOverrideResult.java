@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.registry.core;
 import com.github.dynamic.threadpool.common.model.InstanceInfo.InstanceStatus;
 
 /**
- * Status Override Result.
+ * Status override result.
  *
  * @author chen.ma
  * @date 2021/8/8 23:11

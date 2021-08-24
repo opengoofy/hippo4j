@@ -1,22 +1,22 @@
 package com.github.dynamic.threadpool.registry.config;
 
 import com.github.dynamic.threadpool.registry.core.BaseInstanceRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 
 /**
- * Registry Configuration.
+ * Registry configuration.
  *
  * @author chen.ma
  * @date 2021/8/12 21:48
  */
 @Configuration
+@AllArgsConstructor
 public class RegistryConfiguration {
 
-    @Autowired
-    private BaseInstanceRegistry baseInstanceRegistry;
+    private final BaseInstanceRegistry baseInstanceRegistry;
 
     @PostConstruct
     public void registryInit() {

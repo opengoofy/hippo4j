@@ -16,7 +16,7 @@ import java.util.List;
 import static com.github.dynamic.threadpool.common.constant.Constants.BASE_PATH;
 
 /**
- * Application Controller.
+ * Application controller.
  *
  * @author chen.ma
  * @date 2021/8/8 22:24

@@ -20,7 +20,7 @@ import static com.github.dynamic.threadpool.common.constant.Constants.EVICTION_I
 import static com.github.dynamic.threadpool.common.constant.Constants.SCHEDULED_THREAD_CORE_NUM;
 
 /**
- * Base Instance Registry.
+ * Base instance registry.
  *
  * @author chen.ma
  * @date 2021/8/8 22:46
