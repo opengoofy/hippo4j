@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.starter.alarm;
 
 /**
- * Message Type Enum.
+ * Message type enum.
  *
  * @author chen.ma
  * @date 2021/8/16 20:50

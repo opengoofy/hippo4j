@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * ThreadPool Alarm.
+ * Thread pool alarm.
  *
  * @author chen.ma
  * @date 2021/8/15 13:13
@@ -14,17 +14,17 @@ import lombok.Data;
 public class ThreadPoolAlarm {
 
     /**
-     * 是否报警
+     * isAlarm
      */
     private Boolean isAlarm;
 
     /**
-     * 活跃度报警
+     * livenessAlarm
      */
     private Integer livenessAlarm;
 
     /**
-     * 容量报警
+     * capacityAlarm
      */
     private Integer capacityAlarm;
 

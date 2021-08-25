@@ -6,7 +6,7 @@ import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExec
 import java.util.List;
 
 /**
- * Send Message Handler.
+ * Send message handler.
  *
  * @author chen.ma
  * @date 2021/8/15 15:44

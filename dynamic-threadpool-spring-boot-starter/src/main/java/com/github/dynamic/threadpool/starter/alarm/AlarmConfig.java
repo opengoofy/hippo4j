@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.starter.alarm;
 import lombok.Data;
 
 /**
- * Alarm Config.
+ * Alarm config.
  *
  * @author chen.ma
  * @date 2021/8/15 16:09

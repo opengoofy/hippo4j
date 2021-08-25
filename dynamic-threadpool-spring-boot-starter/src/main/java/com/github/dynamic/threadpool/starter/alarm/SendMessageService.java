@@ -4,7 +4,7 @@ import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
 import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 
 /**
- * Send Msg.
+ * Send msg.
  *
  * @author chen.ma
  * @date 2021/8/15 15:31

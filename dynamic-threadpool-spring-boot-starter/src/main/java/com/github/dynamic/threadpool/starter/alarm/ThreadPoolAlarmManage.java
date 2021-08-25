@@ -8,7 +8,7 @@ import com.github.dynamic.threadpool.starter.toolkit.thread.ResizableCapacityLin
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Alarm Manage.
+ * Alarm manage.
  *
  * @author chen.ma
  * @date 2021/8/15 14:13

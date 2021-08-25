@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Base Send Message Service.
+ * Base send message service.
  *
  * @author chen.ma
  * @date 2021/8/15 15:34
