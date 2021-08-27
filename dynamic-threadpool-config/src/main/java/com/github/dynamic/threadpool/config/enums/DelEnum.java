@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.config.enums;
 
 /**
- * 状态枚举
+ * Del enum.
  *
  * @author chen.ma
  * @date 2021/3/26 18:45
