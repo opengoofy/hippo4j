@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Item Controller.
+ * Item controller.
  *
  * @author chen.ma
  * @date 2021/6/29 21:42
