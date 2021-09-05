@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Pool Run State Controller.
+ * Pool run state controller.
  *
  * @author chen.ma
  * @date 2021/7/7 21:34

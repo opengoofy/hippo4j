@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.concurrent.*;
 
 /**
- * ThreadPool Builder.
+ * ThreadPool builder.
  *
  * @author chen.ma
  * @date 2021/6/28 17:29

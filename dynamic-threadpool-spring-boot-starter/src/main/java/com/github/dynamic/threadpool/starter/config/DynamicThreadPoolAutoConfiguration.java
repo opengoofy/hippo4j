@@ -19,7 +19,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 /**
- * DynamicTp Auto Configuration.
+ * DynamicTp auto configuration.
  *
  * @author chen.ma
  * @date 2021/6/22 09:20

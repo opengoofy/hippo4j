@@ -7,7 +7,7 @@ import com.github.dynamic.threadpool.starter.toolkit.HttpClientUtil;
 import java.util.Map;
 
 /**
- * Server Http Agent.
+ * Server http agent.
  *
  * @author chen.ma
  * @date 2021/6/23 20:50

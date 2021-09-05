@@ -14,7 +14,7 @@ import javax.net.ssl.X509TrustManager;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Http Client Config.
+ * Http client config.
  *
  * @author chen.ma
  * @date 2021/6/10 13:28

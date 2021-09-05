@@ -14,7 +14,7 @@ import static com.github.dynamic.threadpool.starter.toolkit.CloudCommonIdUtil.ge
 import static com.github.dynamic.threadpool.starter.toolkit.CloudCommonIdUtil.getIpApplicationName;
 
 /**
- * Dynamic Tp Discovery Config.
+ * Dynamic threadPool discovery config.
  *
  * @author chen.ma
  * @date 2021/8/6 21:35

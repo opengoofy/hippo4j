@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
- * Annotation to activate Dynamic ThreadPool related configuration.
+ * Annotation to activate dynamic threadPool related configuration.
  *
  * @author chen.ma
  * @date 2021/7/8 23:28

@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.starter.core;
 
 /**
- * Config Adapter.
+ * Config adapter.
  *
  * @author chen.ma
  * @date 2021/6/22 21:29
@@ -9,7 +9,7 @@ package com.github.dynamic.threadpool.starter.core;
 public class ConfigAdapter {
 
     /**
-     * callback Config.
+     * Callback Config.
      *
      * @param config
      */

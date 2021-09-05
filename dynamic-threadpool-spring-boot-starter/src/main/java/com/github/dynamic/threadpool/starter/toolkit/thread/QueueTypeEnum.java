@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.concurrent.*;
 
 /**
- * Queue Type Enum.
+ * Queue type enum.
  *
  * @author chen.ma
  * @date 2021/6/25 12:30

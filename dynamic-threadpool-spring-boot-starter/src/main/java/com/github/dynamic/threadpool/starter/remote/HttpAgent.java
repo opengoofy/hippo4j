@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.common.web.base.Result;
 import java.util.Map;
 
 /**
- * Http Agent.
+ * Http agent.
  *
  * @author chen.ma
  * @date 2021/6/23 20:45
@@ -13,26 +13,26 @@ import java.util.Map;
 public interface HttpAgent {
 
     /**
-     * 开始获取服务集合
+     * Start.
      */
     void start();
 
     /**
-     * 获取命名空间
+     * Get tenant id.
      *
      * @return
      */
     String getTenantId();
 
     /**
-     * 获取编码集
+     * Get encode.
      *
      * @return
      */
     String getEncode();
 
     /**
-     * 发起 Http Post 请求 By Discovery
+     * Send HTTP post request by discovery.
      *
      * @param path
      * @param body
@@ -41,7 +41,7 @@ public interface HttpAgent {
     Result httpPostByDiscovery(String path, Object body);
 
     /**
-     * 发起 Http Get 请求 By 动态配置
+     * Send HTTP get request by dynamic config.
      *
      * @param path
      * @param headers
@@ -53,7 +53,7 @@ public interface HttpAgent {
                            long readTimeoutMs);
 
     /**
-     * 发起 Http Post 请求 By 动态配置
+     * Send HTTP post request by dynamic config.
      *
      * @param path
      * @param headers
@@ -65,7 +65,7 @@ public interface HttpAgent {
                             long readTimeoutMs);
 
     /**
-     * 发起 Http Delete 请求 By 动态配置
+     * Send HTTP delete request by dynamic config.
      *
      * @param path
      * @param headers

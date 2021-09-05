@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.starter.config.BootstrapProperties;
 import java.util.concurrent.Executor;
 
 /**
- * ThreadPool Operation.
+ * ThreadPool operation.
  *
  * @author chen.ma
  * @date 2021/6/22 20:25

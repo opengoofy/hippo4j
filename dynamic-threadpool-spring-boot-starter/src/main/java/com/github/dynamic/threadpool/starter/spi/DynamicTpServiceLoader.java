@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * Dynamic ThreadPool Service Loader.
+ * Dynamic threadPool service loader.
  *
  * @author chen.ma
  * @date 2021/7/10 23:45

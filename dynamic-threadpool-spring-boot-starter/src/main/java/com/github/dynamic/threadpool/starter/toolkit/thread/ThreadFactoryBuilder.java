@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * ThreadFactory Builder.
+ * ThreadFactory builder.
  *
  * @author chen.ma
  * @date 2021/7/5 21:53

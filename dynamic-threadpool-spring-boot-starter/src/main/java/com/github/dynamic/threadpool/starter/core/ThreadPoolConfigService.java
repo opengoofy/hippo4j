@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.starter.remote.HttpAgent;
 import java.util.Arrays;
 
 /**
- * ThreadPool Config Service.
+ * ThreadPool config service.
  *
  * @author chen.ma
  * @date 2021/6/21 21:50

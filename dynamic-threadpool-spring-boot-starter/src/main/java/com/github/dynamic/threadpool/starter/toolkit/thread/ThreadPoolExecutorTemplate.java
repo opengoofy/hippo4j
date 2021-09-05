@@ -5,7 +5,7 @@ import com.github.dynamic.threadpool.starter.toolkit.ArrayUtil;
 import java.util.concurrent.*;
 
 /**
- * ThreadPool Executor Template.
+ * ThreadPool executor template.
  *
  * @author chen.ma
  * @date 2021/7/5 21:59

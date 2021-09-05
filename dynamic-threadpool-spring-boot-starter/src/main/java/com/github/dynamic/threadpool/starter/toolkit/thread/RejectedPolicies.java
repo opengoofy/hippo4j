@@ -6,7 +6,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 
 /**
- * Rejected Policies.
+ * Rejected policies.
  *
  * @author chen.ma
  * @date 2021/7/5 21:23

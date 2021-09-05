@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Fast ThreadPool Executor.
+ * Fast threadPool executor.
  *
  * @author chen.ma
  * @date 2021/7/5 21:00

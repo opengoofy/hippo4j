@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.starter.spi;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Custom BlockingQueue.
+ * Custom blockingQueue.
  *
  * @author chen.ma
  * @date 2021/7/11 00:51

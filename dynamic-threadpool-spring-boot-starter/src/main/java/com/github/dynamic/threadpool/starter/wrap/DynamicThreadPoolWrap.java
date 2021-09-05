@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 /**
- * Dynamic ThreadPool Wrap.
+ * Dynamic threadPool wrap.
  *
  * @author chen.ma
  * @date 2021/6/20 16:55

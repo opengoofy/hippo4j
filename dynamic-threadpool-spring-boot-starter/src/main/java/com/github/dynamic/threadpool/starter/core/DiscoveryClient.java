@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.*;
 
 /**
- * Discovery Client.
+ * Discovery client.
  *
  * @author chen.ma
  * @date 2021/7/13 21:51

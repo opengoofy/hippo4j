@@ -11,9 +11,9 @@ import java.io.Serializable;
 public interface Builder<T> extends Serializable {
 
     /**
-     * 构建
+     * Build.
      *
-     * @return 被构建的对象
+     * @return
      */
     T build();
 

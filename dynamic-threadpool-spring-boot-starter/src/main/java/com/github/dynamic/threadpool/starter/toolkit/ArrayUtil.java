@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.starter.toolkit;
 import java.lang.reflect.Array;
 
 /**
- * Array Util.
+ * Array util.
  *
  * @author chen.ma
  * @date 2021/7/5 21:54

@@ -24,7 +24,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Dynamic ThreadPool Post Processor.
+ * Dynamic threadPool post processor.
  *
  * @author chen.ma
  * @date 2021/8/2 20:40

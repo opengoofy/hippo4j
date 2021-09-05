@@ -3,7 +3,7 @@ package com.github.dynamic.threadpool.starter.spi;
 import java.util.concurrent.RejectedExecutionHandler;
 
 /**
- * Custom RejectedExecution Handler.
+ * Custom rejectedExecution handler.
  *
  * @author chen.ma
  * @date 2021/7/10 23:51

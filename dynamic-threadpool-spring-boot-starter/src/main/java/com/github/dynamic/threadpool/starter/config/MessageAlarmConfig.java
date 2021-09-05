@@ -12,7 +12,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
- * Message Alarm Config.
+ * Message alarm config.
  *
  * @author chen.ma
  * @date 2021/8/15 15:39

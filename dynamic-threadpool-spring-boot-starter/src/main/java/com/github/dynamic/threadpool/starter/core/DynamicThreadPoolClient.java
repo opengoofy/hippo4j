@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.starter.core;
 
 /**
- * Dynamic Tp Client.
+ * Dynamic tp client.
  *
  * @author chen.ma
  * @date 2021/7/13 21:50

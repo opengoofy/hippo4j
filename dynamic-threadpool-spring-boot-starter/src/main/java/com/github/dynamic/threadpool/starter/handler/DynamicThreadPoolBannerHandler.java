@@ -10,7 +10,7 @@ import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
 
 /**
- * 动态线程池打印 Banner.
+ * Dynamic thread pool print banner.
  *
  * @author chen.ma
  * @date 2021/6/20 16:34

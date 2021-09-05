@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 动态线程池标记配置类
+ * Marker configuration.
  *
  * @author chen.ma
  * @date 2021/7/8 23:30

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Global ThreadPool Manage.
+ * Global threadPool manage.
  *
  * @author chen.ma
  * @date 2021/6/20 15:57

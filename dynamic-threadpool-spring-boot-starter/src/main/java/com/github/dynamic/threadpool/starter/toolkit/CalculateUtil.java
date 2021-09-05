@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.starter.toolkit;
 
 /**
- * Calculate Util.
+ * Calculate util.
  *
  * @author chen.ma
  * @date 2021/8/15 14:29

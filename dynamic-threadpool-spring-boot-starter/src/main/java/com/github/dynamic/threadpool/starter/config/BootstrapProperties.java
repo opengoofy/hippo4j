@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.List;
 
 /**
- * Bootstrap Properties.
+ * Bootstrap properties.
  *
  * @author chen.ma
  * @date 2021/6/22 09:14

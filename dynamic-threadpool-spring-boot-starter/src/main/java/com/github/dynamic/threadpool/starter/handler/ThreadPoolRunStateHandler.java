@@ -13,7 +13,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Thread Pool Run State Service.
+ * Thread pool run state service.
  *
  * @author chen.ma
  * @date 2021/7/12 21:25
@@ -21,11 +21,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Slf4j
 public class ThreadPoolRunStateHandler {
 
-    private static InetAddress addr;
+    private static InetAddress INET_ADDRESS;
 
     static {
         try {
-            addr = InetAddress.getLocalHost();
+            INET_ADDRESS = InetAddress.getLocalHost();
         } catch (UnknownHostException ex) {
             log.error("Local IP acquisition failed.", ex);
         }
@@ -75,7 +75,7 @@ public class ThreadPoolRunStateHandler {
         stateInfo.setQueueCapacity(queueCapacity);
         stateInfo.setLargestPoolSize(largestPoolSize);
         stateInfo.setCompletedTaskCount(completedTaskCount);
-        stateInfo.setHost(addr.getHostAddress());
+        stateInfo.setHost(INET_ADDRESS.getHostAddress());
         stateInfo.setTpId(tpId);
 
         int rejectCount = pool instanceof CustomThreadPoolExecutor

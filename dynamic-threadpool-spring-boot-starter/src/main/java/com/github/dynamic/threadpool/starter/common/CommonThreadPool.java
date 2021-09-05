@@ -8,7 +8,7 @@ import com.github.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Common ThreadPool.
+ * Common threadPool.
  *
  * @author chen.ma
  * @date 2021/6/16 22:35

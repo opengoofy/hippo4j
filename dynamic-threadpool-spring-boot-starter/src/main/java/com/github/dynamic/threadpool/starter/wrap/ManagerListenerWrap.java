@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Manager Listener Wrap.
+ * Manager listener wrap.
  *
  * @author chen.ma
  * @date 2021/6/22 17:47

@@ -18,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import static com.github.dynamic.threadpool.common.constant.Constants.MAP_INITIAL_CAPACITY;
 
 /**
- * Custom Thread Pool Wrap.
+ * Custom threadPool wrap.
  *
  * @author chen.ma
  * @date 2021/7/8 21:47

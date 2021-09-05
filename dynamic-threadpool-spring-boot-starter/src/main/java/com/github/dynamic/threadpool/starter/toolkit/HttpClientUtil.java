@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * HttpClient Util.
+ * HttpClient util.
  *
  * @author chen.ma
  * @date 2021/6/10 13:30

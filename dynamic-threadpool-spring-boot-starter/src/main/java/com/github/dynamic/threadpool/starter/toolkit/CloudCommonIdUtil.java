@@ -6,7 +6,7 @@ import org.springframework.core.env.PropertyResolver;
 import java.net.InetAddress;
 
 /**
- * Cloud Common Id Util.
+ * Cloud common id util.
  *
  * @author chen.ma
  * @date 2021/8/6 21:02

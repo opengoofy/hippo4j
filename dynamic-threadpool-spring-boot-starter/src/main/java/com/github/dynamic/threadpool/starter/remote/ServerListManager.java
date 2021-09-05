@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 
 /**
- * Server List Manager.
+ * Server list manager.
  *
  * @author chen.ma
  * @date 2021/6/23 20:42
@@ -39,7 +39,7 @@ public class ServerListManager {
 
             for (String serverAddr : serverAddrsArr) {
                 if (serverAddr.startsWith(HTTPS) || serverAddr.startsWith(HTTP)) {
-                    // TODO 固定写，后面优化
+                    // TODO Temporarily fixed write, later optimized
                     currentServerAddr = serverAddr;
                     serverAddrs.add(serverAddr);
                 }
@@ -71,7 +71,7 @@ public class ServerListManager {
         final Iterator<RandomizedServerAddress> iter;
 
         public ServerAddressIterator(List<String> source) {
-            sorted = new ArrayList<RandomizedServerAddress>();
+            sorted = new ArrayList();
             for (String address : source) {
                 sorted.add(new RandomizedServerAddress(address));
             }

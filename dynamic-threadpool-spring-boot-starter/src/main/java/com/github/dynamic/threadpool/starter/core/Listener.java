@@ -11,14 +11,14 @@ import java.util.concurrent.Executor;
 public interface Listener {
 
     /**
-     * 获取执行器
+     * Get executor.
      *
      * @return
      */
     Executor getExecutor();
 
     /**
-     * 接受配置信息
+     * Receive config info.
      *
      * @param configInfo
      */

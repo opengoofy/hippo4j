@@ -5,7 +5,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Task Queue.
+ * Task queue.
  *
  * @author chen.ma
  * @date 2021/7/5 21:00

@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 import static com.github.dynamic.threadpool.common.constant.Constants.*;
 
 /**
- * Client Worker.
+ * Client worker.
  *
  * @author chen.ma
  * @date 2021/6/20 18:34
