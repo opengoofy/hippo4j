@@ -1,4 +1,4 @@
-package com.github.dynamic.threadpool.registry.core;
+package com.github.dynamic.threadpool.discovery.core;
 
 import com.github.dynamic.threadpool.common.model.InstanceInfo.InstanceStatus;
 

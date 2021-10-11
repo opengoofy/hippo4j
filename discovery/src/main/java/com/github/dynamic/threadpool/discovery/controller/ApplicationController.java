@@ -1,11 +1,11 @@
-package com.github.dynamic.threadpool.registry.controller;
+package com.github.dynamic.threadpool.discovery.controller;
 
 import com.github.dynamic.threadpool.common.model.InstanceInfo;
 import com.github.dynamic.threadpool.common.web.base.Result;
 import com.github.dynamic.threadpool.common.web.base.Results;
 import com.github.dynamic.threadpool.common.web.exception.ErrorCodeEnum;
-import com.github.dynamic.threadpool.registry.core.InstanceRegistry;
-import com.github.dynamic.threadpool.registry.core.Lease;
+import com.github.dynamic.threadpool.discovery.core.InstanceRegistry;
+import com.github.dynamic.threadpool.discovery.core.Lease;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

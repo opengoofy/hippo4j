@@ -5,7 +5,7 @@
 
     <groupId>com.github.dynamic-threadpool</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -13,12 +13,12 @@
     <description>🔥 强大的动态线程池，附带监控线程池功能（没有依赖任何中间件）</description>
 
     <modules>
-        <module>dynamic-threadpool-common</module>
-        <module>dynamic-threadpool-console</module>
-        <module>dynamic-threadpool-server</module>
-        <module>dynamic-threadpool-config</module>
-        <module>dynamic-threadpool-registry</module>
-        <module>dynamic-threadpool-example</module>
+        <module>common</module>
+        <module>console</module>
+        <module>server</module>
+        <module>config</module>
+        <module>discovery</module>
+        <module>example</module>
         <module>dynamic-threadpool-spring-boot-starter</module>
     </modules>
 
@@ -37,6 +37,16 @@
 
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Maven -->
+        <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+        <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
+        <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+        <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+        <license-maven-plugin.version>3.0</license-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -76,31 +86,25 @@
 
             <dependency>
                 <groupId>com.github.dynamic-threadpool</groupId>
-                <artifactId>dynamic-threadpool-common</artifactId>
+                <artifactId>common</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.dynamic-threadpool</groupId>
-                <artifactId>dynamic-threadpool-config</artifactId>
+                <artifactId>config</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.dynamic-threadpool</groupId>
-                <artifactId>dynamic-threadpool-console</artifactId>
+                <artifactId>console</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.dynamic-threadpool</groupId>
-                <artifactId>dynamic-threadpool-registry</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.dynamic-threadpool</groupId>
-                <artifactId>dynamic-threadpool-alarm</artifactId>
+                <artifactId>discovery</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -138,21 +142,93 @@
     </developers>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <excludes>
+                    <exclude>rebel.xml</exclude>
+                </excludes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.3.0.RELEASE</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
+                </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <attach>true</attach>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Built-By>chen.ma</Built-By>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.1.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

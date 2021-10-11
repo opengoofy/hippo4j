@@ -6,10 +6,10 @@
     <parent>
         <groupId>com.github.dynamic-threadpool</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
-    <artifactId>dynamic-threadpool-config</artifactId>
+    <artifactId>config</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -44,7 +44,7 @@
 
         <dependency>
             <groupId>com.github.dynamic-threadpool</groupId>
-            <artifactId>dynamic-threadpool-common</artifactId>
+            <artifactId>common</artifactId>
         </dependency>
 
         <dependency>

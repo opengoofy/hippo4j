@@ -1,6 +1,6 @@
-package com.github.dynamic.threadpool.registry.config;
+package com.github.dynamic.threadpool.discovery.config;
 
-import com.github.dynamic.threadpool.registry.core.BaseInstanceRegistry;
+import com.github.dynamic.threadpool.discovery.core.BaseInstanceRegistry;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
