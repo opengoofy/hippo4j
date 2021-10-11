@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-	<strong> :fire: &nbsp; 动态线程池（DTP）系统，包含 <a href="https://github.com/longtai94/dynamic-threadpool/tree/develop/dynamic-threadpool-server">Server</a> 端及 SpringBoot Client 端需引入的 <a href="https://github.com/longtai94/dynamic-threadpool/tree/develop/dynamic-threadpool-spring-boot-starter">Starter</a>.</strong>
+	<strong> :fire: &nbsp; 动态线程池（DTP）系统，包含 <a href="https://github.com/acmenlt/dynamic-threadpool/tree/develop/dynamic-threadpool-server">Server</a> 端及 SpringBoot Client 端需引入的 <a href="https://github.com/acmenlt/dynamic-threadpool/tree/develop/dynamic-threadpool-spring-boot-starter">Starter</a>.</strong>
 </p>
 <p align="center">
 
@@ -14,21 +14,21 @@
      <img src="https://img.shields.io/badge/公众号-龙台 blog-yellow.svg" />
 </a>
 
-<a target="_blank" href="https://github.com/longtai94/dynamic-threadpool">
+<a target="_blank" href="https://github.com/acmenlt/dynamic-threadpool">
      <img src="https://img.shields.io/badge/⭐-github-orange.svg" />
 </a>
 
-<a href="https://github.com/longtai94/dynamic-threadpool/blob/develop/LICENSE">
-    <img src="https://img.shields.io/github/license/longtai94/dynamic-threadpool?color=42b883&style=flat-square" alt="LICENSE">
+<a href="https://github.com/acmenlt/dynamic-threadpool/blob/develop/LICENSE">
+    <img src="https://img.shields.io/github/license/acmenlt/dynamic-threadpool?color=42b883&style=flat-square" alt="LICENSE">
 </a>
 
 <img src="https://img.shields.io/badge/JDK-1.8+-green?logo=appveyor" />
 
-<img src="https://tokei.rs/b1/github/longtai94/dynamic-threadpool?category=lines" />
+<img src="https://tokei.rs/b1/github/acmenlt/dynamic-threadpool?category=lines" />
 	
 <img src="https://img.shields.io/badge/release-v0.2.0-violet.svg" />
 
-<img src="https://img.shields.io/github/stars/longtai94/dynamic-threadpool.svg" />
+<img src="https://img.shields.io/github/stars/acmenlt/dynamic-threadpool.svg" />
 
 </p>
 
