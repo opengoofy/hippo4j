@@ -11,7 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.dynamic.threadpool.example.inittest.GlobalTestConstant.TEST_THREAD_POOL_ID;
+import static com.github.dynamic.threadpool.example.constant.GlobalTestConstant.MESSAGE_PRODUCE;
 
 /**
  * Test run time metrics.
@@ -30,7 +30,7 @@ public class RunStateHandlerTest {
 
         ScheduledExecutorService scheduledThreadPool = Executors.newSingleThreadScheduledExecutor();
         scheduledThreadPool.scheduleAtFixedRate(() -> {
-            DynamicThreadPoolWrap executorService = GlobalThreadPoolManage.getExecutorService(TEST_THREAD_POOL_ID);
+            DynamicThreadPoolWrap executorService = GlobalThreadPoolManage.getExecutorService(MESSAGE_PRODUCE);
             ThreadPoolExecutor pool = executorService.getPool();
             try {
                 pool.execute(() -> {

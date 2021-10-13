@@ -11,7 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.dynamic.threadpool.example.inittest.GlobalTestConstant.TEST_THREAD_POOL_ID;
+import static com.github.dynamic.threadpool.example.constant.GlobalTestConstant.MESSAGE_PRODUCE;
 
 /**
  * Test alarm send message.
@@ -28,7 +28,7 @@ public class AlarmSendMessageTest {
     public void alarmSendMessageTest() {
         ScheduledExecutorService scheduledThreadPool = Executors.newSingleThreadScheduledExecutor();
         scheduledThreadPool.scheduleWithFixedDelay(() -> {
-            DynamicThreadPoolWrap executorService = GlobalThreadPoolManage.getExecutorService(TEST_THREAD_POOL_ID);
+            DynamicThreadPoolWrap executorService = GlobalThreadPoolManage.getExecutorService(MESSAGE_PRODUCE);
             ThreadPoolExecutor poolExecutor = executorService.getPool();
             try {
                 poolExecutor.execute(() -> ThreadUtil.sleep(10240124));
