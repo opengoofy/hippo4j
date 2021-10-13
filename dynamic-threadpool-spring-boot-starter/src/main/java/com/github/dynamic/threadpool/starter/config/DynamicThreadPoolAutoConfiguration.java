@@ -2,10 +2,7 @@ package com.github.dynamic.threadpool.starter.config;
 
 import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
 import com.github.dynamic.threadpool.starter.controller.PoolRunStateController;
-import com.github.dynamic.threadpool.starter.core.ConfigService;
-import com.github.dynamic.threadpool.starter.core.DynamicThreadPoolPostProcessor;
-import com.github.dynamic.threadpool.starter.core.ThreadPoolConfigService;
-import com.github.dynamic.threadpool.starter.core.ThreadPoolOperation;
+import com.github.dynamic.threadpool.starter.core.*;
 import com.github.dynamic.threadpool.starter.enable.MarkerConfiguration;
 import com.github.dynamic.threadpool.starter.handler.DynamicThreadPoolBannerHandler;
 import com.github.dynamic.threadpool.starter.remote.HttpAgent;
@@ -57,7 +54,8 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent, ThreadPoolOperation threadPoolOperation) {
+    public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent, ThreadPoolOperation threadPoolOperation,
+                                                                      ApplicationContextHolder applicationContextHolder) {
         return new DynamicThreadPoolPostProcessor(properties, httpAgent, threadPoolOperation);
     }
 
