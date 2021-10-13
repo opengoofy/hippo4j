@@ -4,6 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
@@ -53,6 +54,18 @@ public class ApplicationContextHolder implements ApplicationContextAware {
      */
     public static <T> Map<String, T> getBeansOfType(Class<T> clazz) {
         return CONTEXT.getBeansOfType(clazz);
+    }
+
+    /**
+     * Find whether the bean has annotations.
+     *
+     * @param beanName
+     * @param annotationType
+     * @param <A>
+     * @return
+     */
+    public static <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType) {
+        return CONTEXT.findAnnotationOnBean(beanName, annotationType);
     }
 
 }
