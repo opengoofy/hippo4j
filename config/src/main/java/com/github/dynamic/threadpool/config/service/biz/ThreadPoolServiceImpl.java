@@ -4,16 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.dynamic.threadpool.config.mapper.ConfigInfoMapper;
+import com.github.dynamic.threadpool.config.model.ConfigAllInfo;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
-import com.github.dynamic.threadpool.config.mapper.ConfigInfoMapper;
-import com.github.dynamic.threadpool.config.model.ConfigAllInfo;
 import com.github.dynamic.threadpool.config.toolkit.BeanUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,13 +22,12 @@ import java.util.List;
  * @date 2021/6/30 21:26
  */
 @Service
+@AllArgsConstructor
 public class ThreadPoolServiceImpl implements ThreadPoolService {
 
-    @Autowired
-    private ConfigService configService;
+    private final ConfigService configService;
 
-    @Resource
-    private ConfigInfoMapper configInfoMapper;
+    private final ConfigInfoMapper configInfoMapper;
 
     @Override
     public IPage<ThreadPoolRespDTO> queryThreadPoolPage(ThreadPoolQueryReqDTO reqDTO) {

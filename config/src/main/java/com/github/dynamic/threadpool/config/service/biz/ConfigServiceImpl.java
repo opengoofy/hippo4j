@@ -11,10 +11,9 @@ import com.github.dynamic.threadpool.config.event.LocalDataChangeEvent;
 import com.github.dynamic.threadpool.config.mapper.ConfigInfoMapper;
 import com.github.dynamic.threadpool.config.model.ConfigAllInfo;
 import com.github.dynamic.threadpool.config.service.ConfigChangePublisher;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * Config service impl.
@@ -24,10 +23,10 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Service
+@AllArgsConstructor
 public class ConfigServiceImpl implements ConfigService {
 
-    @Resource
-    private ConfigInfoMapper configInfoMapper;
+    private final ConfigInfoMapper configInfoMapper;
 
     @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenantId) {
@@ -47,8 +46,7 @@ public class ConfigServiceImpl implements ConfigService {
             updateConfigInfo(configAllInfo);
         }
 
-        ConfigChangePublisher
-                .notifyConfigChange(new LocalDataChangeEvent(ContentUtil.getGroupKey(configAllInfo)));
+        ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(ContentUtil.getGroupKey(configAllInfo)));
     }
 
     private Integer addConfigInfo(ConfigAllInfo config) {
@@ -74,6 +72,7 @@ public class ConfigServiceImpl implements ConfigService {
         config.setGmtCreate(null);
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
+
         try {
             configInfoMapper.update(config, wrapper);
         } catch (Exception ex) {

@@ -6,21 +6,20 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.github.dynamic.threadpool.config.enums.DelEnum;
+import com.github.dynamic.threadpool.config.mapper.TenantInfoMapper;
+import com.github.dynamic.threadpool.config.model.TenantInfo;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemQueryReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantQueryReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantSaveReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantUpdateReqDTO;
-import com.github.dynamic.threadpool.config.enums.DelEnum;
-import com.github.dynamic.threadpool.config.mapper.TenantInfoMapper;
-import com.github.dynamic.threadpool.config.model.TenantInfo;
 import com.github.dynamic.threadpool.config.toolkit.BeanUtil;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -30,13 +29,12 @@ import java.util.List;
  * @date 2021/6/29 21:12
  */
 @Service
+@AllArgsConstructor
 public class TenantServiceImpl implements TenantService {
 
-    @Autowired
-    private ItemService itemService;
+    private final ItemService itemService;
 
-    @Resource
-    private TenantInfoMapper tenantInfoMapper;
+    private final TenantInfoMapper tenantInfoMapper;
 
     @Override
     public TenantRespDTO getTenantById(String tenantId) {
@@ -75,6 +73,7 @@ public class TenantServiceImpl implements TenantService {
         TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
         int updateResult = tenantInfoMapper.update(tenantInfo, Wrappers
                 .lambdaUpdate(TenantInfo.class).eq(TenantInfo::getTenantId, reqDTO.getTenantId()));
+
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("Update Error.");
@@ -94,6 +93,7 @@ public class TenantServiceImpl implements TenantService {
                 Wrappers.lambdaUpdate(TenantInfo.class)
                         .eq(TenantInfo::getTenantId, tenantId)
                         .set(TenantInfo::getDelFlag, DelEnum.DELETE.getIntCode()));
+
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("Delete error.");

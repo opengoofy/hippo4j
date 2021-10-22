@@ -6,20 +6,19 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.github.dynamic.threadpool.config.enums.DelEnum;
+import com.github.dynamic.threadpool.config.mapper.ItemInfoMapper;
+import com.github.dynamic.threadpool.config.model.ItemInfo;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemQueryReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemSaveReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemUpdateReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolRespDTO;
-import com.github.dynamic.threadpool.config.enums.DelEnum;
-import com.github.dynamic.threadpool.config.mapper.ItemInfoMapper;
-import com.github.dynamic.threadpool.config.model.ItemInfo;
 import com.github.dynamic.threadpool.config.toolkit.BeanUtil;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -29,13 +28,12 @@ import java.util.List;
  * @date 2021/6/29 21:58
  */
 @Service
+@AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    @Resource
-    private ItemInfoMapper itemInfoMapper;
+    private final ItemInfoMapper itemInfoMapper;
 
-    @Autowired
-    private ThreadPoolService threadPoolService;
+    private final ThreadPoolService threadPoolService;
 
     @Override
     public IPage<ItemRespDTO> queryItemPage(ItemQueryReqDTO reqDTO) {
@@ -108,6 +106,7 @@ public class ItemServiceImpl implements ItemService {
                         .eq(ItemInfo::getTenantId, namespace)
                         .eq(ItemInfo::getItemId, itemId)
                         .set(ItemInfo::getDelFlag, DelEnum.DELETE.getIntCode()));
+
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("Delete error.");

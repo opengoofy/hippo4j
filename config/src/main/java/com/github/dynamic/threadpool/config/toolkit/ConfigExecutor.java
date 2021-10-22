@@ -15,8 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class ConfigExecutor {
 
     private static final ScheduledExecutorService LONG_POLLING_EXECUTOR = ExecutorFactory.Managed
-            .newSingleScheduledExecutorService("default group",
-                    r -> new Thread(r, "long-polling"));
+            .newSingleScheduledExecutorService("default group", r -> new Thread(r, "long-polling"));
 
     public static void executeLongPolling(Runnable runnable) {
         LONG_POLLING_EXECUTOR.execute(runnable);
