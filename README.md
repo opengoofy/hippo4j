@@ -96,7 +96,7 @@ Hippo 除去动态修改线程池，还包含实时查看线程池运行时指�
 
 <br/>
 
-通过接口修改线程池中的配置。HTTP POST 路径：http://localhost:6691/v1/cs/configs，Body 请求体如下：
+通过接口修改线程池中的配置。HTTP POST 路径：http://localhost:6691/v1/cs/configs ，Body 请求体如下：
 
 ```json
 {
