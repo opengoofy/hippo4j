@@ -1,4 +1,4 @@
-package com.github.dynamic.threadpool.config.service.biz;
+package com.github.dynamic.threadpool.config.service.biz.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,7 +15,10 @@ import com.github.dynamic.threadpool.config.model.biz.tenant.TenantQueryReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantSaveReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.tenant.TenantUpdateReqDTO;
+import com.github.dynamic.threadpool.config.service.biz.ItemService;
+import com.github.dynamic.threadpool.config.service.biz.TenantService;
 import com.github.dynamic.threadpool.config.toolkit.BeanUtil;
+import com.github.dynamic.threadpool.logrecord.annotation.LogRecord;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -37,7 +40,12 @@ public class TenantServiceImpl implements TenantService {
     private final TenantInfoMapper tenantInfoMapper;
 
     @Override
-    public TenantRespDTO getTenantById(String tenantId) {
+    public TenantRespDTO getTenantById(String id) {
+        return BeanUtil.convert(tenantInfoMapper.selectById(id), TenantRespDTO.class);
+    }
+
+    @Override
+    public TenantRespDTO getTenantByTenantId(String tenantId) {
         LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers
                 .lambdaQuery(TenantInfo.class).eq(TenantInfo::getTenantId, tenantId);
         TenantInfo tenantInfo = tenantInfoMapper.selectOne(queryWrapper);
@@ -69,6 +77,13 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
+    @LogRecord(
+            prefix = "item",
+            bizNo = "{{#reqDTO.tenantId}}_{{#reqDTO.tenantName}}",
+            category = "TENANT_UPDATE",
+            success = "更新租户, ID :: {{#reqDTO.id}}, 租户名称由 :: {TENANT{#reqDTO.id}} -> {{#reqDTO.tenantName}}",
+            detail = "{{#reqDTO.toString()}}"
+    )
     public void updateTenant(TenantUpdateReqDTO reqDTO) {
         TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
         int updateResult = tenantInfoMapper.update(tenantInfo, Wrappers
