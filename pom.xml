@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <url>https://github.com/acmenlt/dynamic-thread-pool</url>
+    <url>https://github.com/acmenlt/dynamic-threadpool</url>
     <description>🔥 强大的动态线程池，附带监控报警功能（没有依赖任何中间件）</description>
 
     <modules>
@@ -19,6 +19,7 @@
         <module>config</module>
         <module>discovery</module>
         <module>example</module>
+        <module>tools</module>
         <module>dynamic-threadpool-spring-boot-starter</module>
     </modules>
 
@@ -32,6 +33,8 @@
         <hutool-core.version>5.4.7</hutool-core.version>
         <fastjson.version>1.2.75</fastjson.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
+        <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
 
         <dingtalk-sdk.version>1.0.1</dingtalk-sdk.version>
 
@@ -109,6 +112,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.github.dynamic-threadpool</groupId>
+                <artifactId>log-record-tool</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
@@ -131,8 +140,28 @@
                 <artifactId>alibaba-dingtalk-service-sdk</artifactId>
                 <version>${dingtalk-sdk.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable-thread-local.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <developers>
         <developer>
