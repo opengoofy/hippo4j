@@ -1,5 +1,7 @@
 server:
   port: 8088
+  servlet:
+    context-path: /example
 
 spring:
   profiles:
@@ -13,5 +15,5 @@ spring:
           url: https://oapi.dingtalk.com/robot/send?access_token=
           token: 4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae
       server-addr: http://localhost:6691
-      namespace: common
-      item-id: message-center
+      namespace: prescription
+      item-id: ${spring.application.name}
