@@ -1,4 +1,4 @@
-package com.github.dynamic.threadpool.config.service.biz;
+package com.github.dynamic.threadpool.config.service.biz.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -11,6 +11,7 @@ import com.github.dynamic.threadpool.config.event.LocalDataChangeEvent;
 import com.github.dynamic.threadpool.config.mapper.ConfigInfoMapper;
 import com.github.dynamic.threadpool.config.model.ConfigAllInfo;
 import com.github.dynamic.threadpool.config.service.ConfigChangePublisher;
+import com.github.dynamic.threadpool.config.service.biz.ConfigService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

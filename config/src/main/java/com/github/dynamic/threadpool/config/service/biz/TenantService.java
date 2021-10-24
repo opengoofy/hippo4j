@@ -17,10 +17,18 @@ public interface TenantService {
     /**
      * Get tenant by id.
      *
-     * @param tenantIdId
+     * @param id
      * @return
      */
-    TenantRespDTO getTenantById(String tenantIdId);
+    TenantRespDTO getTenantById(String id);
+
+    /**
+     * Get tenant by tenantId.
+     *
+     * @param tenantId
+     * @return
+     */
+    TenantRespDTO getTenantByTenantId(String tenantId);
 
     /**
      * Query tenant page.

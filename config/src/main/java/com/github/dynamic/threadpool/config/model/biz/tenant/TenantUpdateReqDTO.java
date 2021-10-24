@@ -12,6 +12,11 @@ import lombok.Data;
 public class TenantUpdateReqDTO {
 
     /**
+     * id
+     */
+    private Long id;
+
+    /**
      * tenantId
      */
     private String tenantId;

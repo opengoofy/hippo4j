@@ -1,6 +1,8 @@
 server:
   port: 6691
 
+tenant: hippo
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -1,4 +1,4 @@
-package com.github.dynamic.threadpool.config.service.biz;
+package com.github.dynamic.threadpool.config.service.biz.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,6 +14,8 @@ import com.github.dynamic.threadpool.config.model.biz.item.ItemRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemSaveReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.item.ItemUpdateReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolRespDTO;
+import com.github.dynamic.threadpool.config.service.biz.ItemService;
+import com.github.dynamic.threadpool.config.service.biz.ThreadPoolService;
 import com.github.dynamic.threadpool.config.toolkit.BeanUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -83,10 +85,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void updateItem(ItemUpdateReqDTO reqDTO) {
         ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
-        int updateResult = itemInfoMapper.update(itemInfo, Wrappers
-                .lambdaUpdate(ItemInfo.class)
-                .eq(ItemInfo::getTenantId, reqDTO.getTenantId())
-                .eq(ItemInfo::getItemId, reqDTO.getItemId()));
+        int updateResult = itemInfoMapper.update(itemInfo,
+                Wrappers.lambdaUpdate(ItemInfo.class)
+                        .eq(ItemInfo::getTenantId, reqDTO.getTenantId())
+                        .eq(ItemInfo::getItemId, reqDTO.getItemId()));
 
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
