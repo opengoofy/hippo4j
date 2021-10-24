@@ -28,10 +28,15 @@ public class DiscoveryConfig {
     @SneakyThrows
     public InstanceInfo instanceConfig() {
         InstanceInfo instanceInfo = new InstanceInfo();
-        instanceInfo.setInstanceId(getDefaultInstanceId(environment));
-        instanceInfo.setIpApplicationName(getIpApplicationName(environment));
-        instanceInfo.setAppName(environment.getProperty("spring.application.name"));
-        instanceInfo.setHostName(InetAddress.getLocalHost().getHostAddress());
+        instanceInfo.setInstanceId(getDefaultInstanceId(environment))
+                .setIpApplicationName(getIpApplicationName(environment))
+                .setHostName(InetAddress.getLocalHost().getHostAddress())
+                .setAppName(environment.getProperty("spring.application.name"))
+                .setClientBasePath(environment.getProperty("server.servlet.context-path"));
+        String callBackUrl = new StringBuilder().append(instanceInfo.getHostName()).append(":")
+                .append(environment.getProperty("server.port")).append(instanceInfo.getClientBasePath())
+                .toString();
+        instanceInfo.setCallBackUrl(callBackUrl);
 
         return instanceInfo;
     }

@@ -20,6 +20,11 @@
             <groupId>com.github.dynamic-threadpool</groupId>
             <artifactId>config</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.dynamic-threadpool</groupId>
+            <artifactId>discovery</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
