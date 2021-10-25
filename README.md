@@ -43,6 +43,9 @@
 
 想给项目起一个简单易记的名字，类似于 Eureka、Nacos、Redis；后来和朋友商量，决定以动物命名：**Hippo（河马）**
 
+![](https://user-images.githubusercontent.com/77398366/138722557-38d638ae-36b4-48ca-8d6b-3bf7a4bc430b.png)
+
+
 ```java
 ├── dynamic-threadpool
 │   ├── dynamic-threadpool-common  -- 公共模块
