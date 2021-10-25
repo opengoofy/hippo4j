@@ -46,18 +46,6 @@
 ![](https://user-images.githubusercontent.com/77398366/138722557-38d638ae-36b4-48ca-8d6b-3bf7a4bc430b.png)
 
 
-```java
-├── dynamic-threadpool
-│   ├── dynamic-threadpool-common  -- 公共模块
-│   ├── dynamic-threadpool-config  -- 配置中心
-│   ├── dynamic-threadpool-console  -- 控制台
-│   ├── dynamic-threadpool-discovery  -- 注册中心
-│   ├── dynamic-threadpool-spring-boot-starter  -- Client 依赖组件
-│   ├── dynamic-threadpool-example  -- 示例项目
-│   └── dynamic-threadpool-server  -- 服务端
-│   └── dynamic-threadpool-tools  -- 抽象工具类
-```
-
 <br/>
 
 ## 它解决了什么问题？
@@ -84,7 +72,24 @@ Hippo 很好解决了这个问题，它将业务中所有线程池统一管理�
 
 举个例子，小编在一家公司的公共组件团队，团队中负责消息、短链接网关等项目。公共组件是租户，消息或短链接就是项目
 
-Hippo 除去动态修改线程池，还包含实时查看线程池运行时指标、负载报警、配置日志管理等。具体功能如下图
+<br/>
+
+| 模块                                   | 模块名称           | 注释                                     |
+| -------------------------------------- | ------------------ | ---------------------------------------- |
+| dynamic-threadpool-common              | 公共模块           | -                                        |
+| dynamic-threadpool-config              | 配置中心           | 提供线程池准实时更新功能                 |
+| dynamic-threadpool-console             | 控制台             | 对接前端项目                             |
+| dynamic-threadpool-discovery           | 注册中心           | 提供线程池项目实例注册、续约、下线等功能 |
+| dynamic-threadpool-spring-boot-starter | SpringBoot Starter | -                                        |
+| dynamic-threadpool-example             | 示例项目           | -                                        |
+| dynamic-threadpool-server              | 服务端             | Server 集成各组件                        |
+| dynamic-threadpool-tools               | 抽象工具类         | Swagger、操作日志等组件                  |
+
+
+<br/>
+
+Hippo 除去动态修改线程池，还包含实时查看线程池运行时指标、负载报警、配置日志管理等
+
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211023101844619.png)
 
