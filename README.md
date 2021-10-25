@@ -101,8 +101,8 @@ Hippo 除去动态修改线程池，还包含实时查看线程池运行时指�
 ```json
 {
     "ignore": "tenantId、itemId、tpId 代表唯一线程池，请不要修改",
-    "tenantId": "common",
-    "itemId": "message-center",
+    "tenantId": "prescription",
+    "itemId": "dynamic-threadpool-example",
     "tpId": "message-produce",
     "coreSize": 10,
     "maxSize": 15,
