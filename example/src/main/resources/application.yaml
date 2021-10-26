@@ -10,10 +10,11 @@ spring:
     name: dynamic-threadpool-example
   dynamic:
     thread-pool:
-      alarms:
+      notifys:
         - type: DING
           url: https://oapi.dingtalk.com/robot/send?access_token=
           token: 4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae
+          receives: '15601166691,18210045950'
       server-addr: http://localhost:6691
       namespace: prescription
       item-id: ${spring.application.name}
