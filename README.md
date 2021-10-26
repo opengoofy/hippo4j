@@ -170,6 +170,16 @@ capacity :: [100=>100], keepAliveTime :: [10000=>10000], rejectedType :: [7=>7]
 
 <br/>
 
+
+## Github Stars 趋势
+
+如果觉得源码对您有帮助，欢迎各位看官右上角 Star、Fork
+
+ [![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool) 
+
+ <br/>
+
+
 ## 最后
 
 小编是个有代码洁癖的程序员，项目中的代码开发完全遵守阿里巴巴代码规约，也推荐大家使用，培养好的编码习惯
