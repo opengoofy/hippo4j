@@ -23,7 +23,7 @@ import java.util.Map;
 public class BaseSendMessageService implements InitializingBean, SendMessageService {
 
     @NonNull
-    private final List<AlarmConfig> alarmConfigs;
+    private final List<NotifyConfig> notifyConfigs;
 
     private final List<SendMessageHandler> sendMessageHandlers = new ArrayList(4);
 
@@ -31,7 +31,7 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
     public void sendAlarmMessage(CustomThreadPoolExecutor threadPoolExecutor) {
         for (SendMessageHandler messageHandler : sendMessageHandlers) {
             try {
-                messageHandler.sendAlarmMessage(alarmConfigs, threadPoolExecutor);
+                messageHandler.sendAlarmMessage(notifyConfigs, threadPoolExecutor);
             } catch (Exception ex) {
                 log.warn("Failed to send thread pool alarm notification.", ex);
             }
@@ -42,7 +42,7 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
     public void sendChangeMessage(PoolParameterInfo parameter) {
         for (SendMessageHandler messageHandler : sendMessageHandlers) {
             try {
-                messageHandler.sendChangeMessage(alarmConfigs, parameter);
+                messageHandler.sendChangeMessage(notifyConfigs, parameter);
             } catch (Exception ex) {
                 log.warn("Failed to send thread pool change notification.", ex);
             }

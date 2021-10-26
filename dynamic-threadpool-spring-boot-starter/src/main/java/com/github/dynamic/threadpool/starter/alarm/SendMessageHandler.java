@@ -23,17 +23,17 @@ public interface SendMessageHandler {
     /**
      * Send alarm message.
      *
-     * @param alarmConfigs
+     * @param notifyConfigs
      * @param threadPoolExecutor
      */
-    void sendAlarmMessage(List<AlarmConfig> alarmConfigs, CustomThreadPoolExecutor threadPoolExecutor);
+    void sendAlarmMessage(List<NotifyConfig> notifyConfigs, CustomThreadPoolExecutor threadPoolExecutor);
 
     /**
      * Send change message.
      *
-     * @param alarmConfigs
+     * @param notifyConfigs
      * @param parameter
      */
-    void sendChangeMessage(List<AlarmConfig> alarmConfigs, PoolParameterInfo parameter);
+    void sendChangeMessage(List<NotifyConfig> notifyConfigs, PoolParameterInfo parameter);
 
 }

@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2021/8/15 16:09
  */
 @Data
-public class AlarmConfig {
+public class NotifyConfig {
 
     /**
      * type
@@ -25,5 +25,10 @@ public class AlarmConfig {
      * token
      */
     private String token;
+
+    /**
+     * receives
+     */
+    private String receives;
 
 }

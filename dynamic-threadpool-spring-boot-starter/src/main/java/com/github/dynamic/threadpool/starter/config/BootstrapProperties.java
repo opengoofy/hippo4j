@@ -1,6 +1,6 @@
 package com.github.dynamic.threadpool.starter.config;
 
-import com.github.dynamic.threadpool.starter.alarm.AlarmConfig;
+import com.github.dynamic.threadpool.starter.alarm.NotifyConfig;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +43,8 @@ public class BootstrapProperties {
     private boolean banner = true;
 
     /**
-     * alarms
+     * notifys
      */
-    private List<AlarmConfig> alarms;
+    private List<NotifyConfig> notifys;
 
 }
