@@ -2,10 +2,13 @@ package com.github.dynamic.threadpool.starter.alarm;
 
 import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
 import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
+import com.github.dynamic.threadpool.starter.config.MessageAlarmConfig;
 import com.github.dynamic.threadpool.starter.toolkit.CalculateUtil;
 import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 import com.github.dynamic.threadpool.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Optional;
 
 /**
  * Alarm manage.
@@ -19,7 +22,9 @@ public class ThreadPoolAlarmManage {
     private static final SendMessageService SEND_MESSAGE_SERVICE;
 
     static {
-        SEND_MESSAGE_SERVICE = ApplicationContextHolder.getBean("sendMessageService", SendMessageService.class);
+        SEND_MESSAGE_SERVICE = Optional.ofNullable(ApplicationContextHolder.getInstance())
+                .map(each -> each.getBean(MessageAlarmConfig.SEND_MESSAGE_BEAN_NAME, SendMessageService.class))
+                .orElse(null);
     }
 
     /**
@@ -47,7 +52,7 @@ public class ThreadPoolAlarmManage {
      * @param threadPoolExecutor
      */
     public static void checkPoolLivenessAlarm(boolean isCore, CustomThreadPoolExecutor threadPoolExecutor) {
-        if (isCore) {
+        if (isCore || SEND_MESSAGE_SERVICE == null) {
             return;
         }
         int activeCount = threadPoolExecutor.getActiveCount();
@@ -64,7 +69,9 @@ public class ThreadPoolAlarmManage {
      * @param threadPoolExecutor
      */
     public static void checkPoolRejectAlarm(CustomThreadPoolExecutor threadPoolExecutor) {
-        SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
+        if (SEND_MESSAGE_SERVICE != null) {
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
+        }
     }
 
     /**
@@ -73,7 +80,9 @@ public class ThreadPoolAlarmManage {
      * @param parameter
      */
     public static void sendPoolConfigChange(PoolParameterInfo parameter) {
-        SEND_MESSAGE_SERVICE.sendChangeMessage(parameter);
+        if (SEND_MESSAGE_SERVICE != null) {
+            SEND_MESSAGE_SERVICE.sendChangeMessage(parameter);
+        }
     }
 
 }

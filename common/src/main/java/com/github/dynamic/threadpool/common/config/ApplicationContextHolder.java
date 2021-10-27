@@ -68,4 +68,13 @@ public class ApplicationContextHolder implements ApplicationContextAware {
         return CONTEXT.findAnnotationOnBean(beanName, annotationType);
     }
 
+    /**
+     * Get ApplicationContext.
+     *
+     * @return
+     */
+    public static ApplicationContext getInstance() {
+        return CONTEXT;
+    }
+
 }
