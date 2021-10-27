@@ -66,4 +66,9 @@ public class ThreadPoolSaveOrUpdateReqDTO {
      */
     private Integer livenessAlarm;
 
+    /**
+     * rejectedType
+     */
+    private Integer rejectedType;
+
 }
