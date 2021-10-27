@@ -50,6 +50,11 @@ public class ThreadPoolRespDTO {
     private Integer queueType;
 
     /**
+     * queueName
+     */
+    private String queueName;
+
+    /**
      * capacity
      */
     private Integer capacity;
@@ -73,6 +78,11 @@ public class ThreadPoolRespDTO {
      * livenessAlarm
      */
     private Integer livenessAlarm;
+
+    /**
+     * rejectedType
+     */
+    private Integer rejectedType;
 
     /**
      * gmtCreate
