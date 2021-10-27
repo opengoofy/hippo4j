@@ -42,7 +42,7 @@ public class ThreadPoolConfig {
     @Bean
     @DynamicThreadPool
     public ThreadPoolExecutor customThreadPoolExecutor() {
-        return ThreadPoolBuilder.builder().threadFactory(MESSAGE_PRODUCE).threadPoolId(MESSAGE_PRODUCE).isCustomPool(true).build();
+        return ThreadPoolBuilder.builder().threadFactory(MESSAGE_PRODUCE).isCustomPool(true).build();
     }
 
 }
