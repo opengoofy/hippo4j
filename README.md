@@ -97,7 +97,7 @@ Hippo 除去动态修改线程池，还包含实时查看线程池运行时指�
 
 ## 如何运行 Demo？
 
-目前动态线程池功能已经完成，可以直接把代码拉到本地运行。项目中数据库是作者 ECS Docker 搭建，大家直接使用即可
+目前动态线程池功能已经完成，可以直接把代码拉到本地运行。导入 [Hippo 初始化 SQL 语句](https://github.com/acmenlt/dynamic-threadpool/blob/develop/server/src/main/resources/hippo_manager.sql)
 
 1. 启动 `dynamic-threadpool-server` 模块下 ServerApplication 应用类
 2. 启动 `dynamic-threadpool-example` 模块下 ExampleApplication 应用类
@@ -117,7 +117,7 @@ Hippo 除去动态修改线程池，还包含实时查看线程池运行时指�
     "queueType": 9,
     "capacity": 100,
     "keepAliveTime": 10,
-    "rejectedType": 7,
+    "rejectedType": 3,
     "isAlarm": 0,
     "capacityAlarm": 81,
     "livenessAlarm": 82
