@@ -8,8 +8,24 @@ package com.github.dynamic.threadpool.starter.alarm;
  */
 public enum MessageTypeEnum {
 
+    /**
+     * 通知类型
+     */
     CHANGE,
 
-    ALARM
+    /**
+     * 容量报警
+     */
+    CAPACITY,
+
+    /**
+     * 活跃度报警
+     */
+    LIVENESS,
+
+    /**
+     * 拒绝策略报警
+     */
+    REJECT
 
 }

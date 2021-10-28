@@ -14,8 +14,7 @@ import com.github.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
 import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
 import com.google.common.base.Joiner;
 import com.taobao.api.ApiException;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -31,13 +30,13 @@ import java.util.concurrent.TimeUnit;
  * @date 2021/8/15 15:49
  */
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class DingSendMessageHandler implements SendMessageHandler {
 
-    @NonNull
     private String active;
 
-    @NonNull
+    private Long alarmInterval;
+
     private InstanceInfo instanceInfo;
 
     @Override
@@ -87,7 +86,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
                         "<font color='#708090' size=2>拒绝策略：%s</font> \n\n" +
                         "<font color='#708090' size=2>拒绝策略执行次数：</font><font color='#FF0000' size=2>%d</font> \n\n " +
                         "<font color='#708090' size=2>OWNER：@%s</font> \n\n" +
-                        "<font color='#708090' size=2>提示：5 分钟内此线程池不会重复告警（可配置）</font> \n\n" +
+                        "<font color='#708090' size=2>提示：%d 分钟内此线程池不会重复告警（可配置）</font> \n\n" +
                         " --- \n\n  " +
                         "**播报时间：%s**",
 
@@ -123,6 +122,8 @@ public class DingSendMessageHandler implements SendMessageHandler {
                 pool.getRejectCount(),
                 // 告警手机号
                 afterReceives,
+                // 报警频率
+                alarmInterval,
                 // 当前时间
                 DateUtil.now()
         );

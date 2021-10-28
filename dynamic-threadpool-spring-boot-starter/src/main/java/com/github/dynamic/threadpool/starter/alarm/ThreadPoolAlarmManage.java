@@ -19,11 +19,23 @@ import java.util.Optional;
 @Slf4j
 public class ThreadPoolAlarmManage {
 
+    /**
+     * 发送消息
+     */
     private static final SendMessageService SEND_MESSAGE_SERVICE;
+
+    /**
+     * 报警间隔控制
+     */
+    private static final AlarmControlHandler ALARM_CONTROL_HANDLER;
 
     static {
         SEND_MESSAGE_SERVICE = Optional.ofNullable(ApplicationContextHolder.getInstance())
                 .map(each -> each.getBean(MessageAlarmConfig.SEND_MESSAGE_BEAN_NAME, SendMessageService.class))
+                .orElse(null);
+
+        ALARM_CONTROL_HANDLER = Optional.ofNullable(ApplicationContextHolder.getInstance())
+                .map(each -> each.getBean(AlarmControlHandler.class))
                 .orElse(null);
     }
 
@@ -33,6 +45,9 @@ public class ThreadPoolAlarmManage {
      * @param threadPoolExecutor
      */
     public static void checkPoolCapacityAlarm(CustomThreadPoolExecutor threadPoolExecutor) {
+        if (SEND_MESSAGE_SERVICE == null) {
+            return;
+        }
         ThreadPoolAlarm threadPoolAlarm = threadPoolExecutor.getThreadPoolAlarm();
         ResizableCapacityLinkedBlockIngQueue blockIngQueue =
                 (ResizableCapacityLinkedBlockIngQueue) threadPoolExecutor.getQueue();
@@ -40,7 +55,9 @@ public class ThreadPoolAlarmManage {
         int queueSize = blockIngQueue.size();
         int capacity = queueSize + blockIngQueue.remainingCapacity();
         int divide = CalculateUtil.divide(queueSize, capacity);
-        if (divide > threadPoolAlarm.getCapacityAlarm()) {
+        boolean isSend = divide > threadPoolAlarm.getCapacityAlarm()
+                && isSendMessage(threadPoolExecutor, MessageTypeEnum.CAPACITY);
+        if (isSend) {
             SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
         }
     }
@@ -52,13 +69,16 @@ public class ThreadPoolAlarmManage {
      * @param threadPoolExecutor
      */
     public static void checkPoolLivenessAlarm(boolean isCore, CustomThreadPoolExecutor threadPoolExecutor) {
-        if (isCore || SEND_MESSAGE_SERVICE == null) {
+        if (isCore || SEND_MESSAGE_SERVICE == null || !isSendMessage(threadPoolExecutor, MessageTypeEnum.LIVENESS)) {
             return;
         }
         int activeCount = threadPoolExecutor.getActiveCount();
         int maximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
         int divide = CalculateUtil.divide(activeCount, maximumPoolSize);
-        if (divide > threadPoolExecutor.getThreadPoolAlarm().getLivenessAlarm()) {
+
+        boolean isSend = divide > threadPoolExecutor.getThreadPoolAlarm().getLivenessAlarm()
+                && isSendMessage(threadPoolExecutor, MessageTypeEnum.CAPACITY);
+        if (isSend) {
             SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
         }
     }
@@ -69,7 +89,11 @@ public class ThreadPoolAlarmManage {
      * @param threadPoolExecutor
      */
     public static void checkPoolRejectAlarm(CustomThreadPoolExecutor threadPoolExecutor) {
-        if (SEND_MESSAGE_SERVICE != null) {
+        if (SEND_MESSAGE_SERVICE == null) {
+            return;
+        }
+
+        if (isSendMessage(threadPoolExecutor, MessageTypeEnum.REJECT)) {
             SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
         }
     }
@@ -80,9 +104,26 @@ public class ThreadPoolAlarmManage {
      * @param parameter
      */
     public static void sendPoolConfigChange(PoolParameterInfo parameter) {
-        if (SEND_MESSAGE_SERVICE != null) {
-            SEND_MESSAGE_SERVICE.sendChangeMessage(parameter);
+        if (SEND_MESSAGE_SERVICE == null) {
+            return;
         }
+
+        SEND_MESSAGE_SERVICE.sendChangeMessage(parameter);
+    }
+
+    /**
+     * Is send message.
+     *
+     * @param threadPoolExecutor
+     * @param typeEnum
+     * @return
+     */
+    private static boolean isSendMessage(CustomThreadPoolExecutor threadPoolExecutor, MessageTypeEnum typeEnum) {
+        AlarmControlDTO alarmControl = AlarmControlDTO.builder()
+                .threadPool(threadPoolExecutor.getThreadPoolId())
+                .typeEnum(typeEnum)
+                .build();
+        return ALARM_CONTROL_HANDLER.isSend(alarmControl);
     }
 
 }

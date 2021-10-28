@@ -43,6 +43,11 @@ public class BootstrapProperties {
     private boolean banner = true;
 
     /**
+     * Alarm interval
+     */
+    private Long alarmInterval;
+
+    /**
      * notifys
      */
     private List<NotifyConfig> notifys;
