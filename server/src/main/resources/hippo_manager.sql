@@ -2,6 +2,49 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `hippo_manager` /*!40100 DEFAULT CHARAC
 
 USE `hippo_manager`;
 
+/******************************************/
+/*   数据库全名 = hippo_manager   */
+/*   表名称 = tenant_info   */
+/******************************************/
+DROP TABLE IF EXISTS `tenant_info`;
+CREATE TABLE `tenant_info` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
+  `tenant_name` varchar(128) DEFAULT NULL COMMENT '租户名称',
+  `tenant_desc` varchar(256) DEFAULT NULL COMMENT '租户介绍',
+  `owner` varchar(32) DEFAULT '-' COMMENT '负责人',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  `del_flag` tinyint(1) DEFAULT NULL COMMENT '是否删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `uk_tenantinfo_tenantid` (`tenant_id`,`del_flag`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='租户表';
+
+/******************************************/
+/*   数据库全名 = hippo_manager   */
+/*   表名称 = item_info   */
+/******************************************/
+DROP TABLE IF EXISTS `item_info`;
+CREATE TABLE `item_info` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
+  `item_id` varchar(128) DEFAULT NULL COMMENT '项目ID',
+  `item_name` varchar(128) DEFAULT NULL COMMENT '项目名称',
+  `item_desc` varchar(256) DEFAULT NULL COMMENT '项目介绍',
+  `owner` varchar(32) DEFAULT NULL COMMENT '负责人',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  `del_flag` tinyint(1) DEFAULT NULL COMMENT '是否删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `uk_iteminfo_tenantitem` (`tenant_id`,`item_id`,`del_flag`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='项目表';
+
+/******************************************/
+/*   数据库全名 = hippo_manager   */
+/*   表名称 = config_info   */
+/******************************************/
 DROP TABLE IF EXISTS `config_info`;
 CREATE TABLE `config_info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
@@ -26,24 +69,12 @@ CREATE TABLE `config_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `uk_configinfo_datagrouptenant` (`tenant_id`,`item_id`,`tp_id`,`del_flag`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='线程池配置表';
 
-DROP TABLE IF EXISTS `item_info`;
-CREATE TABLE `item_info` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
-  `item_id` varchar(128) DEFAULT NULL COMMENT '项目ID',
-  `item_name` varchar(128) DEFAULT NULL COMMENT '项目名称',
-  `item_desc` varchar(256) DEFAULT NULL COMMENT '项目介绍',
-  `owner` varchar(32) DEFAULT NULL COMMENT '负责人',
-  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
-  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
-  `del_flag` tinyint(1) DEFAULT NULL COMMENT '是否删除',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `uk_iteminfo_tenantitem` (`tenant_id`,`item_id`,`del_flag`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
-
+/******************************************/
+/*   数据库全名 = hippo_manager   */
+/*   表名称 = log_record_info   */
+/******************************************/
 DROP TABLE IF EXISTS `log_record_info`;
 CREATE TABLE `log_record_info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -58,21 +89,6 @@ CREATE TABLE `log_record_info` (
   PRIMARY KEY (`id`),
   KEY `idx_biz_key` (`biz_key`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='操作日志表';
-
-DROP TABLE IF EXISTS `tenant_info`;
-CREATE TABLE `tenant_info` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
-  `tenant_name` varchar(128) DEFAULT NULL COMMENT '租户名称',
-  `tenant_desc` varchar(256) DEFAULT NULL COMMENT '租户介绍',
-  `owner` varchar(32) DEFAULT '-' COMMENT '负责人',
-  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
-  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
-  `del_flag` tinyint(1) DEFAULT NULL COMMENT '是否删除',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `uk_tenantinfo_tenantid` (`tenant_id`,`del_flag`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 /* 租户 */
 INSERT INTO `tenant_info` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'framework', '架构组', '架构组：负责集团项目的规范标准定义以及执行', '某某', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
