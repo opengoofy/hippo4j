@@ -25,6 +25,11 @@
             <groupId>com.github.dynamic-threadpool</groupId>
             <artifactId>discovery</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.dynamic-threadpool</groupId>
+            <artifactId>auth</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
