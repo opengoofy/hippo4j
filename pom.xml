@@ -13,6 +13,7 @@
     <description>🔥 强大的动态线程池，附带监控报警功能（没有依赖任何中间件）</description>
 
     <modules>
+        <module>auth</module>
         <module>common</module>
         <module>console</module>
         <module>server</module>
@@ -114,6 +115,12 @@
             <dependency>
                 <groupId>com.github.dynamic-threadpool</groupId>
                 <artifactId>log-record-tool</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.dynamic-threadpool</groupId>
+                <artifactId>auth</artifactId>
                 <version>${revision}</version>
             </dependency>
 
