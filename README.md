@@ -25,7 +25,7 @@
 
 <img src="https://tokei.rs/b1/github/acmenlt/dynamic-threadpool?category=lines" />
 
-<img src="https://img.shields.io/badge/version-v0.3.0-DeepSkyBlue.svg" />
+<img src="https://img.shields.io/badge/version-v0.4.0-DeepSkyBlue.svg" />
 
 <img src="https://img.shields.io/github/stars/acmenlt/dynamic-threadpool.svg" />
 
@@ -41,7 +41,7 @@
 
 因为对动态线程池比较感兴趣，加上想写一个有意义的项目，所以决定自己来造一个轻量级的轮子
 
-想给项目起一个简单易记的名字，类似于 Eureka、Nacos、Redis；后来和朋友商量，决定以动物命名：**Hippo（河马）**
+想给项目起一个简单易记的名字，类似于 Eureka、Nacos、Redis；后来和朋友商量，决定以动物命名：**Hippo**
 
 ![](https://user-images.githubusercontent.com/77398366/138722557-38d638ae-36b4-48ca-8d6b-3bf7a4bc430b.png)
 
@@ -76,6 +76,7 @@ Hippo 很好解决了这个问题，它将业务中所有线程池统一管理�
 
 | 模块                                   | 模块名称           | 注释                                     |
 | -------------------------------------- | ------------------ | ---------------------------------------- |
+| dynamic-threadpool-auth              | 用户权限           | -                                        |
 | dynamic-threadpool-common              | 公共模块           | -                                        |
 | dynamic-threadpool-config              | 配置中心           | 提供线程池准实时更新功能                 |
 | dynamic-threadpool-console             | 控制台             | 对接前端项目                             |
@@ -83,7 +84,7 @@ Hippo 很好解决了这个问题，它将业务中所有线程池统一管理�
 | dynamic-threadpool-spring-boot-starter | SpringBoot Starter | -                                        |
 | dynamic-threadpool-example             | 示例项目           | -                                        |
 | dynamic-threadpool-server              | 服务端             | Server 集成各组件                        |
-| dynamic-threadpool-tools               | 抽象工具类         | Swagger、操作日志等组件                  |
+| dynamic-threadpool-tools               | 抽象工具类         | 操作日志等组件                  |
 
 
 <br/>
