@@ -4,10 +4,10 @@ USE `hippo_manager`;
 
 /******************************************/
 /*   数据库全名 = hippo_manager   */
-/*   表名称 = tenant_info   */
+/*   表名称 = tenant   */
 /******************************************/
-DROP TABLE IF EXISTS `tenant_info`;
-CREATE TABLE `tenant_info` (
+DROP TABLE IF EXISTS `tenant`, `tenant_info`;
+CREATE TABLE `tenant` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
   `tenant_name` varchar(128) DEFAULT NULL COMMENT '租户名称',
@@ -23,10 +23,10 @@ CREATE TABLE `tenant_info` (
 
 /******************************************/
 /*   数据库全名 = hippo_manager   */
-/*   表名称 = item_info   */
+/*   表名称 = item   */
 /******************************************/
-DROP TABLE IF EXISTS `item_info`;
-CREATE TABLE `item_info` (
+DROP TABLE IF EXISTS `item`, `item_info`;
+CREATE TABLE `item` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
   `item_id` varchar(128) DEFAULT NULL COMMENT '项目ID',
@@ -43,10 +43,10 @@ CREATE TABLE `item_info` (
 
 /******************************************/
 /*   数据库全名 = hippo_manager   */
-/*   表名称 = config_info   */
+/*   表名称 = config   */
 /******************************************/
-DROP TABLE IF EXISTS `config_info`;
-CREATE TABLE `config_info` (
+DROP TABLE IF EXISTS `config`, `config_info`;
+CREATE TABLE `config` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
   `item_id` varchar(256) DEFAULT NULL COMMENT '项目ID',
@@ -90,12 +90,58 @@ CREATE TABLE `log_record_info` (
   KEY `idx_biz_key` (`biz_key`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='操作日志表';
 
+/******************************************/
+/*   数据库全名 = hippo_manager   */
+/*   表名称 = user   */
+/******************************************/
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL COMMENT 'ID',
+  `user_name` varchar(64) NOT NULL COMMENT '用户名',
+  `password` varchar(512) NOT NULL COMMENT '用户密码',
+  `gmt_create` datetime NOT NULL COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL COMMENT '修改时间',
+  `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
+/******************************************/
+/*   数据库全名 = hippo_manager   */
+/*   表名称 = role   */
+/******************************************/
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+  `id` bigint(20) NOT NULL COMMENT 'ID',
+  `role` varchar(64) NOT NULL COMMENT '角色',
+  `user_name` varchar(64) NOT NULL COMMENT '用户名',
+  `gmt_create` datetime NOT NULL COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL COMMENT '修改时间',
+  `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
+
+/******************************************/
+/*   数据库全名 = hippo_manager   */
+/*   表名称 = permission   */
+/******************************************/
+DROP TABLE IF EXISTS `permission`;
+CREATE TABLE `permission` (
+  `id` bigint(20) NOT NULL COMMENT 'ID',
+  `role` varchar(512) NOT NULL COMMENT '角色',
+  `resource` varchar(512) NOT NULL COMMENT '资源',
+  `action` varchar(8) NOT NULL COMMENT '读写权限',
+  `gmt_create` datetime NOT NULL COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL COMMENT '修改时间',
+  `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
+
 /* 租户 */
-INSERT INTO `tenant_info` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'framework', '架构组', '架构组：负责集团项目的规范标准定义以及执行', '某某', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
+INSERT INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'framework', '架构组', '架构组：负责集团项目的规范标准定义以及执行', '某某', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
 
 /* 项目 */
-INSERT INTO `item_info` (`id`, `tenant_id`, `item_id`, `item_name`, `item_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', '动态线程池示例项目', '动态线程池示例项目，对应 Hippo 项目的 example 模块', '马称', '2021-10-24 16:11:00', '2021-10-24 16:11:00', '0');
+INSERT INTO `item` (`id`, `tenant_id`, `item_id`, `item_name`, `item_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', '动态线程池示例项目', '动态线程池示例项目，对应 Hippo 项目的 example 模块', '马称', '2021-10-24 16:11:00', '2021-10-24 16:11:00', '0');
 
 /* 线程池 */
-INSERT INTO `config_info` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `core_size`, `max_size`, `queue_type`, `capacity`, `rejected_type`, `keep_alive_time`, `content`, `md5`, `is_alarm`, `capacity_alarm`, `liveness_alarm`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-consume', '示例消费者线程池', '1', '5', '9', '1024', '2', '90', '{\"capacity\":1024,\"capacityAlarm\":80,\"coreSize\":1,\"isAlarm\":0,\"itemId\":\"dynamic-threadpool-example\",\"keepAliveTime\":90,\"livenessAlarm\":80,\"maxSize\":5,\"queueType\":9,\"tenantId\":\"prescription\",\"tpId\":\"message-consume\"}', '548564177fd601015e19ef6df42000d1', '0', '80', '80', '2021-10-24 16:12:16', '2021-10-24 16:12:16', '0'),
+INSERT INTO `config` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `core_size`, `max_size`, `queue_type`, `capacity`, `rejected_type`, `keep_alive_time`, `content`, `md5`, `is_alarm`, `capacity_alarm`, `liveness_alarm`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-consume', '示例消费者线程池', '1', '5', '9', '1024', '2', '90', '{\"capacity\":1024,\"capacityAlarm\":80,\"coreSize\":1,\"isAlarm\":0,\"itemId\":\"dynamic-threadpool-example\",\"keepAliveTime\":90,\"livenessAlarm\":80,\"maxSize\":5,\"queueType\":9,\"tenantId\":\"prescription\",\"tpId\":\"message-consume\"}', '548564177fd601015e19ef6df42000d1', '0', '80', '80', '2021-10-24 16:12:16', '2021-10-24 16:12:16', '0'),
 ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', '示例生产者线程池', '1', '5', '9', '100', '7', '10', '{\"capacity\":100,\"capacityAlarm\":30,\"coreSize\":10,\"isAlarm\":0,\"itemId\":\"dynamic-threadpool-example\",\"keepAliveTime\":10,\"livenessAlarm\":30,\"maxSize\":15,\"queueType\":9,\"rejectedType\":7,\"tenantId\":\"prescription\",\"tpId\":\"message-produce\"}', 'edd6677f6ca35ce2c2e06db5749572c8', '0', '30', '30', '2021-10-24 16:12:56', '2021-10-28 09:49:27', '0');
