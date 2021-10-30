@@ -12,7 +12,7 @@ import java.util.Date;
  * @date 2021/6/29 22:04
  */
 @Data
-@TableName("tenant_info")
+@TableName("tenant")
 public class TenantInfo {
 
     /**

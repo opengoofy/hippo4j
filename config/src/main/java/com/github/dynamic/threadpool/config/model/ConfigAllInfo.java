@@ -17,7 +17,7 @@ import java.util.Date;
  * @date 2021/6/20 15:14
  */
 @Data
-@TableName("config_info")
+@TableName("config")
 public class ConfigAllInfo extends ConfigInfo implements PoolParameter {
 
     private static final long serialVersionUID = -2417394244017463665L;
