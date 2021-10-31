@@ -41,10 +41,9 @@
 
 因为对动态线程池比较感兴趣，加上想写一个有意义的项目，所以决定自己来造一个轻量级的轮子
 
-想给项目起一个简单易记的名字，类似于 Eureka、Nacos、Redis；后来和朋友商量，决定以动物命名：**Hippo**
+想给项目起一个简单易记的名字，类似于 Eureka、Nacos、Redis；后和朋友商量，决定以动物命名：**Hippo**
 
-![](https://user-images.githubusercontent.com/77398366/138722557-38d638ae-36b4-48ca-8d6b-3bf7a4bc430b.png)
-
+![](https://user-images.githubusercontent.com/77398366/139575361-87a0a1b5-716a-4c98-b467-f8f130d30163.png)
 
 <br/>
 
@@ -84,7 +83,7 @@ Hippo 很好解决了这个问题，它将业务中所有线程池统一管理�
 | dynamic-threadpool-spring-boot-starter | SpringBoot Starter | -                                        |
 | dynamic-threadpool-example             | 示例项目           | -                                        |
 | dynamic-threadpool-server              | 服务端             | Server 集成各组件                        |
-| dynamic-threadpool-tools               | 抽象工具类         | 操作日志等组件                  |
+| dynamic-threadpool-tools               | 抽象工具类         | GitHub 变更监控、操作日志等组件                  |
 
 
 <br/>
