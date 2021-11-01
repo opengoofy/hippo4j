@@ -2,7 +2,7 @@ package com.github.dynamic.threadpool.example.inittest;
 
 import cn.hutool.core.thread.ThreadUtil;
 import com.github.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
+import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +28,8 @@ public class AlarmSendMessageTest {
     public void alarmSendMessageTest() {
         ScheduledExecutorService scheduledThreadPool = Executors.newSingleThreadScheduledExecutor();
         scheduledThreadPool.scheduleWithFixedDelay(() -> {
-            DynamicThreadPoolWrap executorService = GlobalThreadPoolManage.getExecutorService(MESSAGE_PRODUCE);
-            ThreadPoolExecutor poolExecutor = executorService.getPool();
+            DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(MESSAGE_PRODUCE);
+            ThreadPoolExecutor poolExecutor = poolWrapper.getPool();
             try {
                 poolExecutor.execute(() -> ThreadUtil.sleep(10240124));
             } catch (Exception ex) {

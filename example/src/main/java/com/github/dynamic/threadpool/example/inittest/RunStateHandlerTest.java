@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.example.inittest;
 
 import com.github.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
+import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +30,8 @@ public class RunStateHandlerTest {
 
         ScheduledExecutorService scheduledThreadPool = Executors.newSingleThreadScheduledExecutor();
         scheduledThreadPool.scheduleAtFixedRate(() -> {
-            DynamicThreadPoolWrap executorService = GlobalThreadPoolManage.getExecutorService(MESSAGE_PRODUCE);
-            ThreadPoolExecutor pool = executorService.getPool();
+            DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(MESSAGE_PRODUCE);
+            ThreadPoolExecutor pool = poolWrapper.getPool();
             try {
                 pool.execute(() -> {
                     log.info("Thread pool name :: {}, Executing incoming blocking...", Thread.currentThread().getName());
