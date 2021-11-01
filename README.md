@@ -180,11 +180,26 @@ capacity :: [100=>100], keepAliveTime :: [10000=>10000], rejectedType :: [7=>7]
  <br/>
 
 
+## 致谢
+
+Hippo 项目基于或参考以下项目:
+
+1. [Nacos](https://github.com/alibaba/nacos)：an easy-to-use dynamic service discovery, configuration and service management platform for building cloud native applications.
+
+2. [Eureka](https://github.com/Netflix/Eureka)：AWS Service registry for resilient mid-tier load balancing and failover.
+
+3. [ShardingSphere](https://github.com/apache/shardingsphere)：Build criterion and ecosystem above multi-model databases
+
+4. [mzt-biz-log](https://github.com/mouzt/mzt-biz-log)：支持Springboot，基于注解的可使用变量、可以自定义函数的通用操作日志组件
+
+5. [equator](https://github.com/dadiyang/equator)：一个用于比较两个对象的所有属性是否全部相等，并且可以获取所有不相等的属性的比对器
+
+<br/>
+
 ## 最后
 
 小编是个有代码洁癖的程序员，项目中的代码开发完全遵守阿里巴巴代码规约，也推荐大家使用，培养好的编码习惯
 
 对于这个项目，是否有什么不一样看法，欢迎在 Issue 一起沟通交流；或者添加小编微信进交流群
-
 
 ![](https://user-images.githubusercontent.com/77398366/138920260-e9dd1268-797f-4d42-9abb-62353d08ea6a.png)
