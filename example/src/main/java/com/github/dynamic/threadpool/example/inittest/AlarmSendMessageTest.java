@@ -2,7 +2,7 @@ package com.github.dynamic.threadpool.example.inittest;
 
 import cn.hutool.core.thread.ThreadUtil;
 import com.github.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
+import com.github.dynamic.threadpool.starter.wrapper.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

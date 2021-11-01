@@ -1,4 +1,4 @@
-package com.github.dynamic.threadpool.starter.wrap;
+package com.github.dynamic.threadpool.starter.wrapper;
 
 import com.github.dynamic.threadpool.starter.common.CommonDynamicThreadPool;
 import com.github.dynamic.threadpool.starter.core.DynamicThreadPoolExecutor;
@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 /**
- * Dynamic threadPool wrap.
+ * Dynamic threadPool wrapper.
  *
  * @author chen.ma
  * @date 2021/6/20 16:55

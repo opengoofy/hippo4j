@@ -11,7 +11,7 @@ import com.github.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
 import com.github.dynamic.threadpool.starter.core.DynamicThreadPoolExecutor;
 import com.github.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
+import com.github.dynamic.threadpool.starter.wrapper.DynamicThreadPoolWrapper;
 import com.google.common.base.Joiner;
 import com.taobao.api.ApiException;
 import lombok.AllArgsConstructor;

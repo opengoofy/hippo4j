@@ -1,6 +1,6 @@
 package com.github.dynamic.threadpool.starter.core;
 
-import com.github.dynamic.threadpool.starter.wrap.ManagerListenerWrap;
+import com.github.dynamic.threadpool.starter.wrapper.ManagerListenerWrapper;
 import com.github.dynamic.threadpool.common.toolkit.ContentUtil;
 import com.github.dynamic.threadpool.common.toolkit.Md5Util;
 import com.github.dynamic.threadpool.common.constant.Constants;
@@ -33,7 +33,7 @@ public class CacheData {
 
     private volatile long localConfigLastModified;
 
-    private final CopyOnWriteArrayList<ManagerListenerWrap> listeners;
+    private final CopyOnWriteArrayList<ManagerListenerWrapper> listeners;
 
     public CacheData(String tenantId, String itemId, String tpId) {
         this.tenantId = tenantId;
@@ -50,7 +50,7 @@ public class CacheData {
             throw new IllegalArgumentException("listener is null");
         }
 
-        ManagerListenerWrap managerListenerWrap = new ManagerListenerWrap(md5, listener);
+        ManagerListenerWrapper managerListenerWrap = new ManagerListenerWrapper(md5, listener);
 
         if (listeners.addIfAbsent(managerListenerWrap)) {
             log.info("Add listener status :: ok, tpId :: {}, cnt :: {}", tpId, listeners.size());
@@ -58,14 +58,14 @@ public class CacheData {
     }
 
     public void checkListenerMd5() {
-        for (ManagerListenerWrap wrap : listeners) {
+        for (ManagerListenerWrapper wrap : listeners) {
             if (!md5.equals(wrap.getLastCallMd5())) {
                 safeNotifyListener(content, md5, wrap);
             }
         }
     }
 
-    private void safeNotifyListener(String content, String md5, ManagerListenerWrap wrap) {
+    private void safeNotifyListener(String content, String md5, ManagerListenerWrapper wrap) {
         Listener listener = wrap.getListener();
 
         Runnable runnable = () -> {

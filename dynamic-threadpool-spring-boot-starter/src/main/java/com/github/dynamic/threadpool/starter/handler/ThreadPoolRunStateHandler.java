@@ -4,7 +4,7 @@ import com.github.dynamic.threadpool.common.model.PoolRunStateInfo;
 import com.github.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
 import com.github.dynamic.threadpool.starter.toolkit.CalculateUtil;
 import com.github.dynamic.threadpool.starter.core.DynamicThreadPoolExecutor;
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
+import com.github.dynamic.threadpool.starter.wrapper.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;

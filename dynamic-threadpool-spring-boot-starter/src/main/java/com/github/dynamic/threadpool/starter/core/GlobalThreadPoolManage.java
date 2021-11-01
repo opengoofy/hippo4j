@@ -1,6 +1,6 @@
 package com.github.dynamic.threadpool.starter.core;
 
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
+import com.github.dynamic.threadpool.starter.wrapper.DynamicThreadPoolWrapper;
 import com.github.dynamic.threadpool.common.model.PoolParameter;
 
 import java.util.Map;

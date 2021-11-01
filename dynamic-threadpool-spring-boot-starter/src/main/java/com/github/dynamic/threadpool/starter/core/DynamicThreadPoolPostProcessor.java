@@ -11,7 +11,7 @@ import com.github.dynamic.threadpool.starter.remote.HttpAgent;
 import com.github.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
+import com.github.dynamic.threadpool.starter.wrapper.DynamicThreadPoolWrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
