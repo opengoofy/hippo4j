@@ -43,7 +43,7 @@
 
 想给项目起一个简单易记的名字，类似于 Eureka、Nacos、Redis；后和朋友商量，决定以动物命名：**Hippo**
 
-![](https://user-images.githubusercontent.com/77398366/139575361-87a0a1b5-716a-4c98-b467-f8f130d30163.png)
+![](https://user-images.githubusercontent.com/77398366/139702684-17595e6e-a743-4a33-a0be-0626967f32f5.png)
 
 <br/>
 
