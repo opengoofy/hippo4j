@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>Demo project for Spring Boot</description>
+    <description>监控 GitHub 项目 Star、Fork 变更, 有变化则发起通知.</description>
 
     <dependencies>
         <dependency>

@@ -13,11 +13,7 @@
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>
-        操作日志记录工具类, 借鉴以下开源项目
-        - https://github.com/mouzt/mzt-biz-log
-        - https://github.com/dadiyang/equator
-    </description>
+    <description>操作日志记录工具类.</description>
 
     <dependencies>
         <dependency>
