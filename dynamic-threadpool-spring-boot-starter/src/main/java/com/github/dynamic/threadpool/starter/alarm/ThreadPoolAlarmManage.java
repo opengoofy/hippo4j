@@ -4,7 +4,7 @@ import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
 import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
 import com.github.dynamic.threadpool.starter.config.MessageAlarmConfig;
 import com.github.dynamic.threadpool.starter.toolkit.CalculateUtil;
-import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
+import com.github.dynamic.threadpool.starter.core.DynamicThreadPoolExecutor;
 import com.github.dynamic.threadpool.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,7 +44,7 @@ public class ThreadPoolAlarmManage {
      *
      * @param threadPoolExecutor
      */
-    public static void checkPoolCapacityAlarm(CustomThreadPoolExecutor threadPoolExecutor) {
+    public static void checkPoolCapacityAlarm(DynamicThreadPoolExecutor threadPoolExecutor) {
         if (SEND_MESSAGE_SERVICE == null) {
             return;
         }
@@ -68,7 +68,7 @@ public class ThreadPoolAlarmManage {
      * @param isCore
      * @param threadPoolExecutor
      */
-    public static void checkPoolLivenessAlarm(boolean isCore, CustomThreadPoolExecutor threadPoolExecutor) {
+    public static void checkPoolLivenessAlarm(boolean isCore, DynamicThreadPoolExecutor threadPoolExecutor) {
         if (isCore || SEND_MESSAGE_SERVICE == null || !isSendMessage(threadPoolExecutor, MessageTypeEnum.LIVENESS)) {
             return;
         }
@@ -88,7 +88,7 @@ public class ThreadPoolAlarmManage {
      *
      * @param threadPoolExecutor
      */
-    public static void checkPoolRejectAlarm(CustomThreadPoolExecutor threadPoolExecutor) {
+    public static void checkPoolRejectAlarm(DynamicThreadPoolExecutor threadPoolExecutor) {
         if (SEND_MESSAGE_SERVICE == null) {
             return;
         }
@@ -118,7 +118,7 @@ public class ThreadPoolAlarmManage {
      * @param typeEnum
      * @return
      */
-    private static boolean isSendMessage(CustomThreadPoolExecutor threadPoolExecutor, MessageTypeEnum typeEnum) {
+    private static boolean isSendMessage(DynamicThreadPoolExecutor threadPoolExecutor, MessageTypeEnum typeEnum) {
         AlarmControlDTO alarmControl = AlarmControlDTO.builder()
                 .threadPool(threadPoolExecutor.getThreadPoolId())
                 .typeEnum(typeEnum)

@@ -2,7 +2,7 @@ package com.github.dynamic.threadpool.starter.alarm;
 
 import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
 import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
-import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
+import com.github.dynamic.threadpool.starter.core.DynamicThreadPoolExecutor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
     private final List<SendMessageHandler> sendMessageHandlers = new ArrayList(4);
 
     @Override
-    public void sendAlarmMessage(CustomThreadPoolExecutor threadPoolExecutor) {
+    public void sendAlarmMessage(DynamicThreadPoolExecutor threadPoolExecutor) {
         for (SendMessageHandler messageHandler : sendMessageHandlers) {
             try {
                 messageHandler.sendAlarmMessage(notifyConfigs, threadPoolExecutor);

@@ -2,6 +2,7 @@ package com.github.dynamic.threadpool.starter.toolkit.thread;
 
 import com.github.dynamic.threadpool.common.toolkit.Assert;
 import com.github.dynamic.threadpool.starter.alarm.ThreadPoolAlarm;
+import com.github.dynamic.threadpool.starter.core.DynamicThreadPoolExecutor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -88,15 +89,15 @@ public class AbstractBuildThreadPoolTemplate {
     }
 
     /**
-     * 构建自定义线程池
+     * 构建动态线程池
      *
      * @param initParam
      * @return
      */
-    public static CustomThreadPoolExecutor buildCustomPool(ThreadPoolInitParam initParam) {
+    public static DynamicThreadPoolExecutor buildDynamicPool(ThreadPoolInitParam initParam) {
         Assert.notNull(initParam);
-        CustomThreadPoolExecutor executorService =
-                new CustomThreadPoolExecutor(initParam.getCorePoolNum(),
+        DynamicThreadPoolExecutor executorService =
+                new DynamicThreadPoolExecutor(initParam.getCorePoolNum(),
                         initParam.getMaxPoolNum(),
                         initParam.getKeepAliveTime(),
                         initParam.getTimeUnit(),

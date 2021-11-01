@@ -1,6 +1,6 @@
 package com.github.dynamic.threadpool.starter.core;
 
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
+import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
 import com.github.dynamic.threadpool.common.model.PoolParameter;
 
 import java.util.Map;
@@ -16,9 +16,9 @@ public class GlobalThreadPoolManage {
 
     private static final Map<String, PoolParameter> POOL_PARAMETER = new ConcurrentHashMap();
 
-    private static final Map<String, DynamicThreadPoolWrap> EXECUTOR_MAP = new ConcurrentHashMap();
+    private static final Map<String, DynamicThreadPoolWrapper> EXECUTOR_MAP = new ConcurrentHashMap();
 
-    public static DynamicThreadPoolWrap getExecutorService(String tpId) {
+    public static DynamicThreadPoolWrapper getExecutorService(String tpId) {
         return EXECUTOR_MAP.get(tpId);
     }
 
@@ -26,12 +26,12 @@ public class GlobalThreadPoolManage {
         return POOL_PARAMETER.get(tpId);
     }
 
-    public static void register(String tpId, PoolParameter poolParameter, DynamicThreadPoolWrap executor) {
+    public static void register(String tpId, PoolParameter poolParameter, DynamicThreadPoolWrapper executor) {
         registerPool(tpId, executor);
         registerPoolParameter(tpId, poolParameter);
     }
 
-    public static void registerPool(String tpId, DynamicThreadPoolWrap executor) {
+    public static void registerPool(String tpId, DynamicThreadPoolWrapper executor) {
         EXECUTOR_MAP.put(tpId, executor);
     }
 

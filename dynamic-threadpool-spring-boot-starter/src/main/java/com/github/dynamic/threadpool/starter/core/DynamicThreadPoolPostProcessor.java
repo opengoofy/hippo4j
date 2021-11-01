@@ -5,14 +5,13 @@ import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
 import com.github.dynamic.threadpool.common.constant.Constants;
 import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
 import com.github.dynamic.threadpool.common.web.base.Result;
-import com.github.dynamic.threadpool.starter.common.CommonThreadPool;
+import com.github.dynamic.threadpool.starter.common.CommonDynamicThreadPool;
 import com.github.dynamic.threadpool.starter.config.BootstrapProperties;
 import com.github.dynamic.threadpool.starter.remote.HttpAgent;
-import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
 import com.github.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.ThreadPoolBuilder;
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
+import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -55,18 +54,18 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (bean instanceof CustomThreadPoolExecutor) {
+        if (bean instanceof DynamicThreadPoolExecutor) {
             var dynamicThreadPool = ApplicationContextHolder.findAnnotationOnBean(beanName, DynamicThreadPool.class);
             if (Objects.isNull(dynamicThreadPool)) {
                 return bean;
             }
-            var customExecutor = (CustomThreadPoolExecutor) bean;
-            var wrap = new DynamicThreadPoolWrap(customExecutor.getThreadPoolId(), customExecutor);
-            CustomThreadPoolExecutor remoteExecutor = fillPoolAndRegister(wrap);
+            var dynamicExecutor = (DynamicThreadPoolExecutor) bean;
+            var wrap = new DynamicThreadPoolWrapper(dynamicExecutor.getThreadPoolId(), dynamicExecutor);
+            var remoteExecutor = fillPoolAndRegister(wrap);
             subscribeConfig(wrap);
             return remoteExecutor;
-        } else if (bean instanceof DynamicThreadPoolWrap) {
-            var wrap = (DynamicThreadPoolWrap) bean;
+        } else if (bean instanceof DynamicThreadPoolWrapper) {
+            var wrap = (DynamicThreadPoolWrapper) bean;
             registerAndSubscribe(wrap);
         }
 
@@ -78,9 +77,11 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      *
      * @param dynamicThreadPoolWrap
      */
-    protected void registerAndSubscribe(DynamicThreadPoolWrap dynamicThreadPoolWrap) {
-        fillPoolAndRegister(dynamicThreadPoolWrap);
-        subscribeConfig(dynamicThreadPoolWrap);
+    protected void registerAndSubscribe(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
+        executorService.execute(() -> {
+            fillPoolAndRegister(dynamicThreadPoolWrap);
+            subscribeConfig(dynamicThreadPoolWrap);
+        });
     }
 
     /**
@@ -88,7 +89,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      *
      * @param dynamicThreadPoolWrap
      */
-    protected CustomThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrap dynamicThreadPoolWrap) {
+    protected DynamicThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
         String tpId = dynamicThreadPoolWrap.getTpId();
         Map<String, String> queryStrMap = new HashMap(3);
         queryStrMap.put(TP_ID, tpId);
@@ -97,7 +98,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
         Result result;
         boolean isSubscribe = false;
-        CustomThreadPoolExecutor poolExecutor = null;
+        DynamicThreadPoolExecutor poolExecutor = null;
         PoolParameterInfo ppi = new PoolParameterInfo();
 
         try {
@@ -105,10 +106,9 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             if (result.isSuccess() && result.getData() != null && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
                 // 使用相关参数创建线程池
                 BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
-                poolExecutor = (CustomThreadPoolExecutor) ThreadPoolBuilder.builder()
-                        .isCustomPool(true)
+                poolExecutor = (DynamicThreadPoolExecutor) ThreadPoolBuilder.builder()
+                        .dynamicPool()
                         .workQueue(workQueue)
-                        .threadPoolId(tpId)
                         .threadFactory(tpId)
                         .poolThreadSize(ppi.getCoreSize(), ppi.getMaxSize())
                         .keepAliveTime(ppi.getKeepAliveTime(), TimeUnit.SECONDS)
@@ -120,13 +120,13 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 isSubscribe = true;
             }
         } catch (Exception ex) {
-            poolExecutor = dynamicThreadPoolWrap.getPool() != null ? dynamicThreadPoolWrap.getPool() : CommonThreadPool.getInstance(tpId);
+            poolExecutor = dynamicThreadPoolWrap.getPool() != null ? dynamicThreadPoolWrap.getPool() : CommonDynamicThreadPool.getInstance(tpId);
             dynamicThreadPoolWrap.setPool(poolExecutor);
 
             log.error("[Init pool] Failed to initialize thread pool configuration. error message :: {}", ex.getMessage());
         } finally {
             if (Objects.isNull(dynamicThreadPoolWrap.getPool())) {
-                dynamicThreadPoolWrap.setPool(CommonThreadPool.getInstance(tpId));
+                dynamicThreadPoolWrap.setPool(CommonDynamicThreadPool.getInstance(tpId));
             }
 
             // 设置是否订阅远端线程池配置
@@ -137,7 +137,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         return poolExecutor;
     }
 
-    protected void subscribeConfig(DynamicThreadPoolWrap dynamicThreadPoolWrap) {
+    protected void subscribeConfig(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
         if (dynamicThreadPoolWrap.isSubscribeFlag()) {
             threadPoolOperation.subscribeConfig(dynamicThreadPoolWrap.getTpId(), executorService, config -> ThreadPoolDynamicRefresh.refreshDynamicPool(config));
         }

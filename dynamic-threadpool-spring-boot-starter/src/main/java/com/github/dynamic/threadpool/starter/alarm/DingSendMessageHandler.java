@@ -8,10 +8,10 @@ import com.dingtalk.api.request.OapiRobotSendRequest;
 import com.github.dynamic.threadpool.common.model.InstanceInfo;
 import com.github.dynamic.threadpool.common.model.PoolParameterInfo;
 import com.github.dynamic.threadpool.starter.core.GlobalThreadPoolManage;
-import com.github.dynamic.threadpool.starter.toolkit.thread.CustomThreadPoolExecutor;
+import com.github.dynamic.threadpool.starter.core.DynamicThreadPoolExecutor;
 import com.github.dynamic.threadpool.starter.toolkit.thread.QueueTypeEnum;
 import com.github.dynamic.threadpool.starter.toolkit.thread.RejectedTypeEnum;
-import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrap;
+import com.github.dynamic.threadpool.starter.wrap.DynamicThreadPoolWrapper;
 import com.google.common.base.Joiner;
 import com.taobao.api.ApiException;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
     }
 
     @Override
-    public void sendAlarmMessage(List<NotifyConfig> notifyConfigs, CustomThreadPoolExecutor pool) {
+    public void sendAlarmMessage(List<NotifyConfig> notifyConfigs, DynamicThreadPoolExecutor pool) {
         Optional<NotifyConfig> notifyConfigOptional = notifyConfigs.stream()
                 .filter(each -> Objects.equals(each.getType(), getType()))
                 .findFirst();
@@ -60,7 +60,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
         changeConfigOptional.ifPresent(each -> dingChangeSendMessage(each, parameter));
     }
 
-    private void dingAlarmSendMessage(NotifyConfig notifyConfig, CustomThreadPoolExecutor pool) {
+    private void dingAlarmSendMessage(NotifyConfig notifyConfig, DynamicThreadPoolExecutor pool) {
         List<String> receives = StrUtil.split(notifyConfig.getReceives(), ',');
         String afterReceives = Joiner.on(", @").join(receives);
 
@@ -133,7 +133,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
 
     private void dingChangeSendMessage(NotifyConfig notifyConfig, PoolParameterInfo parameter) {
         String threadPoolId = parameter.getTpId();
-        DynamicThreadPoolWrap poolWrap = GlobalThreadPoolManage.getExecutorService(threadPoolId);
+        DynamicThreadPoolWrapper poolWrap = GlobalThreadPoolManage.getExecutorService(threadPoolId);
         if (poolWrap == null) {
             log.warn("Thread pool is empty when sending change notification, threadPoolId :: {}", threadPoolId);
             return;
@@ -142,7 +142,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
         List<String> receives = StrUtil.split(notifyConfig.getReceives(), ',');
         String afterReceives = Joiner.on(", @").join(receives);
 
-        CustomThreadPoolExecutor customPool = poolWrap.getPool();
+        DynamicThreadPoolExecutor customPool = poolWrap.getPool();
         /**
          * hesitant e.g. ➲  ➜  ⇨  ➪
          */
