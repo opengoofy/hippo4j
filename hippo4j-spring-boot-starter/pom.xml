@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.dynamic-threadpool</groupId>
-        <artifactId>parent</artifactId>
+        <groupId>io.github.acmenlt</groupId>
+        <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>dynamic-threadpool-spring-boot-starter</artifactId>
+    <artifactId>hippo4j-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -42,7 +42,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.dynamic-threadpool</groupId>
+            <groupId>io.github.acmenlt</groupId>
             <artifactId>common</artifactId>
         </dependency>
 
@@ -83,6 +83,19 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

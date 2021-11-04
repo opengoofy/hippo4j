@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.dynamic-threadpool</groupId>
-    <artifactId>parent</artifactId>
+    <groupId>io.github.acmenlt</groupId>
+    <artifactId>hippo4j-all</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
@@ -21,7 +21,7 @@
         <module>discovery</module>
         <module>example</module>
         <module>tools</module>
-        <module>dynamic-threadpool-spring-boot-starter</module>
+        <module>hippo4j-spring-boot-starter</module>
     </modules>
 
     <properties>
@@ -43,6 +43,8 @@
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
 
+        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -90,43 +92,43 @@
             </dependency>
 
             <dependency>
-                <groupId>com.github.dynamic-threadpool</groupId>
+                <groupId>io.github.acmenlt</groupId>
                 <artifactId>common</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.github.dynamic-threadpool</groupId>
+                <groupId>io.github.acmenlt</groupId>
                 <artifactId>config</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.github.dynamic-threadpool</groupId>
+                <groupId>io.github.acmenlt</groupId>
                 <artifactId>console</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.github.dynamic-threadpool</groupId>
+                <groupId>io.github.acmenlt</groupId>
                 <artifactId>discovery</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.github.dynamic-threadpool</groupId>
+                <groupId>io.github.acmenlt</groupId>
                 <artifactId>log-record-tool</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.github.dynamic-threadpool</groupId>
+                <groupId>io.github.acmenlt</groupId>
                 <artifactId>auth</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.github.dynamic-threadpool</groupId>
+                <groupId>io.github.acmenlt</groupId>
                 <artifactId>open-change-tool</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -185,10 +187,17 @@
 
     <developers>
         <developer>
+            <id>acmenlt</id>
             <name>chen.ma</name>
+            <email>m7798432@163.com</email>
             <url>https://github.com/acmenlt</url>
         </developer>
     </developers>
+
+    <issueManagement>
+        <system>Github Issue</system>
+        <url>https://github.com/acmenlt/dynamic-threadpool/issues</url>
+    </issueManagement>
 
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -217,29 +226,6 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven.javadoc.plugin.version}</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven.source.plugin.version}</version>
-                <configuration>
-                    <attach>true</attach>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
@@ -285,7 +271,77 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <additionalparam>${javadoc.opts}</additionalparam>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- 禁用注释检查 -->
+        <profile>
+            <id>disable-javadoc-doclint</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <properties>
+                <javadoc.opts>-Xdoclint:none</javadoc.opts>
+            </properties>
+        </profile>
+    </profiles>
+
+    <scm>
+        <connection>scm:git@github.com:acmenlt/dynamic-threadpool</connection>
+        <developerConnection>scm:git@github.com:acmenlt/dynamic-threadpool.git</developerConnection>
+        <url>git@github.com:acmenlt/dynamic-threadpool.git</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 </project>

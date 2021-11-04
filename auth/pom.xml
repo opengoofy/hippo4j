@@ -4,13 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.dynamic-threadpool</groupId>
-        <artifactId>parent</artifactId>
+        <groupId>io.github.acmenlt</groupId>
+        <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
 
     <artifactId>auth</artifactId>
     <packaging>jar</packaging>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <dependencies>
         <dependency>

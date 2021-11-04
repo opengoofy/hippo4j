@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.dynamic-threadpool</groupId>
+        <groupId>io.github.acmenlt</groupId>
         <artifactId>tools</artifactId>
         <version>${revision}</version>
     </parent>
@@ -14,6 +14,10 @@
 
     <name>${project.artifactId}</name>
     <description>监控 GitHub 项目 Star、Fork 变更, 有变化则发起通知.</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <dependencies>
         <dependency>

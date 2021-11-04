@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.dynamic-threadpool</groupId>
-        <artifactId>parent</artifactId>
+        <groupId>io.github.acmenlt</groupId>
+        <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
 
@@ -14,6 +14,10 @@
 
     <name>${project.artifactId}</name>
     <description>Demo project for Spring Boot</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -33,13 +37,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.dynamic-threadpool</groupId>
-            <artifactId>dynamic-threadpool-spring-boot-starter</artifactId>
+            <groupId>io.github.acmenlt</groupId>
+            <artifactId>hippo4j-spring-boot-starter</artifactId>
             <version>${revision}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.github.dynamic-threadpool</groupId>
+            <groupId>io.github.acmenlt</groupId>
             <artifactId>open-change-tool</artifactId>
         </dependency>
     </dependencies>

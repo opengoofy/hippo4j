@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.dynamic-threadpool</groupId>
-        <artifactId>parent</artifactId>
+        <groupId>io.github.acmenlt</groupId>
+        <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
 
@@ -14,6 +14,10 @@
 
     <name>${project.artifactId}</name>
     <description>${project.artifactId}</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -43,7 +47,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.dynamic-threadpool</groupId>
+            <groupId>io.github.acmenlt</groupId>
             <artifactId>common</artifactId>
         </dependency>
 
@@ -63,7 +67,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.dynamic-threadpool</groupId>
+            <groupId>io.github.acmenlt</groupId>
             <artifactId>log-record-tool</artifactId>
         </dependency>
     </dependencies>
