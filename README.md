@@ -80,7 +80,7 @@ Hippo 很好解决了这个问题，它将业务中所有线程池统一管理�
 | config              | 配置中心           | 提供线程池准实时更新功能                 |
 | console             | 控制台             | 对接前端项目                             |
 | discovery           | 注册中心           | 提供线程池项目实例注册、续约、下线等功能 |
-| hippo4j-spring-boot-starter | Starter | - 客户端依赖组件                                       |
+| hippo4j-spring-boot-starter | Starter | 客户端依赖组件                                       |
 | example             | 示例项目           | -                                        |
 | server              | 服务端             | Server 集成各组件                        |
 | tools               | 抽象工具类         | GitHub 变更监控、操作日志等组件                  |
