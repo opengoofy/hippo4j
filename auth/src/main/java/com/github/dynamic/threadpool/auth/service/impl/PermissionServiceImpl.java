@@ -1,6 +1,7 @@
 package com.github.dynamic.threadpool.auth.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,6 +13,11 @@ import com.github.dynamic.threadpool.auth.model.biz.permission.PermissionRespDTO
 import com.github.dynamic.threadpool.auth.service.PermissionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Permission service impl.
@@ -54,9 +60,9 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public void deletePermission(String role, String resource, String action) {
         LambdaUpdateWrapper<PermissionInfo> updateWrapper = Wrappers.lambdaUpdate(PermissionInfo.class)
-                .eq(PermissionInfo::getRole, role)
-                .eq(PermissionInfo::getResource, resource)
-                .eq(PermissionInfo::getAction, action);
+                .eq(StrUtil.isNotBlank(role), PermissionInfo::getRole, role)
+                .eq(StrUtil.isNotBlank(resource), PermissionInfo::getResource, resource)
+                .eq(StrUtil.isNotBlank(action), PermissionInfo::getAction, action);
 
         permissionMapper.delete(updateWrapper);
     }

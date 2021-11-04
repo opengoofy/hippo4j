@@ -10,6 +10,7 @@ import com.github.dynamic.threadpool.auth.mapper.UserMapper;
 import com.github.dynamic.threadpool.auth.model.UserInfo;
 import com.github.dynamic.threadpool.auth.model.biz.user.UserQueryPageReqDTO;
 import com.github.dynamic.threadpool.auth.model.biz.user.UserRespDTO;
+import com.github.dynamic.threadpool.auth.service.RoleService;
 import com.github.dynamic.threadpool.auth.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
+
+    private final RoleService roleService;
 
     @Override
     public IPage<UserRespDTO> listUser(int pageNo, int pageSize) {
@@ -69,6 +72,7 @@ public class UserServiceImpl implements UserService {
         LambdaUpdateWrapper<UserInfo> updateWrapper = Wrappers.lambdaUpdate(UserInfo.class)
                 .eq(UserInfo::getUserName, userName);
         userMapper.delete(updateWrapper);
+        roleService.deleteRole("", userName);
     }
 
     @Override

@@ -1,18 +1,25 @@
 package com.github.dynamic.threadpool.auth.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.github.dynamic.threadpool.auth.mapper.RoleMapper;
 import com.github.dynamic.threadpool.auth.model.RoleInfo;
 import com.github.dynamic.threadpool.auth.model.biz.role.RoleQueryPageReqDTO;
 import com.github.dynamic.threadpool.auth.model.biz.role.RoleRespDTO;
+import com.github.dynamic.threadpool.auth.service.PermissionService;
 import com.github.dynamic.threadpool.auth.service.RoleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +34,8 @@ import java.util.stream.Collectors;
 public class RoleServiceImpl implements RoleService {
 
     private final RoleMapper roleMapper;
+
+    private final PermissionService permissionService;
 
     @Override
     public IPage<RoleRespDTO> listRole(int pageNo, int pageSize) {
@@ -53,10 +62,18 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void deleteRole(String role, String userName) {
+        List<String> roleStrList = CollUtil.toList(role);
+        if (StrUtil.isBlank(role)) {
+            LambdaQueryWrapper<RoleInfo> queryWrapper = Wrappers.lambdaQuery(RoleInfo.class).eq(RoleInfo::getUserName, userName);
+            roleStrList = roleMapper.selectList(queryWrapper).stream().map(RoleInfo::getRole).collect(Collectors.toList());
+        }
+
         LambdaUpdateWrapper<RoleInfo> updateWrapper = Wrappers.lambdaUpdate(RoleInfo.class)
-                .eq(RoleInfo::getRole, role)
-                .eq(RoleInfo::getUserName, userName);
+                .eq(StrUtil.isNotBlank(role), RoleInfo::getRole, role)
+                .eq(StrUtil.isNotBlank(userName), RoleInfo::getUserName, userName);
         roleMapper.delete(updateWrapper);
+
+        roleStrList.forEach(each -> permissionService.deletePermission(each, "", ""));
     }
 
     @Override
