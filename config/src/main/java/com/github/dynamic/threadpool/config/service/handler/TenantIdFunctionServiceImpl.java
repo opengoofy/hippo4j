@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 /**
- * 查找项目 Id 旧值.
+ * 查找原租户名称.
  *
  * @author chen.ma
  * @date 2021/10/24 22:07
@@ -19,6 +19,11 @@ import java.util.Optional;
 public class TenantIdFunctionServiceImpl implements ParseFunction {
 
     private final TenantService tenantService;
+
+    @Override
+    public boolean executeBefore() {
+        return true;
+    }
 
     @Override
     public String functionName() {
