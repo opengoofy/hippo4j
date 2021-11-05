@@ -40,12 +40,14 @@ public class ConfigController {
             @RequestParam("itemId") String itemId,
             @RequestParam(value = "namespace") String namespace) {
 
-        return Results.success(configService.findConfigAllInfo(tpId, itemId, namespace));
+        ConfigAllInfo configAllInfo = configService.findConfigAllInfo(tpId, itemId, namespace);
+        return Results.success(configAllInfo);
     }
 
     @PostMapping
-    public Result<Boolean> publishConfig(@RequestBody ConfigAllInfo config) {
-        configService.insertOrUpdate(config);
+    public Result<Boolean> publishConfig(@RequestParam(value = "identify", required = false) String identify,
+                                         @RequestBody ConfigAllInfo config) {
+        configService.insertOrUpdate(identify, config);
         return Results.success(true);
     }
 

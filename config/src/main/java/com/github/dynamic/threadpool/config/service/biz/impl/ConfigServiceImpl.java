@@ -40,14 +40,14 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
-    public void insertOrUpdate(ConfigAllInfo configAllInfo) {
+    public void insertOrUpdate(String identify, ConfigAllInfo configAllInfo) {
         try {
             addConfigInfo(configAllInfo);
         } catch (Exception ex) {
             updateConfigInfo(configAllInfo);
         }
 
-        ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(ContentUtil.getGroupKey(configAllInfo)));
+        ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configAllInfo)));
     }
 
     private Integer addConfigInfo(ConfigAllInfo config) {

@@ -1,8 +1,15 @@
 package com.github.dynamic.threadpool.config.toolkit;
 
+import cn.hutool.core.collection.CollUtil;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 /**
  * Map util.
@@ -26,6 +33,44 @@ public class MapUtil {
             return ret;
         }
         return val;
+    }
+
+
+    /**
+     * 根据 Key 进行模糊匹配.
+     *
+     * @param sourceMap
+     * @param filters
+     * @return
+     */
+    public static List<String> parseMapForFilter(Map<String, ?> sourceMap, String filters) {
+        List<String> resultList = Lists.newArrayList();
+        if (CollUtil.isEmpty(sourceMap)) {
+            return resultList;
+        }
+
+        sourceMap.forEach((key, val) -> {
+            if (checkKey(key, filters)) {
+                resultList.add(key);
+            }
+        });
+
+        return resultList;
+    }
+
+    /**
+     * 匹配想要查询的字符.
+     *
+     * @param key
+     * @param filters
+     * @return
+     */
+    private static boolean checkKey(String key, String filters) {
+        if (key.indexOf(filters) > -1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

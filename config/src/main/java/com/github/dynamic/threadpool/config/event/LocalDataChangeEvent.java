@@ -8,9 +8,18 @@ package com.github.dynamic.threadpool.config.event;
  */
 public class LocalDataChangeEvent extends Event {
 
+    /**
+     * 租户+项目+线程池
+     */
     public final String groupKey;
 
-    public LocalDataChangeEvent(String groupKey) {
+    /**
+     * 客户端实例唯一标识
+     */
+    public final String identify;
+
+    public LocalDataChangeEvent(String identify, String groupKey) {
+        this.identify = identify;
         this.groupKey = groupKey;
     }
 

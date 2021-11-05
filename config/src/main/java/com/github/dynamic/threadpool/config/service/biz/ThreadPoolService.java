@@ -42,8 +42,9 @@ public interface ThreadPoolService {
     /**
      * Save or update thread pool config.
      *
+     * @param identify
      * @param reqDTO
      */
-    void saveOrUpdateThreadPoolConfig(ThreadPoolSaveOrUpdateReqDTO reqDTO);
+    void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO);
 
 }

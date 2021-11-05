@@ -34,6 +34,8 @@ public class InstanceInfo {
 
     private String callBackUrl;
 
+    private String identify;
+
     private volatile String vipAddress;
 
     private volatile String secureVipAddress;

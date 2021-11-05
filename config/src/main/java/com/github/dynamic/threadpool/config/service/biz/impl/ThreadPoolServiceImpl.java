@@ -56,8 +56,8 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
     }
 
     @Override
-    public void saveOrUpdateThreadPoolConfig(ThreadPoolSaveOrUpdateReqDTO reqDTO) {
-        configService.insertOrUpdate(BeanUtil.convert(reqDTO, ConfigAllInfo.class));
+    public void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO) {
+        configService.insertOrUpdate(identify, BeanUtil.convert(reqDTO, ConfigAllInfo.class));
     }
 
 }

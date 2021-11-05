@@ -1,5 +1,9 @@
 package com.github.dynamic.threadpool.common.constant;
 
+import org.springframework.expression.spel.ast.Identifier;
+
+import java.util.UUID;
+
 /**
  * Constants.
  *
@@ -41,6 +45,10 @@ public class Constants {
     public static final String LONG_PULLING_TIMEOUT = "Long-Pulling-Timeout";
 
     public static final String LONG_PULLING_TIMEOUT_NO_HANGUP = "Long-Pulling-Timeout-No-Hangup";
+
+    public static final String LONG_PULLING_CLIENT_IDENTIFICATION = "Long-Pulling-Client-Identification";
+
+    public static final String CLIENT_IDENTIFICATION_VALUE = UUID.randomUUID().toString();
 
     public static final String LISTENING_CONFIGS = "Listening-Configs";
 

@@ -1,8 +1,11 @@
 package com.github.dynamic.threadpool.config.toolkit;
 
+import cn.hutool.core.text.StrBuilder;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.github.dynamic.threadpool.common.constant.Constants.LONG_PULLING_CLIENT_IDENTIFICATION;
 
 /**
  * Request util.
@@ -24,7 +27,8 @@ public class RequestUtil {
             return xForwardedFor.split(X_FORWARDED_FOR_SPLIT_SYMBOL)[0].trim();
         }
         String nginxHeader = request.getHeader(X_REAL_IP);
-        return StringUtils.isEmpty(nginxHeader) ? request.getRemoteAddr() : nginxHeader;
+        String ipPort = request.getHeader(LONG_PULLING_CLIENT_IDENTIFICATION);
+        return StringUtils.isEmpty(nginxHeader) ? ipPort : nginxHeader;
     }
 
 }

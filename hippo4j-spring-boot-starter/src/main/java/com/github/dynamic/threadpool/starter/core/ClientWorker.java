@@ -64,6 +64,8 @@ public class ClientWorker {
             return t;
         });
 
+        log.info("Client identity :: {}", CLIENT_IDENTIFICATION_VALUE);
+
         this.executor.scheduleWithFixedDelay(() -> {
             try {
                 checkConfigInfo();
@@ -141,8 +143,9 @@ public class ClientWorker {
         for (CacheData cacheData : cacheDataList) {
             sb.append(cacheData.tpId).append(WORD_SEPARATOR);
             sb.append(cacheData.itemId).append(WORD_SEPARATOR);
-            sb.append(cacheData.getMd5()).append(WORD_SEPARATOR);
-            sb.append(cacheData.tenantId).append(LINE_SEPARATOR);
+            sb.append(cacheData.tenantId).append(WORD_SEPARATOR);
+            sb.append(CLIENT_IDENTIFICATION_VALUE).append(WORD_SEPARATOR);
+            sb.append(cacheData.getMd5()).append(LINE_SEPARATOR);
 
             if (cacheData.isInitializing()) {
                 inInitializingCacheList.add(GroupKey.getKeyTenant(cacheData.tpId, cacheData.itemId, cacheData.tenantId));
@@ -158,6 +161,9 @@ public class ClientWorker {
         params.put(PROBE_MODIFY_REQUEST, probeUpdateString);
         Map<String, String> headers = new HashMap(2);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
+
+        // 确认客户端身份, 修改线程池配置时可单独修改
+        headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, CLIENT_IDENTIFICATION_VALUE);
 
         // told server do not hang me up if new initializing cacheData added in
         if (isInitializingCacheList) {

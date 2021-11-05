@@ -1,5 +1,6 @@
 package com.github.dynamic.threadpool.config.service;
 
+import cn.hutool.core.collection.CollUtil;
 import com.github.dynamic.threadpool.config.service.biz.ConfigService;
 import com.github.dynamic.threadpool.common.config.ApplicationContextHolder;
 import com.github.dynamic.threadpool.common.constant.Constants;
@@ -8,9 +9,12 @@ import com.github.dynamic.threadpool.config.event.LocalDataChangeEvent;
 import com.github.dynamic.threadpool.config.model.CacheItem;
 import com.github.dynamic.threadpool.config.model.ConfigAllInfo;
 import com.github.dynamic.threadpool.config.notify.NotifyCenter;
+import com.google.common.collect.Maps;
 import org.springframework.util.StringUtils;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -23,7 +27,7 @@ public class ConfigCacheService {
 
     static ConfigService configService = null;
 
-    private static final ConcurrentHashMap<String, CacheItem> CACHE = new ConcurrentHashMap();
+    private static final ConcurrentHashMap<String, Map<String, CacheItem>> CACHE = new ConcurrentHashMap();
 
     public static boolean isUpdateData(String groupKey, String md5, String ip) {
         String contentMd5 = ConfigCacheService.getContentMd5IsNullPut(groupKey, ip);
@@ -32,16 +36,16 @@ public class ConfigCacheService {
 
     /**
      * Get Md5.
-     * TODO：Add IP, different IP thread pool rewrite
-     * TODO：groupKey && Md5 Cache
      *
      * @param groupKey
      * @param ip
      * @return
      */
     private static String getContentMd5IsNullPut(String groupKey, String ip) {
-        CacheItem cacheItem = CACHE.get(groupKey);
-        if (cacheItem != null) {
+        Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CACHE.get(groupKey)).orElse(Maps.newHashMap());
+
+        CacheItem cacheItem = null;
+        if (CollUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(ip)) != null) {
             return cacheItem.md5;
         }
 
@@ -52,9 +56,9 @@ public class ConfigCacheService {
 
         ConfigAllInfo config = configService.findConfigAllInfo(split[0], split[1], split[2]);
         if (config != null && !StringUtils.isEmpty(config.getTpId())) {
-            String md5 = Md5Util.getTpContentMd5(config);
-            cacheItem = new CacheItem(groupKey, md5);
-            CACHE.put(groupKey, cacheItem);
+            cacheItem = new CacheItem(groupKey, config);
+            cacheItemMap.put(ip, cacheItem);
+            CACHE.put(groupKey, cacheItemMap);
         }
         return (cacheItem != null) ? cacheItem.md5 : Constants.NULL;
     }
@@ -74,23 +78,28 @@ public class ConfigCacheService {
         return Md5Util.getTpContentMd5(config);
     }
 
-    public static void updateMd5(String groupKey, String md5, long lastModifiedTs) {
-        CacheItem cache = makeSure(groupKey);
+    public static void updateMd5(String groupKey, String ip, String md5) {
+        CacheItem cache = makeSure(groupKey, ip);
         if (cache.md5 == null || !cache.md5.equals(md5)) {
             cache.md5 = md5;
-            cache.lastModifiedTs = lastModifiedTs;
-            NotifyCenter.publishEvent(new LocalDataChangeEvent(groupKey));
+            cache.lastModifiedTs = System.currentTimeMillis();
+            NotifyCenter.publishEvent(new LocalDataChangeEvent(ip, groupKey));
         }
     }
 
-    static CacheItem makeSure(final String groupKey) {
-        CacheItem item = CACHE.get(groupKey);
+    public static CacheItem makeSure(String groupKey, String ip) {
+        Map<String, CacheItem> ipCacheItemMap = CACHE.get(groupKey);
+        CacheItem item = ipCacheItemMap.get(ip);
         if (null != item) {
             return item;
         }
+
         CacheItem tmp = new CacheItem(groupKey);
-        item = CACHE.putIfAbsent(groupKey, tmp);
-        return (null == item) ? tmp : item;
+        Map<String, CacheItem> cacheItemMap = Maps.newHashMap();
+        cacheItemMap.put(ip, tmp);
+        CACHE.putIfAbsent(groupKey, cacheItemMap);
+
+        return tmp;
     }
 
 }

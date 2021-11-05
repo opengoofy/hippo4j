@@ -73,7 +73,7 @@ public class Md5ConfigUtil {
             if (c == WORD_SEPARATOR_CHAR) {
                 tmpList.add(configKeysString.substring(start, i));
                 start = i + 1;
-                if (tmpList.size() > 3) {
+                if (tmpList.size() > 4) {
                     // Malformed message and return parameter error.
                     throw new IllegalArgumentException("invalid protocol,too much key");
                 }
@@ -84,16 +84,9 @@ public class Md5ConfigUtil {
                 }
                 start = i + 1;
 
-                // If it is the old message, the last digit is MD5. The post-multi-tenant message is tenant
-                if (tmpList.size() == 2) {
-                    String groupKey = getKey(tmpList.get(0), tmpList.get(1));
-                    groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
-                    md5Map.put(groupKey, endValue);
-                } else {
-                    String groupKey = getKey(tmpList.get(0), tmpList.get(1), endValue);
-                    groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
-                    md5Map.put(groupKey, tmpList.get(2));
-                }
+                String groupKey = getKey(tmpList.get(0), tmpList.get(1), tmpList.get(2), tmpList.get(3));
+                groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
+                md5Map.put(groupKey, endValue);
                 tmpList.clear();
 
                 // Protect malformed messages
@@ -113,7 +106,7 @@ public class Md5ConfigUtil {
         return sb.toString();
     }
 
-    public static String getKey(String dataId, String group, String tenant) {
+    public static String getKey(String dataId, String group, String tenant, String identify) {
         StringBuilder sb = new StringBuilder();
         GroupKey.urlEncode(dataId, sb);
         sb.append('+');
@@ -121,7 +114,9 @@ public class Md5ConfigUtil {
         if (!StringUtils.isEmpty(tenant)) {
             sb.append('+');
             GroupKey.urlEncode(tenant, sb);
+            sb.append("+").append(identify);
         }
+
         return sb.toString();
     }
 

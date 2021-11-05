@@ -1,8 +1,10 @@
 package com.github.dynamic.threadpool.config.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.github.dynamic.threadpool.config.notify.listener.Subscriber;
 import com.github.dynamic.threadpool.config.toolkit.ConfigExecutor;
+import com.github.dynamic.threadpool.config.toolkit.MapUtil;
 import com.github.dynamic.threadpool.config.toolkit.Md5ConfigUtil;
 import com.github.dynamic.threadpool.config.toolkit.RequestUtil;
 import com.github.dynamic.threadpool.common.toolkit.Md5Util;
@@ -10,6 +12,7 @@ import com.github.dynamic.threadpool.common.web.base.Results;
 import com.github.dynamic.threadpool.config.event.Event;
 import com.github.dynamic.threadpool.config.event.LocalDataChangeEvent;
 import com.github.dynamic.threadpool.config.notify.NotifyCenter;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
+import static com.github.dynamic.threadpool.common.constant.Constants.GROUP_KEY_DELIMITER;
 
 /**
  * Long polling service.
@@ -61,7 +66,7 @@ public class LongPollingService {
                 } else {
                     if (event instanceof LocalDataChangeEvent) {
                         LocalDataChangeEvent evt = (LocalDataChangeEvent) event;
-                        ConfigExecutor.executeLongPolling(new DataChangeTask(evt.groupKey));
+                        ConfigExecutor.executeLongPolling(new DataChangeTask(evt.identify, evt.groupKey));
                     }
                 }
             }
@@ -85,9 +90,12 @@ public class LongPollingService {
 
     class DataChangeTask implements Runnable {
 
+        final String identify;
+
         final String groupKey;
 
-        DataChangeTask(String groupKey) {
+        DataChangeTask(String identify, String groupKey) {
+            this.identify = identify;
             this.groupKey = groupKey;
         }
 
@@ -97,12 +105,20 @@ public class LongPollingService {
                 for (Iterator<ClientLongPolling> iter = allSubs.iterator(); iter.hasNext(); ) {
                     ClientLongPolling clientSub = iter.next();
 
-                    if (clientSub.clientMd5Map.containsKey(groupKey)) {
-                        getRetainIps().put(clientSub.ip, System.currentTimeMillis());
-                        ConfigCacheService.updateMd5(groupKey, ConfigCacheService.getContentMd5(groupKey), System.currentTimeMillis());
-                        iter.remove();
-                        clientSub.sendResponse(Arrays.asList(groupKey));
+                    String identity = groupKey + GROUP_KEY_DELIMITER + identify;
+                    List<String> parseMapForFilter = Lists.newArrayList(identity);
+                    if (StrUtil.isBlank(identify)) {
+                        parseMapForFilter = MapUtil.parseMapForFilter(clientSub.clientMd5Map, groupKey);
                     }
+
+                    parseMapForFilter.forEach(each -> {
+                        if (clientSub.clientMd5Map.containsKey(each)) {
+                            getRetainIps().put(clientSub.ip, System.currentTimeMillis());
+                            ConfigCacheService.updateMd5(each, clientSub.ip, ConfigCacheService.getContentMd5(groupKey));
+                            iter.remove();
+                            clientSub.sendResponse(Arrays.asList(groupKey));
+                        }
+                    });
                 }
             } catch (Exception ex) {
                 log.error("Data change error :: {}", ex.getMessage(), ex);

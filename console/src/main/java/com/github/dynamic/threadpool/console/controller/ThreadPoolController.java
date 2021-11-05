@@ -41,9 +41,10 @@ public class ThreadPoolController {
         return Results.success(threadPoolService.getThreadPool(reqDTO));
     }
 
-    @PostMapping("/pool/save_or_update")
-    public Result saveOrUpdateThreadPoolConfig(@RequestBody ThreadPoolSaveOrUpdateReqDTO reqDTO) {
-        threadPoolService.saveOrUpdateThreadPoolConfig(reqDTO);
+    @PostMapping("/pool/save_or_update}")
+    public Result saveOrUpdateThreadPoolConfig(@RequestParam(value = "identify", required = false) String identify,
+                                               @RequestBody ThreadPoolSaveOrUpdateReqDTO reqDTO) {
+        threadPoolService.saveOrUpdateThreadPoolConfig(identify, reqDTO);
         return Results.success();
     }
 
