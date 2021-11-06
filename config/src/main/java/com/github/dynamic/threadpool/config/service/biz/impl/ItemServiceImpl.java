@@ -44,8 +44,8 @@ public class ItemServiceImpl implements ItemService {
                 .eq(!StringUtils.isEmpty(reqDTO.getItemName()), ItemInfo::getItemName, reqDTO.getItemName())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId())
                 .eq(!StringUtils.isEmpty(reqDTO.getOwner()), ItemInfo::getOwner, reqDTO.getOwner());
-        Page<ItemInfo> resultPage = itemInfoMapper.selectPage(reqDTO, wrapper);
 
+        Page<ItemInfo> resultPage = itemInfoMapper.selectPage(reqDTO, wrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, ItemRespDTO.class));
     }
 
@@ -55,8 +55,8 @@ public class ItemServiceImpl implements ItemService {
                 .lambdaQuery(ItemInfo.class)
                 .eq(ItemInfo::getTenantId, tenantId)
                 .eq(ItemInfo::getItemId, itemId);
-        ItemInfo itemInfo = itemInfoMapper.selectOne(queryWrapper);
 
+        ItemInfo itemInfo = itemInfoMapper.selectOne(queryWrapper);
         ItemRespDTO result = BeanUtil.convert(itemInfo, ItemRespDTO.class);
         return result;
     }

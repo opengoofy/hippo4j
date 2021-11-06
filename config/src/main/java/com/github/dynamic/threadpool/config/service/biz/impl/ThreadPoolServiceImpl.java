@@ -1,6 +1,7 @@
 package com.github.dynamic.threadpool.config.service.biz.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -39,6 +40,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
                 .eq(!StringUtils.isBlank(reqDTO.getItemId()), ConfigAllInfo::getItemId, reqDTO.getItemId())
                 .eq(!StringUtils.isBlank(reqDTO.getTpId()), ConfigAllInfo::getTpId, reqDTO.getTpId())
                 .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL);
+
         return configInfoMapper.selectPage(reqDTO, wrapper).convert(each -> BeanUtil.convert(each, ThreadPoolRespDTO.class));
     }
 
@@ -50,8 +52,10 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     @Override
     public List<ThreadPoolRespDTO> getThreadPoolByItemId(String itemId) {
-        List<ConfigAllInfo> selectList = configInfoMapper
-                .selectList(Wrappers.lambdaUpdate(ConfigAllInfo.class).eq(ConfigAllInfo::getItemId, itemId));
+        LambdaQueryWrapper<ConfigAllInfo> queryWrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
+                .eq(ConfigAllInfo::getItemId, itemId);
+
+        List<ConfigAllInfo> selectList = configInfoMapper.selectList(queryWrapper);
         return BeanUtil.convert(selectList, ThreadPoolRespDTO.class);
     }
 

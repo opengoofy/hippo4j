@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class LogRecordServiceImpl implements LogRecordService {
 
-    private LogRecordMapper logRecordMapper;
+    private final LogRecordMapper logRecordMapper;
 
     @Override
     public void record(LogRecordInfo logRecordInfo) {

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.github.dynamic.threadpool.common.toolkit.Assert;
 import com.github.dynamic.threadpool.config.enums.DelEnum;
 import com.github.dynamic.threadpool.config.mapper.TenantInfoMapper;
 import com.github.dynamic.threadpool.config.model.TenantInfo;
@@ -48,8 +49,8 @@ public class TenantServiceImpl implements TenantService {
     public TenantRespDTO getTenantByTenantId(String tenantId) {
         LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers
                 .lambdaQuery(TenantInfo.class).eq(TenantInfo::getTenantId, tenantId);
-        TenantInfo tenantInfo = tenantInfoMapper.selectOne(queryWrapper);
 
+        TenantInfo tenantInfo = tenantInfoMapper.selectOne(queryWrapper);
         TenantRespDTO result = BeanUtil.convert(tenantInfo, TenantRespDTO.class);
         return result;
     }
@@ -60,8 +61,8 @@ public class TenantServiceImpl implements TenantService {
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), TenantInfo::getTenantId, reqDTO.getTenantId())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantName()), TenantInfo::getTenantName, reqDTO.getTenantName())
                 .eq(!StringUtils.isEmpty(reqDTO.getOwner()), TenantInfo::getOwner, reqDTO.getOwner());
-        Page resultPage = tenantInfoMapper.selectPage(reqDTO, wrapper);
 
+        Page resultPage = tenantInfoMapper.selectPage(reqDTO, wrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, TenantRespDTO.class));
     }
 

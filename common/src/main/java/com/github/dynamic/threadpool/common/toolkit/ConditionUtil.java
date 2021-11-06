@@ -16,11 +16,10 @@ public class ConditionUtil {
         }
     }
 
-
     public interface NoArgsConsumer {
 
         /**
-         * 执行方法
+         * 方法执行
          */
         void accept();
 

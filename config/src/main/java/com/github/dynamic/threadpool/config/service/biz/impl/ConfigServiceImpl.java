@@ -70,6 +70,7 @@ public class ConfigServiceImpl implements ConfigService {
     private Integer addConfigInfo(ConfigAllInfo config) {
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
+
         try {
             if (SqlHelper.retBool(configInfoMapper.insert(config))) {
                 return config.getId();

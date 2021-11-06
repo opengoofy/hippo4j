@@ -131,4 +131,5 @@ public class DefaultPublisher extends Thread implements EventPublisher {
             notifySubscriber(subscriber, event);
         }
     }
+
 }

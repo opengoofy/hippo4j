@@ -8,6 +8,7 @@ import com.github.dynamic.threadpool.config.model.ConfigAllInfo;
 import com.github.dynamic.threadpool.config.model.ConfigInfoBase;
 import com.github.dynamic.threadpool.config.service.ConfigServletInner;
 import com.github.dynamic.threadpool.config.toolkit.Md5ConfigUtil;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -25,14 +26,13 @@ import java.util.Map;
  * @date 2021/6/20 13:53
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping(Constants.CONFIG_CONTROLLER_PATH)
 public class ConfigController {
 
-    @Autowired
-    private ConfigService configService;
+    private final ConfigService configService;
 
-    @Autowired
-    private ConfigServletInner configServletInner;
+    private final ConfigServletInner configServletInner;
 
     @GetMapping
     public Result<ConfigInfoBase> detailConfigInfo(
