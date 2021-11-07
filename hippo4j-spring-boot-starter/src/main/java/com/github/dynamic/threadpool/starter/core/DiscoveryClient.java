@@ -1,5 +1,6 @@
 package com.github.dynamic.threadpool.starter.core;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.dynamic.threadpool.common.constant.Constants;
 import com.github.dynamic.threadpool.common.model.InstanceInfo;
 import com.github.dynamic.threadpool.common.web.base.Result;
@@ -103,7 +104,7 @@ public class DiscoveryClient {
 
             renewResult = httpAgent.httpPostByDiscovery(Constants.BASE_PATH + "/apps/renew", instanceRenew);
 
-            if (renewResult.getCode() == ErrorCodeEnum.NOT_FOUND.getCode()) {
+            if (StrUtil.equals(ErrorCodeEnum.NOT_FOUND.getCode(), renewResult.getCode())) {
                 long timestamp = instanceInfo.setIsDirtyWithTime();
                 boolean success = register();
                 if (success) {
