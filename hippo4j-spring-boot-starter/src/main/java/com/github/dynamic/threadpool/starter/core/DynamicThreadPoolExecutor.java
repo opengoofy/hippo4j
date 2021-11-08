@@ -2,6 +2,7 @@ package com.github.dynamic.threadpool.starter.core;
 
 import com.github.dynamic.threadpool.starter.alarm.ThreadPoolAlarm;
 import com.github.dynamic.threadpool.starter.alarm.ThreadPoolAlarmManage;
+import com.github.dynamic.threadpool.starter.event.EventExecutor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -23,7 +24,7 @@ import static com.github.dynamic.threadpool.common.constant.Constants.MAP_INITIA
  * @author chen.ma
  * @date 2021/7/8 21:47
  */
-public final class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
+public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
 
     private final AtomicInteger rejectCount = new AtomicInteger();
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
@@ -140,9 +141,7 @@ public final class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
         return this.threadPoolId;
     }
 
-    private final class Worker
-            extends AbstractQueuedSynchronizer
-            implements Runnable {
+    private final class Worker extends AbstractQueuedSynchronizer implements Runnable {
 
         private static final long serialVersionUID = 6138294804551838833L;
 
@@ -309,7 +308,9 @@ public final class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
 
     final void reject(Runnable command) {
         rejectCount.incrementAndGet();
-        ThreadPoolAlarmManage.checkPoolRejectAlarm(this);
+        EventExecutor.publishEvent(
+                () -> ThreadPoolAlarmManage.checkPoolRejectAlarm(this)
+        );
         handler.rejectedExecution(command, this);
     }
 
@@ -362,7 +363,9 @@ public final class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
             }
         }
 
-        ThreadPoolAlarmManage.checkPoolLivenessAlarm(core, this);
+        EventExecutor.publishEvent(
+                () -> ThreadPoolAlarmManage.checkPoolLivenessAlarm(core, this)
+        );
 
         boolean workerStarted = false;
         boolean workerAdded = false;
@@ -538,7 +541,9 @@ public final class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
             c = ctl.get();
         }
         if (isRunning(c) && workQueue.offer(command)) {
-            ThreadPoolAlarmManage.checkPoolCapacityAlarm(this);
+            EventExecutor.publishEvent(
+                    () -> ThreadPoolAlarmManage.checkPoolCapacityAlarm(this)
+            );
             int recheck = ctl.get();
             if (!isRunning(recheck) && remove(command)) {
                 reject(command);
