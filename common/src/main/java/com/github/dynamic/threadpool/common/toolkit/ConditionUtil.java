@@ -1,5 +1,7 @@
 package com.github.dynamic.threadpool.common.toolkit;
 
+import com.github.dynamic.threadpool.common.function.NoArgsConsumer;
+
 /**
  * Condition util.
  *
@@ -14,15 +16,6 @@ public class ConditionUtil {
         } else {
             falseConsumer.accept();
         }
-    }
-
-    public interface NoArgsConsumer {
-
-        /**
-         * 方法执行
-         */
-        void accept();
-
     }
 
 }
