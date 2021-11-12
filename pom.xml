@@ -37,6 +37,7 @@
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
         <forest.version>1.5.11</forest.version>
+        <jjwt.version>0.9.0</jjwt.version>
 
         <dingtalk-sdk.version>1.0.1</dingtalk-sdk.version>
 
@@ -202,7 +203,7 @@
     <build>
         <finalName>${project.artifactId}</finalName>
 
-        <resources>
+        <!--<resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
@@ -213,7 +214,7 @@
                 </excludes>
                 <filtering>true</filtering>
             </resource>
-        </resources>
+        </resources>-->
 
         <plugins>
             <plugin>

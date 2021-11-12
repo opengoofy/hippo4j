@@ -1,6 +1,8 @@
 package com.github.dynamic.threadpool.auth.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.dynamic.threadpool.auth.model.biz.user.UserQueryPageReqDTO;
+import com.github.dynamic.threadpool.auth.model.biz.user.UserReqDTO;
 import com.github.dynamic.threadpool.auth.model.biz.user.UserRespDTO;
 
 import java.util.List;
@@ -16,27 +18,24 @@ public interface UserService {
     /**
      * 分页查询用户列表.
      *
-     * @param pageNo
-     * @param pageSize
+     * @param reqDTO
      * @return
      */
-    IPage<UserRespDTO> listUser(int pageNo, int pageSize);
+    IPage<UserRespDTO> listUser(UserQueryPageReqDTO reqDTO);
 
     /**
      * 新增用户.
      *
-     * @param userName
-     * @param password
+     * @param reqDTO
      */
-    void addUser(String userName, String password);
+    void addUser(UserReqDTO reqDTO);
 
     /**
      * 修改用户.
      *
-     * @param userName
-     * @param password
+     * @param reqDTO
      */
-    void updateUser(String userName, String password);
+    void updateUser(UserReqDTO reqDTO);
 
     /**
      * 删除用户.

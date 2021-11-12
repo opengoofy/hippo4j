@@ -1,7 +1,7 @@
 package com.github.dynamic.threadpool.auth.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.crypto.SecureUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -9,10 +9,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.dynamic.threadpool.auth.mapper.UserMapper;
 import com.github.dynamic.threadpool.auth.model.UserInfo;
 import com.github.dynamic.threadpool.auth.model.biz.user.UserQueryPageReqDTO;
+import com.github.dynamic.threadpool.auth.model.biz.user.UserReqDTO;
 import com.github.dynamic.threadpool.auth.model.biz.user.UserRespDTO;
 import com.github.dynamic.threadpool.auth.service.RoleService;
 import com.github.dynamic.threadpool.auth.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,39 +34,39 @@ public class UserServiceImpl implements UserService {
 
     private final RoleService roleService;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
-    public IPage<UserRespDTO> listUser(int pageNo, int pageSize) {
-        UserQueryPageReqDTO queryPage = new UserQueryPageReqDTO(pageNo, pageSize);
-        IPage<UserInfo> selectPage = userMapper.selectPage(queryPage, null);
+    public IPage<UserRespDTO> listUser(UserQueryPageReqDTO reqDTO) {
+        IPage<UserInfo> selectPage = userMapper.selectPage(reqDTO, null);
 
         return selectPage.convert(each -> BeanUtil.toBean(each, UserRespDTO.class));
     }
 
     @Override
-    public void addUser(String userName, String password) {
+    public void addUser(UserReqDTO reqDTO) {
         LambdaQueryWrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class)
-                .eq(UserInfo::getUserName, userName);
+                .eq(UserInfo::getUserName, reqDTO.getUserName());
         UserInfo existUserInfo = userMapper.selectOne(queryWrapper);
         if (existUserInfo != null) {
             throw new RuntimeException("用户名重复");
         }
 
-        UserInfo insertUser = new UserInfo();
-        insertUser.setUserName(userName);
-        // TODO 暂定为 Md5 加密
-        insertUser.setPassword(SecureUtil.md5(password));
+        reqDTO.setPassword(bCryptPasswordEncoder.encode(reqDTO.getPassword()));
+        UserInfo insertUser = BeanUtil.toBean(reqDTO, UserInfo.class);
         userMapper.insert(insertUser);
     }
 
     @Override
-    public void updateUser(String userName, String password) {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUserName(userName);
-        userInfo.setPassword(SecureUtil.md5(password));
+    public void updateUser(UserReqDTO reqDTO) {
+        if (StrUtil.isNotBlank(reqDTO.getPassword())) {
+            reqDTO.setPassword(bCryptPasswordEncoder.encode(reqDTO.getPassword()));
+        }
+        UserInfo updateUser = BeanUtil.toBean(reqDTO, UserInfo.class);
 
         LambdaUpdateWrapper<UserInfo> updateWrapper = Wrappers.lambdaUpdate(UserInfo.class)
-                .eq(UserInfo::getUserName, userName);
-        userMapper.update(userInfo, updateWrapper);
+                .eq(UserInfo::getUserName, reqDTO.getUserName());
+        userMapper.update(updateUser, updateWrapper);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class UserServiceImpl implements UserService {
         LambdaUpdateWrapper<UserInfo> updateWrapper = Wrappers.lambdaUpdate(UserInfo.class)
                 .eq(UserInfo::getUserName, userName);
         userMapper.delete(updateWrapper);
-        roleService.deleteRole("", userName);
+        // roleService.deleteRole("", userName);
     }
 
     @Override
