@@ -12,13 +12,10 @@ import java.util.Arrays;
  */
 public class ThreadPoolConfigService implements ConfigService {
 
-    private final HttpAgent httpAgent;
-
     private final ClientWorker clientWorker;
 
-    public ThreadPoolConfigService(HttpAgent httpAgent) {
-        this.httpAgent = httpAgent;
-        clientWorker = new ClientWorker(httpAgent);
+    public ThreadPoolConfigService(HttpAgent httpAgent, String identification) {
+        clientWorker = new ClientWorker(httpAgent, identification);
     }
 
     @Override

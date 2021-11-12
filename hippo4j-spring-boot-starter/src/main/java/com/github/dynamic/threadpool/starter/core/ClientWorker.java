@@ -36,6 +36,8 @@ public class ClientWorker {
 
     private final HttpAgent agent;
 
+    private final String identification;
+
     private final ScheduledExecutorService executor;
 
     private final ScheduledExecutorService executorService;
@@ -45,8 +47,9 @@ public class ClientWorker {
     private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap(16);
 
     @SuppressWarnings("all")
-    public ClientWorker(HttpAgent httpAgent) {
+    public ClientWorker(HttpAgent httpAgent, String identification) {
         this.agent = httpAgent;
+        this.identification = identification;
         this.timeout = CONFIG_LONG_POLL_TIMEOUT;
 
         this.executor = Executors.newScheduledThreadPool(1, r -> {
@@ -144,7 +147,7 @@ public class ClientWorker {
             sb.append(cacheData.tpId).append(WORD_SEPARATOR);
             sb.append(cacheData.itemId).append(WORD_SEPARATOR);
             sb.append(cacheData.tenantId).append(WORD_SEPARATOR);
-            sb.append(CLIENT_IDENTIFICATION_VALUE).append(WORD_SEPARATOR);
+            sb.append(identification).append(WORD_SEPARATOR);
             sb.append(cacheData.getMd5()).append(LINE_SEPARATOR);
 
             if (cacheData.isInitializing()) {
@@ -163,7 +166,7 @@ public class ClientWorker {
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
 
         // 确认客户端身份, 修改线程池配置时可单独修改
-        headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, CLIENT_IDENTIFICATION_VALUE);
+        headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, identification);
 
         // told server do not hang me up if new initializing cacheData added in
         if (isInitializingCacheList) {
