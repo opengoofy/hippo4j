@@ -1,6 +1,7 @@
 package com.github.dynamic.threadpool.config.service.biz;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolDelReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
@@ -46,5 +47,12 @@ public interface ThreadPoolService {
      * @param reqDTO
      */
     void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO);
+
+    /**
+     * Delete pool.
+     *
+     * @param reqDTO
+     */
+    void deletePool(ThreadPoolDelReqDTO reqDTO);
 
 }

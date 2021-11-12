@@ -1,13 +1,13 @@
 package com.github.dynamic.threadpool.config.service.biz.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.dynamic.threadpool.config.enums.DelEnum;
 import com.github.dynamic.threadpool.config.mapper.ConfigInfoMapper;
 import com.github.dynamic.threadpool.config.model.ConfigAllInfo;
+import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolDelReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolRespDTO;
 import com.github.dynamic.threadpool.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
@@ -62,6 +62,16 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
     @Override
     public void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO) {
         configService.insertOrUpdate(identify, BeanUtil.convert(reqDTO, ConfigAllInfo.class));
+    }
+
+    @Override
+    public void deletePool(ThreadPoolDelReqDTO reqDTO) {
+        configInfoMapper.delete(
+                Wrappers.lambdaUpdate(ConfigAllInfo.class)
+                        .eq(ConfigAllInfo::getTenantId, reqDTO.getTenantId())
+                        .eq(ConfigAllInfo::getItemId, reqDTO.getItemId())
+                        .eq(ConfigAllInfo::getTpId, reqDTO.getTpId())
+        );
     }
 
 }
