@@ -24,6 +24,8 @@ public class InstanceInfo {
 
     private String hostName;
 
+    private String groupKey;
+
     private String port;
 
     private String instanceId;

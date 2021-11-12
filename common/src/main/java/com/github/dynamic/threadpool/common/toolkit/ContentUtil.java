@@ -41,4 +41,17 @@ public class ContentUtil {
         return resultStr;
     }
 
+    public static String getGroupKey(String... parameters) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < parameters.length; i++) {
+            stringBuilder.append(parameters[i]);
+
+            if (i < parameters.length - 1) {
+                stringBuilder.append(Constants.GROUP_KEY_DELIMITER);
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
 }
