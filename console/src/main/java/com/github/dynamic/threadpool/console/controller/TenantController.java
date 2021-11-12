@@ -27,7 +27,8 @@ public class TenantController {
 
     @PostMapping("/query/page")
     public Result<IPage<TenantRespDTO>> queryNameSpacePage(@RequestBody TenantQueryReqDTO reqDTO) {
-        return Results.success(tenantService.queryTenantPage(reqDTO));
+        IPage<TenantRespDTO> resultPage = tenantService.queryTenantPage(reqDTO);
+        return Results.success(resultPage);
     }
 
     @GetMapping("/query/{tenantId}")
@@ -36,21 +37,21 @@ public class TenantController {
     }
 
     @PostMapping("/save")
-    public Result saveNameSpace(@RequestBody TenantSaveReqDTO reqDTO) {
+    public Result<Boolean> saveNameSpace(@RequestBody TenantSaveReqDTO reqDTO) {
         tenantService.saveTenant(reqDTO);
-        return Results.success();
+        return Results.success(Boolean.TRUE);
     }
 
     @PostMapping("/update")
-    public Result updateNameSpace(@RequestBody TenantUpdateReqDTO reqDTO) {
+    public Result<Boolean> updateNameSpace(@RequestBody TenantUpdateReqDTO reqDTO) {
         tenantService.updateTenant(reqDTO);
-        return Results.success();
+        return Results.success(Boolean.TRUE);
     }
 
     @DeleteMapping("/delete/{tenantId}")
-    public Result deleteNameSpace(@PathVariable("tenantId") String tenantId) {
+    public Result<Boolean> deleteNameSpace(@PathVariable("tenantId") String tenantId) {
         tenantService.deleteTenantById(tenantId);
-        return Results.success();
+        return Results.success(Boolean.TRUE);
     }
 
 }
