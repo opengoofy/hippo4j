@@ -35,7 +35,7 @@
       <el-table-column label="队列容量" align="center" width="120">
         <template slot-scope="scope">{{ scope.row.capacity }}</template>
       </el-table-column>
-      <el-table-column label="队列容量" align="center" width="120">
+      <el-table-column label="拒绝策略" align="center" width="200">
         <template slot-scope="scope">{{ scope.row.rejectedType | rejectedFilter }}</template>
       </el-table-column>
       <el-table-column label="线程存活" align="center" width="120">
