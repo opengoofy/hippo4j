@@ -99,6 +99,7 @@ CREATE TABLE `user` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `user_name` varchar(64) NOT NULL COMMENT '用户名',
   `password` varchar(512) NOT NULL COMMENT '用户密码',
+  `role` varchar(50) NOT NULL COMMENT '角色',
   `gmt_create` datetime NOT NULL COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL COMMENT '修改时间',
   `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
@@ -144,4 +145,7 @@ INSERT INTO `item` (`id`, `tenant_id`, `item_id`, `item_name`, `item_desc`, `own
 
 /* 线程池 */
 INSERT INTO `config` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `core_size`, `max_size`, `queue_type`, `capacity`, `rejected_type`, `keep_alive_time`, `content`, `md5`, `is_alarm`, `capacity_alarm`, `liveness_alarm`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-consume', '示例消费者线程池', '1', '5', '9', '1024', '2', '90', '{\"capacity\":1024,\"capacityAlarm\":80,\"coreSize\":1,\"isAlarm\":0,\"itemId\":\"dynamic-threadpool-example\",\"keepAliveTime\":90,\"livenessAlarm\":80,\"maxSize\":5,\"queueType\":9,\"tenantId\":\"prescription\",\"tpId\":\"message-consume\"}', '548564177fd601015e19ef6df42000d1', '0', '80', '80', '2021-10-24 16:12:16', '2021-10-24 16:12:16', '0'),
-('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', '示例生产者线程池', '1', '5', '9', '100', '7', '10', '{\"capacity\":100,\"capacityAlarm\":30,\"coreSize\":10,\"isAlarm\":0,\"itemId\":\"dynamic-threadpool-example\",\"keepAliveTime\":10,\"livenessAlarm\":30,\"maxSize\":15,\"queueType\":9,\"rejectedType\":7,\"tenantId\":\"prescription\",\"tpId\":\"message-produce\"}', 'edd6677f6ca35ce2c2e06db5749572c8', '0', '30', '30', '2021-10-24 16:12:56', '2021-10-28 09:49:27', '0');
+('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', '示例生产者线程池', '1', '5', '9', '100', '1', '10', '{\"capacity\":100,\"capacityAlarm\":30,\"coreSize\":10,\"isAlarm\":0,\"itemId\":\"dynamic-threadpool-example\",\"keepAliveTime\":10,\"livenessAlarm\":30,\"maxSize\":15,\"queueType\":9,\"rejectedType\":7,\"tenantId\":\"prescription\",\"tpId\":\"message-produce\"}', 'edd6677f6ca35ce2c2e06db5749572c8', '0', '30', '30', '2021-10-24 16:12:56', '2021-10-28 09:49:27', '0');
+
+/* 用户 */
+INSERT INTO `user` (`id`, `user_name`, `password`, `role`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'admin', '$2a$10$2KCqRbra0Yn2TwvkZxtfLuWuUP5KyCWsljO/ci5pLD27pqR3TV1vy', 'ROLE_ADMIN', '2021-11-04 21:35:17', '2021-11-15 23:04:59', '0');
