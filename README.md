@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-   <strong> :fire: &nbsp; 动态线程池（DTP）系统，包含 <a href="https://github.com/acmenlt/dynamic-threadpool/tree/develop/dynamic-threadpool-server">Server</a> 端及 SpringBoot Client 端需引入的 <a href="https://github.com/acmenlt/dynamic-threadpool/tree/develop/dynamic-threadpool-spring-boot-starter">Starter</a>.</strong>
+   <strong> :fire: &nbsp; 动态线程池（Hippo4J）系统，包含 <a href="https://github.com/acmenlt/dynamic-threadpool/tree/develop/dynamic-threadpool-server">Server</a> 端及 SpringBoot Client 端需引入的 <a href="https://github.com/acmenlt/dynamic-threadpool/tree/develop/dynamic-threadpool-spring-boot-starter">Starter</a>.</strong>
 </p>
 <p align="center">
 
@@ -41,7 +41,7 @@
 
 因为对动态线程池比较感兴趣，加上想写一个有意义的项目，所以决定自己来造一个轻量级的轮子
 
-想给项目起一个简单易记的名字，类似于 Eureka、Nacos、Redis；后和朋友商量，决定以动物命名：**Hippo**
+想给项目起一个简单易记的名字，类似于 Eureka、Nacos、Redis；后和朋友商量，决定以动物命名：**Hippo4J**
 
 ![](https://user-images.githubusercontent.com/77398366/139702684-17595e6e-a743-4a33-a0be-0626967f32f5.png)
 
@@ -59,7 +59,7 @@
 
 如果线程池的配置涉及到上述问题，那么就有可能需要发布业务系统来解决；如果发布后参数仍不合理，继续发布......
 
-Hippo 很好解决了这个问题，它将业务中所有线程池统一管理，遇到上述问题不需要发布系统就可以替换线程池参数
+Hippo4J 很好解决了这个问题，它将业务中所有线程池统一管理，遇到上述问题不需要发布系统就可以替换线程池参数
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211023142726818.png)
 
@@ -67,7 +67,7 @@ Hippo 很好解决了这个问题，它将业务中所有线程池统一管理�
 
 ##  它有什么特性？
 
-应用系统中线程池并不容易管理。参考美团的设计，Hippo 按照租户、项目、线程池的维度划分。再加上系统权限，让不同的开发、管理人员负责自己系统的线程池操作
+应用系统中线程池并不容易管理。参考美团的设计，Hippo4J 按照租户、项目、线程池的维度划分。再加上系统权限，让不同的开发、管理人员负责自己系统的线程池操作
 
 举个例子，小编在一家公司的公共组件团队，团队中负责消息、短链接网关等项目。公共组件是租户，消息或短链接就是项目
 
@@ -75,20 +75,20 @@ Hippo 很好解决了这个问题，它将业务中所有线程池统一管理�
 
 | 模块                                   | 模块名称           | 注释                                     |
 | -------------------------------------- | ------------------ | ---------------------------------------- |
-| auth              | 用户权限           | 用户、角色、权限等功能                                        |
-| common              | 公共模块           | -                                        |
-| config              | 配置中心           | 提供线程池准实时更新功能                 |
-| console             | 控制台             | 对接前端项目                             |
-| discovery           | 注册中心           | 提供线程池项目实例注册、续约、下线等功能 |
+| hippo4j-auth              | 用户权限           | 用户、角色、权限等功能                                        |
+| hippo4j-common              | 公共模块           | -                                        |
+| hippo4j-config              | 配置中心           | 提供线程池准实时更新功能                 |
+| hippo4j-console             | 控制台             | 对接前端项目                             |
+| hippo4j-discovery           | 注册中心           | 提供线程池项目实例注册、续约、下线等功能 |
 | hippo4j-spring-boot-starter | Starter | 客户端依赖组件                                       |
-| example             | 示例项目           | -                                        |
-| server              | 服务端             | Server 集成各组件                        |
-| tools               | 抽象工具类         | GitHub 变更监控、操作日志等组件                  |
+| hippo4j-example             | 示例项目           | -                                        |
+| hippo4j-server              | 服务端             | Server 集成各组件                        |
+| hippo4j-tools               | 抽象工具类         | GitHub 变更监控、操作日志等组件                  |
 
 
 <br/>
 
-Hippo 除去动态修改线程池，还包含实时查看线程池运行时指标、负载报警、配置日志管理等
+Hippo4J 除去动态修改线程池，还包含实时查看线程池运行时指标、负载报警、配置日志管理等
 
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211023101844619.png)
@@ -97,10 +97,12 @@ Hippo 除去动态修改线程池，还包含实时查看线程池运行时指�
 
 ## 如何运行 Demo？
 
-目前动态线程池功能已经完成，可以直接把代码拉到本地运行。导入 [Hippo 初始化 SQL 语句](https://github.com/acmenlt/dynamic-threadpool/blob/develop/server/src/main/resources/hippo_manager.sql)
+目前动态线程池功能已经完成，可以直接把代码拉到本地运行。导入 [Hippo4J 初始化 SQL 语句](https://github.com/acmenlt/dynamic-threadpool/blob/develop/server/src/main/resources/hippo_manager.sql)
 
-1. 启动 `dynamic-threadpool-server` 模块下 ServerApplication 应用类
-2. 启动 `dynamic-threadpool-example` 模块下 ExampleApplication 应用类
+1. 启动 `hippo4j-server` 模块下 ServerApplication 应用类
+2. 启动 `hippo4j-example` 模块下 ExampleApplication 应用类
+
+> 🌟 &nbsp; Hippo4J 已集成前端项目，详情参考 [Run Console](http://hippox.cn/zh-cn/docs/run/runConsole.html)
 
 <br/>
 
@@ -182,7 +184,7 @@ capacity :: [100=>100], keepAliveTime :: [10000=>10000], rejectedType :: [7=>7]
 
 ## 致谢
 
-Hippo 项目基于或参考以下项目:
+Hippo4J 项目基于或参考以下项目:
 
 1. [Nacos](https://github.com/alibaba/nacos)：an easy-to-use dynamic service discovery, configuration and service management platform for building cloud native applications.
 
