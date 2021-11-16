@@ -69,6 +69,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
                 "<font color='#FF0000'>[警报] </font>%s - 动态线程池运行告警 \n\n" +
                         " --- \n\n " +
                         "<font color='#708090' size=2>线程池ID：%s</font> \n\n " +
+                        "<font color='#708090' size=2>应用名称：%s</font> \n\n " +
                         "<font color='#778899' size=2>应用实例：%s</font> \n\n " +
                         " --- \n\n  " +
                         "<font color='#708090' size=2>核心线程数：%d</font> \n\n " +
@@ -94,8 +95,10 @@ public class DingSendMessageHandler implements SendMessageHandler {
                 active.toUpperCase(),
                 // 线程池ID
                 pool.getThreadPoolId(),
-                // 节点信息
-                instanceInfo.getIpApplicationName(),
+                // 应用名称
+                instanceInfo.getAppName(),
+                // 实例信息
+                instanceInfo.getIdentify(),
                 // 核心线程数
                 pool.getCorePoolSize(),
                 // 最大线程数
@@ -150,6 +153,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
                 "<font color='#2a9d8f'>[通知] </font>%s - 动态线程池参数变更 \n\n" +
                         " --- \n\n " +
                         "<font color='#708090' size=2>线程池ID：%s</font> \n\n " +
+                        "<font color='#708090' size=2>应用名称：%s</font> \n\n " +
                         "<font color='#778899' size=2>应用实例：%s</font> \n\n " +
                         " --- \n\n  " +
                         "<font color='#708090' size=2>核心线程数：%s</font> \n\n " +
@@ -170,8 +174,10 @@ public class DingSendMessageHandler implements SendMessageHandler {
                 active.toUpperCase(),
                 // 线程池名称
                 threadPoolId,
-                // 节点信息
-                instanceInfo.getIpApplicationName(),
+                // 应用名称
+                instanceInfo.getAppName(),
+                // 实例信息
+                instanceInfo.getIdentify(),
                 // 核心线程数
                 customPool.getCorePoolSize() + "  ➲  " + parameter.getCoreSize(),
                 // 最大线程数

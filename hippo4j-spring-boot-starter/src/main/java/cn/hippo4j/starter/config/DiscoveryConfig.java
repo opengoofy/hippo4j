@@ -35,8 +35,8 @@ public class DiscoveryConfig {
     @SneakyThrows
     public InstanceInfo instanceConfig() {
         InstanceInfo instanceInfo = new InstanceInfo();
-        instanceInfo.setInstanceId(getDefaultInstanceId(environment))
-                .setIpApplicationName(getIpApplicationName(environment))
+        instanceInfo.setInstanceId(getDefaultInstanceId(environment, inetUtils))
+                .setIpApplicationName(getIpApplicationName(environment, inetUtils))
                 .setHostName(InetAddress.getLocalHost().getHostAddress())
                 .setGroupKey(properties.getItemId() + "+" + properties.getNamespace())
                 .setAppName(environment.getProperty("spring.application.name"))
