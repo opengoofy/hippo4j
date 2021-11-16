@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.github.acmenlt</groupId>
+        <groupId>cn.hippo4j</groupId>
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
@@ -42,8 +42,8 @@
         </dependency>
 
         <dependency>
-            <groupId>io.github.acmenlt</groupId>
-            <artifactId>common</artifactId>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-common</artifactId>
         </dependency>
 
         <dependency>

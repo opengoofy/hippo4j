@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.github.dynamic.threadpool.starter.config.DynamicThreadPoolAutoConfiguration
+  cn.hippo4j.starter.config.DynamicThreadPoolAutoConfiguration

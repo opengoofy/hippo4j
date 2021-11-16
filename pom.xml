@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.acmenlt</groupId>
+    <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-all</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -13,14 +13,14 @@
     <description>🔥 强大的动态线程池，附带监控报警功能（没有依赖中间件）</description>
 
     <modules>
-        <module>auth</module>
-        <module>common</module>
-        <module>console</module>
-        <module>server</module>
-        <module>config</module>
-        <module>discovery</module>
-        <module>example</module>
-        <module>tools</module>
+        <module>hippo4j-auth</module>
+        <module>hippo4j-common</module>
+        <module>hippo4j-console</module>
+        <module>hippo4j-server</module>
+        <module>hippo4j-config</module>
+        <module>hippo4j-discovery</module>
+        <module>hippo4j-example</module>
+        <module>hippo4j-tools</module>
         <module>hippo4j-spring-boot-starter</module>
     </modules>
 
@@ -93,43 +93,43 @@
             </dependency>
 
             <dependency>
-                <groupId>io.github.acmenlt</groupId>
-                <artifactId>common</artifactId>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-common</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.acmenlt</groupId>
-                <artifactId>config</artifactId>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-config</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.acmenlt</groupId>
-                <artifactId>console</artifactId>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-console</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.acmenlt</groupId>
-                <artifactId>discovery</artifactId>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-discovery</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.acmenlt</groupId>
+                <groupId>cn.hippo4j</groupId>
                 <artifactId>log-record-tool</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.acmenlt</groupId>
-                <artifactId>auth</artifactId>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-auth</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.acmenlt</groupId>
+                <groupId>cn.hippo4j</groupId>
                 <artifactId>open-change-tool</artifactId>
                 <version>${revision}</version>
             </dependency>

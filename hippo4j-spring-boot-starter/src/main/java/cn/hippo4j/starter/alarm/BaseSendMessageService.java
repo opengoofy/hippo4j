@@ -1,0 +1,59 @@
+package cn.hippo4j.starter.alarm;
+
+import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Base send message service.
+ *
+ * @author chen.ma
+ * @date 2021/8/15 15:34
+ */
+@Slf4j
+@RequiredArgsConstructor
+public class BaseSendMessageService implements InitializingBean, SendMessageService {
+
+    @NonNull
+    private final List<NotifyConfig> notifyConfigs;
+
+    private final List<SendMessageHandler> sendMessageHandlers = new ArrayList(4);
+
+    @Override
+    public void sendAlarmMessage(DynamicThreadPoolExecutor threadPoolExecutor) {
+        for (SendMessageHandler messageHandler : sendMessageHandlers) {
+            try {
+                messageHandler.sendAlarmMessage(notifyConfigs, threadPoolExecutor);
+            } catch (Exception ex) {
+                log.warn("Failed to send thread pool alarm notification.", ex);
+            }
+        }
+    }
+
+    @Override
+    public void sendChangeMessage(PoolParameterInfo parameter) {
+        for (SendMessageHandler messageHandler : sendMessageHandlers) {
+            try {
+                messageHandler.sendChangeMessage(notifyConfigs, parameter);
+            } catch (Exception ex) {
+                log.warn("Failed to send thread pool change notification.", ex);
+            }
+        }
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        Map<String, SendMessageHandler> sendMessageHandlerMap =
+                ApplicationContextHolder.getBeansOfType(SendMessageHandler.class);
+        sendMessageHandlerMap.values().forEach(each -> sendMessageHandlers.add(each));
+    }
+
+}
