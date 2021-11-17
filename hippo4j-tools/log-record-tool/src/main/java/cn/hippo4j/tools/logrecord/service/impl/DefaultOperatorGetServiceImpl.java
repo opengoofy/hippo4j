@@ -13,7 +13,7 @@ public class DefaultOperatorGetServiceImpl implements OperatorGetService {
 
     @Override
     public Operator getUser() {
-        return new Operator("994924");
+        return new Operator("-");
     }
 
 }

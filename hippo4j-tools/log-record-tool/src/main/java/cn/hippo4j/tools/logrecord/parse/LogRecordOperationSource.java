@@ -49,7 +49,7 @@ public class LogRecordOperationSource {
         LogRecordOps recordOps = LogRecordOps.builder()
                 .successLogTemplate(logRecord.success())
                 .failLogTemplate(logRecord.fail())
-                .bizKey(logRecord.prefix().concat("_").concat(logRecord.bizNo()))
+                .bizKey(logRecord.prefix().concat(logRecord.bizNo()))
                 .bizNo(logRecord.bizNo())
                 .operatorId(logRecord.operator())
                 .category(StringUtils.isEmpty(logRecord.category()) ? logRecord.prefix() : logRecord.category())
