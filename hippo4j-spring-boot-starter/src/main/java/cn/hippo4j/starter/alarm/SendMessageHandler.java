@@ -3,8 +3,6 @@ package cn.hippo4j.starter.alarm;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
 
-import java.util.List;
-
 /**
  * Send message handler.
  *
@@ -23,17 +21,17 @@ public interface SendMessageHandler {
     /**
      * Send alarm message.
      *
-     * @param notifyConfigs
+     * @param notifyConfig
      * @param threadPoolExecutor
      */
-    void sendAlarmMessage(List<NotifyConfig> notifyConfigs, DynamicThreadPoolExecutor threadPoolExecutor);
+    void sendAlarmMessage(AlarmNotifyDTO notifyConfig, DynamicThreadPoolExecutor threadPoolExecutor);
 
     /**
      * Send change message.
      *
-     * @param notifyConfigs
+     * @param notifyConfig
      * @param parameter
      */
-    void sendChangeMessage(List<NotifyConfig> notifyConfigs, PoolParameterInfo parameter);
+    void sendChangeMessage(AlarmNotifyDTO notifyConfig, PoolParameterInfo parameter);
 
 }

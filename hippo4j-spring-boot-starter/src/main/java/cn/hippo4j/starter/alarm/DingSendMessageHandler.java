@@ -1,25 +1,23 @@
 package cn.hippo4j.starter.alarm;
 
+import cn.hippo4j.common.model.InstanceInfo;
+import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
+import cn.hippo4j.starter.core.GlobalThreadPoolManage;
+import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
+import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
+import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiRobotSendRequest;
-import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.starter.core.GlobalThreadPoolManage;
-import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
-import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
-import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
-import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
 import com.google.common.base.Joiner;
 import com.taobao.api.ApiException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -35,8 +33,6 @@ public class DingSendMessageHandler implements SendMessageHandler {
 
     private String active;
 
-    private Long alarmInterval;
-
     private InstanceInfo instanceInfo;
 
     @Override
@@ -45,22 +41,16 @@ public class DingSendMessageHandler implements SendMessageHandler {
     }
 
     @Override
-    public void sendAlarmMessage(List<NotifyConfig> notifyConfigs, DynamicThreadPoolExecutor pool) {
-        Optional<NotifyConfig> notifyConfigOptional = notifyConfigs.stream()
-                .filter(each -> Objects.equals(each.getType(), getType()))
-                .findFirst();
-        notifyConfigOptional.ifPresent(each -> dingAlarmSendMessage(each, pool));
+    public void sendAlarmMessage(AlarmNotifyDTO notifyConfig, DynamicThreadPoolExecutor pool) {
+        dingAlarmSendMessage(notifyConfig, pool);
     }
 
     @Override
-    public void sendChangeMessage(List<NotifyConfig> notifyConfigs, PoolParameterInfo parameter) {
-        Optional<NotifyConfig> changeConfigOptional = notifyConfigs.stream()
-                .filter(each -> Objects.equals(each.getType(), getType()))
-                .findFirst();
-        changeConfigOptional.ifPresent(each -> dingChangeSendMessage(each, parameter));
+    public void sendChangeMessage(AlarmNotifyDTO notifyConfig, PoolParameterInfo parameter) {
+        dingChangeSendMessage(notifyConfig, parameter);
     }
 
-    private void dingAlarmSendMessage(NotifyConfig notifyConfig, DynamicThreadPoolExecutor pool) {
+    private void dingAlarmSendMessage(AlarmNotifyDTO notifyConfig, DynamicThreadPoolExecutor pool) {
         List<String> receives = StrUtil.split(notifyConfig.getReceives(), ',');
         String afterReceives = Joiner.on(", @").join(receives);
 
@@ -126,7 +116,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
                 // 告警手机号
                 afterReceives,
                 // 报警频率
-                alarmInterval,
+                notifyConfig.getInterval(),
                 // 当前时间
                 DateUtil.now()
         );
@@ -134,7 +124,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
         execute(notifyConfig, "动态线程池告警", text, receives);
     }
 
-    private void dingChangeSendMessage(NotifyConfig notifyConfig, PoolParameterInfo parameter) {
+    private void dingChangeSendMessage(AlarmNotifyDTO notifyConfig, PoolParameterInfo parameter) {
         String threadPoolId = parameter.getTpId();
         DynamicThreadPoolWrapper poolWrap = GlobalThreadPoolManage.getExecutorService(threadPoolId);
         if (poolWrap == null) {
@@ -200,8 +190,9 @@ public class DingSendMessageHandler implements SendMessageHandler {
         execute(notifyConfig, "动态线程池通知", text, receives);
     }
 
-    private void execute(NotifyConfig notifyConfigs, String title, String text, List<String> mobiles) {
-        String serverUrl = notifyConfigs.getUrl() + notifyConfigs.getToken();
+    private void execute(AlarmNotifyDTO notifyConfig, String title, String text, List<String> mobiles) {
+        String url = "https://oapi.dingtalk.com/robot/send?access_token=";
+        String serverUrl = url + notifyConfig.getSecretKey();
         DingTalkClient dingTalkClient = new DefaultDingTalkClient(serverUrl);
         OapiRobotSendRequest request = new OapiRobotSendRequest();
         request.setMsgtype("markdown");

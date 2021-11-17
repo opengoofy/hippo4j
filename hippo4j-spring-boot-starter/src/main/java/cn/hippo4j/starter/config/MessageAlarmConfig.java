@@ -2,13 +2,12 @@ package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.starter.alarm.*;
+import cn.hippo4j.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.ConfigurableEnvironment;
-
-import java.util.Optional;
 
 /**
  * Message alarm config.
@@ -29,15 +28,14 @@ public class MessageAlarmConfig {
 
     @DependsOn("applicationContextHolder")
     @Bean(MessageAlarmConfig.SEND_MESSAGE_BEAN_NAME)
-    public SendMessageService sendMessageService() {
-        return new BaseSendMessageService(properties.getNotifys());
+    public SendMessageService sendMessageService(HttpAgent httpAgent) {
+        return new BaseSendMessageService(httpAgent, properties);
     }
 
     @Bean
     public SendMessageHandler dingSendMessageHandler() {
         String active = environment.getProperty("spring.profiles.active", Strings.EMPTY);
-        Long alarmInterval = Optional.ofNullable(properties.getAlarmInterval()).orElse(5L);
-        return new DingSendMessageHandler(active, alarmInterval, instanceInfo);
+        return new DingSendMessageHandler(active, instanceInfo);
     }
 
     @Bean

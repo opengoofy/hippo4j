@@ -1,8 +1,10 @@
 package cn.hippo4j.starter.core;
 
-import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
 import cn.hippo4j.common.model.PoolParameter;
+import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import com.google.common.collect.Lists;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,6 +39,10 @@ public class GlobalThreadPoolManage {
 
     public static void registerPoolParameter(String tpId, PoolParameter poolParameter) {
         POOL_PARAMETER.put(tpId, poolParameter);
+    }
+
+    public static List<String> listThreadPoolId() {
+        return Lists.newArrayList(POOL_PARAMETER.keySet());
     }
 
 }
