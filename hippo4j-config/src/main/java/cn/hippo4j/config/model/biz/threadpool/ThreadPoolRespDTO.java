@@ -30,11 +30,6 @@ public class ThreadPoolRespDTO {
     private String tpId;
 
     /**
-     * content
-     */
-    private String content;
-
-    /**
      * coreSize
      */
     private Integer coreSize;

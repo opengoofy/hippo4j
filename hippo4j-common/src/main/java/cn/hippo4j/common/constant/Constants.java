@@ -1,7 +1,5 @@
 package cn.hippo4j.common.constant;
 
-import org.springframework.expression.spel.ast.Identifier;
-
 import java.util.UUID;
 
 /**
