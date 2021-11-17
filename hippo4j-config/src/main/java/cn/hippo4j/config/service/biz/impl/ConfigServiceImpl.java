@@ -1,19 +1,22 @@
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.ConditionUtil;
+import cn.hippo4j.common.toolkit.ContentUtil;
+import cn.hippo4j.common.toolkit.Md5Util;
+import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.ConfigInfoBase;
 import cn.hippo4j.config.service.ConfigChangePublisher;
+import cn.hippo4j.config.service.biz.ConfigService;
+import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import cn.hippo4j.common.toolkit.ConditionUtil;
-import cn.hippo4j.common.toolkit.ContentUtil;
-import cn.hippo4j.common.toolkit.Md5Util;
-import cn.hippo4j.config.service.biz.ConfigService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -50,21 +53,24 @@ public class ConfigServiceImpl implements ConfigService {
                 .eq(ConfigInfoBase::getTpId, configInfo.getTpId());
         ConfigAllInfo existConfig = configInfoMapper.selectOne(queryWrapper);
 
+        String userName = UserContext.getUserName();
+        ConfigServiceImpl configService = ApplicationContextHolder.getBean(this.getClass());
+
         try {
             ConditionUtil
                     .condition(
                             existConfig == null,
-                            () -> addConfigInfo(configInfo),
-                            () -> updateConfigInfo(configInfo)
+                            () -> configService.addConfigInfo(configInfo),
+                            () -> configService.updateConfigInfo(userName, configInfo)
                     );
         } catch (Exception ex) {
-            updateConfigInfo(configInfo);
+            updateConfigInfo(userName, configInfo);
         }
 
         ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configInfo)));
     }
 
-    private Integer addConfigInfo(ConfigAllInfo config) {
+    public Integer addConfigInfo(ConfigAllInfo config) {
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
 
@@ -80,7 +86,14 @@ public class ConfigServiceImpl implements ConfigService {
         return null;
     }
 
-    private void updateConfigInfo(ConfigAllInfo config) {
+    @LogRecord(
+            bizNo = "{{#config.itemId}}:{{#config.tpId}}",
+            category = "THREAD_POOL_UPDATE",
+            operator = "{{#operator}}",
+            success = "核心线程: {{#config.coreSize}}, 最大线程: {{#config.maxSize}}, 队列类型: {{#config.queueType}}, 队列容量: {{#config.capacity}}, 拒绝策略: {{#config.rejectedType}}",
+            detail = "{{#config.toString()}}"
+    )
+    public void updateConfigInfo(String operator, ConfigAllInfo config) {
         LambdaUpdateWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaUpdate(ConfigAllInfo.class)
                 .eq(ConfigAllInfo::getTpId, config.getTpId())
                 .eq(ConfigAllInfo::getItemId, config.getItemId())

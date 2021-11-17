@@ -1,5 +1,6 @@
 package cn.hippo4j.config.model;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -50,5 +51,10 @@ public class ConfigAllInfo extends ConfigInfo implements PoolParameter {
     @JSONField(serialize = false)
     @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
+    }
 
 }
