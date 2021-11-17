@@ -6,15 +6,14 @@ server:
 spring:
   profiles:
     active: dev
+
+  # 应用配置
   application:
     name: dynamic-threadpool-example
+
+  # 动态线程池配置
   dynamic:
     thread-pool:
-      notifys:
-        - type: DING
-          url: https://oapi.dingtalk.com/robot/send?access_token=
-          token: 4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae
-          receives: '15601166691'
       alarm-interval: 30
       server-addr: http://localhost:6691
       namespace: prescription
