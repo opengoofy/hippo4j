@@ -28,8 +28,8 @@ public class MessageAlarmConfig {
 
     @DependsOn("applicationContextHolder")
     @Bean(MessageAlarmConfig.SEND_MESSAGE_BEAN_NAME)
-    public SendMessageService sendMessageService(HttpAgent httpAgent) {
-        return new BaseSendMessageService(httpAgent, properties);
+    public SendMessageService sendMessageService(HttpAgent httpAgent, AlarmControlHandler alarmControlHandler) {
+        return new BaseSendMessageService(httpAgent, properties, alarmControlHandler);
     }
 
     @Bean
@@ -40,8 +40,7 @@ public class MessageAlarmConfig {
 
     @Bean
     public AlarmControlHandler alarmControlHandler() {
-        Long alarmInterval = properties.getAlarmInterval();
-        return new AlarmControlHandler(alarmInterval);
+        return new AlarmControlHandler();
     }
 
 }

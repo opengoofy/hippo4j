@@ -37,20 +37,20 @@ public class DingSendMessageHandler implements SendMessageHandler {
 
     @Override
     public String getType() {
-        return SendMessageEnum.DING.name();
+        return NotifyPlatformEnum.DING.name();
     }
 
     @Override
-    public void sendAlarmMessage(AlarmNotifyDTO notifyConfig, DynamicThreadPoolExecutor pool) {
+    public void sendAlarmMessage(NotifyDTO notifyConfig, DynamicThreadPoolExecutor pool) {
         dingAlarmSendMessage(notifyConfig, pool);
     }
 
     @Override
-    public void sendChangeMessage(AlarmNotifyDTO notifyConfig, PoolParameterInfo parameter) {
+    public void sendChangeMessage(NotifyDTO notifyConfig, PoolParameterInfo parameter) {
         dingChangeSendMessage(notifyConfig, parameter);
     }
 
-    private void dingAlarmSendMessage(AlarmNotifyDTO notifyConfig, DynamicThreadPoolExecutor pool) {
+    private void dingAlarmSendMessage(NotifyDTO notifyConfig, DynamicThreadPoolExecutor pool) {
         List<String> receives = StrUtil.split(notifyConfig.getReceives(), ',');
         String afterReceives = Joiner.on(", @").join(receives);
 
@@ -61,6 +61,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
                         "<font color='#708090' size=2>线程池ID：%s</font> \n\n " +
                         "<font color='#708090' size=2>应用名称：%s</font> \n\n " +
                         "<font color='#778899' size=2>应用实例：%s</font> \n\n " +
+                        "<font color='#778899' size=2>报警类型：%s</font> \n\n " +
                         " --- \n\n  " +
                         "<font color='#708090' size=2>核心线程数：%d</font> \n\n " +
                         "<font color='#708090' size=2>最大线程数：%d</font> \n\n " +
@@ -89,6 +90,8 @@ public class DingSendMessageHandler implements SendMessageHandler {
                 instanceInfo.getAppName(),
                 // 实例信息
                 instanceInfo.getIdentify(),
+                // 报警类型
+                notifyConfig.getTypeEnum(),
                 // 核心线程数
                 pool.getCorePoolSize(),
                 // 最大线程数
@@ -124,7 +127,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
         execute(notifyConfig, "动态线程池告警", text, receives);
     }
 
-    private void dingChangeSendMessage(AlarmNotifyDTO notifyConfig, PoolParameterInfo parameter) {
+    private void dingChangeSendMessage(NotifyDTO notifyConfig, PoolParameterInfo parameter) {
         String threadPoolId = parameter.getTpId();
         DynamicThreadPoolWrapper poolWrap = GlobalThreadPoolManage.getExecutorService(threadPoolId);
         if (poolWrap == null) {
@@ -190,7 +193,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
         execute(notifyConfig, "动态线程池通知", text, receives);
     }
 
-    private void execute(AlarmNotifyDTO notifyConfig, String title, String text, List<String> mobiles) {
+    private void execute(NotifyDTO notifyConfig, String title, String text, List<String> mobiles) {
         String url = "https://oapi.dingtalk.com/robot/send?access_token=";
         String serverUrl = url + notifyConfig.getSecretKey();
         DingTalkClient dingTalkClient = new DefaultDingTalkClient(serverUrl);

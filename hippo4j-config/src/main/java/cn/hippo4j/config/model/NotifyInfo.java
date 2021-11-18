@@ -1,5 +1,6 @@
 package cn.hippo4j.config.model;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -7,14 +8,14 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 报警管理.
+ * 通知管理.
  *
  * @author chen.ma
  * @date 2021/11/17 22:03
  */
 @Data
-@TableName("alarm")
-public class AlarmInfo {
+@TableName("notify")
+public class NotifyInfo {
 
     /**
      * id
@@ -42,6 +43,11 @@ public class AlarmInfo {
     private String platform;
 
     /**
+     * 通知类型
+     */
+    private String type;
+
+    /**
      * 密钥
      */
     private String secretKey;
@@ -60,16 +66,24 @@ public class AlarmInfo {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
     /**
      * 修改时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
+
+    /**
+     * 是否启用
+     */
+    private Integer enable;
 
     /**
      * 是否删除
      */
+    @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
 
 }

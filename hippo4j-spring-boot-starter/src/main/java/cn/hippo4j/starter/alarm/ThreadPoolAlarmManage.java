@@ -5,10 +5,10 @@ import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.starter.config.MessageAlarmConfig;
 import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
 import cn.hippo4j.starter.toolkit.CalculateUtil;
-import cn.hippo4j.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Alarm manage.
@@ -24,19 +24,11 @@ public class ThreadPoolAlarmManage {
      */
     private static final SendMessageService SEND_MESSAGE_SERVICE;
 
-    /**
-     * 报警间隔控制
-     */
-    private static final AlarmControlHandler ALARM_CONTROL_HANDLER;
-
     static {
         SEND_MESSAGE_SERVICE = Optional.ofNullable(ApplicationContextHolder.getInstance())
                 .map(each -> each.getBean(MessageAlarmConfig.SEND_MESSAGE_BEAN_NAME, SendMessageService.class))
                 .orElse(null);
-
-        ALARM_CONTROL_HANDLER = Optional.ofNullable(ApplicationContextHolder.getInstance())
-                .map(each -> each.getBean(AlarmControlHandler.class))
-                .orElse(null);
+        System.out.println();
     }
 
     /**
@@ -49,16 +41,16 @@ public class ThreadPoolAlarmManage {
             return;
         }
         ThreadPoolAlarm threadPoolAlarm = threadPoolExecutor.getThreadPoolAlarm();
-        ResizableCapacityLinkedBlockIngQueue blockIngQueue =
-                (ResizableCapacityLinkedBlockIngQueue) threadPoolExecutor.getQueue();
+        BlockingQueue blockIngQueue = threadPoolExecutor.getQueue();
 
         int queueSize = blockIngQueue.size();
         int capacity = queueSize + blockIngQueue.remainingCapacity();
         int divide = CalculateUtil.divide(queueSize, capacity);
-        boolean isSend = divide > threadPoolAlarm.getCapacityAlarm()
+        boolean isSend = threadPoolAlarm.getIsAlarm()
+                && divide > threadPoolAlarm.getCapacityAlarm()
                 && isSendMessage(threadPoolExecutor, MessageTypeEnum.CAPACITY);
         if (isSend) {
-            SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(MessageTypeEnum.CAPACITY, threadPoolExecutor);
         }
     }
 
@@ -76,10 +68,13 @@ public class ThreadPoolAlarmManage {
         int maximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
         int divide = CalculateUtil.divide(activeCount, maximumPoolSize);
 
-        boolean isSend = divide > threadPoolExecutor.getThreadPoolAlarm().getLivenessAlarm()
+        ThreadPoolAlarm threadPoolAlarm = threadPoolExecutor.getThreadPoolAlarm();
+
+        boolean isSend = threadPoolAlarm.getIsAlarm()
+                && divide > threadPoolAlarm.getLivenessAlarm()
                 && isSendMessage(threadPoolExecutor, MessageTypeEnum.CAPACITY);
         if (isSend) {
-            SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(MessageTypeEnum.CAPACITY, threadPoolExecutor);
         }
     }
 
@@ -93,8 +88,9 @@ public class ThreadPoolAlarmManage {
             return;
         }
 
-        if (isSendMessage(threadPoolExecutor, MessageTypeEnum.REJECT)) {
-            SEND_MESSAGE_SERVICE.sendAlarmMessage(threadPoolExecutor);
+        ThreadPoolAlarm threadPoolAlarm = threadPoolExecutor.getThreadPoolAlarm();
+        if (threadPoolAlarm.getIsAlarm() && isSendMessage(threadPoolExecutor, MessageTypeEnum.REJECT)) {
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(MessageTypeEnum.REJECT, threadPoolExecutor);
         }
     }
 
@@ -119,11 +115,8 @@ public class ThreadPoolAlarmManage {
      * @return
      */
     private static boolean isSendMessage(DynamicThreadPoolExecutor threadPoolExecutor, MessageTypeEnum typeEnum) {
-        AlarmControlDTO alarmControl = AlarmControlDTO.builder()
-                .threadPool(threadPoolExecutor.getThreadPoolId())
-                .typeEnum(typeEnum)
-                .build();
-        return ALARM_CONTROL_HANDLER.isSend(alarmControl);
+        // ignore
+        return true;
     }
 
 }

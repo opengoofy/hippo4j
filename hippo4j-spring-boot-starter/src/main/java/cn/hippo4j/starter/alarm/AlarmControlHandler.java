@@ -2,10 +2,11 @@ package cn.hippo4j.starter.alarm;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Maps;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 /**
  * 报警控制组件.
@@ -15,13 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AlarmControlHandler {
 
-    private final Cache<String, String> cache;
-
-    public AlarmControlHandler(long alarmInterval) {
-        cache = CacheBuilder.newBuilder()
-                .expireAfterWrite(alarmInterval, TimeUnit.MINUTES)
-                .build();
-    }
+    public static Map<String, Cache<String, String>> THREAD_POOL_ALARM_CACHE = Maps.newConcurrentMap();
 
     /**
      * 控制消息推送报警频率.
@@ -29,13 +24,17 @@ public class AlarmControlHandler {
      * @param alarmControl
      * @return
      */
-    public boolean isSend(AlarmControlDTO alarmControl) {
-        String pkId = cache.getIfPresent(alarmControl.buildPk());
-
-        if (StrUtil.isBlank(pkId)) {
-            // val 无意义
-            cache.put(alarmControl.buildPk(), IdUtil.simpleUUID());
-            return true;
+    public boolean isSendAlarm(AlarmControlDTO alarmControl) {
+        Cache<String, String> cache = THREAD_POOL_ALARM_CACHE.get(alarmControl.buildPk());
+        if (cache != null) {
+            String pkId = cache.getIfPresent(alarmControl.getTypeEnum().name());
+            if (StrUtil.isBlank(pkId)) {
+                // val 无意义
+                cache.put(alarmControl.getTypeEnum().name(), IdUtil.simpleUUID());
+                return true;
+            } else {
+                System.out.println(JSON.toJSONString(alarmControl));
+            }
         }
 
         return false;
