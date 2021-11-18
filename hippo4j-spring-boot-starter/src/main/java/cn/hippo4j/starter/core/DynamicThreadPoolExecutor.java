@@ -910,7 +910,7 @@ public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
     protected void afterExecute(Runnable r, Throwable t) {
         Date startDate = statisticsTime.remove(String.valueOf(r.hashCode()));
         Date finishDate = new Date();
-        long diff = finishDate.getTime() - startDate.getTime();
+        // long diff = finishDate.getTime() - startDate.getTime();
 
     }
 
