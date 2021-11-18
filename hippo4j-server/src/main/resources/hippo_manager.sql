@@ -139,26 +139,29 @@ CREATE TABLE `permission` (
 
 /******************************************/
 /*   数据库全名 = hippo_manager   */
-/*   表名称 = alarm   */
+/*   表名称 = notify   */
 /******************************************/
-DROP TABLE IF EXISTS `alarm`;
-CREATE TABLE `alarm` (
+DROP TABLE IF EXISTS `alarm`, `notify`;
+CREATE TABLE `notify` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `tenant_id` varchar(128) NOT NULL DEFAULT '' COMMENT '租户ID',
   `item_id` varchar(128) NOT NULL COMMENT '项目ID',
   `tp_id` varchar(128) NOT NULL COMMENT '线程池ID',
   `platform` varchar(32) NOT NULL COMMENT '通知平台',
+  `type` varchar(32) NOT NULL COMMENT '通知类型',
   `secret_key` varchar(256) NOT NULL COMMENT '密钥',
-  `interval` int(11) NOT NULL COMMENT '报警间隔',
+  `interval` int(11) DEFAULT NULL COMMENT '报警间隔',
   `receives` varchar(512) NOT NULL COMMENT '接收者',
+  `enable` tinyint(1) DEFAULT NULL COMMENT '是否启用',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='报警表';
+  PRIMARY KEY (`id`),
+  KEY `uk_notify_biz_key` (`tenant_id`,`item_id`,`tp_id`,`platform`,`type`,`del_flag`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通知表';
 
 /* 租户 */
-INSERT INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'framework', '架构组', '架构组：负责集团项目的规范标准定义以及执行', '某某', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
+INSERT INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
 
 /* 项目 */
 INSERT INTO `item` (`id`, `tenant_id`, `item_id`, `item_name`, `item_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', '动态线程池示例项目', '动态线程池示例项目，对应 Hippo 项目的 example 模块', '马称', '2021-10-24 16:11:00', '2021-10-24 16:11:00', '0');
@@ -170,5 +173,6 @@ INSERT INTO `config` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `core_si
 /* 用户 */
 INSERT INTO `user` (`id`, `user_name`, `password`, `role`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'admin', '$2a$10$2KCqRbra0Yn2TwvkZxtfLuWuUP5KyCWsljO/ci5pLD27pqR3TV1vy', 'ROLE_ADMIN', '2021-11-04 21:35:17', '2021-11-15 23:04:59', '0');
 
-/* 报警表 */
-INSERT INTO `alarm` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `secret_key`, `interval`, `receives`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-consume', 'DING', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '2021-11-17 15:02:31', '2021-11-17 15:02:31', '0');
+/* 通知表 */
+INSERT INTO `notify` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `type`, `secret_key`, `interval`, `receives`, `enable`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1461345908531671042', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'CONFIG', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', NULL, '15601166691', '0', '2021-11-18 22:49:50', '2021-11-18 22:49:50', '0'),
+('1461345976047382530', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'ALARM', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '0', '2021-11-18 22:50:06', '2021-11-18 22:50:06', '0');
