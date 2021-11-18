@@ -1,24 +1,25 @@
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.config.enums.DelEnum;
 import cn.hippo4j.config.mapper.TenantInfoMapper;
 import cn.hippo4j.config.model.TenantInfo;
 import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
 import cn.hippo4j.config.model.biz.item.ItemRespDTO;
 import cn.hippo4j.config.model.biz.tenant.TenantQueryReqDTO;
+import cn.hippo4j.config.model.biz.tenant.TenantRespDTO;
 import cn.hippo4j.config.model.biz.tenant.TenantSaveReqDTO;
+import cn.hippo4j.config.model.biz.tenant.TenantUpdateReqDTO;
 import cn.hippo4j.config.service.biz.ItemService;
+import cn.hippo4j.config.service.biz.TenantService;
+import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import cn.hippo4j.config.model.biz.tenant.TenantRespDTO;
-import cn.hippo4j.config.model.biz.tenant.TenantUpdateReqDTO;
-import cn.hippo4j.config.service.biz.TenantService;
-import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,12 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public void saveTenant(TenantSaveReqDTO reqDTO) {
+        LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers.lambdaQuery(TenantInfo.class)
+                .eq(TenantInfo::getTenantId, reqDTO.getTenantId());
+
+        TenantInfo existTenantInfo = tenantInfoMapper.selectOne(queryWrapper);
+        Assert.isNull(existTenantInfo, "租户 ID 不允许重复.");
+
         TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
         int insertResult = tenantInfoMapper.insert(tenantInfo);
 

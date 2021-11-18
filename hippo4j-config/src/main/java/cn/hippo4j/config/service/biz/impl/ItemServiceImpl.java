@@ -1,5 +1,6 @@
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.config.enums.DelEnum;
 import cn.hippo4j.config.mapper.ItemInfoMapper;
 import cn.hippo4j.config.model.ItemInfo;
@@ -7,16 +8,16 @@ import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
 import cn.hippo4j.config.model.biz.item.ItemRespDTO;
 import cn.hippo4j.config.model.biz.item.ItemSaveReqDTO;
 import cn.hippo4j.config.model.biz.item.ItemUpdateReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
 import cn.hippo4j.config.service.biz.ItemService;
+import cn.hippo4j.config.service.biz.ThreadPoolService;
+import cn.hippo4j.config.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
-import cn.hippo4j.config.service.biz.ThreadPoolService;
-import cn.hippo4j.config.toolkit.BeanUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void saveItem(ItemSaveReqDTO reqDTO) {
+        LambdaQueryWrapper<ItemInfo> queryWrapper = Wrappers.lambdaQuery(ItemInfo.class)
+                .eq(ItemInfo::getItemId, reqDTO.getItemId());
+
+        ItemInfo existItemInfo = itemInfoMapper.selectOne(queryWrapper);
+        Assert.isNull(existItemInfo, "项目 ID 不允许重复.");
+
         ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
         int insertResult = itemInfoMapper.insert(itemInfo);
 
