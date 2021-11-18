@@ -191,7 +191,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     public ThreadPoolBuilder alarmConfig(int isAlarm, int capacityAlarm, int livenessAlarm) {
-        this.isAlarm = isAlarm == 1 ? true : false;
+        this.isAlarm = isAlarm == 0 ? true : false;
         this.capacityAlarm = capacityAlarm;
         this.livenessAlarm = livenessAlarm;
         return this;
