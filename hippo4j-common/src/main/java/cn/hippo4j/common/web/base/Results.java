@@ -27,6 +27,11 @@ public final class Results {
                 .setMessage(serviceException.getMessage());
     }
 
+    public static Result<Void> failure(Throwable throwable) {
+        return new Result<Void>().setCode(ErrorCodeEnum.SERVICE_ERROR.getCode())
+                .setMessage(throwable.getMessage());
+    }
+
     public static <T> Result<T> failure(String code, String message) {
         return new Result<T>()
                 .setCode(code)
