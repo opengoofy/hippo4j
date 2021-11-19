@@ -1,5 +1,6 @@
 package cn.hippo4j.common.toolkit;
 
+import cn.hippo4j.common.constant.Constants;
 import org.springframework.util.StringUtils;
 
 /**
@@ -36,51 +37,7 @@ public class GroupKey {
     }
 
     public static String[] parseKey(String groupKey) {
-        StringBuilder sb = new StringBuilder();
-        String dataId = null;
-        String group = null;
-        String tenant = null;
-
-        for (int i = 0; i < groupKey.length(); ++i) {
-            char c = groupKey.charAt(i);
-            if ('+' == c) {
-                if (null == dataId) {
-                    dataId = sb.toString();
-                    sb.setLength(0);
-                } else if (null == group) {
-                    group = sb.toString();
-                    sb.setLength(0);
-                } else {
-                    throw new IllegalArgumentException("invalid groupkey:" + groupKey);
-                }
-            } else if ('%' == c) {
-                char next = groupKey.charAt(++i);
-                char nextnext = groupKey.charAt(++i);
-                if ('2' == next && 'B' == nextnext) {
-                    sb.append('+');
-                } else if ('2' == next && '5' == nextnext) {
-                    sb.append('%');
-                } else {
-                    throw new IllegalArgumentException("invalid groupkey:" + groupKey);
-                }
-            } else {
-                sb.append(c);
-            }
-        }
-
-        if (StringUtils.isEmpty(group)) {
-            group = sb.toString();
-            if (group.length() == 0) {
-                throw new IllegalArgumentException("invalid groupkey:" + groupKey);
-            }
-        } else {
-            tenant = sb.toString();
-            if (group.length() == 0) {
-                throw new IllegalArgumentException("invalid groupkey:" + groupKey);
-            }
-        }
-
-        return new String[]{dataId, group, tenant};
+        return groupKey.split(Constants.GROUP_KEY_DELIMITER_TRANSLATION);
     }
 
     public static void urlEncode(String str, StringBuilder sb) {
