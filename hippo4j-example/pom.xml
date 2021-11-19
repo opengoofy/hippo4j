@@ -49,7 +49,7 @@
     </dependencies>
 
     <build>
-        <finalName>hippo-example</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
