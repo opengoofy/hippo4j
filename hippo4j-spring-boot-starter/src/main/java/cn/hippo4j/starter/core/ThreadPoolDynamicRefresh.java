@@ -33,23 +33,23 @@ public class ThreadPoolDynamicRefresh {
 
         int originalCoreSize = executor.getCorePoolSize();
         int originalMaximumPoolSize = executor.getMaximumPoolSize();
-        int originalQueryType = parameter.getQueueType();
+        String originalQuery = executor.getQueue().getClass().getSimpleName();
         int originalCapacity = executor.getQueue().remainingCapacity() + executor.getQueue().size();
-        long originalKeepAliveTime = executor.getKeepAliveTime(TimeUnit.MILLISECONDS);
-        int originalRejectedType = parameter.getRejectedType();
+        long originalKeepAliveTime = executor.getKeepAliveTime(TimeUnit.SECONDS);
+        String originalRejected = executor.getRejectedExecutionHandler().getClass().getSimpleName();
 
         changePoolInfo(executor, parameter);
         ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getPool();
 
-        log.info("[🔥 {}] Changed thread pool. coreSize :: [{}], maxSize :: [{}], queueType :: [{}], capacity :: [{}], keepAliveTime :: [{}], rejectedType :: [{}]",
+        log.info("[🔥 {}] Changed thread pool. \ncoreSize :: [{}], maxSize :: [{}], queueType :: [{}], capacity :: [{}], keepAliveTime :: [{}], rejectedType :: [{}]",
                 threadPoolId.toUpperCase(),
-                String.format("%s=>%s", originalCoreSize, afterExecutor.getCorePoolSize()),
-                String.format("%s=>%s", originalMaximumPoolSize, afterExecutor.getMaximumPoolSize()),
-                String.format("%s=>%s", originalQueryType, parameter.getQueueType()),
-                String.format("%s=>%s", originalCapacity,
+                String.format("%s => %s", originalCoreSize, afterExecutor.getCorePoolSize()),
+                String.format("%s => %s", originalMaximumPoolSize, afterExecutor.getMaximumPoolSize()),
+                String.format("%s => %s", originalQuery, QueueTypeEnum.getBlockingQueueNameByType(parameter.getQueueType())),
+                String.format("%s => %s", originalCapacity,
                         (afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size())),
-                String.format("%s=>%s", originalKeepAliveTime, afterExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS)),
-                String.format("%s=>%s", originalRejectedType, parameter.getRejectedType()));
+                String.format("%s => %s", originalKeepAliveTime, afterExecutor.getKeepAliveTime(TimeUnit.SECONDS)),
+                String.format("%s => %s", originalRejected, RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType())));
     }
 
     public static void changePoolInfo(ThreadPoolExecutor executor, PoolParameterInfo parameter) {
