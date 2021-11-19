@@ -44,6 +44,8 @@ public class ClientWorker {
 
     private AtomicBoolean isHealthServer = new AtomicBoolean(true);
 
+    private AtomicBoolean isHealthServerTemp = new AtomicBoolean(true);
+
     private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap(16);
 
     @SuppressWarnings("all")
@@ -95,8 +97,14 @@ public class ClientWorker {
 
         @SneakyThrows
         private void checkStatus() {
+            if (Objects.equals(isHealthServerTemp.get(), Boolean.FALSE)
+                    && Objects.equals(isHealthServer.get(), Boolean.TRUE)) {
+                isHealthServerTemp.set(Boolean.TRUE);
+                log.info("🚀 The client reconnects to the server successfully.");
+            }
             // 服务端状态不正常睡眠 30s
             if (!isHealthServer.get()) {
+                isHealthServerTemp.set(Boolean.FALSE);
                 log.error("[Check config] Error. exception message, Thread sleep 30 s.");
                 Thread.sleep(30000);
             }
