@@ -1,10 +1,13 @@
 package cn.hippo4j.starter.handler;
 
 import cn.hippo4j.common.model.PoolRunStateInfo;
-import cn.hippo4j.starter.toolkit.CalculateUtil;
-import cn.hippo4j.starter.core.GlobalThreadPoolManage;
 import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
+import cn.hippo4j.starter.core.GlobalThreadPoolManage;
+import cn.hippo4j.starter.toolkit.ByteConvertUtil;
+import cn.hippo4j.starter.toolkit.CalculateUtil;
 import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.system.RuntimeInfo;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
@@ -62,6 +65,15 @@ public class ThreadPoolRunStateHandler {
         // 队列容量
         int queueCapacity = queueSize + remainingCapacity;
 
+        // 内存占比: 使用内存 / 最大内存
+        RuntimeInfo runtimeInfo = new RuntimeInfo();
+        String memoryProportion = StrUtil.builder(
+                "已分配: ",
+                ByteConvertUtil.getPrintSize(runtimeInfo.getTotalMemory()),
+                " / 最大可用: ",
+                ByteConvertUtil.getPrintSize(runtimeInfo.getMaxMemory())
+        ).toString();
+
         PoolRunStateInfo stateInfo = new PoolRunStateInfo();
         stateInfo.setCoreSize(corePoolSize);
         stateInfo.setMaximumSize(maximumPoolSize);
@@ -77,6 +89,8 @@ public class ThreadPoolRunStateHandler {
         stateInfo.setCompletedTaskCount(completedTaskCount);
         stateInfo.setHost(INET_ADDRESS.getHostAddress());
         stateInfo.setTpId(tpId);
+        stateInfo.setMemoryProportion(memoryProportion);
+        stateInfo.setFreeMemory(ByteConvertUtil.getPrintSize(runtimeInfo.getFreeMemory()));
 
         int rejectCount = pool instanceof DynamicThreadPoolExecutor
                 ? ((DynamicThreadPoolExecutor) pool).getRejectCount()

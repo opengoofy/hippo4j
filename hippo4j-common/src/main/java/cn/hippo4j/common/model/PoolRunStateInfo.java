@@ -90,4 +90,14 @@ public class PoolRunStateInfo implements Serializable {
      */
     private String host;
 
+    /**
+     * memoryProportion
+     */
+    private String memoryProportion;
+
+    /**
+     * freeMemory
+     */
+    private String freeMemory;
+
 }
