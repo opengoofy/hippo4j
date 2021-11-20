@@ -26,7 +26,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <revision>1.0.0-SNAPSHOT</revision>
+        <revision>1.0.0-RC3</revision>
 
         <dozer.version>6.5.0</dozer.version>
         <guava.version>29.0-jre</guava.version>
@@ -202,19 +202,6 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
-
-        <!--<resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-                <excludes>
-                    <exclude>rebel.xml</exclude>
-                </excludes>
-                <filtering>true</filtering>
-            </resource>
-        </resources>-->
 
         <plugins>
             <plugin>
