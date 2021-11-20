@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class HttpClientConfig {
 
     @Bean
-    public OkHttpClient okHttpClient() {
+    public OkHttpClient hippo4JOkHttpClient() {
         OkHttpClient.Builder build = new OkHttpClient.Builder();
         build.connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -32,13 +32,13 @@ public class HttpClientConfig {
     }
 
     @Bean
-    public HttpClientUtil httpClientUtil() {
+    public HttpClientUtil hippo4JHttpClientUtil() {
         return new HttpClientUtil();
     }
 
     @Bean
-    public HttpAgent httpAgent(BootstrapProperties properties, HttpClientUtil httpClientUtil) {
-        return new ServerHttpAgent(properties, httpClientUtil);
+    public HttpAgent httpAgent(BootstrapProperties properties, HttpClientUtil hippo4JHttpClientUtil) {
+        return new ServerHttpAgent(properties, hippo4JHttpClientUtil);
     }
 
     @SneakyThrows

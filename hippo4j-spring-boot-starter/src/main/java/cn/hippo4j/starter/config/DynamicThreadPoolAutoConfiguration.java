@@ -31,15 +31,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
-@ImportAutoConfiguration(
-        {
-                HttpClientConfig.class,
-                DiscoveryConfig.class,
-                MessageAlarmConfig.class,
-                UtilAutoConfiguration.class,
-                CorsConfig.class
-        }
-)
+@ImportAutoConfiguration({HttpClientConfig.class, DiscoveryConfig.class, MessageAlarmConfig.class, UtilAutoConfiguration.class, CorsConfig.class})
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapProperties properties;
@@ -53,14 +45,14 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public ApplicationContextHolder applicationContextHolder() {
+    public ApplicationContextHolder hippo4JApplicationContextHolder() {
         return new ApplicationContextHolder();
     }
 
     @Bean
     @SuppressWarnings("all")
-    public ConfigService configService(HttpAgent httpAgent, InetUtils inetUtils) {
-        String ip = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+    public ConfigService configService(HttpAgent httpAgent, InetUtils hippo4JInetUtils) {
+        String ip = hippo4JInetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
         String port = environment.getProperty("server.port");
         String identification = StrUtil.builder(ip, ":", port).toString();
         return new ThreadPoolConfigService(httpAgent, identification);
@@ -74,7 +66,7 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @SuppressWarnings("all")
     public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent, ThreadPoolOperation threadPoolOperation,
-                                                                      ApplicationContextHolder applicationContextHolder) {
+                                                                      ApplicationContextHolder hippo4JApplicationContextHolder) {
         return new DynamicThreadPoolPostProcessor(properties, httpAgent, threadPoolOperation);
     }
 

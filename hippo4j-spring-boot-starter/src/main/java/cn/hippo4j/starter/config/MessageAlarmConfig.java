@@ -24,11 +24,11 @@ public class MessageAlarmConfig {
 
     private ConfigurableEnvironment environment;
 
-    public static final String SEND_MESSAGE_BEAN_NAME = "sendMessageService";
+    public static final String SEND_MESSAGE_BEAN_NAME = "hippo4JSendMessageService";
 
-    @DependsOn("applicationContextHolder")
+    @DependsOn("hippo4JApplicationContextHolder")
     @Bean(MessageAlarmConfig.SEND_MESSAGE_BEAN_NAME)
-    public SendMessageService sendMessageService(HttpAgent httpAgent, AlarmControlHandler alarmControlHandler) {
+    public SendMessageService hippo4JSendMessageService(HttpAgent httpAgent, AlarmControlHandler alarmControlHandler) {
         return new BaseSendMessageService(httpAgent, properties, alarmControlHandler);
     }
 

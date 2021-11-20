@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSON;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -19,8 +19,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class HttpClientUtil {
 
-    @Autowired
-    private OkHttpClient okHttpClient;
+    @Resource
+    private OkHttpClient hippo4JOkHttpClient;
 
     private MediaType jsonMediaType = MediaType.parse("application/json; charset=utf-8");
 
@@ -151,7 +151,7 @@ public class HttpClientUtil {
                 .url(url)
                 .post(requestBody)
                 .build();
-        Response resp = okHttpClient.newCall(request).execute();
+        Response resp = hippo4JOkHttpClient.newCall(request).execute();
         if (resp.code() != HTTP_OK_CODE) {
             String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s [body] %s", resp.code(), url, jsonBody);
             throw new RuntimeException(msg);
@@ -162,7 +162,7 @@ public class HttpClientUtil {
     @SneakyThrows
     private byte[] doGet(String url) {
         Request request = new Request.Builder().get().url(url).build();
-        Response resp = okHttpClient.newCall(request).execute();
+        Response resp = hippo4JOkHttpClient.newCall(request).execute();
         if (resp.code() != HTTP_OK_CODE) {
             String msg = String.format("HttpGet 响应 code 异常. [code] %s [url] %s", resp.code(), url);
             throw new RuntimeException(msg);
@@ -181,7 +181,7 @@ public class HttpClientUtil {
 
         Request request = builder.url(buildUrl).build();
 
-        Call call = okHttpClient.newCall(request);
+        Call call = hippo4JOkHttpClient.newCall(request);
         call.timeout().timeout(readTimeoutMs, TimeUnit.MILLISECONDS);
 
         Response resp = call.execute();
@@ -204,7 +204,7 @@ public class HttpClientUtil {
                 .post(RequestBody.create(jsonMediaType, ""))
                 .build();
 
-        Call call = okHttpClient.newCall(request);
+        Call call = hippo4JOkHttpClient.newCall(request);
         call.timeout().timeout(readTimeoutMs, TimeUnit.MILLISECONDS);
 
         Response resp = call.execute();
