@@ -229,6 +229,7 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
             Map<String, Lease<InstanceInfo>> registerMap = registry.get(appName);
             if (!CollectionUtils.isEmpty(registerMap)) {
                 registerMap.remove(id);
+                log.info("Clean up unhealthy nodes. Node id :: {}", id);
             }
         } finally {
             read.unlock();
