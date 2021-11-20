@@ -10,13 +10,15 @@ spring:
     username: root
     password: root
     hikari:
-      connectionTimeout: 60000
-      idleTimeout: 60000
+      pool-name: Hikari
+      connectionTimeout: 30000
+      idleTimeout: 30000
       validationTimeout: 3000
-      maxLifetime: 60000
+      maxLifetime: 120000
       loginTimeout: 5
-      maximumPoolSize: 60
-      minimumIdle: 10
+      minimumIdle: 5
+      maximumPoolSize: 15
+      connection-test-query: SELECT 1
 
 mybatis-plus:
   configuration:
