@@ -24,6 +24,10 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
 
     private final String DYNAMIC_THREAD_POOL = " :: Dynamic ThreadPool :: ";
 
+    private final String HIPPO4J_GITHUB = "GitHub:  https://github.com/acmenlt/dynamic-threadpool";
+
+    private final String HIPPO4J_SITE = "Site:    https://www.hippox.cn";
+
     private final int STRAP_LINE_SIZE = 50;
 
     @Override
@@ -48,7 +52,8 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
             }
 
             System.out.println(AnsiOutput.toString(banner, AnsiColor.GREEN, DYNAMIC_THREAD_POOL, AnsiColor.DEFAULT,
-                    padding.toString(), AnsiStyle.FAINT, version, "\n"));
+                    padding.toString(), AnsiStyle.FAINT, version, "\n\n", HIPPO4J_GITHUB, "\n", HIPPO4J_SITE, "\n"));
+
         }
     }
 
