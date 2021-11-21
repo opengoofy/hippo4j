@@ -1,6 +1,7 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.toolkit.GroupKey;
+import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.enums.DelEnum;
 import cn.hippo4j.config.mapper.NotifyInfoMapper;
 import cn.hippo4j.config.model.NotifyInfo;
@@ -18,6 +19,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -66,7 +68,11 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public void save(NotifyReqDTO reqDTO) {
-        notifyInfoMapper.insert(BeanUtil.convert(reqDTO, NotifyInfo.class));
+        try {
+            notifyInfoMapper.insert(BeanUtil.convert(reqDTO, NotifyInfo.class));
+        } catch (DuplicateKeyException ex) {
+            throw new ServiceException("新增通知报警配置重复.");
+        }
     }
 
     @Override
@@ -77,7 +83,11 @@ public class NotifyServiceImpl implements NotifyService {
                 .eq(NotifyInfo::getItemId, reqDTO.getItemId())
                 .eq(NotifyInfo::getTpId, reqDTO.getTpId());
 
-        notifyInfoMapper.update(notifyInfo, updateWrapper);
+        try {
+            notifyInfoMapper.update(notifyInfo, updateWrapper);
+        } catch (DuplicateKeyException ex) {
+            throw new ServiceException("修改通知报警配置重复.");
+        }
     }
 
     @Override

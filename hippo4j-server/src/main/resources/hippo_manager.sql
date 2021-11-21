@@ -157,7 +157,7 @@ CREATE TABLE `notify` (
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`),
-  KEY `uk_notify_biz_key` (`tenant_id`,`item_id`,`tp_id`,`platform`,`type`,`del_flag`) USING BTREE
+  UNIQUE KEY `uk_notify_biz_key` (`tenant_id`,`item_id`,`tp_id`,`platform`,`type`,`del_flag`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通知表';
 
 /* 租户 */
