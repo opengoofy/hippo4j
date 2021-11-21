@@ -29,7 +29,11 @@ public class ThreadPoolConfig {
      */
     @Bean
     public DynamicThreadPoolWrapper messageCenterDynamicThreadPool() {
-        return new DynamicThreadPoolWrapper(MESSAGE_CONSUME);
+        ThreadPoolExecutor customExecutor = ThreadPoolBuilder.builder()
+                .dynamicPool()
+                .threadFactory(MESSAGE_CONSUME)
+                .build();
+        return new DynamicThreadPoolWrapper(MESSAGE_CONSUME, customExecutor);
     }
 
     /**
@@ -42,7 +46,10 @@ public class ThreadPoolConfig {
     @Bean
     @DynamicThreadPool
     public ThreadPoolExecutor dynamicThreadPoolExecutor() {
-        return ThreadPoolBuilder.builder().threadFactory(MESSAGE_PRODUCE).dynamicPool().build();
+        return ThreadPoolBuilder.builder()
+                .threadFactory(MESSAGE_PRODUCE)
+                .dynamicPool()
+                .build();
     }
 
 }
