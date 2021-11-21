@@ -89,7 +89,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      *
      * @param dynamicThreadPoolWrap
      */
-    protected DynamicThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
+    protected ThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
         String tpId = dynamicThreadPoolWrap.getTpId();
         Map<String, String> queryStrMap = new HashMap(3);
         queryStrMap.put(TP_ID, tpId);
@@ -98,7 +98,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
         Result result;
         boolean isSubscribe = false;
-        DynamicThreadPoolExecutor poolExecutor = null;
+        ThreadPoolExecutor poolExecutor = null;
         PoolParameterInfo ppi = new PoolParameterInfo();
 
         try {
@@ -116,17 +116,17 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .alarmConfig(ppi.getIsAlarm(), ppi.getCapacityAlarm(), ppi.getLivenessAlarm())
                         .build();
 
-                dynamicThreadPoolWrap.setPool(poolExecutor);
+                dynamicThreadPoolWrap.setExecutor(poolExecutor);
                 isSubscribe = true;
             }
         } catch (Exception ex) {
-            poolExecutor = dynamicThreadPoolWrap.getPool() != null ? dynamicThreadPoolWrap.getPool() : CommonDynamicThreadPool.getInstance(tpId);
-            dynamicThreadPoolWrap.setPool(poolExecutor);
+            poolExecutor = dynamicThreadPoolWrap.getExecutor() != null ? dynamicThreadPoolWrap.getExecutor() : CommonDynamicThreadPool.getInstance(tpId);
+            dynamicThreadPoolWrap.setExecutor(poolExecutor);
 
             log.error("[Init pool] Failed to initialize thread pool configuration. error message :: {}", ex.getMessage());
         } finally {
-            if (Objects.isNull(dynamicThreadPoolWrap.getPool())) {
-                dynamicThreadPoolWrap.setPool(CommonDynamicThreadPool.getInstance(tpId));
+            if (Objects.isNull(dynamicThreadPoolWrap.getExecutor())) {
+                dynamicThreadPoolWrap.setExecutor(CommonDynamicThreadPool.getInstance(tpId));
             }
 
             // 设置是否订阅远端线程池配置

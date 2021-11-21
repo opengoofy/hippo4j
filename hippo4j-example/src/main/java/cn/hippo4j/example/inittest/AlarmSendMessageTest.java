@@ -28,7 +28,7 @@ public class AlarmSendMessageTest {
         ScheduledExecutorService scheduledThreadPool = Executors.newSingleThreadScheduledExecutor();
         scheduledThreadPool.scheduleWithFixedDelay(() -> {
             DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
-            ThreadPoolExecutor poolExecutor = poolWrapper.getPool();
+            ThreadPoolExecutor poolExecutor = poolWrapper.getExecutor();
             try {
                 poolExecutor.execute(() -> ThreadUtil.sleep(10240124));
             } catch (Exception ex) {

@@ -36,19 +36,19 @@ public class ThreadPoolRunStateHandler {
 
     public static PoolRunStateInfo getPoolRunState(String tpId) {
         DynamicThreadPoolWrapper executorService = GlobalThreadPoolManage.getExecutorService(tpId);
-        ThreadPoolExecutor pool = executorService.getPool();
+        ThreadPoolExecutor pool = executorService.getExecutor();
 
         // 核心线程数
         int corePoolSize = pool.getCorePoolSize();
         // 最大线程数
         int maximumPoolSize = pool.getMaximumPoolSize();
-        // 线程池当前线程数
+        // 线程池当前线程数 (有锁)
         int poolSize = pool.getPoolSize();
-        // 活跃线程数
+        // 活跃线程数 (有锁)
         int activeCount = pool.getActiveCount();
-        // 同时进入池中的最大线程数
+        // 同时进入池中的最大线程数 (有锁)
         int largestPoolSize = pool.getLargestPoolSize();
-        // 线程池中执行任务总数量
+        // 线程池中执行任务总数量 (有锁)
         long completedTaskCount = pool.getCompletedTaskCount();
         // 当前负载
         String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "%";

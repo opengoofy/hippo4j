@@ -29,7 +29,7 @@ public class RunStateHandlerTest {
             ThreadUtil.sleep(5000);
             for (int i = 0; i < Integer.MAX_VALUE; i++) {
                 DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
-                ThreadPoolExecutor pool = poolWrapper.getPool();
+                ThreadPoolExecutor pool = poolWrapper.getExecutor();
                 try {
                     pool.execute(() -> {
                         log.info("Thread pool name :: {}, Executing incoming blocking...", Thread.currentThread().getName());
