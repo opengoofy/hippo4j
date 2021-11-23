@@ -8,6 +8,14 @@ package cn.hippo4j.starter.alarm;
  */
 public enum NotifyPlatformEnum {
 
-    DING
+    /**
+     * 钉钉
+     */
+    DING,
 
+    /**
+     * 飞书
+     */
+    LARK,
+    ;
 }

@@ -2,6 +2,7 @@ package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.starter.alarm.*;
+import cn.hippo4j.starter.alarm.lark.LarkSendMessageHandler;
 import cn.hippo4j.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -36,6 +37,12 @@ public class MessageAlarmConfig {
     public SendMessageHandler dingSendMessageHandler() {
         String active = environment.getProperty("spring.profiles.active", Strings.EMPTY);
         return new DingSendMessageHandler(active, instanceInfo);
+    }
+
+    @Bean
+    public SendMessageHandler larkSendMessageHandler() {
+        String active = environment.getProperty("spring.profiles.active", Strings.EMPTY);
+        return new LarkSendMessageHandler(active, instanceInfo);
     }
 
     @Bean

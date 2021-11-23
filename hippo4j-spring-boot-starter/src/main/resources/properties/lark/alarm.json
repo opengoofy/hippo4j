@@ -1,0 +1,185 @@
+{
+  "msg_type": "interactive",
+  "card": {
+    "config": {
+      "wide_screen_mode": true
+    },
+    "header": {
+      "template": "red",
+      "title": {
+        "content": "[🔥警报] %s 动态线程池运行告警",
+        "tag": "plain_text"
+      }
+    },
+    "elements": [
+      {
+        "fields": [
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 线程池ID：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 应用名称：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 应用实例：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 报警类型：** %s",
+              "tag": "lark_md"
+            }
+          }
+        ],
+        "tag": "div"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "fields": [
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 核心线程数：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 最大线程数：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 当前线程数：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 活跃线程数：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 最大任务数：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 线程池任务总量：** %s",
+              "tag": "lark_md"
+            }
+          }
+        ],
+        "tag": "div"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "fields": [
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 队列类型：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 队列容量：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 队列元素个数：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 队列剩余个数：** %s",
+              "tag": "lark_md"
+            }
+          }
+        ],
+        "tag": "div"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "fields": [
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 拒绝策略：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 拒绝策略执行次数：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "user_id": "** OWNER：** %s",
+              "tag": "at"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 播报时间： ** %s",
+              "tag": "lark_md"
+            }
+          }
+        ],
+        "tag": "div"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "tag": "note",
+        "elements": [
+          {
+            "tag": "plain_text",
+            "content": "提示： %s 分钟内此线程池不会重复告警（可配置）"
+          }
+        ]
+      }
+    ]
+  }
+}
+
