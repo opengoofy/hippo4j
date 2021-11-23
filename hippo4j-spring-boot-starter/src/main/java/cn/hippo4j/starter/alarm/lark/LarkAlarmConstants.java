@@ -24,7 +24,19 @@ public class LarkAlarmConstants {
     public static final String NOTICE_JSON_PATH = "classpath:properties/lark/notice.json";
 
     /**
-     * lark at format
+     * lark at format. openid
+     * 当配置openid时,机器人可以@人
      */
-    public static final String LARK_AT_FORMAT = "<at email=''>%s</at>";
+    public static final String LARK_AT_FORMAT_OPENID = "<at id='%s'></at>";
+
+    /**
+     * lark at format. username
+     * 当配置username时,只能蓝色字体展示@username,被@人无@提醒
+     */
+    public static final String LARK_AT_FORMAT_USERNAME = "<at id=''>%s</at>";
+
+    /**
+     * lark openid prefix
+     */
+    public static final String LARK_OPENID_PREFIX = "ou_";
 }
