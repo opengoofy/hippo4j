@@ -32,9 +32,9 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class DingSendMessageHandler implements SendMessageHandler {
 
-    private String active;
+    private final String active;
 
-    private InstanceInfo instanceInfo;
+    private final InstanceInfo instanceInfo;
 
     @Override
     public String getType() {
@@ -68,7 +68,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
                         "<font color='#708090' size=2>最大线程数：%d</font> \n\n " +
                         "<font color='#708090' size=2>当前线程数：%d</font> \n\n " +
                         "<font color='#708090' size=2>活跃线程数：%d</font> \n\n " +
-                        "<font color='#708090' size=2>最大线程数：%d</font> \n\n " +
+                        "<font color='#708090' size=2>最大任务数：%d</font> \n\n " +
                         "<font color='#708090' size=2>线程池任务总量：%d</font> \n\n " +
                         " --- \n\n  " +
                         "<font color='#708090' size=2>队列类型：%s</font> \n\n " +
@@ -214,7 +214,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
         try {
             dingTalkClient.execute(request);
         } catch (ApiException ex) {
-            log.error("Ding failed to send message", ex.getMessage());
+            log.error("Ding failed to send message", ex);
         }
     }
 
