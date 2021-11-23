@@ -170,7 +170,8 @@ public class LarkSendMessageHandler implements SendMessageHandler {
             return "";
         }
         return Arrays.stream(notifyConfig.getReceives().split(","))
-                .map(receive -> String.format(LARK_AT_FORMAT, receive))
+                .map(receive -> StrUtil.startWith(receive, LARK_OPENID_PREFIX) ?
+                        String.format(LARK_AT_FORMAT_OPENID, receive) : String.format(LARK_AT_FORMAT_USERNAME, receive))
                 .collect(Collectors.joining(" "));
     }
 

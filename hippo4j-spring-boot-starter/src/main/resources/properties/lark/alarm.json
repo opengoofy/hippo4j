@@ -153,8 +153,8 @@
           {
             "is_short": true,
             "text": {
-              "user_id": "** OWNER：** %s",
-              "tag": "at"
+              "content": "** OWNER：** %s",
+              "tag": "lark_md"
             }
           },
           {
