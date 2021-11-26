@@ -12,6 +12,11 @@ import lombok.Data;
 public class NotifyRespDTO {
 
     /**
+     * id
+     */
+    private String id;
+
+    /**
      * 租户id
      */
     private String tenantId;

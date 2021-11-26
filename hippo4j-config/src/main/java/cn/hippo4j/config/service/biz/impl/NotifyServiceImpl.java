@@ -68,20 +68,18 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public void save(NotifyReqDTO reqDTO) {
-        try {
-            notifyInfoMapper.insert(BeanUtil.convert(reqDTO, NotifyInfo.class));
-        } catch (DuplicateKeyException ex) {
+        if (existNotify(reqDTO)) {
             throw new ServiceException("新增通知报警配置重复.");
         }
+
+        notifyInfoMapper.insert(BeanUtil.convert(reqDTO, NotifyInfo.class));
     }
 
     @Override
     public void update(NotifyReqDTO reqDTO) {
         NotifyInfo notifyInfo = BeanUtil.convert(reqDTO, NotifyInfo.class);
         LambdaUpdateWrapper<NotifyInfo> updateWrapper = Wrappers.lambdaUpdate(NotifyInfo.class)
-                .eq(NotifyInfo::getTenantId, reqDTO.getTenantId())
-                .eq(NotifyInfo::getItemId, reqDTO.getItemId())
-                .eq(NotifyInfo::getTpId, reqDTO.getTpId());
+                .eq(NotifyInfo::getId, reqDTO.getId());
 
         try {
             notifyInfoMapper.update(notifyInfo, updateWrapper);
@@ -93,9 +91,7 @@ public class NotifyServiceImpl implements NotifyService {
     @Override
     public void delete(NotifyReqDTO reqDTO) {
         LambdaUpdateWrapper<NotifyInfo> updateWrapper = Wrappers.lambdaUpdate(NotifyInfo.class)
-                .eq(NotifyInfo::getTenantId, reqDTO.getTenantId())
-                .eq(NotifyInfo::getItemId, reqDTO.getItemId())
-                .eq(NotifyInfo::getTpId, reqDTO.getTpId());
+                .eq(NotifyInfo::getId, reqDTO.getId());
 
         notifyInfoMapper.delete(updateWrapper);
     }
@@ -109,6 +105,18 @@ public class NotifyServiceImpl implements NotifyService {
                 .eq(NotifyInfo::getType, type);
         List<NotifyInfo> notifyInfos = notifyInfoMapper.selectList(queryWrapper);
         return notifyInfos;
+    }
+
+    private boolean existNotify(NotifyReqDTO reqDTO) {
+        LambdaQueryWrapper<NotifyInfo> queryWrapper = Wrappers.lambdaQuery(NotifyInfo.class)
+                .eq(NotifyInfo::getTenantId, reqDTO.getTenantId())
+                .eq(NotifyInfo::getItemId, reqDTO.getItemId())
+                .eq(NotifyInfo::getTpId, reqDTO.getTpId())
+                .eq(NotifyInfo::getPlatform, reqDTO.getPlatform())
+                .eq(NotifyInfo::getType, reqDTO.getType());
+
+        List<NotifyInfo> existNotifyInfos = notifyInfoMapper.selectList(queryWrapper);
+        return CollUtil.isNotEmpty(existNotifyInfos);
     }
 
 }
