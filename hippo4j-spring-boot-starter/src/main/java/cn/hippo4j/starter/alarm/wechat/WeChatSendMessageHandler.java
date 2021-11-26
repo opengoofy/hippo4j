@@ -16,6 +16,8 @@ import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Joiner;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -149,7 +151,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler {
             WeChatReqDTO weChatReq = new WeChatReqDTO();
             weChatReq.setMsgtype("markdown");
 
-            WeChatReqDTO.Markdown markdown = new WeChatReqDTO.Markdown();
+            Markdown markdown = new Markdown();
             markdown.setContent(text);
             weChatReq.setMarkdown(markdown);
 
@@ -157,6 +159,32 @@ public class WeChatSendMessageHandler implements SendMessageHandler {
         } catch (Exception ex) {
             log.error("WeChat failed to send message", ex);
         }
+    }
+
+    @Data
+    @Accessors(chain = true)
+    public static class WeChatReqDTO {
+
+        /**
+         * msgType
+         */
+        private String msgtype;
+
+        /**
+         * markdown
+         */
+        private Markdown markdown;
+
+    }
+
+    @Data
+    public static class Markdown {
+
+        /**
+         * content
+         */
+        private String content;
+
     }
 
 }
