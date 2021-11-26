@@ -28,7 +28,6 @@ public class ThreadPoolAlarmManage {
         SEND_MESSAGE_SERVICE = Optional.ofNullable(ApplicationContextHolder.getInstance())
                 .map(each -> each.getBean(MessageAlarmConfig.SEND_MESSAGE_BEAN_NAME, SendMessageService.class))
                 .orElse(null);
-        System.out.println();
     }
 
     /**
@@ -72,9 +71,9 @@ public class ThreadPoolAlarmManage {
 
         boolean isSend = threadPoolAlarm.getIsAlarm()
                 && divide > threadPoolAlarm.getLivenessAlarm()
-                && isSendMessage(threadPoolExecutor, MessageTypeEnum.CAPACITY);
+                && isSendMessage(threadPoolExecutor, MessageTypeEnum.LIVENESS);
         if (isSend) {
-            SEND_MESSAGE_SERVICE.sendAlarmMessage(MessageTypeEnum.CAPACITY, threadPoolExecutor);
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(MessageTypeEnum.LIVENESS, threadPoolExecutor);
         }
     }
 

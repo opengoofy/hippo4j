@@ -2,7 +2,6 @@ package cn.hippo4j.starter.alarm;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import com.google.common.cache.Cache;
 import com.google.common.collect.Maps;
 
@@ -32,8 +31,6 @@ public class AlarmControlHandler {
                 // val 无意义
                 cache.put(alarmControl.getTypeEnum().name(), IdUtil.simpleUUID());
                 return true;
-            } else {
-                System.out.println(JSON.toJSONString(alarmControl));
             }
         }
 
