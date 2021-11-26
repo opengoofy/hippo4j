@@ -2,7 +2,9 @@ package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.starter.alarm.*;
+import cn.hippo4j.starter.alarm.ding.DingSendMessageHandler;
 import cn.hippo4j.starter.alarm.lark.LarkSendMessageHandler;
+import cn.hippo4j.starter.alarm.wechat.WeChatSendMessageHandler;
 import cn.hippo4j.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -43,6 +45,12 @@ public class MessageAlarmConfig {
     public SendMessageHandler larkSendMessageHandler() {
         String active = environment.getProperty("spring.profiles.active", Strings.EMPTY);
         return new LarkSendMessageHandler(active, instanceInfo);
+    }
+
+    @Bean
+    public SendMessageHandler weChatSendMessageHandler() {
+        String active = environment.getProperty("spring.profiles.active", Strings.EMPTY);
+        return new WeChatSendMessageHandler(active, instanceInfo);
     }
 
     @Bean

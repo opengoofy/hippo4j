@@ -17,5 +17,10 @@ public enum NotifyPlatformEnum {
      * 飞书
      */
     LARK,
-    ;
+
+    /**
+     * 企业微信
+     */
+    WECHAT
+
 }
