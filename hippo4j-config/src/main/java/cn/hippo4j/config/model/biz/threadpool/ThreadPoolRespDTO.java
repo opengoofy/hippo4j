@@ -15,6 +15,11 @@ import java.util.Date;
 public class ThreadPoolRespDTO {
 
     /**
+     * id
+     */
+    private String id;
+
+    /**
      * tenantId
      */
     private String tenantId;

@@ -22,7 +22,7 @@ public class ConfigInfoBase implements Serializable {
      * ID
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * tenantId

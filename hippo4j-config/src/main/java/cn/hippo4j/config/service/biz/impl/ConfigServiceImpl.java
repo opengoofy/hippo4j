@@ -78,7 +78,7 @@ public class ConfigServiceImpl implements ConfigService {
         ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configInfo)));
     }
 
-    public Integer addConfigInfo(ConfigAllInfo config) {
+    public Long addConfigInfo(ConfigAllInfo config) {
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
 
