@@ -57,4 +57,10 @@ public class NotifyController {
         return Results.success();
     }
 
+    @PostMapping("/enable/{id}/{status}")
+    public Result enableNotify(@PathVariable("id") String id, @PathVariable("status") Integer status) {
+        notifyService.enableNotify(id, status);
+        return Results.success();
+    }
+
 }

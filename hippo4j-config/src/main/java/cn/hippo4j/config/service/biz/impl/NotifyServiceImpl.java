@@ -96,6 +96,14 @@ public class NotifyServiceImpl implements NotifyService {
         notifyInfoMapper.delete(updateWrapper);
     }
 
+    @Override
+    public void enableNotify(String id, Integer status) {
+        NotifyInfo notifyInfo = new NotifyInfo();
+        notifyInfo.setId(Long.parseLong(id));
+        notifyInfo.setEnable(status);
+        notifyInfoMapper.updateById(notifyInfo);
+    }
+
     private List<NotifyInfo> listNotifyCommon(String type, String[] parseKey) {
         LambdaQueryWrapper<NotifyInfo> queryWrapper = Wrappers.lambdaQuery(NotifyInfo.class)
                 .eq(NotifyInfo::getTenantId, parseKey[2])
