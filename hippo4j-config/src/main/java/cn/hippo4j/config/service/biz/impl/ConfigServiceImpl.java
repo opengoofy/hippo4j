@@ -17,14 +17,16 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.SynchronousQueue;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Config service impl.
@@ -60,6 +62,7 @@ public class ConfigServiceImpl implements ConfigService {
 
         String userName = UserContext.getUserName();
         ConfigServiceImpl configService = ApplicationContextHolder.getBean(this.getClass());
+        configInfo.setCapacity(getQueueCapacityByType(configInfo));
 
         try {
             ConditionUtil
@@ -105,7 +108,6 @@ public class ConfigServiceImpl implements ConfigService {
                 .eq(ConfigAllInfo::getTenantId, config.getTenantId());
 
         config.setGmtCreate(null);
-        config.setCapacity(getQueueCapacityByType(config));
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
 
@@ -126,8 +128,20 @@ public class ConfigServiceImpl implements ConfigService {
      * @return
      */
     private Integer getQueueCapacityByType(ConfigAllInfo config) {
-        List<Integer> noCapacityBlockingQueues = Lists.newArrayList(4, 5);
-        return noCapacityBlockingQueues.contains(config.getQueueType()) ? 0 : config.getCapacity();
+        int queueCapacity = 0;
+        switch (config.getQueueType()) {
+            case 5:
+                queueCapacity = Integer.MAX_VALUE;
+                break;
+        }
+
+        List<Integer> queueTypes = Stream.of(1, 2, 3, 6, 9).collect(Collectors.toList());
+        boolean setDefaultFlag = queueTypes.contains(config.getQueueType()) && (config.getCapacity() == null || Objects.equals(config.getCapacity(), 0));
+        if (setDefaultFlag) {
+            queueCapacity = 1024;
+        }
+
+        return queueCapacity;
     }
 
 }
