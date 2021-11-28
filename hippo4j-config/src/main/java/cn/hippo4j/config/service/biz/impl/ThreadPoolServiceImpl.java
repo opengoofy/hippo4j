@@ -10,6 +10,7 @@ import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
 import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -39,7 +40,8 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
                 .eq(!StringUtils.isBlank(reqDTO.getTenantId()), ConfigAllInfo::getTenantId, reqDTO.getTenantId())
                 .eq(!StringUtils.isBlank(reqDTO.getItemId()), ConfigAllInfo::getItemId, reqDTO.getItemId())
                 .eq(!StringUtils.isBlank(reqDTO.getTpId()), ConfigAllInfo::getTpId, reqDTO.getTpId())
-                .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL);
+                .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL)
+                .orderByDesc(ConfigAllInfo::getGmtModified);
 
         return configInfoMapper.selectPage(reqDTO, wrapper).convert(each -> BeanUtil.convert(each, ThreadPoolRespDTO.class));
     }
@@ -64,6 +66,12 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
         configService.insertOrUpdate(identify, BeanUtil.convert(reqDTO, ConfigAllInfo.class));
     }
 
+    @LogRecord(
+            bizNo = "{{#reqDTO.itemId}}_{{#reqDTO.tpId}}",
+            category = "THREAD_POOL_DELETE",
+            success = "删除线程池: {{#reqDTO.tpId}}",
+            detail = "{{#reqDTO.toString()}}"
+    )
     @Override
     public void deletePool(ThreadPoolDelReqDTO reqDTO) {
         configInfoMapper.delete(

@@ -4,7 +4,6 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.ConditionUtil;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
-import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
@@ -60,7 +59,6 @@ public class ConfigServiceImpl implements ConfigService {
                 .eq(ConfigInfoBase::getTpId, configInfo.getTpId());
         ConfigAllInfo existConfig = configInfoMapper.selectOne(queryWrapper);
 
-        String userName = UserContext.getUserName();
         ConfigServiceImpl configService = ApplicationContextHolder.getBean(this.getClass());
         configInfo.setCapacity(getQueueCapacityByType(configInfo));
 
@@ -69,10 +67,10 @@ public class ConfigServiceImpl implements ConfigService {
                     .condition(
                             existConfig == null,
                             () -> configService.addConfigInfo(configInfo),
-                            () -> configService.updateConfigInfo(userName, configInfo)
+                            () -> configService.updateConfigInfo(configInfo)
                     );
         } catch (Exception ex) {
-            updateConfigInfo(userName, configInfo);
+            updateConfigInfo(configInfo);
         }
 
         ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configInfo)));
@@ -95,13 +93,12 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @LogRecord(
-            bizNo = "{{#config.itemId}}:{{#config.tpId}}",
+            bizNo = "{{#config.itemId}}_{{#config.tpId}}",
             category = "THREAD_POOL_UPDATE",
-            operator = "{{#operator}}",
             success = "核心线程: {{#config.coreSize}}, 最大线程: {{#config.maxSize}}, 队列类型: {{#config.queueType}}, 队列容量: {{#config.capacity}}, 拒绝策略: {{#config.rejectedType}}",
             detail = "{{#config.toString()}}"
     )
-    public void updateConfigInfo(String operator, ConfigAllInfo config) {
+    public void updateConfigInfo(ConfigAllInfo config) {
         LambdaUpdateWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaUpdate(ConfigAllInfo.class)
                 .eq(ConfigAllInfo::getTpId, config.getTpId())
                 .eq(ConfigAllInfo::getItemId, config.getItemId())
