@@ -3,6 +3,7 @@ package cn.hippo4j.starter.toolkit.thread;
 
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.starter.alarm.ThreadPoolAlarm;
+import org.springframework.core.task.TaskDecorator;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -95,6 +96,21 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
      * 活跃度告警
      */
     private Integer livenessAlarm;
+
+    /**
+     * 线程任务装饰器
+     */
+    private TaskDecorator taskDecorator;
+
+    /**
+     * 等待终止毫秒
+     */
+    private Long awaitTerminationMillis = 0L;
+
+    /**
+     * 等待任务在关机时完成
+     */
+    private Boolean waitForTasksToCompleteOnShutdown = false;
 
     /**
      * 计算公式：CPU 核数 / (1 - 阻塞系数 0.8)
@@ -197,6 +213,27 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
+    public ThreadPoolBuilder taskDecorator(TaskDecorator taskDecorator) {
+        this.taskDecorator = taskDecorator;
+        return this;
+    }
+
+    public ThreadPoolBuilder awaitTerminationMillis(long awaitTerminationMillis) {
+        this.awaitTerminationMillis = awaitTerminationMillis;
+        return this;
+    }
+
+    public ThreadPoolBuilder waitForTasksToCompleteOnShutdown(boolean waitForTasksToCompleteOnShutdown) {
+        this.waitForTasksToCompleteOnShutdown = waitForTasksToCompleteOnShutdown;
+        return this;
+    }
+
+    public ThreadPoolBuilder dynamicSupport(boolean waitForTasksToCompleteOnShutdown, long awaitTerminationMillis) {
+        this.awaitTerminationMillis = awaitTerminationMillis;
+        this.waitForTasksToCompleteOnShutdown = waitForTasksToCompleteOnShutdown;
+        return this;
+    }
+
     /**
      * 构建
      *
@@ -265,13 +302,16 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
                 .setKeepAliveTime(builder.keepAliveTime)
                 .setCapacity(builder.capacity)
                 .setRejectedExecutionHandler(builder.rejectedExecutionHandler)
-                .setTimeUnit(builder.timeUnit);
+                .setTimeUnit(builder.timeUnit)
+                .setTaskDecorator(builder.taskDecorator);
 
         if (builder.isDynamicPool) {
             String threadPoolId = Optional.ofNullable(builder.threadPoolId).orElse(builder.threadNamePrefix);
             initParam.setThreadPoolId(threadPoolId);
             ThreadPoolAlarm threadPoolAlarm = new ThreadPoolAlarm(builder.isAlarm, builder.capacityAlarm, builder.livenessAlarm);
             initParam.setThreadPoolAlarm(threadPoolAlarm);
+            initParam.setWaitForTasksToCompleteOnShutdown(builder.waitForTasksToCompleteOnShutdown);
+            initParam.setAwaitTerminationMillis(builder.awaitTerminationMillis);
         }
 
         if (!builder.isFastPool) {

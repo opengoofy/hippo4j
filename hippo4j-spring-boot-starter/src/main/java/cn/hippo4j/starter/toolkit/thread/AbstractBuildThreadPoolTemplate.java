@@ -6,6 +6,7 @@ import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.task.TaskDecorator;
 
 import java.util.concurrent.*;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
@@ -101,11 +102,15 @@ public class AbstractBuildThreadPoolTemplate {
                         initParam.getMaxPoolNum(),
                         initParam.getKeepAliveTime(),
                         initParam.getTimeUnit(),
+                        initParam.getWaitForTasksToCompleteOnShutdown(),
+                        initParam.getAwaitTerminationMillis(),
                         initParam.getWorkQueue(),
                         initParam.getThreadPoolId(),
                         initParam.getThreadFactory(),
                         initParam.getThreadPoolAlarm(),
                         initParam.getRejectedExecutionHandler());
+
+        executorService.setTaskDecorator(initParam.getTaskDecorator());
         return executorService;
     }
 
@@ -162,6 +167,21 @@ public class AbstractBuildThreadPoolTemplate {
          * 报警策略
          */
         private ThreadPoolAlarm threadPoolAlarm;
+
+        /**
+         * 线程任务装饰器
+         */
+        private TaskDecorator taskDecorator;
+
+        /**
+         * 等待终止毫秒
+         */
+        private Long awaitTerminationMillis;
+
+        /**
+         * 等待任务在关机时完成
+         */
+        private Boolean waitForTasksToCompleteOnShutdown;
 
         public ThreadPoolInitParam(String threadNamePrefix, boolean isDaemon) {
             this.threadPoolId = threadNamePrefix;

@@ -1,5 +1,9 @@
 package cn.hippo4j.starter.core;
 
+import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.common.CommonDynamicThreadPool;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.remote.HttpAgent;
@@ -8,15 +12,12 @@ import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
 import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
 import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
 import com.alibaba.fastjson.JSON;
-import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.common.web.base.Result;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.task.TaskDecorator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,7 +107,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             if (result.isSuccess() && result.getData() != null && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
                 // 使用相关参数创建线程池
                 BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
-                poolExecutor = (DynamicThreadPoolExecutor) ThreadPoolBuilder.builder()
+                poolExecutor = ThreadPoolBuilder.builder()
                         .dynamicPool()
                         .workQueue(workQueue)
                         .threadFactory(tpId)
@@ -115,6 +116,11 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .rejected(RejectedTypeEnum.createPolicy(ppi.getRejectedType()))
                         .alarmConfig(ppi.getIsAlarm(), ppi.getCapacityAlarm(), ppi.getLivenessAlarm())
                         .build();
+
+                if (poolExecutor instanceof DynamicExecutorConfigurationSupport) {
+                    TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();
+                    ((DynamicThreadPoolExecutor) poolExecutor).setTaskDecorator(taskDecorator);
+                }
 
                 dynamicThreadPoolWrap.setExecutor(poolExecutor);
                 isSubscribe = true;

@@ -5,6 +5,7 @@ import cn.hippo4j.starter.alarm.ThreadPoolAlarmManage;
 import cn.hippo4j.starter.event.EventExecutor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.core.task.TaskDecorator;
 
 import java.security.AccessControlContext;
 import java.security.AccessController;
@@ -24,7 +25,7 @@ import static cn.hippo4j.common.constant.Constants.MAP_INITIAL_CAPACITY;
  * @author chen.ma
  * @date 2021/7/8 21:47
  */
-public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
+public class DynamicThreadPoolExecutor extends DynamicExecutorConfigurationSupport {
 
     private final AtomicInteger rejectCount = new AtomicInteger();
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
@@ -38,6 +39,7 @@ public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
     private static final int TIDYING = 2 << COUNT_BITS;
     private static final int TERMINATED = 3 << COUNT_BITS;
 
+    private TaskDecorator taskDecorator;
     private final BlockingQueue<Runnable> workQueue;
     private final ReentrantLock mainLock = new ReentrantLock();
     private final HashSet<Worker> workers = new HashSet();
@@ -63,12 +65,14 @@ public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
                                      int maximumPoolSize,
                                      long keepAliveTime,
                                      TimeUnit unit,
+                                     boolean waitForTasksToCompleteOnShutdown,
+                                     long awaitTerminationMillis,
                                      @NonNull BlockingQueue<Runnable> workQueue,
                                      @NonNull String threadPoolId,
                                      @NonNull ThreadFactory threadFactory,
                                      @NonNull ThreadPoolAlarm threadPoolAlarm,
                                      @NonNull RejectedExecutionHandler handler) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, waitForTasksToCompleteOnShutdown, awaitTerminationMillis, workQueue, threadFactory, handler);
 
         if (corePoolSize < 0 ||
                 maximumPoolSize <= 0 ||
@@ -533,6 +537,9 @@ public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
 
     @Override
     public void execute(@NonNull Runnable command) {
+        if (taskDecorator != null) {
+            command = taskDecorator.decorate(command);
+        }
         int c = ctl.get();
         if (workerCountOf(c) < corePoolSize) {
             if (addWorker(command, true)) {
@@ -553,6 +560,11 @@ public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
         } else if (!addWorker(command, false)) {
             reject(command);
         }
+    }
+
+    @Override
+    protected ExecutorService initializeExecutor() {
+        return this;
     }
 
     @Override
@@ -686,6 +698,14 @@ public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
     public boolean prestartCoreThread() {
         return workerCountOf(ctl.get()) < corePoolSize &&
                 addWorker(null, true);
+    }
+
+    public TaskDecorator getTaskDecorator() {
+        return taskDecorator;
+    }
+
+    public void setTaskDecorator(TaskDecorator taskDecorator) {
+        this.taskDecorator = taskDecorator;
     }
 
     void ensurePrestart() {

@@ -1,7 +1,9 @@
 package cn.hippo4j.starter.wrapper;
 
 import cn.hippo4j.starter.common.CommonDynamicThreadPool;
+import cn.hippo4j.starter.core.DynamicExecutorConfigurationSupport;
 import lombok.Data;
+import org.springframework.beans.factory.DisposableBean;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -14,7 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @date 2021/6/20 16:55
  */
 @Data
-public class DynamicThreadPoolWrapper {
+public class DynamicThreadPoolWrapper implements DisposableBean {
 
     private String tenantId;
 
@@ -74,6 +76,13 @@ public class DynamicThreadPoolWrapper {
      */
     public <T> Future<T> submit(Callable<T> task) {
         return executor.submit(task);
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        if (executor != null && executor instanceof DynamicExecutorConfigurationSupport) {
+            ((DynamicExecutorConfigurationSupport) executor).destroy();
+        }
     }
 
 }
