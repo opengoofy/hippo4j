@@ -1,5 +1,6 @@
 package cn.hippo4j.example.config;
 
+import cn.hippo4j.example.inittest.TaskDecoratorTest;
 import cn.hippo4j.starter.core.DynamicThreadPool;
 import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
 import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
@@ -10,7 +11,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-import static cn.hippo4j.example.constant.GlobalTestConstant.*;
+import static cn.hippo4j.example.constant.GlobalTestConstant.MESSAGE_CONSUME;
+import static cn.hippo4j.example.constant.GlobalTestConstant.MESSAGE_PRODUCE;
 
 /**
  * Thread pool config.
@@ -49,6 +51,13 @@ public class ThreadPoolConfig {
         return ThreadPoolBuilder.builder()
                 .threadFactory(MESSAGE_PRODUCE)
                 .dynamicPool()
+                /**
+                 * 测试线程任务装饰器.
+                 * 如果需要查看详情, 跳转 {@link TaskDecoratorTest}
+                 */
+                .waitForTasksToCompleteOnShutdown(true)
+                .awaitTerminationMillis(5000)
+                .taskDecorator(new TaskDecoratorTest.ContextCopyingDecorator())
                 .build();
     }
 
