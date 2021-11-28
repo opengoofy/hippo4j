@@ -58,9 +58,6 @@ public class ServerListManager {
     }
 
     Iterator<String> iterator() {
-        if (serverUrls.isEmpty()) {
-            log.error("[iterator-serverlist] No server address defined!");
-        }
         return new ServerAddressIterator(serverUrls);
     }
 

@@ -1,13 +1,15 @@
 package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.starter.alarm.*;
+import cn.hippo4j.starter.alarm.AlarmControlHandler;
+import cn.hippo4j.starter.alarm.BaseSendMessageService;
+import cn.hippo4j.starter.alarm.SendMessageHandler;
+import cn.hippo4j.starter.alarm.SendMessageService;
 import cn.hippo4j.starter.alarm.ding.DingSendMessageHandler;
 import cn.hippo4j.starter.alarm.lark.LarkSendMessageHandler;
 import cn.hippo4j.starter.alarm.wechat.WeChatSendMessageHandler;
 import cn.hippo4j.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -27,6 +29,8 @@ public class MessageAlarmConfig {
 
     private ConfigurableEnvironment environment;
 
+    public static final String ACTIVE_DEFAULT = "unknown";
+
     public static final String SEND_MESSAGE_BEAN_NAME = "hippo4JSendMessageService";
 
     @DependsOn("hippo4JApplicationContextHolder")
@@ -37,19 +41,19 @@ public class MessageAlarmConfig {
 
     @Bean
     public SendMessageHandler dingSendMessageHandler() {
-        String active = environment.getProperty("spring.profiles.active", Strings.EMPTY);
+        String active = environment.getProperty("spring.profiles.active", ACTIVE_DEFAULT);
         return new DingSendMessageHandler(active, instanceInfo);
     }
 
     @Bean
     public SendMessageHandler larkSendMessageHandler() {
-        String active = environment.getProperty("spring.profiles.active", Strings.EMPTY);
+        String active = environment.getProperty("spring.profiles.active", ACTIVE_DEFAULT);
         return new LarkSendMessageHandler(active, instanceInfo);
     }
 
     @Bean
     public SendMessageHandler weChatSendMessageHandler() {
-        String active = environment.getProperty("spring.profiles.active", Strings.EMPTY);
+        String active = environment.getProperty("spring.profiles.active", ACTIVE_DEFAULT);
         return new WeChatSendMessageHandler(active, instanceInfo);
     }
 

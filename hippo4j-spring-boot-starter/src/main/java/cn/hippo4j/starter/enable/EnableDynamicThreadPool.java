@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(MarkerConfiguration.class)
+@Import({BeforeCheckConfiguration.class, MarkerConfiguration.class})
 public @interface EnableDynamicThreadPool {
 
 }

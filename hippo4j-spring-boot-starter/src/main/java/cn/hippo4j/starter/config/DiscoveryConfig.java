@@ -1,11 +1,11 @@
 package cn.hippo4j.starter.config;
 
-import cn.hutool.core.util.StrUtil;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.starter.core.DiscoveryClient;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.toolkit.inet.InetUtils;
+import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -34,14 +34,18 @@ public class DiscoveryConfig {
     @Bean
     @SneakyThrows
     public InstanceInfo instanceConfig() {
+        String namespace = properties.getNamespace();
+        String itemId = properties.getItemId();
+        String applicationName = environment.getProperty("spring.application.name");
+
         InstanceInfo instanceInfo = new InstanceInfo();
         instanceInfo.setInstanceId(getDefaultInstanceId(environment, inetUtils))
                 .setIpApplicationName(getIpApplicationName(environment, inetUtils))
                 .setHostName(InetAddress.getLocalHost().getHostAddress())
-                .setGroupKey(properties.getItemId() + "+" + properties.getNamespace())
-                .setAppName(environment.getProperty("spring.application.name"))
+                .setGroupKey(itemId + "+" + namespace)
+                .setAppName(applicationName)
                 .setClientBasePath(environment.getProperty("server.servlet.context-path"))
-                .setGroupKey(ContentUtil.getGroupKey(properties.getItemId(), properties.getNamespace()));
+                .setGroupKey(ContentUtil.getGroupKey(itemId, namespace));
 
         String callBackUrl = new StringBuilder().append(instanceInfo.getHostName()).append(":")
                 .append(environment.getProperty("server.port")).append(instanceInfo.getClientBasePath())
