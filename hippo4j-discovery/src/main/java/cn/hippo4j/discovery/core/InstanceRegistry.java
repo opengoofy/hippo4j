@@ -35,4 +35,11 @@ public interface InstanceRegistry<T> {
      */
     boolean renew(InstanceInfo.InstanceRenew instanceRenew);
 
+    /**
+     * Remove.
+     *
+     * @param info
+     */
+    void remove(T info);
+
 }

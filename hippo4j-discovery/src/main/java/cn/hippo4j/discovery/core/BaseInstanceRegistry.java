@@ -135,6 +135,31 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         return true;
     }
 
+    @Override
+    public void remove(InstanceInfo info) {
+        ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
+        writeLock.lock();
+        try {
+            String appName = info.getAppName();
+            String instanceId = info.getInstanceId();
+            Map<String, Lease<InstanceInfo>> leaseMap = registry.get(appName);
+            if (CollectionUtils.isEmpty(leaseMap)) {
+                log.warn("Failed to remove unhealthy node, no application found :: {}", appName);
+                return;
+            }
+
+            Lease<InstanceInfo> remove = leaseMap.remove(instanceId);
+            if (remove == null) {
+                log.warn("Failed to remove unhealthy node, no instance found :: {}", instanceId);
+                return;
+            }
+
+            log.info("Remove unhealthy node, node ID :: {}", instanceId);
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
     static class CircularQueue<E> extends AbstractQueue<E> {
 
         private final ArrayBlockingQueue<E> delegate;
