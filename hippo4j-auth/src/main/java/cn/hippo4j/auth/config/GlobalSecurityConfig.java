@@ -75,7 +75,7 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v1/cs/apps/renew/**", "/v1/cs/apps/register/**", "/v1/cs/configs/**", "/v1/cs/listener/**", "/v1/cs/notify/list/config/**");
+        web.ignoring().antMatchers("/v1/cs/apps/renew/**", "/v1/cs/apps/remove/**", "/v1/cs/apps/register/**", "/v1/cs/configs/**", "/v1/cs/listener/**", "/v1/cs/notify/list/config/**");
     }
 
 }
