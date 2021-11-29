@@ -6,12 +6,14 @@ import cn.hippo4j.starter.core.GlobalThreadPoolManage;
 import cn.hippo4j.starter.toolkit.ByteConvertUtil;
 import cn.hippo4j.starter.toolkit.CalculateUtil;
 import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.RuntimeInfo;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -96,6 +98,7 @@ public class ThreadPoolRunStateHandler {
                 ? ((DynamicThreadPoolExecutor) pool).getRejectCount()
                 : -1;
         stateInfo.setRejectCount(rejectCount);
+        stateInfo.setClientLastRefreshTime(DateUtil.formatDateTime(new Date()));
 
         return stateInfo;
     }

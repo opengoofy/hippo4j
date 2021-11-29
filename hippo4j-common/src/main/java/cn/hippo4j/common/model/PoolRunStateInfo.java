@@ -100,4 +100,9 @@ public class PoolRunStateInfo implements Serializable {
      */
     private String freeMemory;
 
+    /**
+     * clientLastRefreshTime
+     */
+    private String clientLastRefreshTime;
+
 }
