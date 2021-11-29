@@ -1,16 +1,18 @@
 package cn.hippo4j.starter.core;
 
-import cn.hippo4j.starter.remote.HttpAgent;
-import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
-import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
-import cn.hutool.core.util.StrUtil;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
+import cn.hippo4j.starter.remote.HttpAgent;
+import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
+import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 
+import java.util.Optional;
 import java.util.concurrent.*;
 
 /**
@@ -20,7 +22,7 @@ import java.util.concurrent.*;
  * @date 2021/7/13 21:51
  */
 @Slf4j
-public class DiscoveryClient {
+public class DiscoveryClient implements DisposableBean {
 
     private final ThreadPoolExecutor heartbeatExecutor;
 
@@ -68,7 +70,7 @@ public class DiscoveryClient {
         log.info("{}{} - registering service...", PREFIX, appPathIdentifier);
 
         String urlPath = Constants.BASE_PATH + "/apps/register/";
-        Result registerResult = null;
+        Result registerResult;
         try {
             registerResult = httpAgent.httpPostByDiscovery(urlPath, instanceInfo);
         } catch (Exception ex) {
@@ -83,6 +85,23 @@ public class DiscoveryClient {
         return registerResult.isSuccess();
     }
 
+    @Override
+    public void destroy() throws Exception {
+        log.info("{}{} - destroy service...", PREFIX, appPathIdentifier);
+        String urlPath = Constants.BASE_PATH + "/apps/remove/";
+        Result removeResult;
+        try {
+            removeResult = httpAgent.httpPostByDiscovery(urlPath, instanceInfo);
+            if (removeResult.isSuccess()) {
+                log.info("{}{} - destroy service success...", PREFIX, appPathIdentifier);
+            }
+        } catch (Throwable ex) {
+            log.error("{}{} - destroy service fail...", PREFIX, appPathIdentifier);
+        }
+
+        Optional.ofNullable(scheduler).ifPresent((each) -> each.shutdown());
+    }
+
     public class HeartbeatThread implements Runnable {
 
         @Override
@@ -94,7 +113,7 @@ public class DiscoveryClient {
     }
 
     boolean renew() {
-        Result renewResult = null;
+        Result renewResult;
         try {
             InstanceInfo.InstanceRenew instanceRenew = new InstanceInfo.InstanceRenew()
                     .setAppName(instanceInfo.getAppName())
@@ -103,7 +122,6 @@ public class DiscoveryClient {
                     .setStatus(instanceInfo.getStatus().toString());
 
             renewResult = httpAgent.httpPostByDiscovery(Constants.BASE_PATH + "/apps/renew", instanceRenew);
-
             if (StrUtil.equals(ErrorCodeEnum.NOT_FOUND.getCode(), renewResult.getCode())) {
                 long timestamp = instanceInfo.setIsDirtyWithTime();
                 boolean success = register();
@@ -112,6 +130,7 @@ public class DiscoveryClient {
                 }
                 return success;
             }
+
             return renewResult.isSuccess();
         } catch (Exception ex) {
             log.error(PREFIX + "{} - was unable to send heartbeat!", appPathIdentifier, ex);

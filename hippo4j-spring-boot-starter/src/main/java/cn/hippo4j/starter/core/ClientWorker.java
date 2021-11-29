@@ -1,14 +1,15 @@
 package cn.hippo4j.starter.core;
 
-import cn.hippo4j.starter.remote.HttpAgent;
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.starter.remote.HttpAgent;
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.StringUtils;
 
 import java.net.URLDecoder;
@@ -28,7 +29,7 @@ import static cn.hippo4j.common.constant.Constants.*;
  * @date 2021/6/20 18:34
  */
 @Slf4j
-public class ClientWorker {
+public class ClientWorker implements DisposableBean {
 
     private double currentLongingTaskCount = 0;
 
@@ -91,6 +92,12 @@ public class ClientWorker {
             }
             currentLongingTaskCount = longingTaskCount;
         }
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        Optional.ofNullable(executor).ifPresent((each) -> each.shutdown());
+        Optional.ofNullable(executorService).ifPresent((each) -> each.shutdown());
     }
 
     class LongPollingRunnable implements Runnable {
