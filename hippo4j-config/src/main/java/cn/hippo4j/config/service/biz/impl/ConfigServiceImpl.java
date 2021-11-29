@@ -125,10 +125,13 @@ public class ConfigServiceImpl implements ConfigService {
      * @return
      */
     private Integer getQueueCapacityByType(ConfigAllInfo config) {
-        int queueCapacity = 0;
+        int queueCapacity;
         switch (config.getQueueType()) {
             case 5:
                 queueCapacity = Integer.MAX_VALUE;
+                break;
+            default:
+                queueCapacity = config.getCapacity();
                 break;
         }
 
