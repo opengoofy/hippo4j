@@ -2,12 +2,14 @@ package cn.hippo4j.config.controller;
 
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.ConfigInfoBase;
+import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigServletInner;
 import cn.hippo4j.config.toolkit.Md5ConfigUtil;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
+import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.util.StringUtils;
@@ -70,6 +72,16 @@ public class ConfigController {
         }
 
         configServletInner.doPollingConfig(request, response, clientMd5Map, probeModify.length());
+    }
+
+    @PostMapping("/remove/config/cache")
+    public Result removeConfigCache(@RequestBody Map<String, String> bodyMap) {
+        String groupKey = bodyMap.get(Constants.GROUP_KEY);
+        if (StrUtil.isNotBlank(groupKey)) {
+            ConfigCacheService.removeConfigCache(groupKey);
+        }
+
+        return Results.success();
     }
 
 }

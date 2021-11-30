@@ -8,12 +8,17 @@ import cn.hippo4j.common.web.exception.ErrorCodeEnum;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
 import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
+import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.*;
+
+import static cn.hippo4j.common.constant.Constants.GROUP_KEY;
 
 /**
  * Discovery client.
@@ -88,15 +93,29 @@ public class DiscoveryClient implements DisposableBean {
     @Override
     public void destroy() throws Exception {
         log.info("{}{} - destroy service...", PREFIX, appPathIdentifier);
-        String urlPath = Constants.BASE_PATH + "/apps/remove/";
-        Result removeResult;
+        String removeConfigCacheUrlPath = Constants.CONFIG_CONTROLLER_PATH + "/remove/config/cache";
+        Result removeConfigCacheResult;
         try {
-            removeResult = httpAgent.httpPostByDiscovery(urlPath, instanceInfo);
-            if (removeResult.isSuccess()) {
-                log.info("{}{} - destroy service success...", PREFIX, appPathIdentifier);
+            String groupKeyIp = StrBuilder.create().append(instanceInfo.getGroupKey()).append(Constants.GROUP_KEY_DELIMITER).append(instanceInfo.getIdentify()).toString();
+            Map<String, String> bodyMap = Maps.newHashMap();
+            bodyMap.put(GROUP_KEY, groupKeyIp);
+            removeConfigCacheResult = httpAgent.httpPostByDiscovery(removeConfigCacheUrlPath, bodyMap);
+            if (removeConfigCacheResult.isSuccess()) {
+                log.info("{}{} - remove config cache success.", PREFIX, appPathIdentifier);
             }
         } catch (Throwable ex) {
-            log.error("{}{} - destroy service fail...", PREFIX, appPathIdentifier);
+            log.error("{}{} - remove config cache fail.", PREFIX, appPathIdentifier, ex);
+        }
+
+        String removeNodeUrlPath = Constants.BASE_PATH + "/apps/remove/";
+        Result removeNodeResult;
+        try {
+            removeNodeResult = httpAgent.httpPostByDiscovery(removeNodeUrlPath, instanceInfo);
+            if (removeNodeResult.isSuccess()) {
+                log.info("{}{} - destroy service success.", PREFIX, appPathIdentifier);
+            }
+        } catch (Throwable ex) {
+            log.error("{}{} - destroy service fail.", PREFIX, appPathIdentifier, ex);
         }
 
         Optional.ofNullable(scheduler).ifPresent((each) -> each.shutdown());

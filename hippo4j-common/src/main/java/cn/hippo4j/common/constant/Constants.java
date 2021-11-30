@@ -16,6 +16,8 @@ public class Constants {
 
     public static final String NAMESPACE = "namespace";
 
+    public static final String GROUP_KEY = "groupKey";
+
     public static final String DEFAULT_NAMESPACE_ID = "public";
 
     public static final String NULL = "";
