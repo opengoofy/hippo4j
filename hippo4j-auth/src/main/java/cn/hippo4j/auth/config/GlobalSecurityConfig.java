@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.annotation.Resource;
+import java.util.stream.Stream;
 
 /**
  * 安全配置.
@@ -75,7 +76,17 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v1/cs/apps/renew/**", "/v1/cs/apps/remove/**", "/v1/cs/apps/register/**", "/v1/cs/configs/**", "/v1/cs/listener/**", "/v1/cs/notify/list/config/**");
+        String[] ignores = Stream
+                .of(
+                        "/v1/cs/apps/renew/**",
+                        "/v1/cs/apps/remove/**",
+                        "/v1/cs/apps/register/**",
+                        "/v1/cs/configs/**",
+                        "/v1/cs/listener/**",
+                        "/v1/cs/notify/list/config/**"
+                )
+                .toArray(String[]::new);
+        web.ignoring().antMatchers(ignores);
     }
 
 }
