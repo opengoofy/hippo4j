@@ -105,12 +105,12 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     /**
      * 等待终止毫秒
      */
-    private Long awaitTerminationMillis = 0L;
+    private Long awaitTerminationMillis = 5000L;
 
     /**
      * 等待任务在关机时完成
      */
-    private Boolean waitForTasksToCompleteOnShutdown = false;
+    private Boolean waitForTasksToCompleteOnShutdown = true;
 
     /**
      * 计算公式：CPU 核数 / (1 - 阻塞系数 0.8)
