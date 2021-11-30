@@ -133,7 +133,7 @@ public class Md5ConfigUtil {
             sb.append(WORD_SEPARATOR);
             sb.append(dataIdGroupId[1]);
             // if have tenant, then set it
-            if (dataIdGroupId.length == 3) {
+            if (dataIdGroupId.length == 4) {
                 if (org.apache.commons.lang3.StringUtils.isNotBlank(dataIdGroupId[2])) {
                     sb.append(WORD_SEPARATOR);
                     sb.append(dataIdGroupId[2]);

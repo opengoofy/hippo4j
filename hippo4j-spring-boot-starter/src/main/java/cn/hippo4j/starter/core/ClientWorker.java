@@ -140,6 +140,7 @@ public class ClientWorker implements DisposableBean {
                     cacheData.setContent(poolContent);
                 } catch (Exception ex) {
                     // ignore
+                    log.error("Failed to get the latest thread pool configuration.", ex);
                 }
             }
 
