@@ -12,7 +12,7 @@ import java.util.Date;
  * @date 2021/12/5 19:19
  */
 @Data
-@TableName("config_instance")
+@TableName("inst_config")
 public class ConfigInstanceInfo {
 
     /**
