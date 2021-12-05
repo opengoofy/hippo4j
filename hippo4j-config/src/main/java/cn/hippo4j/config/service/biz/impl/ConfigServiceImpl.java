@@ -6,11 +6,16 @@ import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
+import cn.hippo4j.config.mapper.ConfigInstanceMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.ConfigInfoBase;
+import cn.hippo4j.config.model.ConfigInstanceInfo;
 import cn.hippo4j.config.service.ConfigChangePublisher;
 import cn.hippo4j.config.service.biz.ConfigService;
+import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hippo4j.tools.logrecord.annotation.LogRecord;
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -40,6 +45,8 @@ public class ConfigServiceImpl implements ConfigService {
 
     private final ConfigInfoMapper configInfoMapper;
 
+    private final ConfigInstanceMapper configInstanceMapper;
+
     @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenantId) {
         LambdaQueryWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
@@ -49,6 +56,40 @@ public class ConfigServiceImpl implements ConfigService {
 
         ConfigAllInfo configAllInfo = configInfoMapper.selectOne(wrapper);
         return configAllInfo;
+    }
+
+    @Override
+    public ConfigAllInfo findConfigRecentInfo(String... params) {
+        ConfigAllInfo resultConfig;
+        ConfigAllInfo configInstance = null;
+        LambdaQueryWrapper<ConfigInstanceInfo> instanceQueryWrapper = Wrappers.lambdaQuery(ConfigInstanceInfo.class)
+                .eq(ConfigInstanceInfo::getInstanceId, params[3])
+                .orderByDesc(ConfigInstanceInfo::getGmtCreate)
+                .last("LIMIT 1");
+
+        ConfigInstanceInfo instanceInfo = configInstanceMapper.selectOne(instanceQueryWrapper);
+        if (instanceInfo != null) {
+            String content = instanceInfo.getContent();
+            configInstance = JSON.parseObject(content, ConfigAllInfo.class);
+            configInstance.setContent(content);
+            configInstance.setGmtCreate(instanceInfo.getGmtCreate());
+            configInstance.setMd5(Md5Util.getTpContentMd5(configInstance));
+        }
+
+        ConfigAllInfo configAllInfo = findConfigAllInfo(params[0], params[1], params[2]);
+        if (configAllInfo != null && configInstance == null) {
+            resultConfig = configAllInfo;
+        } else if (configAllInfo == null && configInstance != null) {
+            resultConfig = configInstance;
+        } else {
+            if (configAllInfo.getGmtModified().before(configInstance.getGmtCreate())) {
+                resultConfig = configInstance;
+            } else {
+                resultConfig = configAllInfo;
+            }
+        }
+
+        return resultConfig;
     }
 
     @Override
@@ -67,10 +108,10 @@ public class ConfigServiceImpl implements ConfigService {
                     .condition(
                             existConfig == null,
                             () -> configService.addConfigInfo(configInfo),
-                            () -> configService.updateConfigInfo(configInfo)
+                            () -> configService.updateConfigInfo(identify, configInfo)
                     );
         } catch (Exception ex) {
-            updateConfigInfo(configInfo);
+            updateConfigInfo(identify, configInfo);
         }
 
         ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configInfo)));
@@ -98,7 +139,7 @@ public class ConfigServiceImpl implements ConfigService {
             success = "核心线程: {{#config.coreSize}}, 最大线程: {{#config.maxSize}}, 队列类型: {{#config.queueType}}, 队列容量: {{#config.capacity}}, 拒绝策略: {{#config.rejectedType}}",
             detail = "{{#config.toString()}}"
     )
-    public void updateConfigInfo(ConfigAllInfo config) {
+    public void updateConfigInfo(String identify, ConfigAllInfo config) {
         LambdaUpdateWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaUpdate(ConfigAllInfo.class)
                 .eq(ConfigAllInfo::getTpId, config.getTpId())
                 .eq(ConfigAllInfo::getItemId, config.getItemId())
@@ -109,6 +150,14 @@ public class ConfigServiceImpl implements ConfigService {
         config.setMd5(Md5Util.getTpContentMd5(config));
 
         try {
+            // 创建线程池配置实例临时配置, 也可以当作历史配置, 不过针对的是单节点
+            if (StrUtil.isNotBlank(identify)) {
+                ConfigInstanceInfo instanceInfo = BeanUtil.convert(config, ConfigInstanceInfo.class);
+                instanceInfo.setInstanceId(identify);
+                configInstanceMapper.insert(instanceInfo);
+                return;
+            }
+
             configInfoMapper.update(config, wrapper);
         } catch (Exception ex) {
             log.error("[db-error] message :: {}", ex.getMessage(), ex);

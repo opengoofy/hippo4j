@@ -114,7 +114,7 @@ public class LongPollingService {
                     parseMapForFilter.forEach(each -> {
                         if (clientSub.clientMd5Map.containsKey(each)) {
                             getRetainIps().put(clientSub.ip, System.currentTimeMillis());
-                            ConfigCacheService.updateMd5(each, clientSub.ip, ConfigCacheService.getContentMd5(groupKey));
+                            ConfigCacheService.updateMd5(each, clientSub.ip, ConfigCacheService.getContentMd5(identity));
                             iter.remove();
                             clientSub.sendResponse(Arrays.asList(groupKey));
                         }

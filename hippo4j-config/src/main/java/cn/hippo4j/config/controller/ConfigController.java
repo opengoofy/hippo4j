@@ -39,9 +39,9 @@ public class ConfigController {
     public Result<ConfigInfoBase> detailConfigInfo(
             @RequestParam("tpId") String tpId,
             @RequestParam("itemId") String itemId,
-            @RequestParam(value = "namespace") String namespace) {
-
-        ConfigAllInfo configAllInfo = configService.findConfigAllInfo(tpId, itemId, namespace);
+            @RequestParam("namespace") String namespace,
+            @RequestParam(value = "instanceId", required = false) String instanceId) {
+        ConfigAllInfo configAllInfo = configService.findConfigRecentInfo(tpId, itemId, namespace, instanceId);
         return Results.success(configAllInfo);
     }
 
