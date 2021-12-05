@@ -1,9 +1,9 @@
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `hippo_manager` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `hippo4j_manager` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
 
-USE `hippo_manager`;
+USE `hippo4j_manager`;
 
 /******************************************/
-/*   数据库全名 = hippo_manager   */
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = tenant   */
 /******************************************/
 DROP TABLE IF EXISTS `tenant`, `tenant_info`;
@@ -22,7 +22,7 @@ CREATE TABLE `tenant` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='租户表';
 
 /******************************************/
-/*   数据库全名 = hippo_manager   */
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = item   */
 /******************************************/
 DROP TABLE IF EXISTS `item`, `item_info`;
@@ -42,7 +42,7 @@ CREATE TABLE `item` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='项目表';
 
 /******************************************/
-/*   数据库全名 = hippo_manager   */
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = config   */
 /******************************************/
 DROP TABLE IF EXISTS `config`, `config_info`;
@@ -72,7 +72,7 @@ CREATE TABLE `config` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='线程池配置表';
 
 /******************************************/
-/*   数据库全名 = hippo_manager   */
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = inst_config   */
 /******************************************/
 DROP TABLE IF EXISTS `inst_config`;
@@ -93,7 +93,7 @@ CREATE TABLE `inst_config` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='线程池配置实例表';
 
 /******************************************/
-/*   数据库全名 = hippo_manager   */
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = log_record_info   */
 /******************************************/
 DROP TABLE IF EXISTS `log_record_info`;
@@ -112,7 +112,7 @@ CREATE TABLE `log_record_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='操作日志表';
 
 /******************************************/
-/*   数据库全名 = hippo_manager   */
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = user   */
 /******************************************/
 DROP TABLE IF EXISTS `user`;
@@ -128,7 +128,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 /******************************************/
-/*   数据库全名 = hippo_manager   */
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = role   */
 /******************************************/
 DROP TABLE IF EXISTS `role`;
@@ -143,7 +143,7 @@ CREATE TABLE `role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
 
 /******************************************/
-/*   数据库全名 = hippo_manager   */
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = permission   */
 /******************************************/
 DROP TABLE IF EXISTS `permission`;
@@ -159,7 +159,7 @@ CREATE TABLE `permission` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 /******************************************/
-/*   数据库全名 = hippo_manager   */
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = notify   */
 /******************************************/
 DROP TABLE IF EXISTS `alarm`, `notify`;
