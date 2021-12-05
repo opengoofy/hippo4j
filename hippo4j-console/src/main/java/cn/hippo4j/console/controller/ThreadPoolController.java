@@ -2,6 +2,7 @@ package cn.hippo4j.console.controller;
 
 import cn.hippo4j.console.model.ThreadPoolInstanceInfo;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
@@ -74,6 +75,7 @@ public class ThreadPoolController {
         List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
         content.forEach((key, val) -> {
             ThreadPoolInstanceInfo threadPoolInstanceInfo = BeanUtil.convert(val.configAllInfo, ThreadPoolInstanceInfo.class);
+            threadPoolInstanceInfo.setClientAddress(StrUtil.subBefore(key, Constants.IDENTIFY_SLICER_SYMBOL, false));
             threadPoolInstanceInfo.setIdentify(key);
             threadPoolInstanceInfo.setClientBasePath(holder.getClientBasePath());
             returnThreadPool.add(threadPoolInstanceInfo);

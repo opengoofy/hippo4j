@@ -13,6 +13,11 @@ import lombok.Data;
 public class ThreadPoolInstanceInfo extends ConfigAllInfo {
 
     /**
+     * clientAddress
+     */
+    private String clientAddress;
+
+    /**
      * identify
      */
     private String identify;
