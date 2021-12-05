@@ -70,7 +70,7 @@ public class ClientWorker implements DisposableBean {
             return t;
         });
 
-        log.info("Client identity :: {}", CLIENT_IDENTIFICATION_VALUE);
+        log.info("Client identity :: {}", identification);
 
         this.executor.scheduleWithFixedDelay(() -> {
             try {
@@ -216,6 +216,7 @@ public class ClientWorker implements DisposableBean {
         params.put("namespace", namespace);
         params.put("itemId", itemId);
         params.put("tpId", tpId);
+        params.put("instanceId", identification);
 
         Result result = agent.httpGetByConfig(CONFIG_CONTROLLER_PATH, null, params, readTimeout);
         if (result.isSuccess()) {

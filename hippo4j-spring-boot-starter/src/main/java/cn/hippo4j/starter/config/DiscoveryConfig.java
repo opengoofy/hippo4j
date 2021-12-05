@@ -4,8 +4,8 @@ import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.starter.core.DiscoveryClient;
 import cn.hippo4j.starter.remote.HttpAgent;
+import cn.hippo4j.starter.toolkit.IdentifyUtil;
 import cn.hippo4j.starter.toolkit.inet.InetUtils;
-import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,7 @@ public class DiscoveryConfig {
 
     private final BootstrapProperties properties;
 
-    private final InetUtils inetUtils;
+    private final InetUtils hippo4JInetUtils;
 
     @Bean
     @SneakyThrows
@@ -39,8 +39,8 @@ public class DiscoveryConfig {
         String applicationName = environment.getProperty("spring.application.name");
 
         InstanceInfo instanceInfo = new InstanceInfo();
-        instanceInfo.setInstanceId(getDefaultInstanceId(environment, inetUtils))
-                .setIpApplicationName(getIpApplicationName(environment, inetUtils))
+        instanceInfo.setInstanceId(getDefaultInstanceId(environment, hippo4JInetUtils))
+                .setIpApplicationName(getIpApplicationName(environment, hippo4JInetUtils))
                 .setHostName(InetAddress.getLocalHost().getHostAddress())
                 .setGroupKey(itemId + "+" + namespace)
                 .setAppName(applicationName)
@@ -52,11 +52,8 @@ public class DiscoveryConfig {
                 .toString();
         instanceInfo.setCallBackUrl(callBackUrl);
 
-        String ip = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
-        String port = environment.getProperty("server.port");
-        String identification = StrUtil.builder(ip, ":", port).toString();
-        instanceInfo.setIdentify(identification);
-
+        String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);
+        instanceInfo.setIdentify(identify);
 
         return instanceInfo;
     }

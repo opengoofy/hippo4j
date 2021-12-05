@@ -1,6 +1,5 @@
 package cn.hippo4j.starter.config;
 
-import cn.hutool.core.util.StrUtil;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.starter.controller.PoolRunStateController;
 import cn.hippo4j.starter.core.ConfigService;
@@ -10,7 +9,9 @@ import cn.hippo4j.starter.core.ThreadPoolOperation;
 import cn.hippo4j.starter.enable.MarkerConfiguration;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.starter.remote.HttpAgent;
+import cn.hippo4j.starter.toolkit.IdentifyUtil;
 import cn.hippo4j.starter.toolkit.inet.InetUtils;
+import cn.hutool.core.util.IdUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -38,6 +39,8 @@ public class DynamicThreadPoolAutoConfiguration {
 
     private final ConfigurableEnvironment environment;
 
+    public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
+
     @Bean
     public DynamicThreadPoolBannerHandler threadPoolBannerHandler() {
         return new DynamicThreadPoolBannerHandler(properties);
@@ -52,10 +55,8 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @SuppressWarnings("all")
     public ConfigService configService(HttpAgent httpAgent, InetUtils hippo4JInetUtils) {
-        String ip = hippo4JInetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
-        String port = environment.getProperty("server.port");
-        String identification = StrUtil.builder(ip, ":", port).toString();
-        return new ThreadPoolConfigService(httpAgent, identification);
+        String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);
+        return new ThreadPoolConfigService(httpAgent, identify);
     }
 
     @Bean
