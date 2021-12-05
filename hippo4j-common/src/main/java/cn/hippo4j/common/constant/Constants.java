@@ -1,7 +1,5 @@
 package cn.hippo4j.common.constant;
 
-import java.util.UUID;
-
 /**
  * Constants.
  *
@@ -32,6 +30,8 @@ public class Constants {
 
     public static final String GENERAL_SPLIT_SYMBOL = ",";
 
+    public static final String IDENTIFY_SLICER_SYMBOL = "_";
+
     public static final String LONG_POLLING_LINE_SEPARATOR = "\r\n";
 
     public static final String BASE_PATH = "/v1/cs";
@@ -47,8 +47,6 @@ public class Constants {
     public static final String LONG_PULLING_TIMEOUT_NO_HANGUP = "Long-Pulling-Timeout-No-Hangup";
 
     public static final String LONG_PULLING_CLIENT_IDENTIFICATION = "Long-Pulling-Client-Identification";
-
-    public static final String CLIENT_IDENTIFICATION_VALUE = UUID.randomUUID().toString();
 
     public static final String LISTENING_CONFIGS = "Listening-Configs";
 
