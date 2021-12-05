@@ -73,6 +73,26 @@ CREATE TABLE `config` (
 
 /******************************************/
 /*   数据库全名 = hippo_manager   */
+/*   表名称 = config_instance   */
+/******************************************/
+DROP TABLE IF EXISTS `config_instance`;
+CREATE TABLE `config_instance` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
+  `item_id` varchar(256) DEFAULT NULL COMMENT '项目ID',
+  `tp_id` varchar(56) DEFAULT NULL COMMENT '线程池ID',
+  `instance_id` varchar(256) DEFAULT NULL COMMENT '实例ID',
+  `content` longtext COMMENT '线程池内容',
+  `md5` varchar(32) NOT NULL COMMENT 'MD5',
+  `gmt_create` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `idx_config_instance` (`tenant_id`,`item_id`,`tp_id`,`instance_id`) USING BTREE,
+  KEY `idx_instance` (`instance_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='线程池配置实例表';
+
+/******************************************/
+/*   数据库全名 = hippo_manager   */
 /*   表名称 = log_record_info   */
 /******************************************/
 DROP TABLE IF EXISTS `log_record_info`;
