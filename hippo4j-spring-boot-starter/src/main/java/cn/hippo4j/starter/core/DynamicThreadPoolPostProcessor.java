@@ -46,10 +46,14 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     private final ThreadPoolOperation threadPoolOperation;
 
     private final ExecutorService executorService = ThreadPoolBuilder.builder()
-            .poolThreadSize(2, 4)
-            .keepAliveTime(0L, TimeUnit.MILLISECONDS)
-            .workQueue(QueueTypeEnum.ARRAY_BLOCKING_QUEUE, 1)
-            .threadFactory("dynamic-threadPool-config")
+            .corePoolSize(2)
+            .maxPoolNum(4)
+            .keepAliveTime(2000)
+            .timeUnit(TimeUnit.MILLISECONDS)
+            .workQueue(QueueTypeEnum.ARRAY_BLOCKING_QUEUE)
+            .capacity(1)
+            .allowCoreThreadTimeOut(true)
+            .threadFactory("dynamic-threadPool-init-config")
             .rejected(new ThreadPoolExecutor.DiscardOldestPolicy())
             .build();
 

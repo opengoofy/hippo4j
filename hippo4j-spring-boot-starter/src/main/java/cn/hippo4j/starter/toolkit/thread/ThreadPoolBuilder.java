@@ -113,6 +113,11 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     private Boolean waitForTasksToCompleteOnShutdown = true;
 
     /**
+     * 允许核心线程超时
+     */
+    private Boolean allowCoreThreadTimeOut = false;
+
+    /**
      * 计算公式：CPU 核数 / (1 - 阻塞系数 0.8)
      *
      * @return 线程池核心线程数
@@ -234,6 +239,11 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
+    public ThreadPoolBuilder allowCoreThreadTimeOut(boolean allowCoreThreadTimeOut) {
+        this.allowCoreThreadTimeOut = allowCoreThreadTimeOut;
+        return this;
+    }
+
     /**
      * 构建
      *
@@ -303,6 +313,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
                 .setCapacity(builder.capacity)
                 .setRejectedExecutionHandler(builder.rejectedExecutionHandler)
                 .setTimeUnit(builder.timeUnit)
+                .setAllowCoreThreadTimeOut(builder.allowCoreThreadTimeOut)
                 .setTaskDecorator(builder.taskDecorator);
 
         if (builder.isDynamicPool) {

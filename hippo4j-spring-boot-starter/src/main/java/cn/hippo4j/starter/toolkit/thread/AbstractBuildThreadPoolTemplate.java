@@ -49,14 +49,20 @@ public class AbstractBuildThreadPoolTemplate {
      */
     public static ThreadPoolExecutor buildPool(ThreadPoolInitParam initParam) {
         Assert.notNull(initParam);
-        ThreadPoolExecutor executorService =
-                new ThreadPoolExecutorTemplate(initParam.getCorePoolNum(),
-                        initParam.getMaxPoolNum(),
-                        initParam.getKeepAliveTime(),
-                        initParam.getTimeUnit(),
-                        initParam.getWorkQueue(),
-                        initParam.getThreadFactory(),
-                        initParam.rejectedExecutionHandler);
+        ThreadPoolExecutor executorService;
+        try {
+            executorService = new ThreadPoolExecutorTemplate(initParam.getCorePoolNum(),
+                    initParam.getMaxPoolNum(),
+                    initParam.getKeepAliveTime(),
+                    initParam.getTimeUnit(),
+                    initParam.getWorkQueue(),
+                    initParam.getThreadFactory(),
+                    initParam.rejectedExecutionHandler);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("Error creating thread pool parameter.", ex);
+        }
+
+        executorService.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return executorService;
     }
 
@@ -77,15 +83,21 @@ public class AbstractBuildThreadPoolTemplate {
      */
     public static ThreadPoolExecutor buildFastPool(ThreadPoolInitParam initParam) {
         TaskQueue<Runnable> taskQueue = new TaskQueue(initParam.getCapacity());
-        FastThreadPoolExecutor fastThreadPoolExecutor =
-                new FastThreadPoolExecutor(initParam.getCorePoolNum(),
-                        initParam.getMaxPoolNum(),
-                        initParam.getKeepAliveTime(),
-                        initParam.getTimeUnit(),
-                        taskQueue,
-                        initParam.getThreadFactory(),
-                        initParam.rejectedExecutionHandler);
+        FastThreadPoolExecutor fastThreadPoolExecutor;
+        try {
+            fastThreadPoolExecutor = new FastThreadPoolExecutor(initParam.getCorePoolNum(),
+                    initParam.getMaxPoolNum(),
+                    initParam.getKeepAliveTime(),
+                    initParam.getTimeUnit(),
+                    taskQueue,
+                    initParam.getThreadFactory(),
+                    initParam.rejectedExecutionHandler);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("Error creating thread pool parameter.", ex);
+        }
+
         taskQueue.setExecutor(fastThreadPoolExecutor);
+        fastThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return fastThreadPoolExecutor;
     }
 
@@ -97,21 +109,28 @@ public class AbstractBuildThreadPoolTemplate {
      */
     public static DynamicThreadPoolExecutor buildDynamicPool(ThreadPoolInitParam initParam) {
         Assert.notNull(initParam);
-        DynamicThreadPoolExecutor executorService =
-                new DynamicThreadPoolExecutor(initParam.getCorePoolNum(),
-                        initParam.getMaxPoolNum(),
-                        initParam.getKeepAliveTime(),
-                        initParam.getTimeUnit(),
-                        initParam.getWaitForTasksToCompleteOnShutdown(),
-                        initParam.getAwaitTerminationMillis(),
-                        initParam.getWorkQueue(),
-                        initParam.getThreadPoolId(),
-                        initParam.getThreadFactory(),
-                        initParam.getThreadPoolAlarm(),
-                        initParam.getRejectedExecutionHandler());
+        DynamicThreadPoolExecutor dynamicThreadPoolExecutor;
+        try {
+            dynamicThreadPoolExecutor = new DynamicThreadPoolExecutor(
+                    initParam.getCorePoolNum(),
+                    initParam.getMaxPoolNum(),
+                    initParam.getKeepAliveTime(),
+                    initParam.getTimeUnit(),
+                    initParam.getWaitForTasksToCompleteOnShutdown(),
+                    initParam.getAwaitTerminationMillis(),
+                    initParam.getWorkQueue(),
+                    initParam.getThreadPoolId(),
+                    initParam.getThreadFactory(),
+                    initParam.getThreadPoolAlarm(),
+                    initParam.getRejectedExecutionHandler()
+            );
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(String.format("Error creating thread pool parameter. threadPool id :: %s", initParam.getThreadPoolId()), ex);
+        }
 
-        executorService.setTaskDecorator(initParam.getTaskDecorator());
-        return executorService;
+        dynamicThreadPoolExecutor.setTaskDecorator(initParam.getTaskDecorator());
+        dynamicThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
+        return dynamicThreadPoolExecutor;
     }
 
     @Data
@@ -182,6 +201,11 @@ public class AbstractBuildThreadPoolTemplate {
          * 等待任务在关机时完成
          */
         private Boolean waitForTasksToCompleteOnShutdown;
+
+        /**
+         * 允许核心线程超时
+         */
+        private Boolean allowCoreThreadTimeOut = false;
 
         public ThreadPoolInitParam(String threadNamePrefix, boolean isDaemon) {
             this.threadPoolId = threadNamePrefix;

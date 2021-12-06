@@ -2,7 +2,7 @@ package cn.hippo4j.starter.core;
 
 import cn.hippo4j.starter.alarm.ThreadPoolAlarm;
 import cn.hippo4j.starter.alarm.ThreadPoolAlarmManage;
-import cn.hippo4j.starter.event.EventExecutor;
+import cn.hippo4j.starter.event.MonitorEventExecutor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.core.task.TaskDecorator;
@@ -312,7 +312,7 @@ public class DynamicThreadPoolExecutor extends DynamicExecutorConfigurationSuppo
 
     final void reject(Runnable command) {
         rejectCount.incrementAndGet();
-        EventExecutor.publishEvent(
+        MonitorEventExecutor.publishEvent(
                 () -> ThreadPoolAlarmManage.checkPoolRejectAlarm(this)
         );
         handler.rejectedExecution(command, this);
@@ -367,7 +367,7 @@ public class DynamicThreadPoolExecutor extends DynamicExecutorConfigurationSuppo
             }
         }
 
-        EventExecutor.publishEvent(
+        MonitorEventExecutor.publishEvent(
                 () -> ThreadPoolAlarmManage.checkPoolLivenessAlarm(core, this)
         );
 
@@ -548,7 +548,7 @@ public class DynamicThreadPoolExecutor extends DynamicExecutorConfigurationSuppo
             c = ctl.get();
         }
         if (isRunning(c) && workQueue.offer(command)) {
-            EventExecutor.publishEvent(
+            MonitorEventExecutor.publishEvent(
                     () -> ThreadPoolAlarmManage.checkPoolCapacityAlarm(this)
             );
             int recheck = ctl.get();
