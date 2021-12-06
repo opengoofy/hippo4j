@@ -60,4 +60,6 @@ public class Constants {
 
     public static final int MAP_INITIAL_CAPACITY = 16;
 
+    public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
+
 }
