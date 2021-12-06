@@ -46,6 +46,8 @@
 
 [运行 Hippo4J 自带 Demo 参考文档](https://hippox.cn/zh-cn/docs/run/demo.html)
 
+[在线体验地址](http://console.hippox.cn:6691/index.html) 用户名密码：hippo4j / hippo4j
+
 ## Stars 趋势
 
 [![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool)
