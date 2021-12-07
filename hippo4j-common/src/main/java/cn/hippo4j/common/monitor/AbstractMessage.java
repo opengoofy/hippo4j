@@ -1,6 +1,7 @@
 package cn.hippo4j.common.monitor;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @date 2021/12/7 20:31
  */
 @Data
+@NoArgsConstructor
 public abstract class AbstractMessage implements Message {
 
     /**
@@ -21,7 +23,7 @@ public abstract class AbstractMessage implements Message {
     /**
      * messageTypeEnum
      */
-    private MessageTypeEnum messageTypeEnum;
+    private MessageTypeEnum messageType;
 
     /**
      * message

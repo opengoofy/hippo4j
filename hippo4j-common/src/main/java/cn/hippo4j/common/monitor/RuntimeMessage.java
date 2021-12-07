@@ -1,6 +1,7 @@
 package cn.hippo4j.common.monitor;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Dynamic thread pool runtime data.
@@ -9,6 +10,7 @@ import lombok.Data;
  * @date 2021/12/6 18:18
  */
 @Data
+@NoArgsConstructor
 public class RuntimeMessage extends AbstractMessage {
 
     /**
