@@ -8,6 +8,10 @@ import cn.hippo4j.starter.core.ThreadPoolConfigService;
 import cn.hippo4j.starter.core.ThreadPoolOperation;
 import cn.hippo4j.starter.enable.MarkerConfiguration;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
+import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
+import cn.hippo4j.starter.monitor.HttpMvcSender;
+import cn.hippo4j.starter.monitor.MessageSender;
+import cn.hippo4j.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.toolkit.IdentifyUtil;
 import cn.hippo4j.starter.toolkit.inet.InetUtils;
@@ -72,8 +76,24 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public PoolRunStateController poolRunStateController() {
-        return new PoolRunStateController();
+    public ThreadPoolRunStateHandler threadPoolRunStateHandler() {
+        return new ThreadPoolRunStateHandler();
+    }
+
+    @Bean
+    public PoolRunStateController poolRunStateController(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+        return new PoolRunStateController(threadPoolRunStateHandler);
+    }
+
+    @Bean
+    @SuppressWarnings("all")
+    public HttpMvcSender httpMvcSender(HttpAgent httpAgent) {
+        return new HttpMvcSender(httpAgent);
+    }
+
+    @Bean
+    public ReportingEventExecutor reportingEventExecutor(BootstrapProperties properties, MessageSender messageSender) {
+        return new ReportingEventExecutor(properties, messageSender);
     }
 
 }
