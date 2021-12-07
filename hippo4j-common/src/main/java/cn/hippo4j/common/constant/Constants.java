@@ -40,6 +40,8 @@ public class Constants {
 
     public static final String LISTENER_PATH = CONFIG_CONTROLLER_PATH + "/listener";
 
+    public static final String MONITOR_PATH = CONFIG_CONTROLLER_PATH + "/monitor";
+
     public static final String PROBE_MODIFY_REQUEST = "Listening-Configs";
 
     public static final String LONG_PULLING_TIMEOUT = "Long-Pulling-Timeout";
