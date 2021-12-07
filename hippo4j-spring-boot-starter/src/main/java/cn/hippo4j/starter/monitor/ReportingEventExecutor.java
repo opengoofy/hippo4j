@@ -75,8 +75,8 @@ public class ReportingEventExecutor extends AbstractThreadPoolRuntime implements
 
     @Override
     public void run(String... args) {
-        // 延迟 10秒后每 5秒调用一次. scheduleAtFixedRate 间隔周期是前后两次任务的开始时间计算的, 不考虑执行任务本身的耗时
-        collectVesselExecutor.scheduleAtFixedRate(() -> runTimeGatherTask(), 10, 5, TimeUnit.SECONDS);
+        // 延迟 10秒后每 5秒调用一次. scheduleWithFixedDelay 每次执行时间为上一次任务结束时, 向后推一个时间间隔
+        collectVesselExecutor.scheduleWithFixedDelay(() -> runTimeGatherTask(), 10, 5, TimeUnit.SECONDS);
         ThreadUtil.newThread(this, "reporting-task", Boolean.TRUE).start();
 
         log.info("Dynamic thread pool :: [{}]. The dynamic thread pool starts data collection and reporting. ", getThreadPoolNum());
@@ -108,7 +108,7 @@ public class ReportingEventExecutor extends AbstractThreadPoolRuntime implements
             runtimeMessages.add(runtimeMessage);
         }
 
-        message.setMessageTypeEnum(MessageTypeEnum.RUNTIME);
+        message.setMessageType(MessageTypeEnum.RUNTIME);
         message.setMessages(runtimeMessages);
 
         return message;
