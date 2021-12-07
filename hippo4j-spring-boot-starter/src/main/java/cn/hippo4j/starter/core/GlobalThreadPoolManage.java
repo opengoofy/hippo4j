@@ -16,33 +16,85 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class GlobalThreadPoolManage {
 
+    /**
+     * 动态线程池参数容器
+     */
     private static final Map<String, PoolParameter> POOL_PARAMETER = new ConcurrentHashMap();
 
+    /**
+     * 动态线程池包装容器
+     */
     private static final Map<String, DynamicThreadPoolWrapper> EXECUTOR_MAP = new ConcurrentHashMap();
 
-    public static DynamicThreadPoolWrapper getExecutorService(String tpId) {
-        return EXECUTOR_MAP.get(tpId);
+    /**
+     * 获取动态线程池包装类.
+     *
+     * @param threadPoolId
+     * @return
+     */
+    public static DynamicThreadPoolWrapper getExecutorService(String threadPoolId) {
+        return EXECUTOR_MAP.get(threadPoolId);
     }
 
-    public static PoolParameter getPoolParameter(String tpId) {
-        return POOL_PARAMETER.get(tpId);
+    /**
+     * 获取动态线程池参数.
+     *
+     * @param threadPoolId
+     * @return
+     */
+    public static PoolParameter getPoolParameter(String threadPoolId) {
+        return POOL_PARAMETER.get(threadPoolId);
     }
 
-    public static void register(String tpId, PoolParameter poolParameter, DynamicThreadPoolWrapper executor) {
-        registerPool(tpId, executor);
-        registerPoolParameter(tpId, poolParameter);
+    /**
+     * 注册动态线程池包装以及参数.
+     *
+     * @param threadPoolId
+     * @param poolParameter
+     * @param executor
+     */
+    public static void register(String threadPoolId, PoolParameter poolParameter, DynamicThreadPoolWrapper executor) {
+        registerPool(threadPoolId, executor);
+        registerPoolParameter(threadPoolId, poolParameter);
     }
 
-    public static void registerPool(String tpId, DynamicThreadPoolWrapper executor) {
-        EXECUTOR_MAP.put(tpId, executor);
+    /**
+     * 注册动态线程池.
+     *
+     * @param threadPoolId
+     * @param executor
+     */
+    public static void registerPool(String threadPoolId, DynamicThreadPoolWrapper executor) {
+        EXECUTOR_MAP.put(threadPoolId, executor);
     }
 
-    public static void registerPoolParameter(String tpId, PoolParameter poolParameter) {
-        POOL_PARAMETER.put(tpId, poolParameter);
+    /**
+     * 注册动态线程池参数.
+     *
+     * @param threadPoolId
+     * @param poolParameter
+     */
+    public static void registerPoolParameter(String threadPoolId, PoolParameter poolParameter) {
+        POOL_PARAMETER.put(threadPoolId, poolParameter);
     }
 
+    /**
+     * 获取呀动态线程池标识集合.
+     *
+     * @return
+     */
     public static List<String> listThreadPoolId() {
         return Lists.newArrayList(POOL_PARAMETER.keySet());
+    }
+
+    /**
+     * 获取动态线程池数量.
+     * 数据在项目最初启动的时候可能不准确, 因为是异步进行注册.
+     *
+     * @return
+     */
+    public static Integer getThreadPoolNum() {
+        return listThreadPoolId().size();
     }
 
 }
