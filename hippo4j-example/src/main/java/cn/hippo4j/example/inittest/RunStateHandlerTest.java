@@ -4,6 +4,7 @@ import cn.hutool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Random;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -21,7 +22,7 @@ public class RunStateHandlerTest {
     @Resource
     private ThreadPoolExecutor dynamicThreadPoolExecutor;
 
-    // @PostConstruct
+    @PostConstruct
     @SuppressWarnings("all")
     public void runStateHandlerTest() {
         log.info("Test thread pool runtime state interface, The rejection policy will be triggered after 30s...");
