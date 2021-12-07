@@ -83,6 +83,7 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v1/cs/apps/register/**",
                         "/v1/cs/configs/**",
                         "/v1/cs/listener/**",
+                        "/v1/cs/monitor/**",
                         "/v1/cs/notify/list/config/**"
                 )
                 .toArray(String[]::new);
