@@ -3,6 +3,8 @@ package cn.hippo4j.common.toolkit;
 import cn.hippo4j.common.constant.Constants;
 import org.springframework.util.StringUtils;
 
+import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
+
 /**
  * Group key.
  *
@@ -19,6 +21,18 @@ public class GroupKey {
         return doGetKey(dataId, group, datumStr);
     }
 
+    public static String getKey(String... params) {
+        StringBuilder groupKey = new StringBuilder();
+        groupKey.append(params[0]).append(GROUP_KEY_DELIMITER);
+
+        for (int i = 1; i < params.length - 1; i++) {
+            groupKey.append(params[i]).append(GROUP_KEY_DELIMITER);
+        }
+
+        groupKey.append(params[params.length]);
+        return groupKey.toString();
+    }
+
     public static String getKeyTenant(String dataId, String group, String tenant) {
         return doGetKey(dataId, group, tenant);
     }
@@ -26,10 +40,10 @@ public class GroupKey {
     private static String doGetKey(String dataId, String group, String datumStr) {
         StringBuilder sb = new StringBuilder();
         urlEncode(dataId, sb);
-        sb.append('+');
+        sb.append(GROUP_KEY_DELIMITER);
         urlEncode(group, sb);
         if (!StringUtils.isEmpty(datumStr)) {
-            sb.append('+');
+            sb.append(GROUP_KEY_DELIMITER);
             urlEncode(datumStr, sb);
         }
 
