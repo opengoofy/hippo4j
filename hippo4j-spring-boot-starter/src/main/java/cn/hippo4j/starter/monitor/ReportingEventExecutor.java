@@ -8,6 +8,7 @@ import cn.hippo4j.common.monitor.RuntimeMessage;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.core.GlobalThreadPoolManage;
 import cn.hippo4j.starter.handler.AbstractThreadPoolRuntime;
+import cn.hippo4j.starter.remote.ServerHealthCheck;
 import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
 import cn.hippo4j.starter.toolkit.thread.ThreadUtil;
 import cn.hutool.core.bean.BeanUtil;
@@ -47,6 +48,9 @@ public class ReportingEventExecutor extends AbstractThreadPoolRuntime implements
     @NonNull
     private final MessageSender messageSender;
 
+    @NonNull
+    private final ServerHealthCheck serverHealthCheck;
+
     /**
      * 数据采集的缓冲容器, 等待 ReportingEventExecutor 上报服务端
      */
@@ -57,7 +61,7 @@ public class ReportingEventExecutor extends AbstractThreadPoolRuntime implements
      */
     private final ScheduledThreadPoolExecutor collectVesselExecutor = new ScheduledThreadPoolExecutor(
             new Integer(1),
-            ThreadFactoryBuilder.builder().daemon(true).prefix("scheduled-collect-vessel").build()
+            ThreadFactoryBuilder.builder().daemon(true).prefix("collect-data-scheduled").build()
     );
 
     @SneakyThrows
@@ -91,6 +95,7 @@ public class ReportingEventExecutor extends AbstractThreadPoolRuntime implements
      * 采集动态线程池数据, 并添加缓冲队列
      */
     private void runTimeGatherTask() {
+        serverHealthCheck.isHealthStatus();
         Message message = collectMessage();
         messageCollectVessel.offer(message);
     }

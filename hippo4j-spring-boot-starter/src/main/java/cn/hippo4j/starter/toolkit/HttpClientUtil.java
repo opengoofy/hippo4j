@@ -67,6 +67,20 @@ public class HttpClientUtil {
     }
 
     /**
+     * 调用健康检查
+     *
+     * @param url
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    @SneakyThrows
+    public <T> T restApiGetHealth(String url, Class<T> clazz) {
+        String resp = new String(doGet(url), "utf-8");
+        return JSON.parseObject(resp, clazz);
+    }
+
+    /**
      * Get 请求, 支持查询字符串
      *
      * @param url

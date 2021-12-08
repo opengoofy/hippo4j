@@ -13,6 +13,8 @@ import cn.hippo4j.starter.monitor.HttpMvcSender;
 import cn.hippo4j.starter.monitor.MessageSender;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.starter.remote.HttpAgent;
+import cn.hippo4j.starter.remote.HttpScheduledHealthCheck;
+import cn.hippo4j.starter.remote.ServerHealthCheck;
 import cn.hippo4j.starter.toolkit.IdentifyUtil;
 import cn.hippo4j.starter.toolkit.inet.InetUtils;
 import cn.hutool.core.util.IdUtil;
@@ -58,9 +60,9 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public ConfigService configService(HttpAgent httpAgent, InetUtils hippo4JInetUtils) {
+    public ConfigService configService(HttpAgent httpAgent, InetUtils hippo4JInetUtils, ServerHealthCheck serverHealthCheck) {
         String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);
-        return new ThreadPoolConfigService(httpAgent, identify);
+        return new ThreadPoolConfigService(httpAgent, identify, serverHealthCheck);
     }
 
     @Bean
@@ -92,8 +94,15 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ReportingEventExecutor reportingEventExecutor(BootstrapProperties properties, MessageSender messageSender) {
-        return new ReportingEventExecutor(properties, messageSender);
+    public ReportingEventExecutor reportingEventExecutor(BootstrapProperties properties, MessageSender messageSender,
+                                                         ServerHealthCheck serverHealthCheck) {
+        return new ReportingEventExecutor(properties, messageSender, serverHealthCheck);
+    }
+
+    @Bean
+    @SuppressWarnings("all")
+    public ServerHealthCheck httpScheduledHealthCheck(HttpAgent httpAgent) {
+        return new HttpScheduledHealthCheck(httpAgent);
     }
 
 }

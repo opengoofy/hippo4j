@@ -32,6 +32,14 @@ public interface HttpAgent {
     String getEncode();
 
     /**
+     * Http get simple.
+     *
+     * @param path
+     * @return
+     */
+    Result httpGetSimple(String path);
+
+    /**
      * Http post.
      *
      * @param path

@@ -5,6 +5,8 @@ import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.remote.HttpAgent;
+import cn.hippo4j.starter.remote.ServerHealthCheck;
+import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import lombok.SneakyThrows;
@@ -18,7 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static cn.hippo4j.common.constant.Constants.*;
 
@@ -39,21 +40,20 @@ public class ClientWorker implements DisposableBean {
 
     private final String identification;
 
+    private final ServerHealthCheck serverHealthCheck;
+
     private final ScheduledExecutorService executor;
 
     private final ScheduledExecutorService executorService;
 
-    private AtomicBoolean isHealthServer = new AtomicBoolean(true);
-
-    private AtomicBoolean isHealthServerTemp = new AtomicBoolean(true);
-
     private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap(16);
 
     @SuppressWarnings("all")
-    public ClientWorker(HttpAgent httpAgent, String identification) {
+    public ClientWorker(HttpAgent httpAgent, String identification, ServerHealthCheck serverHealthCheck) {
         this.agent = httpAgent;
         this.identification = identification;
         this.timeout = CONFIG_LONG_POLL_TIMEOUT;
+        this.serverHealthCheck = serverHealthCheck;
 
         this.executor = Executors.newScheduledThreadPool(1, r -> {
             Thread t = new Thread(r);
@@ -62,13 +62,9 @@ public class ClientWorker implements DisposableBean {
             return t;
         });
 
-        int threadSize = Runtime.getRuntime().availableProcessors();
-        this.executorService = Executors.newScheduledThreadPool(threadSize, r -> {
-            Thread t = new Thread(r);
-            t.setName("client.long.polling.executor");
-            t.setDaemon(true);
-            return t;
-        });
+        this.executorService = Executors.newSingleThreadScheduledExecutor(
+                ThreadFactoryBuilder.builder().prefix("client-long-polling-executor").daemon(true).build()
+        );
 
         log.info("Client identity :: {}", identification);
 
@@ -102,25 +98,10 @@ public class ClientWorker implements DisposableBean {
 
     class LongPollingRunnable implements Runnable {
 
-        @SneakyThrows
-        private void checkStatus() {
-            if (Objects.equals(isHealthServerTemp.get(), Boolean.FALSE)
-                    && Objects.equals(isHealthServer.get(), Boolean.TRUE)) {
-                isHealthServerTemp.set(Boolean.TRUE);
-                log.info("🚀 The client reconnects to the server successfully.");
-            }
-            // 服务端状态不正常睡眠 30s
-            if (!isHealthServer.get()) {
-                isHealthServerTemp.set(Boolean.FALSE);
-                log.error("[Check config] Error. exception message, Thread sleep 30 s.");
-                Thread.sleep(30000);
-            }
-        }
-
         @Override
         @SneakyThrows
         public void run() {
-            checkStatus();
+            serverHealthCheck.isHealthStatus();
 
             List<CacheData> cacheDataList = new ArrayList();
             List<String> inInitializingCacheList = new ArrayList();
@@ -197,10 +178,7 @@ public class ClientWorker implements DisposableBean {
             long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
             Result result = agent.httpPostByConfig(LISTENER_PATH, headers, params, readTimeoutMs);
 
-            // Server 端重启后会进入非健康状态, 不进入 catch 则为健康调用
-            isHealthServer.set(true);
             if (result != null && result.isSuccess()) {
-                setHealthServer(true);
                 return parseUpdateDataIdResponse(result.getData().toString());
             }
         } catch (Exception ex) {
@@ -295,12 +273,8 @@ public class ClientWorker implements DisposableBean {
         return lastCacheData;
     }
 
-    public boolean isHealthServer() {
-        return this.isHealthServer.get();
-    }
-
     private void setHealthServer(boolean isHealthServer) {
-        this.isHealthServer.set(isHealthServer);
+        this.serverHealthCheck.setHealthStatus(isHealthServer);
     }
 
 }

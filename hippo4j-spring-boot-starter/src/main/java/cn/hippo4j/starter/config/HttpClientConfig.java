@@ -37,6 +37,7 @@ public class HttpClientConfig {
     }
 
     @Bean
+    @SuppressWarnings("all")
     public HttpAgent httpAgent(BootstrapProperties properties, HttpClientUtil hippo4JHttpClientUtil) {
         return new ServerHttpAgent(properties, hippo4JHttpClientUtil);
     }

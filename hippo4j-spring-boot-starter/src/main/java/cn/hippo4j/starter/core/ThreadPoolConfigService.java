@@ -1,6 +1,7 @@
 package cn.hippo4j.starter.core;
 
 import cn.hippo4j.starter.remote.HttpAgent;
+import cn.hippo4j.starter.remote.ServerHealthCheck;
 
 import java.util.Arrays;
 
@@ -14,8 +15,11 @@ public class ThreadPoolConfigService implements ConfigService {
 
     private final ClientWorker clientWorker;
 
-    public ThreadPoolConfigService(HttpAgent httpAgent, String identification) {
-        clientWorker = new ClientWorker(httpAgent, identification);
+    private final ServerHealthCheck serverHealthCheck;
+
+    public ThreadPoolConfigService(HttpAgent httpAgent, String identification, ServerHealthCheck serverHealthCheck) {
+        this.serverHealthCheck = serverHealthCheck;
+        this.clientWorker = new ClientWorker(httpAgent, identification, serverHealthCheck);
     }
 
     @Override
@@ -25,7 +29,7 @@ public class ThreadPoolConfigService implements ConfigService {
 
     @Override
     public String getServerStatus() {
-        if (clientWorker.isHealthServer()) {
+        if (serverHealthCheck.isHealthStatus()) {
             return "UP";
         } else {
             return "DOWN";

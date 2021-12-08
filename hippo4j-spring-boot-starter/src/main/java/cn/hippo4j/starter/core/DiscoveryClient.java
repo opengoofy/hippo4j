@@ -54,11 +54,9 @@ public class DiscoveryClient implements DisposableBean {
                 .threadFactory("DiscoveryClient-HeartbeatExecutor", true)
                 .build();
 
-        this.scheduler = Executors.newScheduledThreadPool(2,
-                ThreadFactoryBuilder.builder()
-                        .daemon(true)
-                        .prefix("DiscoveryClient-Scheduler")
-                        .build()
+        this.scheduler = new ScheduledThreadPoolExecutor(
+                new Integer(1),
+                ThreadFactoryBuilder.builder().daemon(true).prefix("DiscoveryClient-Scheduler").build()
         );
 
         register();
