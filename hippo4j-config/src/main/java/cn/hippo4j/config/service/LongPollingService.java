@@ -164,7 +164,7 @@ public class LongPollingService {
         final AsyncContext asyncContext = req.startAsync();
         asyncContext.setTimeout(0L);
 
-        ConfigExecutor.executeLongPolling(new ClientLongPolling(asyncContext, clientMd5Map, ip, probeRequestSize, timeout, appName));
+        ConfigExecutor.executeLongPolling(new ClientLongPolling(asyncContext, clientMd5Map, ip, probeRequestSize, timeout - delayTime, appName));
     }
 
     class ClientLongPolling implements Runnable {
