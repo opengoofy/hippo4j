@@ -95,7 +95,10 @@ public class ReportingEventExecutor extends AbstractThreadPoolRuntime implements
      * 采集动态线程池数据, 并添加缓冲队列
      */
     private void runTimeGatherTask() {
-        serverHealthCheck.isHealthStatus();
+        boolean healthStatus = serverHealthCheck.isHealthStatus();
+        if (!healthStatus) {
+            return;
+        }
         Message message = collectMessage();
         messageCollectVessel.offer(message);
     }

@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.remote;
 
+import cn.hippo4j.starter.core.ShutdownExecuteException;
 import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static cn.hippo4j.common.constant.Constants.HEALTH_CHECK_INTERVAL;
+
 /**
  * Abstract health check.
  *
@@ -18,12 +21,17 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2021/12/8 20:19
  */
 @Slf4j
-public abstract class AbstractHealthCheck implements InitializingBean, ServerHealthCheck {
+public abstract class AbstractHealthCheck implements ServerHealthCheck, InitializingBean {
 
     /**
      * Health status
      */
     private volatile boolean healthStatus = true;
+
+    /**
+     * Client shutdown hook
+     */
+    private volatile boolean clientShutdownHook = false;
 
     /**
      * Health main lock
@@ -64,19 +72,22 @@ public abstract class AbstractHealthCheck implements InitializingBean, ServerHea
         } else {
             healthStatus = false;
         }
-
     }
 
     @Override
     @SneakyThrows
     public boolean isHealthStatus() {
-        while (!healthStatus) {
+        while (!healthStatus && !clientShutdownHook) {
             healthMainLock.lock();
             try {
                 healthCondition.await();
             } finally {
                 healthMainLock.unlock();
             }
+        }
+
+        if (!healthStatus) {
+            throw new ShutdownExecuteException();
         }
 
         return healthStatus;
@@ -107,7 +118,13 @@ public abstract class AbstractHealthCheck implements InitializingBean, ServerHea
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        healthCheckExecutor.scheduleWithFixedDelay(() -> healthCheck(), 0, 5, TimeUnit.SECONDS);
+        // 添加钩子函数, Client 端停止时, 如果 Server 端是非健康状态, Client 销毁函数会暂停运行
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            clientShutdownHook = true;
+            signalAllBizThread();
+        }));
+
+        healthCheckExecutor.scheduleWithFixedDelay(() -> healthCheck(), 0, HEALTH_CHECK_INTERVAL, TimeUnit.SECONDS);
     }
 
 }

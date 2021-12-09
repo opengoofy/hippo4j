@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.*;
 
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY;
@@ -102,6 +101,10 @@ public class DiscoveryClient implements DisposableBean {
                 log.info("{}{} - remove config cache success.", PREFIX, appPathIdentifier);
             }
         } catch (Throwable ex) {
+            if (ex instanceof ShutdownExecuteException) {
+                return;
+            }
+
             log.error("{}{} - remove config cache fail.", PREFIX, appPathIdentifier, ex);
         }
 
@@ -115,8 +118,6 @@ public class DiscoveryClient implements DisposableBean {
         } catch (Throwable ex) {
             log.error("{}{} - destroy service fail.", PREFIX, appPathIdentifier, ex);
         }
-
-        Optional.ofNullable(scheduler).ifPresent((each) -> each.shutdown());
     }
 
     public class HeartbeatThread implements Runnable {
