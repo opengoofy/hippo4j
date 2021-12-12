@@ -1,5 +1,6 @@
 package cn.hippo4j.console.controller;
 
+import cn.hippo4j.common.toolkit.UserContext;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import cn.hippo4j.auth.model.biz.user.UserQueryPageReqDTO;
 import cn.hippo4j.auth.model.biz.user.UserReqDTO;
@@ -30,6 +31,14 @@ public class UserController {
     public Result<IPage<UserRespDTO>> listUser(@RequestBody UserQueryPageReqDTO reqDTO) {
         IPage<UserRespDTO> resultUserPage = userService.listUser(reqDTO);
         return Results.success(resultUserPage);
+    }
+
+    @GetMapping("/info")
+    public Result<UserRespDTO> userInfo() {
+        String userName = UserContext.getUserName();
+        IPage<UserRespDTO> listUser = userService.listUser(new UserQueryPageReqDTO().setUserName(userName));
+        UserRespDTO userRespDTO = listUser.getRecords().get(0);
+        return Results.success(userRespDTO);
     }
 
     @PostMapping("/add")

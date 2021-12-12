@@ -94,6 +94,34 @@ CREATE TABLE `inst_config` (
 
 /******************************************/
 /*   数据库全名 = hippo4j_manager   */
+/*   表名称 = his_run_data   */
+/******************************************/
+DROP TABLE IF EXISTS `his_run_data`;
+CREATE TABLE `his_run_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
+  `item_id` varchar(256) DEFAULT NULL COMMENT '项目ID',
+  `tp_id` varchar(56) DEFAULT NULL COMMENT '线程池ID',
+  `instance_id` varchar(256) DEFAULT NULL COMMENT '实例ID',
+  `current_load` bigint(20) DEFAULT NULL COMMENT '当前负载',
+  `peak_load` bigint(20) DEFAULT NULL COMMENT '峰值负载',
+  `pool_size` bigint(20) DEFAULT NULL COMMENT '线程数',
+  `active_size` bigint(20) DEFAULT NULL COMMENT '活跃线程数',
+  `queue_capacity` bigint(20) DEFAULT NULL COMMENT '队列容量',
+  `queue_size` bigint(20) DEFAULT NULL COMMENT '队列元素',
+  `queue_remaining_capacity` bigint(20) DEFAULT NULL COMMENT '队列剩余容量',
+  `completed_task_count` bigint(20) DEFAULT NULL COMMENT '已完成任务计数',
+  `reject_count` bigint(20) DEFAULT NULL COMMENT '拒绝次数',
+  `timestamp` bigint(20) DEFAULT NULL COMMENT '时间戳',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_group_key` (`tenant_id`,`item_id`,`tp_id`,`instance_id`) USING BTREE,
+  KEY `idx_timestamp` (`timestamp`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='历史运行数据表';
+
+/******************************************/
+/*   数据库全名 = hippo4j_manager   */
 /*   表名称 = log_record_info   */
 /******************************************/
 DROP TABLE IF EXISTS `log_record_info`;

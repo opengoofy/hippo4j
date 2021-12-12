@@ -9,8 +9,13 @@ package cn.hippo4j.common.monitor;
 public enum MessageTypeEnum {
 
     /**
-     * 运行时
+     * RUNTIME
      */
-    RUNTIME
+    RUNTIME,
+
+    /**
+     * DEFAULT
+     */
+    DEFAULT
 
 }

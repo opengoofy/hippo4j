@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Message wrapper.
@@ -15,11 +16,36 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageWrapper extends AbstractMessage implements Serializable {
+public class MessageWrapper implements MessageRequest<Message> {
 
     /**
-     * messageObj
+     * contentParams
      */
-    private Object messageObj;
+    private List<Map<String, Object>> contentParams;
+
+    /**
+     * responseClass
+     */
+    private Class responseClass;
+
+    /**
+     * getMessageType
+     */
+    private MessageTypeEnum messageType;
+
+    @Override
+    public List<Map<String, Object>> getContentParams() {
+        return contentParams;
+    }
+
+    @Override
+    public Class<Message> getResponseClass() {
+        return responseClass;
+    }
+
+    @Override
+    public MessageTypeEnum getMessageType() {
+        return messageType;
+    }
 
 }

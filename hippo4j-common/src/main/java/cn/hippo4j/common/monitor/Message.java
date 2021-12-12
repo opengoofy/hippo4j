@@ -9,7 +9,7 @@ import java.util.List;
  * @author chen.ma
  * @date 2021/12/6 20:16
  */
-public interface Message extends Serializable {
+public interface Message<T extends Message> extends Serializable {
 
     /**
      * Get groupKey.
@@ -30,6 +30,6 @@ public interface Message extends Serializable {
      *
      * @return
      */
-    List<Message> getMessages();
+    List<T> getMessages();
 
 }

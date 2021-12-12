@@ -2,6 +2,7 @@ package cn.hippo4j.starter.monitor;
 
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
+import cn.hippo4j.common.toolkit.MessageConvert;
 import cn.hippo4j.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,7 @@ public class HttpMvcSender implements MessageSender {
     @Override
     public void send(Message message) {
         try {
-            MessageWrapper messageWrapper = new MessageWrapper(message);
-            messageWrapper.setMessageType(message.getMessageType());
+            MessageWrapper messageWrapper = MessageConvert.convert(message);
             httpAgent.httpPost(MONITOR_PATH, messageWrapper);
         } catch (Throwable ex) {
             log.error("Failed to push dynamic thread pool runtime data.", ex);

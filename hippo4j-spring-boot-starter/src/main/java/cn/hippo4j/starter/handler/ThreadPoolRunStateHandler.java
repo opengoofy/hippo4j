@@ -39,6 +39,8 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
                 ByteConvertUtil.getPrintSize(runtimeInfo.getMaxMemory())
         ).toString();
 
+        poolRunStateInfo.setCurrentLoad(poolRunStateInfo.getCurrentLoad() + "%");
+        poolRunStateInfo.setPeakLoad(poolRunStateInfo.getPeakLoad() + "%");
         poolRunStateInfo.setHost(INET_ADDRESS.getHostAddress());
         poolRunStateInfo.setMemoryProportion(memoryProportion);
         poolRunStateInfo.setFreeMemory(ByteConvertUtil.getPrintSize(runtimeInfo.getFreeMemory()));

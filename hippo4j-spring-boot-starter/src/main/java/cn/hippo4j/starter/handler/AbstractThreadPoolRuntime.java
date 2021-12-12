@@ -50,9 +50,9 @@ public abstract class AbstractThreadPoolRuntime {
         // 线程池中执行任务总数量 (有锁)
         long completedTaskCount = pool.getCompletedTaskCount();
         // 当前负载
-        String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "%";
+        String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
         // 峰值负载
-        String peakLoad = CalculateUtil.divide(largestPoolSize, maximumPoolSize) + "%";
+        String peakLoad = CalculateUtil.divide(largestPoolSize, maximumPoolSize) + "";
 
         BlockingQueue<Runnable> queue = pool.getQueue();
         // 队列元素个数
@@ -71,8 +71,8 @@ public abstract class AbstractThreadPoolRuntime {
         stateInfo.setMaximumSize(maximumPoolSize);
         stateInfo.setActiveSize(activeCount);
         stateInfo.setCurrentLoad(currentLoad);
-        stateInfo.setQueueType(queueType);
         stateInfo.setPeakLoad(peakLoad);
+        stateInfo.setQueueType(queueType);
         stateInfo.setQueueSize(queueSize);
         stateInfo.setQueueCapacity(queueCapacity);
         stateInfo.setQueueRemainingCapacity(remainingCapacity);
@@ -84,6 +84,7 @@ public abstract class AbstractThreadPoolRuntime {
                 : -1;
         stateInfo.setRejectCount(rejectCount);
         stateInfo.setClientLastRefreshTime(DateUtil.formatDateTime(new Date()));
+        stateInfo.setTimestamp(System.currentTimeMillis());
 
         return supplement(stateInfo);
     }

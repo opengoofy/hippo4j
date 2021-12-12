@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public abstract class AbstractMessage implements Message {
+public abstract class AbstractMessage<T extends Message> implements Message {
 
     /**
      * groupKey: tenant + item + tpId + identify
@@ -28,6 +28,6 @@ public abstract class AbstractMessage implements Message {
     /**
      * message
      */
-    private List<Message> messages;
+    private List<T> messages;
 
 }

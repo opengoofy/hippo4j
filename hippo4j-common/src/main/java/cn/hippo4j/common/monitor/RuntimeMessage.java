@@ -34,6 +34,11 @@ public class RuntimeMessage extends AbstractMessage {
     private Integer largestPoolSize;
 
     /**
+     * activeSize
+     */
+    private String activeSize;
+
+    /**
      * queueCapacity
      */
     private Integer queueCapacity;
@@ -44,6 +49,11 @@ public class RuntimeMessage extends AbstractMessage {
     private Integer queueSize;
 
     /**
+     * queueRemainingCapacity
+     */
+    private String queueRemainingCapacity;
+
+    /**
      * completedTaskCount
      */
     private Long completedTaskCount;
@@ -52,5 +62,10 @@ public class RuntimeMessage extends AbstractMessage {
      * rejectCount
      */
     private Integer rejectCount;
+
+    /**
+     * timestamp
+     */
+    private Long timestamp;
 
 }

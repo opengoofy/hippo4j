@@ -36,6 +36,11 @@ public class PoolRunStateInfo implements Serializable {
     private Integer coreSize;
 
     /**
+     * activeCount
+     */
+    private Integer activeCount;
+
+    /**
      * maximumSize
      */
     private Integer maximumSize;
@@ -104,5 +109,10 @@ public class PoolRunStateInfo implements Serializable {
      * clientLastRefreshTime
      */
     private String clientLastRefreshTime;
+
+    /**
+     * timestamp
+     */
+    private Long timestamp;
 
 }
