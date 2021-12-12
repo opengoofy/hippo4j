@@ -72,7 +72,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         String username = JwtTokenUtil.getUsername(token);
-        UserContext.setUserName(username);
+        String userRole = JwtTokenUtil.getUserRole(token);
+        UserContext.setUserInfo(username, userRole);
 
         String role = JwtTokenUtil.getUserRole(token);
         if (username != null) {
