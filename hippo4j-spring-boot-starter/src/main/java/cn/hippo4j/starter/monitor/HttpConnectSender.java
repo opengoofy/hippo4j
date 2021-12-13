@@ -17,7 +17,7 @@ import static cn.hippo4j.common.constant.Constants.MONITOR_PATH;
  */
 @Slf4j
 @AllArgsConstructor
-public class HttpMvcSender implements MessageSender {
+public class HttpConnectSender implements MessageSender {
 
     private final HttpAgent httpAgent;
 

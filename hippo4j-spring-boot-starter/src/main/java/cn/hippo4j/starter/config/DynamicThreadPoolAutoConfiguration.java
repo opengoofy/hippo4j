@@ -9,7 +9,7 @@ import cn.hippo4j.starter.core.ThreadPoolOperation;
 import cn.hippo4j.starter.enable.MarkerConfiguration;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
-import cn.hippo4j.starter.monitor.HttpMvcSender;
+import cn.hippo4j.starter.monitor.HttpConnectSender;
 import cn.hippo4j.starter.monitor.MessageSender;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.starter.remote.HttpAgent;
@@ -89,8 +89,8 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public HttpMvcSender httpMvcSender(HttpAgent httpAgent) {
-        return new HttpMvcSender(httpAgent);
+    public HttpConnectSender httpMvcSender(HttpAgent httpAgent) {
+        return new HttpConnectSender(httpAgent);
     }
 
     @Bean
