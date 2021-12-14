@@ -28,4 +28,9 @@ public class ChartInfo {
      */
     private Integer threadPoolCount;
 
+    /**
+     * 线程池实例统计
+     */
+    private Integer threadPoolInstanceCount;
+
 }

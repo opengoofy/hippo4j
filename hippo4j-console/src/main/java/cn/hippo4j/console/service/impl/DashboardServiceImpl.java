@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,19 +63,34 @@ public class DashboardServiceImpl implements DashboardService {
         ChartInfo chartInfo = new ChartInfo();
         chartInfo.setTenantCount(tenantCount)
                 .setItemCount(itemCount)
-                .setThreadPoolCount(threadPoolCount);
+                .setThreadPoolCount(threadPoolCount)
+                .setThreadPoolInstanceCount(ConfigCacheService.getTotal());
         return chartInfo;
     }
 
     @Override
     public LineChartInfo getLineChatInfo() {
         Date currentDate = new Date();
-        DateTime sixtyTime = DateUtil.offsetMinute(currentDate, -60);
+        DateTime startTime = DateUtil.offsetMinute(currentDate, -10);
 
-        List<Long> completedTaskCounts = Lists.newArrayList(2000L, 2345L, 5676L, 2357L, 1111L, 11193L);
-        List<Long> rejectCounts = Lists.newArrayList(1000L, 1345L, 2676L, 1357L, 111L, 11193L);
+        List<HisRunDataMapper.ThreadPoolTaskRanking> threadPoolTaskRankings = hisRunDataMapper.queryThreadPoolMaxRanking(startTime.getTime(), currentDate.getTime());
 
-        return new LineChartInfo(completedTaskCounts, rejectCounts);
+        List<Object> oneList = Lists.newArrayList();
+        List<Object> twoList = Lists.newArrayList();
+        List<Object> threeList = Lists.newArrayList();
+        List<Object> fourList = Lists.newArrayList();
+
+        ArrayList<List<Object>> lists = Lists.newArrayList(oneList, twoList, threeList, fourList);
+        for (int i = 0; i < threadPoolTaskRankings.size(); i++) {
+            List<Object> eachList = lists.get(i);
+            HisRunDataMapper.ThreadPoolTaskRanking taskRanking = threadPoolTaskRankings.get(i);
+            eachList.add(taskRanking.getTpId());
+            eachList.add(taskRanking.getMaxQueueSize());
+            eachList.add(taskRanking.getMaxRejectCount());
+            eachList.add(taskRanking.getMaxCompletedTaskCount());
+        }
+
+        return new LineChartInfo(oneList, twoList, threeList, fourList);
     }
 
     @Override
@@ -150,13 +166,13 @@ public class DashboardServiceImpl implements DashboardService {
             Lease<InstanceInfo> first = CollUtil.getFirst(leases);
             if (first == null) {
                 rankingChartInfo.setInst(0);
+            } else {
+                InstanceInfo holder = first.getHolder();
+                String itemTenantKey = holder.getGroupKey();
+                String groupKey = getGroupKey(each.getTpId(), itemTenantKey);
+                Map<String, CacheItem> content = ConfigCacheService.getContent(groupKey);
+                rankingChartInfo.setInst(content.keySet().size());
             }
-
-            InstanceInfo holder = first.getHolder();
-            String itemTenantKey = holder.getGroupKey();
-            String groupKey = getGroupKey(each.getTpId(), itemTenantKey);
-            Map<String, CacheItem> content = ConfigCacheService.getContent(groupKey);
-            rankingChartInfo.setInst(content.keySet().size());
 
             String keyTenant = GroupKey.getKeyTenant(each.getTenantId(), each.getItemId(), each.getTpId());
             rankingChartInfo.setGroupKey(keyTenant);

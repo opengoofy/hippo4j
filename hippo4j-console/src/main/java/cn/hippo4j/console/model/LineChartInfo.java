@@ -18,13 +18,23 @@ import java.util.List;
 public class LineChartInfo {
 
     /**
-     * completedTaskCounts
+     * oneList
      */
-    private List<Long> completedTaskCounts;
+    private List<Object> oneList;
 
     /**
-     * rejectCounts
+     * twoList
      */
-    private List<Long> rejectCounts;
+    private List<Object> twoList;
+
+    /**
+     * threeList
+     */
+    private List<Object> threeList;
+
+    /**
+     * fourList
+     */
+    private List<Object> fourList;
 
 }
