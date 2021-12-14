@@ -1,21 +1,22 @@
 package cn.hippo4j.config.service;
 
-import cn.hippo4j.config.notify.NotifyCenter;
-import cn.hippo4j.config.toolkit.Md5ConfigUtil;
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
-import cn.hippo4j.config.notify.listener.Subscriber;
-import cn.hippo4j.config.toolkit.ConfigExecutor;
-import cn.hippo4j.config.toolkit.MapUtil;
-import cn.hippo4j.config.toolkit.RequestUtil;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.event.Event;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
+import cn.hippo4j.config.notify.NotifyCenter;
+import cn.hippo4j.config.notify.listener.Subscriber;
+import cn.hippo4j.config.toolkit.ConfigExecutor;
+import cn.hippo4j.config.toolkit.MapUtil;
+import cn.hippo4j.config.toolkit.Md5ConfigUtil;
+import cn.hippo4j.config.toolkit.RequestUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
@@ -113,8 +114,8 @@ public class LongPollingService {
 
                     parseMapForFilter.forEach(each -> {
                         if (clientSub.clientMd5Map.containsKey(each)) {
-                            getRetainIps().put(clientSub.ip, System.currentTimeMillis());
-                            ConfigCacheService.updateMd5(each, clientSub.ip, ConfigCacheService.getContentMd5(identity));
+                            getRetainIps().put(clientSub.clientIdentify, System.currentTimeMillis());
+                            ConfigCacheService.updateMd5(each, clientSub.clientIdentify, ConfigCacheService.getContentMd5(each));
                             iter.remove();
                             clientSub.sendResponse(Arrays.asList(groupKey));
                         }
@@ -126,18 +127,14 @@ public class LongPollingService {
         }
     }
 
-    public static boolean isSupportLongPolling(HttpServletRequest req) {
-        return null != req.getHeader(LONG_POLLING_HEADER);
-    }
-
-    private static boolean isFixedPolling() {
-        return SwitchService.getSwitchBoolean(SwitchService.FIXED_POLLING, false);
-    }
-
-    private static int getFixedPollingInterval() {
-        return SwitchService.getSwitchInteger(SwitchService.FIXED_POLLING_INTERVAL, FIXED_POLLING_INTERVAL_MS);
-    }
-
+    /**
+     * Add long polling client.
+     *
+     * @param req
+     * @param rsp
+     * @param clientMd5Map
+     * @param probeRequestSize
+     */
     public void addLongPollingClient(HttpServletRequest req, HttpServletResponse rsp, Map<String, String> clientMd5Map,
                                      int probeRequestSize) {
         String str = req.getHeader(LONG_POLLING_HEADER);
@@ -159,14 +156,17 @@ public class LongPollingService {
             }
         }
 
-        String ip = RequestUtil.getRemoteIp(req);
+        String clientIdentify = RequestUtil.getClientIdentify(req);
 
         final AsyncContext asyncContext = req.startAsync();
         asyncContext.setTimeout(0L);
 
-        ConfigExecutor.executeLongPolling(new ClientLongPolling(asyncContext, clientMd5Map, ip, probeRequestSize, timeout - delayTime, appName));
+        ConfigExecutor.executeLongPolling(new ClientLongPolling(asyncContext, clientMd5Map, clientIdentify, probeRequestSize, timeout - delayTime, appName));
     }
 
+    /**
+     * Regularly check the configuration for changes.
+     */
     class ClientLongPolling implements Runnable {
 
         final AsyncContext asyncContext;
@@ -175,7 +175,7 @@ public class LongPollingService {
 
         final long createTime;
 
-        final String ip;
+        final String clientIdentify;
 
         final String appName;
 
@@ -185,10 +185,10 @@ public class LongPollingService {
 
         Future<?> asyncTimeoutFuture;
 
-        public ClientLongPolling(AsyncContext asyncContext, Map<String, String> clientMd5Map, String ip, int probeRequestSize, long timeout, String appName) {
+        public ClientLongPolling(AsyncContext asyncContext, Map<String, String> clientMd5Map, String clientIdentify, int probeRequestSize, long timeout, String appName) {
             this.asyncContext = asyncContext;
             this.clientMd5Map = clientMd5Map;
-            this.ip = ip;
+            this.clientIdentify = clientIdentify;
             this.probeRequestSize = probeRequestSize;
             this.timeoutTime = timeout;
             this.appName = appName;
@@ -199,7 +199,7 @@ public class LongPollingService {
         public void run() {
             asyncTimeoutFuture = ConfigExecutor.scheduleLongPolling(() -> {
                 try {
-                    getRetainIps().put(ClientLongPolling.this.ip, System.currentTimeMillis());
+                    getRetainIps().put(ClientLongPolling.this.clientIdentify, System.currentTimeMillis());
                     allSubs.remove(ClientLongPolling.this);
 
                     if (isFixedPolling()) {
@@ -221,6 +221,11 @@ public class LongPollingService {
             allSubs.add(this);
         }
 
+        /**
+         * Send response.
+         *
+         * @param changedGroups Changed thread pool group key
+         */
         private void sendResponse(List<String> changedGroups) {
             // Cancel time out task.
             if (null != asyncTimeoutFuture) {
@@ -229,6 +234,11 @@ public class LongPollingService {
             generateResponse(changedGroups);
         }
 
+        /**
+         * Generate async response.
+         *
+         * @param changedGroups Changed thread pool group key
+         */
         private void generateResponse(List<String> changedGroups) {
             if (null == changedGroups) {
                 // Tell web container to send http response.
@@ -239,17 +249,15 @@ public class LongPollingService {
             HttpServletResponse response = (HttpServletResponse) asyncContext.getResponse();
 
             try {
-                String respStr = Md5Util.compareMd5ResultString(changedGroups);
-                String resultStr = JSON.toJSONString(Results.success(respStr));
-
+                String respStr = buildRespStr(changedGroups);
                 response.setHeader("Pragma", "no-cache");
                 response.setDateHeader("Expires", 0);
                 response.setHeader("Cache-Control", "no-cache,no-store");
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().println(resultStr);
-                asyncContext.complete();
+                response.getWriter().println(respStr);
             } catch (Exception ex) {
-                log.error(ex.toString(), ex);
+                log.error("Response client failed to return data.", ex);
+            } finally {
                 asyncContext.complete();
             }
         }
@@ -260,20 +268,66 @@ public class LongPollingService {
         return retainIps;
     }
 
+    /**
+     * Generate sync response.
+     *
+     * @param response      response
+     * @param changedGroups Changed thread pool group key
+     */
     private void generateResponse(HttpServletResponse response, List<String> changedGroups) {
-        if (!CollectionUtils.isEmpty(changedGroups)) {
+        if (CollUtil.isNotEmpty(changedGroups)) {
             try {
-                final String changedGroupKeStr = Md5ConfigUtil.compareMd5ResultString(changedGroups);
-                final String respString = JSON.toJSONString(Results.success(changedGroupKeStr));
+                String respStr = buildRespStr(changedGroups);
                 response.setHeader("Pragma", "no-cache");
                 response.setDateHeader("Expires", 0);
                 response.setHeader("Cache-Control", "no-cache,no-store");
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().println(respString);
+                response.getWriter().println(respStr);
             } catch (Exception ex) {
-                log.error(ex.toString(), ex);
+                log.error("Response client failed to return data.", ex);
             }
         }
+    }
+
+    /**
+     * Build resp str.
+     *
+     * @param changedGroups Changed thread pool group key
+     * @return
+     */
+    @SneakyThrows
+    private String buildRespStr(List<String> changedGroups) {
+        String changedGroupStr = Md5Util.compareMd5ResultString(changedGroups);
+        String respStr = JSONUtil.toJSONString(Results.success(changedGroupStr));
+        return respStr;
+    }
+
+    /**
+     * Is support long polling.
+     *
+     * @param req
+     * @return
+     */
+    public static boolean isSupportLongPolling(HttpServletRequest req) {
+        return null != req.getHeader(LONG_POLLING_HEADER);
+    }
+
+    /**
+     * Is fixed polling.
+     *
+     * @return
+     */
+    private static boolean isFixedPolling() {
+        return SwitchService.getSwitchBoolean(SwitchService.FIXED_POLLING, false);
+    }
+
+    /**
+     * Get fixed polling interval.
+     *
+     * @return
+     */
+    private static int getFixedPollingInterval() {
+        return SwitchService.getSwitchInteger(SwitchService.FIXED_POLLING_INTERVAL, FIXED_POLLING_INTERVAL_MS);
     }
 
 }

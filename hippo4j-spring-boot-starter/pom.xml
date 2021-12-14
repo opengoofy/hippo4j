@@ -37,11 +37,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-common</artifactId>
         </dependency>

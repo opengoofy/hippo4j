@@ -1,5 +1,7 @@
 package cn.hippo4j.config.config;
 
+import cn.hippo4j.common.api.JsonFacade;
+import cn.hippo4j.common.api.impl.JacksonHandler;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class CommonConfig {
+
+    @Bean
+    public JsonFacade jacksonHandler() {
+        return new JacksonHandler();
+    }
 
     @Bean
     public ApplicationContextHolder simpleApplicationContextHolder() {

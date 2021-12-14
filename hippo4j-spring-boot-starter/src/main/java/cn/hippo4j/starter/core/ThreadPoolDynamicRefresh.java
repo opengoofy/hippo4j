@@ -1,11 +1,11 @@
 package cn.hippo4j.starter.core;
 
+import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.starter.alarm.ThreadPoolAlarmManage;
 import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
 import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
 import cn.hippo4j.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue;
-import com.alibaba.fastjson.JSON;
-import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.starter.alarm.ThreadPoolAlarmManage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPoolDynamicRefresh {
 
     public static void refreshDynamicPool(String content) {
-        PoolParameterInfo parameter = JSON.parseObject(content, PoolParameterInfo.class);
+        PoolParameterInfo parameter = JSONUtil.parseObject(content, PoolParameterInfo.class);
         ThreadPoolAlarmManage.sendPoolConfigChange(parameter);
         ThreadPoolDynamicRefresh.refreshDynamicPool(parameter);
     }

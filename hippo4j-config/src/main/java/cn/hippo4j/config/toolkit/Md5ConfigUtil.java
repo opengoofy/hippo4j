@@ -50,8 +50,8 @@ public class Md5ConfigUtil {
     public static List<String> compareMd5(HttpServletRequest request, Map<String, String> clientMd5Map) {
         List<String> changedGroupKeys = new ArrayList();
         clientMd5Map.forEach((key, val) -> {
-            String remoteIp = RequestUtil.getRemoteIp(request);
-            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, remoteIp);
+            String clientIdentify = RequestUtil.getClientIdentify(request);
+            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify);
             if (!isUpdateData) {
                 changedGroupKeys.add(key);
             }

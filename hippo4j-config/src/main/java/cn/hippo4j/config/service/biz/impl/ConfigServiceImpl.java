@@ -3,6 +3,7 @@ package cn.hippo4j.config.service.biz.impl;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.ConditionUtil;
 import cn.hippo4j.common.toolkit.ContentUtil;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
@@ -15,7 +16,6 @@ import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -62,18 +62,22 @@ public class ConfigServiceImpl implements ConfigService {
     public ConfigAllInfo findConfigRecentInfo(String... params) {
         ConfigAllInfo resultConfig;
         ConfigAllInfo configInstance = null;
-        LambdaQueryWrapper<ConfigInstanceInfo> instanceQueryWrapper = Wrappers.lambdaQuery(ConfigInstanceInfo.class)
-                .eq(ConfigInstanceInfo::getInstanceId, params[3])
-                .orderByDesc(ConfigInstanceInfo::getGmtCreate)
-                .last("LIMIT 1");
 
-        ConfigInstanceInfo instanceInfo = configInstanceMapper.selectOne(instanceQueryWrapper);
-        if (instanceInfo != null) {
-            String content = instanceInfo.getContent();
-            configInstance = JSON.parseObject(content, ConfigAllInfo.class);
-            configInstance.setContent(content);
-            configInstance.setGmtCreate(instanceInfo.getGmtCreate());
-            configInstance.setMd5(Md5Util.getTpContentMd5(configInstance));
+        String instanceId = params[3];
+        if (StrUtil.isNotBlank(instanceId)) {
+            LambdaQueryWrapper<ConfigInstanceInfo> instanceQueryWrapper = Wrappers.lambdaQuery(ConfigInstanceInfo.class)
+                    .eq(ConfigInstanceInfo::getInstanceId, params[3])
+                    .orderByDesc(ConfigInstanceInfo::getGmtCreate)
+                    .last("LIMIT 1");
+
+            ConfigInstanceInfo instanceInfo = configInstanceMapper.selectOne(instanceQueryWrapper);
+            if (instanceInfo != null) {
+                String content = instanceInfo.getContent();
+                configInstance = JSONUtil.parseObject(content, ConfigAllInfo.class);
+                configInstance.setContent(content);
+                configInstance.setGmtCreate(instanceInfo.getGmtCreate());
+                configInstance.setMd5(Md5Util.getTpContentMd5(configInstance));
+            }
         }
 
         ConfigAllInfo configAllInfo = findConfigAllInfo(params[0], params[1], params[2]);

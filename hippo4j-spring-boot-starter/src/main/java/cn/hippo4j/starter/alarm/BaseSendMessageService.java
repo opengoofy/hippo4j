@@ -3,6 +3,7 @@ package cn.hippo4j.starter.alarm;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.GroupKey;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
@@ -10,7 +11,6 @@ import cn.hippo4j.starter.core.GlobalThreadPoolManage;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
@@ -125,8 +125,8 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
         }
 
         if (result != null && result.isSuccess() && result.getData() != null) {
-            String resultDataStr = JSON.toJSONString(result.getData());
-            List<ThreadPoolNotify> resultData = JSON.parseArray(resultDataStr, ThreadPoolNotify.class);
+            String resultDataStr = JSONUtil.toJSONString(result.getData());
+            List<ThreadPoolNotify> resultData = JSONUtil.parseArray(resultDataStr, ThreadPoolNotify.class);
             resultData.forEach(each -> ALARM_NOTIFY_CONFIG.put(each.getNotifyKey(), each.getNotifyList()));
 
             ALARM_NOTIFY_CONFIG.forEach((key, val) ->

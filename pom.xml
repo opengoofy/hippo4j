@@ -26,7 +26,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <revision>1.0.0-RC3</revision>
+        <revision>1.0.0-SNAPSHOT</revision>
 
         <dozer.version>6.5.0</dozer.version>
         <guava.version>29.0-jre</guava.version>
@@ -38,6 +38,7 @@
         <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
         <forest.version>1.5.11</forest.version>
         <jjwt.version>0.9.0</jjwt.version>
+        <jackson-bom.version>2.11.1</jackson-bom.version>
 
         <dingtalk-sdk.version>1.0.1</dingtalk-sdk.version>
 
@@ -194,6 +195,13 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-json</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

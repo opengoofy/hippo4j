@@ -1,6 +1,6 @@
 package cn.hippo4j.config.model.biz.tenant;
 
-import com.alibaba.fastjson.JSON;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import lombok.Data;
 
 /**
@@ -39,7 +39,7 @@ public class TenantUpdateReqDTO {
 
     @Override
     public String toString() {
-        return JSON.toJSONString(this);
+        return JSONUtil.toJSONString(this);
     }
 
 }
