@@ -1,6 +1,7 @@
 package cn.hippo4j.starter.alarm;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.JSONUtil;
@@ -51,10 +52,11 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
 
     @Override
     public void sendAlarmMessage(MessageTypeEnum typeEnum, DynamicThreadPoolExecutor executor) {
+        String threadPoolId = executor.getThreadPoolId();
         String buildKey = StrUtil.builder(executor.getThreadPoolId(), "+", "ALARM").toString();
         List<NotifyDTO> notifyList = ALARM_NOTIFY_CONFIG.get(buildKey);
         if (CollUtil.isEmpty(notifyList)) {
-            log.warn("Please configure alarm notification on the server.");
+            log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
             return;
         }
 
@@ -62,7 +64,7 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
                 if (messageHandler == null) {
-                    log.warn("Please configure alarm notification on the server.");
+                    log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
                     return;
                 }
 
@@ -70,17 +72,18 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
                     messageHandler.sendAlarmMessage(each, executor);
                 }
             } catch (Exception ex) {
-                log.warn("Failed to send thread pool alarm notification.", ex);
+                log.warn("Failed to send thread pool alarm notification. key :: [{}]", threadPoolId, ex);
             }
         });
     }
 
     @Override
     public void sendChangeMessage(PoolParameterInfo parameter) {
+        String threadPoolId = parameter.getTpId();
         String buildKey = StrUtil.builder(parameter.getTpId(), "+", "CONFIG").toString();
         List<NotifyDTO> notifyList = ALARM_NOTIFY_CONFIG.get(buildKey);
         if (CollUtil.isEmpty(notifyList)) {
-            log.warn("Please configure alarm notification on the server.");
+            log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
             return;
         }
 
@@ -88,13 +91,13 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
                 if (messageHandler == null) {
-                    log.warn("Please configure alarm notification on the server.");
+                    log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
                     return;
                 }
 
                 messageHandler.sendChangeMessage(each, parameter);
             } catch (Exception ex) {
-                log.warn("Failed to send thread pool change notification.", ex);
+                log.warn("Failed to send thread pool change notification. key :: [{}]", threadPoolId, ex);
             }
         });
     }
@@ -135,7 +138,7 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
                                 Cache<String, String> cache = CacheBuilder.newBuilder()
                                         .expireAfterWrite(each.getInterval(), TimeUnit.MINUTES)
                                         .build();
-                                AlarmControlHandler.THREAD_POOL_ALARM_CACHE.put(StrUtil.builder(each.getTpId(), "+", each.getPlatform()).toString(), cache);
+                                AlarmControlHandler.THREAD_POOL_ALARM_CACHE.put(StrUtil.builder(each.getTpId(), Constants.GROUP_KEY_DELIMITER, each.getPlatform()).toString(), cache);
                             })
             );
         }
