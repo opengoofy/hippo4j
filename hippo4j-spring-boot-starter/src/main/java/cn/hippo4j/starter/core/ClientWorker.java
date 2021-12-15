@@ -3,12 +3,12 @@ package cn.hippo4j.starter.core;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.remote.ServerHealthCheck;
 import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -110,7 +110,7 @@ public class ClientWorker {
                 try {
                     String content = getServerConfig(namespace, itemId, tpId, 3000L);
                     CacheData cacheData = cacheMap.get(tpId);
-                    String poolContent = ContentUtil.getPoolContent(JSON.parseObject(content, PoolParameterInfo.class));
+                    String poolContent = ContentUtil.getPoolContent(JSONUtil.parseObject(content, PoolParameterInfo.class));
                     cacheData.setContent(poolContent);
                 } catch (Exception ex) {
                     // ignore
@@ -191,7 +191,7 @@ public class ClientWorker {
 
         Result result = agent.httpGetByConfig(CONFIG_CONTROLLER_PATH, null, params, readTimeout);
         if (result.isSuccess()) {
-            return result.getData().toString();
+            return JSONUtil.toJSONString(result.getData());
         }
 
         log.error("[Sub server] namespace :: {}, itemId :: {}, tpId :: {}, result code :: {}",
@@ -217,18 +217,16 @@ public class ClientWorker {
                 String[] keyArr = dataIdAndGroup.split(WORD_SEPARATOR);
                 String dataId = keyArr[0];
                 String group = keyArr[1];
-                if (keyArr.length == 2) {
-                    updateList.add(GroupKey.getKey(dataId, group));
-                    log.info("[{}] [Polling resp] config changed. dataId={}, group={}", dataId, group);
-                } else if (keyArr.length == 3) {
+                if (keyArr.length == 3) {
                     String tenant = keyArr[2];
                     updateList.add(GroupKey.getKeyTenant(dataId, group, tenant));
-                    log.info("[Polling resp] config changed. dataId={}, group={}, tenant={}", dataId, group, tenant);
+                    log.info("Refresh thread pool changed. [{}]", dataId);
                 } else {
-                    log.error("[{}] [Polling resp] invalid dataIdAndGroup error {}", dataIdAndGroup);
+                    log.error("[{}] [Polling resp] invalid dataIdAndGroup error.", dataIdAndGroup);
                 }
             }
         }
+
         return updateList;
     }
 
@@ -251,7 +249,7 @@ public class ClientWorker {
             String serverConfig = null;
             try {
                 serverConfig = getServerConfig(namespace, itemId, tpId, 3000L);
-                PoolParameterInfo poolInfo = JSON.parseObject(serverConfig, PoolParameterInfo.class);
+                PoolParameterInfo poolInfo = JSONUtil.parseObject(serverConfig, PoolParameterInfo.class);
                 cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
             } catch (Exception ex) {
                 log.error("[Cache Data] Error. Service Unavailable :: {}", ex.getMessage());

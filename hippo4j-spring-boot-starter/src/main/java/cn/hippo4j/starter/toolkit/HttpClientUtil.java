@@ -1,6 +1,6 @@
 package cn.hippo4j.starter.toolkit;
 
-import com.alibaba.fastjson.JSON;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -63,7 +63,7 @@ public class HttpClientUtil {
      */
     public <T> T restApiGet(String url, Class<T> clazz) {
         String resp = get(url);
-        return JSON.parseObject(resp, clazz);
+        return JSONUtil.parseObject(resp, clazz);
     }
 
     /**
@@ -77,7 +77,7 @@ public class HttpClientUtil {
     @SneakyThrows
     public <T> T restApiGetHealth(String url, Class<T> clazz) {
         String resp = new String(doGet(url), "utf-8");
-        return JSON.parseObject(resp, clazz);
+        return JSONUtil.parseObject(resp, clazz);
     }
 
     /**
@@ -92,7 +92,7 @@ public class HttpClientUtil {
     public <T> T restApiGet(String url, Map<String, String> queryString, Class<T> clazz) {
         String fullUrl = buildUrl(url, queryString);
         String resp = get(fullUrl);
-        return JSON.parseObject(resp, clazz);
+        return JSONUtil.parseObject(resp, clazz);
     }
 
     /**
@@ -121,7 +121,7 @@ public class HttpClientUtil {
      */
     public <T> T restApiPost(String url, Object body, Class<T> clazz) {
         String resp = restApiPost(url, body);
-        return JSON.parseObject(resp, clazz);
+        return JSONUtil.parseObject(resp, clazz);
     }
 
     /**
@@ -159,7 +159,7 @@ public class HttpClientUtil {
 
     @SneakyThrows
     private String doPost(String url, Object body) {
-        String jsonBody = JSON.toJSONString(body);
+        String jsonBody = JSONUtil.toJSONString(body);
         RequestBody requestBody = RequestBody.create(jsonMediaType, jsonBody);
         Request request = new Request.Builder()
                 .url(url)
@@ -205,7 +205,7 @@ public class HttpClientUtil {
             throw new RuntimeException(msg);
         }
 
-        return JSON.parseObject(resp.body().string(), clazz);
+        return JSONUtil.parseObject(resp.body().string(), clazz);
     }
 
     @SneakyThrows
@@ -227,7 +227,7 @@ public class HttpClientUtil {
             log.error(msg);
             throw new RuntimeException(msg);
         }
-        return JSON.parseObject(resp.body().string(), clazz);
+        return JSONUtil.parseObject(resp.body().string(), clazz);
     }
 
 }

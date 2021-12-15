@@ -2,6 +2,7 @@ package cn.hippo4j.starter.alarm.wechat;
 
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.starter.alarm.NotifyDTO;
 import cn.hippo4j.starter.alarm.NotifyPlatformEnum;
 import cn.hippo4j.starter.alarm.SendMessageHandler;
@@ -13,7 +14,6 @@ import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
-import com.alibaba.fastjson.JSON;
 import com.google.common.base.Joiner;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -155,7 +155,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler {
             markdown.setContent(text);
             weChatReq.setMarkdown(markdown);
 
-            HttpRequest.post(serverUrl).body(JSON.toJSONString(weChatReq)).execute();
+            HttpRequest.post(serverUrl).body(JSONUtil.toJSONString(weChatReq)).execute();
         } catch (Exception ex) {
             log.error("WeChat failed to send message", ex);
         }

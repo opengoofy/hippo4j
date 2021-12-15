@@ -1,7 +1,6 @@
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.constant.Constants;
-import com.alibaba.fastjson.JSON;
 import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 
@@ -27,7 +26,7 @@ public class ContentUtil {
                 .setCapacityAlarm(parameter.getCapacityAlarm())
                 .setLivenessAlarm(parameter.getLivenessAlarm())
                 .setRejectedType(parameter.getRejectedType());
-        return JSON.toJSONString(poolInfo);
+        return JSONUtil.toJSONString(poolInfo);
     }
 
     public static String getGroupKey(PoolParameter parameter) {

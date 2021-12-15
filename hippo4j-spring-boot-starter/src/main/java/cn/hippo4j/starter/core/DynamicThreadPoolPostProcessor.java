@@ -3,6 +3,7 @@ package cn.hippo4j.starter.core;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.common.CommonDynamicThreadPool;
 import cn.hippo4j.starter.config.BootstrapProperties;
@@ -11,7 +12,6 @@ import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
 import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
 import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
 import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
-import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -108,26 +108,29 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
         try {
             result = httpAgent.httpGetByConfig(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 5000L);
-            if (result.isSuccess() && result.getData() != null && (ppi = JSON.toJavaObject((JSON) result.getData(), PoolParameterInfo.class)) != null) {
-                // 使用相关参数创建线程池
-                BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
-                poolExecutor = ThreadPoolBuilder.builder()
-                        .dynamicPool()
-                        .workQueue(workQueue)
-                        .threadFactory(tpId)
-                        .poolThreadSize(ppi.getCoreSize(), ppi.getMaxSize())
-                        .keepAliveTime(ppi.getKeepAliveTime(), TimeUnit.SECONDS)
-                        .rejected(RejectedTypeEnum.createPolicy(ppi.getRejectedType()))
-                        .alarmConfig(ppi.getIsAlarm(), ppi.getCapacityAlarm(), ppi.getLivenessAlarm())
-                        .build();
+            if (result.isSuccess() && result.getData() != null) {
+                String resultJsonStr = JSONUtil.toJSONString(result.getData());
+                if ((ppi = JSONUtil.parseObject(resultJsonStr, PoolParameterInfo.class)) != null) {
+                    // 使用相关参数创建线程池
+                    BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
+                    poolExecutor = ThreadPoolBuilder.builder()
+                            .dynamicPool()
+                            .workQueue(workQueue)
+                            .threadFactory(tpId)
+                            .poolThreadSize(ppi.getCoreSize(), ppi.getMaxSize())
+                            .keepAliveTime(ppi.getKeepAliveTime(), TimeUnit.SECONDS)
+                            .rejected(RejectedTypeEnum.createPolicy(ppi.getRejectedType()))
+                            .alarmConfig(ppi.getIsAlarm(), ppi.getCapacityAlarm(), ppi.getLivenessAlarm())
+                            .build();
 
-                if (poolExecutor instanceof DynamicExecutorConfigurationSupport) {
-                    TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();
-                    ((DynamicThreadPoolExecutor) poolExecutor).setTaskDecorator(taskDecorator);
+                    if (poolExecutor instanceof DynamicExecutorConfigurationSupport) {
+                        TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();
+                        ((DynamicThreadPoolExecutor) poolExecutor).setTaskDecorator(taskDecorator);
+                    }
+
+                    dynamicThreadPoolWrap.setExecutor(poolExecutor);
+                    isSubscribe = true;
                 }
-
-                dynamicThreadPoolWrap.setExecutor(poolExecutor);
-                isSubscribe = true;
             }
         } catch (Exception ex) {
             poolExecutor = dynamicThreadPoolWrap.getExecutor() != null ? dynamicThreadPoolWrap.getExecutor() : CommonDynamicThreadPool.getInstance(tpId);

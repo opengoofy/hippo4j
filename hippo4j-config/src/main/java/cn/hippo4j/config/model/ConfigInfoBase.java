@@ -1,8 +1,8 @@
 package cn.hippo4j.config.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -87,13 +87,13 @@ public class ConfigInfoBase implements Serializable {
     /**
      * MD5
      */
-    @JSONField(serialize = false)
+    @JsonIgnore
     private String md5;
 
     /**
      * content
      */
-    @JSONField(serialize = false)
+    @JsonIgnore
     private String content;
 
 }

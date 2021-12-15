@@ -1,12 +1,12 @@
 package cn.hippo4j.config.model;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
+import cn.hippo4j.common.model.PoolParameter;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import cn.hippo4j.common.model.PoolParameter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
@@ -26,21 +26,21 @@ public class ConfigAllInfo extends ConfigInfo implements PoolParameter {
     /**
      * desc
      */
-    @JSONField(serialize = false)
+    @JsonIgnore
     @TableField(exist = false, fill = FieldFill.UPDATE)
     private String desc;
 
     /**
      * gmtCreate
      */
-    @JSONField(serialize = false)
+    @JsonIgnore
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
     /**
      * gmtModified
      */
-    @JSONField(serialize = false)
+    @JsonIgnore
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
@@ -48,13 +48,13 @@ public class ConfigAllInfo extends ConfigInfo implements PoolParameter {
      * delFlag
      */
     @TableLogic
-    @JSONField(serialize = false)
+    @JsonIgnore
     @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
 
     @Override
     public String toString() {
-        return JSON.toJSONString(this);
+        return JSONUtil.toJSONString(this);
     }
 
 }

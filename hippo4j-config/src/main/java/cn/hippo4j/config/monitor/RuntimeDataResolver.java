@@ -2,9 +2,8 @@ package cn.hippo4j.config.monitor;
 
 import cn.hippo4j.common.monitor.MessageTypeEnum;
 import cn.hippo4j.common.monitor.RuntimeMessage;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.config.service.biz.HisRunDataService;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,7 +28,7 @@ public class RuntimeDataResolver extends AbstractMonitorDataExecuteStrategy<Runt
 
     @Override
     public void execute(RuntimeMessage message) {
-        log.info("[{}] Perform monitoring data persistence. content :: {}", this.getClass().getName(), JSON.toJSONString(message, SerializerFeature.PrettyFormat));
+        log.info("[{}] Perform monitoring data persistence. content :: {}", this.getClass().getName(), JSONUtil.toJSONString(message));
 
         hisRunDataService.save(message);
     }

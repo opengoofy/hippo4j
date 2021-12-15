@@ -1,10 +1,10 @@
 package cn.hippo4j.auth.filter;
 
 import cn.hippo4j.auth.toolkit.JwtTokenUtil;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ServiceException;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,7 +50,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             // 返回 Json 形式的错误信息
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
-            response.getWriter().write(JSON.toJSONString(Results.failure("-1", ex.getMessage())));
+            response.getWriter().write(JSONUtil.toJSONString(Results.failure("-1", ex.getMessage())));
             response.getWriter().flush();
             return;
         }
