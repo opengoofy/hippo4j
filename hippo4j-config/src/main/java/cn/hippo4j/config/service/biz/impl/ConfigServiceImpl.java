@@ -18,7 +18,6 @@ import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.AllArgsConstructor;
@@ -50,9 +49,9 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenantId) {
         LambdaQueryWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
-                .eq(!StringUtils.isBlank(tpId), ConfigAllInfo::getTpId, tpId)
-                .eq(!StringUtils.isBlank(itemId), ConfigAllInfo::getItemId, itemId)
-                .eq(!StringUtils.isBlank(tenantId), ConfigAllInfo::getTenantId, tenantId);
+                .eq(StrUtil.isNotBlank(tpId), ConfigAllInfo::getTpId, tpId)
+                .eq(StrUtil.isNotBlank(itemId), ConfigAllInfo::getItemId, itemId)
+                .eq(StrUtil.isNotBlank(tenantId), ConfigAllInfo::getTenantId, tenantId);
 
         ConfigAllInfo configAllInfo = configInfoMapper.selectOne(wrapper);
         return configAllInfo;
@@ -66,6 +65,9 @@ public class ConfigServiceImpl implements ConfigService {
         String instanceId = params[3];
         if (StrUtil.isNotBlank(instanceId)) {
             LambdaQueryWrapper<ConfigInstanceInfo> instanceQueryWrapper = Wrappers.lambdaQuery(ConfigInstanceInfo.class)
+                    .eq(ConfigInstanceInfo::getTpId, params[0])
+                    .eq(ConfigInstanceInfo::getItemId, params[1])
+                    .eq(ConfigInstanceInfo::getTenantId, params[2])
                     .eq(ConfigInstanceInfo::getInstanceId, params[3])
                     .orderByDesc(ConfigInstanceInfo::getGmtCreate)
                     .last("LIMIT 1");

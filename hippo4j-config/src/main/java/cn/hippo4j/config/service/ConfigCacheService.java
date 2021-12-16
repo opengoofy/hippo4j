@@ -11,6 +11,7 @@ import cn.hippo4j.config.notify.NotifyCenter;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.toolkit.MapUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -68,7 +69,7 @@ public class ConfigCacheService {
         }
         String[] params = groupKey.split("\\+");
         ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
-        if (config != null && !StringUtils.isEmpty(config.getTpId())) {
+        if (config != null && StrUtil.isNotBlank(config.getTpId())) {
             cacheItem = new CacheItem(groupKey, config);
             cacheItemMap.put(clientIdentify, cacheItem);
             CLIENT_CONFIG_CACHE.put(groupKey, cacheItemMap);
