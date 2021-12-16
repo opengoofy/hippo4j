@@ -11,9 +11,10 @@ import cn.hippo4j.starter.core.ThreadPoolOperation;
 import cn.hippo4j.starter.enable.MarkerConfiguration;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
-import cn.hippo4j.starter.monitor.HttpConnectSender;
-import cn.hippo4j.starter.monitor.MessageSender;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
+import cn.hippo4j.starter.monitor.collect.RunTimeInfoCollector;
+import cn.hippo4j.starter.monitor.send.HttpConnectSender;
+import cn.hippo4j.starter.monitor.send.MessageSender;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.starter.remote.ServerHealthCheck;
@@ -110,6 +111,11 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     public JsonFacade jacksonHandler() {
         return new JacksonHandler();
+    }
+
+    @Bean
+    public RunTimeInfoCollector runTimeInfoCollector() {
+        return new RunTimeInfoCollector(properties);
     }
 
 }

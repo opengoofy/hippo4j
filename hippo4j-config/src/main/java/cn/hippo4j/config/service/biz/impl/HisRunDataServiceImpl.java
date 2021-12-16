@@ -44,6 +44,7 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
                 .eq(HisRunDataInfo::getTpId, reqDTO.getTpId())
                 .eq(HisRunDataInfo::getInstanceId, reqDTO.getInstanceId())
                 .between(HisRunDataInfo::getTimestamp, startTime, currentDate.getTime())
+                .orderByAsc(HisRunDataInfo::getTimestamp)
                 .list();
 
         return BeanUtil.convert(hisRunDataInfos, MonitorRespDTO.class);
@@ -61,6 +62,7 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
                 .eq(HisRunDataInfo::getTpId, reqDTO.getTpId())
                 .eq(HisRunDataInfo::getInstanceId, reqDTO.getInstanceId())
                 .between(HisRunDataInfo::getTimestamp, startTime, currentDate.getTime())
+                .orderByAsc(HisRunDataInfo::getTimestamp)
                 .list();
 
         List<String> times = Lists.newArrayList();

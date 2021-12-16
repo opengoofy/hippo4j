@@ -13,6 +13,7 @@ import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
 import cn.hippo4j.config.service.biz.HisRunDataService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,8 @@ public class MonitorController {
 
     private final QueryMonitorExecuteChoose queryMonitorExecuteChoose;
 
+    private final ThreadPoolTaskExecutor monitorThreadPoolTaskExecutor;
+
     @GetMapping
     public Result<List<MonitorRespDTO>> queryMonitor(MonitorQueryReqDTO reqDTO) {
         List<MonitorRespDTO> monitorRespList = hisRunDataService.query(reqDTO);
@@ -40,15 +43,24 @@ public class MonitorController {
     }
 
     @PostMapping("/info")
-    public Result<MonitorActiveRespDTO> querInfoThreadPoolMonitor(@RequestBody MonitorQueryReqDTO reqDTO) {
+    public Result<MonitorActiveRespDTO> queryInfoThreadPoolMonitor(@RequestBody MonitorQueryReqDTO reqDTO) {
         MonitorActiveRespDTO monitorRespList = hisRunDataService.queryInfoThreadPoolMonitor(reqDTO);
         return Results.success(monitorRespList);
     }
 
     @PostMapping
-    public Result dataCollect(@RequestBody MessageWrapper messageWrapper) {
-        Message message = MessageConvert.convert(messageWrapper);
-        queryMonitorExecuteChoose.chooseAndExecute(message);
+    public Result<Void> dataCollect(@RequestBody MessageWrapper messageWrapper) {
+        Runnable task = () -> {
+            Message message = MessageConvert.convert(messageWrapper);
+            queryMonitorExecuteChoose.chooseAndExecute(message);
+        };
+
+        try {
+            monitorThreadPoolTaskExecutor.execute(task);
+        } catch (Exception ex) {
+            log.error("Monitoring data insertion database task overflow.", ex);
+        }
+
         return Results.success();
     }
 

@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.monitor;
+package cn.hippo4j.starter.monitor.collect;
 
 import cn.hippo4j.common.monitor.Message;
 
@@ -8,7 +8,7 @@ import cn.hippo4j.common.monitor.Message;
  * @author chen.ma
  * @date 2021/12/7 20:11
  */
-public interface Collect {
+public interface Collector {
 
     /**
      * Collect message.

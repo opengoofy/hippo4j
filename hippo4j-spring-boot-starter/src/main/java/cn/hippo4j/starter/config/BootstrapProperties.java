@@ -20,23 +20,28 @@ public class BootstrapProperties {
     public static final String PREFIX = "spring.dynamic.thread-pool";
 
     /**
-     * serverAddr
+     * Server addr
      */
     private String serverAddr;
 
     /**
-     * namespace
+     * Namespace
      */
     private String namespace;
 
     /**
-     * itemId
+     * Item id
      */
     private String itemId;
 
     /**
-     * Enable banner
+     * Print dynamic thread pool banner
      */
     private boolean banner = true;
+
+    /**
+     * Time interval for client to collect monitoring data. unit: ms
+     */
+    private Long collectInterval = 5000L;
 
 }

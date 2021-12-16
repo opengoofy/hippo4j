@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.monitor;
+package cn.hippo4j.starter.monitor.send;
 
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
