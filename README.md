@@ -52,16 +52,24 @@
 
 [![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool)
 
-## 联系我
 
-对于这个项目，是否有什么不一样看法，同 [作者](https://hippox.cn/zh-cn/docs/other/exchange.html) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
+## 鸣谢
 
-## 致谢
 
 Hippo4J 项目基于或参考以下项目:
 
-1. [Nacos](https://github.com/alibaba/nacos)：an easy-to-use dynamic service discovery, configuration and service management platform for building cloud native applications.
-2. [Eureka](https://github.com/Netflix/Eureka)：AWS Service registry for resilient mid-tier load balancing and failover.
-3. [ShardingSphere](https://github.com/apache/shardingsphere)：Build criterion and ecosystem above multi-model databases.
-4. [mzt-biz-log](https://github.com/mouzt/mzt-biz-log)：支持 Springboot，基于注解的可使用变量、可以自定义函数的通用操作日志组件.
-5. [equator](https://github.com/dadiyang/equator)：一个用于比较两个对象的所有属性是否全部相等，并且可以获取所有不相等的属性的比对器.
+- [Nacos](https://github.com/alibaba/nacos)
+- [Eureka](https://github.com/Netflix/Eureka)
+- [mzt-biz-log](https://github.com/mouzt/mzt-biz-log)
+- [equator](https://github.com/dadiyang/equator)
+
+感谢 JetBrains 提供的免费开源 License：
+
+<p>
+<img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
+</p>
+
+
+## 联系我
+
+对于这个项目，是否有什么不一样看法，同 [作者](https://hippox.cn/zh-cn/docs/other/exchange.html) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
