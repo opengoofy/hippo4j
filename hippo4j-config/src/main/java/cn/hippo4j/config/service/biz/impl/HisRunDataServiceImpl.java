@@ -14,7 +14,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -29,13 +29,15 @@ import static cn.hutool.core.date.DatePattern.NORM_TIME_PATTERN;
  * @date 2021/12/10 21:28
  */
 @Service
-@AllArgsConstructor
 public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunDataInfo> implements HisRunDataService {
+
+    @Value("${clean.history.data.period:30}")
+    private Long cleanHistoryDataPeriod;
 
     @Override
     public List<MonitorRespDTO> query(MonitorQueryReqDTO reqDTO) {
         Date currentDate = new Date();
-        DateTime dateTime = DateUtil.offsetMinute(currentDate, -30);
+        DateTime dateTime = DateUtil.offsetMinute(currentDate, (int) -cleanHistoryDataPeriod);
         long startTime = dateTime.getTime();
 
         List<HisRunDataInfo> hisRunDataInfos = this.lambdaQuery()
@@ -53,7 +55,7 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
     @Override
     public MonitorActiveRespDTO queryInfoThreadPoolMonitor(MonitorQueryReqDTO reqDTO) {
         Date currentDate = new Date();
-        DateTime dateTime = DateUtil.offsetMinute(currentDate, -60);
+        DateTime dateTime = DateUtil.offsetMinute(currentDate, (int) -cleanHistoryDataPeriod);
         long startTime = dateTime.getTime();
 
         List<HisRunDataInfo> hisRunDataInfos = this.lambdaQuery()

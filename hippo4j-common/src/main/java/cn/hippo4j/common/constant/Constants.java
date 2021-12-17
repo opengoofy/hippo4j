@@ -70,4 +70,6 @@ public class Constants {
 
     public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
 
+    public static final String DEFAULT_GROUP = "default group";
+
 }
