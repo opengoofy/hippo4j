@@ -32,11 +32,13 @@ public class TimeCleanHistoryDataTask implements Runnable, InitializingBean {
     @Value("${clean.history.data.period:30}")
     private Long cleanHistoryDataPeriod;
 
+    @Value("${clean.history.data.period.enable:true}")
+    private Boolean cleanHistoryDataPeriodEnable;
+
     @NonNull
     private final HisRunDataService hisRunDataService;
 
-    private final ScheduledExecutorService cleanHistoryDataExecutor = ExecutorFactory.Managed
-            .newSingleScheduledExecutorService(DEFAULT_GROUP, r -> new Thread(r, "clean-history-data"));
+    private ScheduledExecutorService cleanHistoryDataExecutor;
 
     @Override
     public void run() {
@@ -51,7 +53,11 @@ public class TimeCleanHistoryDataTask implements Runnable, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        cleanHistoryDataExecutor.scheduleWithFixedDelay(this, 0, 1, TimeUnit.MINUTES);
+        if (cleanHistoryDataPeriodEnable) {
+            cleanHistoryDataExecutor = ExecutorFactory.Managed
+                    .newSingleScheduledExecutorService(DEFAULT_GROUP, r -> new Thread(r, "clean-history-data"));
+            cleanHistoryDataExecutor.scheduleWithFixedDelay(this, 0, 1, TimeUnit.MINUTES);
+        }
     }
 
 }
