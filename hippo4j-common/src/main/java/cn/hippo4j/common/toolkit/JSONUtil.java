@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class JSONUtil {
 
-    private static JsonFacade jsonFacade;
+    private static JsonFacade JSON_FACADE;
 
     static {
-        JSONUtil.jsonFacade = ApplicationContextHolder.getBean(JsonFacade.class);
+        JSONUtil.JSON_FACADE = ApplicationContextHolder.getBean(JsonFacade.class);
     }
 
     public static String toJSONString(Object object) {
@@ -25,7 +25,7 @@ public class JSONUtil {
             return null;
         }
 
-        return jsonFacade.toJSONString(object);
+        return JSON_FACADE.toJSONString(object);
     }
 
     public static <T> T parseObject(String text, Class<T> clazz) {
@@ -33,7 +33,7 @@ public class JSONUtil {
             return null;
         }
 
-        return jsonFacade.parseObject(text, clazz);
+        return JSON_FACADE.parseObject(text, clazz);
     }
 
     public static <T> List<T> parseArray(String text, Class<T> clazz) {
@@ -41,7 +41,7 @@ public class JSONUtil {
             return null;
         }
 
-        return jsonFacade.parseArray(text, clazz);
+        return JSON_FACADE.parseArray(text, clazz);
     }
 
 }
