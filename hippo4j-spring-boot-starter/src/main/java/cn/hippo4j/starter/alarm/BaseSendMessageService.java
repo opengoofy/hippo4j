@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static cn.hippo4j.common.constant.Constants.BASE_PATH;
+
 /**
  * Base send message service.
  *
@@ -122,7 +124,7 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
 
         Result result = null;
         try {
-            result = httpAgent.httpPostByDiscovery("/v1/cs/notify/list/config", new ThreadPoolNotifyReqDTO(groupKeys));
+            result = httpAgent.httpPostByDiscovery(BASE_PATH + "/notify/list/config", new ThreadPoolNotifyReqDTO(groupKeys));
         } catch (Throwable ex) {
             log.error("Get dynamic thread pool notify configuration error.", ex);
         }

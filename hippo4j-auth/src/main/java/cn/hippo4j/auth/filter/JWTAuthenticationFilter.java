@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static cn.hippo4j.auth.constant.Constants.SPLIT_COMMA;
+import static cn.hippo4j.common.constant.Constants.BASE_PATH;
 
 /**
  * JWT authentication filter.
@@ -42,7 +43,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-        super.setFilterProcessesUrl("/v1/cs/auth/login");
+        super.setFilterProcessesUrl(BASE_PATH + "/auth/login");
     }
 
     @Override

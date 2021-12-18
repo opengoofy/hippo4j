@@ -17,7 +17,7 @@ import org.springframework.beans.factory.DisposableBean;
 import java.util.Map;
 import java.util.concurrent.*;
 
-import static cn.hippo4j.common.constant.Constants.GROUP_KEY;
+import static cn.hippo4j.common.constant.Constants.*;
 
 /**
  * Discovery client.
@@ -71,7 +71,7 @@ public class DiscoveryClient implements DisposableBean {
     boolean register() {
         log.info("{}{} - registering service...", PREFIX, appPathIdentifier);
 
-        String urlPath = Constants.BASE_PATH + "/apps/register/";
+        String urlPath = BASE_PATH + "/apps/register/";
         Result registerResult;
         try {
             registerResult = httpAgent.httpPostByDiscovery(urlPath, instanceInfo);
@@ -108,7 +108,7 @@ public class DiscoveryClient implements DisposableBean {
             log.error("{}{} - remove config cache fail.", PREFIX, appPathIdentifier, ex);
         }
 
-        String removeNodeUrlPath = Constants.BASE_PATH + "/apps/remove/";
+        String removeNodeUrlPath = BASE_PATH + "/apps/remove/";
         Result removeNodeResult;
         try {
             removeNodeResult = httpAgent.httpPostByDiscovery(removeNodeUrlPath, instanceInfo);
@@ -139,7 +139,7 @@ public class DiscoveryClient implements DisposableBean {
                     .setLastDirtyTimestamp(instanceInfo.getLastDirtyTimestamp().toString())
                     .setStatus(instanceInfo.getStatus().toString());
 
-            renewResult = httpAgent.httpPostByDiscovery(Constants.BASE_PATH + "/apps/renew", instanceRenew);
+            renewResult = httpAgent.httpPostByDiscovery(BASE_PATH + "/apps/renew", instanceRenew);
             if (StrUtil.equals(ErrorCodeEnum.NOT_FOUND.getCode(), renewResult.getCode())) {
                 long timestamp = instanceInfo.setIsDirtyWithTime();
                 boolean success = register();

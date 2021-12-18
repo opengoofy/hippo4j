@@ -78,14 +78,14 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         String[] ignores = Stream
                 .of(
-                        "/v1/cs/apps/renew/**",
-                        "/v1/cs/apps/remove/**",
-                        "/v1/cs/apps/register/**",
-                        "/v1/cs/configs/**",
-                        "/v1/cs/listener/**",
-                        "/v1/cs/monitor/**",
-                        "/v1/cs/health/check/**",
-                        "/v1/cs/notify/list/config/**"
+                        "/hippo4j/v1/cs/apps/renew/**",
+                        "/hippo4j/v1/cs/apps/remove/**",
+                        "/hippo4j/v1/cs/apps/register/**",
+                        "/hippo4j/v1/cs/configs/**",
+                        "/hippo4j/v1/cs/listener/**",
+                        "/hippo4j/v1/cs/monitor/**",
+                        "/hippo4j/v1/cs/health/check/**",
+                        "/hippo4j/v1/cs/notify/list/config/**"
                 )
                 .toArray(String[]::new);
         web.ignoring().antMatchers(ignores);
