@@ -1,5 +1,6 @@
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/hippo4j-logo-logoly.png)
 
+
 <p>
   <a href="https://github.com/acmenlt/dynamic-threadpool" target="_blank">
     <img alt="GitHub" src="https://img.shields.io/github/stars/acmenlt/dynamic-threadpool?label=Stars&style=flat-square&logo=GitHub">
@@ -44,7 +45,7 @@
 
 ## 快速开始
 
-[运行 Hippo4J 自带 Demo 参考文档](https://hippox.cn/zh-cn/docs/run/demo.html)
+[运行 Hippo4J 自带 Demo 参考文档](https://www.hippox.cn/kuai-su-kai-shi/ru-he-yun-hang)
 
 [在线体验地址](http://console.hippox.cn:6691/index.html) 用户名密码：hippo4j / hippo4j
 
@@ -72,4 +73,4 @@ Hippo4J 项目基于或参考以下项目:
 
 ## 联系我
 
-对于这个项目，是否有什么不一样看法，同 [作者](https://hippox.cn/zh-cn/docs/other/exchange.html) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
+对于这个项目，是否有什么不一样看法，同 [作者](https://www.hippox.cn/qi-ta/jia-qun-gou-tong) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
