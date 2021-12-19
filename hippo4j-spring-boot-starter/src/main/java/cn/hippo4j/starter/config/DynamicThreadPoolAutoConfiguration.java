@@ -1,7 +1,5 @@
 package cn.hippo4j.starter.config;
 
-import cn.hippo4j.common.api.JsonFacade;
-import cn.hippo4j.common.api.impl.JacksonHandler;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.starter.controller.PoolRunStateController;
 import cn.hippo4j.starter.core.ConfigService;
@@ -106,11 +104,6 @@ public class DynamicThreadPoolAutoConfiguration {
     @SuppressWarnings("all")
     public ServerHealthCheck httpScheduledHealthCheck(HttpAgent httpAgent) {
         return new HttpScheduledHealthCheck(httpAgent);
-    }
-
-    @Bean
-    public JsonFacade jacksonHandler() {
-        return new JacksonHandler();
     }
 
     @Bean

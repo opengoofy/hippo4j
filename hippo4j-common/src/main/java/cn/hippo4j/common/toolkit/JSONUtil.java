@@ -1,7 +1,7 @@
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.api.JsonFacade;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.api.impl.JacksonHandler;
 import cn.hutool.core.util.StrUtil;
 
 import java.util.List;
@@ -14,11 +14,7 @@ import java.util.List;
  */
 public class JSONUtil {
 
-    private static JsonFacade JSON_FACADE;
-
-    static {
-        JSONUtil.JSON_FACADE = ApplicationContextHolder.getBean(JsonFacade.class);
-    }
+    private static final JsonFacade JSON_FACADE = new JacksonHandler();
 
     public static String toJSONString(Object object) {
         if (object == null) {

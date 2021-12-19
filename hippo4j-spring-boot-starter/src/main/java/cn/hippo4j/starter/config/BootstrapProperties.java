@@ -59,4 +59,9 @@ public class BootstrapProperties {
      */
     private Long collectInterval = 5000L;
 
+    /**
+     * JSON serialization type.
+     */
+    private String jsonSerializeType = "JACKSON";
+
 }
