@@ -1,13 +1,16 @@
 package cn.hippo4j.auth.filter;
 
+import cn.hippo4j.auth.security.JwtTokenManager;
 import cn.hippo4j.auth.toolkit.JwtTokenUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ServiceException;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -19,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
+import static cn.hippo4j.common.constant.Constants.ACCESS_TOKEN;
+
 /**
  * JWT authorization filter.
  *
@@ -28,21 +33,36 @@ import java.util.Collections;
 @Slf4j
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+    private final JwtTokenManager tokenManager;
+
+    public JWTAuthorizationFilter(JwtTokenManager tokenManager, AuthenticationManager authenticationManager) {
         super(authenticationManager);
+        this.tokenManager = tokenManager;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
+        // 验证客户端交互时 Token
+        String accessToken = request.getParameter(ACCESS_TOKEN);
+        if (StrUtil.isNotBlank(accessToken)) {
+            tokenManager.validateToken(accessToken);
 
-        String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
+            Authentication authentication = this.tokenManager.getAuthentication(accessToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            chain.doFilter(request, response);
+            return;
+        }
+
         // 如果请求头中没有 Authorization 信息则直接放行
+        String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
         if (tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
+
         // 如果请求头中有 Token, 则进行解析, 并且设置认证信息
         try {
             SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader));

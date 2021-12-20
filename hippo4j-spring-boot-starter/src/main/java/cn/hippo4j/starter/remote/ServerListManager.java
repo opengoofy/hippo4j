@@ -1,6 +1,8 @@
 package cn.hippo4j.starter.remote;
 
 import cn.hippo4j.starter.config.BootstrapProperties;
+import cn.hutool.core.util.StrUtil;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -21,6 +23,7 @@ public class ServerListManager {
 
     private String serverAddrsStr;
 
+    @Getter
     volatile List<String> serverUrls = new ArrayList();
 
     private volatile String currentServerAddr;
@@ -34,18 +37,21 @@ public class ServerListManager {
         serverAddrsStr = properties.getServerAddr();
 
         if (!StringUtils.isEmpty(serverAddrsStr)) {
-            List<String> serverAddrs = new ArrayList();
-            String[] serverAddrsArr = this.serverAddrsStr.split(",");
+            List<String> serverAddrList = new ArrayList();
+            String[] serverAddrListArr = this.serverAddrsStr.split(",");
 
-            for (String serverAddr : serverAddrsArr) {
-                if (serverAddr.startsWith(HTTPS) || serverAddr.startsWith(HTTP)) {
-                    // TODO Temporarily fixed write, later optimized
-                    currentServerAddr = serverAddr;
-                    serverAddrs.add(serverAddr);
+            for (String serverAddr : serverAddrListArr) {
+                boolean whetherJoint = StrUtil.isNotBlank(serverAddr)
+                        && !serverAddr.startsWith(HTTPS) && !serverAddr.startsWith(HTTP);
+                if (whetherJoint) {
+                    serverAddr = HTTP + serverAddr;
                 }
+
+                currentServerAddr = serverAddr;
+                serverAddrList.add(serverAddr);
             }
 
-            this.serverUrls = serverAddrs;
+            this.serverUrls = serverAddrList;
         }
     }
 

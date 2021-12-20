@@ -20,6 +20,16 @@ public class BootstrapProperties {
     public static final String PREFIX = "spring.dynamic.thread-pool";
 
     /**
+     * Username.
+     */
+    private String username;
+
+    /**
+     * Password.
+     */
+    private String password;
+
+    /**
      * Server addr
      */
     private String serverAddr;

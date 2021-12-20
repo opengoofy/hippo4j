@@ -22,8 +22,8 @@ public class JwtTokenUtil {
     public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
 
-    private static final String SECRET = "Hippo4J_admin";
-    private static final String ISS = "admin";
+    public static final String SECRET = "SecretKey039245678901232039487623456783092349288901402967890140939827";
+    public static final String ISS = "admin";
 
     /**
      * 角色的 Key
@@ -110,10 +110,7 @@ public class JwtTokenUtil {
     }
 
     private static Claims getTokenBody(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET)
-                .parseClaimsJws(token)
-                .getBody();
+        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
     }
 
 }

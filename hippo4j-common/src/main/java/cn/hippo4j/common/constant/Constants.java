@@ -16,6 +16,12 @@ public class Constants {
 
     public static final String GROUP_KEY = "groupKey";
 
+    public static final String AUTHORITIES_KEY = "auth";
+
+    public static final String ACCESS_TOKEN = "accessToken";
+
+    public static final String TOKEN_TTL = "tokenTtl";
+
     public static final String DEFAULT_NAMESPACE_ID = "public";
 
     public static final String NULL = "";

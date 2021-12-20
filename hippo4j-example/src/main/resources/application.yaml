@@ -16,4 +16,6 @@ spring:
     thread-pool:
       server-addr: http://localhost:6691
       namespace: prescription
-      item-id: ${spring.application.name}
+      item-id: dynamic-threadpool-example
+      username: admin
+      password: 123456

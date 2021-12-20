@@ -3,9 +3,12 @@ package cn.hippo4j.auth.config;
 import cn.hippo4j.auth.constant.Constants;
 import cn.hippo4j.auth.filter.JWTAuthenticationFilter;
 import cn.hippo4j.auth.filter.JWTAuthorizationFilter;
+import cn.hippo4j.auth.security.JwtTokenManager;
 import cn.hippo4j.auth.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,6 +39,9 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private UserDetailsService userDetailsService;
 
+    @Resource
+    private JwtTokenManager tokenManager;
+
     @Bean
     public UserDetailsService customUserService() {
         return new UserDetailsServiceImpl();
@@ -44,6 +50,12 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
@@ -70,24 +82,13 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(tokenManager, authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        String[] ignores = Stream
-                .of(
-                        "/hippo4j/v1/cs/apps/renew/**",
-                        "/hippo4j/v1/cs/apps/remove/**",
-                        "/hippo4j/v1/cs/apps/register/**",
-                        "/hippo4j/v1/cs/configs/**",
-                        "/hippo4j/v1/cs/listener/**",
-                        "/hippo4j/v1/cs/monitor/**",
-                        "/hippo4j/v1/cs/health/check/**",
-                        "/hippo4j/v1/cs/notify/list/config/**"
-                )
-                .toArray(String[]::new);
+        String[] ignores = Stream.of("/hippo4j/v1/cs/auth/users/apply/token/**").toArray(String[]::new);
         web.ignoring().antMatchers(ignores);
     }
 
