@@ -1,7 +1,7 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.config.enums.DelEnum;
+import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.config.mapper.TenantInfoMapper;
 import cn.hippo4j.config.model.TenantInfo;
 import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
@@ -108,7 +108,7 @@ public class TenantServiceImpl implements TenantService {
         reqDTO.setTenantId(tenantId);
         List<ItemRespDTO> itemList = itemService.queryItem(reqDTO);
         if (CollectionUtils.isNotEmpty(itemList)) {
-            throw new RuntimeException("The line of business contains project references, and the deletion failed.");
+            throw new RuntimeException("租户包含项目引用, 删除失败.");
         }
 
         int updateResult = tenantInfoMapper.update(new TenantInfo(),

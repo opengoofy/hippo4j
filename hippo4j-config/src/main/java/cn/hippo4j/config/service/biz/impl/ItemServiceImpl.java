@@ -1,7 +1,7 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.config.enums.DelEnum;
+import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.config.mapper.ItemInfoMapper;
 import cn.hippo4j.config.model.ItemInfo;
 import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
@@ -107,7 +107,7 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(String namespace, String itemId) {
         List<ThreadPoolRespDTO> itemList = threadPoolService.getThreadPoolByItemId(itemId);
         if (CollectionUtils.isNotEmpty(itemList)) {
-            throw new RuntimeException("The project contains a thread pool reference, and the deletion failed.");
+            throw new RuntimeException("项目包含线程池引用, 删除失败.");
         }
 
         int updateResult = itemInfoMapper.update(new ItemInfo(),

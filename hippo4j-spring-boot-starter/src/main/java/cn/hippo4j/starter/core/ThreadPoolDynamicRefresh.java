@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.core;
 
+import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.starter.alarm.ThreadPoolAlarmManage;
@@ -37,11 +38,13 @@ public class ThreadPoolDynamicRefresh {
         int originalCapacity = executor.getQueue().remainingCapacity() + executor.getQueue().size();
         long originalKeepAliveTime = executor.getKeepAliveTime(TimeUnit.SECONDS);
         String originalRejected = executor.getRejectedExecutionHandler().getClass().getSimpleName();
+        boolean originalAllowCoreThreadTimeOut = executor.allowsCoreThreadTimeOut();
 
         changePoolInfo(executor, parameter);
         ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
 
-        log.info("[🔥 {}] Changed thread pool. \ncoreSize :: [{}], maxSize :: [{}], queueType :: [{}], capacity :: [{}], keepAliveTime :: [{}], rejectedType :: [{}]",
+        log.info(
+                "[🔥 {}] Changed thread pool. \ncoreSize :: [{}], maxSize :: [{}], queueType :: [{}], capacity :: [{}], keepAliveTime :: [{}], rejectedType :: [{}], allowCoreThreadTimeOut :: [{}]",
                 threadPoolId.toUpperCase(),
                 String.format("%s => %s", originalCoreSize, afterExecutor.getCorePoolSize()),
                 String.format("%s => %s", originalMaximumPoolSize, afterExecutor.getMaximumPoolSize()),
@@ -49,7 +52,9 @@ public class ThreadPoolDynamicRefresh {
                 String.format("%s => %s", originalCapacity,
                         (afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size())),
                 String.format("%s => %s", originalKeepAliveTime, afterExecutor.getKeepAliveTime(TimeUnit.SECONDS)),
-                String.format("%s => %s", originalRejected, RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType())));
+                String.format("%s => %s", originalRejected, RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType())),
+                String.format("%s => %s", originalAllowCoreThreadTimeOut, EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()))
+        );
     }
 
     public static void changePoolInfo(ThreadPoolExecutor executor, PoolParameterInfo parameter) {
@@ -77,6 +82,10 @@ public class ThreadPoolDynamicRefresh {
 
         if (parameter.getRejectedType() != null) {
             executor.setRejectedExecutionHandler(RejectedTypeEnum.createPolicy(parameter.getRejectedType()));
+        }
+
+        if (parameter.getAllowCoreThreadTimeOut() != null) {
+            executor.allowCoreThreadTimeOut(EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()));
         }
     }
 

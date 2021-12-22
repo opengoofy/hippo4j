@@ -58,9 +58,10 @@ CREATE TABLE `config` (
   `capacity` int(11) DEFAULT NULL COMMENT '队列大小',
   `rejected_type` int(11) DEFAULT NULL COMMENT '拒绝策略',
   `keep_alive_time` int(11) DEFAULT NULL COMMENT '线程存活时间',
+  `allow_core_thread_time_out` tinyint(1) DEFAULT NULL COMMENT '允许核心线程超时',
   `content` longtext COMMENT '线程池内容',
   `md5` varchar(32) NOT NULL COMMENT 'MD5',
-  `is_alarm` tinyint(1) DEFAULT NULL COMMENT '是否报警 0：报警 1:不报警',
+  `is_alarm` tinyint(1) DEFAULT NULL COMMENT '是否报警',
   `capacity_alarm` int(11) DEFAULT NULL COMMENT '容量报警',
   `liveness_alarm` int(11) DEFAULT NULL COMMENT '活跃度报警',
   `gmt_create` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -145,7 +146,7 @@ CREATE TABLE `log_record_info` (
 /******************************************/
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` bigint(20) NOT NULL COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_name` varchar(64) NOT NULL COMMENT '用户名',
   `password` varchar(512) NOT NULL COMMENT '用户密码',
   `role` varchar(50) NOT NULL COMMENT '角色',
@@ -153,7 +154,7 @@ CREATE TABLE `user` (
   `gmt_modified` datetime NOT NULL COMMENT '修改时间',
   `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 /******************************************/
 /*   数据库全名 = hippo4j_manager   */
@@ -161,14 +162,14 @@ CREATE TABLE `user` (
 /******************************************/
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
-  `id` bigint(20) NOT NULL COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `role` varchar(64) NOT NULL COMMENT '角色',
   `user_name` varchar(64) NOT NULL COMMENT '用户名',
   `gmt_create` datetime NOT NULL COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL COMMENT '修改时间',
   `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
 
 /******************************************/
 /*   数据库全名 = hippo4j_manager   */
@@ -176,7 +177,7 @@ CREATE TABLE `role` (
 /******************************************/
 DROP TABLE IF EXISTS `permission`;
 CREATE TABLE `permission` (
-  `id` bigint(20) NOT NULL COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `role` varchar(512) NOT NULL COMMENT '角色',
   `resource` varchar(512) NOT NULL COMMENT '资源',
   `action` varchar(8) NOT NULL COMMENT '读写权限',
@@ -184,7 +185,7 @@ CREATE TABLE `permission` (
   `gmt_modified` datetime NOT NULL COMMENT '修改时间',
   `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 /******************************************/
 /*   数据库全名 = hippo4j_manager   */
@@ -207,7 +208,7 @@ CREATE TABLE `notify` (
   `del_flag` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_notify_biz_key` (`tenant_id`,`item_id`,`tp_id`,`platform`,`type`,`del_flag`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通知表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='通知表';
 
 /* 租户 */
 INSERT INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
@@ -223,5 +224,5 @@ INSERT INTO `config` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `core_si
 INSERT INTO `user` (`id`, `user_name`, `password`, `role`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'admin', '$2a$10$2KCqRbra0Yn2TwvkZxtfLuWuUP5KyCWsljO/ci5pLD27pqR3TV1vy', 'ROLE_ADMIN', '2021-11-04 21:35:17', '2021-11-15 23:04:59', '0');
 
 /* 通知表 */
-INSERT INTO `notify` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `type`, `secret_key`, `interval`, `receives`, `enable`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1461345908531671042', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'CONFIG', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', NULL, '15601166691', '0', '2021-11-18 22:49:50', '2021-11-18 22:49:50', '0'),
-('1461345976047382530', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'ALARM', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '0', '2021-11-18 22:50:06', '2021-11-18 22:50:06', '0');
+INSERT INTO `notify` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `type`, `secret_key`, `interval`, `receives`, `enable`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'CONFIG', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', NULL, '15601166691', '0', '2021-11-18 22:49:50', '2021-11-18 22:49:50', '0'),
+('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'ALARM', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '0', '2021-11-18 22:50:06', '2021-11-18 22:50:06', '0');

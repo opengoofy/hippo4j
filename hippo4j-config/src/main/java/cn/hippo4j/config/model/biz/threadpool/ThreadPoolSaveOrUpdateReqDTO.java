@@ -71,4 +71,9 @@ public class ThreadPoolSaveOrUpdateReqDTO {
      */
     private Integer rejectedType;
 
+    /**
+     * allowCoreThreadTimeOut
+     */
+    private Integer allowCoreThreadTimeOut;
+
 }

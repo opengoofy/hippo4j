@@ -2,7 +2,7 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.web.exception.ServiceException;
-import cn.hippo4j.config.enums.DelEnum;
+import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.config.mapper.NotifyInfoMapper;
 import cn.hippo4j.config.model.NotifyInfo;
 import cn.hippo4j.config.model.biz.notify.NotifyListRespDTO;
@@ -110,7 +110,7 @@ public class NotifyServiceImpl implements NotifyService {
                 .eq(NotifyInfo::getTenantId, parseKey[2])
                 .eq(NotifyInfo::getItemId, parseKey[1])
                 .eq(NotifyInfo::getTpId, parseKey[0])
-                .eq(NotifyInfo::getEnable, DelEnum.NORMAL)
+                .eq(NotifyInfo::getEnable, EnableEnum.YES.getIntCode())
                 .eq(NotifyInfo::getType, type);
         List<NotifyInfo> notifyInfos = notifyInfoMapper.selectList(queryWrapper);
         return notifyInfos;

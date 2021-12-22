@@ -1,4 +1,4 @@
-package cn.hippo4j.config.enums;
+package cn.hippo4j.common.enums;
 
 /**
  * Del enum.

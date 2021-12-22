@@ -1,6 +1,6 @@
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.config.enums.DelEnum;
+import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;

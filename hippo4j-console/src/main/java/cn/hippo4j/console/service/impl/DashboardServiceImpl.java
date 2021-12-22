@@ -2,7 +2,7 @@ package cn.hippo4j.console.service.impl;
 
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.GroupKey;
-import cn.hippo4j.config.enums.DelEnum;
+import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.HisRunDataMapper;
 import cn.hippo4j.config.mapper.ItemInfoMapper;

@@ -85,6 +85,11 @@ public class ConfigInfoBase implements Serializable {
     private Integer livenessAlarm;
 
     /**
+     * allowCoreThreadTimeOut
+     */
+    private Integer allowCoreThreadTimeOut;
+
+    /**
      * MD5
      */
     @JsonIgnore

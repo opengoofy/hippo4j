@@ -92,4 +92,11 @@ public interface PoolParameter {
      */
     Integer getLivenessAlarm();
 
+    /**
+     * allowCoreThreadTimeOut
+     *
+     * @return
+     */
+    Integer getAllowCoreThreadTimeOut();
+
 }

@@ -1,6 +1,6 @@
 package cn.hippo4j.starter.toolkit.thread;
 
-
+import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.starter.alarm.ThreadPoolAlarm;
 import org.springframework.core.task.TaskDecorator;
@@ -212,7 +212,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     public ThreadPoolBuilder alarmConfig(int isAlarm, int capacityAlarm, int livenessAlarm) {
-        this.isAlarm = isAlarm == 0 ? true : false;
+        this.isAlarm = isAlarm == EnableEnum.YES.getIntCode() ? true : false;
         this.capacityAlarm = capacityAlarm;
         this.livenessAlarm = livenessAlarm;
         return this;

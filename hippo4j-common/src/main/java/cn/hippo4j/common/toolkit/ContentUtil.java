@@ -25,6 +25,7 @@ public class ContentUtil {
                 .setIsAlarm(parameter.getIsAlarm())
                 .setCapacityAlarm(parameter.getCapacityAlarm())
                 .setLivenessAlarm(parameter.getLivenessAlarm())
+                .setAllowCoreThreadTimeOut(parameter.getAllowCoreThreadTimeOut())
                 .setRejectedType(parameter.getRejectedType());
         return JSONUtil.toJSONString(poolInfo);
     }

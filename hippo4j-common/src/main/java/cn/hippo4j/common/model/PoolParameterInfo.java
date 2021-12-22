@@ -82,4 +82,9 @@ public class PoolParameterInfo implements PoolParameter, Serializable {
      */
     private Integer livenessAlarm;
 
+    /**
+     * allowCoreThreadTimeOut
+     */
+    private Integer allowCoreThreadTimeOut;
+
 }

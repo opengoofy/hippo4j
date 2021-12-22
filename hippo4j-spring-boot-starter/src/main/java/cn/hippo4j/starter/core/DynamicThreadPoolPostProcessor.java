@@ -2,6 +2,7 @@ package cn.hippo4j.starter.core;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
@@ -121,6 +122,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                             .keepAliveTime(ppi.getKeepAliveTime(), TimeUnit.SECONDS)
                             .rejected(RejectedTypeEnum.createPolicy(ppi.getRejectedType()))
                             .alarmConfig(ppi.getIsAlarm(), ppi.getCapacityAlarm(), ppi.getLivenessAlarm())
+                            .allowCoreThreadTimeOut(EnableEnum.getBool(ppi.getAllowCoreThreadTimeOut()))
                             .build();
 
                     if (poolExecutor instanceof DynamicExecutorConfigurationSupport) {

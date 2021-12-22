@@ -1,6 +1,6 @@
 package cn.hippo4j.config.config;
 
-import cn.hippo4j.config.enums.DelEnum;
+import cn.hippo4j.common.enums.DelEnum;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;

@@ -85,6 +85,11 @@ public class ThreadPoolRespDTO {
     private Integer rejectedType;
 
     /**
+     * allowCoreThreadTimeOut
+     */
+    private Integer allowCoreThreadTimeOut;
+
+    /**
      * gmtCreate
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
