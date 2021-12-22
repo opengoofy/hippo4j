@@ -1,10 +1,7 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.toolkit.ConditionUtil;
-import cn.hippo4j.common.toolkit.ContentUtil;
-import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.toolkit.Md5Util;
+import cn.hippo4j.common.toolkit.*;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.ConfigInstanceMapper;
@@ -25,11 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static cn.hippo4j.config.service.ConfigCacheService.getContent;
 
 /**
  * Config service impl.
@@ -100,6 +100,7 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public void insertOrUpdate(String identify, ConfigAllInfo configInfo) {
+        verification(identify);
         LambdaQueryWrapper<ConfigAllInfo> queryWrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
                 .eq(ConfigAllInfo::getTenantId, configInfo.getTenantId())
                 .eq(ConfigInfoBase::getItemId, configInfo.getItemId())
@@ -121,6 +122,13 @@ public class ConfigServiceImpl implements ConfigService {
         }
 
         ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configInfo)));
+    }
+
+    private void verification(String identify) {
+        if (StringUtil.isNotBlank(identify)) {
+            Map content = getContent(identify);
+            Assert.isTrue(CollectionUtil.isNotEmpty(content), "线程池实例不存在, 请尝试页面刷新.");
+        }
     }
 
     public Long addConfigInfo(ConfigAllInfo config) {
