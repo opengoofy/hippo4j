@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.alarm.wechat;
 
+import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
@@ -126,6 +127,8 @@ public class WeChatSendMessageHandler implements SendMessageHandler {
                 customPool.getCorePoolSize() + "  ➲  " + parameter.getCoreSize(),
                 // 最大线程数
                 customPool.getMaximumPoolSize() + "  ➲  " + parameter.getMaxSize(),
+                // 核心线程超时
+                customPool.allowsCoreThreadTimeOut() + "  ➲  " + EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()),
                 // 线程存活时间
                 customPool.getKeepAliveTime(TimeUnit.SECONDS) + "  ➲  " + parameter.getKeepAliveTime(),
                 // 阻塞队列

@@ -48,6 +48,7 @@ public class WeChatAlarmConstants {
                     "> 应用实例：%s \n" +
                     "> 核心线程数：%s \n" +
                     "> 最大线程数：%s \n" +
+                    "> 核心线程超时：%s \n" +
                     "> 线程存活时间：%s / SECONDS \n" +
                     "> 队列类型：%s \n" +
                     "> 队列容量：%s \n" +

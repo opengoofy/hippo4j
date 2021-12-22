@@ -65,6 +65,7 @@ public class DingAlarmConstants {
                     " --- \n\n  " +
                     "<font color='#708090' size=2>核心线程数：%s</font> \n\n " +
                     "<font color='#708090' size=2>最大线程数：%s</font> \n\n " +
+                    "<font color='#708090' size=2>核心线程超时：%s</font> \n\n " +
                     "<font color='#708090' size=2>线程存活时间：%s / SECONDS</font> \n\n" +
                     " --- \n\n  " +
                     "<font color='#708090' size=2>队列类型：%s</font> \n\n " +
