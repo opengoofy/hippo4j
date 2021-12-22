@@ -1,9 +1,5 @@
 package cn.hippo4j.console.controller;
 
-import cn.hippo4j.console.model.ThreadPoolInstanceInfo;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.web.base.Result;
@@ -16,10 +12,15 @@ import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
 import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.console.model.ThreadPoolInstanceInfo;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public class ThreadPoolController {
 
     @PostMapping("/save_or_update")
     public Result saveOrUpdateThreadPoolConfig(@RequestParam(value = "identify", required = false) String identify,
-                                               @RequestBody ThreadPoolSaveOrUpdateReqDTO reqDTO) {
+                                               @Validated @RequestBody ThreadPoolSaveOrUpdateReqDTO reqDTO) {
         threadPoolService.saveOrUpdateThreadPoolConfig(identify, reqDTO);
         return Results.success();
     }

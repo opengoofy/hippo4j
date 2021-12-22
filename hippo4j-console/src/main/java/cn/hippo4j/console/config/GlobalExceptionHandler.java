@@ -1,14 +1,21 @@
 package cn.hippo4j.console.config;
 
+import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ServiceException;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 /**
  * 全局异常捕获器.
@@ -29,6 +36,19 @@ public class GlobalExceptionHandler {
 
         log.info("[{}] {} [ex] {}", request.getMethod(), request.getRequestURL().toString(), ex.toString());
         return Results.failure(ex);
+    }
+
+    @SneakyThrows
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public Result validExceptionHandler(HttpServletRequest request, MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        FieldError firstFieldError = CollectionUtil.getFirst(bindingResult.getFieldErrors());
+        String exceptionStr = Optional.ofNullable(firstFieldError)
+                .map(FieldError::getDefaultMessage)
+                .orElse(StringUtil.EMPTY);
+
+        log.error("[{}] {} [ex] {}", request.getMethod(), getUrl(request), exceptionStr);
+        return Results.failure(new ServiceException(exceptionStr));
     }
 
     @ExceptionHandler(value = Throwable.class)

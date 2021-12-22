@@ -1,6 +1,5 @@
 package cn.hippo4j.console.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
@@ -9,7 +8,9 @@ import cn.hippo4j.config.model.biz.tenant.TenantRespDTO;
 import cn.hippo4j.config.model.biz.tenant.TenantSaveReqDTO;
 import cn.hippo4j.config.model.biz.tenant.TenantUpdateReqDTO;
 import cn.hippo4j.config.service.biz.TenantService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -37,7 +38,7 @@ public class TenantController {
     }
 
     @PostMapping("/save")
-    public Result<Boolean> saveNameSpace(@RequestBody TenantSaveReqDTO reqDTO) {
+    public Result<Boolean> saveNameSpace(@Validated @RequestBody TenantSaveReqDTO reqDTO) {
         tenantService.saveTenant(reqDTO);
         return Results.success(Boolean.TRUE);
     }

@@ -1,6 +1,5 @@
 package cn.hippo4j.console.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
@@ -9,7 +8,9 @@ import cn.hippo4j.config.model.biz.item.ItemRespDTO;
 import cn.hippo4j.config.model.biz.item.ItemSaveReqDTO;
 import cn.hippo4j.config.model.biz.item.ItemUpdateReqDTO;
 import cn.hippo4j.config.service.biz.ItemService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -36,7 +37,7 @@ public class ItemController {
     }
 
     @PostMapping("/save")
-    public Result saveItem(@RequestBody ItemSaveReqDTO reqDTO) {
+    public Result saveItem(@Validated @RequestBody ItemSaveReqDTO reqDTO) {
         itemService.saveItem(reqDTO);
         return Results.success();
     }

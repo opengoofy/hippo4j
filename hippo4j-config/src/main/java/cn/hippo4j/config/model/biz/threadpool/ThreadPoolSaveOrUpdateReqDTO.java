@@ -2,6 +2,8 @@ package cn.hippo4j.config.model.biz.threadpool;
 
 import lombok.Data;
 
+import javax.validation.constraints.Pattern;
+
 /**
  * Thread pool save or update req dto.
  *
@@ -14,16 +16,19 @@ public class ThreadPoolSaveOrUpdateReqDTO {
     /**
      * tenantId
      */
+    @Pattern(regexp = "^((?!\\+).)*$", message = "租户、项目、线程池 ID 包含+号")
     private String tenantId;
 
     /**
      * TpId
      */
+    @Pattern(regexp = "^((?!\\+).)*$", message = "租户、项目、线程池 ID 包含+号")
     private String tpId;
 
     /**
      * ItemId
      */
+    @Pattern(regexp = "^((?!\\+).)*$", message = "租户、项目、线程池 ID 包含+号")
     private String itemId;
 
     /**
