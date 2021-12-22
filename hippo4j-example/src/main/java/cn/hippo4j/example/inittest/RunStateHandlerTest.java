@@ -31,7 +31,6 @@ public class RunStateHandlerTest {
     @SuppressWarnings("all")
     public void runStateHandlerTest() {
         log.info("Test thread pool runtime state interface...");
-        ThreadUtil.sleep(5000);
 
         // 启动动态线程池模拟运行任务
         runTask(messageCenterDynamicThreadPool.getExecutor());
@@ -43,6 +42,7 @@ public class RunStateHandlerTest {
 
     private void runTask(ExecutorService executorService) {
         new Thread(() -> {
+            ThreadUtil.sleep(5000);
             for (int i = 0; i < Integer.MAX_VALUE; i++) {
                 try {
                     executorService.execute(() -> {
