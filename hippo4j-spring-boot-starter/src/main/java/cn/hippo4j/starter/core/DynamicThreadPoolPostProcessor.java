@@ -52,10 +52,10 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             .keepAliveTime(2000)
             .timeUnit(TimeUnit.MILLISECONDS)
             .workQueue(QueueTypeEnum.ARRAY_BLOCKING_QUEUE)
-            .capacity(1)
+            .capacity(1024)
             .allowCoreThreadTimeOut(true)
-            .threadFactory("dynamic-threadPool-init-config")
-            .rejected(new ThreadPoolExecutor.DiscardOldestPolicy())
+            .threadFactory("dynamic-threadPool-change-config")
+            .rejected(new ThreadPoolExecutor.AbortPolicy())
             .build();
 
     @Override
@@ -84,10 +84,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      * @param dynamicThreadPoolWrap
      */
     protected void registerAndSubscribe(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
-        executorService.execute(() -> {
-            fillPoolAndRegister(dynamicThreadPoolWrap);
-            subscribeConfig(dynamicThreadPoolWrap);
-        });
+        fillPoolAndRegister(dynamicThreadPoolWrap);
+        subscribeConfig(dynamicThreadPoolWrap);
     }
 
     /**

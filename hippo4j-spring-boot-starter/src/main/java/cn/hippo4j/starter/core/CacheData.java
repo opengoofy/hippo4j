@@ -70,11 +70,14 @@ public class CacheData {
 
         Runnable runnable = () -> {
             wrap.setLastCallMd5(md5);
-
             listener.receiveConfigInfo(content);
         };
 
-        listener.getExecutor().execute(runnable);
+        try {
+            listener.getExecutor().execute(runnable);
+        } catch (Exception ex) {
+            log.error("Failed to execute listener. message :: {}", ex.getMessage());
+        }
     }
 
     public void setContent(String content) {
