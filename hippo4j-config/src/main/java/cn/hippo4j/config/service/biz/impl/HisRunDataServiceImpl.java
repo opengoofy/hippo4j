@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static cn.hutool.core.date.DatePattern.NORM_TIME_PATTERN;
 
@@ -71,25 +72,59 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
         List<String> times = Lists.newArrayList();
         List<Long> poolSizeList = Lists.newArrayList();
         List<Long> activeSizeList = Lists.newArrayList();
+        List<Long> queueCapacityList = Lists.newArrayList();
         List<Long> queueSizeList = Lists.newArrayList();
         List<Long> completedTaskCountList = Lists.newArrayList();
         List<Long> rejectCountList = Lists.newArrayList();
         List<Long> queueRemainingCapacityList = Lists.newArrayList();
         List<Long> currentLoadList = Lists.newArrayList();
 
-        hisRunDataInfos.forEach(each -> {
+        long countTemp = 0L;
+        AtomicBoolean firstFlag = new AtomicBoolean(Boolean.TRUE);
+        for (HisRunDataInfo each : hisRunDataInfos) {
             String time = DateUtil.format(new Date(each.getTimestamp()), NORM_TIME_PATTERN);
             times.add(time);
             poolSizeList.add(each.getPoolSize());
             activeSizeList.add(each.getActiveSize());
             queueSizeList.add(each.getQueueSize());
-            completedTaskCountList.add(each.getCompletedTaskCount());
             rejectCountList.add(each.getRejectCount());
             queueRemainingCapacityList.add(each.getQueueRemainingCapacity());
             currentLoadList.add(each.getCurrentLoad());
-        });
+            queueCapacityList.add(each.getQueueCapacity());
 
-        return new MonitorActiveRespDTO(times, poolSizeList, activeSizeList, queueSizeList, completedTaskCountList, rejectCountList, queueRemainingCapacityList, currentLoadList);
+            if (firstFlag.get()) {
+                completedTaskCountList.add(0L);
+                firstFlag.set(Boolean.FALSE);
+                countTemp = each.getCompletedTaskCount();
+                continue;
+            }
+
+            long completedTaskCount = each.getCompletedTaskCount();
+            long countTask = completedTaskCount - countTemp;
+            completedTaskCountList.add(countTask);
+            countTemp = each.getCompletedTaskCount();
+        }
+
+        return new MonitorActiveRespDTO(times, poolSizeList, activeSizeList, queueSizeList, completedTaskCountList, rejectCountList, queueRemainingCapacityList, currentLoadList, queueCapacityList);
+    }
+
+    @Override
+    public MonitorRespDTO queryThreadPoolLastTaskCount(MonitorQueryReqDTO reqDTO) {
+        Date currentDate = new Date();
+        DateTime dateTime = DateUtil.offsetMinute(currentDate, -properties.getCleanHistoryDataPeriod());
+        long startTime = dateTime.getTime();
+
+        HisRunDataInfo hisRunDataInfo = this.lambdaQuery()
+                .eq(HisRunDataInfo::getTenantId, reqDTO.getTenantId())
+                .eq(HisRunDataInfo::getItemId, reqDTO.getItemId())
+                .eq(HisRunDataInfo::getTpId, reqDTO.getTpId())
+                .eq(HisRunDataInfo::getInstanceId, reqDTO.getInstanceId())
+                .orderByAsc(HisRunDataInfo::getTimestamp)
+                .between(HisRunDataInfo::getTimestamp, startTime, currentDate.getTime())
+                .last("LIMIT 1")
+                .one();
+
+        return BeanUtil.convert(hisRunDataInfo, MonitorRespDTO.class);
     }
 
     @Override

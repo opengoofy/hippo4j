@@ -57,4 +57,9 @@ public class MonitorActiveRespDTO {
      */
     private List<Long> currentLoadList;
 
+    /**
+     * queueCapacityList
+     */
+    private List<Long> queueCapacityList;
+
 }

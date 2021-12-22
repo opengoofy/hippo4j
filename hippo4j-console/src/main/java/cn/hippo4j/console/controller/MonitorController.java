@@ -48,6 +48,12 @@ public class MonitorController {
         return Results.success(monitorRespList);
     }
 
+    @PostMapping("/last/task/count")
+    public Result<MonitorRespDTO> queryThreadPoolLastTaskCount(@RequestBody MonitorQueryReqDTO reqDTO) {
+        MonitorRespDTO resultDTO = hisRunDataService.queryThreadPoolLastTaskCount(reqDTO);
+        return Results.success(resultDTO);
+    }
+
     @PostMapping
     public Result<Void> dataCollect(@RequestBody MessageWrapper messageWrapper) {
         Runnable task = () -> {

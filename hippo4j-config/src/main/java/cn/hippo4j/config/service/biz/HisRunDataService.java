@@ -34,6 +34,14 @@ public interface HisRunDataService extends IService<HisRunDataInfo> {
     MonitorActiveRespDTO queryInfoThreadPoolMonitor(MonitorQueryReqDTO reqDTO);
 
     /**
+     * Query thread pool last task count.
+     *
+     * @param reqDTO
+     * @return
+     */
+    MonitorRespDTO queryThreadPoolLastTaskCount(MonitorQueryReqDTO reqDTO);
+
+    /**
      * Save.
      *
      * @param message
