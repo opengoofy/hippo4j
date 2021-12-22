@@ -25,36 +25,36 @@ public class MonitorActiveRespDTO {
     /**
      * poolSizeList
      */
-    List<Long> poolSizeList;
+    private List<Long> poolSizeList;
 
     /**
      * activeSizeList
      */
-    List<Long> activeSizeList;
+    private List<Long> activeSizeList;
 
     /**
      * queueSizeList
      */
-    List<Long> queueSizeList;
+    private List<Long> queueSizeList;
 
     /**
      * completedTaskCountList
      */
-    List<Long> completedTaskCountList;
+    private List<Long> completedTaskCountList;
 
     /**
      * rejectCountList
      */
-    List<Long> rejectCountList;
+    private List<Long> rejectCountList;
 
     /**
      * queueRemainingCapacityList
      */
-    List<Long> queueRemainingCapacityList;
+    private List<Long> queueRemainingCapacityList;
 
     /**
      * currentLoadList
      */
-    List<Long> currentLoadList;
+    private List<Long> currentLoadList;
 
 }
