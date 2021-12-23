@@ -119,7 +119,7 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
                 .eq(HisRunDataInfo::getItemId, reqDTO.getItemId())
                 .eq(HisRunDataInfo::getTpId, reqDTO.getTpId())
                 .eq(HisRunDataInfo::getInstanceId, reqDTO.getInstanceId())
-                .orderByAsc(HisRunDataInfo::getTimestamp)
+                .orderByDesc(HisRunDataInfo::getTimestamp)
                 .between(HisRunDataInfo::getTimestamp, startTime, currentDate.getTime())
                 .last("LIMIT 1")
                 .one();
