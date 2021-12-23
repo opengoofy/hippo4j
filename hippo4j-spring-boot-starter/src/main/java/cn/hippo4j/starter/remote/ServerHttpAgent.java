@@ -46,7 +46,7 @@ public class ServerHttpAgent implements HttpAgent {
         this.securityProxy.applyToken(this.serverListManager.getServerUrls());
         this.executorService = new ScheduledThreadPoolExecutor(
                 new Integer(1),
-                ThreadFactoryBuilder.builder().daemon(true).prefix("token-security-updater").build()
+                ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.token.security.updater").build()
         );
 
         this.executorService.scheduleWithFixedDelay(

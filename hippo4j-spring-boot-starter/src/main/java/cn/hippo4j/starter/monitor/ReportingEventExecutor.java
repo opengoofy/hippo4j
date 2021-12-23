@@ -80,7 +80,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
             Integer bufferSize = properties.getTaskBufferSize();
             messageCollectVessel = new ArrayBlockingQueue(bufferSize);
 
-            String collectVesselTaskName = "collect-data-scheduled";
+            String collectVesselTaskName = "client.scheduled.collect.data";
             collectVesselExecutor = new ScheduledThreadPoolExecutor(
                     new Integer(1),
                     ThreadFactoryBuilder.builder().daemon(true).prefix(collectVesselTaskName).build()
@@ -95,7 +95,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
             );
 
             // 启动上报监控数据线程
-            String reportingTaskName = "reporting-task";
+            String reportingTaskName = "client.thread.reporting.task";
             ThreadUtil.newThread(this, reportingTaskName, Boolean.TRUE).start();
 
             // 获取所有数据采集组件, 目前仅有历史运行数据采集
@@ -111,7 +111,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
     }
 
     /**
-     * 采集动态线程池数据, 并添加缓冲队列
+     * 采集动态线程池数据, 并添加缓冲队列.
      */
     private void runTimeGatherTask() {
         boolean healthStatus = serverHealthCheck.isHealthStatus();

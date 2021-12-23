@@ -21,9 +21,9 @@ import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 public class AbstractBuildThreadPoolTemplate {
 
     /**
-     * 线程池构建初始化参数
+     * 线程池构建初始化参数.
      * <p>
-     * 此处本身是模版设计方法, 但是考虑创建简洁性, 移除 abstract
+     * 此处本身是模版设计方法, 但是考虑创建简洁性, 移除 abstract.
      * 异常参考 {@link AbstractQueuedSynchronizer#tryAcquire}
      *
      * @return
@@ -33,7 +33,7 @@ public class AbstractBuildThreadPoolTemplate {
     }
 
     /**
-     * 构建线程池
+     * 构建线程池.
      *
      * @return
      */
@@ -43,7 +43,7 @@ public class AbstractBuildThreadPoolTemplate {
     }
 
     /**
-     * 构建线程池
+     * 构建线程池.
      *
      * @return
      */
@@ -67,7 +67,7 @@ public class AbstractBuildThreadPoolTemplate {
     }
 
     /**
-     * 构建快速执行线程池
+     * 构建快速执行线程池.
      *
      * @return
      */
@@ -77,7 +77,7 @@ public class AbstractBuildThreadPoolTemplate {
     }
 
     /**
-     * 构建快速执行线程池
+     * 构建快速执行线程池.
      *
      * @return
      */
@@ -102,7 +102,7 @@ public class AbstractBuildThreadPoolTemplate {
     }
 
     /**
-     * 构建动态线程池
+     * 构建动态线程池.
      *
      * @param initParam
      * @return

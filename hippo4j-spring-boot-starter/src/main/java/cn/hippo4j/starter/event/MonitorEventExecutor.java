@@ -21,7 +21,7 @@ import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
 public class MonitorEventExecutor {
 
     private static final ExecutorService EVENT_EXECUTOR = ThreadPoolBuilder.builder()
-            .threadFactory("monitor-event-executor")
+            .threadFactory("client.monitor.event.executor")
             .corePoolSize(AVAILABLE_PROCESSORS)
             .maxPoolNum(AVAILABLE_PROCESSORS)
             .workQueue(QueueTypeEnum.LINKED_BLOCKING_QUEUE)

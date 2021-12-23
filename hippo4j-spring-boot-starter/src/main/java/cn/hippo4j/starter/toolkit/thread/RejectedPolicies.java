@@ -49,7 +49,7 @@ public class RejectedPolicies {
             try {
                 executor.getQueue().put(r);
             } catch (InterruptedException e) {
-                log.error("线程池添加队列任务失败", e);
+                log.error("Adding Queue task to thread pool failed.", e);
             }
         };
     }

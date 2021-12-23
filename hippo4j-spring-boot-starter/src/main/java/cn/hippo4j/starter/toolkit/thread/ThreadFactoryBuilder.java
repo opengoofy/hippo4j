@@ -40,7 +40,7 @@ public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
 
     /**
-     * 设置用于创建基础线程的线程工厂
+     * 设置用于创建基础线程的线程工厂.
      *
      * @param backingThreadFactory 用于创建基础线程的线程工厂
      * @return this
@@ -51,7 +51,7 @@ public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
     }
 
     /**
-     * 设置线程名前缀, 例如设置前缀为 mb-thread- 则线程名为 mb-thread-1 之类
+     * 设置线程名前缀, 例如设置前缀为 mb-thread- 则线程名为 mb-thread-1 之类.
      *
      * @param namePrefix 线程名前缀
      * @return this
@@ -62,7 +62,7 @@ public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
     }
 
     /**
-     * 设置是否守护线程
+     * 设置是否守护线程.
      *
      * @param daemon 是否守护线程
      * @return this
@@ -73,7 +73,7 @@ public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
     }
 
     /**
-     * 设置线程优先级
+     * 设置线程优先级.
      *
      * @param priority 优先级
      * @return this
@@ -93,7 +93,7 @@ public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
     }
 
     /**
-     * 设置未捕获异常的处理方式
+     * 设置未捕获异常的处理方式.
      *
      * @param uncaughtExceptionHandler {@link Thread.UncaughtExceptionHandler}
      */
@@ -102,7 +102,7 @@ public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
     }
 
     /**
-     * 构建
+     * 构建.
      *
      * @return
      */
@@ -121,7 +121,7 @@ public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
     }
 
     /**
-     * 构建
+     * 构建.
      *
      * @param builder {@link ThreadFactoryBuilder}
      * @return {@link ThreadFactory}

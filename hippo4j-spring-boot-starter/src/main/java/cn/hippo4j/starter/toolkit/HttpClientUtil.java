@@ -27,7 +27,7 @@ public class HttpClientUtil {
     private static int HTTP_OK_CODE = 200;
 
     /**
-     * Get 请求
+     * Get 请求.
      *
      * @param url
      * @return
@@ -43,7 +43,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * Get 请求, 支持添加查询字符串
+     * Get 请求, 支持添加查询字符串.
      *
      * @param url
      * @param queryString 查询字符串
@@ -55,7 +55,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * 获取 Json 后直接反序列化
+     * 获取 Json 后直接反序列化.
      *
      * @param url
      * @param clazz
@@ -67,7 +67,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * 调用健康检查
+     * 调用健康检查.
      *
      * @param url
      * @param clazz
@@ -81,7 +81,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * Get 请求, 支持查询字符串
+     * Get 请求, 支持查询字符串.
      *
      * @param url
      * @param queryString
@@ -96,7 +96,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * Rest 接口 Post 调用
+     * Rest 接口 Post 调用.
      *
      * @param url
      * @param body
@@ -112,8 +112,8 @@ public class HttpClientUtil {
     }
 
     /**
-     * Rest 接口 Post 调用
-     * 对返回值直接反序列化
+     * Rest 接口 Post 调用.
+     * 对返回值直接反序列化.
      *
      * @param url
      * @param body
@@ -125,7 +125,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * 根据查询字符串构造完整的 Url
+     * 根据查询字符串构造完整的 Url.
      *
      * @param url
      * @param queryString

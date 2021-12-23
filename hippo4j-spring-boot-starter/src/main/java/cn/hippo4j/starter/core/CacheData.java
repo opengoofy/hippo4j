@@ -42,12 +42,11 @@ public class CacheData {
         this.content = ContentUtil.getPoolContent(GlobalThreadPoolManage.getPoolParameter(tpId));
         this.md5 = getMd5String(content);
         this.listeners = new CopyOnWriteArrayList();
-
     }
 
     public void addListener(Listener listener) {
         if (null == listener) {
-            throw new IllegalArgumentException("listener is null");
+            throw new IllegalArgumentException("Listener is null.");
         }
 
         ManagerListenerWrapper managerListenerWrap = new ManagerListenerWrapper(md5, listener);

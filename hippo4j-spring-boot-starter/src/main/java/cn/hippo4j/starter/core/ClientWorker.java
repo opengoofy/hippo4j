@@ -62,7 +62,7 @@ public class ClientWorker {
         });
 
         this.executorService = Executors.newSingleThreadScheduledExecutor(
-                ThreadFactoryBuilder.builder().prefix("client-long-polling-executor").daemon(true).build()
+                ThreadFactoryBuilder.builder().prefix("client.long.polling.executor").daemon(true).build()
         );
 
         log.info("Client identity :: {}", identification);
@@ -71,7 +71,7 @@ public class ClientWorker {
             try {
                 checkConfigInfo();
             } catch (Throwable e) {
-                log.error("[Sub check] rotate check error", e);
+                log.error("Sub check rotate check error.", e);
             }
         }, 1L, 10L, TimeUnit.MILLISECONDS);
     }
@@ -176,7 +176,7 @@ public class ClientWorker {
             }
         } catch (Exception ex) {
             setHealthServer(false);
-            log.error("[Check update] get changed dataId exception. error message :: {}", ex.getMessage());
+            log.error("Check update get changed dataId exception. error message :: {}", ex.getMessage());
         }
 
         return Collections.emptyList();
@@ -194,7 +194,7 @@ public class ClientWorker {
             return JSONUtil.toJSONString(result.getData());
         }
 
-        log.error("[Sub server] namespace :: {}, itemId :: {}, tpId :: {}, result code :: {}",
+        log.error("Sub server namespace :: {}, itemId :: {}, tpId :: {}, result code :: {}",
                 namespace, itemId, tpId, result.getCode());
         return NULL;
     }
@@ -207,7 +207,7 @@ public class ClientWorker {
         try {
             response = URLDecoder.decode(response, "UTF-8");
         } catch (Exception e) {
-            log.error("[Polling resp] decode modifiedDataIdsString error", e);
+            log.error("Polling resp decode modifiedDataIdsString error.", e);
         }
 
 
@@ -222,7 +222,7 @@ public class ClientWorker {
                     updateList.add(GroupKey.getKeyTenant(dataId, group, tenant));
                     log.info("Refresh thread pool changed. [{}]", dataId);
                 } else {
-                    log.error("[{}] [Polling resp] invalid dataIdAndGroup error.", dataIdAndGroup);
+                    log.error("[{}] Polling resp invalid dataIdAndGroup error.", dataIdAndGroup);
                 }
             }
         }

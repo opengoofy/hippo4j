@@ -18,14 +18,30 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Data
 public class DynamicThreadPoolWrapper implements DisposableBean {
 
+    /**
+     * Tenant id
+     */
     private String tenantId;
 
+    /**
+     * Item id
+     */
     private String itemId;
 
+    /**
+     * Thread pool id
+     */
     private String tpId;
 
+    /**
+     * Subscribe flag
+     */
     private boolean subscribeFlag;
 
+    /**
+     * executor
+     * {@link cn.hippo4j.starter.core.DynamicThreadPoolExecutor}
+     */
     private ThreadPoolExecutor executor;
 
     /**
@@ -38,7 +54,7 @@ public class DynamicThreadPoolWrapper implements DisposableBean {
     }
 
     /**
-     * 首选服务端线程池, 为空使用 threadPoolExecutor
+     * 首选服务端线程池, 为空使用 threadPoolExecutor.
      *
      * @param threadPoolId
      * @param threadPoolExecutor
@@ -49,7 +65,7 @@ public class DynamicThreadPoolWrapper implements DisposableBean {
     }
 
     /**
-     * 提交任务
+     * 提交任务.
      *
      * @param command
      */
@@ -58,7 +74,7 @@ public class DynamicThreadPoolWrapper implements DisposableBean {
     }
 
     /**
-     * 提交任务
+     * 提交任务.
      *
      * @param task
      * @return
@@ -68,7 +84,7 @@ public class DynamicThreadPoolWrapper implements DisposableBean {
     }
 
     /**
-     * 提交任务
+     * 提交任务.
      *
      * @param task
      * @param <T>

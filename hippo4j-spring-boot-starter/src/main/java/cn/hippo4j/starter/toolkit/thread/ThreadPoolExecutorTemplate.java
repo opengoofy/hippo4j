@@ -23,7 +23,7 @@ public class ThreadPoolExecutorTemplate extends ThreadPoolExecutor {
     }
 
     private Exception clientTrace() {
-        return new Exception("tread task root stack trace");
+        return new Exception("Tread task root stack trace.");
     }
 
     @Override

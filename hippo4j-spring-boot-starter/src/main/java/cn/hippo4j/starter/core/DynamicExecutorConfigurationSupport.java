@@ -127,13 +127,13 @@ public abstract class DynamicExecutorConfigurationSupport extends ThreadPoolExec
                 if (!executor.awaitTermination(this.awaitTerminationMillis, TimeUnit.MILLISECONDS)) {
                     if (log.isWarnEnabled()) {
                         log.warn("Timed out while waiting for executor" +
-                                (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate");
+                                (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
                     }
                 }
             } catch (InterruptedException ex) {
                 if (log.isWarnEnabled()) {
                     log.warn("Interrupted while waiting for executor" +
-                            (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate");
+                            (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
                 }
                 Thread.currentThread().interrupt();
             }

@@ -48,7 +48,7 @@ public class FastThreadPoolExecutor extends ThreadPoolExecutorTemplate {
             try {
                 if (!queue.retryOffer(command, 0, TimeUnit.MILLISECONDS)) {
                     submittedTaskCount.decrementAndGet();
-                    throw new RejectedExecutionException("队列容量已满.", rx);
+                    throw new RejectedExecutionException("The blocking queue capacity is full.", rx);
                 }
             } catch (InterruptedException x) {
                 submittedTaskCount.decrementAndGet();

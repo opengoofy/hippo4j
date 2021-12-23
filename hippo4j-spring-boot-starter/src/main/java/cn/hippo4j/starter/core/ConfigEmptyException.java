@@ -13,8 +13,14 @@ import lombok.Data;
 @AllArgsConstructor
 public class ConfigEmptyException extends RuntimeException {
 
+    /**
+     * description
+     */
     private String description;
 
+    /**
+     * action
+     */
     private String action;
 
 }

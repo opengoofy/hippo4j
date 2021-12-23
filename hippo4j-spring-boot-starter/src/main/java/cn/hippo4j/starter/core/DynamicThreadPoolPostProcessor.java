@@ -15,7 +15,6 @@ import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
 import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.task.TaskDecorator;
@@ -54,24 +53,24 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             .workQueue(QueueTypeEnum.ARRAY_BLOCKING_QUEUE)
             .capacity(1024)
             .allowCoreThreadTimeOut(true)
-            .threadFactory("dynamic-threadPool-change-config")
+            .threadFactory("client.dynamic.threadPool.change.config")
             .rejected(new ThreadPoolExecutor.AbortPolicy())
             .build();
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DynamicThreadPoolExecutor) {
-            var dynamicThreadPool = ApplicationContextHolder.findAnnotationOnBean(beanName, DynamicThreadPool.class);
+            DynamicThreadPool dynamicThreadPool = ApplicationContextHolder.findAnnotationOnBean(beanName, DynamicThreadPool.class);
             if (Objects.isNull(dynamicThreadPool)) {
                 return bean;
             }
-            var dynamicExecutor = (DynamicThreadPoolExecutor) bean;
-            var wrap = new DynamicThreadPoolWrapper(dynamicExecutor.getThreadPoolId(), dynamicExecutor);
-            var remoteExecutor = fillPoolAndRegister(wrap);
+            DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) bean;
+            DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(dynamicExecutor.getThreadPoolId(), dynamicExecutor);
+            ThreadPoolExecutor remoteExecutor = fillPoolAndRegister(wrap);
             subscribeConfig(wrap);
             return remoteExecutor;
         } else if (bean instanceof DynamicThreadPoolWrapper) {
-            var wrap = (DynamicThreadPoolWrapper) bean;
+            DynamicThreadPoolWrapper wrap = (DynamicThreadPoolWrapper) bean;
             registerAndSubscribe(wrap);
         }
 
@@ -136,7 +135,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             poolExecutor = dynamicThreadPoolWrap.getExecutor() != null ? dynamicThreadPoolWrap.getExecutor() : CommonDynamicThreadPool.getInstance(tpId);
             dynamicThreadPoolWrap.setExecutor(poolExecutor);
 
-            log.error("[Init pool] Failed to initialize thread pool configuration. error message :: {}", ex.getMessage());
+            log.error("Failed to initialize thread pool configuration. error message :: {}", ex.getMessage());
         } finally {
             if (Objects.isNull(dynamicThreadPoolWrap.getExecutor())) {
                 dynamicThreadPoolWrap.setExecutor(CommonDynamicThreadPool.getInstance(tpId));

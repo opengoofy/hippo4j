@@ -44,11 +44,11 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
     private final Condition healthCondition = healthMainLock.newCondition();
 
     /**
-     * Health check executor.
+     * Health check executor
      */
     private final ScheduledThreadPoolExecutor healthCheckExecutor = new ScheduledThreadPoolExecutor(
             new Integer(1),
-            ThreadFactoryBuilder.builder().daemon(true).prefix("health-check-scheduled").build()
+            ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.health.check").build()
     );
 
     /**

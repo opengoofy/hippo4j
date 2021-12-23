@@ -245,7 +245,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     /**
-     * 构建
+     * 构建.
      *
      * @return
      */
@@ -258,7 +258,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     /**
-     * 创建
+     * 创建.
      *
      * @return
      */
@@ -267,7 +267,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     /**
-     * 构建普通线程池
+     * 构建普通线程池.
      *
      * @param builder
      * @return
@@ -277,7 +277,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     /**
-     * 构建快速消费线程池
+     * 构建快速消费线程池.
      *
      * @param builder
      * @return
@@ -287,7 +287,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     /**
-     * 构建动态线程池
+     * 构建动态线程池.
      *
      * @param builder
      * @return
@@ -297,7 +297,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     /**
-     * 构建初始化参数
+     * 构建初始化参数.
      *
      * @param builder
      * @return

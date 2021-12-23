@@ -7,7 +7,6 @@ import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
-import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
@@ -15,9 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-import static cn.hippo4j.common.constant.Constants.*;
+import static cn.hippo4j.common.constant.Constants.BASE_PATH;
+import static cn.hippo4j.common.constant.Constants.GROUP_KEY;
 
 /**
  * Discovery client.
@@ -27,8 +29,6 @@ import static cn.hippo4j.common.constant.Constants.*;
  */
 @Slf4j
 public class DiscoveryClient implements DisposableBean {
-
-    private final ThreadPoolExecutor heartbeatExecutor;
 
     private final ScheduledExecutorService scheduler;
 
@@ -46,16 +46,10 @@ public class DiscoveryClient implements DisposableBean {
         this.httpAgent = httpAgent;
         this.instanceInfo = instanceInfo;
         this.appPathIdentifier = instanceInfo.getAppName().toUpperCase() + "/" + instanceInfo.getInstanceId();
-        this.heartbeatExecutor = ThreadPoolBuilder.builder()
-                .poolThreadSize(1, 5)
-                .keepAliveTime(0, TimeUnit.SECONDS)
-                .workQueue(new SynchronousQueue())
-                .threadFactory("DiscoveryClient-HeartbeatExecutor", true)
-                .build();
 
         this.scheduler = new ScheduledThreadPoolExecutor(
                 new Integer(1),
-                ThreadFactoryBuilder.builder().daemon(true).prefix("DiscoveryClient-Scheduler").build()
+                ThreadFactoryBuilder.builder().daemon(true).prefix("client.discovery.scheduler").build()
         );
 
         register();
