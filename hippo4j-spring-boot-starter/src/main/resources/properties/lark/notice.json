@@ -61,6 +61,13 @@
           {
             "is_short": true,
             "text": {
+              "content": "** 核心线程超时：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
               "content": "** 线程存活时间：** %s / SECONDS",
               "tag": "lark_md"
             }
