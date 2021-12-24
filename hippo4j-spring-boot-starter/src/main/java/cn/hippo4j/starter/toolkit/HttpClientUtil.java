@@ -165,23 +165,29 @@ public class HttpClientUtil {
                 .url(url)
                 .post(requestBody)
                 .build();
-        Response resp = hippo4JOkHttpClient.newCall(request).execute();
-        if (resp.code() != HTTP_OK_CODE) {
-            String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s [body] %s", resp.code(), url, jsonBody);
-            throw new RuntimeException(msg);
+         try (Response resp = hippo4JOkHttpClient.newCall(request).execute()) {
+            try (ResponseBody responseBody = resp.body()) {
+                if (resp.code() != HTTP_OK_CODE) {
+                    String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s [body] %s", resp.code(), url, jsonBody);
+                    throw new ResponseStatusException(HttpStatus.valueOf(resp.code()), msg);
+                }
+                return resp.body().string();
+            }
         }
-        return resp.body().string();
     }
 
     @SneakyThrows
     private byte[] doGet(String url) {
         Request request = new Request.Builder().get().url(url).build();
-        Response resp = hippo4JOkHttpClient.newCall(request).execute();
-        if (resp.code() != HTTP_OK_CODE) {
-            String msg = String.format("HttpGet 响应 code 异常. [code] %s [url] %s", resp.code(), url);
-            throw new RuntimeException(msg);
+        try(Response resp = hippo4JOkHttpClient.newCall(request).execute()){
+            try(ResponseBody responseBody = resp.body()){
+                if (resp.code() != HTTP_OK_CODE) {
+                    String msg = String.format("HttpGet 响应 code 异常. [code] %s [url] %s", resp.code(), url);
+                    throw new ResponseStatusException(HttpStatus.valueOf(resp.code()), msg);
+                }
+                return resp.body().bytes();
+            }
         }
-        return resp.body().bytes();
     }
 
     @SneakyThrows
