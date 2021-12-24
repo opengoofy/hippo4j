@@ -1,6 +1,7 @@
 package cn.hippo4j.starter.toolkit;
 
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.web.exception.ServiceException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -106,7 +107,7 @@ public class HttpClientUtil {
         try {
             return doPost(url, body);
         } catch (Exception e) {
-            log.error("httpPost 调用失败. {}", url, e);
+            log.error("httpPost 调用失败. {} message :: {}", url, e.getMessage());
             throw e;
         }
     }
@@ -165,13 +166,14 @@ public class HttpClientUtil {
                 .url(url)
                 .post(requestBody)
                 .build();
-         try (Response resp = hippo4JOkHttpClient.newCall(request).execute()) {
+        try (Response resp = hippo4JOkHttpClient.newCall(request).execute()) {
             try (ResponseBody responseBody = resp.body()) {
                 if (resp.code() != HTTP_OK_CODE) {
                     String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s [body] %s", resp.code(), url, jsonBody);
-                    throw new ResponseStatusException(HttpStatus.valueOf(resp.code()), msg);
+                    throw new ServiceException(msg);
                 }
-                return resp.body().string();
+
+                return responseBody.string();
             }
         }
     }
@@ -179,13 +181,13 @@ public class HttpClientUtil {
     @SneakyThrows
     private byte[] doGet(String url) {
         Request request = new Request.Builder().get().url(url).build();
-        try(Response resp = hippo4JOkHttpClient.newCall(request).execute()){
-            try(ResponseBody responseBody = resp.body()){
+        try (Response resp = hippo4JOkHttpClient.newCall(request).execute()) {
+            try (ResponseBody responseBody = resp.body()) {
                 if (resp.code() != HTTP_OK_CODE) {
                     String msg = String.format("HttpGet 响应 code 异常. [code] %s [url] %s", resp.code(), url);
-                    throw new ResponseStatusException(HttpStatus.valueOf(resp.code()), msg);
+                    throw new ServiceException(msg);
                 }
-                return resp.body().bytes();
+                return responseBody.bytes();
             }
         }
     }
@@ -204,14 +206,17 @@ public class HttpClientUtil {
         Call call = hippo4JOkHttpClient.newCall(request);
         call.timeout().timeout(readTimeoutMs, TimeUnit.MILLISECONDS);
 
-        Response resp = call.execute();
-        if (resp.code() != HTTP_OK_CODE) {
-            String msg = String.format("HttpGet 响应 code 异常. [code] %s [url] %s", resp.code(), url);
-            log.error(msg);
-            throw new RuntimeException(msg);
-        }
+        try (Response resp = call.execute()) {
+            try (ResponseBody responseBody = resp.body()) {
+                if (resp.code() != HTTP_OK_CODE) {
+                    String msg = String.format("HttpGet 响应 code 异常. [code] %s [url] %s", resp.code(), url);
+                    log.error(msg);
+                    throw new ServiceException(msg);
+                }
 
-        return JSONUtil.parseObject(resp.body().string(), clazz);
+                return JSONUtil.parseObject(responseBody.string(), clazz);
+            }
+        }
     }
 
     @SneakyThrows
@@ -227,13 +232,17 @@ public class HttpClientUtil {
         Call call = hippo4JOkHttpClient.newCall(request);
         call.timeout().timeout(readTimeoutMs, TimeUnit.MILLISECONDS);
 
-        Response resp = call.execute();
-        if (resp.code() != HTTP_OK_CODE) {
-            String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s.", resp.code(), url);
-            log.error(msg);
-            throw new RuntimeException(msg);
+        try (Response resp = call.execute()) {
+            try (ResponseBody responseBody = resp.body()) {
+                if (resp.code() != HTTP_OK_CODE) {
+                    String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s.", resp.code(), url);
+                    log.error(msg);
+                    throw new ServiceException(msg);
+                }
+
+                return JSONUtil.parseObject(responseBody.string(), clazz);
+            }
         }
-        return JSONUtil.parseObject(resp.body().string(), clazz);
     }
 
 }

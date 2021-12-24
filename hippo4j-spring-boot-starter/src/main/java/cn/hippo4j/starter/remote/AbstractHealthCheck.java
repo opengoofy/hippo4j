@@ -5,6 +5,8 @@ import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -21,7 +23,7 @@ import static cn.hippo4j.common.constant.Constants.HEALTH_CHECK_INTERVAL;
  * @date 2021/12/8 20:19
  */
 @Slf4j
-public abstract class AbstractHealthCheck implements ServerHealthCheck, InitializingBean {
+public abstract class AbstractHealthCheck implements ServerHealthCheck, InitializingBean, ApplicationListener<ContextRefreshedEvent> {
 
     /**
      * Health status
@@ -32,6 +34,11 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
      * Client shutdown hook
      */
     private volatile boolean clientShutdownHook = false;
+
+    /**
+     * Spring context init complete
+     */
+    private boolean contextInitComplete = false;
 
     /**
      * Health main lock
@@ -77,7 +84,8 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
     @Override
     @SneakyThrows
     public boolean isHealthStatus() {
-        while (!healthStatus && !clientShutdownHook) {
+        while (contextInitComplete
+                && !healthStatus && !clientShutdownHook) {
             healthMainLock.lock();
             try {
                 healthCondition.await();
@@ -125,6 +133,15 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
         }));
 
         healthCheckExecutor.scheduleWithFixedDelay(() -> healthCheck(), 0, HEALTH_CHECK_INTERVAL, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        synchronized (ServerHealthCheck.class) {
+            if (event.getApplicationContext().getParent() == null) {
+                contextInitComplete = true;
+            }
+        }
     }
 
 }

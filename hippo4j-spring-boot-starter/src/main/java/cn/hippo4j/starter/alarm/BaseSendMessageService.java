@@ -126,7 +126,7 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
         try {
             result = httpAgent.httpPostByDiscovery(BASE_PATH + "/notify/list/config", new ThreadPoolNotifyReqDTO(groupKeys));
         } catch (Throwable ex) {
-            log.error("Get dynamic thread pool notify configuration error.", ex);
+            log.error("Get dynamic thread pool notify configuration error. message :: {}", ex.getMessage());
         }
 
         if (result != null && result.isSuccess() && result.getData() != null) {

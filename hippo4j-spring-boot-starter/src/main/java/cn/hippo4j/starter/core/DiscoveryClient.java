@@ -71,7 +71,7 @@ public class DiscoveryClient implements DisposableBean {
             registerResult = httpAgent.httpPostByDiscovery(urlPath, instanceInfo);
         } catch (Exception ex) {
             registerResult = Results.failure(ErrorCodeEnum.SERVICE_ERROR);
-            log.error("{}{} - registration failed :: {}", PREFIX, appPathIdentifier, ex.getMessage(), ex);
+            log.error("{}{} - registration failed :: {}", PREFIX, appPathIdentifier, ex.getMessage());
         }
 
         if (log.isInfoEnabled()) {
