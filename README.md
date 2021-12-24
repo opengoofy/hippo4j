@@ -12,7 +12,7 @@
 
 ## Hippo4J 介绍
 
-- Hippo4J 是基于 [美团线程池](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html) 设计理念开发，针对线程池展开的动态调参、监控、报警
+- Hippo4J 是基于 [美团线程池](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html) 设计理念开发，针对线程池增强动态调参、监控、报警功能
 - C/S 架构部署使用。部署 Server 端，SpringBoot 项目引入 Starter 与之交互
 - 通过 Web 控制台对线程池参数进行动态调整，同时支持集群内线程池的差异化配置
 - Starter 组件内置线程池参数变更通知，以及运行过载报警功能（支持多通知平台）
@@ -45,7 +45,7 @@
 
 ## 快速开始
 
-[运行 Hippo4J 自带 Demo 参考文档](https://www.hippox.cn/kuai-su-kai-shi/ru-he-yun-hang)
+[运行 Hippo4J 自带 Demo 参考文档](https://www.hippox.cn/pages/793dcb/)
 
 [在线体验地址](http://console.hippox.cn:6691/index.html) 用户名密码：hippo4j / hippo4j
 
@@ -73,4 +73,4 @@ Hippo4J 项目基于或参考以下项目:
 
 ## 联系我
 
-对于这个项目，是否有什么不一样看法，同 [作者](https://www.hippox.cn/qi-ta/jia-qun-gou-tong) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
+对于这个项目，是否有什么不一样看法，同 [作者](https://www.hippox.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
