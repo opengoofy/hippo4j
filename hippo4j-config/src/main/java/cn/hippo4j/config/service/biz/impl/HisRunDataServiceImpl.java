@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -128,6 +129,7 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void save(Message message) {
         List<RuntimeMessage> runtimeMessages = message.getMessages();
         List<HisRunDataInfo> hisRunDataInfos = Lists.newArrayList();
