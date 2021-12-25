@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.toolkit.thread;
+package cn.hippo4j.common.design.builder;
 
 import java.io.Serializable;
 

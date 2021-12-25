@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.toolkit.thread;
 
+import cn.hippo4j.common.design.builder.Builder;
 import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.starter.alarm.ThreadPoolAlarm;
