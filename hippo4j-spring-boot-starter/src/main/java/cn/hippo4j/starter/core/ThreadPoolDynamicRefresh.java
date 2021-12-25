@@ -67,7 +67,7 @@ public class ThreadPoolDynamicRefresh {
         }
 
         if (parameter.getCapacity() != null
-                && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.type, parameter.getQueueType())) {
+                && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.name, executor.getQueue().getClass().getSimpleName())) {
             if (executor.getQueue() instanceof ResizableCapacityLinkedBlockIngQueue) {
                 ResizableCapacityLinkedBlockIngQueue queue = (ResizableCapacityLinkedBlockIngQueue) executor.getQueue();
                 queue.setCapacity(parameter.getCapacity());

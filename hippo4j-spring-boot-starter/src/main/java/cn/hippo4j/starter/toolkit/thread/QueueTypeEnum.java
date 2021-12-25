@@ -20,37 +20,37 @@ public enum QueueTypeEnum {
     /**
      * {@link java.util.concurrent.ArrayBlockingQueue}
      */
-    ARRAY_BLOCKING_QUEUE(1, "ArrayBlockingQueue"),
+    ARRAY_BLOCKING_QUEUE(1, ArrayBlockingQueue.class.getSimpleName()),
 
     /**
      * {@link java.util.concurrent.LinkedBlockingQueue}
      */
-    LINKED_BLOCKING_QUEUE(2, "LinkedBlockingQueue"),
+    LINKED_BLOCKING_QUEUE(2, LinkedBlockingQueue.class.getSimpleName()),
 
     /**
      * {@link java.util.concurrent.LinkedBlockingDeque}
      */
-    LINKED_BLOCKING_DEQUE(3, "LinkedBlockingDeque"),
+    LINKED_BLOCKING_DEQUE(3, LinkedBlockingDeque.class.getSimpleName()),
 
     /**
      * {@link java.util.concurrent.SynchronousQueue}
      */
-    SYNCHRONOUS_QUEUE(4, "SynchronousQueue"),
+    SYNCHRONOUS_QUEUE(4, SynchronousQueue.class.getSimpleName()),
 
     /**
      * {@link java.util.concurrent.LinkedTransferQueue}
      */
-    LINKED_TRANSFER_QUEUE(5, "LinkedTransferQueue"),
+    LINKED_TRANSFER_QUEUE(5, LinkedTransferQueue.class.getSimpleName()),
 
     /**
      * {@link java.util.concurrent.PriorityBlockingQueue}
      */
-    PRIORITY_BLOCKING_QUEUE(6, "PriorityBlockingQueue"),
+    PRIORITY_BLOCKING_QUEUE(6, PriorityBlockingQueue.class.getSimpleName()),
 
     /**
      * {@link "io.dynamic.threadpool.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue"}
      */
-    RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockIngQueue");
+    RESIZABLE_LINKED_BLOCKING_QUEUE(9, ResizableCapacityLinkedBlockIngQueue.class.getSimpleName());
 
     public Integer type;
 
