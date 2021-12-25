@@ -1,7 +1,9 @@
 package cn.hippo4j.starter.core;
 
+import cn.hippo4j.starter.event.ApplicationCompleteEvent;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.remote.ServerHealthCheck;
+import org.springframework.context.ApplicationListener;
 
 import java.util.Arrays;
 
@@ -11,7 +13,7 @@ import java.util.Arrays;
  * @author chen.ma
  * @date 2021/6/21 21:50
  */
-public class ThreadPoolConfigService implements ConfigService {
+public class ThreadPoolConfigService implements ConfigService, ApplicationListener<ApplicationCompleteEvent> {
 
     private final ClientWorker clientWorker;
 
@@ -34,6 +36,11 @@ public class ThreadPoolConfigService implements ConfigService {
         } else {
             return "DOWN";
         }
+    }
+
+    @Override
+    public void onApplicationEvent(ApplicationCompleteEvent event) {
+        clientWorker.notifyApplicationComplete();
     }
 
 }

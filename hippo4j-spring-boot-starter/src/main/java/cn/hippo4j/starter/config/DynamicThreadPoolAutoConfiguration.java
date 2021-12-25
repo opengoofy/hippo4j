@@ -7,6 +7,7 @@ import cn.hippo4j.starter.core.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.starter.core.ThreadPoolConfigService;
 import cn.hippo4j.starter.core.ThreadPoolOperation;
 import cn.hippo4j.starter.enable.MarkerConfiguration;
+import cn.hippo4j.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
@@ -109,6 +110,11 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     public RunTimeInfoCollector runTimeInfoCollector() {
         return new RunTimeInfoCollector(properties);
+    }
+
+    @Bean
+    public ApplicationContentPostProcessor applicationContentPostProcessor() {
+        return new ApplicationContentPostProcessor();
     }
 
 }

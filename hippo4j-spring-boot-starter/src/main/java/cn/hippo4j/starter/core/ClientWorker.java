@@ -15,10 +15,7 @@ import org.springframework.util.StringUtils;
 
 import java.net.URLDecoder;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import static cn.hippo4j.common.constant.Constants.*;
 
@@ -31,9 +28,9 @@ import static cn.hippo4j.common.constant.Constants.*;
 @Slf4j
 public class ClientWorker {
 
-    private double currentLongingTaskCount = 0;
-
     private long timeout;
+
+    private double currentLongingTaskCount = 0;
 
     private final HttpAgent agent;
 
@@ -44,6 +41,8 @@ public class ClientWorker {
     private final ScheduledExecutorService executor;
 
     private final ScheduledExecutorService executorService;
+
+    private final CountDownLatch awaitApplicationComplete = new CountDownLatch(1);
 
     private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap(16);
 
@@ -69,11 +68,15 @@ public class ClientWorker {
 
         this.executor.scheduleWithFixedDelay(() -> {
             try {
+                // 等待 spring 容器启动成功
+                awaitApplicationComplete.await();
+
+                // 检查动态线程池配置是否被更新
                 checkConfigInfo();
             } catch (Throwable e) {
                 log.error("Sub check rotate check error.", e);
             }
-        }, 1L, 10L, TimeUnit.MILLISECONDS);
+        }, 1L, 1024L, TimeUnit.MILLISECONDS);
     }
 
     public void checkConfigInfo() {
@@ -246,13 +249,13 @@ public class ClientWorker {
         cacheData = new CacheData(namespace, itemId, tpId);
         CacheData lastCacheData = cacheMap.putIfAbsent(tpId, cacheData);
         if (lastCacheData == null) {
-            String serverConfig = null;
+            String serverConfig;
             try {
                 serverConfig = getServerConfig(namespace, itemId, tpId, 3000L);
                 PoolParameterInfo poolInfo = JSONUtil.parseObject(serverConfig, PoolParameterInfo.class);
                 cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
             } catch (Exception ex) {
-                log.error("[Cache Data] Error. Service Unavailable :: {}", ex.getMessage());
+                log.error("Cache Data Error. Service Unavailable :: {}", ex.getMessage());
             }
 
             int taskId = cacheMap.size() / CONFIG_LONG_POLL_TIMEOUT;
@@ -266,6 +269,10 @@ public class ClientWorker {
 
     private void setHealthServer(boolean isHealthServer) {
         this.serverHealthCheck.setHealthStatus(isHealthServer);
+    }
+
+    protected void notifyApplicationComplete() {
+        awaitApplicationComplete.countDown();
     }
 
 }
