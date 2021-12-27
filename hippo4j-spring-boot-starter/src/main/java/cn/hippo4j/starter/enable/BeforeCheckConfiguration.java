@@ -4,6 +4,7 @@ import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.core.ConfigEmptyException;
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -19,53 +20,56 @@ import org.springframework.core.env.ConfigurableEnvironment;
 public class BeforeCheckConfiguration {
 
     @Bean
-    public BeforeCheckConfiguration.BeforeCheck dynamicThreadPoolBeforeCheckBean(BootstrapProperties properties, ConfigurableEnvironment environment) {
-        String username = properties.getUsername();
-        if (StrUtil.isBlank(username)) {
-            throw new ConfigEmptyException(
-                    "Web server failed to start. The dynamic thread pool username is empty.",
-                    "Please check whether the [spring.dynamic.thread-pool.username] configuration is empty or an empty string."
-            );
-        }
+    public BeforeCheckConfiguration.BeforeCheck dynamicThreadPoolBeforeCheckBean(@Autowired(required = false) BootstrapProperties properties,
+                                                                                 ConfigurableEnvironment environment) {
+        if (properties != null) {
+            String username = properties.getUsername();
+            if (StrUtil.isBlank(username)) {
+                throw new ConfigEmptyException(
+                        "Web server failed to start. The dynamic thread pool username is empty.",
+                        "Please check whether the [spring.dynamic.thread-pool.username] configuration is empty or an empty string."
+                );
+            }
 
-        String password = properties.getPassword();
-        if (StrUtil.isBlank(password)) {
-            throw new ConfigEmptyException(
-                    "Web server failed to start. The dynamic thread pool password is empty.",
-                    "Please check whether the [spring.dynamic.thread-pool.password] configuration is empty or an empty string."
-            );
-        }
+            String password = properties.getPassword();
+            if (StrUtil.isBlank(password)) {
+                throw new ConfigEmptyException(
+                        "Web server failed to start. The dynamic thread pool password is empty.",
+                        "Please check whether the [spring.dynamic.thread-pool.password] configuration is empty or an empty string."
+                );
+            }
 
-        String namespace = properties.getNamespace();
-        if (StrUtil.isBlank(namespace)) {
-            throw new ConfigEmptyException(
-                    "Web server failed to start. The dynamic thread pool namespace is empty.",
-                    "Please check whether the [spring.dynamic.thread-pool.namespace] configuration is empty or an empty string."
-            );
-        }
+            String namespace = properties.getNamespace();
+            if (StrUtil.isBlank(namespace)) {
+                throw new ConfigEmptyException(
+                        "Web server failed to start. The dynamic thread pool namespace is empty.",
+                        "Please check whether the [spring.dynamic.thread-pool.namespace] configuration is empty or an empty string."
+                );
+            }
 
-        String itemId = properties.getItemId();
-        if (StrUtil.isBlank(itemId)) {
-            throw new ConfigEmptyException(
-                    "Web server failed to start. The dynamic thread pool item id is empty.",
-                    "Please check whether the [spring.dynamic.thread-pool.item-id] configuration is empty or an empty string."
-            );
-        }
+            String itemId = properties.getItemId();
+            if (StrUtil.isBlank(itemId)) {
+                throw new ConfigEmptyException(
+                        "Web server failed to start. The dynamic thread pool item id is empty.",
+                        "Please check whether the [spring.dynamic.thread-pool.item-id] configuration is empty or an empty string."
+                );
+            }
 
-        String serverAddr = properties.getServerAddr();
-        if (StrUtil.isBlank(serverAddr)) {
-            throw new ConfigEmptyException(
-                    "Web server failed to start. The dynamic thread pool server addr is empty.",
-                    "Please check whether the [spring.dynamic.thread-pool.server-addr] configuration is empty or an empty string."
-            );
-        }
+            String serverAddr = properties.getServerAddr();
+            if (StrUtil.isBlank(serverAddr)) {
+                throw new ConfigEmptyException(
+                        "Web server failed to start. The dynamic thread pool server addr is empty.",
+                        "Please check whether the [spring.dynamic.thread-pool.server-addr] configuration is empty or an empty string."
+                );
+            }
 
-        String applicationName = environment.getProperty("spring.application.name");
-        if (StrUtil.isBlank(applicationName)) {
-            throw new ConfigEmptyException(
-                    "Web server failed to start. The dynamic thread pool application name is empty.",
-                    "Please check whether the [spring.application.name] configuration is empty or an empty string."
-            );
+            String applicationName = environment.getProperty("spring.application.name");
+            if (StrUtil.isBlank(applicationName)) {
+                throw new ConfigEmptyException(
+                        "Web server failed to start. The dynamic thread pool application name is empty.",
+                        "Please check whether the [spring.application.name] configuration is empty or an empty string."
+                );
+            }
         }
 
         return new BeforeCheckConfiguration.BeforeCheck();

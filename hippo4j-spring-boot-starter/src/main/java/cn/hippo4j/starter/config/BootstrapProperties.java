@@ -45,6 +45,11 @@ public class BootstrapProperties {
     private String itemId;
 
     /**
+     * Whether to enable dynamic thread pool
+     */
+    private Boolean enable = true;
+
+    /**
      * Print dynamic thread pool banner
      */
     private Boolean banner = true;

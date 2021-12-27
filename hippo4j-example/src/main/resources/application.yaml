@@ -19,3 +19,4 @@ spring:
       item-id: dynamic-threadpool-example
       username: admin
       password: 123456
+      enable: true
