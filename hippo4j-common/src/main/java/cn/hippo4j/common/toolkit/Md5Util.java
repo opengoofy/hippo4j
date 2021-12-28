@@ -2,7 +2,6 @@ package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.PoolParameter;
-import cn.hutool.core.util.StrUtil;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -78,12 +77,12 @@ public class Md5Util {
             sb.append(dataIdGroupId[1]);
             // if have tenant, then set it
             if (dataIdGroupId.length == 3) {
-                if (StrUtil.isNotBlank(dataIdGroupId[2])) {
+                if (StringUtil.isNotBlank(dataIdGroupId[2])) {
                     sb.append(Constants.WORD_SEPARATOR);
                     sb.append(dataIdGroupId[2]);
                 }
             } else if (dataIdGroupId.length == 4) {
-                if (StrUtil.isNotBlank(dataIdGroupId[2])) {
+                if (StringUtil.isNotBlank(dataIdGroupId[2])) {
                     sb.append(Constants.WORD_SEPARATOR);
                     sb.append(dataIdGroupId[2]);
                 }

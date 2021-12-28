@@ -2,7 +2,6 @@ package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.api.JsonFacade;
 import cn.hippo4j.common.api.impl.JacksonHandler;
-import cn.hutool.core.util.StrUtil;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class JSONUtil {
     }
 
     public static <T> T parseObject(String text, Class<T> clazz) {
-        if (StrUtil.isBlank(text)) {
+        if (StringUtil.isBlank(text)) {
             return null;
         }
 
@@ -33,7 +32,7 @@ public class JSONUtil {
     }
 
     public static <T> List<T> parseArray(String text, Class<T> clazz) {
-        if (StrUtil.isBlank(text)) {
+        if (StringUtil.isBlank(text)) {
             return null;
         }
 
