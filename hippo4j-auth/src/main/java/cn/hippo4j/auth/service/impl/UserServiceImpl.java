@@ -3,16 +3,17 @@ package cn.hippo4j.auth.service.impl;
 import cn.hippo4j.auth.mapper.UserMapper;
 import cn.hippo4j.auth.model.UserInfo;
 import cn.hippo4j.auth.model.biz.user.UserQueryPageReqDTO;
+import cn.hippo4j.auth.model.biz.user.UserReqDTO;
 import cn.hippo4j.auth.model.biz.user.UserRespDTO;
 import cn.hippo4j.auth.service.RoleService;
 import cn.hippo4j.auth.service.UserService;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import cn.hippo4j.auth.model.biz.user.UserReqDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public IPage<UserRespDTO> listUser(UserQueryPageReqDTO reqDTO) {
-        IPage<UserInfo> selectPage = userMapper.selectPage(reqDTO, null);
+        LambdaQueryWrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class)
+                .eq(StringUtil.isNotBlank(reqDTO.getUserName()), UserInfo::getUserName, reqDTO.getUserName());
+        IPage<UserInfo> selectPage = userMapper.selectPage(reqDTO, queryWrapper);
 
         return selectPage.convert(each -> BeanUtil.toBean(each, UserRespDTO.class));
     }

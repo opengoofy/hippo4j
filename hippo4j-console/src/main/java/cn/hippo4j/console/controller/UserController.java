@@ -8,7 +8,6 @@ import cn.hippo4j.auth.security.AuthManager;
 import cn.hippo4j.auth.service.UserService;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.TokenInfo;
-import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -47,10 +46,9 @@ public class UserController {
         return Results.success(resultUserPage);
     }
 
-    @GetMapping("/info")
-    public Result<UserRespDTO> userInfo() {
-        String userName = UserContext.getUserName();
-        IPage<UserRespDTO> listUser = userService.listUser(new UserQueryPageReqDTO().setUserName(userName));
+    @GetMapping("/info/{username}")
+    public Result<UserRespDTO> userInfo(@PathVariable("username") String username) {
+        IPage<UserRespDTO> listUser = userService.listUser(new UserQueryPageReqDTO().setUserName(username));
         UserRespDTO userRespDTO = listUser.getRecords().get(0);
         return Results.success(userRespDTO);
     }
