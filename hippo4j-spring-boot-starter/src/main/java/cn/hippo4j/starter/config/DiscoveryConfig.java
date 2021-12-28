@@ -59,7 +59,7 @@ public class DiscoveryConfig {
     }
 
     @Bean
-    public DiscoveryClient discoveryClient(HttpAgent httpAgent, InstanceInfo instanceInfo) {
+    public DiscoveryClient hippo4JDiscoveryClient(HttpAgent httpAgent, InstanceInfo instanceInfo) {
         return new DiscoveryClient(httpAgent, instanceInfo);
     }
 
