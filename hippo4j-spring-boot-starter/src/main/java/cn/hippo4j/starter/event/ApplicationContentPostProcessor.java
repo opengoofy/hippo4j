@@ -5,7 +5,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
 import javax.annotation.Resource;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Application content post processor.
@@ -18,13 +17,15 @@ public class ApplicationContentPostProcessor implements ApplicationListener<Cont
     @Resource
     private ApplicationContext applicationContext;
 
-    private AtomicBoolean executeOnlyOnce = new AtomicBoolean(Boolean.TRUE);
+    private boolean executeOnlyOnce = true;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (event.getApplicationContext().getParent() == null && executeOnlyOnce.get()) {
-            applicationContext.publishEvent(new ApplicationCompleteEvent(this));
-            executeOnlyOnce.set(Boolean.FALSE);
+        synchronized (ApplicationContentPostProcessor.class) {
+            if (executeOnlyOnce) {
+                applicationContext.publishEvent(new ApplicationCompleteEvent(this));
+                executeOnlyOnce = false;
+            }
         }
     }
 
