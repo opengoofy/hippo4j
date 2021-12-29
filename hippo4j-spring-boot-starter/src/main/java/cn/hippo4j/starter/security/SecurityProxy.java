@@ -3,10 +3,10 @@ package cn.hippo4j.starter.security;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.TokenInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.toolkit.HttpClientUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -66,7 +66,7 @@ public class SecurityProxy {
     }
 
     public boolean applyToken(String server) {
-        if (StrUtil.isAllNotBlank(username, password)) {
+        if (StringUtil.isAllNotEmpty(username, password)) {
             String url = server + APPLY_TOKEN_URL;
 
             Map<String, String> bodyMap = new HashMap(2);

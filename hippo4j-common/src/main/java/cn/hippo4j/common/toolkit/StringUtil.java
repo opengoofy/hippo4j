@@ -1,5 +1,7 @@
 package cn.hippo4j.common.toolkit;
 
+import cn.hutool.core.util.ArrayUtil;
+
 /**
  * String util.
  *
@@ -18,7 +20,7 @@ public class StringUtil {
      * @param str
      * @return
      */
-    public static boolean isBlank(String str) {
+    public static boolean isBlank(CharSequence str) {
         int length;
 
         if ((str == null) || ((length = str.length()) == 0)) {
@@ -38,13 +40,62 @@ public class StringUtil {
     }
 
     /**
+     * Is empty.
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isEmpty(CharSequence str) {
+        return str == null || str.length() == 0;
+    }
+
+    /**
+     * Is not empty.
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isNotEmpty(CharSequence str) {
+        return !isEmpty(str);
+    }
+
+    /**
      * Is not blank.
      *
      * @param str
      * @return
      */
-    public static boolean isNotBlank(String str) {
+    public static boolean isNotBlank(CharSequence str) {
         return isBlank(str) == false;
+    }
+
+    /**
+     * Is all not empty.
+     *
+     * @param args
+     * @return
+     */
+    public static boolean isAllNotEmpty(CharSequence... args) {
+        return false == hasEmpty(args);
+    }
+
+    /**
+     * Has empty.
+     *
+     * @param strList
+     * @return
+     */
+    public static boolean hasEmpty(CharSequence... strList) {
+        if (ArrayUtil.isEmpty(strList)) {
+            return true;
+        }
+
+        for (CharSequence str : strList) {
+            if (isEmpty(str)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
