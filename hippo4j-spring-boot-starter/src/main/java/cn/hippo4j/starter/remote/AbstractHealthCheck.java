@@ -1,12 +1,12 @@
 package cn.hippo4j.starter.remote;
 
 import cn.hippo4j.starter.core.ShutdownExecuteException;
+import cn.hippo4j.starter.event.ApplicationCompleteEvent;
 import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -23,7 +23,7 @@ import static cn.hippo4j.common.constant.Constants.HEALTH_CHECK_INTERVAL;
  * @date 2021/12/8 20:19
  */
 @Slf4j
-public abstract class AbstractHealthCheck implements ServerHealthCheck, InitializingBean, ApplicationListener<ContextRefreshedEvent> {
+public abstract class AbstractHealthCheck implements ServerHealthCheck, InitializingBean, ApplicationListener<ApplicationCompleteEvent> {
 
     /**
      * Health status
@@ -36,7 +36,7 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
     private volatile boolean clientShutdownHook = false;
 
     /**
-     * Spring context init complete
+     * Spring context init complete. TODO: Why this
      */
     private boolean contextInitComplete = false;
 
@@ -136,12 +136,8 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
     }
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        synchronized (ServerHealthCheck.class) {
-            if (event.getApplicationContext().getParent() == null) {
-                contextInitComplete = true;
-            }
-        }
+    public void onApplicationEvent(ApplicationCompleteEvent event) {
+        contextInitComplete = true;
     }
 
 }
