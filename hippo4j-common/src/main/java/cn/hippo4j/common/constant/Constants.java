@@ -62,6 +62,8 @@ public class Constants {
 
     public static final String LISTENING_CONFIGS = "Listening-Configs";
 
+    public static final String WEIGHT_CONFIGS = "Weight-Configs";
+
     public static final String GROUP_KEY_DELIMITER = "+";
 
     public static final String GROUP_KEY_DELIMITER_TRANSLATION = "\\+";

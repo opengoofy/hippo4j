@@ -8,6 +8,7 @@ import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.remote.ServerHealthCheck;
 import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -155,6 +156,7 @@ public class ClientWorker {
     public List<String> checkUpdateTpIds(String probeUpdateString, boolean isInitializingCacheList) {
         Map<String, String> params = new HashMap(2);
         params.put(PROBE_MODIFY_REQUEST, probeUpdateString);
+        params.put(WEIGHT_CONFIGS, IdUtil.simpleUUID());
         Map<String, String> headers = new HashMap(2);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
 
