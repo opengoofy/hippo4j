@@ -110,7 +110,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler {
         }
 
         List<String> receives = StrUtil.split(notifyConfig.getReceives(), ',');
-        String afterReceives = Joiner.on(", @").join(receives);
+        String afterReceives = Joiner.on("><@").join(receives);
 
         ThreadPoolExecutor customPool = poolWrap.getExecutor();
         String text = String.format(

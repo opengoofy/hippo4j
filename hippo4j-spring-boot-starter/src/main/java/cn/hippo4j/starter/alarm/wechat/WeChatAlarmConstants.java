@@ -54,7 +54,7 @@ public class WeChatAlarmConstants {
                     "> 队列容量：%s \n" +
                     "> AGO 拒绝策略：%s \n" +
                     "> NOW 拒绝策略：%s \n" +
-                    "> OWNER：**@%s** \n" +
+                    "> OWNER：<@%s> \n" +
                     "> 提示：动态线程池配置变更实时通知（无限制） \n\n" +
                     "**播报时间：%s**";
 
