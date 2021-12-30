@@ -12,11 +12,11 @@ import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
 import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
 import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiRobotSendRequest;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.taobao.api.ApiException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +59,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
     }
 
     private void dingAlarmSendMessage(NotifyDTO notifyConfig, DynamicThreadPoolExecutor pool) {
-        List<String> receives = StrUtil.split(notifyConfig.getReceives(), ',');
+        String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on(", @").join(receives);
 
         BlockingQueue<Runnable> queue = pool.getQueue();
@@ -107,7 +107,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
                 DateUtil.now()
         );
 
-        execute(notifyConfig, DingAlarmConstants.DING_ALARM_TITLE, text, receives);
+        execute(notifyConfig, DingAlarmConstants.DING_ALARM_TITLE, text, Lists.newArrayList(receives));
     }
 
     private void dingChangeSendMessage(NotifyDTO notifyConfig, PoolParameterInfo parameter) {
@@ -118,7 +118,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
             return;
         }
 
-        List<String> receives = StrUtil.split(notifyConfig.getReceives(), ',');
+        String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on(", @").join(receives);
 
         ThreadPoolExecutor customPool = poolWrap.getExecutor();
@@ -156,7 +156,7 @@ public class DingSendMessageHandler implements SendMessageHandler {
                 DateUtil.now()
         );
 
-        execute(notifyConfig, DingAlarmConstants.DING_NOTICE_TITLE, text, receives);
+        execute(notifyConfig, DingAlarmConstants.DING_NOTICE_TITLE, text, Lists.newArrayList(receives));
     }
 
     private void execute(NotifyDTO notifyConfig, String title, String text, List<String> mobiles) {

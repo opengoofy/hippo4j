@@ -13,7 +13,6 @@ import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
 import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
 import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import com.google.common.base.Joiner;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,6 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -49,7 +47,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler {
 
     @Override
     public void sendAlarmMessage(NotifyDTO notifyConfig, DynamicThreadPoolExecutor pool) {
-        List<String> receives = StrUtil.split(notifyConfig.getReceives(), ',');
+        String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on(", @").join(receives);
 
         BlockingQueue<Runnable> queue = pool.getQueue();
@@ -109,7 +107,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler {
             return;
         }
 
-        List<String> receives = StrUtil.split(notifyConfig.getReceives(), ',');
+        String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on("><@").join(receives);
 
         ThreadPoolExecutor customPool = poolWrap.getExecutor();

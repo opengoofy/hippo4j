@@ -3,6 +3,7 @@ package cn.hippo4j.starter.alarm.lark;
 import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.starter.alarm.NotifyDTO;
 import cn.hippo4j.starter.alarm.NotifyPlatformEnum;
 import cn.hippo4j.starter.alarm.SendMessageHandler;
@@ -169,7 +170,7 @@ public class LarkSendMessageHandler implements SendMessageHandler {
     }
 
     private String getReceives(NotifyDTO notifyConfig) {
-        if (StrUtil.isBlank(notifyConfig.getReceives())) {
+        if (StringUtil.isBlank(notifyConfig.getReceives())) {
             return "";
         }
         return Arrays.stream(notifyConfig.getReceives().split(","))

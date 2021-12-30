@@ -1,7 +1,5 @@
 package cn.hippo4j.common.toolkit;
 
-import cn.hutool.core.util.ArrayUtil;
-
 /**
  * String util.
  *

@@ -9,7 +9,6 @@ import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.remote.ServerHealthCheck;
 import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -105,8 +104,8 @@ public class ClientWorker {
             cacheMap.forEach((key, val) -> cacheDataList.add(val));
 
             List<String> changedTpIds = checkUpdateDataIds(cacheDataList, inInitializingCacheList);
-            for (String each : changedTpIds) {
-                String[] keys = StrUtil.split(each, GROUP_KEY_DELIMITER);
+            for (String groupKey : changedTpIds) {
+                String[] keys = groupKey.split(GROUP_KEY_DELIMITER);
                 String tpId = keys[0];
                 String itemId = keys[1];
                 String namespace = keys[2];
