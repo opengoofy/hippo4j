@@ -3,7 +3,6 @@ package cn.hippo4j.common.toolkit;
 import cn.hippo4j.common.monitor.AbstractMessage;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
-import cn.hutool.core.bean.BeanUtil;
 import lombok.SneakyThrows;
 
 import java.util.ArrayList;
@@ -31,7 +30,11 @@ public class MessageConvert {
 
         List<Map<String, Object>> messageMapList = new ArrayList();
         List<Message> messages = message.getMessages();
-        messages.forEach(each -> messageMapList.add(BeanUtil.beanToMap(each)));
+        messages.forEach(each -> {
+            String eachVal = JSONUtil.toJSONString(each);
+            Map mapObj = JSONUtil.parseObject(eachVal, Map.class);
+            messageMapList.add(mapObj);
+        });
 
         wrapper.setContentParams(messageMapList);
         return wrapper;
@@ -49,7 +52,11 @@ public class MessageConvert {
         List<Map<String, Object>> contentParams = messageWrapper.getContentParams();
 
         List<Message> messages = new ArrayList();
-        contentParams.forEach(each -> messages.add(BeanUtil.toBean(each, messageWrapper.getResponseClass())));
+        contentParams.forEach(each -> {
+            String eachVal = JSONUtil.toJSONString(each);
+            Message messageObj = JSONUtil.parseObject(eachVal, messageWrapper.getResponseClass());
+            messages.add(messageObj);
+        });
 
         message.setMessages(messages);
         message.setMessageType(messageWrapper.getMessageType());
