@@ -2,6 +2,9 @@ package cn.hippo4j.config.service;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
+import cn.hippo4j.common.design.observer.Observer;
+import cn.hippo4j.common.design.observer.ObserverMessage;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
@@ -32,7 +35,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class ConfigCacheService {
 
-    private static ConfigService CONFIG_SERVICE = null;
+    private static ConfigService CONFIG_SERVICE;
+
+    static {
+        AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.CLEAR_CONFIG_CACHE, new ClearConfigCache());
+    }
 
     /**
      * TODO: 数据结构、客户端停机时 remove 操作待重构
@@ -138,13 +145,35 @@ public class ConfigCacheService {
      *
      * @param groupKey 租户 + 项目 + IP
      */
-    public synchronized static void removeConfigCache(String groupKey) {
+    public static void removeConfigCache(String groupKey) {
+        coarseRemove(groupKey);
+    }
+
+    /**
+     * Coarse remove.
+     *
+     * @param coarse
+     */
+    private synchronized static void coarseRemove(String coarse) {
         // 模糊搜索
-        List<String> identificationList = MapUtil.parseMapForFilter(CLIENT_CONFIG_CACHE, groupKey);
+        List<String> identificationList = MapUtil.parseMapForFilter(CLIENT_CONFIG_CACHE, coarse);
         for (String cacheMapKey : identificationList) {
             Map<String, CacheItem> removeCacheItem = CLIENT_CONFIG_CACHE.remove(cacheMapKey);
             log.info("Remove invalidated config cache. config info :: {}", JSONUtil.toJSONString(removeCacheItem));
         }
+    }
+
+    /**
+     * This is an observer, clear config cache.
+     */
+    static class ClearConfigCache implements Observer<String> {
+
+        @Override
+        public void accept(ObserverMessage<String> observerMessage) {
+            log.info("Clean up the configuration cache. Key :: {}", observerMessage.message());
+            coarseRemove(observerMessage.message());
+        }
+
     }
 
 }

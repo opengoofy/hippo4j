@@ -1,5 +1,6 @@
 package cn.hippo4j.discovery.core;
 
+import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.InstanceInfo.InstanceStatus;
 import com.google.common.cache.CacheBuilder;
@@ -244,18 +245,22 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         for (Lease<InstanceInfo> expiredLease : expiredLeases) {
             String appName = expiredLease.getHolder().getAppName();
             String id = expiredLease.getHolder().getInstanceId();
-            internalCancel(appName, id, false);
+            String identify = expiredLease.getHolder().getIdentify();
+            internalCancel(appName, id, identify, false);
         }
     }
 
-    protected boolean internalCancel(String appName, String id, boolean isReplication) {
+    protected boolean internalCancel(String appName, String id, String identify, boolean isReplication) {
         read.lock();
         try {
             Map<String, Lease<InstanceInfo>> registerMap = registry.get(appName);
             if (!CollectionUtils.isEmpty(registerMap)) {
                 registerMap.remove(id);
+                AbstractSubjectCenter.notify(AbstractSubjectCenter.SubjectType.CLEAR_CONFIG_CACHE, () -> identify);
+
                 log.info("Clean up unhealthy nodes. Node id :: {}", id);
             }
+
         } finally {
             read.unlock();
         }
