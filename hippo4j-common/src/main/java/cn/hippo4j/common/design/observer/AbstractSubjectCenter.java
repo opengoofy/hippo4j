@@ -32,6 +32,16 @@ public class AbstractSubjectCenter {
     /**
      * Register observer.
      *
+     * @param subjectType
+     * @param observer
+     */
+    public static void register(SubjectType subjectType, Observer observer) {
+        register(subjectType.name(), observer);
+    }
+
+    /**
+     * Register observer.
+     *
      * @param subject
      * @param observer
      */
@@ -75,6 +85,22 @@ public class AbstractSubjectCenter {
         observers.remove(observer);
     }
 
+    /**
+     * Notify.
+     *
+     * @param subjectType
+     * @param observerMessage
+     */
+    public static void notify(SubjectType subjectType, ObserverMessage observerMessage) {
+        notify(subjectType.name(), observerMessage);
+    }
+
+    /**
+     * Notify.
+     *
+     * @param subject
+     * @param observerMessage
+     */
     public static void notify(String subject, ObserverMessage observerMessage) {
         List<Observer> observers = OBSERVERS_MAP.get(subject);
         if (CollectionUtil.isEmpty(observers)) {
@@ -91,12 +117,17 @@ public class AbstractSubjectCenter {
         });
     }
 
-    private enum SubjectType {
+    public enum SubjectType {
 
         /**
          * Spring content refreshed.
          */
-        SPRING_CONTENT_REFRESHED
+        SPRING_CONTENT_REFRESHED,
+
+        /**
+         * Clear config cache.
+         */
+        CLEAR_CONFIG_CACHE
 
     }
 
