@@ -1,5 +1,9 @@
 package cn.hippo4j.common.toolkit;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * User context (Transition scheme).
  *
@@ -8,29 +12,33 @@ package cn.hippo4j.common.toolkit;
  */
 public class UserContext {
 
-    private static String username;
-
-    private static String userRole;
-
-    public static void setUserName(String username) {
-        UserContext.username = username;
-    }
-
-    public static void setUserRole(String userRole) {
-        UserContext.userRole = userRole;
-    }
+    private static final ThreadLocal<User> USER_THREAD_LOCAL = new ThreadLocal();
 
     public static void setUserInfo(String username, String userRole) {
-        UserContext.username = username;
-        UserContext.userRole = userRole;
+        USER_THREAD_LOCAL.set(new User(username, userRole));
     }
 
     public static String getUserName() {
-        return username;
+        return USER_THREAD_LOCAL.get().username;
     }
 
     public static String getUserRole() {
-        return userRole;
+        return USER_THREAD_LOCAL.get().userRole;
+    }
+
+    public static void clear() {
+        USER_THREAD_LOCAL.remove();
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class User {
+
+        private String username;
+
+        private String userRole;
+
     }
 
 }
