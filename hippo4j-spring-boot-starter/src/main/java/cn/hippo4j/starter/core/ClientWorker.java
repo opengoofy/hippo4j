@@ -105,7 +105,7 @@ public class ClientWorker {
 
             List<String> changedTpIds = checkUpdateDataIds(cacheDataList, inInitializingCacheList);
             for (String groupKey : changedTpIds) {
-                String[] keys = groupKey.split(GROUP_KEY_DELIMITER);
+                String[] keys = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
                 String tpId = keys[0];
                 String itemId = keys[1];
                 String namespace = keys[2];
