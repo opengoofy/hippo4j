@@ -2,7 +2,6 @@ package cn.hippo4j.starter.common;
 
 import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
 import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
-import cn.hippo4j.starter.toolkit.thread.RejectedPolicies;
 import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
 
 import java.util.concurrent.TimeUnit;
@@ -21,7 +20,6 @@ public class CommonDynamicThreadPool {
                 .threadFactory(threadPoolId)
                 .poolThreadSize(3, 5)
                 .keepAliveTime(1000L, TimeUnit.SECONDS)
-                .rejected(RejectedPolicies.runsOldestTaskPolicy())
                 .alarmConfig(1, 80, 80)
                 .workQueue(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, 512)
                 .build();
