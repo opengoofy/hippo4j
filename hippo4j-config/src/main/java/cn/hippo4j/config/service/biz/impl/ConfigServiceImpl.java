@@ -2,6 +2,7 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.*;
+import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.ConfigInstanceMapper;
@@ -83,7 +84,9 @@ public class ConfigServiceImpl implements ConfigService {
         }
 
         ConfigAllInfo configAllInfo = findConfigAllInfo(params[0], params[1], params[2]);
-        if (configAllInfo != null && configInstance == null) {
+        if (configAllInfo == null && configInstance == null) {
+            throw new ServiceException("Thread pool configuration is not defined.");
+        } else if (configAllInfo != null && configInstance == null) {
             resultConfig = configAllInfo;
         } else if (configAllInfo == null && configInstance != null) {
             resultConfig = configInstance;
