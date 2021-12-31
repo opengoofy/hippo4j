@@ -18,10 +18,10 @@ public class CommonDynamicThreadPool {
         DynamicThreadPoolExecutor poolExecutor = (DynamicThreadPoolExecutor) ThreadPoolBuilder.builder()
                 .dynamicPool()
                 .threadFactory(threadPoolId)
-                .poolThreadSize(3, 5)
-                .keepAliveTime(1000L, TimeUnit.SECONDS)
+                .poolThreadSize(2, 4)
+                .keepAliveTime(60L, TimeUnit.SECONDS)
                 .alarmConfig(1, 80, 80)
-                .workQueue(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, 512)
+                .workQueue(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, 1024)
                 .build();
         return poolExecutor;
     }
