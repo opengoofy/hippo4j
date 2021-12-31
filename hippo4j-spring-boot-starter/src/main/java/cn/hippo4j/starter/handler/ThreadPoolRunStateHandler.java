@@ -1,13 +1,16 @@
 package cn.hippo4j.starter.handler;
 
 import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.starter.core.GlobalThreadPoolManage;
 import cn.hippo4j.starter.toolkit.ByteConvertUtil;
+import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.RuntimeInfo;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Thread pool run state service.
@@ -44,6 +47,12 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
         poolRunStateInfo.setHost(INET_ADDRESS.getHostAddress());
         poolRunStateInfo.setMemoryProportion(memoryProportion);
         poolRunStateInfo.setFreeMemory(ByteConvertUtil.getPrintSize(runtimeInfo.getFreeMemory()));
+
+        String threadPoolId = poolRunStateInfo.getTpId();
+        DynamicThreadPoolWrapper executorService = GlobalThreadPoolManage.getExecutorService(threadPoolId);
+        ThreadPoolExecutor pool = executorService.getExecutor();
+        String rejectedName = pool.getRejectedExecutionHandler().getClass().getSimpleName();
+        poolRunStateInfo.setRejectedName(rejectedName);
 
         return poolRunStateInfo;
     }

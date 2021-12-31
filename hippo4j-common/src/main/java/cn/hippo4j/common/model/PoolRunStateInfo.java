@@ -115,4 +115,9 @@ public class PoolRunStateInfo implements Serializable {
      */
     private Long timestamp;
 
+    /**
+     * rejectedName
+     */
+    private String rejectedName;
+
 }
