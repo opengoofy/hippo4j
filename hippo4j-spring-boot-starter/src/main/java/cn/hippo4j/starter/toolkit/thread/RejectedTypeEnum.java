@@ -42,12 +42,12 @@ public enum RejectedTypeEnum {
     /**
      * 发生拒绝事件时, 添加新任务并运行最早的任务
      */
-    RUNS_OLDEST_TASK_POLICY(5, RejectedPolicies.runsOldestTaskPolicy()),
+    RUNS_OLDEST_TASK_POLICY(5, new RejectedPolicies.RunsOldestTaskPolicy()),
 
     /**
      * 使用阻塞方法将拒绝任务添加队列, 可保证任务不丢失
      */
-    SYNC_PUT_QUEUE_POLICY(6, RejectedPolicies.syncPutQueuePolicy());
+    SYNC_PUT_QUEUE_POLICY(6, new RejectedPolicies.SyncPutQueuePolicy());
 
     /**
      * 类型

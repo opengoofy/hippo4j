@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Rejected policies.
@@ -15,12 +16,12 @@ import java.util.concurrent.RejectedExecutionHandler;
 public class RejectedPolicies {
 
     /**
-     * 发生拒绝事件时, 添加新任务并运行最早的任务
-     *
-     * @return
+     * 发生拒绝事件时, 添加新任务并运行最早的任务.
      */
-    public static RejectedExecutionHandler runsOldestTaskPolicy() {
-        return (r, executor) -> {
+    public static class RunsOldestTaskPolicy implements RejectedExecutionHandler {
+
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
             if (executor.isShutdown()) {
                 return;
             }
@@ -33,16 +34,17 @@ public class RejectedPolicies {
             if (!newTaskAdd) {
                 executor.execute(r);
             }
-        };
+        }
+
     }
 
     /**
-     * 使用阻塞方法将拒绝任务添加队列, 可保证任务不丢失
-     *
-     * @return
+     * 使用阻塞方法将拒绝任务添加队列, 可保证任务不丢失.
      */
-    public static RejectedExecutionHandler syncPutQueuePolicy() {
-        return (r, executor) -> {
+    public static class SyncPutQueuePolicy implements RejectedExecutionHandler {
+
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
             if (executor.isShutdown()) {
                 return;
             }
@@ -51,7 +53,8 @@ public class RejectedPolicies {
             } catch (InterruptedException e) {
                 log.error("Adding Queue task to thread pool failed.", e);
             }
-        };
+        }
+
     }
 
 }
