@@ -22,7 +22,7 @@ public class BeforeCheckConfiguration {
     @Bean
     public BeforeCheckConfiguration.BeforeCheck dynamicThreadPoolBeforeCheckBean(@Autowired(required = false) BootstrapProperties properties,
                                                                                  ConfigurableEnvironment environment) {
-        if (properties != null) {
+        if (properties != null && properties.getEnable()) {
             String username = properties.getUsername();
             if (StringUtil.isBlank(username)) {
                 throw new ConfigEmptyException(
