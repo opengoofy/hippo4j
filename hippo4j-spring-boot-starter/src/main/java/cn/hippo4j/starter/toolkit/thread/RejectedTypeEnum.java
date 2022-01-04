@@ -3,7 +3,6 @@ package cn.hippo4j.starter.toolkit.thread;
 import cn.hippo4j.starter.spi.CustomRejectedExecutionHandler;
 import cn.hippo4j.starter.spi.DynamicTpServiceLoader;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
@@ -90,10 +89,7 @@ public enum RejectedTypeEnum {
     }
 
     public static String getRejectedNameByType(int type) {
-        Optional<RejectedTypeEnum> rejectedTypeEnum = Arrays.stream(RejectedTypeEnum.values())
-                .filter(each -> each.type == type).findFirst();
-
-        return rejectedTypeEnum.map(each -> each.rejectedHandler.getClass().getSimpleName()).orElse("");
+        return createPolicy(type).getClass().getSimpleName();
     }
 
 }
