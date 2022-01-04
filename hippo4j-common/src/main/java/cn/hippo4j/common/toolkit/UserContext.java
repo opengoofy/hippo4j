@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 /**
  * User context (Transition scheme).
  *
@@ -19,11 +21,11 @@ public class UserContext {
     }
 
     public static String getUserName() {
-        return USER_THREAD_LOCAL.get().username;
+        return Optional.ofNullable(USER_THREAD_LOCAL.get()).map(User::getUsername).orElse("");
     }
 
     public static String getUserRole() {
-        return USER_THREAD_LOCAL.get().userRole;
+        return Optional.ofNullable(USER_THREAD_LOCAL.get()).map(User::getUserRole).orElse("");
     }
 
     public static void clear() {
