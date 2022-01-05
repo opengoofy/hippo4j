@@ -15,8 +15,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * @author chen.ma
  * @date 2021/11/28 22:44
  */
+@Configuration
 @AllArgsConstructor
-@Configuration(proxyBeanMethods = false)
 public class BeforeCheckConfiguration {
 
     @Bean

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @author chen.ma
  * @date 2021/7/8 23:30
  */
-@Configuration(proxyBeanMethods = false)
+@Configuration
 public class MarkerConfiguration {
 
     @Bean
