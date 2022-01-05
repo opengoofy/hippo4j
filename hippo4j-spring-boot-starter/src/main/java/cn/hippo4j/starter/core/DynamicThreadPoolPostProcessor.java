@@ -9,6 +9,7 @@ import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.common.CommonDynamicThreadPool;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.remote.HttpAgent;
+import cn.hippo4j.starter.toolkit.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
 import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
 import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
@@ -60,16 +61,29 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DynamicThreadPoolExecutor) {
-            DynamicThreadPool dynamicThreadPool = ApplicationContextHolder.findAnnotationOnBean(beanName, DynamicThreadPool.class);
-            if (Objects.isNull(dynamicThreadPool)) {
-                return bean;
+            DynamicThreadPool dynamicThreadPool;
+            try {
+                dynamicThreadPool = ApplicationContextHolder.findAnnotationOnBean(beanName, DynamicThreadPool.class);
+                if (Objects.isNull(dynamicThreadPool)) {
+                    // 适配低版本 SpringBoot
+                    dynamicThreadPool = DynamicThreadPoolAnnotationUtil.findAnnotationOnBean(beanName, DynamicThreadPool.class);
+                    if (Objects.isNull(dynamicThreadPool)) {
+                        return bean;
+                    }
+                }
+            } catch (Exception ex) {
+                log.error("Failed to create dynamic thread pool in annotation mode.", ex);
             }
+
             DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) bean;
             DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(dynamicExecutor.getThreadPoolId(), dynamicExecutor);
             ThreadPoolExecutor remoteExecutor = fillPoolAndRegister(wrap);
             subscribeConfig(wrap);
+
             return remoteExecutor;
-        } else if (bean instanceof DynamicThreadPoolWrapper) {
+        }
+
+        if (bean instanceof DynamicThreadPoolWrapper) {
             DynamicThreadPoolWrapper wrap = (DynamicThreadPoolWrapper) bean;
             registerAndSubscribe(wrap);
         }
