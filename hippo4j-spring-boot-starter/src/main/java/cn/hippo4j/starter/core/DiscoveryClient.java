@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.core;
 
+import cn.hippo4j.common.api.ClientCloseHookExecute;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.web.base.Result;
@@ -9,17 +10,14 @@ import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static cn.hippo4j.common.constant.Constants.BASE_PATH;
-import static cn.hippo4j.common.constant.Constants.GROUP_KEY;
 
 /**
  * Discovery client.
@@ -84,33 +82,30 @@ public class DiscoveryClient implements DisposableBean {
     @Override
     public void destroy() throws Exception {
         log.info("{}{} - destroy service...", PREFIX, appPathIdentifier);
-        String removeConfigCacheUrlPath = Constants.CONFIG_CONTROLLER_PATH + "/remove/config/cache";
-        Result removeConfigCacheResult;
+        String ClientCloseUrlPath = Constants.BASE_PATH + "/client/close";
+        Result clientCLoseResult;
         try {
-            String groupKeyIp = StrBuilder.create().append(instanceInfo.getGroupKey()).append(Constants.GROUP_KEY_DELIMITER).append(instanceInfo.getIdentify()).toString();
-            Map<String, String> bodyMap = Maps.newHashMap();
-            bodyMap.put(GROUP_KEY, groupKeyIp);
-            removeConfigCacheResult = httpAgent.httpPostByDiscovery(removeConfigCacheUrlPath, bodyMap);
-            if (removeConfigCacheResult.isSuccess()) {
-                log.info("{}{} - remove config cache success.", PREFIX, appPathIdentifier);
+            String groupKeyIp = StrBuilder.create()
+                    .append(instanceInfo.getGroupKey())
+                    .append(Constants.GROUP_KEY_DELIMITER)
+                    .append(instanceInfo.getIdentify())
+                    .toString();
+
+            ClientCloseHookExecute.ClientCloseHookReq clientCloseHookReq = new ClientCloseHookExecute.ClientCloseHookReq();
+            clientCloseHookReq.setAppName(instanceInfo.getAppName())
+                    .setInstanceId(instanceInfo.getInstanceId())
+                    .setGroupKey(groupKeyIp);
+
+            clientCLoseResult = httpAgent.httpPostByDiscovery(ClientCloseUrlPath, clientCloseHookReq);
+            if (clientCLoseResult.isSuccess()) {
+                log.info("{}{} -client close hook success.", PREFIX, appPathIdentifier);
             }
         } catch (Throwable ex) {
             if (ex instanceof ShutdownExecuteException) {
                 return;
             }
 
-            log.error("{}{} - remove config cache fail.", PREFIX, appPathIdentifier, ex);
-        }
-
-        String removeNodeUrlPath = BASE_PATH + "/apps/remove/";
-        Result removeNodeResult;
-        try {
-            removeNodeResult = httpAgent.httpPostByDiscovery(removeNodeUrlPath, instanceInfo);
-            if (removeNodeResult.isSuccess()) {
-                log.info("{}{} - destroy service success.", PREFIX, appPathIdentifier);
-            }
-        } catch (Throwable ex) {
-            log.error("{}{} - destroy service fail.", PREFIX, appPathIdentifier, ex);
+            log.error("{}{} - client close hook fail.", PREFIX, appPathIdentifier, ex);
         }
     }
 
