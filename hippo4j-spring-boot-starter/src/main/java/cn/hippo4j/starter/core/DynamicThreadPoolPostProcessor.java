@@ -73,6 +73,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 }
             } catch (Exception ex) {
                 log.error("Failed to create dynamic thread pool in annotation mode.", ex);
+                return bean;
             }
 
             DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) bean;
