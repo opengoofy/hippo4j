@@ -6,6 +6,7 @@ import cn.hippo4j.starter.core.DiscoveryClient;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.toolkit.IdentifyUtil;
 import cn.hippo4j.starter.toolkit.inet.InetUtils;
+import cn.hutool.core.text.StrBuilder;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.net.InetAddress;
 
+import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
+import static cn.hippo4j.starter.config.DynamicThreadPoolAutoConfiguration.CLIENT_IDENTIFICATION_VALUE;
 import static cn.hippo4j.starter.toolkit.CloudCommonIdUtil.getDefaultInstanceId;
 import static cn.hippo4j.starter.toolkit.CloudCommonIdUtil.getIpApplicationName;
 
@@ -36,19 +39,24 @@ public class DiscoveryConfig {
     public InstanceInfo instanceConfig() {
         String namespace = properties.getNamespace();
         String itemId = properties.getItemId();
+        String port = environment.getProperty("server.port");
         String applicationName = environment.getProperty("spring.application.name");
 
         InstanceInfo instanceInfo = new InstanceInfo();
-        instanceInfo.setInstanceId(getDefaultInstanceId(environment, hippo4JInetUtils))
+        String instanceId = getDefaultInstanceId(environment, hippo4JInetUtils);
+        instanceId = StrBuilder.create().append(instanceId).append(":").append(CLIENT_IDENTIFICATION_VALUE).toString();
+
+        instanceInfo.setInstanceId(instanceId)
                 .setIpApplicationName(getIpApplicationName(environment, hippo4JInetUtils))
                 .setHostName(InetAddress.getLocalHost().getHostAddress())
-                .setGroupKey(itemId + "+" + namespace)
+                .setGroupKey(itemId + GROUP_KEY_DELIMITER + namespace)
                 .setAppName(applicationName)
+                .setPort(port)
                 .setClientBasePath(environment.getProperty("server.servlet.context-path"))
                 .setGroupKey(ContentUtil.getGroupKey(itemId, namespace));
 
         String callBackUrl = new StringBuilder().append(instanceInfo.getHostName()).append(":")
-                .append(environment.getProperty("server.port")).append(instanceInfo.getClientBasePath())
+                .append(port).append(instanceInfo.getClientBasePath())
                 .toString();
         instanceInfo.setCallBackUrl(callBackUrl);
 
