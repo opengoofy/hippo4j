@@ -77,6 +77,7 @@ public class ThreadPoolController {
         content.forEach((key, val) -> {
             ThreadPoolInstanceInfo threadPoolInstanceInfo = BeanUtil.convert(val.configAllInfo, ThreadPoolInstanceInfo.class);
             threadPoolInstanceInfo.setClientAddress(StrUtil.subBefore(key, Constants.IDENTIFY_SLICER_SYMBOL, false));
+            threadPoolInstanceInfo.setActive(holder.getActive());
             threadPoolInstanceInfo.setIdentify(key);
             threadPoolInstanceInfo.setClientBasePath(holder.getClientBasePath());
             returnThreadPool.add(threadPoolInstanceInfo);

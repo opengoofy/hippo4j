@@ -38,6 +38,8 @@ public class InstanceInfo {
 
     private String identify;
 
+    private String active;
+
     private volatile String vipAddress;
 
     private volatile String secureVipAddress;

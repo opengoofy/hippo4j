@@ -41,6 +41,7 @@ public class DiscoveryConfig {
         String itemId = properties.getItemId();
         String port = environment.getProperty("server.port");
         String applicationName = environment.getProperty("spring.application.name");
+        String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
 
         InstanceInfo instanceInfo = new InstanceInfo();
         String instanceId = getDefaultInstanceId(environment, hippo4JInetUtils);
@@ -62,6 +63,7 @@ public class DiscoveryConfig {
 
         String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);
         instanceInfo.setIdentify(identify);
+        instanceInfo.setActive(active.toUpperCase());
 
         return instanceInfo;
     }

@@ -27,4 +27,9 @@ public class ThreadPoolInstanceInfo extends ConfigAllInfo {
      */
     private String clientBasePath;
 
+    /**
+     * active
+     */
+    private String active;
+
 }

@@ -1,16 +1,21 @@
 package cn.hippo4j.starter.handler;
 
+import cn.hippo4j.common.model.ManyPoolRunStateInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
 import cn.hippo4j.starter.core.GlobalThreadPoolManage;
 import cn.hippo4j.starter.toolkit.ByteConvertUtil;
+import cn.hippo4j.starter.toolkit.inet.InetUtils;
 import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.RuntimeInfo;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.ConfigurableEnvironment;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import static cn.hippo4j.starter.config.DynamicThreadPoolAutoConfiguration.CLIENT_IDENTIFICATION_VALUE;
 
 /**
  * Thread pool run state service.
@@ -19,17 +24,12 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @date 2021/7/12 21:25
  */
 @Slf4j
+@AllArgsConstructor
 public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
 
-    private static InetAddress INET_ADDRESS;
+    private final InetUtils hippo4JInetUtils;
 
-    static {
-        try {
-            INET_ADDRESS = InetAddress.getLocalHost();
-        } catch (UnknownHostException ex) {
-            log.error("Local IP acquisition failed.", ex);
-        }
-    }
+    private final ConfigurableEnvironment environment;
 
     @Override
     protected PoolRunStateInfo supplement(PoolRunStateInfo poolRunStateInfo) {
@@ -44,7 +44,9 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
 
         poolRunStateInfo.setCurrentLoad(poolRunStateInfo.getCurrentLoad() + "%");
         poolRunStateInfo.setPeakLoad(poolRunStateInfo.getPeakLoad() + "%");
-        poolRunStateInfo.setHost(INET_ADDRESS.getHostAddress());
+
+        String ipAddress = hippo4JInetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+        poolRunStateInfo.setHost(ipAddress);
         poolRunStateInfo.setMemoryProportion(memoryProportion);
         poolRunStateInfo.setFreeMemory(ByteConvertUtil.getPrintSize(runtimeInfo.getFreeMemory()));
 
@@ -54,7 +56,13 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
         String rejectedName = pool.getRejectedExecutionHandler().getClass().getSimpleName();
         poolRunStateInfo.setRejectedName(rejectedName);
 
-        return poolRunStateInfo;
+        ManyPoolRunStateInfo manyPoolRunStateInfo = BeanUtil.toBean(poolRunStateInfo, ManyPoolRunStateInfo.class);
+        manyPoolRunStateInfo.setIdentify(CLIENT_IDENTIFICATION_VALUE);
+
+        String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
+        manyPoolRunStateInfo.setActive(active.toUpperCase());
+
+        return manyPoolRunStateInfo;
     }
 
 }

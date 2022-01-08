@@ -82,8 +82,9 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ThreadPoolRunStateHandler threadPoolRunStateHandler() {
-        return new ThreadPoolRunStateHandler();
+    @SuppressWarnings("all")
+    public ThreadPoolRunStateHandler threadPoolRunStateHandler(InetUtils hippo4JInetUtils) {
+        return new ThreadPoolRunStateHandler(hippo4JInetUtils, environment);
     }
 
     @Bean
