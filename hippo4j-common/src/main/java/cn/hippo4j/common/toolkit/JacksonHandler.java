@@ -1,4 +1,4 @@
-package cn.hippo4j.common.api.impl;
+package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.api.JsonFacade;
 import com.fasterxml.jackson.annotation.JsonInclude;
