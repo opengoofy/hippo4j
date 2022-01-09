@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.config;
 
+import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.starter.controller.PoolRunStateController;
 import cn.hippo4j.starter.core.ConfigService;
@@ -8,6 +9,7 @@ import cn.hippo4j.starter.core.ThreadPoolConfigService;
 import cn.hippo4j.starter.core.ThreadPoolOperation;
 import cn.hippo4j.starter.enable.MarkerConfiguration;
 import cn.hippo4j.starter.event.ApplicationContentPostProcessor;
+import cn.hippo4j.starter.handler.BaseThreadDetailStateHandler;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
@@ -23,6 +25,7 @@ import cn.hutool.core.util.IdUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -88,8 +91,15 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public PoolRunStateController poolRunStateController(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        return new PoolRunStateController(threadPoolRunStateHandler);
+    @ConditionalOnMissingBean(value = ThreadDetailState.class)
+    public ThreadDetailState baseThreadDetailStateHandler() {
+        return new BaseThreadDetailStateHandler();
+    }
+
+    @Bean
+    public PoolRunStateController poolRunStateController(ThreadPoolRunStateHandler threadPoolRunStateHandler,
+                                                         ThreadDetailState threadDetailState) {
+        return new PoolRunStateController(threadPoolRunStateHandler, threadDetailState);
     }
 
     @Bean

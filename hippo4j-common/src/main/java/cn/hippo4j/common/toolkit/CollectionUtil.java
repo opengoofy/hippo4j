@@ -1,5 +1,6 @@
 package cn.hippo4j.common.toolkit;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,46 @@ public class CollectionUtil {
      */
     public static boolean isNotEmpty(Map<?, ?> map) {
         return !isEmpty(map);
+    }
+
+    /**
+     * Is empty.
+     *
+     * @param Iterator
+     * @return
+     */
+    public static boolean isEmpty(Iterator<?> Iterator) {
+        return null == Iterator || false == Iterator.hasNext();
+    }
+
+    /**
+     * Is not empty.
+     *
+     * @param Iterator
+     * @return
+     */
+    public static boolean isNotEmpty(Iterator<?> Iterator) {
+        return !isEmpty(Iterator);
+    }
+
+    /**
+     * Is empty.
+     *
+     * @param collection
+     * @return
+     */
+    public static boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
+    }
+
+    /**
+     * Is not empty.
+     *
+     * @param collection
+     * @return
+     */
+    public static boolean isNotEmpty(Collection<?> collection) {
+        return !isEmpty(collection);
     }
 
 }
