@@ -49,11 +49,6 @@
 
 [在线体验地址](http://console.hippox.cn:6691/index.html) 用户名密码：hippo4j / hippo4j
 
-## Stars 趋势
-
-[![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool)
-
-
 ## 联系我
 
 对于这个项目，是否有什么不一样看法，同 [作者](https://www.hippox.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
@@ -65,6 +60,9 @@
 
 ![](https://user-images.githubusercontent.com/77398366/148769916-0ee3a9c2-c8ed-4ce8-849e-038b4a546679.png)
 
+## Stars 趋势
+
+[![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool)
 
 
 ## 鸣谢
