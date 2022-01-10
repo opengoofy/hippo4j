@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static cn.hippo4j.common.toolkit.ContentUtil.getGroupKey;
 
@@ -72,12 +73,15 @@ public class ThreadPoolController {
         String itemTenantKey = holder.getGroupKey();
         String groupKey = getGroupKey(tpId, itemTenantKey);
         Map<String, CacheItem> content = ConfigCacheService.getContent(groupKey);
+        Map<String, String> activeMap = leases.stream()
+                .map(each -> each.getHolder())
+                .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getActive));
 
         List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
         content.forEach((key, val) -> {
             ThreadPoolInstanceInfo threadPoolInstanceInfo = BeanUtil.convert(val.configAllInfo, ThreadPoolInstanceInfo.class);
             threadPoolInstanceInfo.setClientAddress(StrUtil.subBefore(key, Constants.IDENTIFY_SLICER_SYMBOL, false));
-            threadPoolInstanceInfo.setActive(holder.getActive());
+            threadPoolInstanceInfo.setActive(activeMap.get(key));
             threadPoolInstanceInfo.setIdentify(key);
             threadPoolInstanceInfo.setClientBasePath(holder.getClientBasePath());
             returnThreadPool.add(threadPoolInstanceInfo);
