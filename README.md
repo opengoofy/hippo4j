@@ -54,6 +54,19 @@
 [![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool)
 
 
+## 联系我
+
+对于这个项目，是否有什么不一样看法，同 [作者](https://www.hippox.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
+
+
+## 公众号
+
+如果大家想要实时关注 Hippo4J 最新动态以及干货分享的话，可以关注我的公众号
+
+![](https://user-images.githubusercontent.com/77398366/148769916-0ee3a9c2-c8ed-4ce8-849e-038b4a546679.png)
+
+
+
 ## 鸣谢
 
 
@@ -70,7 +83,3 @@ Hippo4J 项目基于或参考以下项目:
 <img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
 </p>
 
-
-## 联系我
-
-对于这个项目，是否有什么不一样看法，同 [作者](https://www.hippox.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
