@@ -47,9 +47,11 @@ public class BaseThreadDetailStateHandler implements ThreadDetailState {
                 try {
                     thread = (Thread) ReflectUtil.getFieldValue(worker, THREAD);
                     if (thread == null) {
+                        log.warn("Reflection get worker thread is null. Worker :: {}", worker);
                         continue;
                     }
                 } catch (Exception ex) {
+                    log.error("Reflection get worker thread exception. Worker :: {}", worker, ex);
                     continue;
                 }
 
