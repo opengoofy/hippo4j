@@ -1,7 +1,5 @@
 package cn.hippo4j.common.toolkit;
 
-import com.sun.xml.internal.ws.util.UtilException;
-
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -18,7 +16,7 @@ public class ReflectUtil {
 
     private static final Map<Class<?>, Field[]> FIELDS_CACHE = new ConcurrentHashMap();
 
-    public static Object getFieldValue(Object obj, String fieldName) throws UtilException {
+    public static Object getFieldValue(Object obj, String fieldName) {
         if (null == obj || StringUtil.isBlank(fieldName)) {
             return null;
         }
@@ -27,7 +25,7 @@ public class ReflectUtil {
         return getFieldValue(obj, field);
     }
 
-    public static Object getFieldValue(Object obj, Field field) throws UtilException {
+    public static Object getFieldValue(Object obj, Field field) {
         if (null == field) {
             return null;
         }
