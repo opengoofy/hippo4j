@@ -26,6 +26,7 @@ public class CommonConfig {
     @Primary
     public ThreadPoolTaskExecutor monitorThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor monitorThreadPool = new ThreadPoolTaskExecutor();
+        monitorThreadPool.setThreadNamePrefix("server.monitor.executor.");
         monitorThreadPool.setCorePoolSize(AVAILABLE_PROCESSORS);
         monitorThreadPool.setMaxPoolSize(AVAILABLE_PROCESSORS << 1);
         monitorThreadPool.setQueueCapacity(4096);

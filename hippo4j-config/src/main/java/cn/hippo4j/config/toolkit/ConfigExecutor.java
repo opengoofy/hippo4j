@@ -17,7 +17,7 @@ import static cn.hippo4j.common.constant.Constants.DEFAULT_GROUP;
 public class ConfigExecutor {
 
     private static final ScheduledExecutorService LONG_POLLING_EXECUTOR = ExecutorFactory.Managed
-            .newSingleScheduledExecutorService(DEFAULT_GROUP, r -> new Thread(r, "long-polling"));
+            .newSingleScheduledExecutorService(DEFAULT_GROUP, r -> new Thread(r, "server.long.polling"));
 
     public static void executeLongPolling(Runnable runnable) {
         LONG_POLLING_EXECUTOR.execute(runnable);
