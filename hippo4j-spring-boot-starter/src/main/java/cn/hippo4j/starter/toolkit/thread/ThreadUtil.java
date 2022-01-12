@@ -22,4 +22,22 @@ public class ThreadUtil {
         return t;
     }
 
+    /**
+     * 挂起当前线程.
+     *
+     * @param millis 毫秒
+     * @return
+     */
+    public static boolean sleep(long millis) {
+        if (millis > 0) {
+            try {
+                Thread.sleep(millis);
+            } catch (InterruptedException e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }
