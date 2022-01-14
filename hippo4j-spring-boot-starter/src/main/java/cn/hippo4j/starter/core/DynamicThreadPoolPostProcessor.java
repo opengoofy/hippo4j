@@ -137,7 +137,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                             .allowCoreThreadTimeOut(EnableEnum.getBool(ppi.getAllowCoreThreadTimeOut()))
                             .build();
 
-                    if (poolExecutor instanceof DynamicExecutorConfigurationSupport) {
+                    if (dynamicThreadPoolWrap.getExecutor() instanceof DynamicExecutorConfigurationSupport) {
                         TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();
                         ((DynamicThreadPoolExecutor) poolExecutor).setTaskDecorator(taskDecorator);
                     }
