@@ -2,6 +2,7 @@ package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.model.CacheItem;
@@ -75,6 +76,7 @@ public class ThreadPoolController {
         Map<String, CacheItem> content = ConfigCacheService.getContent(groupKey);
         Map<String, String> activeMap = leases.stream()
                 .map(each -> each.getHolder())
+                .filter(each -> StringUtil.isNotBlank(each.getActive()))
                 .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getActive));
 
         List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
