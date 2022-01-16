@@ -20,9 +20,9 @@ public abstract class DynamicExecutorConfigurationSupport extends ThreadPoolExec
 
     private ExecutorService executor;
 
-    private long awaitTerminationMillis = 0;
+    protected long awaitTerminationMillis;
 
-    private boolean waitForTasksToCompleteOnShutdown = false;
+    protected boolean waitForTasksToCompleteOnShutdown;
 
     public DynamicExecutorConfigurationSupport(int corePoolSize,
                                                int maximumPoolSize,
@@ -79,6 +79,17 @@ public abstract class DynamicExecutorConfigurationSupport extends ThreadPoolExec
         }
 
         this.executor = initializeExecutor();
+    }
+
+    /**
+     * Set support param.
+     *
+     * @param awaitTerminationMillis
+     * @param waitForTasksToCompleteOnShutdown
+     */
+    public void setSupportParam(long awaitTerminationMillis, boolean waitForTasksToCompleteOnShutdown) {
+        this.awaitTerminationMillis = awaitTerminationMillis;
+        this.waitForTasksToCompleteOnShutdown = waitForTasksToCompleteOnShutdown;
     }
 
     /**
