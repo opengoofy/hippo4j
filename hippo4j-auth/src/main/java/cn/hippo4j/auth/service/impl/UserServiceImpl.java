@@ -8,8 +8,10 @@ import cn.hippo4j.auth.model.biz.user.UserRespDTO;
 import cn.hippo4j.auth.service.RoleService;
 import cn.hippo4j.auth.service.UserService;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -19,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -90,6 +93,17 @@ public class UserServiceImpl implements UserService {
         List<String> userNames = userInfos.stream().map(UserInfo::getUserName).collect(Collectors.toList());
 
         return userNames;
+    }
+
+    @Override
+    public UserRespDTO getUser(UserReqDTO reqDTO) {
+        Wrapper queryWrapper = Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, reqDTO.getUserName());
+        UserInfo userInfo = userMapper.selectOne(queryWrapper);
+
+        UserRespDTO respUser = Optional.ofNullable(userInfo)
+                .map(each -> BeanUtil.toBean(each, UserRespDTO.class))
+                .orElseThrow(() -> new ServiceException("查询无此用户, 可以尝试清空缓存或退出登录."));
+        return respUser;
     }
 
 }

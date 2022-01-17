@@ -48,8 +48,7 @@ public class UserController {
 
     @GetMapping("/info/{username}")
     public Result<UserRespDTO> userInfo(@PathVariable("username") String username) {
-        IPage<UserRespDTO> listUser = userService.listUser(new UserQueryPageReqDTO().setUserName(username));
-        UserRespDTO userRespDTO = listUser.getRecords().get(0);
+        UserRespDTO userRespDTO = userService.getUser(new UserReqDTO().setUserName(username));
         return Results.success(userRespDTO);
     }
 

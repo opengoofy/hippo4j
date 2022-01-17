@@ -52,4 +52,12 @@ public interface UserService {
      */
     List<String> getUserLikeUsername(String userName);
 
+    /**
+     * 获取用户详情.
+     *
+     * @param reqDTO
+     * @return
+     */
+    UserRespDTO getUser(UserReqDTO reqDTO);
+
 }
