@@ -50,9 +50,8 @@ public class CacheData {
         }
 
         ManagerListenerWrapper managerListenerWrap = new ManagerListenerWrapper(md5, listener);
-
         if (listeners.addIfAbsent(managerListenerWrap)) {
-            log.info("Add listener status :: ok, tpId :: {}, cnt :: {}", tpId, listeners.size());
+            log.info("Add listener status :: ok, thread pool id :: {}, listeners count :: {}", tpId, listeners.size());
         }
     }
 
