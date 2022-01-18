@@ -59,6 +59,11 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             .build();
 
     @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) {
+        return bean;
+    }
+
+    @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DynamicThreadPoolExecutor) {
             DynamicThreadPool dynamicThreadPool;
