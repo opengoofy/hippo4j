@@ -62,6 +62,9 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
         manyPoolRunStateInfo.setActive(active.toUpperCase());
 
+        String threadPoolState = ThreadPoolStatusHandler.getThreadPoolState(pool);
+        manyPoolRunStateInfo.setState(threadPoolState);
+
         return manyPoolRunStateInfo;
     }
 

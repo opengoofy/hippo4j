@@ -21,4 +21,9 @@ public class ManyPoolRunStateInfo extends PoolRunStateInfo {
      */
     private String active;
 
+    /**
+     * state
+     */
+    private String state;
+
 }

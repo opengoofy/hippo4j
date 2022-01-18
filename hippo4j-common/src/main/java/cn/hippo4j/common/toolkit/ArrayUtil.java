@@ -22,6 +22,18 @@ public class ArrayUtil {
     }
 
     /**
+     * Is not empty.
+     *
+     * @param array
+     * @param <T>
+     * @return
+     */
+    public static <T> boolean isNotEmpty(T[] array) {
+        return !isEmpty(array);
+    }
+
+
+    /**
      * First match.
      *
      * @param matcher
