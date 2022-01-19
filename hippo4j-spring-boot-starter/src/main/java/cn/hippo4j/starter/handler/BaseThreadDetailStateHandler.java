@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * Base thread detail state handler.
  *
- * <p>The Java 8 implementation is temporarily provided,
+ * <p> The Java 8 implementation is temporarily provided,
  * {@link ThreadDetailState} interface can be customized.
  *
  * @author chen.ma
@@ -33,11 +33,15 @@ public class BaseThreadDetailStateHandler implements ThreadDetailState {
     public List<ThreadDetailStateInfo> getThreadDetailStateInfo(String threadPoolId) {
         DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
         ThreadPoolExecutor executor = poolWrapper.getExecutor();
+        return getThreadDetailStateInfo(executor);
+    }
 
+    @Override
+    public List<ThreadDetailStateInfo> getThreadDetailStateInfo(ThreadPoolExecutor threadPoolExecutor) {
         List<ThreadDetailStateInfo> resultThreadState = new ArrayList();
         try {
             // TODO: Should the object be copied deeply to avoid the destruction of the worker
-            HashSet<Object> workers = (HashSet<Object>) ReflectUtil.getFieldValue(executor, WORKERS);
+            HashSet<Object> workers = (HashSet<Object>) ReflectUtil.getFieldValue(threadPoolExecutor, WORKERS);
             if (CollectionUtil.isEmpty(workers)) {
                 return resultThreadState;
             }

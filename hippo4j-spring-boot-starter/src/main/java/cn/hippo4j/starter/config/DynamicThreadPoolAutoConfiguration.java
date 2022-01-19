@@ -3,6 +3,7 @@ package cn.hippo4j.starter.config;
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.starter.controller.PoolRunStateController;
+import cn.hippo4j.starter.controller.WebThreadPoolController;
 import cn.hippo4j.starter.core.ConfigService;
 import cn.hippo4j.starter.core.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.starter.core.ThreadPoolConfigService;
@@ -12,6 +13,9 @@ import cn.hippo4j.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.starter.handler.BaseThreadDetailStateHandler;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
+import cn.hippo4j.starter.handler.web.TomcatWebThreadPoolHandler;
+import cn.hippo4j.starter.handler.web.WebThreadPoolRunStateHandler;
+import cn.hippo4j.starter.handler.web.WebThreadPoolService;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.starter.monitor.collect.RunTimeInfoCollector;
 import cn.hippo4j.starter.monitor.send.HttpConnectSender;
@@ -28,6 +32,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -51,6 +56,8 @@ public class DynamicThreadPoolAutoConfiguration {
     private final BootstrapProperties properties;
 
     private final ConfigurableEnvironment environment;
+
+    private final ServletWebServerApplicationContext applicationContext;
 
     public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
 
@@ -128,6 +135,23 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     public ApplicationContentPostProcessor applicationContentPostProcessor() {
         return new ApplicationContentPostProcessor();
+    }
+
+    @Bean
+    public WebThreadPoolRunStateHandler webThreadPoolRunStateHandler() {
+        return new WebThreadPoolRunStateHandler();
+    }
+
+    @Bean
+    public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler() {
+        return new TomcatWebThreadPoolHandler(applicationContext);
+    }
+
+    @Bean
+    public WebThreadPoolController webThreadPoolController(WebThreadPoolService webThreadPoolService,
+                                                           ThreadDetailState threadDetailState,
+                                                           WebThreadPoolRunStateHandler webThreadPoolRunStateHandler) {
+        return new WebThreadPoolController(webThreadPoolService, threadDetailState, webThreadPoolRunStateHandler);
     }
 
 }
