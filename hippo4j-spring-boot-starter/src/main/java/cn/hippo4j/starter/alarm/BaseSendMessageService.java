@@ -1,7 +1,6 @@
 package cn.hippo4j.starter.alarm;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.JSONUtil;
@@ -12,8 +11,6 @@ import cn.hippo4j.starter.core.GlobalThreadPoolManage;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
@@ -25,7 +22,6 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static cn.hippo4j.common.constant.Constants.BASE_PATH;
 
@@ -136,12 +132,7 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
 
             ALARM_NOTIFY_CONFIG.forEach((key, val) ->
                     val.stream().filter(each -> StrUtil.equals("ALARM", each.getType()))
-                            .forEach(each -> {
-                                Cache<String, String> cache = CacheBuilder.newBuilder()
-                                        .expireAfterWrite(each.getInterval(), TimeUnit.MINUTES)
-                                        .build();
-                                AlarmControlHandler.THREAD_POOL_ALARM_CACHE.put(StrUtil.builder(each.getTpId(), Constants.GROUP_KEY_DELIMITER, each.getPlatform()).toString(), cache);
-                            })
+                            .forEach(each -> alarmControlHandler.initCacheAndLock(each.getTpId(), each.getPlatform(), each.getInterval()))
             );
         }
     }
