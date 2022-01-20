@@ -14,8 +14,8 @@ import cn.hippo4j.starter.handler.BaseThreadDetailStateHandler;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
 import cn.hippo4j.starter.handler.web.TomcatWebThreadPoolHandler;
+import cn.hippo4j.starter.handler.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.starter.handler.web.WebThreadPoolRunStateHandler;
-import cn.hippo4j.starter.handler.web.WebThreadPoolService;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.starter.monitor.collect.RunTimeInfoCollector;
 import cn.hippo4j.starter.monitor.send.HttpConnectSender;
@@ -143,15 +143,21 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnBean(name = "tomcatServletWebServerFactory")
     public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler() {
         return new TomcatWebThreadPoolHandler(applicationContext);
     }
 
     @Bean
-    public WebThreadPoolController webThreadPoolController(WebThreadPoolService webThreadPoolService,
+    public WebThreadPoolHandlerChoose webThreadPoolServiceChoose() {
+        return new WebThreadPoolHandlerChoose();
+    }
+
+    @Bean
+    public WebThreadPoolController webThreadPoolController(WebThreadPoolHandlerChoose webThreadPoolServiceChoose,
                                                            ThreadDetailState threadDetailState,
                                                            WebThreadPoolRunStateHandler webThreadPoolRunStateHandler) {
-        return new WebThreadPoolController(webThreadPoolService, threadDetailState, webThreadPoolRunStateHandler);
+        return new WebThreadPoolController(webThreadPoolServiceChoose, threadDetailState, webThreadPoolRunStateHandler);
     }
 
 }
