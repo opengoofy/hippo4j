@@ -1,8 +1,8 @@
 package cn.hippo4j.starter.event;
 
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 
 import javax.annotation.Resource;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @author chen.ma
  * @date 2021/12/25 20:21
  */
-public class ApplicationContentPostProcessor implements ApplicationListener<ContextRefreshedEvent> {
+public class ApplicationContentPostProcessor implements ApplicationListener<ApplicationReadyEvent> {
 
     @Resource
     private ApplicationContext applicationContext;
@@ -20,7 +20,7 @@ public class ApplicationContentPostProcessor implements ApplicationListener<Cont
     private boolean executeOnlyOnce = true;
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    public void onApplicationEvent(ApplicationReadyEvent event) {
         synchronized (ApplicationContentPostProcessor.class) {
             if (executeOnlyOnce) {
                 applicationContext.publishEvent(new ApplicationCompleteEvent(this));
