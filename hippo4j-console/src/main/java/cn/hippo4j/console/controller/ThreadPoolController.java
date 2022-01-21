@@ -79,13 +79,18 @@ public class ThreadPoolController {
                 .filter(each -> StringUtil.isNotBlank(each.getActive()))
                 .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getActive));
 
+        Map<String, String> clientBasePathMap = leases.stream()
+                .map(each -> each.getHolder())
+                .filter(each -> StringUtil.isNotBlank(each.getClientBasePath()))
+                .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getClientBasePath));
+
         List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
         content.forEach((key, val) -> {
             ThreadPoolInstanceInfo threadPoolInstanceInfo = BeanUtil.convert(val.configAllInfo, ThreadPoolInstanceInfo.class);
             threadPoolInstanceInfo.setClientAddress(StrUtil.subBefore(key, Constants.IDENTIFY_SLICER_SYMBOL, false));
             threadPoolInstanceInfo.setActive(activeMap.get(key));
             threadPoolInstanceInfo.setIdentify(key);
-            threadPoolInstanceInfo.setClientBasePath(holder.getClientBasePath());
+            threadPoolInstanceInfo.setClientBasePath(clientBasePathMap.get(key));
             returnThreadPool.add(threadPoolInstanceInfo);
         });
 
