@@ -47,13 +47,14 @@ public class DiscoveryConfig {
         String instanceId = getDefaultInstanceId(environment, hippo4JInetUtils);
         instanceId = StrBuilder.create().append(instanceId).append(":").append(CLIENT_IDENTIFICATION_VALUE).toString();
 
+        String contextPath = environment.getProperty("server.servlet.context-path", "");
         instanceInfo.setInstanceId(instanceId)
                 .setIpApplicationName(getIpApplicationName(environment, hippo4JInetUtils))
                 .setHostName(InetAddress.getLocalHost().getHostAddress())
                 .setGroupKey(itemId + GROUP_KEY_DELIMITER + namespace)
                 .setAppName(applicationName)
                 .setPort(port)
-                .setClientBasePath(environment.getProperty("server.servlet.context-path"))
+                .setClientBasePath(contextPath)
                 .setGroupKey(ContentUtil.getGroupKey(itemId, namespace));
 
         String callBackUrl = new StringBuilder().append(instanceInfo.getHostName()).append(":")

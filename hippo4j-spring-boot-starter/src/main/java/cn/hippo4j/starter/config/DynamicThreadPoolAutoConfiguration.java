@@ -155,9 +155,8 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     public WebThreadPoolController webThreadPoolController(WebThreadPoolHandlerChoose webThreadPoolServiceChoose,
-                                                           ThreadDetailState threadDetailState,
                                                            WebThreadPoolRunStateHandler webThreadPoolRunStateHandler) {
-        return new WebThreadPoolController(webThreadPoolServiceChoose, threadDetailState, webThreadPoolRunStateHandler);
+        return new WebThreadPoolController(webThreadPoolServiceChoose, webThreadPoolRunStateHandler);
     }
 
 }

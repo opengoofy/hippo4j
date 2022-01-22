@@ -1,6 +1,6 @@
 package cn.hippo4j.starter.controller;
 
-import cn.hippo4j.common.api.ThreadDetailState;
+import cn.hippo4j.common.model.PoolBaseInfo;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
 import cn.hippo4j.common.web.base.Result;
@@ -26,9 +26,15 @@ public class WebThreadPoolController {
 
     private final WebThreadPoolHandlerChoose webThreadPoolServiceChoose;
 
-    private final ThreadDetailState threadDetailState;
-
     private final WebThreadPoolRunStateHandler webThreadPoolRunStateHandler;
+
+    @GetMapping("/web/base/info")
+    public Result<PoolBaseInfo> getPoolBaseState() {
+        WebThreadPoolService webThreadPoolService = webThreadPoolServiceChoose.choose();
+        Executor webThreadPool = webThreadPoolService.getWebThreadPool();
+        PoolBaseInfo poolBaseInfo = webThreadPoolRunStateHandler.simpleInfo(webThreadPool);
+        return Results.success(poolBaseInfo);
+    }
 
     @GetMapping("/web/run/state")
     public Result<PoolRunStateInfo> getPoolRunState() {

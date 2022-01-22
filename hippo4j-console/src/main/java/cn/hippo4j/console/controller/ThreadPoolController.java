@@ -62,6 +62,18 @@ public class ThreadPoolController {
         return Results.success();
     }
 
+    @DeleteMapping("/delete")
+    public Result deletePool(@RequestBody ThreadPoolDelReqDTO reqDTO) {
+        threadPoolService.deletePool(reqDTO);
+        return Results.success();
+    }
+
+    @PostMapping("/alarm/enable/{id}/{isAlarm}")
+    public Result alarmEnable(@PathVariable("id") String id, @PathVariable("isAlarm") Integer isAlarm) {
+        threadPoolService.alarmEnable(id, isAlarm);
+        return Results.success();
+    }
+
     @GetMapping("/list/instance/{itemId}/{tpId}")
     public Result<List<ThreadPoolInstanceInfo>> listInstance(@PathVariable("itemId") String itemId, @PathVariable("tpId") String tpId) {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
@@ -97,16 +109,26 @@ public class ThreadPoolController {
         return Results.success(returnThreadPool);
     }
 
-    @DeleteMapping("/delete")
-    public Result deletePool(@RequestBody ThreadPoolDelReqDTO reqDTO) {
-        threadPoolService.deletePool(reqDTO);
-        return Results.success();
-    }
+    @GetMapping("/list/client/instance/{itemId}")
+    public Result listClientInstance(@PathVariable("itemId") String itemId) {
+        List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
+        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+        if (first == null) {
+            return Results.success(Lists.newArrayList());
+        }
 
-    @PostMapping("/alarm/enable/{id}/{isAlarm}")
-    public Result alarmEnable(@PathVariable("id") String id, @PathVariable("isAlarm") Integer isAlarm) {
-        threadPoolService.alarmEnable(id, isAlarm);
-        return Results.success();
+        List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
+        leases.forEach(each -> {
+            InstanceInfo holder = each.getHolder();
+            ThreadPoolInstanceInfo threadPoolInstanceInfo = new ThreadPoolInstanceInfo();
+            threadPoolInstanceInfo.setActive(holder.getActive());
+            threadPoolInstanceInfo.setClientAddress(holder.getCallBackUrl());
+            threadPoolInstanceInfo.setIdentify(holder.getIdentify());
+
+            returnThreadPool.add(threadPoolInstanceInfo);
+        });
+
+        return Results.success(returnThreadPool);
     }
 
 }

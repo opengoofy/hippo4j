@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class PoolRunStateInfo implements Serializable {
+public class PoolRunStateInfo extends PoolBaseInfo implements Serializable {
 
     /**
      * currentLoad
@@ -31,19 +31,9 @@ public class PoolRunStateInfo implements Serializable {
     private String tpId;
 
     /**
-     * coreSize
-     */
-    private Integer coreSize;
-
-    /**
      * activeCount
      */
     private Integer activeCount;
-
-    /**
-     * maximumSize
-     */
-    private Integer maximumSize;
 
     /**
      * poolSize
@@ -59,16 +49,6 @@ public class PoolRunStateInfo implements Serializable {
      * The maximum number of threads that enter the thread pool at the same time
      */
     private Integer largestPoolSize;
-
-    /**
-     * queueType
-     */
-    private String queueType;
-
-    /**
-     * queueCapacity
-     */
-    private Integer queueCapacity;
 
     /**
      * queueSize
@@ -114,10 +94,5 @@ public class PoolRunStateInfo implements Serializable {
      * timestamp
      */
     private Long timestamp;
-
-    /**
-     * rejectedName
-     */
-    private String rejectedName;
 
 }

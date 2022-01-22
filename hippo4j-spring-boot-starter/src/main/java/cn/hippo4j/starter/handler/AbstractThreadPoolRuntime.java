@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.handler;
 
+import cn.hippo4j.common.model.PoolBaseInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
 import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
 import cn.hippo4j.starter.core.GlobalThreadPoolManage;
@@ -19,6 +20,16 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @date 2021/12/7 19:44
  */
 public abstract class AbstractThreadPoolRuntime {
+
+    /**
+     * Simple info.
+     *
+     * @param executor
+     * @return
+     */
+    protected PoolBaseInfo simpleInfo(Executor executor) {
+        return null;
+    }
 
     /**
      * Supplement.

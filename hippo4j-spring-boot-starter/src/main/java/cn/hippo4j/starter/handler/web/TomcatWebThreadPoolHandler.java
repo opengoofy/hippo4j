@@ -48,11 +48,22 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
     @Override
     public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
-        ThreadPoolExecutor tomcatExecutor = (ThreadPoolExecutor) executor;
         try {
+            ThreadPoolExecutor tomcatExecutor = (ThreadPoolExecutor) executor;
+            int originalCoreSize = tomcatExecutor.getCorePoolSize();
+            int originalMaximumPoolSize = tomcatExecutor.getMaximumPoolSize();
+            long originalKeepAliveTime = tomcatExecutor.getKeepAliveTime(TimeUnit.SECONDS);
+
             tomcatExecutor.setCorePoolSize(poolParameterInfo.getCoreSize());
             tomcatExecutor.setMaximumPoolSize(poolParameterInfo.getMaxSize());
             tomcatExecutor.setKeepAliveTime(poolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
+
+            log.info(
+                    "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}], keepAliveTime :: [{}]",
+                    String.format("%s => %s", originalCoreSize, poolParameterInfo.getCoreSize()),
+                    String.format("%s => %s", originalMaximumPoolSize, poolParameterInfo.getMaxSize()),
+                    String.format("%s => %s", originalKeepAliveTime, poolParameterInfo.getKeepAliveTime())
+            );
         } catch (Exception ex) {
             log.error("Failed to modify the Tomcat thread pool parameter.", ex);
         }
