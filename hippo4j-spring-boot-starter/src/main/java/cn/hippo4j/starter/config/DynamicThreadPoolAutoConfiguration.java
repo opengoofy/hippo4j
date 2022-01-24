@@ -57,8 +57,6 @@ public class DynamicThreadPoolAutoConfiguration {
 
     private final ConfigurableEnvironment environment;
 
-    private final ServletWebServerApplicationContext applicationContext;
-
     public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
 
     @Bean
@@ -145,6 +143,12 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @ConditionalOnBean(name = "tomcatServletWebServerFactory")
     public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler() {
+        ServletWebServerApplicationContext applicationContext = null;
+        try {
+            applicationContext = ApplicationContextHolder.getBean(ServletWebServerApplicationContext.class);
+        } catch (Exception ex) {
+            // ignore
+        }
         return new TomcatWebThreadPoolHandler(applicationContext);
     }
 
