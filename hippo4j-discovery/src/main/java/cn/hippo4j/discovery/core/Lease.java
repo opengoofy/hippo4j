@@ -9,7 +9,20 @@ package cn.hippo4j.discovery.core;
 public class Lease<T> {
 
     enum Action {
-        REGISTER, CANCEL, RENEW
+        /**
+         * REGISTER
+         */
+        REGISTER,
+
+        /**
+         * CANCEL
+         */
+        CANCEL,
+
+        /**
+         * RENEW
+         */
+        RENEW
     }
 
     private T holder;

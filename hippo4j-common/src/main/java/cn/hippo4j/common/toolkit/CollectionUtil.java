@@ -73,21 +73,21 @@ public class CollectionUtil {
     /**
      * Is empty.
      *
-     * @param Iterator
+     * @param iterator
      * @return
      */
-    public static boolean isEmpty(Iterator<?> Iterator) {
-        return null == Iterator || false == Iterator.hasNext();
+    public static boolean isEmpty(Iterator<?> iterator) {
+        return null == iterator || false == iterator.hasNext();
     }
 
     /**
      * Is not empty.
      *
-     * @param Iterator
+     * @param iterator
      * @return
      */
-    public static boolean isNotEmpty(Iterator<?> Iterator) {
-        return !isEmpty(Iterator);
+    public static boolean isNotEmpty(Iterator<?> iterator) {
+        return !isEmpty(iterator);
     }
 
     /**

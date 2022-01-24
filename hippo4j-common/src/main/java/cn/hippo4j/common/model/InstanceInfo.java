@@ -101,14 +101,29 @@ public class InstanceInfo {
 
     public enum InstanceStatus {
 
+        /**
+         * UP
+         */
         UP,
 
+        /**
+         * DOWN
+         */
         DOWN,
 
+        /**
+         * STARTING
+         */
         STARTING,
 
+        /**
+         * OUT_OF_SERVICE
+         */
         OUT_OF_SERVICE,
 
+        /**
+         * UNKNOWN
+         */
         UNKNOWN;
 
         public static InstanceStatus toEnum(String s) {
@@ -125,10 +140,19 @@ public class InstanceInfo {
     }
 
     public enum ActionType {
+        /**
+         * ADDED
+         */
         ADDED,
 
+        /**
+         * MODIFIED
+         */
         MODIFIED,
 
+        /**
+         * DELETED
+         */
         DELETED
     }
 

@@ -82,8 +82,8 @@ public class DiscoveryClient implements DisposableBean {
     @Override
     public void destroy() throws Exception {
         log.info("{}{} - destroy service...", PREFIX, appPathIdentifier);
-        String ClientCloseUrlPath = Constants.BASE_PATH + "/client/close";
-        Result clientCLoseResult;
+        String clientCloseUrlPath = Constants.BASE_PATH + "/client/close";
+        Result clientCloseResult;
         try {
             String groupKeyIp = StrBuilder.create()
                     .append(instanceInfo.getGroupKey())
@@ -96,8 +96,8 @@ public class DiscoveryClient implements DisposableBean {
                     .setInstanceId(instanceInfo.getInstanceId())
                     .setGroupKey(groupKeyIp);
 
-            clientCLoseResult = httpAgent.httpPostByDiscovery(ClientCloseUrlPath, clientCloseHookReq);
-            if (clientCLoseResult.isSuccess()) {
+            clientCloseResult = httpAgent.httpPostByDiscovery(clientCloseUrlPath, clientCloseHookReq);
+            if (clientCloseResult.isSuccess()) {
                 log.info("{}{} -client close hook success.", PREFIX, appPathIdentifier);
             }
         } catch (Throwable ex) {

@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static cn.hippo4j.common.constant.Constants.MAP_INITIAL_CAPACITY;
+
 /**
  * Jwt token util.
  *
@@ -51,7 +53,7 @@ public class JwtTokenUtil {
      */
     public static String createToken(Long id, String username, String role, boolean isRememberMe) {
         long expiration = isRememberMe ? EXPIRATION_REMEMBER : EXPIRATION;
-        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap(MAP_INITIAL_CAPACITY);
         map.put(ROLE_CLAIMS, role);
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET)

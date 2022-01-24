@@ -8,6 +8,9 @@ package cn.hippo4j.common.web.exception;
  */
 public enum ErrorCodeEnum {
 
+    /**
+     * UNKNOWN_ERROR
+     */
     UNKNOWN_ERROR {
         @Override
         public String getCode() {
@@ -20,6 +23,9 @@ public enum ErrorCodeEnum {
         }
     },
 
+    /**
+     * VALIDATION_ERROR
+     */
     VALIDATION_ERROR {
         @Override
         public String getCode() {
@@ -32,6 +38,9 @@ public enum ErrorCodeEnum {
         }
     },
 
+    /**
+     * SERVICE_ERROR
+     */
     SERVICE_ERROR {
         @Override
         public String getCode() {
@@ -44,6 +53,9 @@ public enum ErrorCodeEnum {
         }
     },
 
+    /**
+     * NOT_FOUND
+     */
     NOT_FOUND {
         @Override
         public String getCode() {

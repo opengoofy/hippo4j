@@ -23,6 +23,9 @@ public class TaskDecoratorTest {
 
     public static final String PLACEHOLDER = "site";
 
+    /**
+     * 测试动态线程池传递 {@link TaskDecorator}
+     */
     // @PostConstruct
     public void taskDecoratorTest() {
         new Thread(() -> {

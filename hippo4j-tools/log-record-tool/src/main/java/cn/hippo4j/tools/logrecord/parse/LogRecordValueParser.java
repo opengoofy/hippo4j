@@ -33,7 +33,7 @@ public class LogRecordValueParser implements BeanFactoryAware {
 
     private final LogRecordExpressionEvaluator expressionEvaluator = new LogRecordExpressionEvaluator();
 
-    private static final Pattern pattern = Pattern.compile("\\{\\s*(\\w*)\\s*\\{(.*?)}}");
+    private static final Pattern PATTERN = Pattern.compile("\\{\\s*(\\w*)\\s*\\{(.*?)}}");
 
     public Map<String, String> processTemplate(Collection<String> templates, Object ret,
                                                Class<?> targetClass, Method method, Object[] args, String errorMsg,
@@ -43,7 +43,7 @@ public class LogRecordValueParser implements BeanFactoryAware {
 
         for (String expressionTemplate : templates) {
             if (expressionTemplate.contains("{")) {
-                Matcher matcher = pattern.matcher(expressionTemplate);
+                Matcher matcher = PATTERN.matcher(expressionTemplate);
                 StringBuffer parsedStr = new StringBuffer();
                 while (matcher.find()) {
                     String expression = matcher.group(2);
@@ -63,12 +63,12 @@ public class LogRecordValueParser implements BeanFactoryAware {
     }
 
     public Map<String, String> processBeforeExecuteFunctionTemplate(Collection<String> templates, Class<?> targetClass, Method method, Object[] args) {
-        Map<String, String> functionNameAndReturnValueMap = new HashMap<>();
+        Map<String, String> functionNameAndReturnValueMap = new HashMap(16);
         EvaluationContext evaluationContext = expressionEvaluator.createEvaluationContext(method, args, targetClass, null, null, beanFactory);
 
         for (String expressionTemplate : templates) {
             if (expressionTemplate.contains("{")) {
-                Matcher matcher = pattern.matcher(expressionTemplate);
+                Matcher matcher = PATTERN.matcher(expressionTemplate);
                 while (matcher.find()) {
                     String expression = matcher.group(2);
                     if (expression.contains("#_ret") || expression.contains("#_errorMsg")) {
