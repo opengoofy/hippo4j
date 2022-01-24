@@ -49,13 +49,13 @@ Starter 组件内置线程池参数变更通知，以及运行过载报警功能
 
 ## 快速开始
 
-[运行 Hippo4J 自带 Demo 参考文档](https://www.hippox.cn/pages/793dcb/)
+[运行 Hippo4J 自带 Demo 参考文档](https://hippox.cn/pages/793dcb/)
 
 [在线体验地址](http://console.hippox.cn:6691/index.html) 用户名密码：hippo4j / hippo4j
 
 ## 联系我
 
-对于这个项目，是否有什么不一样看法，同 [作者](https://www.hippox.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
+对于这个项目，是否有什么不一样看法，同 [作者](https://hippox.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
 
 
 ## 公众号
