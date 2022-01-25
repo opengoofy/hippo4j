@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @author chen.ma
  * @date 2021/6/10 13:28
  */
-public class HttpClientConfig {
+public class HttpClientConfiguration {
 
     @Bean
     public OkHttpClient hippo4JOkHttpClient() {

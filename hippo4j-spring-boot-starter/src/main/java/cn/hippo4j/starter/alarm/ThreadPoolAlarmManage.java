@@ -2,7 +2,7 @@ package cn.hippo4j.starter.alarm;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.starter.config.MessageAlarmConfig;
+import cn.hippo4j.starter.config.MessageAlarmConfiguration;
 import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
 import cn.hippo4j.starter.toolkit.CalculateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class ThreadPoolAlarmManage {
 
     static {
         SEND_MESSAGE_SERVICE = Optional.ofNullable(ApplicationContextHolder.getInstance())
-                .map(each -> each.getBean(MessageAlarmConfig.SEND_MESSAGE_BEAN_NAME, SendMessageService.class))
+                .map(each -> each.getBean(MessageAlarmConfiguration.SEND_MESSAGE_BEAN_NAME, SendMessageService.class))
                 .orElse(null);
     }
 

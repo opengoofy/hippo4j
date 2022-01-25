@@ -21,7 +21,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * @date 2021/8/15 15:39
  */
 @AllArgsConstructor
-public class MessageAlarmConfig {
+public class MessageAlarmConfiguration {
 
     private final BootstrapProperties properties;
 
@@ -34,7 +34,7 @@ public class MessageAlarmConfig {
     public static final String SEND_MESSAGE_BEAN_NAME = "hippo4JSendMessageService";
 
     @DependsOn("hippo4JApplicationContextHolder")
-    @Bean(MessageAlarmConfig.SEND_MESSAGE_BEAN_NAME)
+    @Bean(MessageAlarmConfiguration.SEND_MESSAGE_BEAN_NAME)
     public SendMessageService hippo4JSendMessageService(HttpAgent httpAgent, AlarmControlHandler alarmControlHandler) {
         return new BaseSendMessageService(httpAgent, properties, alarmControlHandler);
     }

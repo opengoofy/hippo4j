@@ -26,7 +26,7 @@ import static cn.hippo4j.starter.toolkit.CloudCommonIdUtil.getIpApplicationName;
  * @date 2021/8/6 21:35
  */
 @AllArgsConstructor
-public class DiscoveryConfig {
+public class DiscoveryConfiguration {
 
     private final ConfigurableEnvironment environment;
 
