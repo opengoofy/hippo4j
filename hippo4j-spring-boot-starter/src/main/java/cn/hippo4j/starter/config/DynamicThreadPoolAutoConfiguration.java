@@ -27,6 +27,7 @@ import cn.hippo4j.starter.toolkit.IdentifyUtil;
 import cn.hippo4j.starter.toolkit.inet.InetUtils;
 import cn.hutool.core.util.IdUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -142,13 +143,7 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @ConditionalOnBean(name = "tomcatServletWebServerFactory")
-    public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler() {
-        ServletWebServerApplicationContext applicationContext = null;
-        try {
-            applicationContext = ApplicationContextHolder.getBean(ServletWebServerApplicationContext.class);
-        } catch (Exception ex) {
-            // ignore
-        }
+    public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler(@Autowired(required = false) ServletWebServerApplicationContext applicationContext) {
         return new TomcatWebThreadPoolHandler(applicationContext);
     }
 
