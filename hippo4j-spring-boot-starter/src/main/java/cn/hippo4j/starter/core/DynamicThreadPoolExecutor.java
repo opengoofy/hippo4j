@@ -74,12 +74,6 @@ public class DynamicThreadPoolExecutor extends DynamicExecutorConfigurationSuppo
                                      @NonNull RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, waitForTasksToCompleteOnShutdown, awaitTerminationMillis, workQueue, threadPoolId, threadFactory, handler);
 
-        if (corePoolSize < 0 ||
-                maximumPoolSize <= 0 ||
-                maximumPoolSize < corePoolSize ||
-                keepAliveTime < 0) {
-            throw new IllegalArgumentException();
-        }
 
         this.corePoolSize = corePoolSize;
         this.maximumPoolSize = maximumPoolSize;
