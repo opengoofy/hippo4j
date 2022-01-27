@@ -79,7 +79,7 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 获取呀动态线程池标识集合.
+     * 获取动态线程池标识集合.
      *
      * @return
      */
