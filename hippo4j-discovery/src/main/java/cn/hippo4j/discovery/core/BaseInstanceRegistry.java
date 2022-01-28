@@ -55,7 +55,7 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
     }
 
     @Override
-    public synchronized void register(InstanceInfo registrant) {
+    public void register(InstanceInfo registrant) {
         Map<String, Lease<InstanceInfo>> registerMap = registry.get(registrant.getAppName());
         if (registerMap == null) {
             ConcurrentHashMap<String, Lease<InstanceInfo>> registerNewMap = new ConcurrentHashMap(12);
