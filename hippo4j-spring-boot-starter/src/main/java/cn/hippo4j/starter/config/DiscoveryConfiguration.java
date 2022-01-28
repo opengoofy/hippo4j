@@ -40,7 +40,7 @@ public class DiscoveryConfiguration {
         String namespace = properties.getNamespace();
         String itemId = properties.getItemId();
         String port = environment.getProperty("server.port");
-        String applicationName = environment.getProperty("spring.application.name");
+        String applicationName = environment.getProperty("spring.dynamic.thread-pool.item-id");
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
 
         InstanceInfo instanceInfo = new InstanceInfo();

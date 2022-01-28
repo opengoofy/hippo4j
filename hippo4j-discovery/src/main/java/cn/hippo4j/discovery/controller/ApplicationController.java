@@ -6,8 +6,7 @@ import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
 import cn.hippo4j.discovery.core.InstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,11 +22,10 @@ import static cn.hippo4j.common.constant.Constants.BASE_PATH;
  */
 @Slf4j
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping(BASE_PATH + "/apps")
 public class ApplicationController {
 
-    @NonNull
     private final InstanceRegistry instanceRegistry;
 
     @GetMapping("/{appName}")
