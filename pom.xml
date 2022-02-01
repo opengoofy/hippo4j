@@ -26,7 +26,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <revision>1.0.0-beta.7</revision>
+        <revision>1.0.0</revision>
 
         <dozer.version>6.5.0</dozer.version>
         <guava.version>29.0-jre</guava.version>
