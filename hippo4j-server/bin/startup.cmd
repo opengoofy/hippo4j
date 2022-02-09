@@ -15,7 +15,7 @@ set CUSTOM_SEARCH_LOCATIONS=%BASE_DIR%/conf/application.properties
 set SERVER=hippo4j-server
 
 echo "hippo4j is starting with standalone"
-set "HIPPO4J_JVM_OPTS=-Xms1024m -Xmx1024m -Xmn512m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=%BASE_DIR%\logs\java_heapdump.hprof -XX:-UseLargePages"
+set "HIPPO4J_JVM_OPTS=-Xms1024m -Xmx1024m -Xmn512m -Dhippo4j.standalone=true -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=%BASE_DIR%\logs\java_heapdump.hprof -XX:-UseLargePages"
 
 set "HIPPO4J_OPTS=%HIPPO4J_OPTS% -Dhippo4j.home=%BASE_DIR%"
 set "HIPPO4J_OPTS=%HIPPO4J_OPTS% -jar %BASE_DIR%\target\%SERVER%.jar"

@@ -40,6 +40,21 @@
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Implementation-Title>${project.artifactId}</Implementation-Title>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Build-Time>${maven.build.timestamp}</Build-Time>
+                            <Built-By>chen.ma</Built-By>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
