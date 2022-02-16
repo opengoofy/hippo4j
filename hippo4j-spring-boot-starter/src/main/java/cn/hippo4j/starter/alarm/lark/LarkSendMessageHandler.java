@@ -24,6 +24,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -44,6 +45,8 @@ public class LarkSendMessageHandler implements SendMessageHandler {
     private final String active;
 
     private final InstanceInfo instanceInfo;
+
+    private static volatile String larkJson;
 
     @Override
     public String getType() {
@@ -166,7 +169,14 @@ public class LarkSendMessageHandler implements SendMessageHandler {
     }
 
     private String getLarkJson(String filePath) throws FileNotFoundException {
-        return FileUtil.readString(ResourceUtils.getFile(filePath), StandardCharsets.UTF_8);
+        if (Objects.isNull(larkJson)) {
+            synchronized (LarkSendMessageHandler.class) {
+                if (Objects.isNull(larkJson)) {
+                    larkJson = FileUtil.readString(ResourceUtils.getFile(filePath), StandardCharsets.UTF_8);
+                }
+            }
+        }
+        return larkJson;
     }
 
     private String getReceives(NotifyDTO notifyConfig) {
@@ -188,5 +198,6 @@ public class LarkSendMessageHandler implements SendMessageHandler {
             log.error("Lark failed to send message", ex);
         }
     }
+
 
 }
