@@ -35,7 +35,7 @@ public class ThreadPoolStatusHandler {
         if (EXCEPTION_FLAG.get()) {
             try {
                 Method runStateLessThan = ReflectUtil.getMethodByName(ThreadPoolExecutor.class, "runStateLessThan");
-                ReflectUtil.setAccessible(runStateLessThan);
+                cn.hippo4j.common.toolkit.ReflectUtil.setAccessible(runStateLessThan);
 
                 AtomicInteger ctl = (AtomicInteger) ReflectUtil.getFieldValue(executor, "ctl");
                 int shutdown = (int) ReflectUtil.getFieldValue(executor, "SHUTDOWN");
@@ -45,7 +45,7 @@ public class ThreadPoolStatusHandler {
                 }
 
                 Method runStateAtLeast = ReflectUtil.getMethodByName(ThreadPoolExecutor.class, "runStateAtLeast");
-                ReflectUtil.setAccessible(runStateAtLeast);
+                cn.hippo4j.common.toolkit.ReflectUtil.setAccessible(runStateAtLeast);
                 int terminated = (int) ReflectUtil.getFieldValue(executor, "TERMINATED");
                 String resultStatus = ReflectUtil.invoke(executor, runStateAtLeast, ctl.get(), terminated) ? TERMINATED : SHUTTING_DOWN;
                 return resultStatus;
