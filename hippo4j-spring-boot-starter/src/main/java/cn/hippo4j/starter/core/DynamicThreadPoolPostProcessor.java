@@ -138,7 +138,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                             .poolThreadSize(ppi.getCoreSize(), ppi.getMaxSize())
                             .keepAliveTime(ppi.getKeepAliveTime(), TimeUnit.SECONDS)
                             .rejected(RejectedTypeEnum.createPolicy(ppi.getRejectedType()))
-                            .alarmConfig(ppi.getIsAlarm(), ppi.getCapacityAlarm(), ppi.getLivenessAlarm())
                             .allowCoreThreadTimeOut(EnableEnum.getBool(ppi.getAllowCoreThreadTimeOut()))
                             .build();
 

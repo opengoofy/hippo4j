@@ -1,9 +1,7 @@
 package cn.hippo4j.starter.toolkit.thread;
 
 import cn.hippo4j.common.design.builder.Builder;
-import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.starter.alarm.ThreadPoolAlarm;
 import org.springframework.core.task.TaskDecorator;
 
 import java.math.BigDecimal;
@@ -87,16 +85,6 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
      * 是否告警
      */
     private boolean isAlarm = false;
-
-    /**
-     * 容量告警
-     */
-    private Integer capacityAlarm;
-
-    /**
-     * 活跃度告警
-     */
-    private Integer livenessAlarm;
 
     /**
      * 线程任务装饰器
@@ -212,13 +200,6 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
-    public ThreadPoolBuilder alarmConfig(int isAlarm, int capacityAlarm, int livenessAlarm) {
-        this.isAlarm = isAlarm == EnableEnum.YES.getIntCode() ? true : false;
-        this.capacityAlarm = capacityAlarm;
-        this.livenessAlarm = livenessAlarm;
-        return this;
-    }
-
     public ThreadPoolBuilder taskDecorator(TaskDecorator taskDecorator) {
         this.taskDecorator = taskDecorator;
         return this;
@@ -320,8 +301,6 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         if (builder.isDynamicPool) {
             String threadPoolId = Optional.ofNullable(builder.threadPoolId).orElse(builder.threadNamePrefix);
             initParam.setThreadPoolId(threadPoolId);
-            ThreadPoolAlarm threadPoolAlarm = new ThreadPoolAlarm(builder.isAlarm, builder.livenessAlarm, builder.capacityAlarm);
-            initParam.setThreadPoolAlarm(threadPoolAlarm);
             initParam.setWaitForTasksToCompleteOnShutdown(builder.waitForTasksToCompleteOnShutdown);
             initParam.setAwaitTerminationMillis(builder.awaitTerminationMillis);
         }
