@@ -20,8 +20,8 @@
         <module>hippo4j-config</module>
         <module>hippo4j-discovery</module>
         <module>hippo4j-example</module>
+        <module>hippo4j-spring-boot</module>
         <module>hippo4j-tools</module>
-        <module>hippo4j-spring-boot-starter</module>
     </modules>
 
     <properties>
