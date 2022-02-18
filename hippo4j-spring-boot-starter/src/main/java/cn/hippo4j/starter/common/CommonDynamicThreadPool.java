@@ -20,7 +20,6 @@ public class CommonDynamicThreadPool {
                 .threadFactory(threadPoolId)
                 .poolThreadSize(2, 4)
                 .keepAliveTime(60L, TimeUnit.SECONDS)
-                .alarmConfig(1, 80, 80)
                 .workQueue(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, 1024)
                 .build();
         return poolExecutor;
