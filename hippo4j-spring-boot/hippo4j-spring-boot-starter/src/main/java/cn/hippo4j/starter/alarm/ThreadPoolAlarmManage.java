@@ -39,7 +39,12 @@ public class ThreadPoolAlarmManage {
         if (SEND_MESSAGE_SERVICE == null) {
             return;
         }
-        ThreadPoolAlarm threadPoolAlarm = threadPoolExecutor.getThreadPoolAlarm();
+
+        /**
+         * TODO 通知改造
+         * https://github.com/acmenlt/dynamic-threadpool/issues/100
+         */
+        ThreadPoolAlarm threadPoolAlarm = new ThreadPoolAlarm(null, 80, 80);
         BlockingQueue blockIngQueue = threadPoolExecutor.getQueue();
 
         int queueSize = blockIngQueue.size();
@@ -67,8 +72,11 @@ public class ThreadPoolAlarmManage {
         int maximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
         int divide = CalculateUtil.divide(activeCount, maximumPoolSize);
 
-        ThreadPoolAlarm threadPoolAlarm = threadPoolExecutor.getThreadPoolAlarm();
-
+        /**
+         * TODO 通知改造
+         * https://github.com/acmenlt/dynamic-threadpool/issues/100
+         */
+        ThreadPoolAlarm threadPoolAlarm = new ThreadPoolAlarm(null, 80, 80);
         boolean isSend = threadPoolAlarm.getIsAlarm()
                 && divide > threadPoolAlarm.getLivenessAlarm()
                 && isSendMessage(threadPoolExecutor, MessageTypeEnum.LIVENESS);
@@ -87,7 +95,11 @@ public class ThreadPoolAlarmManage {
             return;
         }
 
-        ThreadPoolAlarm threadPoolAlarm = threadPoolExecutor.getThreadPoolAlarm();
+        /**
+         * TODO 通知改造
+         * https://github.com/acmenlt/dynamic-threadpool/issues/100
+         */
+        ThreadPoolAlarm threadPoolAlarm = new ThreadPoolAlarm(null, 80, 80);
         if (threadPoolAlarm.getIsAlarm() && isSendMessage(threadPoolExecutor, MessageTypeEnum.REJECT)) {
             SEND_MESSAGE_SERVICE.sendAlarmMessage(MessageTypeEnum.REJECT, threadPoolExecutor);
         }

@@ -1,7 +1,6 @@
 package cn.hippo4j.starter.toolkit.thread;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.starter.alarm.ThreadPoolAlarm;
 import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -121,7 +120,6 @@ public class AbstractBuildThreadPoolTemplate {
                     initParam.getWorkQueue(),
                     initParam.getThreadPoolId(),
                     initParam.getThreadFactory(),
-                    initParam.getThreadPoolAlarm(),
                     initParam.getRejectedExecutionHandler()
             );
         } catch (IllegalArgumentException ex) {
@@ -181,11 +179,6 @@ public class AbstractBuildThreadPoolTemplate {
          * 线程 ID
          */
         private String threadPoolId;
-
-        /**
-         * 报警策略
-         */
-        private ThreadPoolAlarm threadPoolAlarm;
 
         /**
          * 线程任务装饰器

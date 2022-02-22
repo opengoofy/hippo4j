@@ -20,13 +20,13 @@
         <module>hippo4j-config</module>
         <module>hippo4j-discovery</module>
         <module>hippo4j-example</module>
+        <module>hippo4j-spring-boot</module>
         <module>hippo4j-tools</module>
-        <module>hippo4j-spring-boot-starter</module>
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
-        <revision>1.0.0</revision>
+        <revision>1.0.1</revision>
 
         <dozer.version>6.5.0</dozer.version>
         <guava.version>29.0-jre</guava.version>
