@@ -1,6 +1,6 @@
 package cn.hippo4j.config.notify.listener;
 
-import cn.hippo4j.config.event.Event;
+import cn.hippo4j.config.event.AbstractEvent;
 
 import java.util.List;
 
@@ -10,13 +10,13 @@ import java.util.List;
  * @author chen.ma
  * @date 2021/6/23 19:02
  */
-public abstract class SmartSubscriber extends Subscriber {
+public abstract class AbstractSmartSubscriber extends AbstractSubscriber {
 
     /**
      * Subscribe types.
      *
      * @return
      */
-    public abstract List<Class<? extends Event>> subscribeTypes();
+    public abstract List<Class<? extends AbstractEvent>> subscribeTypes();
 
 }

@@ -1,6 +1,6 @@
 package cn.hippo4j.example.inittest;
 
-import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

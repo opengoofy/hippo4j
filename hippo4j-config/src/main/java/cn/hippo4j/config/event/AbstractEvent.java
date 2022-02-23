@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author chen.ma
  * @date 2021/6/23 18:59
  */
-public abstract class Event implements Serializable {
+public abstract class AbstractEvent implements Serializable {
 
     private static final AtomicLong SEQUENCE = new AtomicLong(0);
 

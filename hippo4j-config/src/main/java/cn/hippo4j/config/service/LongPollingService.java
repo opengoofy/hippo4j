@@ -3,10 +3,10 @@ package cn.hippo4j.config.service;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.common.web.base.Results;
-import cn.hippo4j.config.event.Event;
+import cn.hippo4j.config.event.AbstractEvent;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.notify.NotifyCenter;
-import cn.hippo4j.config.notify.listener.Subscriber;
+import cn.hippo4j.config.notify.listener.AbstractSubscriber;
 import cn.hippo4j.config.toolkit.ConfigExecutor;
 import cn.hippo4j.config.toolkit.MapUtil;
 import cn.hippo4j.config.toolkit.Md5ConfigUtil;
@@ -58,10 +58,10 @@ public class LongPollingService {
 
         NotifyCenter.registerToPublisher(LocalDataChangeEvent.class, NotifyCenter.ringBufferSize);
 
-        NotifyCenter.registerSubscriber(new Subscriber() {
+        NotifyCenter.registerSubscriber(new AbstractSubscriber() {
 
             @Override
-            public void onEvent(Event event) {
+            public void onEvent(AbstractEvent event) {
                 if (isFixedPolling()) {
                     // Ignore.
                 } else {
@@ -73,7 +73,7 @@ public class LongPollingService {
             }
 
             @Override
-            public Class<? extends Event> subscribeType() {
+            public Class<? extends AbstractEvent> subscribeType() {
                 return LocalDataChangeEvent.class;
             }
         });

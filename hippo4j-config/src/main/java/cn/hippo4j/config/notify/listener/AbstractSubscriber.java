@@ -1,6 +1,6 @@
 package cn.hippo4j.config.notify.listener;
 
-import cn.hippo4j.config.event.Event;
+import cn.hippo4j.config.event.AbstractEvent;
 
 import java.util.concurrent.Executor;
 
@@ -10,7 +10,7 @@ import java.util.concurrent.Executor;
  * @author chen.ma
  * @date 2021/6/23 19:02
  */
-public abstract class Subscriber<T extends Event> {
+public abstract class AbstractSubscriber<T extends AbstractEvent> {
 
     /**
      * Event callback.
@@ -24,7 +24,7 @@ public abstract class Subscriber<T extends Event> {
      *
      * @return
      */
-    public abstract Class<? extends Event> subscribeType();
+    public abstract Class<? extends AbstractEvent> subscribeType();
 
     public Executor executor() {
         return null;

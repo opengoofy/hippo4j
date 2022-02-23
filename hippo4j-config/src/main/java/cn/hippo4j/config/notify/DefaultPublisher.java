@@ -1,8 +1,8 @@
 package cn.hippo4j.config.notify;
 
+import cn.hippo4j.config.event.AbstractEvent;
 import cn.hutool.core.collection.ConcurrentHashSet;
-import cn.hippo4j.config.notify.listener.Subscriber;
-import cn.hippo4j.config.event.Event;
+import cn.hippo4j.config.notify.listener.AbstractSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
@@ -20,9 +20,9 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 @Slf4j
 public class DefaultPublisher extends Thread implements EventPublisher {
 
-    protected final ConcurrentHashSet<Subscriber> subscribers = new ConcurrentHashSet();
+    protected final ConcurrentHashSet<AbstractSubscriber> subscribers = new ConcurrentHashSet();
 
-    private BlockingQueue<Event> queue;
+    private BlockingQueue<AbstractEvent> queue;
 
     private volatile boolean initialized = false;
 
@@ -36,7 +36,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
             .newUpdater(DefaultPublisher.class, Long.class, "lastEventSequence");
 
     @Override
-    public void init(Class<? extends Event> type, int bufferSize) {
+    public void init(Class<? extends AbstractEvent> type, int bufferSize) {
         setDaemon(true);
         setName("dynamic.thread-pool.publisher-" + type.getName());
         this.queueMaxSize = bufferSize;
@@ -80,7 +80,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
                 if (shutdown) {
                     break;
                 }
-                final Event event = queue.take();
+                final AbstractEvent event = queue.take();
                 receiveEvent(event);
                 UPDATER.compareAndSet(this, lastEventSequence, Math.max(lastEventSequence, event.sequence()));
             }
@@ -90,12 +90,12 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     }
 
     @Override
-    public void addSubscriber(Subscriber subscriber) {
+    public void addSubscriber(AbstractSubscriber subscriber) {
         subscribers.add(subscriber);
     }
 
     @Override
-    public boolean publish(Event event) {
+    public boolean publish(AbstractEvent event) {
         boolean success = this.queue.offer(event);
         if (!success) {
             log.warn("Unable to plug in due to interruption, synchronize sending time, event :: {}", event);
@@ -106,7 +106,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     }
 
     @Override
-    public void notifySubscriber(Subscriber subscriber, Event event) {
+    public void notifySubscriber(AbstractSubscriber subscriber, AbstractEvent event) {
         final Runnable job = () -> subscriber.onEvent(event);
 
         final Executor executor = subscriber.executor();
@@ -126,8 +126,8 @@ public class DefaultPublisher extends Thread implements EventPublisher {
         return !CollectionUtils.isEmpty(subscribers);
     }
 
-    void receiveEvent(Event event) {
-        for (Subscriber subscriber : subscribers) {
+    void receiveEvent(AbstractEvent event) {
+        for (AbstractSubscriber subscriber : subscribers) {
             notifySubscriber(subscriber, event);
         }
     }

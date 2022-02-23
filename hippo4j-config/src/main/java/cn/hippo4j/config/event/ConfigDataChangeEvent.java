@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
  * @author chen.ma
  * @date 2021/6/24 23:35
  */
-public class ConfigDataChangeEvent extends Event {
+public class ConfigDataChangeEvent extends AbstractEvent {
 
     public final String tenantId;
 

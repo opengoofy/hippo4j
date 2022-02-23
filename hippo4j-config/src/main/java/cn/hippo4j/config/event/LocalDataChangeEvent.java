@@ -6,7 +6,7 @@ package cn.hippo4j.config.event;
  * @author chen.ma
  * @date 2021/6/23 19:13
  */
-public class LocalDataChangeEvent extends Event {
+public class LocalDataChangeEvent extends AbstractEvent {
 
     /**
      * 租户+项目+线程池

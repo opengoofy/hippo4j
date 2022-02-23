@@ -2,9 +2,9 @@ package cn.hippo4j.example.config;
 
 import cn.hippo4j.example.inittest.TaskDecoratorTest;
 import cn.hippo4j.starter.core.DynamicThreadPool;
-import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
-import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
-import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

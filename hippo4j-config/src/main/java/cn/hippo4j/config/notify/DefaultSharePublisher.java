@@ -1,9 +1,9 @@
 package cn.hippo4j.config.notify;
 
+import cn.hippo4j.config.event.AbstractEvent;
 import cn.hutool.core.collection.ConcurrentHashSet;
-import cn.hippo4j.config.notify.listener.Subscriber;
-import cn.hippo4j.config.event.Event;
-import cn.hippo4j.config.event.SlowEvent;
+import cn.hippo4j.config.notify.listener.AbstractSubscriber;
+import cn.hippo4j.config.event.AbstractSlowEvent;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,21 +19,21 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class DefaultSharePublisher extends DefaultPublisher {
 
-    private final Map<Class<? extends SlowEvent>, Set<Subscriber>> subMappings = new ConcurrentHashMap();
+    private final Map<Class<? extends AbstractSlowEvent>, Set<AbstractSubscriber>> subMappings = new ConcurrentHashMap();
 
-    protected final ConcurrentHashSet<Subscriber> subscribers = new ConcurrentHashSet();
+    protected final ConcurrentHashSet<AbstractSubscriber> subscribers = new ConcurrentHashSet();
 
     private final Lock lock = new ReentrantLock();
 
-    public void addSubscriber(Subscriber subscriber, Class<? extends Event> subscribeType) {
-        Class<? extends SlowEvent> subSlowEventType = (Class<? extends SlowEvent>) subscribeType;
+    public void addSubscriber(AbstractSubscriber subscriber, Class<? extends AbstractEvent> subscribeType) {
+        Class<? extends AbstractSlowEvent> subSlowEventType = (Class<? extends AbstractSlowEvent>) subscribeType;
         subscribers.add(subscriber);
 
         lock.lock();
         try {
-            Set<Subscriber> sets = subMappings.get(subSlowEventType);
+            Set<AbstractSubscriber> sets = subMappings.get(subSlowEventType);
             if (sets == null) {
-                Set<Subscriber> newSet = new ConcurrentHashSet();
+                Set<AbstractSubscriber> newSet = new ConcurrentHashSet();
                 newSet.add(subscriber);
                 subMappings.put(subSlowEventType, newSet);
                 return;

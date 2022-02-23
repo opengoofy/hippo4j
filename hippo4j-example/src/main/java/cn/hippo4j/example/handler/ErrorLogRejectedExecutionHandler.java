@@ -1,6 +1,6 @@
 package cn.hippo4j.example.handler;
 
-import cn.hippo4j.starter.spi.CustomRejectedExecutionHandler;
+import cn.hippo4j.core.spi.CustomRejectedExecutionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
