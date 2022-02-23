@@ -1,7 +1,7 @@
 package cn.hippo4j.starter.alarm;
 
 import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 
 /**
  * Send message handler.

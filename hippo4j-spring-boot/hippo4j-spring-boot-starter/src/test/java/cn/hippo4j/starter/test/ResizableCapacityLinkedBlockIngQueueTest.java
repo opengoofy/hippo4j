@@ -1,6 +1,6 @@
 package cn.hippo4j.starter.test;
 
-import cn.hippo4j.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue;
+import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.LinkedBlockingQueue;

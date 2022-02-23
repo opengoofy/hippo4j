@@ -2,8 +2,9 @@ package cn.hippo4j.starter.alarm;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.notify.NotifyTypeEnum;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.starter.config.MessageAlarmConfiguration;
-import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
 import cn.hippo4j.starter.toolkit.CalculateUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,7 +55,7 @@ public class ThreadPoolAlarmManage {
                 && divide > threadPoolAlarm.getCapacityAlarm()
                 && isSendMessage(threadPoolExecutor, MessageTypeEnum.CAPACITY);
         if (isSend) {
-            SEND_MESSAGE_SERVICE.sendAlarmMessage(MessageTypeEnum.CAPACITY, threadPoolExecutor);
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(NotifyTypeEnum.CAPACITY, threadPoolExecutor);
         }
     }
 
@@ -81,7 +82,7 @@ public class ThreadPoolAlarmManage {
                 && divide > threadPoolAlarm.getLivenessAlarm()
                 && isSendMessage(threadPoolExecutor, MessageTypeEnum.LIVENESS);
         if (isSend) {
-            SEND_MESSAGE_SERVICE.sendAlarmMessage(MessageTypeEnum.LIVENESS, threadPoolExecutor);
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(NotifyTypeEnum.ACTIVITY, threadPoolExecutor);
         }
     }
 
@@ -101,7 +102,7 @@ public class ThreadPoolAlarmManage {
          */
         ThreadPoolAlarm threadPoolAlarm = new ThreadPoolAlarm(null, 80, 80);
         if (threadPoolAlarm.getIsAlarm() && isSendMessage(threadPoolExecutor, MessageTypeEnum.REJECT)) {
-            SEND_MESSAGE_SERVICE.sendAlarmMessage(MessageTypeEnum.REJECT, threadPoolExecutor);
+            SEND_MESSAGE_SERVICE.sendAlarmMessage(NotifyTypeEnum.REJECT, threadPoolExecutor);
         }
     }
 

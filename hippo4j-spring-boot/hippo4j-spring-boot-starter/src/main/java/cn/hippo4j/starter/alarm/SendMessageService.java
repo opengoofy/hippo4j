@@ -1,7 +1,8 @@
 package cn.hippo4j.starter.alarm;
 
 import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
+import cn.hippo4j.common.notify.NotifyTypeEnum;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 
 /**
  * Send msg.
@@ -17,7 +18,7 @@ public interface SendMessageService {
      * @param typeEnum
      * @param threadPoolExecutor
      */
-    void sendAlarmMessage(MessageTypeEnum typeEnum, DynamicThreadPoolExecutor threadPoolExecutor);
+    void sendAlarmMessage(NotifyTypeEnum typeEnum, DynamicThreadPoolExecutor threadPoolExecutor);
 
     /**
      * Send change message.

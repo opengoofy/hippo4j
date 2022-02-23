@@ -6,8 +6,8 @@ import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.monitor.collect.Collector;
 import cn.hippo4j.starter.monitor.send.MessageSender;
 import cn.hippo4j.starter.remote.ServerHealthCheck;
-import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
-import cn.hippo4j.starter.toolkit.thread.ThreadUtil;
+import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hutool.core.collection.CollUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static cn.hippo4j.starter.core.GlobalThreadPoolManage.getThreadPoolNum;
+import static cn.hippo4j.core.executor.manage.GlobalThreadPoolManage.getThreadPoolNum;
 
 /**
  * 动态线程池采集上报事件执行器.

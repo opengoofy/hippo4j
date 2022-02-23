@@ -6,14 +6,14 @@ import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.starter.common.CommonDynamicThreadPool;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.refresh.ThreadPoolDynamicRefresh;
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.core.executor.support.*;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.toolkit.DynamicThreadPoolAnnotationUtil;
-import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
-import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
-import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
-import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -142,7 +142,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                             .build();
 
                     // 设置动态线程池增强参数
-                    if (dynamicThreadPoolWrap.getExecutor() instanceof DynamicExecutorConfigurationSupport) {
+                    if (dynamicThreadPoolWrap.getExecutor() instanceof AbstractDynamicExecutorSupport) {
                         TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();
                         ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setTaskDecorator(taskDecorator);
 

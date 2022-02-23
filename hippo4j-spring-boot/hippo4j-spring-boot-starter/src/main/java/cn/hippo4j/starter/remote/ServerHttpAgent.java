@@ -6,7 +6,7 @@ import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.security.SecurityProxy;
 import cn.hippo4j.starter.toolkit.HttpClientUtil;
-import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
+import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
 

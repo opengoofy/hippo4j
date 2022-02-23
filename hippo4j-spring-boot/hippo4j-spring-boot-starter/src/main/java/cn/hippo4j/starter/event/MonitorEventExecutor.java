@@ -1,8 +1,8 @@
 package cn.hippo4j.starter.event;
 
 import cn.hippo4j.common.function.NoArgsConsumer;
-import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
-import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
+import cn.hippo4j.core.executor.support.QueueTypeEnum;
+import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ExecutorService;

@@ -1,8 +1,8 @@
 package cn.hippo4j.starter.test;
 
-import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
-import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
-import cn.hippo4j.starter.toolkit.thread.ThreadUtil;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -44,7 +44,7 @@ public class RejectedExecutionHandlerProxyTest {
         ThreadUtil.sleep(1000);
 
         DynamicThreadPoolExecutor dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) executor;
-        Integer rejectCount = dynamicThreadPoolExecutor.getRejectCount();
+        long rejectCount = dynamicThreadPoolExecutor.getRejectCountNum();
         log.info("ThreadPool name :: {}, Reject count :: {}", Thread.currentThread().getName(), rejectCount);
     }
 }

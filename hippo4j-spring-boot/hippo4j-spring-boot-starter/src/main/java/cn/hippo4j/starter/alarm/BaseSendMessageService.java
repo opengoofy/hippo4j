@@ -2,12 +2,15 @@ package cn.hippo4j.starter.alarm;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.notify.AlarmControlDTO;
+import cn.hippo4j.common.notify.AlarmControlHandler;
+import cn.hippo4j.common.notify.NotifyTypeEnum;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.starter.config.BootstrapProperties;
-import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
-import cn.hippo4j.starter.core.GlobalThreadPoolManage;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
@@ -49,7 +52,7 @@ public class BaseSendMessageService implements InitializingBean, SendMessageServ
     private final Map<String, SendMessageHandler> sendMessageHandlers = Maps.newHashMap();
 
     @Override
-    public void sendAlarmMessage(MessageTypeEnum typeEnum, DynamicThreadPoolExecutor executor) {
+    public void sendAlarmMessage(NotifyTypeEnum typeEnum, DynamicThreadPoolExecutor executor) {
         String threadPoolId = executor.getThreadPoolId();
         String buildKey = StrUtil.builder(executor.getThreadPoolId(), "+", "ALARM").toString();
         List<NotifyDTO> notifyList = ALARM_NOTIFY_CONFIG.get(buildKey);

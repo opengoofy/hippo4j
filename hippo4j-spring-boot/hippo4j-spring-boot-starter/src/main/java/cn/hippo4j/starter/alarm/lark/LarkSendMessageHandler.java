@@ -5,13 +5,13 @@ import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.starter.alarm.NotifyDTO;
-import cn.hippo4j.starter.alarm.NotifyPlatformEnum;
+import cn.hippo4j.common.notify.NotifyPlatformEnum;
 import cn.hippo4j.starter.alarm.SendMessageHandler;
-import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
-import cn.hippo4j.starter.core.GlobalThreadPoolManage;
-import cn.hippo4j.starter.toolkit.thread.QueueTypeEnum;
-import cn.hippo4j.starter.toolkit.thread.RejectedTypeEnum;
-import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.core.executor.support.QueueTypeEnum;
+import cn.hippo4j.core.executor.support.RejectedTypeEnum;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
@@ -105,7 +105,7 @@ public class LarkSendMessageHandler implements SendMessageHandler {
                 // 拒绝策略名称
                 pool.getRejectedExecutionHandler().getClass().getSimpleName(),
                 // 拒绝策略次数
-                pool.getRejectCount(),
+                pool.getRejectCountNum(),
                 // 告警姓名
                 afterReceives,
                 // 当前时间

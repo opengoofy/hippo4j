@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.alarm;
 
+import cn.hippo4j.common.notify.NotifyTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -56,6 +57,6 @@ public class NotifyDTO {
     /**
      * 报警类型
      */
-    private MessageTypeEnum typeEnum;
+    private NotifyTypeEnum typeEnum;
 
 }

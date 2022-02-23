@@ -4,8 +4,8 @@ import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.model.ThreadDetailStateInfo;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.starter.core.GlobalThreadPoolManage;
-import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;

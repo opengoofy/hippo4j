@@ -7,7 +7,7 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.remote.ServerHealthCheck;
-import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
+import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hutool.core.util.IdUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

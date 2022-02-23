@@ -1,6 +1,6 @@
 package cn.hippo4j.starter.toolkit.inet;
 
-import cn.hippo4j.starter.toolkit.thread.ThreadPoolBuilder;
+import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

@@ -7,7 +7,7 @@ import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
 import cn.hippo4j.starter.remote.HttpAgent;
-import cn.hippo4j.starter.toolkit.thread.ThreadFactoryBuilder;
+import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;

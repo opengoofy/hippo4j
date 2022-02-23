@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.core;
 
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.starter.wrapper.ManagerListenerWrapper;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.Md5Util;

@@ -1,7 +1,7 @@
 package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.starter.alarm.AlarmControlHandler;
+import cn.hippo4j.common.notify.AlarmControlHandler;
 import cn.hippo4j.starter.alarm.BaseSendMessageService;
 import cn.hippo4j.starter.alarm.SendMessageHandler;
 import cn.hippo4j.starter.alarm.SendMessageService;

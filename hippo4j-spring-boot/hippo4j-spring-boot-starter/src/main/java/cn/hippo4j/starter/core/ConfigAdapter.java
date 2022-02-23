@@ -1,5 +1,7 @@
 package cn.hippo4j.starter.core;
 
+import cn.hippo4j.core.refresh.ThreadPoolDynamicRefresh;
+
 /**
  * Config adapter.
  *

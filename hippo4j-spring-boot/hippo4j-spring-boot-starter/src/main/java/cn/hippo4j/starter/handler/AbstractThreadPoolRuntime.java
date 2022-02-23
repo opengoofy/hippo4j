@@ -2,10 +2,10 @@ package cn.hippo4j.starter.handler;
 
 import cn.hippo4j.common.model.PoolBaseInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
-import cn.hippo4j.starter.core.DynamicThreadPoolExecutor;
-import cn.hippo4j.starter.core.GlobalThreadPoolManage;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.starter.toolkit.CalculateUtil;
-import cn.hippo4j.starter.wrapper.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hutool.core.date.DateUtil;
 
 import java.util.Date;
@@ -103,9 +103,9 @@ public abstract class AbstractThreadPoolRuntime {
             stateInfo.setLargestPoolSize(largestPoolSize);
             stateInfo.setCompletedTaskCount(completedTaskCount);
 
-            int rejectCount = pool instanceof DynamicThreadPoolExecutor
-                    ? ((DynamicThreadPoolExecutor) pool).getRejectCount()
-                    : -1;
+            long rejectCount = pool instanceof DynamicThreadPoolExecutor
+                    ? ((DynamicThreadPoolExecutor) pool).getRejectCountNum()
+                    : -1L;
             stateInfo.setRejectCount(rejectCount);
             stateInfo.setClientLastRefreshTime(DateUtil.formatDateTime(new Date()));
             stateInfo.setTimestamp(System.currentTimeMillis());
