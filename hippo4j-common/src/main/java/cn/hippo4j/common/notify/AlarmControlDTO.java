@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.alarm;
+package cn.hippo4j.common.notify;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.Builder;
@@ -27,7 +27,7 @@ public class AlarmControlDTO {
     /**
      * 推送报警类型
      */
-    private MessageTypeEnum typeEnum;
+    private NotifyTypeEnum typeEnum;
 
     /**
      * 构建线程池报警标识

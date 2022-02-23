@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.alarm;
+package cn.hippo4j.common.notify;
 
 /**
  * Notify platform enum.
@@ -9,17 +9,17 @@ package cn.hippo4j.starter.alarm;
 public enum NotifyPlatformEnum {
 
     /**
-     * 钉钉
+     * DING
      */
     DING,
 
     /**
-     * 飞书
+     * LARK
      */
     LARK,
 
     /**
-     * 企业微信
+     * WECHAT
      */
     WECHAT
 

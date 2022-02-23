@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.alarm;
+package cn.hippo4j.common.notify;
 
 import cn.hippo4j.common.constant.Constants;
 import cn.hutool.core.util.IdUtil;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 报警控制组件.
+ * Alarm control assembly.
  *
  * @author chen.ma
  * @date 2021/10/28 21:24
@@ -24,7 +24,7 @@ public class AlarmControlHandler {
     private final Map<String, Cache<String, String>> threadPoolAlarmCache = Maps.newConcurrentMap();
 
     /**
-     * 控制消息推送报警频率.
+     * Control message push alarm frequency.
      *
      * @param alarmControl
      * @return
@@ -43,7 +43,7 @@ public class AlarmControlHandler {
             try {
                 pkId = cache.getIfPresent(alarmControl.getTypeEnum().name());
                 if (StrUtil.isBlank(pkId)) {
-                    // val 无意义
+                    // Val meaningless.
                     cache.put(alarmControl.getTypeEnum().name(), IdUtil.simpleUUID());
                     return true;
                 }

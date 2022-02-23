@@ -68,7 +68,7 @@ public class PoolRunStateInfo extends PoolBaseInfo implements Serializable {
     /**
      * rejectCount
      */
-    private Integer rejectCount;
+    private Long rejectCount;
 
     /**
      * host
