@@ -15,18 +15,19 @@
     <modules>
         <module>hippo4j-auth</module>
         <module>hippo4j-common</module>
-        <module>hippo4j-console</module>
-        <module>hippo4j-server</module>
         <module>hippo4j-config</module>
+        <module>hippo4j-console</module>
+        <module>hippo4j-core</module>
         <module>hippo4j-discovery</module>
         <module>hippo4j-example</module>
+        <module>hippo4j-server</module>
         <module>hippo4j-spring-boot</module>
         <module>hippo4j-tools</module>
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
-        <revision>1.0.1</revision>
+        <revision>1.0.1-SNAPSHOT</revision>
 
         <dozer.version>6.5.0</dozer.version>
         <guava.version>29.0-jre</guava.version>
@@ -127,6 +128,12 @@
             <dependency>
                 <groupId>cn.hippo4j</groupId>
                 <artifactId>hippo4j-auth</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-core</artifactId>
                 <version>${revision}</version>
             </dependency>
 
