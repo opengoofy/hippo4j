@@ -9,7 +9,7 @@ import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
  * @author chen.ma
  * @date 2022/2/22 19:56
  */
-public interface SendMessageService {
+public interface HippoSendMessageService {
 
     /**
      * Send alarm message.

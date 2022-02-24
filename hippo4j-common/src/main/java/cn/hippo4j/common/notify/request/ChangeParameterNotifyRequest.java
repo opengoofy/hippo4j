@@ -1,5 +1,6 @@
 package cn.hippo4j.common.notify.request;
 
+import cn.hippo4j.common.notify.request.base.BaseNotifyRequest;
 import lombok.Data;
 
 /**

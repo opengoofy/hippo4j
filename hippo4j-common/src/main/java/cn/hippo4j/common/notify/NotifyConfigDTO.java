@@ -1,6 +1,5 @@
-package cn.hippo4j.starter.alarm;
+package cn.hippo4j.common.notify;
 
-import cn.hippo4j.common.notify.NotifyTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -12,7 +11,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class NotifyDTO {
+public class NotifyConfigDTO {
 
     /**
      * 租户id
@@ -27,7 +26,7 @@ public class NotifyDTO {
     /**
      * 线程池id
      */
-    private String tpId;
+    private String threadPoolId;
 
     /**
      * 通知平台

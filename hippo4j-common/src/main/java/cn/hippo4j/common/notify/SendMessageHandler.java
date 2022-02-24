@@ -1,6 +1,6 @@
 package cn.hippo4j.common.notify;
 
-import cn.hippo4j.common.notify.request.NotifyRequest;
+import cn.hippo4j.common.notify.request.base.NotifyRequest;
 
 /**
  * Send message handler.
@@ -20,15 +20,17 @@ public interface SendMessageHandler<T extends NotifyRequest, R extends NotifyReq
     /**
      * Send alarm message.
      *
+     * @param notifyConfig
      * @param alarmNotifyRequest
      */
-    void sendAlarmMessage(T alarmNotifyRequest);
+    void sendAlarmMessage(NotifyConfigDTO notifyConfig, T alarmNotifyRequest);
 
     /**
      * Send change message.
      *
+     * @param notifyConfig
      * @param changeParameterNotifyRequest
      */
-    void sendChangeMessage(R changeParameterNotifyRequest);
+    void sendChangeMessage(NotifyConfigDTO notifyConfig, R changeParameterNotifyRequest);
 
 }

@@ -1,9 +1,10 @@
 package cn.hippo4j.common.notify.platform;
 
+import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.common.notify.NotifyPlatformEnum;
-import cn.hippo4j.common.notify.request.RobotAlarmNotifyRequest;
-import cn.hippo4j.common.notify.request.RobotChangeParameterNotifyRequest;
 import cn.hippo4j.common.notify.SendMessageHandler;
+import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
+import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hutool.core.date.DateUtil;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
@@ -25,7 +26,7 @@ import static cn.hippo4j.common.notify.platform.DingAlarmConstants.DING_NOTICE_T
  * @date 2021/8/15 15:49
  */
 @Slf4j
-public class DingSendMessageHandler implements SendMessageHandler<RobotAlarmNotifyRequest, RobotChangeParameterNotifyRequest> {
+public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
 
     @Override
     public String getType() {
@@ -33,8 +34,8 @@ public class DingSendMessageHandler implements SendMessageHandler<RobotAlarmNoti
     }
 
     @Override
-    public void sendAlarmMessage(RobotAlarmNotifyRequest alarmNotifyRequest) {
-        String[] receives = alarmNotifyRequest.getReceives().split(",");
+    public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
+        String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on(", @").join(receives);
 
         String text = String.format(
@@ -81,14 +82,14 @@ public class DingSendMessageHandler implements SendMessageHandler<RobotAlarmNoti
                 DateUtil.now()
         );
 
-        execute(alarmNotifyRequest.getSecretKey(), DingAlarmConstants.DING_ALARM_TITLE, text, Lists.newArrayList(receives));
+        execute(notifyConfig.getSecretKey(), DingAlarmConstants.DING_ALARM_TITLE, text, Lists.newArrayList(receives));
     }
 
     @Override
-    public void sendChangeMessage(RobotChangeParameterNotifyRequest changeParameterNotifyRequest) {
+    public void sendChangeMessage(NotifyConfigDTO notifyConfig, ChangeParameterNotifyRequest changeParameterNotifyRequest) {
         String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
 
-        String[] receives = changeParameterNotifyRequest.getReceives().split(",");
+        String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on(", @").join(receives);
 
         /**
@@ -111,7 +112,7 @@ public class DingSendMessageHandler implements SendMessageHandler<RobotAlarmNoti
                 // 核心线程超时
                 changeParameterNotifyRequest.getBeforeAllowsCoreThreadTimeOut() + "  ➲  " + changeParameterNotifyRequest.getNowAllowsCoreThreadTimeOut(),
                 // 线程存活时间
-                changeParameterNotifyRequest.getBeforeKeepAliveTime() + "  ➲  " + changeParameterNotifyRequest.getNowAllowsCoreThreadTimeOut(),
+                changeParameterNotifyRequest.getBeforeKeepAliveTime() + "  ➲  " + changeParameterNotifyRequest.getNowKeepAliveTime(),
                 // 阻塞队列
                 changeParameterNotifyRequest.getBlockingQueueName(),
                 // 阻塞队列容量
@@ -125,7 +126,7 @@ public class DingSendMessageHandler implements SendMessageHandler<RobotAlarmNoti
                 DateUtil.now()
         );
 
-        execute(changeParameterNotifyRequest.getSecretKey(), DingAlarmConstants.DING_NOTICE_TITLE, text, Lists.newArrayList(receives));
+        execute(notifyConfig.getSecretKey(), DingAlarmConstants.DING_NOTICE_TITLE, text, Lists.newArrayList(receives));
     }
 
     private void execute(String secretKey, String title, String text, List<String> mobiles) {

@@ -1,4 +1,4 @@
-package cn.hippo4j.common.notify.request;
+package cn.hippo4j.common.notify.request.base;
 
 import lombok.Data;
 

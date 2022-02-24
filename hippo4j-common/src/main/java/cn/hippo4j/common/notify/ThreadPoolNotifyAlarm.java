@@ -1,17 +1,17 @@
-package cn.hippo4j.starter.alarm;
+package cn.hippo4j.common.notify;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * Thread pool alarm.
+ * Thread pool notify alarm.
  *
  * @author chen.ma
  * @date 2021/8/15 13:13
  */
 @Data
 @AllArgsConstructor
-public class ThreadPoolAlarm {
+public class ThreadPoolNotifyAlarm {
 
     /**
      * isAlarm

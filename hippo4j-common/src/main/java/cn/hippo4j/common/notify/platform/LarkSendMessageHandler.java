@@ -5,37 +5,41 @@ import cn.hippo4j.common.notify.NotifyPlatformEnum;
 import cn.hippo4j.common.notify.SendMessageHandler;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
-import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
-import com.google.common.base.Joiner;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import static cn.hippo4j.common.notify.platform.WeChatAlarmConstants.*;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static cn.hippo4j.common.notify.platform.LarkAlarmConstants.*;
 
 /**
- * WeChat send message handler.
+ * Send lark notification message.
  *
- * @author chen.ma
- * @date 2021/11/26 20:06
+ * @author imyzt
+ * @date 2021/11/22 21:12
  */
 @Slf4j
-public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
+@AllArgsConstructor
+public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
 
     @Override
     public String getType() {
-        return NotifyPlatformEnum.WECHAT.name();
+        return NotifyPlatformEnum.LARK.name();
     }
 
     @Override
+    @SneakyThrows
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
-        String[] receives = notifyConfig.getReceives().split(",");
-        String afterReceives = Joiner.on(", @").join(receives);
+        String afterReceives = getReceives(alarmNotifyRequest.getReceives());
+        String larkAlarmJson = LARK_ALARM_JSON_STR;
 
-        String text = String.format(
-                WE_CHAT_ALARM_TXT,
+        String text = String.format(larkAlarmJson,
                 // 环境
                 alarmNotifyRequest.getActive(),
                 // 线程池ID
@@ -45,7 +49,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
                 // 实例信息
                 alarmNotifyRequest.getIdentify(),
                 // 报警类型
-                notifyConfig.getTypeEnum(),
+                alarmNotifyRequest.getNotifyTypeEnum(),
                 // 核心线程数
                 alarmNotifyRequest.getCorePoolSize(),
                 // 最大线程数
@@ -72,23 +76,26 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
                 alarmNotifyRequest.getRejectCountNum(),
                 // 告警手机号
                 afterReceives,
-                // 报警频率
-                notifyConfig.getInterval(),
                 // 当前时间
-                DateUtil.now()
+                DateUtil.now(),
+                // 报警频率
+                alarmNotifyRequest.getInterval()
         );
+
         execute(notifyConfig.getSecretKey(), text);
     }
 
     @Override
+    @SneakyThrows
     public void sendChangeMessage(NotifyConfigDTO notifyConfig, ChangeParameterNotifyRequest changeParameterNotifyRequest) {
         String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
+        String afterReceives = getReceives(notifyConfig.getReceives());
+        String larkNoticeJson = LARK_NOTICE_JSON_STR;
 
-        String[] receives = notifyConfig.getReceives().split(",");
-        String afterReceives = Joiner.on("><@").join(receives);
-
-        String text = String.format(
-                WE_CHAT_NOTICE_TXT,
+        /**
+         * hesitant e.g. ➲  ➜  ⇨  ➪
+         */
+        String text = String.format(larkNoticeJson,
                 // 环境
                 changeParameterNotifyRequest.getActive(),
                 // 线程池名称
@@ -121,53 +128,24 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
         execute(notifyConfig.getSecretKey(), text);
     }
 
-    /**
-     * Execute.
-     *
-     * @param secretKey
-     * @param text
-     */
+    private String getReceives(String receives) {
+        if (StringUtil.isBlank(receives)) {
+            return "";
+        }
+        return Arrays.stream(receives.split(","))
+                .map(receive -> StrUtil.startWith(receive, LARK_OPENID_PREFIX) ?
+                        String.format(LARK_AT_FORMAT_OPENID, receive) : String.format(LARK_AT_FORMAT_USERNAME, receive))
+                .collect(Collectors.joining(" "));
+    }
+
     private void execute(String secretKey, String text) {
-        String serverUrl = WE_CHAT_SERVER_URL + secretKey;
+        String serverUrl = LARK_BOT_URL + secretKey;
 
         try {
-            WeChatReqDTO weChatReq = new WeChatReqDTO();
-            weChatReq.setMsgtype("markdown");
-
-            Markdown markdown = new Markdown();
-            markdown.setContent(text);
-            weChatReq.setMarkdown(markdown);
-
-            HttpRequest.post(serverUrl).body(JSONUtil.toJSONString(weChatReq)).execute();
+            HttpRequest.post(serverUrl).body(text).execute();
         } catch (Exception ex) {
-            log.error("WeChat failed to send message", ex);
+            log.error("Lark failed to send message", ex);
         }
-    }
-
-    @Data
-    @Accessors(chain = true)
-    public static class WeChatReqDTO {
-
-        /**
-         * msgType
-         */
-        private String msgtype;
-
-        /**
-         * markdown
-         */
-        private Markdown markdown;
-
-    }
-
-    @Data
-    public static class Markdown {
-
-        /**
-         * content
-         */
-        private String content;
-
     }
 
 }

@@ -1,7 +1,9 @@
 package cn.hippo4j.common.notify.request;
 
 import cn.hippo4j.common.notify.NotifyTypeEnum;
+import cn.hippo4j.common.notify.request.base.BaseNotifyRequest;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * Alarm notify request.
@@ -10,6 +12,7 @@ import lombok.Data;
  * @date 2022/2/22 19:41
  */
 @Data
+@Accessors(chain = true)
 public class AlarmNotifyRequest extends BaseNotifyRequest {
 
     /**

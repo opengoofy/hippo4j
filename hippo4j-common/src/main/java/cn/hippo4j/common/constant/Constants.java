@@ -80,4 +80,6 @@ public class Constants {
 
     public static final String DEFAULT_GROUP = "default group";
 
+    public static final String UNKNOWN = "unknown";
+
 }
