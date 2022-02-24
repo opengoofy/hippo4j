@@ -16,15 +16,16 @@ public class RejectedProxyUtil {
      * Proxy rejected execution.
      *
      * @param rejectedExecutionHandler
+     * @param threadPoolId
      * @param rejectedNum
      * @return
      */
-    public static RejectedExecutionHandler createProxy(RejectedExecutionHandler rejectedExecutionHandler, AtomicLong rejectedNum) {
+    public static RejectedExecutionHandler createProxy(RejectedExecutionHandler rejectedExecutionHandler, String threadPoolId, AtomicLong rejectedNum) {
         RejectedExecutionHandler rejectedProxy = (RejectedExecutionHandler) Proxy
                 .newProxyInstance(
                         rejectedExecutionHandler.getClass().getClassLoader(),
                         new Class[]{RejectedExecutionHandler.class},
-                        new RejectedProxyInvocationHandler(rejectedExecutionHandler, rejectedNum)
+                        new RejectedProxyInvocationHandler(rejectedExecutionHandler, threadPoolId, rejectedNum)
                 );
 
         return rejectedProxy;

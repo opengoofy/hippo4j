@@ -2,14 +2,17 @@ package cn.hippo4j.core.refresh;
 
 import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.core.executor.support.QueueTypeEnum;
 import cn.hippo4j.core.executor.support.RejectedTypeEnum;
 import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -25,19 +28,33 @@ import java.util.concurrent.atomic.AtomicLong;
  * @date 2021/6/20 15:51
  */
 @Slf4j
+@AllArgsConstructor
 public class ThreadPoolDynamicRefresh {
 
-    public static void refreshDynamicPool(String content) {
-        PoolParameterInfo parameter = JSONUtil.parseObject(content, PoolParameterInfo.class);
-        // TODO 抽象报警通知模块
-        // ThreadPoolAlarmManage.sendPoolConfigChange(parameter);
-        ThreadPoolDynamicRefresh.refreshDynamicPool(parameter);
-    }
+    private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
-    public static void refreshDynamicPool(PoolParameterInfo parameter) {
+    /**
+     * Refresh dynamic pool.
+     *
+     * @param content
+     */
+    public void refreshDynamicPool(String content) {
+        PoolParameterInfo parameter = JSONUtil.parseObject(content, PoolParameterInfo.class);
+
         String threadPoolId = parameter.getTpId();
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
 
+        refreshDynamicPool(parameter, executor);
+    }
+
+    /**
+     * Refresh dynamic pool.
+     *
+     * @param parameter
+     * @param executor
+     */
+    public void refreshDynamicPool(PoolParameterInfo parameter, ThreadPoolExecutor executor) {
+        String threadPoolId = parameter.getTpId();
         int originalCoreSize = executor.getCorePoolSize();
         int originalMaximumPoolSize = executor.getMaximumPoolSize();
         String originalQuery = executor.getQueue().getClass().getSimpleName();
@@ -53,8 +70,27 @@ public class ThreadPoolDynamicRefresh {
         }
         originalRejected = rejectedExecutionHandler.getClass().getSimpleName();
 
+        // Send change message.
+        ChangeParameterNotifyRequest request = new ChangeParameterNotifyRequest();
+        request.setBeforeCorePoolSize(originalCoreSize);
+        request.setBeforeMaximumPoolSize(originalMaximumPoolSize);
+        request.setBeforeAllowsCoreThreadTimeOut(originalAllowCoreThreadTimeOut);
+        request.setBeforeKeepAliveTime(originalKeepAliveTime);
+        request.setBlockingQueueName(originalQuery);
+        request.setBeforeQueueCapacity(originalCapacity);
+        request.setBeforeRejectedName(originalRejected);
+        request.setThreadPoolId(threadPoolId);
+
         changePoolInfo(executor, parameter);
         ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
+
+        request.setNowCorePoolSize(afterExecutor.getCorePoolSize());
+        request.setNowMaximumPoolSize(afterExecutor.getMaximumPoolSize());
+        request.setNowAllowsCoreThreadTimeOut(EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()));
+        request.setNowKeepAliveTime(afterExecutor.getKeepAliveTime(TimeUnit.SECONDS));
+        request.setNowQueueCapacity((afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size()));
+        request.setNowRejectedName(RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType()));
+        threadPoolNotifyAlarmHandler.sendPoolConfigChange(request);
 
         log.info(
                 "[🔥 {}] Changed thread pool. " +
@@ -77,7 +113,13 @@ public class ThreadPoolDynamicRefresh {
         );
     }
 
-    public static void changePoolInfo(ThreadPoolExecutor executor, PoolParameterInfo parameter) {
+    /**
+     * Change pool info.
+     *
+     * @param executor
+     * @param parameter
+     */
+    public void changePoolInfo(ThreadPoolExecutor executor, PoolParameterInfo parameter) {
         if (parameter.getCoreSize() != null) {
             executor.setCorePoolSize(parameter.getCoreSize());
         }
@@ -106,7 +148,7 @@ public class ThreadPoolDynamicRefresh {
                 DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) executor;
                 dynamicExecutor.setRedundancyHandler(rejectedExecutionHandler);
                 AtomicLong rejectCount = dynamicExecutor.getRejectCount();
-                rejectedExecutionHandler = RejectedProxyUtil.createProxy(rejectedExecutionHandler, rejectCount);
+                rejectedExecutionHandler = RejectedProxyUtil.createProxy(rejectedExecutionHandler, parameter.getTpId(), rejectCount);
             }
 
             executor.setRejectedExecutionHandler(rejectedExecutionHandler);

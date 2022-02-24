@@ -46,7 +46,7 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
         this.threadPoolId = threadPoolId;
 
         // Number of dynamic proxy denial policies.
-        RejectedExecutionHandler rejectedProxy = RejectedProxyUtil.createProxy(handler, rejectCount);
+        RejectedExecutionHandler rejectedProxy = RejectedProxyUtil.createProxy(handler, threadPoolId, rejectCount);
         setRejectedExecutionHandler(rejectedProxy);
 
         // Redundant fields to avoid reflecting the acquired fields when sending change information.

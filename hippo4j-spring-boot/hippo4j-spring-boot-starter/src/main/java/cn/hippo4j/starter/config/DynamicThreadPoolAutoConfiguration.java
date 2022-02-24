@@ -2,6 +2,9 @@ package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.refresh.ThreadPoolDynamicRefresh;
+import cn.hippo4j.core.toolkit.IdentifyUtil;
+import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.starter.controller.PoolRunStateController;
 import cn.hippo4j.starter.controller.WebThreadPoolController;
 import cn.hippo4j.starter.core.ConfigService;
@@ -23,9 +26,6 @@ import cn.hippo4j.starter.monitor.send.MessageSender;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.starter.remote.ServerHealthCheck;
-import cn.hippo4j.starter.toolkit.IdentifyUtil;
-import cn.hippo4j.starter.toolkit.inet.InetUtils;
-import cn.hutool.core.util.IdUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -51,14 +51,12 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@ImportAutoConfiguration({HttpClientConfiguration.class, DiscoveryConfiguration.class, MessageAlarmConfiguration.class, UtilAutoConfiguration.class})
+@ImportAutoConfiguration({HttpClientConfiguration.class, DiscoveryConfiguration.class, MessageNotifyConfiguration.class, UtilAutoConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapProperties properties;
 
     private final ConfigurableEnvironment environment;
-
-    public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
 
     @Bean
     public DynamicThreadPoolBannerHandler threadPoolBannerHandler() {
@@ -85,9 +83,11 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent, ThreadPoolOperation threadPoolOperation,
-                                                                      ApplicationContextHolder hippo4JApplicationContextHolder) {
-        return new DynamicThreadPoolPostProcessor(properties, httpAgent, threadPoolOperation);
+    public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent,
+                                                                      ThreadPoolOperation threadPoolOperation,
+                                                                      ApplicationContextHolder hippo4JApplicationContextHolder,
+                                                                      ThreadPoolDynamicRefresh threadPoolDynamicRefresh) {
+        return new DynamicThreadPoolPostProcessor(properties, httpAgent, threadPoolOperation, threadPoolDynamicRefresh);
     }
 
     @Bean

@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.toolkit;
+package cn.hippo4j.core.toolkit;
 
 /**
  * Calculate util.

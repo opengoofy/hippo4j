@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.toolkit.inet;
+package cn.hippo4j.core.toolkit.inet;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

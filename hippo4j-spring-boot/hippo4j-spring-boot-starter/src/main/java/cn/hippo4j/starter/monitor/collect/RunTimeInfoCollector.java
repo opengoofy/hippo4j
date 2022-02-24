@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 
-import static cn.hippo4j.starter.toolkit.IdentifyUtil.getThreadPoolIdentify;
+import static cn.hippo4j.core.toolkit.IdentifyUtil.getThreadPoolIdentify;
 
 /**
  * Thread pool runtime data collection.
@@ -36,7 +36,7 @@ public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements C
         for (String each : listThreadPoolId) {
             PoolRunStateInfo poolRunState = getPoolRunState(each);
             RuntimeMessage runtimeMessage = BeanUtil.toBean(poolRunState, RuntimeMessage.class);
-            runtimeMessage.setGroupKey(getThreadPoolIdentify(each, properties));
+            runtimeMessage.setGroupKey(getThreadPoolIdentify(each, properties.getItemId(), properties.getNamespace()));
             runtimeMessages.add(runtimeMessage);
         }
 

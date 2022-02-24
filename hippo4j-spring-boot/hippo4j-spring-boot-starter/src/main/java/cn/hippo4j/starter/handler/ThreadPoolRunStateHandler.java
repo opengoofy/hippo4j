@@ -6,8 +6,8 @@ import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
+import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.starter.toolkit.ByteConvertUtil;
-import cn.hippo4j.starter.toolkit.inet.InetUtils;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.RuntimeInfo;
@@ -17,7 +17,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-import static cn.hippo4j.starter.config.DynamicThreadPoolAutoConfiguration.CLIENT_IDENTIFICATION_VALUE;
+import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 
 /**
  * Thread pool run state service.

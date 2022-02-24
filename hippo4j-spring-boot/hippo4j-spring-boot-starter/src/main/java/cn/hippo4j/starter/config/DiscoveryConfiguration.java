@@ -2,10 +2,10 @@ package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
+import cn.hippo4j.core.toolkit.IdentifyUtil;
+import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.starter.core.DiscoveryClient;
 import cn.hippo4j.starter.remote.HttpAgent;
-import cn.hippo4j.starter.toolkit.IdentifyUtil;
-import cn.hippo4j.starter.toolkit.inet.InetUtils;
 import cn.hutool.core.text.StrBuilder;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -15,7 +15,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import java.net.InetAddress;
 
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
-import static cn.hippo4j.starter.config.DynamicThreadPoolAutoConfiguration.CLIENT_IDENTIFICATION_VALUE;
+import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 import static cn.hippo4j.starter.toolkit.CloudCommonIdUtil.getDefaultInstanceId;
 import static cn.hippo4j.starter.toolkit.CloudCommonIdUtil.getIpApplicationName;
 

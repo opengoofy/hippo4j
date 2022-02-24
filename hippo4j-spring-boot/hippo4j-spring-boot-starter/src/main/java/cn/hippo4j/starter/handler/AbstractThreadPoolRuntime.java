@@ -4,7 +4,7 @@ import cn.hippo4j.common.model.PoolBaseInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.starter.toolkit.CalculateUtil;
+import cn.hippo4j.core.toolkit.CalculateUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hutool.core.date.DateUtil;
 

@@ -1,8 +1,8 @@
-package cn.hippo4j.starter.toolkit;
+package cn.hippo4j.core.toolkit;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.starter.config.BootstrapProperties;
-import cn.hippo4j.starter.toolkit.inet.InetUtils;
+import cn.hippo4j.core.toolkit.inet.InetUtils;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
-import static cn.hippo4j.starter.config.DynamicThreadPoolAutoConfiguration.CLIENT_IDENTIFICATION_VALUE;
 
 /**
  * Identify util.
@@ -23,7 +22,9 @@ import static cn.hippo4j.starter.config.DynamicThreadPoolAutoConfiguration.CLIEN
  */
 public class IdentifyUtil {
 
-    private static String identify;
+    private static String IDENTIFY;
+
+    public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
 
     /**
      * Generate identify.
@@ -33,8 +34,8 @@ public class IdentifyUtil {
      * @return
      */
     public static synchronized String generate(ConfigurableEnvironment environment, InetUtils hippo4JInetUtils) {
-        if (StrUtil.isNotBlank(identify)) {
-            return identify;
+        if (StrUtil.isNotBlank(IDENTIFY)) {
+            return IDENTIFY;
         }
         String ip = hippo4JInetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
         String port = environment.getProperty("server.port", "8080");
@@ -45,7 +46,7 @@ public class IdentifyUtil {
                 CLIENT_IDENTIFICATION_VALUE
         ).toString();
 
-        identify = identification;
+        IDENTIFY = identification;
         return identification;
     }
 
@@ -56,7 +57,7 @@ public class IdentifyUtil {
      */
     @SneakyThrows
     public static String getIdentify() {
-        while (StrUtil.isBlank(identify)) {
+        while (StrUtil.isBlank(IDENTIFY)) {
             ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
             InetUtils inetUtils = ApplicationContextHolder.getBean(InetUtils.class);
 
@@ -68,19 +69,20 @@ public class IdentifyUtil {
             Thread.sleep(500);
         }
 
-        return identify;
+        return IDENTIFY;
     }
 
     /**
      * Get thread pool identify.
      *
      * @param threadPoolId
-     * @param properties
+     * @param itemId
+     * @param namespace
      * @return
      */
-    public static String getThreadPoolIdentify(String threadPoolId, BootstrapProperties properties) {
+    public static String getThreadPoolIdentify(String threadPoolId, String itemId, String namespace) {
         ArrayList<String> params = Lists.newArrayList(
-                threadPoolId, properties.getItemId(), properties.getNamespace(), getIdentify()
+                threadPoolId, itemId, namespace, getIdentify()
         );
 
         return Joiner.on(GROUP_KEY_DELIMITER).join(params);

@@ -1,6 +1,6 @@
 package cn.hippo4j.starter.toolkit;
 
-import cn.hippo4j.starter.toolkit.inet.InetUtils;
+import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.SneakyThrows;
 import org.springframework.core.env.PropertyResolver;
 

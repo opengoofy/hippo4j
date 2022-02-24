@@ -1,7 +1,7 @@
 package cn.hippo4j.starter.config;
 
-import cn.hippo4j.starter.toolkit.inet.InetUtils;
-import cn.hippo4j.starter.toolkit.inet.InetUtilsProperties;
+import cn.hippo4j.core.toolkit.inet.InetUtils;
+import cn.hippo4j.core.toolkit.inet.InetUtilsProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

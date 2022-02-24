@@ -4,16 +4,19 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.refresh.ThreadPoolDynamicRefresh;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.*;
+import cn.hippo4j.core.refresh.ThreadPoolDynamicRefresh;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.toolkit.DynamicThreadPoolAnnotationUtil;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
+import cn.hutool.core.util.BooleanUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -45,6 +48,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     private final HttpAgent httpAgent;
 
     private final ThreadPoolOperation threadPoolOperation;
+
+    private final ThreadPoolDynamicRefresh threadPoolDynamicRefresh;
 
     private final ExecutorService executorService = ThreadPoolBuilder.builder()
             .corePoolSize(2)
@@ -143,6 +148,13 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
                     // 设置动态线程池增强参数
                     if (dynamicThreadPoolWrap.getExecutor() instanceof AbstractDynamicExecutorSupport) {
+                        ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
+                                BooleanUtil.toBoolean(ppi.getIsAlarm().toString()),
+                                ppi.getCapacityAlarm(),
+                                ppi.getLivenessAlarm()
+                        );
+                        GlobalNotifyAlarmManage.put(tpId, threadPoolNotifyAlarm);
+
                         TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();
                         ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setTaskDecorator(taskDecorator);
 
@@ -180,7 +192,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      */
     protected void subscribeConfig(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
         if (dynamicThreadPoolWrap.isSubscribeFlag()) {
-            threadPoolOperation.subscribeConfig(dynamicThreadPoolWrap.getTpId(), executorService, config -> ThreadPoolDynamicRefresh.refreshDynamicPool(config));
+            threadPoolOperation.subscribeConfig(dynamicThreadPoolWrap.getTpId(), executorService, config -> threadPoolDynamicRefresh.refreshDynamicPool(config));
         }
     }
 
