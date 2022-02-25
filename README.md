@@ -8,6 +8,9 @@
   <a href="https://github.com/acmenlt/dynamic-threadpool/blob/develop/LICENSE">
     <img src="https://img.shields.io/github/license/acmenlt/dynamic-threadpool?color=42b883&style=flat-square" alt="LICENSE">
   </a>
+  <a title="Hits" target="_blank" href="https://github.com/acmenlt/dynamic-threadpool">
+    <img src="https://hits.b3log.org/acmenlt/dynamic-threadpool.svg">
+  </a>
 </p>
 
 ## Hippo4J 介绍
