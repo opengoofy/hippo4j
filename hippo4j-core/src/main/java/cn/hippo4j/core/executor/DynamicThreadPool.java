@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.core;
+package cn.hippo4j.core.executor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

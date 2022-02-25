@@ -1,8 +1,8 @@
-package cn.hippo4j.starter.enable;
+package cn.hippo4j.core.enable;
 
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.starter.config.BootstrapProperties;
-import cn.hippo4j.starter.core.ConfigEmptyException;
+import cn.hippo4j.core.config.BootstrapPropertiesInterface;
+import cn.hippo4j.core.config.ConfigEmptyException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 public class BeforeCheckConfiguration {
 
     @Bean
-    public BeforeCheckConfiguration.BeforeCheck dynamicThreadPoolBeforeCheckBean(@Autowired(required = false) BootstrapProperties properties,
+    public BeforeCheckConfiguration.BeforeCheck dynamicThreadPoolBeforeCheckBean(@Autowired(required = false) BootstrapPropertiesInterface properties,
                                                                                  ConfigurableEnvironment environment) {
         if (properties != null && properties.getEnable()) {
             String username = properties.getUsername();

@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.config;
+package cn.hippo4j.core.config;
 
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.core.toolkit.inet.InetUtilsProperties;

@@ -35,10 +35,10 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
     @Value("${spring.profiles.active:UNKNOWN}")
     private String active;
 
-    @Value("${spring.dynamic.thread-pool.item-id}")
+    @Value("${spring.dynamic.thread-pool.item-id:}")
     private String itemId;
 
-    @Value("${spring.application.name}")
+    @Value("${spring.application.name:UNKNOWN}")
     private String applicationName;
 
     @Value("${spring.dynamic.thread-pool.check-state-interval:5}")
@@ -107,7 +107,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
 
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
         boolean isSend = threadPoolNotifyAlarm.getIsAlarm()
-                && divide > threadPoolNotifyAlarm.getLivenessAlarm();
+                && divide > threadPoolNotifyAlarm.getActiveAlarm();
         if (isSend) {
             AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
             alarmNotifyRequest.setThreadPoolId(threadPoolId);
@@ -123,7 +123,6 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
     public void checkPoolRejectedAlarm(String threadPoolId) {
         ThreadPoolExecutor threadPoolExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
         checkPoolRejectedAlarm(threadPoolId, threadPoolExecutor);
-
     }
 
     /**

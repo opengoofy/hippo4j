@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.config;
 
+import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = BootstrapProperties.PREFIX)
-public class BootstrapProperties {
+public class BootstrapProperties implements BootstrapPropertiesInterface {
 
     public static final String PREFIX = "spring.dynamic.thread-pool";
 
@@ -52,7 +53,7 @@ public class BootstrapProperties {
     /**
      * Print dynamic thread pool banner
      */
-    private Boolean banner = true;
+    private Boolean enableBanner = true;
 
     /**
      * Enable client data collect

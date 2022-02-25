@@ -21,32 +21,32 @@ public enum RejectedTypeEnum {
     /**
      * 被拒绝任务的程序由主线程执行
      */
-    CALLER_RUNS_POLICY(1, new ThreadPoolExecutor.CallerRunsPolicy()),
+    CALLER_RUNS_POLICY(1, "CallerRunsPolicy", new ThreadPoolExecutor.CallerRunsPolicy()),
 
     /**
      * 被拒绝任务的处理程序, 抛出异常
      */
-    ABORT_POLICY(2, new ThreadPoolExecutor.AbortPolicy()),
+    ABORT_POLICY(2, "AbortPolicy", new ThreadPoolExecutor.AbortPolicy()),
 
     /**
      * 被拒绝任务的处理程序, 默默地丢弃被拒绝的任务。
      */
-    DISCARD_POLICY(3, new ThreadPoolExecutor.DiscardPolicy()),
+    DISCARD_POLICY(3, "DiscardPolicy", new ThreadPoolExecutor.DiscardPolicy()),
 
     /**
      * 被拒绝任务的处理程序, 它丢弃最早的未处理请求, 然后重试
      */
-    DISCARD_OLDEST_POLICY(4, new ThreadPoolExecutor.DiscardOldestPolicy()),
+    DISCARD_OLDEST_POLICY(4, "DiscardOldestPolicy", new ThreadPoolExecutor.DiscardOldestPolicy()),
 
     /**
      * 发生拒绝事件时, 添加新任务并运行最早的任务
      */
-    RUNS_OLDEST_TASK_POLICY(5, new RejectedPolicies.RunsOldestTaskPolicy()),
+    RUNS_OLDEST_TASK_POLICY(5, "RunsOldestTaskPolicy", new RejectedPolicies.RunsOldestTaskPolicy()),
 
     /**
      * 使用阻塞方法将拒绝任务添加队列, 可保证任务不丢失
      */
-    SYNC_PUT_QUEUE_POLICY(6, new RejectedPolicies.SyncPutQueuePolicy());
+    SYNC_PUT_QUEUE_POLICY(6, "SyncPutQueuePolicy", new RejectedPolicies.SyncPutQueuePolicy());
 
     /**
      * 类型
@@ -54,17 +54,49 @@ public enum RejectedTypeEnum {
     public Integer type;
 
     /**
+     * 名称
+     */
+    public String name;
+
+    /**
      * 线程池拒绝策略
      */
     public RejectedExecutionHandler rejectedHandler;
 
-    RejectedTypeEnum(Integer type, RejectedExecutionHandler rejectedHandler) {
+    RejectedTypeEnum(Integer type, String name, RejectedExecutionHandler rejectedHandler) {
         this.type = type;
+        this.name = name;
         this.rejectedHandler = rejectedHandler;
     }
 
     static {
         DynamicThreadPoolServiceLoader.register(CustomRejectedExecutionHandler.class);
+    }
+
+    /**
+     * Create policy.
+     *
+     * @param name
+     * @return
+     */
+    public static RejectedExecutionHandler createPolicy(String name) {
+        RejectedTypeEnum rejectedTypeEnum = Stream.of(RejectedTypeEnum.values())
+                .filter(each -> Objects.equals(each.name, name))
+                .findFirst()
+                .orElse(null);
+
+        if (rejectedTypeEnum != null) {
+            return rejectedTypeEnum.rejectedHandler;
+        }
+
+        Collection<CustomRejectedExecutionHandler> customRejectedExecutionHandlers = DynamicThreadPoolServiceLoader
+                .getSingletonServiceInstances(CustomRejectedExecutionHandler.class);
+        Optional<RejectedExecutionHandler> customRejected = customRejectedExecutionHandlers.stream()
+                .filter(each -> Objects.equals(name, each.getName()))
+                .map(each -> each.generateRejected())
+                .findFirst();
+
+        return customRejected.orElse(ABORT_POLICY.rejectedHandler);
     }
 
     /**

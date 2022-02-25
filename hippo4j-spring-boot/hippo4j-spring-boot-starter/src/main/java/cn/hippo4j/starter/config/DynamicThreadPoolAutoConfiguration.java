@@ -2,6 +2,7 @@ package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.refresh.ThreadPoolDynamicRefresh;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
@@ -11,7 +12,7 @@ import cn.hippo4j.starter.core.ConfigService;
 import cn.hippo4j.starter.core.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.starter.core.ThreadPoolConfigService;
 import cn.hippo4j.starter.core.ThreadPoolOperation;
-import cn.hippo4j.starter.enable.MarkerConfiguration;
+import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.starter.handler.BaseThreadDetailStateHandler;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;

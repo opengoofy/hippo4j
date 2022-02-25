@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.toolkit;
+package cn.hippo4j.core.toolkit.inet;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import org.springframework.beans.factory.ListableBeanFactory;

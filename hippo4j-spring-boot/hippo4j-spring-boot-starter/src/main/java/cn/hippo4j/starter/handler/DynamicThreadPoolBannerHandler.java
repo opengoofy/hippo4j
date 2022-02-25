@@ -42,7 +42,7 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
                 "|___/ \\_, |_||_\\__,_|_|_|_|_\\__|   |_| |_|  \n" +
                 "      |__/                                  \n";
 
-        if (properties.getBanner()) {
+        if (properties.getEnableBanner()) {
             String version = getVersion();
             version = (version != null) ? " (v" + version + ")" : "no version.";
 

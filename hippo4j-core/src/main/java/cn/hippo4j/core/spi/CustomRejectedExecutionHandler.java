@@ -18,6 +18,15 @@ public interface CustomRejectedExecutionHandler {
     Integer getType();
 
     /**
+     * Adapt hippo4j core rejected execution handler.
+     *
+     * @return
+     */
+    default String getName() {
+        return "";
+    }
+
+    /**
      * Get custom reject policy.
      *
      * @return

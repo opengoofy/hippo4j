@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.core;
+package cn.hippo4j.core.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

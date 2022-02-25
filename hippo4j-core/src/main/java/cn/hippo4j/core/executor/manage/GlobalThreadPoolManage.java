@@ -84,7 +84,7 @@ public class GlobalThreadPoolManage {
      * @return
      */
     public static List<String> listThreadPoolId() {
-        return Lists.newArrayList(POOL_PARAMETER.keySet());
+        return Lists.newArrayList(EXECUTOR_MAP.keySet());
     }
 
     /**

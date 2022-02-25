@@ -12,6 +12,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class CommonDynamicThreadPool {
 
+    /**
+     * Get instance.
+     *
+     * @param threadPoolId
+     * @return
+     */
     public static DynamicThreadPoolExecutor getInstance(String threadPoolId) {
         DynamicThreadPoolExecutor poolExecutor = (DynamicThreadPoolExecutor) ThreadPoolBuilder.builder()
                 .dynamicPool()

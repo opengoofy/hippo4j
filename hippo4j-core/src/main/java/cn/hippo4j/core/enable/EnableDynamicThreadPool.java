@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.enable;
+package cn.hippo4j.core.enable;
 
 import org.springframework.context.annotation.Import;
 

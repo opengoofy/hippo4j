@@ -18,6 +18,15 @@ public interface CustomBlockingQueue {
     Integer getType();
 
     /**
+     * Adapt hippo4j core blocking queue.
+     *
+     * @return
+     */
+    default String getName() {
+        return "";
+    }
+
+    /**
      * Get custom blocking queue.
      *
      * @return

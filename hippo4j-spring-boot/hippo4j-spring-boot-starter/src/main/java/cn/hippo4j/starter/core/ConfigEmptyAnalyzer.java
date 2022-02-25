@@ -1,5 +1,6 @@
 package cn.hippo4j.starter.core;
 
+import cn.hippo4j.core.config.ConfigEmptyException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 
