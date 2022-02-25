@@ -34,7 +34,7 @@ public class WeChatAlarmConstants {
                     "> 队列剩余个数：%s \n" +
                     "> 拒绝策略：%s \n" +
                     "> 拒绝策略执行次数：%s \n" +
-                    "> OWNER：@%s \n" +
+                    "> OWNER：<@%s> \n" +
                     "> 提示：%d 分钟内此线程池不会重复告警（可配置） \n\n" +
                     "**播报时间：%s**";
 

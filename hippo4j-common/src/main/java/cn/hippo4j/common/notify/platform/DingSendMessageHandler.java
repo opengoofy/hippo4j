@@ -49,7 +49,7 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 // 实例信息
                 alarmNotifyRequest.getIdentify(),
                 // 报警类型
-                alarmNotifyRequest.getNotifyTypeEnum(),
+                notifyConfig.getTypeEnum(),
                 // 核心线程数
                 alarmNotifyRequest.getCorePoolSize(),
                 // 最大线程数
@@ -63,7 +63,7 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 // 线程池任务总量
                 alarmNotifyRequest.getCompletedTaskCount(),
                 // 队列类型名称
-                alarmNotifyRequest.getClass().getSimpleName(),
+                alarmNotifyRequest.getQueueName(),
                 // 队列容量
                 alarmNotifyRequest.getCapacity(),
                 // 队列元素个数
@@ -77,7 +77,7 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 // 告警手机号
                 afterReceives,
                 // 报警频率
-                alarmNotifyRequest.getInterval(),
+                notifyConfig.getInterval(),
                 // 当前时间
                 DateUtil.now()
         );

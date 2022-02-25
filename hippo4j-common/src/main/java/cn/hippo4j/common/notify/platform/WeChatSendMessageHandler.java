@@ -32,7 +32,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
     @Override
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
         String[] receives = notifyConfig.getReceives().split(",");
-        String afterReceives = Joiner.on(", @").join(receives);
+        String afterReceives = Joiner.on("><@").join(receives);
 
         String text = String.format(
                 WE_CHAT_ALARM_TXT,
@@ -59,7 +59,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
                 // 线程池任务总量
                 alarmNotifyRequest.getCompletedTaskCount(),
                 // 队列类型名称
-                alarmNotifyRequest.getClass().getSimpleName(),
+                alarmNotifyRequest.getQueueName(),
                 // 队列容量
                 alarmNotifyRequest.getCapacity(),
                 // 队列元素个数

@@ -1,31 +1,49 @@
 package cn.hippo4j.common.notify;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
 
 /**
  * Thread pool notify alarm.
  *
  * @author chen.ma
- * @date 2021/8/15 13:13
+ * @date 2021/8/15 19:13
  */
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class ThreadPoolNotifyAlarm {
 
     /**
      * isAlarm
      */
+    @NonNull
     private Boolean isAlarm;
 
     /**
-     * livenessAlarm
+     * activeAlarm
      */
-    private Integer livenessAlarm;
+    @NonNull
+    private Integer activeAlarm;
 
     /**
      * capacityAlarm
      */
+    @NonNull
     private Integer capacityAlarm;
+
+    /**
+     * interval
+     */
+    private Integer interval;
+
+    /**
+     * receives
+     */
+    private Map<String, String> receives;
 
 }
