@@ -22,6 +22,10 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
