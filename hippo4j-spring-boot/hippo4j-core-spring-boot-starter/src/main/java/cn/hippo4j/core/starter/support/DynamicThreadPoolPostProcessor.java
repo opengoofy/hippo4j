@@ -139,6 +139,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             }
 
             GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrap.getTpId(), dynamicThreadPoolWrap);
+            GlobalCoreThreadPoolManage.register(threadPoolId, executorProperties);
         }
 
         return newDynamicPoolExecutor;

@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Bootstrap properties.
@@ -20,19 +21,29 @@ public class BootstrapCoreProperties {
     public static final String PREFIX = "spring.dynamic.thread-pool";
 
     /**
-     * Enabled banner
+     * Enabled banner.
      */
     private Boolean enableBanner;
 
     /***
-     * Enabled collect
+     * Enabled collect.
      */
     private Boolean enabledCollect;
 
     /**
-     * Check state interval
+     * Check state interval.
      */
     private String checkStateInterval;
+
+    /**
+     * Config file type.
+     */
+    private String configFileType;
+
+    /**
+     * Nacos config.
+     */
+    private Map<String, String> nacos;
 
     /**
      * Notify platforms.
@@ -40,7 +51,7 @@ public class BootstrapCoreProperties {
     private List<NotifyPlatformProperties> notifyPlatforms;
 
     /**
-     * Executors
+     * Executors.
      */
     private List<ExecutorProperties> executors;
 

@@ -1,13 +1,14 @@
 package cn.hippo4j.core.starter.refresher;
 
+import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
+import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.config.listener.Listener;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /**
  * Nacos cloud refresher handler.
@@ -16,24 +17,32 @@ import java.util.concurrent.Executors;
  * @date 2022/2/26 11:21
  */
 @Slf4j
-@AllArgsConstructor
-public class NacosCloudRefresherHandler implements InitializingBean, Listener {
+public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements InitializingBean, Listener {
 
     private final NacosConfigManager nacosConfigManager;
 
+    public NacosCloudRefresherHandler(NacosConfigManager nacosConfigManager,
+                                      ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
+                                      ConfigParserHandler configParserHandler,
+                                      BootstrapCoreProperties bootstrapCoreProperties) {
+        super(threadPoolNotifyAlarmHandler, configParserHandler, bootstrapCoreProperties);
+        this.nacosConfigManager = nacosConfigManager;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
-        nacosConfigManager.getConfigService().addListener("hippo4j-nacos.yaml", "DEFAULT_GROUP", this);
+        Map<String, String> nacosConfig = bootstrapCoreProperties.getNacos();
+        nacosConfigManager.getConfigService().addListener(nacosConfig.get("data-id"), nacosConfig.get("group"), this);
     }
 
     @Override
     public Executor getExecutor() {
-        return Executors.newSingleThreadExecutor();
+        return dynamicRefreshExecutorService;
     }
 
     @Override
     public void receiveConfigInfo(String configInfo) {
-        log.info("Config :: {}", configInfo);
+        dynamicRefresh(configInfo);
     }
 
 }
