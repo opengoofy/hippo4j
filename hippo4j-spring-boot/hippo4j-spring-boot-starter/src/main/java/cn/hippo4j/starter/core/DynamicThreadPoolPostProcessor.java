@@ -13,7 +13,6 @@ import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.*;
-import cn.hippo4j.core.refresh.ThreadPoolDynamicRefresh;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.core.toolkit.inet.DynamicThreadPoolAnnotationUtil;
@@ -50,7 +49,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
     private final ThreadPoolOperation threadPoolOperation;
 
-    private final ThreadPoolDynamicRefresh threadPoolDynamicRefresh;
+    private final ServerThreadPoolDynamicRefresh threadPoolDynamicRefresh;
 
     private final ExecutorService executorService = ThreadPoolBuilder.builder()
             .corePoolSize(2)
@@ -193,7 +192,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      */
     protected void subscribeConfig(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
         if (dynamicThreadPoolWrap.isSubscribeFlag()) {
-            threadPoolOperation.subscribeConfig(dynamicThreadPoolWrap.getTpId(), executorService, config -> threadPoolDynamicRefresh.refreshDynamicPool(config));
+            threadPoolOperation.subscribeConfig(dynamicThreadPoolWrap.getTpId(), executorService, config -> threadPoolDynamicRefresh.dynamicRefresh(config));
         }
     }
 

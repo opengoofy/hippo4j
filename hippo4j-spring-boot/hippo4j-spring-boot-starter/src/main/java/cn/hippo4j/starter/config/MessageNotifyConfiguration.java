@@ -1,11 +1,12 @@
 package cn.hippo4j.starter.config;
 
+import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.notify.*;
 import cn.hippo4j.common.notify.platform.DingSendMessageHandler;
 import cn.hippo4j.common.notify.platform.LarkSendMessageHandler;
 import cn.hippo4j.common.notify.platform.WeChatSendMessageHandler;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
-import cn.hippo4j.core.refresh.ThreadPoolDynamicRefresh;
+import cn.hippo4j.starter.core.ServerThreadPoolDynamicRefresh;
 import cn.hippo4j.starter.notify.ServerNotifyConfigBuilder;
 import cn.hippo4j.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
@@ -59,8 +60,8 @@ public class MessageNotifyConfiguration {
     }
 
     @Bean
-    public ThreadPoolDynamicRefresh threadPoolDynamicRefresh(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
-        return new ThreadPoolDynamicRefresh(threadPoolNotifyAlarmHandler);
+    public ServerThreadPoolDynamicRefresh threadPoolDynamicRefresh(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
+        return new ServerThreadPoolDynamicRefresh(threadPoolNotifyAlarmHandler);
     }
 
 }

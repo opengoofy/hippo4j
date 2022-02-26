@@ -1,6 +1,7 @@
-package cn.hippo4j.core.refresh;
+package cn.hippo4j.starter.core;
 
 import cn.hippo4j.common.enums.EnableEnum;
+import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.JSONUtil;
@@ -12,6 +13,7 @@ import cn.hippo4j.core.executor.support.QueueTypeEnum;
 import cn.hippo4j.core.executor.support.RejectedTypeEnum;
 import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
+import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,23 +24,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * ThreadPool dynamic refresh.
+ * Thread pool dynamic refresh.
  *
  * @author chen.ma
  * @date 2021/6/20 15:51
  */
 @Slf4j
 @AllArgsConstructor
-public class ThreadPoolDynamicRefresh {
+public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh {
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
-    /**
-     * Refresh dynamic pool.
-     *
-     * @param content
-     */
-    public void refreshDynamicPool(String content) {
+    @Override
+    public void dynamicRefresh(String content) {
         PoolParameterInfo parameter = JSONUtil.parseObject(content, PoolParameterInfo.class);
 
         String threadPoolId = parameter.getTpId();
@@ -53,7 +51,7 @@ public class ThreadPoolDynamicRefresh {
      * @param parameter
      * @param executor
      */
-    public void refreshDynamicPool(PoolParameterInfo parameter, ThreadPoolExecutor executor) {
+    public void refreshDynamicPool(PoolParameter parameter, ThreadPoolExecutor executor) {
         String threadPoolId = parameter.getTpId();
         int originalCoreSize = executor.getCorePoolSize();
         int originalMaximumPoolSize = executor.getMaximumPoolSize();
@@ -119,7 +117,7 @@ public class ThreadPoolDynamicRefresh {
      * @param executor
      * @param parameter
      */
-    public void changePoolInfo(ThreadPoolExecutor executor, PoolParameterInfo parameter) {
+    public void changePoolInfo(ThreadPoolExecutor executor, PoolParameter parameter) {
         if (parameter.getCoreSize() != null) {
             executor.setCorePoolSize(parameter.getCoreSize());
         }

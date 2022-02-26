@@ -3,7 +3,7 @@ package cn.hippo4j.starter.config;
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
-import cn.hippo4j.core.refresh.ThreadPoolDynamicRefresh;
+import cn.hippo4j.starter.core.ServerThreadPoolDynamicRefresh;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.starter.controller.PoolRunStateController;
@@ -87,7 +87,7 @@ public class DynamicThreadPoolAutoConfiguration {
     public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent,
                                                                       ThreadPoolOperation threadPoolOperation,
                                                                       ApplicationContextHolder hippo4JApplicationContextHolder,
-                                                                      ThreadPoolDynamicRefresh threadPoolDynamicRefresh) {
+                                                                      ServerThreadPoolDynamicRefresh threadPoolDynamicRefresh) {
         return new DynamicThreadPoolPostProcessor(properties, httpAgent, threadPoolOperation, threadPoolDynamicRefresh);
     }
 
