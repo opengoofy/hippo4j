@@ -1,4 +1,6 @@
-package cn.hippo4j.common.notify;
+package cn.hippo4j.common.api;
+
+import cn.hippo4j.common.notify.NotifyConfigDTO;
 
 import java.util.List;
 import java.util.Map;

@@ -1,5 +1,6 @@
 package cn.hippo4j.common.notify;
 
+import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
