@@ -1,7 +1,7 @@
 package cn.hippo4j.core.starter.notify;
 
 import cn.hippo4j.common.notify.AlarmControlHandler;
-import cn.hippo4j.common.notify.NotifyConfigBuilder;
+import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;

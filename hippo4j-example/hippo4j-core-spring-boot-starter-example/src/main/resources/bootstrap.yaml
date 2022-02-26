@@ -6,9 +6,14 @@ server:
 spring:
   profiles:
     active: dev
-
-  application:
-    name: dynamic-threadpool-example
+  cloud:
+    nacos:
+      config:
+        # group: DEFAULT_GROUP
+        password: nacos
+        server-addr: 192.168.1.5:8848
+        username: nacos
+        # namespace: public
 
   dynamic:
     thread-pool:
