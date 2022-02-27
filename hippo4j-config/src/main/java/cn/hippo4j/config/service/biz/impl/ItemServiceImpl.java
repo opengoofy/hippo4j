@@ -77,15 +77,18 @@ public class ItemServiceImpl implements ItemService {
         LambdaQueryWrapper<ItemInfo> queryWrapper = Wrappers.lambdaQuery(ItemInfo.class)
                 .eq(ItemInfo::getItemId, reqDTO.getItemId());
 
-        ItemInfo existItemInfo = itemInfoMapper.selectOne(queryWrapper);
-        Assert.isNull(existItemInfo, "项目 ID 不允许重复.");
+        // 当前为单体应用, 后续支持集群部署时切换分布式锁.
+        synchronized (ItemService.class) {
+            ItemInfo existItemInfo = itemInfoMapper.selectOne(queryWrapper);
+            Assert.isNull(existItemInfo, "项目配置已存在.");
 
-        ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
-        int insertResult = itemInfoMapper.insert(itemInfo);
+            ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
+            int insertResult = itemInfoMapper.insert(itemInfo);
 
-        boolean retBool = SqlHelper.retBool(insertResult);
-        if (!retBool) {
-            throw new RuntimeException("Save error");
+            boolean retBool = SqlHelper.retBool(insertResult);
+            if (!retBool) {
+                throw new RuntimeException("Save error");
+            }
         }
     }
 

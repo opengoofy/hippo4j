@@ -1,6 +1,7 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.toolkit.*;
 import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
@@ -113,16 +114,12 @@ public class ConfigServiceImpl implements ConfigService {
         ConfigServiceImpl configService = ApplicationContextHolder.getBean(this.getClass());
         configInfo.setCapacity(getQueueCapacityByType(configInfo));
 
-        try {
-            ConditionUtil
-                    .condition(
-                            existConfig == null,
-                            () -> configService.addConfigInfo(configInfo),
-                            () -> configService.updateConfigInfo(identify, configInfo)
-                    );
-        } catch (Exception ex) {
-            updateConfigInfo(identify, configInfo);
-        }
+        ConditionUtil
+                .condition(
+                        existConfig == null,
+                        () -> configService.addConfigInfo(configInfo),
+                        () -> configService.updateConfigInfo(identify, configInfo)
+                );
 
         ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configInfo)));
     }
@@ -139,8 +136,18 @@ public class ConfigServiceImpl implements ConfigService {
         config.setMd5(Md5Util.getTpContentMd5(config));
 
         try {
-            if (SqlHelper.retBool(configInfoMapper.insert(config))) {
-                return config.getId();
+            // 当前为单体应用, 后续支持集群部署时切换分布式锁.
+            synchronized (ConfigService.class) {
+                ConfigAllInfo configAllInfo = configInfoMapper.selectOne(
+                        Wrappers.lambdaQuery(ConfigAllInfo.class)
+                                .eq(ConfigAllInfo::getTpId, config.getTpId())
+                                .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode())
+                );
+                Assert.isNull(configAllInfo, "线程池配置已存在.");
+
+                if (SqlHelper.retBool(configInfoMapper.insert(config))) {
+                    return config.getId();
+                }
             }
         } catch (Exception ex) {
             log.error("[db-error] message :: {}", ex.getMessage(), ex);

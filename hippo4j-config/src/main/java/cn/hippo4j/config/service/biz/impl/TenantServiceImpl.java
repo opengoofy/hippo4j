@@ -71,15 +71,18 @@ public class TenantServiceImpl implements TenantService {
         LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers.lambdaQuery(TenantInfo.class)
                 .eq(TenantInfo::getTenantId, reqDTO.getTenantId());
 
-        TenantInfo existTenantInfo = tenantInfoMapper.selectOne(queryWrapper);
-        Assert.isNull(existTenantInfo, "租户 ID 不允许重复.");
+        // 当前为单体应用, 后续支持集群部署时切换分布式锁.
+        synchronized (TenantService.class) {
+            TenantInfo existTenantInfo = tenantInfoMapper.selectOne(queryWrapper);
+            Assert.isNull(existTenantInfo, "租户配置已存在.");
 
-        TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
-        int insertResult = tenantInfoMapper.insert(tenantInfo);
+            TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
+            int insertResult = tenantInfoMapper.insert(tenantInfo);
 
-        boolean retBool = SqlHelper.retBool(insertResult);
-        if (!retBool) {
-            throw new RuntimeException("Save Error.");
+            boolean retBool = SqlHelper.retBool(insertResult);
+            if (!retBool) {
+                throw new RuntimeException("Save Error.");
+            }
         }
     }
 
