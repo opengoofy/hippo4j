@@ -70,19 +70,20 @@ Starter 组件内置线程池参数变更通知，以及运行过载报警功能
 [![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool)
 
 
+## 友情链接
+
+- [**JavaGuide**](https://github.com/Snailclimb/JavaGuide)：「Java学习+面试指南」一份涵盖大部分 Java 程序员所需要掌握的核心知识。准备 Java 面试，首选 JavaGuide！
+- [**Guide-Rpc-Framework**](https://github.com/Snailclimb/guide-rpc-framework)：A custom RPC framework implemented by Netty+Kyro+Zookeeper.（一款基于 Netty+Kyro+Zookeeper 实现的自定义 RPC 框架-附详细实现过程和相关教程。）
+
 ## 鸣谢
 
 
-Hippo4J 项目基于或参考以下项目:
-
-- [Nacos](https://github.com/alibaba/nacos)
-- [Eureka](https://github.com/Netflix/Eureka)
-- [mzt-biz-log](https://github.com/mouzt/mzt-biz-log)
-- [equator](https://github.com/dadiyang/equator)
+Hippo4J 项目基于或参考以下项目：[**Nacos**](https://github.com/alibaba/nacos)、[**Eureka**](https://github.com/Netflix/Eureka)、[**Mzt-Biz-Log**](https://github.com/mouzt/mzt-biz-log)、[**Equator**](https://github.com/dadiyang/equator)
 
 感谢 JetBrains 提供的免费开源 License：
 
 <p>
 <img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
 </p>
+
 
