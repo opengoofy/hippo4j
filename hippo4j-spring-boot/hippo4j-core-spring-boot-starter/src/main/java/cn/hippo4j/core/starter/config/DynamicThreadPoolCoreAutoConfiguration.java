@@ -42,7 +42,9 @@ public class DynamicThreadPoolCoreAutoConfiguration {
 
     private final BootstrapCoreProperties bootstrapCoreProperties;
 
-    private static final String NACOS_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";
+    private static final String NACOS_CONFIG_MANAGER_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";
+
+    private static final String NACOS_CONFIG_KEY = "com.alibaba.nacos.api.config";
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -92,7 +94,8 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingClass(NACOS_KEY)
+    @ConditionalOnClass(name = NACOS_CONFIG_KEY)
+    @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
     public NacosRefresherHandler nacosRefresherHandler(ConfigService configService,
                                                        ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
                                                        ConfigParserHandler configParserHandler,
@@ -101,7 +104,7 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnClass(name = NACOS_KEY)
+    @ConditionalOnClass(name = NACOS_CONFIG_MANAGER_KEY)
     public NacosCloudRefresherHandler nacosCloudRefresherHandler(NacosConfigManager nacosConfigManager,
                                                                  ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
                                                                  ConfigParserHandler configParserHandler,
