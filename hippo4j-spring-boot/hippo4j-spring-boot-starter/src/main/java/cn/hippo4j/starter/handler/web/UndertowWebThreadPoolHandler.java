@@ -24,14 +24,11 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
     private static final String UNDERTOW_NAME = "undertow";
 
-
-
     @Override
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
         // There is no need to consider reflection performance because the fetch is a singleton
         UndertowWebServer undertowWebServer = (UndertowWebServer) webServer;
         Field undertowField = ReflectionUtils.findField(UndertowWebServer.class, UNDERTOW_NAME);
-        assert undertowField != null;
         ReflectionUtils.makeAccessible(undertowField);
         Undertow undertow = (Undertow) ReflectionUtils.getField(undertowField, undertowWebServer);
         return Objects.isNull(undertow) ? null : undertow.getWorker();
