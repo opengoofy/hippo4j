@@ -12,6 +12,7 @@ import cn.hippo4j.common.notify.platform.WeChatSendMessageHandler;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.starter.notify.CoreNotifyConfigBuilder;
+import cn.hippo4j.core.starter.refresher.ApolloRefresherHandler;
 import cn.hippo4j.core.starter.refresher.ConfigParserHandler;
 import cn.hippo4j.core.starter.refresher.NacosCloudRefresherHandler;
 import cn.hippo4j.core.starter.refresher.NacosRefresherHandler;
@@ -21,6 +22,7 @@ import com.alibaba.nacos.api.config.ConfigService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +47,8 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     private static final String NACOS_CONFIG_MANAGER_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";
 
     private static final String NACOS_CONFIG_KEY = "com.alibaba.nacos.api.config";
+
+    private static final String APOLLO_CONFIG_KEY = "com.ctrip.framework.apollo.ConfigService.class";
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -110,6 +114,15 @@ public class DynamicThreadPoolCoreAutoConfiguration {
                                                                  ConfigParserHandler configParserHandler,
                                                                  BootstrapCoreProperties bootstrapCoreProperties) {
         return new NacosCloudRefresherHandler(nacosConfigManager, threadPoolNotifyAlarmHandler, configParserHandler, bootstrapCoreProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnClass(name = APOLLO_CONFIG_KEY)
+    public ApolloRefresherHandler apolloRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
+                                                  ConfigParserHandler configParserHandler,
+                                                  BootstrapCoreProperties bootstrapCoreProperties) {
+        return new ApolloRefresherHandler(threadPoolNotifyAlarmHandler, configParserHandler, bootstrapCoreProperties);
     }
 
     @Bean
