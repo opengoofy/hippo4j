@@ -17,9 +17,7 @@ import cn.hippo4j.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.starter.handler.BaseThreadDetailStateHandler;
 import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
-import cn.hippo4j.starter.handler.web.TomcatWebThreadPoolHandler;
-import cn.hippo4j.starter.handler.web.WebThreadPoolHandlerChoose;
-import cn.hippo4j.starter.handler.web.WebThreadPoolRunStateHandler;
+import cn.hippo4j.starter.handler.web.*;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.starter.monitor.collect.RunTimeInfoCollector;
 import cn.hippo4j.starter.monitor.send.HttpConnectSender;
@@ -28,13 +26,11 @@ import cn.hippo4j.starter.remote.HttpAgent;
 import cn.hippo4j.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.starter.remote.ServerHealthCheck;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -54,6 +50,12 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 @ImportAutoConfiguration({HttpClientConfiguration.class, DiscoveryConfiguration.class, MessageNotifyConfiguration.class, UtilAutoConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
+
+    private static final String TOMCAT_SERVLET_WEB_SERVER_FACTORY = "tomcatWebThreadPoolHandler";
+
+    private static final String JETTY_SERVLET_WEB_SERVER_FACTORY = "JettyServletWebServerFactory";
+
+    private static final String UNDERTOW_SERVLET_WEB_SERVER_FACTORY = "undertowServletWebServerFactory";
 
     private final BootstrapProperties properties;
 
@@ -143,10 +145,22 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(name = "tomcatServletWebServerFactory")
-    public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler(@Autowired(required = false) ServletWebServerApplicationContext applicationContext) {
-        return new TomcatWebThreadPoolHandler(applicationContext);
+    @ConditionalOnBean(name = TOMCAT_SERVLET_WEB_SERVER_FACTORY)
+    public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler() {
+        return new TomcatWebThreadPoolHandler();
     }
+
+    @Bean
+    @ConditionalOnBean(name = JETTY_SERVLET_WEB_SERVER_FACTORY)
+    public JettyWebThreadPoolHandler jettyWebThreadPoolHandler() {return new JettyWebThreadPoolHandler();
+    }
+
+    @Bean
+    @ConditionalOnBean(name = UNDERTOW_SERVLET_WEB_SERVER_FACTORY)
+    public UndertowWebThreadPoolHandler undertowWebThreadPoolHandler() {
+        return new UndertowWebThreadPoolHandler();
+    }
+
 
     @Bean
     public WebThreadPoolHandlerChoose webThreadPoolServiceChoose() {

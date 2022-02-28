@@ -3,11 +3,11 @@ package cn.hippo4j.starter.handler.web;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
-import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
+import org.springframework.boot.web.server.WebServer;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -19,16 +19,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 @Slf4j
 @AllArgsConstructor
-public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
+public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService{
 
-    private final ServletWebServerApplicationContext applicationContext;
 
     private final AtomicBoolean cacheFlag = new AtomicBoolean(Boolean.FALSE);
 
     private static String EXCEPTION_MESSAGE;
 
     @Override
-    protected Executor getWebThreadPoolByServer() {
+    protected Executor getWebThreadPoolByServer(WebServer webServer) {
         if (cacheFlag.get()) {
             log.warn("Exception getting Tomcat thread pool. Exception message :: {}", EXCEPTION_MESSAGE);
             return null;
@@ -36,7 +35,7 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
         Executor tomcatExecutor = null;
         try {
-            tomcatExecutor = ((TomcatWebServer) applicationContext.getWebServer()).getTomcat().getConnector().getProtocolHandler().getExecutor();
+            tomcatExecutor = ((TomcatWebServer) webServer).getTomcat().getConnector().getProtocolHandler().getExecutor();
         } catch (Exception ex) {
             cacheFlag.set(Boolean.TRUE);
             EXCEPTION_MESSAGE = ex.getMessage();
@@ -50,20 +49,20 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
     public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
         try {
             ThreadPoolExecutor tomcatExecutor = (ThreadPoolExecutor) executor;
-            int originalCoreSize = tomcatExecutor.getCorePoolSize();
-            int originalMaximumPoolSize = tomcatExecutor.getMaximumPoolSize();
-            long originalKeepAliveTime = tomcatExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-
             tomcatExecutor.setCorePoolSize(poolParameterInfo.getCoreSize());
             tomcatExecutor.setMaximumPoolSize(poolParameterInfo.getMaxSize());
             tomcatExecutor.setKeepAliveTime(poolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
-
+            int originalCoreSize = tomcatExecutor.getCorePoolSize();
+            int originalMaximumPoolSize = tomcatExecutor.getMaximumPoolSize();
+            long originalKeepAliveTime = tomcatExecutor.getKeepAliveTime(TimeUnit.SECONDS);
             log.info(
                     "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}], keepAliveTime :: [{}]",
                     String.format("%s => %s", originalCoreSize, poolParameterInfo.getCoreSize()),
                     String.format("%s => %s", originalMaximumPoolSize, poolParameterInfo.getMaxSize()),
                     String.format("%s => %s", originalKeepAliveTime, poolParameterInfo.getKeepAliveTime())
             );
+
+
         } catch (Exception ex) {
             log.error("Failed to modify the Tomcat thread pool parameter.", ex);
         }
