@@ -43,20 +43,11 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
         try {
             ThreadPoolExecutor undertowExecutor = (ThreadPoolExecutor) executor;
-            int originalCoreSize = undertowExecutor.getCorePoolSize();
-            int originalMaximumPoolSize = undertowExecutor.getMaximumPoolSize();
-            long originalKeepAliveTime = undertowExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-
             undertowExecutor.setCorePoolSize(poolParameterInfo.getCoreSize());
             undertowExecutor.setMaximumPoolSize(poolParameterInfo.getMaxSize());
             undertowExecutor.setKeepAliveTime(poolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
+            super.log(poolParameterInfo, undertowExecutor);
 
-            log.info(
-                    "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}], keepAliveTime :: [{}]",
-                    String.format("%s => %s", originalCoreSize, poolParameterInfo.getCoreSize()),
-                    String.format("%s => %s", originalMaximumPoolSize, poolParameterInfo.getMaxSize()),
-                    String.format("%s => %s", originalKeepAliveTime, poolParameterInfo.getKeepAliveTime())
-            );
         } catch (Exception ex) {
             log.error("Failed to modify the undertow thread pool parameter.", ex);
         }

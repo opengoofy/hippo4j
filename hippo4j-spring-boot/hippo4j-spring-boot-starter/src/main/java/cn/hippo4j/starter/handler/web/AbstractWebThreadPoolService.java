@@ -10,6 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Abstract web thread pool service.
@@ -47,6 +49,19 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
         }
 
         return executor;
+    }
+
+    public void log(PoolParameterInfo poolParameterInfo, ThreadPoolExecutor threadPoolExecutor) {
+        int originalCoreSize = threadPoolExecutor.getCorePoolSize();
+        int originalMaximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
+        long originalKeepAliveTime = threadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
+        log.info(
+                "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}], keepAliveTime :: [{}]",
+                String.format("%s => %s", originalCoreSize, poolParameterInfo.getCoreSize()),
+                String.format("%s => %s", originalMaximumPoolSize, poolParameterInfo.getMaxSize()),
+                String.format("%s => %s", originalKeepAliveTime, poolParameterInfo.getKeepAliveTime())
+        );
+
     }
 
 }

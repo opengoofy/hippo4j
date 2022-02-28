@@ -29,20 +29,11 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService{
     public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
         try {
             ThreadPoolExecutor jettyExecutor = (ThreadPoolExecutor) executor;
-            int originalCoreSize = jettyExecutor.getCorePoolSize();
-            int originalMaximumPoolSize = jettyExecutor.getMaximumPoolSize();
-            long originalKeepAliveTime = jettyExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-
             jettyExecutor.setCorePoolSize(poolParameterInfo.getCoreSize());
             jettyExecutor.setMaximumPoolSize(poolParameterInfo.getMaxSize());
             jettyExecutor.setKeepAliveTime(poolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
 
-            log.info(
-                    "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}], keepAliveTime :: [{}]",
-                    String.format("%s => %s", originalCoreSize, poolParameterInfo.getCoreSize()),
-                    String.format("%s => %s", originalMaximumPoolSize, poolParameterInfo.getMaxSize()),
-                    String.format("%s => %s", originalKeepAliveTime, poolParameterInfo.getKeepAliveTime())
-            );
+            super.log(poolParameterInfo, jettyExecutor);
         } catch (Exception ex) {
             log.error("Failed to modify the jetty thread pool parameter.", ex);
         }
