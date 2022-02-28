@@ -9,6 +9,7 @@ import cn.hippo4j.core.executor.support.*;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
+import cn.hippo4j.core.starter.refresher.config.ConfigParser;
 import cn.hippo4j.core.starter.support.GlobalCoreThreadPoolManage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
-    private final ConfigParserHandler configParserHandler;
+    private final ConfigParser configParser;
 
     protected final BootstrapCoreProperties bootstrapCoreProperties;
 
@@ -51,7 +52,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
     @Override
     public void dynamicRefresh(String content) {
-        Map<Object, Object> configInfo = configParserHandler.parseConfig(content, bootstrapCoreProperties.getConfigFileType());
+        Map<Object, Object> configInfo = configParser.parseConfig(content);
 
         ConfigurationPropertySource sources = new MapConfigurationPropertySource(configInfo);
         Binder binder = new Binder(sources);
