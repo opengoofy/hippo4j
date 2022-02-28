@@ -19,8 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 @Slf4j
 @AllArgsConstructor
-public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService{
-
+public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
     private final AtomicBoolean cacheFlag = new AtomicBoolean(Boolean.FALSE);
 
@@ -52,17 +51,17 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService{
             tomcatExecutor.setCorePoolSize(poolParameterInfo.getCoreSize());
             tomcatExecutor.setMaximumPoolSize(poolParameterInfo.getMaxSize());
             tomcatExecutor.setKeepAliveTime(poolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
+
             int originalCoreSize = tomcatExecutor.getCorePoolSize();
             int originalMaximumPoolSize = tomcatExecutor.getMaximumPoolSize();
             long originalKeepAliveTime = tomcatExecutor.getKeepAliveTime(TimeUnit.SECONDS);
+
             log.info(
                     "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}], keepAliveTime :: [{}]",
                     String.format("%s => %s", originalCoreSize, poolParameterInfo.getCoreSize()),
                     String.format("%s => %s", originalMaximumPoolSize, poolParameterInfo.getMaxSize()),
                     String.format("%s => %s", originalKeepAliveTime, poolParameterInfo.getKeepAliveTime())
             );
-
-
         } catch (Exception ex) {
             log.error("Failed to modify the Tomcat thread pool parameter.", ex);
         }

@@ -152,7 +152,8 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @ConditionalOnBean(name = JETTY_SERVLET_WEB_SERVER_FACTORY)
-    public JettyWebThreadPoolHandler jettyWebThreadPoolHandler() {return new JettyWebThreadPoolHandler();
+    public JettyWebThreadPoolHandler jettyWebThreadPoolHandler() {
+        return new JettyWebThreadPoolHandler();
     }
 
     @Bean
@@ -160,7 +161,6 @@ public class DynamicThreadPoolAutoConfiguration {
     public UndertowWebThreadPoolHandler undertowWebThreadPoolHandler() {
         return new UndertowWebThreadPoolHandler();
     }
-
 
     @Bean
     public WebThreadPoolHandlerChoose webThreadPoolServiceChoose() {

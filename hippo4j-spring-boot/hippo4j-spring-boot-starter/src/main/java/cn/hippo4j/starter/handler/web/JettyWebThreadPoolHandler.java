@@ -14,9 +14,7 @@ import java.util.concurrent.Executor;
  * @description:
  */
 @Slf4j
-public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService{
-
-
+public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
     @Override
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
@@ -33,6 +31,7 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService{
             Integer maxSize = poolParameterInfo.getMaxSize();
             jettyExecutor.setMinThreads(coreSize);
             jettyExecutor.setMaxThreads(maxSize);
+
             log.info(
                     "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}]",
                     String.format("%s => %s", jettyExecutor.getMinThreads(), coreSize),
@@ -41,8 +40,6 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService{
         } catch (Exception ex) {
             log.error("Failed to modify the jetty thread pool parameter.", ex);
         }
-
     }
-
 
 }

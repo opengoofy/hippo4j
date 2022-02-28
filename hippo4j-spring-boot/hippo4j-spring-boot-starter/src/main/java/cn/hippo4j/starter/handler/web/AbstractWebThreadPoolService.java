@@ -44,5 +44,4 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
         return executor;
     }
 
-
 }
