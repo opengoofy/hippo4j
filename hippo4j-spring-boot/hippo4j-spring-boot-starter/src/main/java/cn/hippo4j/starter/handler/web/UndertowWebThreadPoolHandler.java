@@ -2,18 +2,16 @@ package cn.hippo4j.starter.handler.web;
 
 import cn.hippo4j.common.model.PoolParameterInfo;
 import io.undertow.Undertow;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.embedded.undertow.UndertowWebServer;
 import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.util.ReflectionUtils;
+import org.xnio.Options;
+import org.xnio.XnioWorker;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Undertow web thread pool handler.
@@ -42,11 +40,25 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     @Override
     public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
         try {
-            ThreadPoolExecutor undertowExecutor = (ThreadPoolExecutor) executor;
-            undertowExecutor.setCorePoolSize(poolParameterInfo.getCoreSize());
-            undertowExecutor.setMaximumPoolSize(poolParameterInfo.getMaxSize());
-            undertowExecutor.setKeepAliveTime(poolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
-            super.log(poolParameterInfo, undertowExecutor);
+            XnioWorker xnioWorker = (XnioWorker) executor;
+
+            Integer coreSize = poolParameterInfo.getCoreSize();
+            Integer maxSize = poolParameterInfo.getMaxSize();
+            Integer keepAliveTime = poolParameterInfo.getKeepAliveTime();
+
+            int originalCoreSize = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
+            int originalMaximumPoolSize = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
+            int originalKeepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);
+
+            xnioWorker.setOption(Options.WORKER_TASK_CORE_THREADS, coreSize);
+            xnioWorker.setOption(Options.WORKER_TASK_MAX_THREADS, maxSize);
+            xnioWorker.setOption(Options.WORKER_TASK_KEEPALIVE, keepAliveTime);
+            log.info(
+                    "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}], keepAliveTime :: [{}]",
+                    String.format("%s => %s", originalCoreSize, coreSize),
+                    String.format("%s => %s", originalMaximumPoolSize, maxSize),
+                    String.format("%s => %s", originalKeepAliveTime, keepAliveTime)
+            );
 
         } catch (Exception ex) {
             log.error("Failed to modify the undertow thread pool parameter.", ex);

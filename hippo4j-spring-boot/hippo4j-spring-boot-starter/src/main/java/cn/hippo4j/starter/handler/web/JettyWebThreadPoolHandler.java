@@ -2,12 +2,11 @@ package cn.hippo4j.starter.handler.web;
 
 import cn.hippo4j.common.model.PoolParameterInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.util.thread.ThreadPool;
 import org.springframework.boot.web.embedded.jetty.JettyWebServer;
 import org.springframework.boot.web.server.WebServer;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author : wh
@@ -28,15 +27,22 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService{
     @Override
     public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
         try {
-            ThreadPoolExecutor jettyExecutor = (ThreadPoolExecutor) executor;
-            jettyExecutor.setCorePoolSize(poolParameterInfo.getCoreSize());
-            jettyExecutor.setMaximumPoolSize(poolParameterInfo.getMaxSize());
-            jettyExecutor.setKeepAliveTime(poolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
+            ThreadPool.SizedThreadPool jettyExecutor = (ThreadPool.SizedThreadPool) executor;
 
-            super.log(poolParameterInfo, jettyExecutor);
+            Integer coreSize = poolParameterInfo.getCoreSize();
+            Integer maxSize = poolParameterInfo.getMaxSize();
+            jettyExecutor.setMinThreads(coreSize);
+            jettyExecutor.setMaxThreads(maxSize);
+            log.info(
+                    "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}]",
+                    String.format("%s => %s", jettyExecutor.getMinThreads(), coreSize),
+                    String.format("%s => %s", jettyExecutor.getMaxThreads(), maxSize)
+            );
         } catch (Exception ex) {
             log.error("Failed to modify the jetty thread pool parameter.", ex);
         }
 
     }
+
+
 }
