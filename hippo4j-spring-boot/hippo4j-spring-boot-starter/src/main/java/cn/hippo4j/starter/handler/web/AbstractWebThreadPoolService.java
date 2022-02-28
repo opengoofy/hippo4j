@@ -38,9 +38,9 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
     public Executor getWebThreadPool() {
         if (executor == null) {
             synchronized (AbstractWebThreadPoolService.class) {
-                ApplicationContext applicationContext = ApplicationContextHolder.getInstance();
-                WebServer webServer = ((WebServerApplicationContext) applicationContext).getWebServer();
                 if (executor == null) {
+                    ApplicationContext applicationContext = ApplicationContextHolder.getInstance();
+                    WebServer webServer = ((WebServerApplicationContext) applicationContext).getWebServer();
                     executor = getWebThreadPoolByServer(webServer);
                 }
             }
