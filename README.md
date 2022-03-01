@@ -74,6 +74,7 @@ Starter 组件内置线程池参数变更通知，以及运行过载报警功能
 
 - [**JavaGuide**](https://github.com/Snailclimb/JavaGuide)：「Java学习+面试指南」一份涵盖大部分 Java 程序员所需要掌握的核心知识。准备 Java 面试，首选 JavaGuide！
 - [**Guide-Rpc-Framework**](https://github.com/Snailclimb/guide-rpc-framework)：A custom RPC framework implemented by Netty+Kyro+Zookeeper.（一款基于 Netty+Kyro+Zookeeper 实现的自定义 RPC 框架-附详细实现过程和相关教程。）
+- [**toBeBetterJavaer**](https://github.com/itwanger/toBeBetterJavaer)：Java 程序员进阶之路，据说每一个优秀的 Java 程序员都喜欢她，风趣幽默、通俗易懂。内容包括 Java 基础、Java 并发编程、Java 虚拟机、Java 企业级开发、Java 面试等核心知识点
 
 ## 鸣谢
 
