@@ -12,8 +12,8 @@ import cn.hippo4j.common.notify.platform.WeChatSendMessageHandler;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.starter.notify.CoreNotifyConfigBuilder;
+import cn.hippo4j.core.starter.parser.ConfigParserHandler;
 import cn.hippo4j.core.starter.refresher.ApolloRefresherHandler;
-import cn.hippo4j.core.starter.refresher.ConfigParserHandler;
 import cn.hippo4j.core.starter.refresher.NacosCloudRefresherHandler;
 import cn.hippo4j.core.starter.refresher.NacosRefresherHandler;
 import cn.hippo4j.core.starter.support.DynamicThreadPoolPostProcessor;
@@ -102,32 +102,25 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
     public NacosRefresherHandler nacosRefresherHandler(ConfigService configService,
                                                        ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                                       ConfigParserHandler configParserHandler,
                                                        BootstrapCoreProperties bootstrapCoreProperties) {
-        return new NacosRefresherHandler(configService, threadPoolNotifyAlarmHandler, configParserHandler, bootstrapCoreProperties);
+        return new NacosRefresherHandler(configService, threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = NACOS_CONFIG_MANAGER_KEY)
     public NacosCloudRefresherHandler nacosCloudRefresherHandler(NacosConfigManager nacosConfigManager,
                                                                  ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                                                 ConfigParserHandler configParserHandler,
                                                                  BootstrapCoreProperties bootstrapCoreProperties) {
-        return new NacosCloudRefresherHandler(nacosConfigManager, threadPoolNotifyAlarmHandler, configParserHandler, bootstrapCoreProperties);
+        return new NacosCloudRefresherHandler(nacosConfigManager, threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnClass(name = APOLLO_CONFIG_KEY)
     public ApolloRefresherHandler apolloRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                                  ConfigParserHandler configParserHandler,
                                                   BootstrapCoreProperties bootstrapCoreProperties) {
-        return new ApolloRefresherHandler(threadPoolNotifyAlarmHandler, configParserHandler, bootstrapCoreProperties);
+        return new ApolloRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
-    @Bean
-    public ConfigParserHandler configParserHandler() {
-        return new ConfigParserHandler();
-    }
 
 }

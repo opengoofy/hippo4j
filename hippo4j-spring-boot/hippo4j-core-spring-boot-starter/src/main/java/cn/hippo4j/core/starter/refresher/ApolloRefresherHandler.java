@@ -26,14 +26,14 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
     private String namespace;
 
 
-    public ApolloRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler, ConfigParserHandler configParserHandler, BootstrapCoreProperties bootstrapCoreProperties) {
-        super(threadPoolNotifyAlarmHandler, configParserHandler, bootstrapCoreProperties);
+    public ApolloRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler , BootstrapCoreProperties bootstrapCoreProperties) {
+        super(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
     @Override
     public void onChange(ConfigChangeEvent configChangeEvent) {
         ConfigFile configFile = ConfigService.getConfigFile(namespace,
-                ConfigFileFormat.fromString(bootstrapCoreProperties.getConfigFileType()));
+                ConfigFileFormat.fromString(bootstrapCoreProperties.getConfigFileType().getValue()));
         String configInfo = configFile.getContent();
         dynamicRefresh(configInfo);
     }
@@ -46,4 +46,5 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
         config.addChangeListener(this);
         log.info("dynamic-thread-pool refresher, add apollo listener success, namespace: {}", namespace);
     }
+
 }

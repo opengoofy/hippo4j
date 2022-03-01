@@ -23,9 +23,8 @@ public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRef
 
     public NacosCloudRefresherHandler(NacosConfigManager nacosConfigManager,
                                       ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                      ConfigParserHandler configParserHandler,
                                       BootstrapCoreProperties bootstrapCoreProperties) {
-        super(threadPoolNotifyAlarmHandler, configParserHandler, bootstrapCoreProperties);
+        super(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
         this.nacosConfigManager = nacosConfigManager;
     }
 

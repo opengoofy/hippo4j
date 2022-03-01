@@ -9,6 +9,7 @@ import cn.hippo4j.core.executor.support.*;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
+import cn.hippo4j.core.starter.parser.ConfigParserHandler;
 import cn.hippo4j.core.starter.support.GlobalCoreThreadPoolManage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -40,8 +42,6 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
-    private final ConfigParserHandler configParserHandler;
-
     protected final BootstrapCoreProperties bootstrapCoreProperties;
 
     protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder()
@@ -50,8 +50,15 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             .build();
 
     @Override
-    public void dynamicRefresh(String content) {
-        Map<Object, Object> configInfo = configParserHandler.parseConfig(content, bootstrapCoreProperties.getConfigFileType());
+    public void dynamicRefresh(String content){
+        Map<Object, Object> configInfo = null;
+        try {
+            configInfo = ConfigParserHandler.getInstance().parseConfig(content, bootstrapCoreProperties.getConfigFileType());
+        } catch (IOException e) {
+            log.error("dynamic-thread-pool parse config file error, content: {}, fileType: {}",
+                    content, bootstrapCoreProperties.getConfigFileType(), e);
+            return;
+        }
 
         ConfigurationPropertySource sources = new MapConfigurationPropertySource(configInfo);
         Binder binder = new Binder(sources);
