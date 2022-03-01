@@ -8,7 +8,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>hippo4j-core-spring-boot-starter-example</artifactId>
+    <artifactId>hippo4j-core-nacos-spring-boot-starter-example</artifactId>
     <name>${project.artifactId}</name>
 
     <properties>
