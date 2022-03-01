@@ -1,5 +1,6 @@
 package cn.hippo4j.core.starter.config;
 
+import cn.hippo4j.core.starter.parser.ConfigFileTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -38,7 +39,7 @@ public class BootstrapCoreProperties {
     /**
      * Config file type.
      */
-    private String configFileType;
+    private ConfigFileTypeEnum configFileType;
 
     /**
      * Nacos config.

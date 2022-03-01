@@ -2,7 +2,6 @@ package cn.hippo4j.core.starter.refresher;
 
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
-import cn.hippo4j.core.starter.refresher.config.ConfigParser;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.config.listener.Listener;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +23,8 @@ public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRef
 
     public NacosCloudRefresherHandler(NacosConfigManager nacosConfigManager,
                                       ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                      ConfigParser configParser,
                                       BootstrapCoreProperties bootstrapCoreProperties) {
-        super(threadPoolNotifyAlarmHandler, configParser, bootstrapCoreProperties);
+        super(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
         this.nacosConfigManager = nacosConfigManager;
     }
 
