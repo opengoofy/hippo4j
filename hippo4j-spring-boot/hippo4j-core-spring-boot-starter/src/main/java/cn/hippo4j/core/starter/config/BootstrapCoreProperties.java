@@ -23,19 +23,24 @@ public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
     public static final String PREFIX = "spring.dynamic.thread-pool";
 
     /**
+     * Enable dynamic thread pool.
+     */
+    private Boolean enable = Boolean.TRUE;
+
+    /**
      * Enabled banner.
      */
-    private Boolean banner;
+    private Boolean banner = Boolean.TRUE;
 
     /***
      * Enabled collect.
      */
-    private Boolean collect;
+    private Boolean collect = Boolean.TRUE;
 
     /**
      * Check state interval.
      */
-    private String checkStateInterval;
+    private Integer checkStateInterval;
 
     /**
      * Config file type.
