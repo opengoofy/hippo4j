@@ -1,6 +1,6 @@
-package cn.hippo4j.starter.handler;
+package cn.hippo4j.core.handler;
 
-import cn.hippo4j.starter.config.BootstrapProperties;
+import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import org.springframework.boot.ansi.AnsiStyle;
 public class DynamicThreadPoolBannerHandler implements InitializingBean {
 
     @NonNull
-    private final BootstrapProperties properties;
+    private final BootstrapPropertiesInterface properties;
 
     private final String DYNAMIC_THREAD_POOL = " :: Dynamic ThreadPool :: ";
 
@@ -42,7 +42,7 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
                 "|___/ \\_, |_||_\\__,_|_|_|_|_\\__|   |_| |_|  \n" +
                 "      |__/                                  \n";
 
-        if (properties.getEnableBanner()) {
+        if (properties.getBanner()) {
             String version = getVersion();
             version = (version != null) ? " (v" + version + ")" : "no version.";
 

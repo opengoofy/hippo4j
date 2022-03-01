@@ -14,7 +14,7 @@ import java.util.Map;
  * @date : 2022/3/1 07:57
  * @description:
  */
-public class YamlConfigParser extends AbstractConfigParser{
+public class YamlConfigParser extends AbstractConfigParser {
 
     @Override
     public Map<Object, Object> doParse(String content) {

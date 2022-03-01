@@ -15,7 +15,7 @@ import cn.hippo4j.starter.core.ThreadPoolOperation;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.starter.handler.BaseThreadDetailStateHandler;
-import cn.hippo4j.starter.handler.DynamicThreadPoolBannerHandler;
+import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
 import cn.hippo4j.starter.handler.web.*;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;

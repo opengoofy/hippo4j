@@ -53,12 +53,12 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
     /**
      * Print dynamic thread pool banner
      */
-    private Boolean enableBanner = true;
+    private Boolean banner = true;
 
     /**
      * Enable client data collect
      */
-    private Boolean enableCollect = true;
+    private Boolean collect = true;
 
     /**
      * Task buffer container capacity

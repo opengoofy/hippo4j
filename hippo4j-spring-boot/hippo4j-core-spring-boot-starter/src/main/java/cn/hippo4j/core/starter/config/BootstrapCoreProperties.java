@@ -1,5 +1,6 @@
 package cn.hippo4j.core.starter.config;
 
+import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import cn.hippo4j.core.starter.parser.ConfigFileTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,19 +18,19 @@ import java.util.Map;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = BootstrapCoreProperties.PREFIX)
-public class BootstrapCoreProperties {
+public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
 
     public static final String PREFIX = "spring.dynamic.thread-pool";
 
     /**
      * Enabled banner.
      */
-    private Boolean enableBanner;
+    private Boolean banner;
 
     /***
      * Enabled collect.
      */
-    private Boolean enabledCollect;
+    private Boolean collect;
 
     /**
      * Check state interval.
@@ -45,6 +46,11 @@ public class BootstrapCoreProperties {
      * Nacos config.
      */
     private Map<String, String> nacos;
+
+    /**
+     * Apollo config.
+     */
+    private Map<String, String> apollo;
 
     /**
      * Notify platforms.

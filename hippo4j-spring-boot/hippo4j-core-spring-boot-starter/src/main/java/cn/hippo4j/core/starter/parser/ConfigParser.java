@@ -15,6 +15,6 @@ public interface ConfigParser {
 
     Map<Object, Object> doParse(String content) throws IOException;
 
-    List<ConfigFileTypeEnum>  getConfigFileTypes();
+    List<ConfigFileTypeEnum> getConfigFileTypes();
 
 }

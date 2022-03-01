@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+import java.util.Objects;
+
 /**
  * Before check configuration.
  *
@@ -19,10 +21,13 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @AllArgsConstructor
 public class BeforeCheckConfiguration {
 
+    private final String bootstrapPropertiesClassName = "cn.hippo4j.starter.config.BootstrapProperties";
+
     @Bean
     public BeforeCheckConfiguration.BeforeCheck dynamicThreadPoolBeforeCheckBean(@Autowired(required = false) BootstrapPropertiesInterface properties,
                                                                                  ConfigurableEnvironment environment) {
-        if (properties != null && properties.getEnable()) {
+        boolean checkFlag = properties != null && Objects.equals(bootstrapPropertiesClassName, properties.getClass().getName()) && properties.getEnable();
+        if (checkFlag) {
             String username = properties.getUsername();
             if (StringUtil.isBlank(username)) {
                 throw new ConfigEmptyException(

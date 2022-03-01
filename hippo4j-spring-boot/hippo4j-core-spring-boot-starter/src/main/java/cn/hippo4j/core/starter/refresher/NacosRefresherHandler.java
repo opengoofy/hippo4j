@@ -33,17 +33,18 @@ public class NacosRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh 
         Map<String, String> nacosConfig = bootstrapCoreProperties.getNacos();
 
         configService.addListener(nacosConfig.get("data-id"), nacosConfig.get("group"),
-            new Listener() {
-                @Override
-                public Executor getExecutor() {
-                    return dynamicRefreshExecutorService;
-                }
+                new Listener() {
+                    @Override
+                    public Executor getExecutor() {
+                        return dynamicRefreshExecutorService;
+                    }
 
-                @Override
-                public void receiveConfigInfo(String configInfo) {
-                    dynamicRefresh(configInfo);
+                    @Override
+                    public void receiveConfigInfo(String configInfo) {
+                        dynamicRefresh(configInfo);
+                    }
                 }
-            });
+        );
     }
 
 }

@@ -76,7 +76,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
 
     @Override
     public void run(String... args) {
-        if (properties.getEnableCollect()) {
+        if (properties.getCollect()) {
             Integer bufferSize = properties.getTaskBufferSize();
             messageCollectVessel = new ArrayBlockingQueue(bufferSize);
 

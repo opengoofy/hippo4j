@@ -13,41 +13,62 @@ public interface BootstrapPropertiesInterface {
      *
      * @return
      */
-    Boolean getEnable();
+    default Boolean getEnable() {
+        return null;
+    }
 
     /**
      * Get username.
      *
      * @return
      */
-    String getUsername();
+    default String getUsername() {
+        return null;
+    }
 
     /**
      * Get password.
      *
      * @return
      */
-    String getPassword();
+    default String getPassword() {
+        return null;
+    }
 
     /**
      * Get namespace.
      *
      * @return
      */
-    String getNamespace();
+    default String getNamespace() {
+        return null;
+    }
 
     /**
      * Get item id.
      *
      * @return
      */
-    String getItemId();
+    default String getItemId() {
+        return null;
+    }
 
     /**
      * Get server addr.
      *
      * @return
      */
-    String getServerAddr();
+    default String getServerAddr() {
+        return null;
+    }
+
+    /**
+     * Get banner.
+     *
+     * @return
+     */
+    default Boolean getBanner() {
+        return null;
+    }
 
 }

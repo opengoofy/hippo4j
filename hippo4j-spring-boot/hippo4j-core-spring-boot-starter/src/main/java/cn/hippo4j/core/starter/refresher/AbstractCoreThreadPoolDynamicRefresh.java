@@ -50,8 +50,8 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             .build();
 
     @Override
-    public void dynamicRefresh(String content){
-        Map<Object, Object> configInfo = null;
+    public void dynamicRefresh(String content) {
+        Map<Object, Object> configInfo;
         try {
             configInfo = ConfigParserHandler.getInstance().parseConfig(content, bootstrapCoreProperties.getConfigFileType());
         } catch (IOException e) {

@@ -25,8 +25,7 @@ public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRef
     public NacosCloudRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
                                       BootstrapCoreProperties bootstrapCoreProperties) {
         super(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
-        nacosConfigManager = ApplicationContextHolder.getBean(
-            NacosConfigManager.class);
+        nacosConfigManager = ApplicationContextHolder.getBean(NacosConfigManager.class);
     }
 
     @Override
@@ -34,16 +33,17 @@ public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRef
         Map<String, String> nacosConfig = bootstrapCoreProperties.getNacos();
 
         nacosConfigManager.getConfigService().addListener(nacosConfig.get("data-id"),
-            nacosConfig.get("group"), new Listener() {
-                @Override
-                public Executor getExecutor() {
-                    return dynamicRefreshExecutorService;
-                }
+                nacosConfig.get("group"), new Listener() {
+                    @Override
+                    public Executor getExecutor() {
+                        return dynamicRefreshExecutorService;
+                    }
 
-                @Override
-                public void receiveConfigInfo(String configInfo) {
-                    dynamicRefresh(configInfo);
-                }
-            });
+                    @Override
+                    public void receiveConfigInfo(String configInfo) {
+                        dynamicRefresh(configInfo);
+                    }
+                });
     }
+
 }
