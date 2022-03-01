@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements InitializingBean {
 
-    private static final String APOLLO_PROPERTY = "${apollo.bootstrap.namespaces:application}";
+    private static final String APOLLO_PROPERTY = "${spring.dynamic.thread-pool.apollo.namespace:application}";
 
     @Value(APOLLO_PROPERTY)
     private String namespace;
