@@ -15,38 +15,71 @@
 
 ## Hippo4J 介绍
 
-Hippo4J 是基于 [美团线程池](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html) 设计理念开发，针对线程池增强动态调参、监控、报警功能
-C/S 架构部署使用
+Hippo4J 基于 **美团动态线程池** 设计理念开发，针对线程池增强 **动态调参、监控、报警功能**
 
-部署 Server 端，SpringBoot 项目引入 Starter 与之交互
+通过 Web 控制台对线程池参数进行动态调整，支持 **集群内线程池的差异化配置**。内置线程池参数变更通知，以及 **运行过载报警** 功能（支持多通知平台）
 
-通过 Web 控制台对线程池参数进行动态调整，同时支持集群内线程池的差异化配置
+按照租户、项目、线程池的维度划分，配合系统权限，让不同的开发、管理人员负责自己系统的线程池
 
-Starter 组件内置线程池参数变更通知，以及运行过载报警功能（支持多通知平台）
+自 1.1.0 版本发布后，Hippo4J 分为两种使用模式，用一张图来说明两者的使用差别
 
-按照租户、项目、线程池的维度划分，配合系统权限，让不同的开发、管理人员负责自己系统的线程池操作
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220228110417623.png)
+
+### hippo4j-spring-boot-starter
+
+**部署 hippo4j-server 服务**，通过可视化 Web 界面完成线程池的创建、变更以及查看，不依赖三方中间件
+
+相比较 hippo4j-core，功能会更强大，但是也引入了一定的复杂性。需要部署一个 Java 服务，以及 MySQL 数据库
+
+### hippo4j-core-spring-boot-starter
+
+**轻量级动态线程池管理**，依赖 Apollo、Nacos 等三方配置中心（任选其一）完成线程池参数动态变更，同样包含运行时报警、监控功能
+
+
+
+|      | hippo4j-core starter                                 | hippo4j starter                                              |
+| ---- | ---------------------------------------------------- | ------------------------------------------------------------ |
+| 使用 | 客户端仅依赖 hippo4j-core-spring-boot-starter 包即可 | 需部署 hippo4j-server 服务，客户端依赖 hippo4j-spring-boot-starter 包 |
+| 依赖 | Nacos、Apollo 等配置中心（任选其一）                 | 无                                                           |
+| 功能 | 包含基础功能：参数动态化、运行时监控、报警等         | 基础功能之外扩展控制台界面、线程池堆栈查看、线程池运行信息实时查看、历史运行信息查看、线程池配置集群个性化等 |
+
+使用建议：根据公司情况选择，如果基本功能可以满足使用，选择 hippo4j-core 使用即可；如果希望更多的功能，可以选择 Hippo4J
+
+**两者在进行替换的时候，无需修改业务代码**
+
+
 
 ## 解决什么问题
 
 简单来说，Hippo4J 主要为我们解决了下面这些使用原生线程池存在的问题：
 
-- **频繁抛出拒绝策略** ：核心线程过小，阻塞队列过小，最大线程过小
-- **线程处理速度下降** ：核心线程过小，阻塞队列过小，最大线程过大
-- **任务堆积** ：核心线程过小，阻塞队列过大
-- **空闲线程资源浪费** ：核心线程或最大线程过大
-- **线程池执行不可知** ：线程池运行过程中无法得知具体的参数信息，包括不限于任务调度及拒绝策略执行次数
+- **原生线程池创建时无法合理评估参数问题**。比如功能使用到线程池，遇到突发流量洪峰，频繁拒绝任务。Hippo4J 提供动态修改参数功能，**避免修改线程池参数后重启线上应用**
+- 当线程池运行过程中无法再接受新的任务，此时你想知道 **线程池内线程都在做什么**？Hippo4J 提供查看线程池堆栈功能
+- 某接口频繁超时，内部依赖线程池执行，想要 **查看过去一段时间线程池运行参数情况**。Hippo4J 提供历史数据图表查看功能
+- **原生线程池无任务报警策略**。Hippo4J 内置四种报警策略，分别是：活跃度报警、队列容量报警、拒绝策略报警和运行时间过长报警
 
-## 模块介绍
+### 报警通知
 
-- `hippo4j-auth`：用户、角色、权限等
-- `hippo4j-common`：多个模块公用代码实现
-- `hippo4j-config`：提供线程池准实时参数更新功能
-- `hippo4j-console`：对接 Web 前端项目
-- `hippo4j-discovery`：提供线程池项目实例注册、续约、下线等功能
-- `hippo4j-spring-boot-starter`：负责与 Server 端交互的依赖组件
-- `hippo4j-example` ：示例工程
-- `hippo4j-server` ：聚合 Server 端发布需要的模块
-- `hippo4j-tools` ：操作日志等组件代码
+Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池参数变更通知** 和 **运行时报警** 功能。示例如下
+
+<table>
+  <tr>
+    <td align="center" style="width: 400px;">
+      <a href="https://github.com/acmenlt">
+        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213443242.png" style="width: 400px;"><br>
+        <sub>配置变更</sub>
+      </a><br>
+    </td>
+    <td align="center" style="width: 400px;">
+      <a href="https://github.com/acmenlt">
+        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213512019.png" style="width: 400px;"><br>
+        <sub>报警通知</sub>
+      </a><br>
+    </td>
+  </tr>
+</table>
+
+### 
 
 ## 快速开始
 
@@ -84,7 +117,5 @@ Hippo4J 项目基于或参考以下项目：[**Nacos**](https://github.com/aliba
 感谢 JetBrains 提供的免费开源 License：
 
 <p>
-<img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
+    <img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
 </p>
-
-
