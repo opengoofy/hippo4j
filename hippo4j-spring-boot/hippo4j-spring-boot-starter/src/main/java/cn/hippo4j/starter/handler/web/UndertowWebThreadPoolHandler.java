@@ -60,7 +60,6 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
         } catch (Exception ex) {
             log.error("Failed to modify the undertow thread pool parameter.", ex);
         }
-
     }
 
 }
