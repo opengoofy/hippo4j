@@ -7,7 +7,6 @@ import com.ctrip.framework.apollo.ConfigChangeListener;
 import com.ctrip.framework.apollo.ConfigFile;
 import com.ctrip.framework.apollo.ConfigService;
 import com.ctrip.framework.apollo.core.enums.ConfigFileFormat;
-import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
  * @description:
  */
 @Slf4j
-public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements ConfigChangeListener, InitializingBean {
+public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements InitializingBean {
 
     private static final String APOLLO_PROPERTY = "${apollo.bootstrap.namespaces:application}";
 
@@ -31,19 +30,19 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
     }
 
     @Override
-    public void onChange(ConfigChangeEvent configChangeEvent) {
-        ConfigFile configFile = ConfigService.getConfigFile(namespace,
-                ConfigFileFormat.fromString(bootstrapCoreProperties.getConfigFileType().getValue()));
-        String configInfo = configFile.getContent();
-        dynamicRefresh(configInfo);
-    }
-
-    @Override
     public void afterPropertiesSet() {
         String[] apolloNamespaces = this.namespace.split(",");
         this.namespace = apolloNamespaces[0];
         Config config = ConfigService.getConfig(namespace);
-        config.addChangeListener(this);
+
+        ConfigChangeListener configChangeListener = configChangeEvent -> {
+            ConfigFile configFile = ConfigService.getConfigFile(namespace,
+                ConfigFileFormat.fromString(bootstrapCoreProperties.getConfigFileType().getValue()));
+            String configInfo = configFile.getContent();
+            dynamicRefresh(configInfo);
+        };
+
+        config.addChangeListener(configChangeListener);
         log.info("dynamic-thread-pool refresher, add apollo listener success, namespace: {}", namespace);
     }
 
