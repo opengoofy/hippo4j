@@ -21,6 +21,10 @@
 
     <modules>
         <module>hippo4j-example-core</module>
+
+        <module>hippo4j-core-nacos-spring-boot-starter-example</module>
+
+        <module>hippo4j-core-apollo-spring-boot-starter-example</module>
     </modules>
 
 </project>

@@ -1,10 +1,10 @@
-package cn.hippo4j.example.core.starter;
+package cn.hippo4j.example.core.apollo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Hippo4jCoreExampleApplicationTests {
+class Hippo4jCoreApolloSpringBootStarterExampleApplicationTests {
 
     @Test
     void contextLoads() {

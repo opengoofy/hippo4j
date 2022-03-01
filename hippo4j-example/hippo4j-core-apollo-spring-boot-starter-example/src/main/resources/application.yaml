@@ -1,19 +1,11 @@
 server:
-  port: 8089
+  port: 8090
   servlet:
     context-path: /example
 
 spring:
   profiles:
     active: dev
-  cloud:
-    nacos:
-      config:
-        # group: DEFAULT_GROUP
-        password: nacos
-        server-addr: 192.168.1.5:8848
-        username: nacos
-        # namespace: public
 
   dynamic:
     thread-pool:
@@ -25,9 +17,8 @@ spring:
           secret-key: 1d307bfa-815f-4662-a2e5-99415e947bb8
         - platform: 'DING'
           secret-key: 56417ebba6a27ca352f0de77a2ae9da66d01f39610b5ee8a6033c60ef9071c55
-      nacos:
-        data-id: 'hippo4j-nacos.yaml'
-        group: 'DEFAULT_GROUP'
+      apollo:
+        namespace: xxxx
       config-file-type: yml
       executors:
         - thread-pool-id: 'message-consume'
