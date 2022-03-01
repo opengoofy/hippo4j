@@ -1,5 +1,6 @@
 package cn.hippo4j.core.starter.refresher;
 
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import com.alibaba.cloud.nacos.NacosConfigManager;
@@ -17,31 +18,32 @@ import java.util.concurrent.Executor;
  * @date 2022/2/26 11:21
  */
 @Slf4j
-public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements InitializingBean, Listener {
+public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements InitializingBean {
 
     private final NacosConfigManager nacosConfigManager;
 
-    public NacosCloudRefresherHandler(NacosConfigManager nacosConfigManager,
-                                      ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
+    public NacosCloudRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
                                       BootstrapCoreProperties bootstrapCoreProperties) {
         super(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
-        this.nacosConfigManager = nacosConfigManager;
+        nacosConfigManager = ApplicationContextHolder.getBean(
+            NacosConfigManager.class);
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
         Map<String, String> nacosConfig = bootstrapCoreProperties.getNacos();
-        nacosConfigManager.getConfigService().addListener(nacosConfig.get("data-id"), nacosConfig.get("group"), this);
-    }
 
-    @Override
-    public Executor getExecutor() {
-        return dynamicRefreshExecutorService;
-    }
+        nacosConfigManager.getConfigService().addListener(nacosConfig.get("data-id"),
+            nacosConfig.get("group"), new Listener() {
+                @Override
+                public Executor getExecutor() {
+                    return dynamicRefreshExecutorService;
+                }
 
-    @Override
-    public void receiveConfigInfo(String configInfo) {
-        dynamicRefresh(configInfo);
+                @Override
+                public void receiveConfigInfo(String configInfo) {
+                    dynamicRefresh(configInfo);
+                }
+            });
     }
-
 }
