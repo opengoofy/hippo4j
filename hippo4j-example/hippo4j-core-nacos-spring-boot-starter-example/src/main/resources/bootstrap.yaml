@@ -38,6 +38,7 @@ spring:
           maximum-pool-size: 1
           queue-capacity: 1
           blocking-queue: 'LinkedBlockingQueue'
+          executeTimeOut: 1000
           rejected-handler: 'AbortPolicy'
           keep-alive-time: 6691
           allow-core-thread-time-out: true

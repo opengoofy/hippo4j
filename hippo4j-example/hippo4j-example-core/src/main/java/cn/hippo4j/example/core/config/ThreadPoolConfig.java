@@ -4,6 +4,7 @@ import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
+import cn.hippo4j.example.core.handler.TaskTraceBuilderHandler;
 import cn.hippo4j.example.core.inittest.TaskDecoratorTest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +35,9 @@ public class ThreadPoolConfig {
         ThreadPoolExecutor customExecutor = ThreadPoolBuilder.builder()
                 .dynamicPool()
                 .threadFactory(MESSAGE_CONSUME)
+                .taskTraceBuilder(new TaskTraceBuilderHandler())
                 .build();
+
         return new DynamicThreadPoolWrapper(MESSAGE_CONSUME, customExecutor);
     }
 
