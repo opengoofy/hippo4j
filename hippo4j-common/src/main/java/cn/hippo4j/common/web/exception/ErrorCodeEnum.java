@@ -6,7 +6,7 @@ package cn.hippo4j.common.web.exception;
  * @author chen.ma
  * @date 2021/3/19 16:07
  */
-public enum ErrorCodeEnum {
+public enum ErrorCodeEnum implements ErrorCode {
 
     /**
      * UNKNOWN_ERROR
@@ -66,10 +66,21 @@ public enum ErrorCodeEnum {
         public String getMessage() {
             return "NOT_FOUND";
         }
-    };
+    },
 
-    public abstract String getCode();
+    /**
+     * LOGIN_TIMEOUT
+     */
+    LOGIN_TIMEOUT {
+        @Override
+        public String getCode() {
+            return "A000004";
+        }
 
-    public abstract String getMessage();
+        @Override
+        public String getMessage() {
+            return "登录时间过长, 请退出重新登录";
+        }
+    }
 
 }

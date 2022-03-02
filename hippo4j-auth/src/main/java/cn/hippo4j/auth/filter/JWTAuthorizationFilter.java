@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 import static cn.hippo4j.common.constant.Constants.ACCESS_TOKEN;
+import static cn.hippo4j.common.web.exception.ErrorCodeEnum.LOGIN_TIMEOUT;
 
 /**
  * JWT authorization filter.
@@ -92,7 +93,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String token = tokenHeader.replace(JwtTokenUtil.TOKEN_PREFIX, "");
         boolean expiration = JwtTokenUtil.isExpiration(token);
         if (expiration) {
-            throw new ServiceException("登录时间过长，请退出重新登录");
+            throw new ServiceException(LOGIN_TIMEOUT);
         }
 
         String username = JwtTokenUtil.getUsername(token);
