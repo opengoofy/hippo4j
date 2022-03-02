@@ -9,6 +9,8 @@
     </parent>
 
     <artifactId>hippo4j-core-spring-boot-starter</artifactId>
+    <packaging>jar</packaging>
+
     <name>${project.artifactId}</name>
     <description>${project.artifactId}</description>
 
