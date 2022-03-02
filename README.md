@@ -23,7 +23,7 @@ Hippo4J 基于 **美团动态线程池** 设计理念开发，针对线程池增
 
 自 1.1.0 版本发布后，Hippo4J 分为两种使用模式，用一张图来说明两者的使用差别
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220228110417623.png)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220302100650442.png)
 
 ### hippo4j-spring-boot-starter
 
