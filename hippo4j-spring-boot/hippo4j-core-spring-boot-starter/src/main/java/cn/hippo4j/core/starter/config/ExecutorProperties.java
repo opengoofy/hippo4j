@@ -48,6 +48,11 @@ public class ExecutorProperties {
     private Long keepAliveTime;
 
     /**
+     * executeTimeOut
+     */
+    private Long executeTimeOut;
+
+    /**
      * allowCoreThreadTimeOut
      */
     private Boolean allowCoreThreadTimeOut;

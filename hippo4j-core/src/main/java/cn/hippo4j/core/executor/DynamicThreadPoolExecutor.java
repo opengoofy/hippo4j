@@ -1,6 +1,8 @@
 package cn.hippo4j.core.executor;
 
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
+import cn.hippo4j.common.notify.TaskTraceBuilder;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import lombok.Getter;
 import lombok.NonNull;
@@ -20,7 +22,15 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
 
     @Getter
     @Setter
+    private Long executeTimeOut;
+
+    @Getter
+    @Setter
     private TaskDecorator taskDecorator;
+
+    @Getter
+    @Setter
+    private TaskTraceBuilder taskTraceBuilder;
 
     @Getter
     @Setter
@@ -32,10 +42,13 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
     @Getter
     private final AtomicLong rejectCount = new AtomicLong();
 
+    private final ThreadLocal<Long> startTime = new ThreadLocal();
+
     public DynamicThreadPoolExecutor(int corePoolSize,
                                      int maximumPoolSize,
                                      long keepAliveTime,
                                      TimeUnit unit,
+                                     long executeTimeOut,
                                      boolean waitForTasksToCompleteOnShutdown,
                                      long awaitTerminationMillis,
                                      @NonNull BlockingQueue<Runnable> workQueue,
@@ -44,6 +57,7 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
                                      @NonNull RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, waitForTasksToCompleteOnShutdown, awaitTerminationMillis, workQueue, threadPoolId, threadFactory, handler);
         this.threadPoolId = threadPoolId;
+        this.executeTimeOut = executeTimeOut;
 
         // Number of dynamic proxy denial policies.
         RejectedExecutionHandler rejectedProxy = RejectedProxyUtil.createProxy(handler, threadPoolId, rejectCount);
@@ -60,6 +74,29 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
         }
 
         super.execute(command);
+    }
+
+    @Override
+    protected void beforeExecute(Thread t, Runnable r) {
+        this.startTime.set(System.currentTimeMillis());
+    }
+
+    @Override
+    protected void afterExecute(Runnable r, Throwable t) {
+        try {
+            long startTime = this.startTime.get();
+            long endTime = System.currentTimeMillis();
+            long executeTime;
+            boolean executeTimeAlarm = (executeTime = (endTime - startTime)) > executeTimeOut;
+            if (executeTimeAlarm) {
+                ThreadPoolNotifyAlarmHandler notifyAlarmHandler = ApplicationContextHolder.getBean(ThreadPoolNotifyAlarmHandler.class);
+                if (notifyAlarmHandler != null) {
+                    notifyAlarmHandler.asyncSendExecuteTimeOutAlarm(threadPoolId, executeTime, executeTimeOut, this);
+                }
+            }
+        } finally {
+            this.startTime.remove();
+        }
     }
 
     @Override

@@ -1,11 +1,10 @@
 package cn.hippo4j.common.notify.platform;
 
-import cn.hippo4j.common.notify.NotifyConfigDTO;
-import cn.hippo4j.common.notify.NotifyPlatformEnum;
-import cn.hippo4j.common.notify.SendMessageHandler;
+import cn.hippo4j.common.notify.*;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiRobotSendRequest;
@@ -15,9 +14,9 @@ import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Objects;
 
-import static cn.hippo4j.common.notify.platform.DingAlarmConstants.DING_ALARM_TXT;
-import static cn.hippo4j.common.notify.platform.DingAlarmConstants.DING_NOTICE_TXT;
+import static cn.hippo4j.common.notify.platform.DingAlarmConstants.*;
 
 /**
  * Send ding notification message.
@@ -38,8 +37,33 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
         String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on(", @").join(receives);
 
+        String dingAlarmTxt;
+        String dingAlarmTimoutReplaceTxt;
+        if (Objects.equals(notifyConfig.getTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
+            TaskTraceBuilder taskTraceBuilder = alarmNotifyRequest.getTaskTraceBuilder();
+            if (taskTraceBuilder != null) {
+                String taskTraceStr = "";
+                try {
+                    taskTraceStr = taskTraceBuilder.traceBuild();
+                } catch (Exception ex) {
+                    // ignore
+                } finally {
+                    taskTraceBuilder.clear();
+                }
+                String weChatAlarmTimoutTraceReplaceTxt = String.format(DING_ALARM_TIMOUT_TRACE_REPLACE_TXT, taskTraceStr);
+                dingAlarmTimoutReplaceTxt = StrUtil.replace(DING_ALARM_TIMOUT_REPLACE_TXT, DING_ALARM_TIMOUT_TRACE_REPLACE_TXT, weChatAlarmTimoutTraceReplaceTxt);
+            } else {
+                dingAlarmTimoutReplaceTxt = StrUtil.replace(DING_ALARM_TIMOUT_REPLACE_TXT, DING_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
+            }
+
+            dingAlarmTimoutReplaceTxt = String.format(dingAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
+            dingAlarmTxt = StrUtil.replace(DING_ALARM_TXT, DING_ALARM_TIMOUT_REPLACE_TXT, dingAlarmTimoutReplaceTxt);
+        } else {
+            dingAlarmTxt = StrUtil.replace(DING_ALARM_TXT, DING_ALARM_TIMOUT_REPLACE_TXT, "");
+        }
+
         String text = String.format(
-                DING_ALARM_TXT,
+                dingAlarmTxt,
                 // 环境
                 alarmNotifyRequest.getActive(),
                 // 线程池ID

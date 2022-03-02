@@ -7,6 +7,7 @@ import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.toolkit.CalculateUtil;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hutool.core.util.StrUtil;
@@ -48,6 +49,15 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
             1,
             r -> new Thread(r, "client.alarm.notify")
     );
+
+    private final ExecutorService EXECUTE_TIMEOUT_EXECUTOR = ThreadPoolBuilder.builder()
+            .poolThreadSize(2, 4)
+            .threadFactory("client.execute.timeout.alarm")
+            .allowCoreThreadTimeOut(true)
+            .keepAliveTime(60L, TimeUnit.SECONDS)
+            .workQueue(new LinkedBlockingQueue(4096))
+            .rejected(new ThreadPoolExecutor.AbortPolicy())
+            .build();
 
     @Override
     public void run(String... args) throws Exception {
@@ -137,7 +147,30 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
             alarmNotifyRequest.setThreadPoolId(threadPoolId);
             hippoSendMessageService.sendAlarmMessage(NotifyTypeEnum.REJECT, alarmNotifyRequest);
         }
+    }
 
+    /**
+     * Async send execute time out alarm.
+     *
+     * @param threadPoolId
+     * @param executeTime
+     * @param executeTimeOut
+     * @param threadPoolExecutor
+     */
+    public void asyncSendExecuteTimeOutAlarm(String threadPoolId, long executeTime, long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
+        if (threadPoolExecutor instanceof DynamicThreadPoolExecutor) {
+            try {
+                AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
+                alarmNotifyRequest.setThreadPoolId(threadPoolId);
+                alarmNotifyRequest.setExecuteTime(executeTime);
+                alarmNotifyRequest.setExecuteTimeOut(executeTimeOut);
+
+                Runnable task = () -> hippoSendMessageService.sendAlarmMessage(NotifyTypeEnum.TIMEOUT, alarmNotifyRequest);
+                EXECUTE_TIMEOUT_EXECUTOR.execute(task);
+            } catch (Throwable ex) {
+                log.error("Send thread pool execution timeout alarm error.", ex);
+            }
+        }
     }
 
     /**

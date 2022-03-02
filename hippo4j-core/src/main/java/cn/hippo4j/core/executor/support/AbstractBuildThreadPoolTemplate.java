@@ -1,5 +1,6 @@
 package cn.hippo4j.core.executor.support;
 
+import cn.hippo4j.common.notify.TaskTraceBuilder;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import lombok.Data;
@@ -115,6 +116,7 @@ public class AbstractBuildThreadPoolTemplate {
                     initParam.getMaxPoolNum(),
                     initParam.getKeepAliveTime(),
                     initParam.getTimeUnit(),
+                    initParam.getExecuteTimeOut(),
                     initParam.getWaitForTasksToCompleteOnShutdown(),
                     initParam.getAwaitTerminationMillis(),
                     initParam.getWorkQueue(),
@@ -127,6 +129,7 @@ public class AbstractBuildThreadPoolTemplate {
         }
 
         dynamicThreadPoolExecutor.setTaskDecorator(initParam.getTaskDecorator());
+        dynamicThreadPoolExecutor.setTaskTraceBuilder(initParam.getTaskTraceBuilder());
         dynamicThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return dynamicThreadPoolExecutor;
     }
@@ -154,6 +157,11 @@ public class AbstractBuildThreadPoolTemplate {
          * 线程存活时间单位
          */
         private TimeUnit timeUnit;
+
+        /**
+         * 执行超时时间
+         */
+        private Long executeTimeOut;
 
         /**
          * 队列最大容量
@@ -184,6 +192,11 @@ public class AbstractBuildThreadPoolTemplate {
          * 线程任务装饰器
          */
         private TaskDecorator taskDecorator;
+
+        /**
+         * 任务 Trace 构造器
+         */
+        private TaskTraceBuilder taskTraceBuilder;
 
         /**
          * 等待终止毫秒

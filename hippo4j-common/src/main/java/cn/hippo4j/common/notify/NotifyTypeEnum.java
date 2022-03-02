@@ -26,6 +26,11 @@ public enum NotifyTypeEnum {
     /**
      * REJECT
      */
-    REJECT
+    REJECT,
+
+    /**
+     * TIMEOUT
+     */
+    TIMEOUT
 
 }

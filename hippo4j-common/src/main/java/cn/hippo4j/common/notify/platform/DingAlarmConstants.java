@@ -24,6 +24,20 @@ public class DingAlarmConstants {
     public static final String DING_NOTICE_TITLE = "动态线程池通知";
 
     /**
+     * Trace 信息
+     */
+    public static final String DING_ALARM_TIMOUT_TRACE_REPLACE_TXT = "<font color='#708090' size=2>链路信息：%d</font> \n\n";
+
+    /**
+     * 替换任务超时模板
+     */
+    public static final String DING_ALARM_TIMOUT_REPLACE_TXT =
+            "<font color='#708090' size=2>任务执行时间：%d / ms </font> \n\n" +
+                    "<font color='#708090' size=2>超时时间：%d / ms</font> \n\n" +
+                    DING_ALARM_TIMOUT_TRACE_REPLACE_TXT +
+                    " --- \n\n  ";
+
+    /**
      * 线程池报警通知文本
      */
     public static final String DING_ALARM_TXT =
@@ -46,6 +60,7 @@ public class DingAlarmConstants {
                     "<font color='#708090' size=2>队列元素个数：%d</font> \n\n " +
                     "<font color='#708090' size=2>队列剩余个数：%d</font> \n\n " +
                     " --- \n\n  " +
+                    DING_ALARM_TIMOUT_REPLACE_TXT +
                     "<font color='#708090' size=2>拒绝策略：%s</font> \n\n" +
                     "<font color='#708090' size=2>拒绝策略执行次数：</font><font color='#FF0000' size=2>%d</font> \n\n " +
                     "<font color='#708090' size=2>OWNER：@%s</font> \n\n" +

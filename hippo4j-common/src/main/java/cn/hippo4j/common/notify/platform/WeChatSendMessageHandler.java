@@ -1,17 +1,18 @@
 package cn.hippo4j.common.notify.platform;
 
-import cn.hippo4j.common.notify.NotifyConfigDTO;
-import cn.hippo4j.common.notify.NotifyPlatformEnum;
-import cn.hippo4j.common.notify.SendMessageHandler;
+import cn.hippo4j.common.notify.*;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import com.google.common.base.Joiner;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Objects;
 
 import static cn.hippo4j.common.notify.platform.WeChatAlarmConstants.*;
 
@@ -34,8 +35,33 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
         String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on("><@").join(receives);
 
+        String weChatAlarmTxt;
+        String weChatAlarmTimoutReplaceTxt;
+        if (Objects.equals(notifyConfig.getTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
+            TaskTraceBuilder taskTraceBuilder = alarmNotifyRequest.getTaskTraceBuilder();
+            if (taskTraceBuilder != null) {
+                String taskTraceStr = "";
+                try {
+                    taskTraceStr = taskTraceBuilder.traceBuild();
+                } catch (Exception ex) {
+                    // ignore
+                } finally {
+                    taskTraceBuilder.clear();
+                }
+                String weChatAlarmTimoutTraceReplaceTxt = String.format(WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, taskTraceStr);
+                weChatAlarmTimoutReplaceTxt = StrUtil.replace(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, weChatAlarmTimoutTraceReplaceTxt);
+            } else {
+                weChatAlarmTimoutReplaceTxt = StrUtil.replace(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
+            }
+
+            weChatAlarmTimoutReplaceTxt = String.format(weChatAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
+            weChatAlarmTxt = StrUtil.replace(WE_CHAT_ALARM_TXT, WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, weChatAlarmTimoutReplaceTxt);
+        } else {
+            weChatAlarmTxt = StrUtil.replace(WE_CHAT_ALARM_TXT, WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, "");
+        }
+
         String text = String.format(
-                WE_CHAT_ALARM_TXT,
+                weChatAlarmTxt,
                 // 环境
                 alarmNotifyRequest.getActive(),
                 // 线程池ID

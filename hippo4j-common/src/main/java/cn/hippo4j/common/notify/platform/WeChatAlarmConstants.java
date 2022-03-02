@@ -1,7 +1,7 @@
 package cn.hippo4j.common.notify.platform;
 
 /**
- * Ding alarm constants.
+ * We chat alarm constants.
  *
  * @author chen.ma
  * @date 2021/11/26 20:03
@@ -12,6 +12,19 @@ public class WeChatAlarmConstants {
      * 企微机器人 Url
      */
     public static final String WE_CHAT_SERVER_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=";
+
+    /**
+     * Trace 信息
+     */
+    public static final String WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT = "> 链路信息：%s \n";
+
+    /**
+     * 替换任务超时模板
+     */
+    public static final String WE_CHAT_ALARM_TIMOUT_REPLACE_TXT =
+            "> 任务执行时间：%s / ms \n" +
+                    "> 超时时间：%s / ms \n" +
+                    WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT;
 
     /**
      * 线程池报警通知文本
@@ -34,6 +47,7 @@ public class WeChatAlarmConstants {
                     "> 队列剩余个数：%s \n" +
                     "> 拒绝策略：%s \n" +
                     "> 拒绝策略执行次数：%s \n" +
+                    WE_CHAT_ALARM_TIMOUT_REPLACE_TXT +
                     "> OWNER：<@%s> \n" +
                     "> 提示：%d 分钟内此线程池不会重复告警（可配置） \n\n" +
                     "**播报时间：%s**";

@@ -1,6 +1,7 @@
 package cn.hippo4j.core.starter.support;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.notify.TaskTraceBuilder;
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
@@ -102,6 +103,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .dynamicPool()
                         .workQueue(workQueue)
                         .threadFactory(threadPoolId)
+                        .executeTimeOut(executorProperties.getExecuteTimeOut())
                         .poolThreadSize(executorProperties.getCorePoolSize(), executorProperties.getMaximumPoolSize())
                         .keepAliveTime(executorProperties.getKeepAliveTime(), TimeUnit.SECONDS)
                         .rejected(RejectedTypeEnum.createPolicy(executorProperties.getRejectedHandler()))
@@ -127,6 +129,9 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                     long awaitTerminationMillis = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).awaitTerminationMillis;
                     boolean waitForTasksToCompleteOnShutdown = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).waitForTasksToCompleteOnShutdown;
                     ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setSupportParam(awaitTerminationMillis, waitForTasksToCompleteOnShutdown);
+
+                    TaskTraceBuilder taskTraceBuilder = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskTraceBuilder();
+                    ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setTaskTraceBuilder(taskTraceBuilder);
                 }
 
                 dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);
