@@ -12,15 +12,20 @@ spring:
         password: nacos
         server-addr: 127.0.0.1:8848
         username: nacos
+        extension-configs:
+          - data-id: hippo4j-nacos.yaml
+            group: DEFAULT_GROUP
+            refresh: true
 
   dynamic:
     thread-pool:
       enable: true
-      enable-banner: true
-      check-state-interval: 3
+      banner: true
+      collect: true
+      check-state-interval: 5
       notify-platforms:
         - platform: 'WECHAT'
-          secret-key: 1d307bfa-815f-4662-a2e5-99415e947bb8
+          secret-key: ac0426a5-c712-474c-9bff-72b8b8f5caff
         - platform: 'DING'
           secret-key: 56417ebba6a27ca352f0de77a2ae9da66d01f39610b5ee8a6033c60ef9071c55
       nacos:
@@ -45,4 +50,3 @@ spring:
             receives:
               WECHAT: 'xxx' # Fill in the enterprise weChat userId
               DING: 'xxx' # phone
-
