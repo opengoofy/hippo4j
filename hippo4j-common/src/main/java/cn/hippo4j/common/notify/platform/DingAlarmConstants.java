@@ -26,7 +26,7 @@ public class DingAlarmConstants {
     /**
      * Trace 信息
      */
-    public static final String DING_ALARM_TIMOUT_TRACE_REPLACE_TXT = "<font color='#708090' size=2>链路信息：%d</font> \n\n";
+    public static final String DING_ALARM_TIMOUT_TRACE_REPLACE_TXT = "<font color='#708090' size=2>链路信息：%s</font> \n\n";
 
     /**
      * 替换任务超时模板

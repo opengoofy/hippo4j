@@ -4,7 +4,6 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.common.notify.TaskTraceBuilder;
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
@@ -14,9 +13,9 @@ import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.*;
+import cn.hippo4j.core.toolkit.inet.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.starter.remote.HttpAgent;
-import cn.hippo4j.core.toolkit.inet.DynamicThreadPoolAnnotationUtil;
 import cn.hutool.core.util.BooleanUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -165,9 +164,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
                         long executeTimeOut = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getExecuteTimeOut();
                         ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setExecuteTimeOut(executeTimeOut);
-
-                        TaskTraceBuilder taskTraceBuilder = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskTraceBuilder();
-                        ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setTaskTraceBuilder(taskTraceBuilder);
                     }
 
                     dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);

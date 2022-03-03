@@ -1,7 +1,6 @@
 package cn.hippo4j.core.executor.support;
 
 import cn.hippo4j.common.design.builder.Builder;
-import cn.hippo4j.common.notify.TaskTraceBuilder;
 import cn.hippo4j.common.toolkit.Assert;
 import org.springframework.core.task.TaskDecorator;
 
@@ -91,11 +90,6 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
      * 线程任务装饰器
      */
     private TaskDecorator taskDecorator;
-
-    /**
-     * 任务 Trace 构造器
-     */
-    private TaskTraceBuilder taskTraceBuilder;
 
     /**
      * 等待终止毫秒
@@ -223,11 +217,6 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
-    public ThreadPoolBuilder taskTraceBuilder(TaskTraceBuilder taskTraceBuilder) {
-        this.taskTraceBuilder = taskTraceBuilder;
-        return this;
-    }
-
     public ThreadPoolBuilder awaitTerminationMillis(long awaitTerminationMillis) {
         this.awaitTerminationMillis = awaitTerminationMillis;
         return this;
@@ -316,7 +305,6 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
                 .setMaxPoolNum(builder.maxPoolSize)
                 .setKeepAliveTime(builder.keepAliveTime)
                 .setCapacity(builder.capacity)
-                .setTaskTraceBuilder(builder.taskTraceBuilder)
                 .setExecuteTimeOut(builder.executeTimeOut)
                 .setRejectedExecutionHandler(builder.rejectedExecutionHandler)
                 .setTimeUnit(builder.timeUnit)

@@ -4,6 +4,7 @@ import cn.hippo4j.common.notify.*;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
@@ -38,17 +39,9 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
         String weChatAlarmTxt;
         String weChatAlarmTimoutReplaceTxt;
         if (Objects.equals(notifyConfig.getTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
-            TaskTraceBuilder taskTraceBuilder = alarmNotifyRequest.getTaskTraceBuilder();
-            if (taskTraceBuilder != null) {
-                String taskTraceStr = "";
-                try {
-                    taskTraceStr = taskTraceBuilder.traceBuild();
-                } catch (Exception ex) {
-                    // ignore
-                } finally {
-                    taskTraceBuilder.clear();
-                }
-                String weChatAlarmTimoutTraceReplaceTxt = String.format(WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, taskTraceStr);
+            String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
+            if (StringUtil.isNotBlank(executeTimeoutTrace)) {
+                String weChatAlarmTimoutTraceReplaceTxt = String.format(WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, executeTimeoutTrace);
                 weChatAlarmTimoutReplaceTxt = StrUtil.replace(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, weChatAlarmTimoutTraceReplaceTxt);
             } else {
                 weChatAlarmTimoutReplaceTxt = StrUtil.replace(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");

@@ -3,6 +3,7 @@ package cn.hippo4j.common.notify.platform;
 import cn.hippo4j.common.notify.*;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.dingtalk.api.DefaultDingTalkClient;
@@ -40,18 +41,10 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
         String dingAlarmTxt;
         String dingAlarmTimoutReplaceTxt;
         if (Objects.equals(notifyConfig.getTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
-            TaskTraceBuilder taskTraceBuilder = alarmNotifyRequest.getTaskTraceBuilder();
-            if (taskTraceBuilder != null) {
-                String taskTraceStr = "";
-                try {
-                    taskTraceStr = taskTraceBuilder.traceBuild();
-                } catch (Exception ex) {
-                    // ignore
-                } finally {
-                    taskTraceBuilder.clear();
-                }
-                String weChatAlarmTimoutTraceReplaceTxt = String.format(DING_ALARM_TIMOUT_TRACE_REPLACE_TXT, taskTraceStr);
-                dingAlarmTimoutReplaceTxt = StrUtil.replace(DING_ALARM_TIMOUT_REPLACE_TXT, DING_ALARM_TIMOUT_TRACE_REPLACE_TXT, weChatAlarmTimoutTraceReplaceTxt);
+            String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
+            if (StringUtil.isNotBlank(executeTimeoutTrace)) {
+                String dingAlarmTimoutTraceReplaceTxt = String.format(DING_ALARM_TIMOUT_TRACE_REPLACE_TXT, executeTimeoutTrace);
+                dingAlarmTimoutReplaceTxt = StrUtil.replace(DING_ALARM_TIMOUT_REPLACE_TXT, DING_ALARM_TIMOUT_TRACE_REPLACE_TXT, dingAlarmTimoutTraceReplaceTxt);
             } else {
                 dingAlarmTimoutReplaceTxt = StrUtil.replace(DING_ALARM_TIMOUT_REPLACE_TXT, DING_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
             }

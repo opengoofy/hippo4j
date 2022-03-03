@@ -1,7 +1,10 @@
 package cn.hippo4j.example.core.handler;
 
-import cn.hippo4j.common.notify.TaskTraceBuilder;
+import cn.hippo4j.common.toolkit.StringUtil;
 import org.slf4j.MDC;
+import org.springframework.core.task.TaskDecorator;
+
+import static cn.hippo4j.common.constant.Constants.EXECUTE_TIMEOUT_TRACE;
 
 /**
  * Task trace builder handler.
@@ -9,30 +12,21 @@ import org.slf4j.MDC;
  * @author chen.ma
  * @date 2022/3/2 20:46
  */
-public class TaskTraceBuilderHandler implements TaskTraceBuilder {
-
-    private final String TRACE_KEY = "traceId";
+public final class TaskTraceBuilderHandler implements TaskDecorator {
 
     @Override
-    public void before() {
-        MDC.put(TRACE_KEY, "https://github.com/acmenlt/dynamic-threadpool 行行好, 点个 Star.");
-    }
+    public Runnable decorate(Runnable runnable) {
+        String executeTimeoutTrace = MDC.get(EXECUTE_TIMEOUT_TRACE);
 
-    @Override
-    public String traceBuild() {
-        String traceStr;
-        try {
-            traceStr = MDC.get(TRACE_KEY);
-        } finally {
-            clear();
-        }
+        Runnable taskRun = () -> {
+            if (StringUtil.isNotBlank(executeTimeoutTrace)) {
+                MDC.put(EXECUTE_TIMEOUT_TRACE, executeTimeoutTrace);
+            }
+            runnable.run();
+            // 此处不用进行清理操作, 统一在线程任务执行后清理
+        };
 
-        return traceStr;
-    }
-
-    @Override
-    public void clear() {
-        MDC.remove(TRACE_KEY);
+        return taskRun;
     }
 
 }

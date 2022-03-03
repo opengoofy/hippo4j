@@ -2,7 +2,6 @@ package cn.hippo4j.core.executor;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
-import cn.hippo4j.common.notify.TaskTraceBuilder;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import lombok.Getter;
 import lombok.NonNull;
@@ -27,10 +26,6 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
     @Getter
     @Setter
     private TaskDecorator taskDecorator;
-
-    @Getter
-    @Setter
-    private TaskTraceBuilder taskTraceBuilder;
 
     @Getter
     @Setter
@@ -83,6 +78,10 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
 
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
+        if (executeTimeOut == null || executeTimeOut <= 0) {
+            return;
+        }
+
         try {
             long startTime = this.startTime.get();
             long endTime = System.currentTimeMillis();

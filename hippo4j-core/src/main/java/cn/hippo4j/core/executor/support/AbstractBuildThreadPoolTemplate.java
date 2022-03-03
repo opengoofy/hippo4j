@@ -1,6 +1,5 @@
 package cn.hippo4j.core.executor.support;
 
-import cn.hippo4j.common.notify.TaskTraceBuilder;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import lombok.Data;
@@ -129,7 +128,6 @@ public class AbstractBuildThreadPoolTemplate {
         }
 
         dynamicThreadPoolExecutor.setTaskDecorator(initParam.getTaskDecorator());
-        dynamicThreadPoolExecutor.setTaskTraceBuilder(initParam.getTaskTraceBuilder());
         dynamicThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return dynamicThreadPoolExecutor;
     }
@@ -192,11 +190,6 @@ public class AbstractBuildThreadPoolTemplate {
          * 线程任务装饰器
          */
         private TaskDecorator taskDecorator;
-
-        /**
-         * 任务 Trace 构造器
-         */
-        private TaskTraceBuilder taskTraceBuilder;
 
         /**
          * 等待终止毫秒

@@ -34,8 +34,8 @@ public class ThreadPoolConfig {
     public DynamicThreadPoolWrapper messageCenterDynamicThreadPool() {
         ThreadPoolExecutor customExecutor = ThreadPoolBuilder.builder()
                 .dynamicPool()
+                .taskDecorator(new TaskTraceBuilderHandler())
                 .threadFactory(MESSAGE_CONSUME)
-                .taskTraceBuilder(new TaskTraceBuilderHandler())
                 .build();
 
         return new DynamicThreadPoolWrapper(MESSAGE_CONSUME, customExecutor);

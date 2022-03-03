@@ -1,7 +1,6 @@
 package cn.hippo4j.common.notify.request;
 
 import cn.hippo4j.common.notify.NotifyTypeEnum;
-import cn.hippo4j.common.notify.TaskTraceBuilder;
 import cn.hippo4j.common.notify.request.base.BaseNotifyRequest;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -112,8 +111,8 @@ public class AlarmNotifyRequest extends BaseNotifyRequest {
     private Long executeTimeOut;
 
     /**
-     * taskTraceBuilder
+     * executeTimeoutTrace
      */
-    private TaskTraceBuilder taskTraceBuilder;
+    private String executeTimeoutTrace;
 
 }
