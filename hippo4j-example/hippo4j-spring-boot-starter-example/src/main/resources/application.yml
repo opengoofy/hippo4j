@@ -1,0 +1,19 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /example
+
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: dynamic-threadpool-example
+
+  dynamic:
+    thread-pool:
+      server-addr: http://localhost:6691
+      namespace: prescription
+      item-id: dynamic-threadpool-example
+      username: admin
+      password: 123456
