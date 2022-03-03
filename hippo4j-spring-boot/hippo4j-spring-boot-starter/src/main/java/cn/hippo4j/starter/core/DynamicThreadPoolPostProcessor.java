@@ -168,6 +168,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
                     dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);
                     isSubscribe = true;
+
+
                 }
             }
         } catch (Exception ex) {

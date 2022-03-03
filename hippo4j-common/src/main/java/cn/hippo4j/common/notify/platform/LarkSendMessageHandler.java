@@ -2,6 +2,7 @@ package cn.hippo4j.common.notify.platform;
 
 import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.common.notify.NotifyPlatformEnum;
+import cn.hippo4j.common.notify.NotifyTypeEnum;
 import cn.hippo4j.common.notify.SendMessageHandler;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
@@ -14,6 +15,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static cn.hippo4j.common.notify.platform.LarkAlarmConstants.*;
@@ -36,10 +38,26 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     @Override
     @SneakyThrows
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
-        String afterReceives = getReceives(alarmNotifyRequest.getReceives());
-        String larkAlarmJson = LARK_ALARM_JSON_STR;
+        String afterReceives = getReceives(notifyConfig.getReceives());
 
-        String text = String.format(larkAlarmJson,
+        String larkAlarmTxt;
+        String larkAlarmTimoutReplaceTxt;
+        if (Objects.equals(notifyConfig.getTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
+            String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
+            if (StringUtil.isNotBlank(executeTimeoutTrace)) {
+                String larkAlarmTimoutTraceReplaceTxt = String.format(LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, executeTimeoutTrace);
+                larkAlarmTimoutReplaceTxt = StrUtil.replace(LARK_ALARM_TIMOUT_REPLACE_TXT, LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, larkAlarmTimoutTraceReplaceTxt);
+            } else {
+                larkAlarmTimoutReplaceTxt = StrUtil.replace(LARK_ALARM_TIMOUT_REPLACE_TXT, LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
+            }
+
+            larkAlarmTimoutReplaceTxt = String.format(larkAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
+            larkAlarmTxt = StrUtil.replace(LARK_ALARM_JSON_STR, LARK_ALARM_TIMOUT_REPLACE_TXT, larkAlarmTimoutReplaceTxt);
+        } else {
+            larkAlarmTxt = StrUtil.replace(LARK_ALARM_JSON_STR, LARK_ALARM_TIMOUT_REPLACE_TXT, "");
+        }
+
+        String text = String.format(larkAlarmTxt,
                 // 环境
                 alarmNotifyRequest.getActive(),
                 // 线程池ID
