@@ -52,7 +52,7 @@ public final class Results {
      * @param abstractException 框架自定义抽象异常
      * @return
      */
-    protected static Result<Void> failure(AbstractException abstractException) {
+    public static Result<Void> failure(AbstractException abstractException) {
         String errorCode = Optional.ofNullable(abstractException.getErrorCode())
                 .map(ErrorCode::getCode)
                 .orElse(ErrorCodeEnum.SERVICE_ERROR.getCode());

@@ -71,7 +71,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             // 返回 Json 形式的错误信息
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
-            response.getWriter().write(JSONUtil.toJSONString(Results.failure("-1", ex.getMessage())));
+            String resultStatus = "-1";
+            if (ex instanceof ServiceException) {
+                ServiceException serviceException = (ServiceException) ex;
+                resultStatus = serviceException.errorCode.getCode();
+            }
+            response.getWriter().write(JSONUtil.toJSONString(Results.failure(resultStatus, ex.getMessage())));
             response.getWriter().flush();
             return;
         }

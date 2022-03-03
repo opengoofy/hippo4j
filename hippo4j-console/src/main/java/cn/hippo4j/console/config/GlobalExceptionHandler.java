@@ -4,6 +4,7 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.web.exception.AbstractException;
 import cn.hippo4j.common.web.exception.ServiceException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,8 @@ import java.util.Optional;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = {ServiceException.class})
-    public Result serviceException(HttpServletRequest request, ServiceException ex) {
+    @ExceptionHandler(value = {AbstractException.class})
+    public Result serviceException(HttpServletRequest request, AbstractException ex) {
         if (ex.getCause() != null) {
             log.error("[{}] {} [ex] {}", request.getMethod(), request.getRequestURL().toString(), ex.toString(), ex.getCause());
             return Results.failure(ex);
