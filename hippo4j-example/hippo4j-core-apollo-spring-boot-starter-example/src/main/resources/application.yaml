@@ -10,7 +10,7 @@ spring:
   dynamic:
     thread-pool:
       enable: true
-      enable-banner: true
+      banner: true
       check-state-interval: 3
       notify-platforms:
         - platform: 'WECHAT'
@@ -25,6 +25,7 @@ spring:
           core-pool-size: 1
           maximum-pool-size: 1
           queue-capacity: 1
+          execute-time-out: 1000
           blocking-queue: 'LinkedBlockingQueue'
           rejected-handler: 'AbortPolicy'
           keep-alive-time: 6691
