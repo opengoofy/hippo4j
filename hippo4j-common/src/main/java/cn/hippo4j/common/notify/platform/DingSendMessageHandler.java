@@ -55,18 +55,21 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
             dingAlarmTxt = StrUtil.replace(DING_ALARM_TXT, DING_ALARM_TIMOUT_REPLACE_TXT, "");
         }
 
+        String[] strings = alarmNotifyRequest.getIdentify().split("_");
         String text = String.format(
                 dingAlarmTxt,
                 // 环境
                 alarmNotifyRequest.getActive(),
+                // 报警类型
+                notifyConfig.getTypeEnum(),
                 // 线程池ID
                 alarmNotifyRequest.getThreadPoolId(),
                 // 应用名称
                 alarmNotifyRequest.getAppName(),
-                // 实例信息
-                alarmNotifyRequest.getIdentify(),
-                // 报警类型
-                notifyConfig.getTypeEnum(),
+                // Host
+                strings[0],
+                // 实例ID
+                strings[1],
                 // 核心线程数
                 alarmNotifyRequest.getCorePoolSize(),
                 // 最大线程数

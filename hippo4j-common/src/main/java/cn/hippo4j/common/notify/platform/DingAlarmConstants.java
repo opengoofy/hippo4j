@@ -41,12 +41,12 @@ public class DingAlarmConstants {
      * 线程池报警通知文本
      */
     public static final String DING_ALARM_TXT =
-            "<font color='#FF0000'>[警报] </font>%s - 动态线程池运行告警 \n\n" +
+            "<font color='#FF0000'>[警报] </font>%s - 动态线程池运行告警（%s） \n\n" +
                     " --- \n\n " +
                     "<font color='#708090' size=2>线程池ID：%s</font> \n\n " +
                     "<font color='#708090' size=2>应用名称：%s</font> \n\n " +
                     "<font color='#778899' size=2>应用实例：%s</font> \n\n " +
-                    "<font color='#778899' size=2>报警类型：%s</font> \n\n " +
+                    "<font color='#778899' size=2>实例标识：%s</font> \n\n " +
                     " --- \n\n  " +
                     "<font color='#708090' size=2>核心线程数：%d</font> \n\n " +
                     "<font color='#708090' size=2>最大线程数：%d</font> \n\n " +

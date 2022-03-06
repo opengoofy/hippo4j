@@ -60,14 +60,14 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
         String text = String.format(larkAlarmTxt,
                 // 环境
                 alarmNotifyRequest.getActive(),
+                // 报警类型
+                notifyConfig.getTypeEnum(),
                 // 线程池ID
                 alarmNotifyRequest.getThreadPoolId(),
                 // 应用名称
                 alarmNotifyRequest.getAppName(),
                 // 实例信息
                 alarmNotifyRequest.getIdentify(),
-                // 报警类型
-                notifyConfig.getTypeEnum(),
                 // 核心线程数
                 alarmNotifyRequest.getCorePoolSize(),
                 // 最大线程数

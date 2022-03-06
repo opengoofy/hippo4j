@@ -30,11 +30,10 @@ public class WeChatAlarmConstants {
      * 线程池报警通知文本
      */
     public static final String WE_CHAT_ALARM_TXT =
-            "### <font color='#FF0000'>[警报] </font>%s - 动态线程池运行告警 \n" +
+            "### <font color='#FF0000'>[警报] </font>%s - 动态线程池运行告警（%s） \n" +
                     "> 线程池ID：<font color=\"warning\">%s</font> \n" +
                     "> 应用名称：<font color=\"warning\">%s</font> \n" +
                     "> 应用实例：%s \n" +
-                    "> 报警类型：%s \n" +
                     "> 核心线程数：%s \n" +
                     "> 最大线程数：%s \n" +
                     "> 当前线程数：%s \n" +
