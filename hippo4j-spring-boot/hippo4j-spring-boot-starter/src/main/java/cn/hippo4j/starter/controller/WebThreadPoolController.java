@@ -16,6 +16,8 @@ import java.util.concurrent.Executor;
 /**
  * Web thread pool controller.
  *
+ * <p> At present, only Tomcat is well supported, and other web containers need to be improved.
+ *
  * @author chen.ma
  * @date 2022/1/19 20:54
  */

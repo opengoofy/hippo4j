@@ -47,7 +47,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @ImportAutoConfiguration({HttpClientConfiguration.class, DiscoveryConfiguration.class, MessageNotifyConfiguration.class, UtilAutoConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 
-    private static final String TOMCAT_SERVLET_WEB_SERVER_FACTORY = "tomcatWebThreadPoolHandler";
+    private static final String TOMCAT_SERVLET_WEB_SERVER_FACTORY = "tomcatServletWebServerFactory";
 
     private static final String JETTY_SERVLET_WEB_SERVER_FACTORY = "JettyServletWebServerFactory";
 
