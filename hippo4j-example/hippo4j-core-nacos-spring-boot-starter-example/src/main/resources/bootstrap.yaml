@@ -6,6 +6,10 @@ server:
 spring:
   profiles:
     active: dev
+
+  application:
+    name: dynamic-threadpool-example
+
   cloud:
     nacos:
       config:
@@ -28,6 +32,8 @@ spring:
           secret-key: ac0426a5-c712-474c-9bff-72b8b8f5caff
         - platform: 'DING'
           secret-key: 56417ebba6a27ca352f0de77a2ae9da66d01f39610b5ee8a6033c60ef9071c55
+        - platform: 'LARK'
+          secret-key: 2cbf2808-3839-4c26-a04d-fd201dd51f9e
       nacos:
         data-id: 'hippo4j-nacos.yaml'
         group: 'DEFAULT_GROUP'
@@ -51,3 +57,4 @@ spring:
             receives:
               WECHAT: 'xxx' # Fill in the enterprise weChat userId
               DING: 'xxx' # phone
+              LARK: 'xxx'

@@ -7,6 +7,9 @@ spring:
   profiles:
     active: dev
 
+  application:
+    name: dynamic-threadpool-example
+
   dynamic:
     thread-pool:
       enable: true
