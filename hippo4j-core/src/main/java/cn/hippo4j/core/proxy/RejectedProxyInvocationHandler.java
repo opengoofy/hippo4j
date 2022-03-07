@@ -28,8 +28,12 @@ public class RejectedProxyInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         rejectCount.incrementAndGet();
 
-        ThreadPoolNotifyAlarmHandler alarmHandler = ApplicationContextHolder.getBean(ThreadPoolNotifyAlarmHandler.class);
-        alarmHandler.checkPoolRejectedAlarm(threadPoolId);
+        if (ApplicationContextHolder.getInstance() != null) {
+            ThreadPoolNotifyAlarmHandler alarmHandler = ApplicationContextHolder.getBean(ThreadPoolNotifyAlarmHandler.class);
+            if (alarmHandler != null) {
+                alarmHandler.checkPoolRejectedAlarm(threadPoolId);
+            }
+        }
 
         try {
             return method.invoke(target, args);
