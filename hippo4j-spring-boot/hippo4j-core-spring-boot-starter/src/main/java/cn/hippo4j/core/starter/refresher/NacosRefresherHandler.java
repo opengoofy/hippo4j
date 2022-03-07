@@ -6,7 +6,6 @@ import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -18,7 +17,7 @@ import java.util.concurrent.Executor;
  * @date 2022/2/26 00:10
  */
 @Slf4j
-public class NacosRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements InitializingBean {
+public class NacosRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
 
     private final ConfigService configService;
 

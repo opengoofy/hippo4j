@@ -8,7 +8,6 @@ import com.ctrip.framework.apollo.ConfigFile;
 import com.ctrip.framework.apollo.ConfigService;
 import com.ctrip.framework.apollo.core.enums.ConfigFileFormat;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
@@ -17,7 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
  * @description:
  */
 @Slf4j
-public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements InitializingBean {
+public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
 
     private static final String APOLLO_PROPERTY = "${spring.dynamic.thread-pool.apollo.namespace:application}";
 
