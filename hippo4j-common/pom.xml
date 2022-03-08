@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>${project.artifactId}</description>
+    <description>hippo4j common code package.</description>
 
     <dependencies>
         <dependency>

@@ -9,8 +9,10 @@
     </parent>
 
     <artifactId>hippo4j-core</artifactId>
+    <packaging>jar</packaging>
+
     <name>${project.artifactId}</name>
-    <description>${project.artifactId}</description>
+    <description>hippo4j core code package.</description>
 
     <dependencies>
         <dependency>
