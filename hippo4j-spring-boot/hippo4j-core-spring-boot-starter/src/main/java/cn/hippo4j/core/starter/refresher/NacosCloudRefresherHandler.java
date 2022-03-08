@@ -6,7 +6,6 @@ import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.config.listener.Listener;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -18,7 +17,7 @@ import java.util.concurrent.Executor;
  * @date 2022/2/26 11:21
  */
 @Slf4j
-public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements InitializingBean {
+public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
 
     private final NacosConfigManager nacosConfigManager;
 

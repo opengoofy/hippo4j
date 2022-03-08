@@ -13,6 +13,8 @@ import cn.hippo4j.core.starter.parser.ConfigParserHandler;
 import cn.hippo4j.core.starter.support.GlobalCoreThreadPoolManage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
@@ -38,7 +40,7 @@ import static cn.hippo4j.core.starter.config.BootstrapCoreProperties.PREFIX;
  */
 @Slf4j
 @AllArgsConstructor
-public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh {
+public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean {
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
