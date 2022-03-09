@@ -96,7 +96,7 @@ Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池
 
 如果大家想要实时关注 Hippo4J 最新动态以及干货分享的话，可以关注我的公众号
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/29_99d111ebde8e438c16a7517a35d1cf7d.png)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/43_65f6020ed111b6bb3808ec338576bd6b.png)
 
 ## Stars 趋势
 
