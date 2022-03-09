@@ -73,6 +73,10 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
 
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
+        if (executeTimeOut == null || executeTimeOut <= 0) {
+            return;
+        }
+
         this.startTime.set(System.currentTimeMillis());
     }
 
