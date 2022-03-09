@@ -18,6 +18,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.task.TaskDecorator;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -102,7 +103,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .dynamicPool()
                         .workQueue(workQueue)
                         .threadFactory(threadPoolId)
-                        .executeTimeOut(executorProperties.getExecuteTimeOut())
+                        .executeTimeOut(Optional.ofNullable(executorProperties.getExecuteTimeOut()).orElse(0L))
                         .poolThreadSize(executorProperties.getCorePoolSize(), executorProperties.getMaximumPoolSize())
                         .keepAliveTime(executorProperties.getKeepAliveTime(), TimeUnit.SECONDS)
                         .rejected(RejectedTypeEnum.createPolicy(executorProperties.getRejectedHandler()))
@@ -132,7 +133,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
                 dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);
             } catch (Exception ex) {
-                log.error("Failed to initialize thread pool configuration. error message :: {}", ex.getMessage());
+                log.error("Failed to initialize thread pool configuration. error :: {}", ex);
             } finally {
                 if (Objects.isNull(dynamicThreadPoolWrap.getExecutor())) {
                     dynamicThreadPoolWrap.setExecutor(CommonDynamicThreadPool.getInstance(threadPoolId));
