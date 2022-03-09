@@ -13,12 +13,7 @@ import cn.hippo4j.core.starter.parser.ConfigParserHandler;
 import cn.hippo4j.core.starter.support.GlobalCoreThreadPoolManage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.bind.Bindable;
-import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,8 +24,6 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-
-import static cn.hippo4j.core.starter.config.BootstrapCoreProperties.PREFIX;
 
 /**
  * Abstract core thread pool dynamic refresh.
@@ -62,10 +55,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             return;
         }
 
-        ConfigurationPropertySource sources = new MapConfigurationPropertySource(configInfo);
-        Binder binder = new Binder(sources);
-        BootstrapCoreProperties bindableCoreProperties = binder.bind(PREFIX, Bindable.ofInstance(bootstrapCoreProperties)).get();
-
+        BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
         List<ExecutorProperties> executors = bindableCoreProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
