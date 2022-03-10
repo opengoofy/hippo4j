@@ -42,7 +42,7 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
 
         String larkAlarmTxt;
         String larkAlarmTimoutReplaceTxt;
-        if (Objects.equals(notifyConfig.getTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
+        if (Objects.equals(alarmNotifyRequest.getNotifyTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
             String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
             if (StringUtil.isNotBlank(executeTimeoutTrace)) {
                 String larkAlarmTimoutTraceReplaceTxt = String.format(LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, executeTimeoutTrace);
@@ -61,7 +61,7 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 // 环境
                 alarmNotifyRequest.getActive(),
                 // 报警类型
-                notifyConfig.getTypeEnum(),
+                alarmNotifyRequest.getNotifyTypeEnum(),
                 // 线程池ID
                 alarmNotifyRequest.getThreadPoolId(),
                 // 应用名称

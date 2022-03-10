@@ -38,7 +38,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
 
         String weChatAlarmTxt;
         String weChatAlarmTimoutReplaceTxt;
-        if (Objects.equals(notifyConfig.getTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
+        if (Objects.equals(alarmNotifyRequest.getNotifyTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
             String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
             if (StringUtil.isNotBlank(executeTimeoutTrace)) {
                 String weChatAlarmTimoutTraceReplaceTxt = String.format(WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, executeTimeoutTrace);
@@ -58,7 +58,7 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
                 // 环境
                 alarmNotifyRequest.getActive(),
                 // 报警类型
-                notifyConfig.getTypeEnum(),
+                alarmNotifyRequest.getNotifyTypeEnum(),
                 // 线程池ID
                 alarmNotifyRequest.getThreadPoolId(),
                 // 应用名称

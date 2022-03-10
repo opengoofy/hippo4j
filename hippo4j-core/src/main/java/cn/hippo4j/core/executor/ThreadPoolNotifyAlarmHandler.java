@@ -5,7 +5,7 @@ import cn.hippo4j.common.notify.NotifyTypeEnum;
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
-import cn.hippo4j.common.toolkit.MDCUtil;
+import cn.hippo4j.core.toolkit.TraceContextUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
@@ -21,8 +21,6 @@ import org.springframework.boot.CommandLineRunner;
 
 import java.util.List;
 import java.util.concurrent.*;
-
-import static cn.hippo4j.common.constant.Constants.EXECUTE_TIMEOUT_TRACE;
 
 /**
  * Thread pool alarm notify.
@@ -168,15 +166,13 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
                 alarmNotifyRequest.setThreadPoolId(threadPoolId);
                 alarmNotifyRequest.setExecuteTime(executeTime);
                 alarmNotifyRequest.setExecuteTimeOut(executeTimeOut);
-                String executeTimeoutTrace = MDCUtil.getAndRemove(EXECUTE_TIMEOUT_TRACE);
-                Runnable task = () -> {
-                    if (StringUtil.isNotBlank(executeTimeoutTrace)) {
-                        alarmNotifyRequest.setExecuteTimeoutTrace(executeTimeoutTrace);
-                    }
 
-                    hippoSendMessageService.sendAlarmMessage(NotifyTypeEnum.TIMEOUT, alarmNotifyRequest);
-                };
+                String executeTimeoutTrace = TraceContextUtil.getAndRemove();
+                if (StringUtil.isNotBlank(executeTimeoutTrace)) {
+                    alarmNotifyRequest.setExecuteTimeoutTrace(executeTimeoutTrace);
+                }
 
+                Runnable task = () -> hippoSendMessageService.sendAlarmMessage(NotifyTypeEnum.TIMEOUT, alarmNotifyRequest);
                 EXECUTE_TIMEOUT_EXECUTOR.execute(task);
             } catch (Throwable ex) {
                 log.error("Send thread pool execution timeout alarm error.", ex);

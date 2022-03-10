@@ -50,7 +50,8 @@ public class BaseSendMessageServiceImpl implements HippoSendMessageService, Comm
                     return;
                 }
 
-                if (isSendAlarm(each.getThreadPoolId(), each.setTypeEnum(typeEnum))) {
+                if (isSendAlarm(each.getThreadPoolId(), each.getPlatform(), typeEnum)) {
+                    alarmNotifyRequest.setNotifyTypeEnum(typeEnum);
                     messageHandler.sendAlarmMessage(each, alarmNotifyRequest);
                 }
             } catch (Exception ex) {
@@ -88,14 +89,15 @@ public class BaseSendMessageServiceImpl implements HippoSendMessageService, Comm
      * Is send alarm.
      *
      * @param threadPoolId
-     * @param notifyInfo
+     * @param platform
+     * @param typeEnum
      * @return
      */
-    private boolean isSendAlarm(String threadPoolId, NotifyConfigDTO notifyInfo) {
+    private boolean isSendAlarm(String threadPoolId, String platform, NotifyTypeEnum typeEnum) {
         AlarmControlDTO alarmControl = AlarmControlDTO.builder()
                 .threadPool(threadPoolId)
-                .platform(notifyInfo.getPlatform())
-                .typeEnum(notifyInfo.getTypeEnum())
+                .platform(platform)
+                .typeEnum(typeEnum)
                 .build();
 
         return alarmControlHandler.isSendAlarm(alarmControl);
