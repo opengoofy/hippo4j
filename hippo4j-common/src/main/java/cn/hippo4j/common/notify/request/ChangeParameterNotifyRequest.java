@@ -34,6 +34,10 @@ public class ChangeParameterNotifyRequest extends BaseNotifyRequest {
 
     private Long nowKeepAliveTime;
 
+    private Long beforeExecuteTimeOut;
+
+    private Long nowExecuteTimeOut;
+
     private String blockingQueueName;
 
     private Integer beforeQueueCapacity;

@@ -60,13 +60,14 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         long originalKeepAliveTime = executor.getKeepAliveTime(TimeUnit.SECONDS);
         boolean originalAllowCoreThreadTimeOut = executor.allowsCoreThreadTimeOut();
 
-        String originalRejected;
+        Long originalExecuteTimeOut = null;
         RejectedExecutionHandler rejectedExecutionHandler = executor.getRejectedExecutionHandler();
         if (executor instanceof AbstractDynamicExecutorSupport) {
             DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) executor;
             rejectedExecutionHandler = dynamicExecutor.getRedundancyHandler();
+            originalExecuteTimeOut = dynamicExecutor.getExecuteTimeOut();
         }
-        originalRejected = rejectedExecutionHandler.getClass().getSimpleName();
+        String originalRejected = rejectedExecutionHandler.getClass().getSimpleName();
 
         // Send change message.
         ChangeParameterNotifyRequest request = new ChangeParameterNotifyRequest();
@@ -77,6 +78,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         request.setBlockingQueueName(originalQuery);
         request.setBeforeQueueCapacity(originalCapacity);
         request.setBeforeRejectedName(originalRejected);
+        request.setBeforeExecuteTimeOut(originalExecuteTimeOut);
         request.setThreadPoolId(threadPoolId);
 
         changePoolInfo(executor, parameter);
@@ -88,6 +90,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         request.setNowKeepAliveTime(afterExecutor.getKeepAliveTime(TimeUnit.SECONDS));
         request.setNowQueueCapacity((afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size()));
         request.setNowRejectedName(RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType()));
+        request.setNowExecuteTimeOut(originalExecuteTimeOut);
         threadPoolNotifyAlarmHandler.sendPoolConfigChange(request);
 
         log.info(
@@ -97,6 +100,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                         "\n    queueType :: [{}]" +
                         "\n    capacity :: [{}]" +
                         "\n    keepAliveTime :: [{}]" +
+                        "\n    executeTimeOut :: [{}]" +
                         "\n    rejectedType :: [{}]" +
                         "\n    allowCoreThreadTimeOut :: [{}]",
                 threadPoolId.toUpperCase(),
@@ -106,6 +110,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 String.format("%s => %s", originalCapacity,
                         (afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size())),
                 String.format("%s => %s", originalKeepAliveTime, afterExecutor.getKeepAliveTime(TimeUnit.SECONDS)),
+                String.format("%s => %s", originalExecuteTimeOut, originalExecuteTimeOut),
                 String.format("%s => %s", originalRejected, RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType())),
                 String.format("%s => %s", originalAllowCoreThreadTimeOut, EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()))
         );

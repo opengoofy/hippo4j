@@ -45,7 +45,7 @@ public class WeChatAlarmConstants {
                     "> 队列元素个数：%s \n" +
                     "> 队列剩余个数：%s \n" +
                     "> 拒绝策略：%s \n" +
-                    "> 拒绝策略执行次数：%s \n" +
+                    "> 拒绝策略执行次数：<font color='#FF0000'>%s</font> \n" +
                     WE_CHAT_ALARM_TIMOUT_REPLACE_TXT +
                     "> OWNER：<@%s> \n" +
                     "> 提示：%d 分钟内此线程池不会重复告警（可配置） \n\n" +
@@ -62,7 +62,8 @@ public class WeChatAlarmConstants {
                     "> 核心线程数：%s \n" +
                     "> 最大线程数：%s \n" +
                     "> 核心线程超时：%s \n" +
-                    "> 线程存活时间：%s / SECONDS \n" +
+                    "> 线程存活时间：%s \n" +
+                    "> 执行超时时间：%s \n" +
                     "> 队列类型：%s \n" +
                     "> 队列容量：%s \n" +
                     "> AGO 拒绝策略：%s \n" +

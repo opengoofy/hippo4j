@@ -36,7 +36,7 @@ public class MessageNotifyConfiguration {
     @Bean
     public HippoSendMessageService hippoSendMessageService(NotifyConfigBuilder notifyConfigBuilder,
                                                            AlarmControlHandler alarmControlHandler) {
-        return new BaseSendMessageServiceImpl(notifyConfigBuilder, alarmControlHandler);
+        return new HippoBaseSendMessageService(notifyConfigBuilder, alarmControlHandler);
     }
 
     @Bean

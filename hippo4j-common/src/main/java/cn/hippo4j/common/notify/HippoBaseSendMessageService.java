@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class BaseSendMessageServiceImpl implements HippoSendMessageService, CommandLineRunner {
+public class HippoBaseSendMessageService implements HippoSendMessageService, CommandLineRunner {
 
     private final NotifyConfigBuilder notifyConfigBuilder;
 
@@ -38,7 +38,6 @@ public class BaseSendMessageServiceImpl implements HippoSendMessageService, Comm
         String buildKey = StrUtil.builder(threadPoolId, "+", "ALARM").toString();
         List<NotifyConfigDTO> notifyList = notifyConfigs.get(buildKey);
         if (CollUtil.isEmpty(notifyList)) {
-            log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
             return;
         }
 
@@ -111,6 +110,15 @@ public class BaseSendMessageServiceImpl implements HippoSendMessageService, Comm
 
         Map<String, List<NotifyConfigDTO>> buildNotify = notifyConfigBuilder.buildNotify();
         notifyConfigs.putAll(buildNotify);
+    }
+
+    /**
+     * Put platform.
+     *
+     * @param notifyConfigs
+     */
+    public synchronized void putPlatform(Map<String, List<NotifyConfigDTO>> notifyConfigs) {
+        this.notifyConfigs.putAll(notifyConfigs);
     }
 
 }

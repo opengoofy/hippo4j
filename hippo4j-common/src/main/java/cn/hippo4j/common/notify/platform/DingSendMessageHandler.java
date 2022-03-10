@@ -133,6 +133,8 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 changeParameterNotifyRequest.getBeforeAllowsCoreThreadTimeOut() + "  ➲  " + changeParameterNotifyRequest.getNowAllowsCoreThreadTimeOut(),
                 // 线程存活时间
                 changeParameterNotifyRequest.getBeforeKeepAliveTime() + "  ➲  " + changeParameterNotifyRequest.getNowKeepAliveTime(),
+                // 执行超时时间
+                changeParameterNotifyRequest.getBeforeExecuteTimeOut() + "  ➲  " + changeParameterNotifyRequest.getNowExecuteTimeOut(),
                 // 阻塞队列
                 changeParameterNotifyRequest.getBlockingQueueName(),
                 // 阻塞队列容量

@@ -134,6 +134,8 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 changeParameterNotifyRequest.getBlockingQueueName(),
                 // 阻塞队列容量
                 changeParameterNotifyRequest.getBeforeQueueCapacity() + "  ➲  " + changeParameterNotifyRequest.getNowQueueCapacity(),
+                // 执行超时时间
+                changeParameterNotifyRequest.getBeforeExecuteTimeOut() + "  ➲  " + changeParameterNotifyRequest.getNowExecuteTimeOut(),
                 // 拒绝策略
                 changeParameterNotifyRequest.getBeforeRejectedName(),
                 changeParameterNotifyRequest.getNowRejectedName(),

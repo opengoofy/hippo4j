@@ -133,6 +133,11 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      * @param threadPoolId
      */
     public void checkPoolRejectedAlarm(String threadPoolId) {
+        ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
+        if (!threadPoolNotifyAlarm.getIsAlarm()) {
+            return;
+        }
+
         ThreadPoolExecutor threadPoolExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
         checkPoolRejectedAlarm(threadPoolId, threadPoolExecutor);
     }
@@ -160,6 +165,11 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      * @param threadPoolExecutor
      */
     public void asyncSendExecuteTimeOutAlarm(String threadPoolId, long executeTime, long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
+        ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
+        if (!threadPoolNotifyAlarm.getIsAlarm()) {
+            return;
+        }
+
         if (threadPoolExecutor instanceof DynamicThreadPoolExecutor) {
             try {
                 AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
