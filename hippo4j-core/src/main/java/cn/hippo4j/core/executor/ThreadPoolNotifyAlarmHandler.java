@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.*;
 
 /**
@@ -134,7 +135,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      */
     public void checkPoolRejectedAlarm(String threadPoolId) {
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
-        if (!threadPoolNotifyAlarm.getIsAlarm()) {
+        if (Objects.isNull(threadPoolNotifyAlarm)||!threadPoolNotifyAlarm.getIsAlarm()) {
             return;
         }
 
