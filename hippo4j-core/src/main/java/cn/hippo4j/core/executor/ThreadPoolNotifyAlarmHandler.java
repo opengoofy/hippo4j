@@ -135,7 +135,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      */
     public void checkPoolRejectedAlarm(String threadPoolId) {
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
-        if (Objects.isNull(threadPoolNotifyAlarm)||!threadPoolNotifyAlarm.getIsAlarm()) {
+        if (Objects.isNull(threadPoolNotifyAlarm) || !threadPoolNotifyAlarm.getIsAlarm()) {
             return;
         }
 

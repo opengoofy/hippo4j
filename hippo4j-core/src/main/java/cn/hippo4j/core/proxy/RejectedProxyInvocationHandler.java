@@ -30,7 +30,11 @@ public class RejectedProxyInvocationHandler implements InvocationHandler {
 
         if (ApplicationContextHolder.getInstance() != null) {
             ThreadPoolNotifyAlarmHandler alarmHandler = ApplicationContextHolder.getBean(ThreadPoolNotifyAlarmHandler.class);
-            alarmHandler.checkPoolRejectedAlarm(threadPoolId);
+            try {
+                alarmHandler.checkPoolRejectedAlarm(threadPoolId);
+            } catch (Exception ignored) {
+                //ignored
+            }
         }
 
         try {

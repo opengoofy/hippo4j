@@ -16,7 +16,7 @@ public class GlobalNotifyAlarmManage {
     /**
      * Notify alarm map.
      */
-    private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap();
 
     /**
      * Get.
