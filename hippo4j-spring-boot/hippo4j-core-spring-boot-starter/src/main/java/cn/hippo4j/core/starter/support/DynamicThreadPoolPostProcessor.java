@@ -109,42 +109,83 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .rejected(RejectedTypeEnum.createPolicy(executorProperties.getRejectedHandler()))
                         .allowCoreThreadTimeOut(executorProperties.getAllowCoreThreadTimeOut())
                         .build();
-
-                // 设置动态线程池增强参数
-                ThreadPoolNotifyAlarm notify = executorProperties.getNotify();
-                if (dynamicThreadPoolWrap.getExecutor() instanceof AbstractDynamicExecutorSupport) {
-                    ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
-                            notify.getIsAlarm(),
-                            notify.getCapacityAlarm(),
-                            notify.getActiveAlarm()
-                    );
-
-                    threadPoolNotifyAlarm.setInterval(notify.getInterval());
-                    threadPoolNotifyAlarm.setReceives(notify.getReceives());
-                    GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
-
-                    TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();
-                    ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setTaskDecorator(taskDecorator);
-
-                    long awaitTerminationMillis = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).awaitTerminationMillis;
-                    boolean waitForTasksToCompleteOnShutdown = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).waitForTasksToCompleteOnShutdown;
-                    ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setSupportParam(awaitTerminationMillis, waitForTasksToCompleteOnShutdown);
-                }
-
-                dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);
             } catch (Exception ex) {
                 log.error("Failed to initialize thread pool configuration. error :: {}", ex);
             } finally {
                 if (Objects.isNull(dynamicThreadPoolWrap.getExecutor())) {
                     dynamicThreadPoolWrap.setExecutor(CommonDynamicThreadPool.getInstance(threadPoolId));
                 }
-            }
 
-            GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrap.getTpId(), dynamicThreadPoolWrap);
-            GlobalCoreThreadPoolManage.register(threadPoolId, executorProperties);
+                dynamicThreadPoolWrap.setInitFlag(Boolean.TRUE);
+            }
         }
 
+        // 设置动态线程池增强参数
+        ThreadPoolNotifyAlarm notify = Optional.ofNullable(executorProperties)
+                .map(each -> each.getNotify())
+                .orElseGet(() -> {
+                    ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(true, 80, 80);
+                    threadPoolNotifyAlarm.setInterval(2);
+                    return threadPoolNotifyAlarm;
+                });
+        if (dynamicThreadPoolWrap.getExecutor() instanceof AbstractDynamicExecutorSupport) {
+            ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
+                    notify.getIsAlarm(),
+                    notify.getCapacityAlarm(),
+                    notify.getActiveAlarm()
+            );
+
+            threadPoolNotifyAlarm.setInterval(notify.getInterval());
+            threadPoolNotifyAlarm.setReceives(notify.getReceives());
+            GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
+
+            TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();
+            ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setTaskDecorator(taskDecorator);
+
+            long awaitTerminationMillis = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).awaitTerminationMillis;
+            boolean waitForTasksToCompleteOnShutdown = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).waitForTasksToCompleteOnShutdown;
+            ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setSupportParam(awaitTerminationMillis, waitForTasksToCompleteOnShutdown);
+        }
+
+        dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);
+
+        GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrap.getTpId(), dynamicThreadPoolWrap);
+        GlobalCoreThreadPoolManage.register(
+                threadPoolId,
+                executorProperties == null
+                        ? buildExecutorProperties(threadPoolId, newDynamicPoolExecutor)
+                        : executorProperties
+        );
+
         return newDynamicPoolExecutor;
+    }
+
+    /**
+     * Build executor properties.
+     *
+     * @param threadPoolId
+     * @param executor
+     * @return
+     */
+    private ExecutorProperties buildExecutorProperties(String threadPoolId, ThreadPoolExecutor executor) {
+        ExecutorProperties executorProperties = new ExecutorProperties();
+        BlockingQueue<Runnable> queue = executor.getQueue();
+        int queueSize = queue.size();
+        String queueType = queue.getClass().getSimpleName();
+        int remainingCapacity = queue.remainingCapacity();
+        int queueCapacity = queueSize + remainingCapacity;
+
+        executorProperties.setCorePoolSize(executor.getCorePoolSize())
+                .setMaximumPoolSize(executor.getMaximumPoolSize())
+                .setAllowCoreThreadTimeOut(executor.allowsCoreThreadTimeOut())
+                .setKeepAliveTime(executor.getKeepAliveTime(TimeUnit.SECONDS))
+                .setBlockingQueue(queueType)
+                .setExecuteTimeOut(10000L)
+                .setQueueCapacity(queueCapacity)
+                .setRejectedHandler(((DynamicThreadPoolExecutor) executor).getRedundancyHandler().getClass().getSimpleName())
+                .setThreadPoolId(threadPoolId);
+
+        return executorProperties;
     }
 
 }

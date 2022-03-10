@@ -39,6 +39,11 @@ public class DynamicThreadPoolWrapper implements DisposableBean {
     private boolean subscribeFlag;
 
     /**
+     * Init flag
+     */
+    private boolean initFlag;
+
+    /**
      * executor
      * {@link DynamicThreadPoolExecutor}
      */

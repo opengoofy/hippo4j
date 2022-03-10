@@ -3,7 +3,7 @@ package cn.hippo4j.core.starter.config;
 import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.notify.AlarmControlHandler;
-import cn.hippo4j.common.notify.BaseSendMessageServiceImpl;
+import cn.hippo4j.common.notify.HippoBaseSendMessageService;
 import cn.hippo4j.common.notify.HippoSendMessageService;
 import cn.hippo4j.common.notify.SendMessageHandler;
 import cn.hippo4j.common.notify.platform.DingSendMessageHandler;
@@ -67,7 +67,7 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @Bean
     public HippoSendMessageService hippoSendMessageService(NotifyConfigBuilder notifyConfigBuilder,
                                                            AlarmControlHandler alarmControlHandler) {
-        return new BaseSendMessageServiceImpl(notifyConfigBuilder, alarmControlHandler);
+        return new HippoBaseSendMessageService(notifyConfigBuilder, alarmControlHandler);
     }
 
     @Bean

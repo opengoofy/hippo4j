@@ -33,53 +33,67 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
 
         List<ExecutorProperties> executors = bootstrapCoreProperties.getExecutors();
         for (ExecutorProperties executor : executors) {
-            String threadPoolId = executor.getThreadPoolId();
-            String alarmBuildKey = threadPoolId + "+ALARM";
-            List<NotifyConfigDTO> alarmNotifyConfigs = Lists.newArrayList();
-
-            List<NotifyPlatformProperties> notifyPlatforms = bootstrapCoreProperties.getNotifyPlatforms();
-            for (NotifyPlatformProperties platformProperties : notifyPlatforms) {
-                NotifyConfigDTO notifyConfig = new NotifyConfigDTO();
-                notifyConfig.setPlatform(platformProperties.getPlatform());
-                notifyConfig.setThreadPoolId(threadPoolId);
-                notifyConfig.setType("ALARM");
-                notifyConfig.setSecretKey(platformProperties.getSecretKey());
-                notifyConfig.setInterval(executor.getNotify().getInterval());
-                Map<String, String> receives = executor.getNotify().getReceives();
-                String receive = receives.get(platformProperties.getPlatform());
-                if (StrUtil.isBlank(receive)) {
-                    receive = platformProperties.getReceives();
-                }
-                notifyConfig.setReceives(receive);
-                alarmNotifyConfigs.add(notifyConfig);
-            }
-
-            resultMap.put(alarmBuildKey, alarmNotifyConfigs);
-
-            String changeBuildKey = threadPoolId + "+CONFIG";
-            List<NotifyConfigDTO> changeNotifyConfigs = Lists.newArrayList();
-
-            for (NotifyPlatformProperties platformProperties : notifyPlatforms) {
-                NotifyConfigDTO notifyConfig = new NotifyConfigDTO();
-                notifyConfig.setPlatform(platformProperties.getPlatform());
-                notifyConfig.setThreadPoolId(threadPoolId);
-                notifyConfig.setType("CONFIG");
-                notifyConfig.setSecretKey(platformProperties.getSecretKey());
-
-                Map<String, String> receives = executor.getNotify().getReceives();
-                String receive = receives.get(platformProperties.getPlatform());
-                if (StrUtil.isBlank(receive)) {
-                    receive = platformProperties.getReceives();
-                }
-                notifyConfig.setReceives(receive);
-                changeNotifyConfigs.add(notifyConfig);
-            }
-
-            resultMap.put(changeBuildKey, changeNotifyConfigs);
+            resultMap.putAll(buildSingleNotifyConfig(executor));
         }
 
-        resultMap.forEach((key, val) ->
-                val.stream().filter(each -> StrUtil.equals("ALARM", each.getType()))
+        return resultMap;
+    }
+
+    /**
+     * Build single notify config.
+     *
+     * @param executor
+     * @return
+     */
+    public Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig(ExecutorProperties executor) {
+        Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
+        String threadPoolId = executor.getThreadPoolId();
+        String alarmBuildKey = threadPoolId + "+ALARM";
+        List<NotifyConfigDTO> alarmNotifyConfigs = Lists.newArrayList();
+
+        List<NotifyPlatformProperties> notifyPlatforms = bootstrapCoreProperties.getNotifyPlatforms();
+        for (NotifyPlatformProperties platformProperties : notifyPlatforms) {
+            NotifyConfigDTO notifyConfig = new NotifyConfigDTO();
+            notifyConfig.setPlatform(platformProperties.getPlatform());
+            notifyConfig.setThreadPoolId(threadPoolId);
+            notifyConfig.setType("ALARM");
+            notifyConfig.setSecretKey(platformProperties.getSecretKey());
+            notifyConfig.setInterval(executor.getNotify().getInterval());
+            Map<String, String> receives = executor.getNotify().getReceives();
+            String receive = receives.get(platformProperties.getPlatform());
+            if (StrUtil.isBlank(receive)) {
+                receive = platformProperties.getReceives();
+            }
+            notifyConfig.setReceives(receive);
+            alarmNotifyConfigs.add(notifyConfig);
+        }
+
+        resultMap.put(alarmBuildKey, alarmNotifyConfigs);
+
+        String changeBuildKey = threadPoolId + "+CONFIG";
+        List<NotifyConfigDTO> changeNotifyConfigs = Lists.newArrayList();
+
+        for (NotifyPlatformProperties platformProperties : notifyPlatforms) {
+            NotifyConfigDTO notifyConfig = new NotifyConfigDTO();
+            notifyConfig.setPlatform(platformProperties.getPlatform());
+            notifyConfig.setThreadPoolId(threadPoolId);
+            notifyConfig.setType("CONFIG");
+            notifyConfig.setSecretKey(platformProperties.getSecretKey());
+
+            Map<String, String> receives = executor.getNotify().getReceives();
+            String receive = receives.get(platformProperties.getPlatform());
+            if (StrUtil.isBlank(receive)) {
+                receive = platformProperties.getReceives();
+            }
+            notifyConfig.setReceives(receive);
+            changeNotifyConfigs.add(notifyConfig);
+        }
+
+        resultMap.put(changeBuildKey, changeNotifyConfigs);
+
+        resultMap.forEach(
+                (key, val) -> val.stream()
+                        .filter(each -> StrUtil.equals("ALARM", each.getType()))
                         .forEach(each -> alarmControlHandler.initCacheAndLock(each.getThreadPoolId(), each.getPlatform(), each.getInterval()))
         );
 

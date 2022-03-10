@@ -1,14 +1,19 @@
 package cn.hippo4j.core.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
+import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.notify.HippoBaseSendMessageService;
+import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.*;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
+import cn.hippo4j.core.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.starter.parser.ConfigParserHandler;
 import cn.hippo4j.core.starter.support.GlobalCoreThreadPoolManage;
 import lombok.AllArgsConstructor;
@@ -56,6 +61,40 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
         }
 
         BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
+
+        // platforms
+        refreshPlatforms(bindableCoreProperties);
+        // executors
+        refreshExecutors(bindableCoreProperties);
+    }
+
+    /**
+     * Refresh platform.
+     *
+     * @param bindableCoreProperties
+     */
+    private void refreshPlatforms(BootstrapCoreProperties bindableCoreProperties) {
+        List<ExecutorProperties> executors = bindableCoreProperties.getExecutors();
+        for (ExecutorProperties executor : executors) {
+            String threadPoolId = executor.getThreadPoolId();
+            DynamicThreadPoolWrapper wrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
+            if (!wrapper.isInitFlag()) {
+                HippoBaseSendMessageService sendMessageService = ApplicationContextHolder.getBean(HippoBaseSendMessageService.class);
+                CoreNotifyConfigBuilder configBuilder = ApplicationContextHolder.getBean(CoreNotifyConfigBuilder.class);
+                Map<String, List<NotifyConfigDTO>> notifyConfig = configBuilder.buildSingleNotifyConfig(executor);
+                sendMessageService.putPlatform(notifyConfig);
+
+                wrapper.setInitFlag(Boolean.TRUE);
+            }
+        }
+    }
+
+    /**
+     * Refresh executors.
+     *
+     * @param bindableCoreProperties
+     */
+    private void refreshExecutors(BootstrapCoreProperties bindableCoreProperties) {
         List<ExecutorProperties> executors = bindableCoreProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
@@ -74,6 +113,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             changeRequest.setBlockingQueueName(beforeProperties.getBlockingQueue());
             changeRequest.setBeforeQueueCapacity(beforeProperties.getQueueCapacity());
             changeRequest.setBeforeRejectedName(beforeProperties.getRejectedHandler());
+            changeRequest.setBeforeExecuteTimeOut(beforeProperties.getExecuteTimeOut());
             changeRequest.setThreadPoolId(beforeProperties.getThreadPoolId());
 
             changeRequest.setNowCorePoolSize(properties.getCorePoolSize());
@@ -82,6 +122,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             changeRequest.setNowKeepAliveTime(properties.getKeepAliveTime());
             changeRequest.setNowQueueCapacity(properties.getQueueCapacity());
             changeRequest.setNowRejectedName(properties.getRejectedHandler());
+            changeRequest.setNowExecuteTimeOut(properties.getExecuteTimeOut());
 
             GlobalCoreThreadPoolManage.refresh(threadPoolId, properties);
             log.info(
@@ -91,6 +132,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                             "\n    queueType :: [{}]" +
                             "\n    capacity :: [{}]" +
                             "\n    keepAliveTime :: [{}]" +
+                            "\n    executeTimeOut :: [{}]" +
                             "\n    rejectedType :: [{}]" +
                             "\n    allowCoreThreadTimeOut :: [{}]",
                     threadPoolId.toUpperCase(),
@@ -99,6 +141,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                     String.format("%s => %s", beforeProperties.getBlockingQueue(), properties.getBlockingQueue()),
                     String.format("%s => %s", beforeProperties.getQueueCapacity(), properties.getQueueCapacity()),
                     String.format("%s => %s", beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime()),
+                    String.format("%s => %s", beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut()),
                     String.format("%s => %s", beforeProperties.getRejectedHandler(), properties.getRejectedHandler()),
                     String.format("%s => %s", beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())
             );
@@ -124,6 +167,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
         boolean result = !Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize())
                 || !Objects.equals(beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize())
                 || !Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())
+                || !Objects.equals(beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut())
                 || !Objects.equals(beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime())
                 || !Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())
                 ||
@@ -155,6 +199,12 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
         if (!Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())) {
             executor.allowCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut());
+        }
+
+        if (!Objects.equals(beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut())) {
+            if (executor instanceof AbstractDynamicExecutorSupport) {
+                ((DynamicThreadPoolExecutor) executor).setExecuteTimeOut(properties.getExecuteTimeOut());
+            }
         }
 
         if (!Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())) {

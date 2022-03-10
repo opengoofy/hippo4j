@@ -2,6 +2,7 @@ package cn.hippo4j.core.starter.config;
 
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * Executor properties.
@@ -10,6 +11,7 @@ import lombok.Data;
  * @date 2022/2/25 00:40
  */
 @Data
+@Accessors(chain = true)
 public class ExecutorProperties {
 
     /**

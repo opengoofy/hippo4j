@@ -1,17 +1,16 @@
 package cn.hippo4j.core.starter.refresher;
 
+import cn.hippo4j.common.notify.NotifyPlatformEnum;
+import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
+import cn.hippo4j.core.starter.config.NotifyPlatformProperties;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.springframework.boot.context.properties.bind.Bindable;
-import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 
 import java.util.List;
 import java.util.Map;
@@ -34,8 +33,9 @@ public class BootstrapCorePropertiesBinderAdapt {
      * @return
      */
     public static BootstrapCoreProperties bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapCoreProperties bootstrapCoreProperties) {
-        BootstrapCoreProperties bindableCoreProperties = null;
-        try {
+        BootstrapCoreProperties bindableCoreProperties = adapt(configInfo);
+        ;
+        /*try {
             ConfigurationPropertySource sources = new MapConfigurationPropertySource(configInfo);
             Binder binder = new Binder(sources);
             bindableCoreProperties = binder.bind(PREFIX, Bindable.ofInstance(bootstrapCoreProperties)).get();
@@ -45,7 +45,7 @@ public class BootstrapCorePropertiesBinderAdapt {
             } catch (ClassNotFoundException notEx) {
                 bindableCoreProperties = adapt(configInfo);
             }
-        }
+        }*/
 
         return bindableCoreProperties;
     }
@@ -62,7 +62,14 @@ public class BootstrapCorePropertiesBinderAdapt {
             // filter
             Map<Object, Object> targetMap = Maps.newHashMap();
             configInfo.forEach((key, val) -> {
-                if (key != null && StringUtil.isNotBlank((String) key) && ((String) key).indexOf(PREFIX + ".executors") != -1) {
+                boolean containFlag = key != null
+                        && StringUtil.isNotBlank((String) key)
+                        && (
+                        ((String) key).indexOf(PREFIX + ".executors") != -1
+                                || ((String) key).indexOf(PREFIX + ".notify-platforms") != -1
+                                || ((String) key).indexOf(PREFIX + ".notifyPlatforms") != -1
+                );
+                if (containFlag) {
                     String targetKey = key.toString().replace(PREFIX + ".", "");
                     targetMap.put(targetKey, val);
                 }
@@ -70,35 +77,87 @@ public class BootstrapCorePropertiesBinderAdapt {
 
             // convert
             List<ExecutorProperties> executorPropertiesList = Lists.newArrayList();
+            List<NotifyPlatformProperties> notifyPropertiesList = Lists.newArrayList();
             for (int i = 0; i < Integer.MAX_VALUE; i++) {
-                Map<String, Object> tarterSingleMap = Maps.newHashMap();
+                Map<String, Object> executorSingleMap = Maps.newHashMap();
+                Map<String, Object> platformSingleMap = Maps.newHashMap();
+                Map<String, Object> notifySingleMap = Maps.newHashMap();
 
                 for (Map.Entry entry : targetMap.entrySet()) {
                     String key = entry.getKey().toString();
-                    if (key.indexOf(i + "") != -1) {
-                        key = key.replace("executors[" + i + "].", "");
+                    if (key.indexOf("executors[" + i + "].") != -1) {
+                        if (key.indexOf("executors[" + i + "].notify.") != -1) {
+                            key = key.replace("executors[" + i + "].notify.", "");
+                            String[] notifyKeySplit = key.split("-");
+                            if (notifyKeySplit != null && notifyKeySplit.length > 0) {
+                                key = key.replace("-", "_");
+                            }
+
+                            notifySingleMap.put(key, entry.getValue());
+                        } else {
+                            key = key.replace("executors[" + i + "].", "");
+
+                            String[] keySplit = key.split("-");
+                            if (keySplit != null && keySplit.length > 0) {
+                                key = key.replace("-", "_");
+                            }
+                            executorSingleMap.put(key, entry.getValue());
+                        }
+                    }
+
+
+                    if (key.indexOf("notify-platforms[" + i + "].") != -1 || key.indexOf("notifyPlatforms[" + i + "].") != -1) {
+                        if (key.indexOf("notify-platforms[" + i + "].") != -1) {
+                            key = key.replace("notify-platforms[" + i + "].", "");
+                        } else {
+                            key = key.replace("notifyPlatforms[" + i + "].", "");
+                        }
 
                         String[] keySplit = key.split("-");
                         if (keySplit != null && keySplit.length > 0) {
                             key = key.replace("-", "_");
                         }
 
-                        tarterSingleMap.put(key, entry.getValue());
+                        platformSingleMap.put(key, entry.getValue());
                     }
                 }
 
-                if (CollectionUtil.isEmpty(tarterSingleMap)) {
+                if (CollectionUtil.isEmpty(executorSingleMap) && CollectionUtil.isEmpty(platformSingleMap)) {
                     break;
                 }
 
-                ExecutorProperties executorProperties = BeanUtil.mapToBean(tarterSingleMap, ExecutorProperties.class, true, CopyOptions.create());
-                if (executorProperties != null) {
-                    executorPropertiesList.add(executorProperties);
+                if (CollectionUtil.isNotEmpty(executorSingleMap)) {
+                    ExecutorProperties executorProperties = BeanUtil.mapToBean(executorSingleMap, ExecutorProperties.class, true, CopyOptions.create());
+                    if (executorProperties != null) {
+                        if (CollectionUtil.isNotEmpty(notifySingleMap)) {
+                            ThreadPoolNotifyAlarm alarm = BeanUtil.mapToBean(notifySingleMap, ThreadPoolNotifyAlarm.class, true, CopyOptions.create());
+                            Map<String, String> notifyReceivesMap = Maps.newHashMap();
+                            for (NotifyPlatformEnum value : NotifyPlatformEnum.values()) {
+                                Object receives = targetMap.get("executors[" + i + "].notify.receives." + value.name());
+                                if (receives != null && StringUtil.isNotBlank((String) receives)) {
+                                    notifyReceivesMap.put(value.name(), (String) receives);
+                                }
+                            }
+
+                            alarm.setReceives(notifyReceivesMap);
+                            executorProperties.setNotify(alarm);
+                        }
+
+                        executorPropertiesList.add(executorProperties);
+                    }
+                }
+
+                if (CollectionUtil.isNotEmpty(platformSingleMap)) {
+                    NotifyPlatformProperties notifyPlatformProperties = BeanUtil.mapToBean(platformSingleMap, NotifyPlatformProperties.class, true, CopyOptions.create());
+                    if (notifyPlatformProperties != null) {
+                        notifyPropertiesList.add(notifyPlatformProperties);
+                    }
                 }
             }
 
             bindableCoreProperties = new BootstrapCoreProperties();
             bindableCoreProperties.setExecutors(executorPropertiesList);
+            bindableCoreProperties.setNotifyPlatforms(notifyPropertiesList);
         } catch (Exception ex) {
             throw ex;
         }
