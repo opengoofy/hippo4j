@@ -11,6 +11,10 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 
 import java.util.List;
 import java.util.Map;
@@ -33,9 +37,8 @@ public class BootstrapCorePropertiesBinderAdapt {
      * @return
      */
     public static BootstrapCoreProperties bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapCoreProperties bootstrapCoreProperties) {
-        BootstrapCoreProperties bindableCoreProperties = adapt(configInfo);
-        ;
-        /*try {
+        BootstrapCoreProperties bindableCoreProperties = null;
+        try {
             ConfigurationPropertySource sources = new MapConfigurationPropertySource(configInfo);
             Binder binder = new Binder(sources);
             bindableCoreProperties = binder.bind(PREFIX, Bindable.ofInstance(bootstrapCoreProperties)).get();
@@ -45,7 +48,7 @@ public class BootstrapCorePropertiesBinderAdapt {
             } catch (ClassNotFoundException notEx) {
                 bindableCoreProperties = adapt(configInfo);
             }
-        }*/
+        }
 
         return bindableCoreProperties;
     }

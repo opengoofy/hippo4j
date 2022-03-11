@@ -10,6 +10,7 @@ import cn.hippo4j.common.notify.platform.DingSendMessageHandler;
 import cn.hippo4j.common.notify.platform.LarkSendMessageHandler;
 import cn.hippo4j.common.notify.platform.WeChatSendMessageHandler;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
+import cn.hippo4j.core.config.WebThreadPoolConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.starter.refresher.ApolloRefresherHandler;
@@ -36,7 +37,7 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @AllArgsConstructor
 @EnableConfigurationProperties(BootstrapCoreProperties.class)
-@ImportAutoConfiguration({UtilAutoConfiguration.class})
+@ImportAutoConfiguration({UtilAutoConfiguration.class, WebThreadPoolConfiguration.class})
 @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 public class DynamicThreadPoolCoreAutoConfiguration {
 
@@ -116,6 +117,5 @@ public class DynamicThreadPoolCoreAutoConfiguration {
                                                   BootstrapCoreProperties bootstrapCoreProperties) {
         return new ApolloRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
-
 
 }

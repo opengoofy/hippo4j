@@ -58,6 +58,22 @@ public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
     private Map<String, String> apollo;
 
     /**
+     * Tomcat thread pool config.
+     */
+    private WebThreadPoolProperties tomcat;
+
+    /**
+     * Undertow thread pool config.
+     */
+    private WebThreadPoolProperties undertow;
+
+    /**
+     * Jetty thread pool config.
+     * KeepAliveTime is not supported temporarily.
+     */
+    private WebThreadPoolProperties jetty;
+
+    /**
      * Notify platforms.
      */
     private List<NotifyPlatformProperties> notifyPlatforms;
