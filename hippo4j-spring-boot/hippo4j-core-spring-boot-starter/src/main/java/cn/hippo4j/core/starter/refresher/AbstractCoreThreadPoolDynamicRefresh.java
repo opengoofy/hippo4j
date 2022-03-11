@@ -2,9 +2,13 @@ package cn.hippo4j.core.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.model.PoolParameter;
+import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.notify.HippoBaseSendMessageService;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.common.web.executor.WebThreadPoolHandlerChoose;
+import cn.hippo4j.common.web.executor.WebThreadPoolService;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
@@ -13,6 +17,7 @@ import cn.hippo4j.core.executor.support.*;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
+import cn.hippo4j.core.starter.config.WebThreadPoolProperties;
 import cn.hippo4j.core.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.starter.parser.ConfigParserHandler;
 import cn.hippo4j.core.starter.support.GlobalCoreThreadPoolManage;
@@ -62,10 +67,32 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
         BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
 
+        // web pool
+        refreshWebExecutor(bindableCoreProperties);
         // platforms
         refreshPlatforms(bindableCoreProperties);
         // executors
         refreshExecutors(bindableCoreProperties);
+    }
+
+    /**
+     * Refresh web executor.
+     *
+     * @param bindableCoreProperties
+     */
+    private void refreshWebExecutor(BootstrapCoreProperties bindableCoreProperties) {
+        WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
+        WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
+
+        PoolParameterInfo nowParameter = buildWebPoolParameter(bindableCoreProperties);
+        if (nowParameter != null) {
+            PoolParameter beforeParameter = webThreadPoolService.getWebThreadPoolParameter();
+            if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
+                    || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
+                    || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())) {
+                webThreadPoolService.updateWebThreadPool(nowParameter);
+            }
+        }
     }
 
     /**
@@ -232,6 +259,33 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                 log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type :: {}", executor.getQueue().getClass().getSimpleName());
             }
         }
+    }
+
+    /**
+     * Build web pool parameter.
+     *
+     * @param bindableCoreProperties
+     * @return
+     */
+    private PoolParameterInfo buildWebPoolParameter(BootstrapCoreProperties bindableCoreProperties) {
+        PoolParameterInfo parameterInfo = null;
+        WebThreadPoolProperties poolProperties = null;
+        if (bindableCoreProperties.getTomcat() != null) {
+            poolProperties = bindableCoreProperties.getTomcat();
+        } else if (bindableCoreProperties.getUndertow() != null) {
+            poolProperties = bindableCoreProperties.getUndertow();
+        } else if (bindableCoreProperties.getJetty() != null) {
+            poolProperties = bindableCoreProperties.getJetty();
+        }
+
+        if (poolProperties != null) {
+            parameterInfo = new PoolParameterInfo();
+            parameterInfo.setCoreSize(poolProperties.getCorePoolSize());
+            parameterInfo.setMaxSize(poolProperties.getMaximumPoolSize());
+            parameterInfo.setKeepAliveTime(poolProperties.getKeepAliveTime());
+        }
+
+        return parameterInfo;
     }
 
 }
