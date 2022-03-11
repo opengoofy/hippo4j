@@ -1,5 +1,6 @@
-package cn.hippo4j.starter.handler.web;
+package cn.hippo4j.common.web.executor;
 
+import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 
 import java.util.concurrent.Executor;
@@ -18,6 +19,13 @@ public interface WebThreadPoolService {
      * @return Tomcat、Jetty、Undertow ThreadPoolExecutor
      */
     Executor getWebThreadPool();
+
+    /**
+     * Get web thread pool parameter.
+     *
+     * @return
+     */
+    PoolParameter getWebThreadPoolParameter();
 
     /**
      * Update web thread pool.

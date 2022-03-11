@@ -5,9 +5,9 @@ import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
-import cn.hippo4j.starter.handler.web.WebThreadPoolHandlerChoose;
+import cn.hippo4j.common.web.executor.WebThreadPoolHandlerChoose;
 import cn.hippo4j.starter.handler.web.WebThreadPoolRunStateHandler;
-import cn.hippo4j.starter.handler.web.WebThreadPoolService;
+import cn.hippo4j.common.web.executor.WebThreadPoolService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

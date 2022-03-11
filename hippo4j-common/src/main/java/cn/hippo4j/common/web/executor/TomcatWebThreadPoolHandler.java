@@ -1,5 +1,6 @@
-package cn.hippo4j.starter.handler.web;
+package cn.hippo4j.common.web.executor;
 
+import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,26 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         }
 
         return tomcatExecutor;
+    }
+
+    @Override
+    public PoolParameter getWebThreadPoolParameter() {
+        PoolParameterInfo parameterInfo = null;
+        try {
+            parameterInfo = new PoolParameterInfo();
+            ThreadPoolExecutor tomcatExecutor = (ThreadPoolExecutor) executor;
+            int minThreads = tomcatExecutor.getCorePoolSize();
+            int maxThreads = tomcatExecutor.getMaximumPoolSize();
+            long keepAliveTime = tomcatExecutor.getKeepAliveTime(TimeUnit.SECONDS);
+
+            parameterInfo.setCoreSize(minThreads);
+            parameterInfo.setMaxSize(maxThreads);
+            parameterInfo.setKeepAliveTime((int) keepAliveTime);
+        } catch (Exception ex) {
+            log.error("Failed to get the tomcat thread pool parameter.", ex);
+        }
+
+        return parameterInfo;
     }
 
     @Override

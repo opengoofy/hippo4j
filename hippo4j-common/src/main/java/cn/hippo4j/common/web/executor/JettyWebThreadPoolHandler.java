@@ -1,5 +1,6 @@
-package cn.hippo4j.starter.handler.web;
+package cn.hippo4j.common.web.executor;
 
+import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
@@ -20,6 +21,25 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
         JettyWebServer jettyWebServer = (JettyWebServer) webServer;
         return jettyWebServer.getServer().getThreadPool();
+    }
+
+    @Override
+    public PoolParameter getWebThreadPoolParameter() {
+        PoolParameterInfo parameterInfo = null;
+        try {
+            parameterInfo = new PoolParameterInfo();
+            QueuedThreadPool jettyExecutor = (QueuedThreadPool) executor;
+
+            int minThreads = jettyExecutor.getMinThreads();
+            int maxThreads = jettyExecutor.getMaxThreads();
+
+            parameterInfo.setCoreSize(minThreads);
+            parameterInfo.setMaxSize(maxThreads);
+        } catch (Exception ex) {
+            log.error("Failed to get the jetty thread pool parameter.", ex);
+        }
+
+        return parameterInfo;
     }
 
     @Override

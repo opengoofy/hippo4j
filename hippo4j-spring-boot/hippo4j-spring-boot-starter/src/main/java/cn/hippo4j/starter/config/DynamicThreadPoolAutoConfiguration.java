@@ -2,7 +2,9 @@ package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.web.executor.WebThreadPoolHandlerChoose;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
+import cn.hippo4j.core.config.WebThreadPoolConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
@@ -13,7 +15,7 @@ import cn.hippo4j.starter.core.*;
 import cn.hippo4j.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.starter.handler.BaseThreadDetailStateHandler;
 import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
-import cn.hippo4j.starter.handler.web.*;
+import cn.hippo4j.starter.handler.web.WebThreadPoolRunStateHandler;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.starter.monitor.collect.RunTimeInfoCollector;
 import cn.hippo4j.starter.monitor.send.HttpConnectSender;
@@ -44,14 +46,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@ImportAutoConfiguration({HttpClientConfiguration.class, DiscoveryConfiguration.class, MessageNotifyConfiguration.class, UtilAutoConfiguration.class})
+@ImportAutoConfiguration({HttpClientConfiguration.class, DiscoveryConfiguration.class, MessageNotifyConfiguration.class, UtilAutoConfiguration.class, WebThreadPoolConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
-
-    private static final String TOMCAT_SERVLET_WEB_SERVER_FACTORY = "tomcatServletWebServerFactory";
-
-    private static final String JETTY_SERVLET_WEB_SERVER_FACTORY = "JettyServletWebServerFactory";
-
-    private static final String UNDERTOW_SERVLET_WEB_SERVER_FACTORY = "undertowServletWebServerFactory";
 
     private final BootstrapProperties properties;
 
@@ -138,29 +134,6 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     public WebThreadPoolRunStateHandler webThreadPoolRunStateHandler() {
         return new WebThreadPoolRunStateHandler();
-    }
-
-    @Bean
-    @ConditionalOnBean(name = TOMCAT_SERVLET_WEB_SERVER_FACTORY)
-    public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler() {
-        return new TomcatWebThreadPoolHandler();
-    }
-
-    @Bean
-    @ConditionalOnBean(name = JETTY_SERVLET_WEB_SERVER_FACTORY)
-    public JettyWebThreadPoolHandler jettyWebThreadPoolHandler() {
-        return new JettyWebThreadPoolHandler();
-    }
-
-    @Bean
-    @ConditionalOnBean(name = UNDERTOW_SERVLET_WEB_SERVER_FACTORY)
-    public UndertowWebThreadPoolHandler undertowWebThreadPoolHandler() {
-        return new UndertowWebThreadPoolHandler();
-    }
-
-    @Bean
-    public WebThreadPoolHandlerChoose webThreadPoolServiceChoose() {
-        return new WebThreadPoolHandlerChoose();
     }
 
     @Bean

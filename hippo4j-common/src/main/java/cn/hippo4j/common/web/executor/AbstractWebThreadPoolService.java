@@ -1,7 +1,9 @@
-package cn.hippo4j.starter.handler.web;
+package cn.hippo4j.common.web.executor;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
@@ -15,7 +17,7 @@ import java.util.concurrent.Executor;
  * @date 2022/1/19 21:20
  */
 @Slf4j
-public abstract class AbstractWebThreadPoolService implements WebThreadPoolService {
+public abstract class AbstractWebThreadPoolService implements WebThreadPoolService, ApplicationRunner {
 
     /**
      * Thread pool executor.
@@ -25,6 +27,7 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
     /**
      * Get web thread pool by server.
      *
+     * @param webServer
      * @return
      */
     protected abstract Executor getWebThreadPoolByServer(WebServer webServer);
@@ -42,6 +45,11 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
         }
 
         return executor;
+    }
+
+    @Override
+    public void run(ApplicationArguments args) {
+        getWebThreadPool();
     }
 
 }
