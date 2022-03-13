@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>hippo4j common code package.</description>
+    <description>HIPPO4J、HIPPO4J-CORE 公共代码库.</description>
 
     <dependencies>
         <dependency>

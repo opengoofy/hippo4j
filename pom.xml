@@ -10,7 +10,7 @@
 
     <name>${project.artifactId}</name>
     <url>https://github.com/acmenlt/dynamic-threadpool</url>
-    <description>🔥 强大的动态线程池，附带监控报警功能（没有依赖中间件）</description>
+    <description>动态可观测线程池框架, 为业务系统提高线上运行保障能力.</description>
 
     <modules>
         <module>hippo4j-auth</module>
