@@ -36,7 +36,7 @@ public class TaskDecoratorTest {
             threadPoolExecutor.execute(() -> {
                 /**
                  * 此处打印不为空, taskDecorator 即为生效.
-                 * taskDecorator 配置查看 {@link ThreadPoolConfig#messageCenterDynamicThreadPool()}
+                 * taskDecorator 配置查看 {@link ThreadPoolConfig#messageConsumeDynamicThreadPool()}
                  */
                 log.info("通过 taskDecorator MDC 传递上下文 :: {}", MDC.get(PLACEHOLDER));
             });

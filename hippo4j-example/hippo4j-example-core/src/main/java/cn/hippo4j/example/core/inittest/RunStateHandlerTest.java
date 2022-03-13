@@ -1,6 +1,5 @@
 package cn.hippo4j.example.core.inittest;
 
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -25,10 +24,10 @@ import static cn.hippo4j.common.constant.Constants.EXECUTE_TIMEOUT_TRACE;
 public class RunStateHandlerTest {
 
     @Resource
-    private DynamicThreadPoolWrapper messageCenterDynamicThreadPool;
+    private ThreadPoolExecutor messageConsumeDynamicThreadPool;
 
     @Resource
-    private ThreadPoolExecutor dynamicThreadPoolExecutor;
+    private ThreadPoolExecutor messageProduceDynamicThreadPool;
 
     @PostConstruct
     @SuppressWarnings("all")
@@ -36,10 +35,10 @@ public class RunStateHandlerTest {
         log.info("Test thread pool runtime state interface...");
 
         // 启动动态线程池模拟运行任务
-        runTask(messageCenterDynamicThreadPool.getExecutor());
+        runTask(messageConsumeDynamicThreadPool);
 
         // 启动动态线程池模拟运行任务
-        runTask(dynamicThreadPoolExecutor);
+        runTask(messageProduceDynamicThreadPool);
     }
 
     private void runTask(ExecutorService executorService) {
