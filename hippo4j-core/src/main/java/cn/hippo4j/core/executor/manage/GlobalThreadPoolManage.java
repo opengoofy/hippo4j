@@ -17,12 +17,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GlobalThreadPoolManage {
 
     /**
-     * 动态线程池参数容器
+     * 动态线程池参数容器.
      */
     private static final Map<String, PoolParameter> POOL_PARAMETER = new ConcurrentHashMap();
 
     /**
-     * 动态线程池包装容器
+     * 动态线程池包装容器.
      */
     private static final Map<String, DynamicThreadPoolWrapper> EXECUTOR_MAP = new ConcurrentHashMap();
 

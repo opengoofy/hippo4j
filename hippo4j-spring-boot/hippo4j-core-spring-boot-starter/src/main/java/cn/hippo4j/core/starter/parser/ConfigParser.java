@@ -11,10 +11,28 @@ import java.util.Map;
  */
 public interface ConfigParser {
 
+    /**
+     * Supports.
+     *
+     * @param type
+     * @return
+     */
     boolean supports(ConfigFileTypeEnum type);
 
+    /**
+     * Do parse.
+     *
+     * @param content
+     * @return
+     * @throws IOException
+     */
     Map<Object, Object> doParse(String content) throws IOException;
 
+    /**
+     * Get config file types.
+     *
+     * @return
+     */
     List<ConfigFileTypeEnum> getConfigFileTypes();
 
 }

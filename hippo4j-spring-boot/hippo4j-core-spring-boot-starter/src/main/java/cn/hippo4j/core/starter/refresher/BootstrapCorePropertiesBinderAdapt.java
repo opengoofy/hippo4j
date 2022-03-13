@@ -59,6 +59,7 @@ public class BootstrapCorePropertiesBinderAdapt {
      * @param configInfo
      * @return
      */
+    @Deprecated
     private static BootstrapCoreProperties adapt(Map<Object, Object> configInfo) {
         BootstrapCoreProperties bindableCoreProperties;
         try {

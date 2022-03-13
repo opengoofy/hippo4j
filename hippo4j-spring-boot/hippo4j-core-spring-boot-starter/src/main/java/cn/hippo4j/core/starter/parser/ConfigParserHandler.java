@@ -33,6 +33,7 @@ public class ConfigParserHandler {
                 return parser.doParse(content);
             }
         }
+
         return Collections.emptyMap();
     }
 

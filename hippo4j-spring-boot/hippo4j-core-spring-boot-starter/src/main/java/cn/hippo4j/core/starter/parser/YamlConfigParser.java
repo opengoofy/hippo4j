@@ -21,8 +21,10 @@ public class YamlConfigParser extends AbstractConfigParser {
         if (StringUtils.isEmpty(content)) {
             return Maps.newHashMapWithExpectedSize(0);
         }
+
         YamlPropertiesFactoryBean bean = new YamlPropertiesFactoryBean();
         bean.setResources(new ByteArrayResource(content.getBytes()));
+
         return bean.getObject();
     }
 
@@ -30,4 +32,5 @@ public class YamlConfigParser extends AbstractConfigParser {
     public List<ConfigFileTypeEnum> getConfigFileTypes() {
         return Lists.newArrayList(ConfigFileTypeEnum.YML, ConfigFileTypeEnum.YAML);
     }
+
 }

@@ -2,6 +2,7 @@ package cn.hippo4j.core.starter.support;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
@@ -99,10 +100,11 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             try {
                 // 使用相关参数创建线程池
                 BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(executorProperties.getBlockingQueue(), executorProperties.getQueueCapacity());
+                String threadNamePrefix = executorProperties.getThreadNamePrefix();
                 newDynamicPoolExecutor = ThreadPoolBuilder.builder()
                         .dynamicPool()
                         .workQueue(workQueue)
-                        .threadFactory(threadPoolId)
+                        .threadFactory(StringUtil.isNotBlank(threadNamePrefix) ? threadNamePrefix : threadPoolId)
                         .executeTimeOut(Optional.ofNullable(executorProperties.getExecuteTimeOut()).orElse(0L))
                         .poolThreadSize(executorProperties.getCorePoolSize(), executorProperties.getMaximumPoolSize())
                         .keepAliveTime(executorProperties.getKeepAliveTime(), TimeUnit.SECONDS)

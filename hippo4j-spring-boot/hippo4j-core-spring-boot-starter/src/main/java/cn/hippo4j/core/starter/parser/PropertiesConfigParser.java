@@ -13,8 +13,7 @@ import java.util.Properties;
  * @date : 2022/3/1 07:49
  * @description:
  */
-public class PropertiesConfigParser extends AbstractConfigParser{
-
+public class PropertiesConfigParser extends AbstractConfigParser {
 
     @Override
     public Map<Object, Object> doParse(String content) throws IOException {
@@ -27,4 +26,5 @@ public class PropertiesConfigParser extends AbstractConfigParser{
     public List<ConfigFileTypeEnum> getConfigFileTypes() {
         return Lists.newArrayList(ConfigFileTypeEnum.PROPERTIES);
     }
+
 }
