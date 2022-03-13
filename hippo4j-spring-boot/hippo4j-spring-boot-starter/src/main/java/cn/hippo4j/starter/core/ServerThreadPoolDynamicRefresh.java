@@ -94,7 +94,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         threadPoolNotifyAlarmHandler.sendPoolConfigChange(request);
 
         log.info(
-                "[🔥 {}] Changed thread pool. " +
+                "[{}] Changed thread pool. " +
                         "\n    coreSize :: [{}]" +
                         "\n    maxSize :: [{}]" +
                         "\n    queueType :: [{}]" +

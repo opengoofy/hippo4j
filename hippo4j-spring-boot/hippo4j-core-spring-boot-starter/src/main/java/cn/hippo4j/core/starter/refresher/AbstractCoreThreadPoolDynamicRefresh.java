@@ -153,7 +153,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
             GlobalCoreThreadPoolManage.refresh(threadPoolId, properties);
             log.info(
-                    "[🔥 {}] Changed thread pool. " +
+                    "[{}] Changed thread pool. " +
                             "\n    coreSize :: [{}]" +
                             "\n    maxSize :: [{}]" +
                             "\n    queueType :: [{}]" +

@@ -73,7 +73,10 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
             xnioWorker.setOption(Options.WORKER_TASK_MAX_THREADS, maxSize);
             xnioWorker.setOption(Options.WORKER_TASK_KEEPALIVE, keepAliveTime);
             log.info(
-                    "🔥 Changed web thread pool. coreSize :: [{}], maxSize :: [{}], keepAliveTime :: [{}]",
+                    "[UNDERTOW] Changed web thread pool. " +
+                            "\n    coreSize :: [{}]" +
+                            "\n    maxSize :: [{}]" +
+                            "\n    keepAliveTime :: [{}]",
                     String.format("%s => %s", originalCoreSize, coreSize),
                     String.format("%s => %s", originalMaximumPoolSize, maxSize),
                     String.format("%s => %s", originalKeepAliveTime, keepAliveTime)

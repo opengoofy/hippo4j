@@ -73,7 +73,7 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
         if (healthCheckStatus) {
             if (Objects.equals(healthStatus, false)) {
                 healthStatus = true;
-                log.info("🚀 The client reconnects to the server successfully.");
+                log.info("The client reconnects to the server successfully.");
                 signalAllBizThread();
             }
         } else {
