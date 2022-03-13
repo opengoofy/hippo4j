@@ -11,6 +11,7 @@ import cn.hippo4j.common.notify.platform.LarkSendMessageHandler;
 import cn.hippo4j.common.notify.platform.WeChatSendMessageHandler;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.config.WebThreadPoolConfiguration;
+import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.starter.refresher.ApolloRefresherHandler;
@@ -19,6 +20,7 @@ import cn.hippo4j.core.starter.refresher.NacosRefresherHandler;
 import cn.hippo4j.core.starter.support.DynamicThreadPoolPostProcessor;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -36,6 +38,7 @@ import org.springframework.core.annotation.Order;
  */
 @Configuration
 @AllArgsConstructor
+@ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapCoreProperties.class)
 @ImportAutoConfiguration({UtilAutoConfiguration.class, WebThreadPoolConfiguration.class})
 @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
