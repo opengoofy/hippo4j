@@ -4,8 +4,6 @@ import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.CuratorListener;
@@ -45,7 +43,8 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
                 loadNode(nodePath);
             } else if (newState == ConnectionState.RECONNECTED) {
                 loadNode(nodePath);
-            }};
+            }
+        };
 
         final CuratorListener curatorListener = (client, curatorEvent) -> {
             final WatchedEvent watchedEvent = curatorEvent.getWatchedEvent();
@@ -58,7 +57,9 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
                     default:
                         break;
                 }
-            }};
+            }
+        };
+
         curatorFramework.getConnectionStateListenable().addListener(connectionStateListener);
         curatorFramework.getCuratorListenable().addListener(curatorListener);
         curatorFramework.start();
@@ -66,6 +67,7 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
 
     /**
      * load config info and refresh.
+     *
      * @param nodePath zk config node path.
      */
     public void loadNode(String nodePath) {
@@ -83,13 +85,15 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                final Pair<String, String> keyValue = new ImmutablePair<>(nodeName, value);
-                content.append(keyValue.getKey()).append("=").append(keyValue.getValue()).append("\n");
+
+                content.append(nodeName).append("=").append(value).append("\n");
             });
+
             dynamicRefresh(content.toString());
             registerNotifyAlarmManage();
         } catch (Exception e) {
             log.error("load zk node error, nodePath is {}", nodePath, e);
         }
     }
+
 }

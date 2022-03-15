@@ -32,11 +32,12 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
 
         List<ExecutorProperties> executors = bootstrapCoreProperties.getExecutors();
-        if (null !=executors) {
+        if (null != executors) {
             for (ExecutorProperties executor : executors) {
                 resultMap.putAll(buildSingleNotifyConfig(executor));
             }
         }
+
         return resultMap;
     }
 
