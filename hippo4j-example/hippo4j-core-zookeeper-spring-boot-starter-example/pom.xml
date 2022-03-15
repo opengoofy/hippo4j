@@ -7,8 +7,8 @@
         <groupId>cn.hippo4j</groupId>
         <version>${revision}</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>hippo4j-core-zookeeper-spring-boot-starter-example</artifactId>
 
     <properties>
@@ -20,24 +20,29 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
+
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-core-spring-boot-starter</artifactId>
-            <version>1.1.0</version>
+            <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
             <version>5.1.0</version>
         </dependency>
+
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-example-core</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
+
 </project>
