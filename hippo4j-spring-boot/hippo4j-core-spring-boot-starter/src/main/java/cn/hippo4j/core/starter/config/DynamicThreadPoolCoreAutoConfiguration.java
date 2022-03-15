@@ -17,6 +17,7 @@ import cn.hippo4j.core.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.starter.refresher.ApolloRefresherHandler;
 import cn.hippo4j.core.starter.refresher.NacosCloudRefresherHandler;
 import cn.hippo4j.core.starter.refresher.NacosRefresherHandler;
+import cn.hippo4j.core.starter.refresher.ZookeeperRefresherHandler;
 import cn.hippo4j.core.starter.support.DynamicThreadPoolPostProcessor;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -51,6 +52,8 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     private static final String NACOS_CONFIG_KEY = "com.alibaba.nacos.api.config";
 
     private static final String APOLLO_CONFIG_KEY = "com.ctrip.framework.apollo.ConfigService";
+
+    private static final String ZK_CONFIG_KEY = "org.apache.curator.framework.CuratorFramework";
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -121,4 +124,10 @@ public class DynamicThreadPoolCoreAutoConfiguration {
         return new ApolloRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
+    @Bean
+    @ConditionalOnClass(name = ZK_CONFIG_KEY)
+    public ZookeeperRefresherHandler zookeeperRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
+                                                        BootstrapCoreProperties bootstrapCoreProperties) {
+        return new ZookeeperRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
+    }
 }

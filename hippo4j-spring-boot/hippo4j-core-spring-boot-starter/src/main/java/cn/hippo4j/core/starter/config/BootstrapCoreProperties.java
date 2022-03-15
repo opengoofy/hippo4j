@@ -58,6 +58,11 @@ public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
     private Map<String, String> apollo;
 
     /**
+     * Zookeeper config.
+     */
+    private Map<String, String> zookeeper;
+
+    /**
      * Tomcat thread pool config.
      */
     private WebThreadPoolProperties tomcat;

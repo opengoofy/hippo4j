@@ -6,12 +6,14 @@ import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.notify.HippoBaseSendMessageService;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
+import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.web.executor.WebThreadPoolHandlerChoose;
 import cn.hippo4j.common.web.executor.WebThreadPoolService;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
+import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.*;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
@@ -73,6 +75,24 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
         refreshPlatforms(bindableCoreProperties);
         // executors
         refreshExecutors(bindableCoreProperties);
+    }
+
+    /**
+     * register notify alarm manage
+     */
+    public void registerNotifyAlarmManage() {
+        bootstrapCoreProperties.getExecutors().forEach(executorProperties -> {
+            ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
+                    executorProperties.getNotify().getIsAlarm(),
+                    executorProperties.getNotify().getCapacityAlarm(),
+                    executorProperties.getNotify().getActiveAlarm()
+            );
+
+            threadPoolNotifyAlarm.setInterval(executorProperties.getNotify().getInterval());
+            threadPoolNotifyAlarm.setReceives(executorProperties.getNotify().getReceives());
+            GlobalNotifyAlarmManage.put(executorProperties.getThreadPoolId(), threadPoolNotifyAlarm);
+        });
+
     }
 
     /**

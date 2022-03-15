@@ -28,6 +28,7 @@
         <module>hippo4j-core-nacos-spring-boot-starter-example</module>
         <!-- 测试 Hippo4J-Core Apollo 配置中心 -->
         <module>hippo4j-core-apollo-spring-boot-starter-example</module>
+        <module>hippo4j-core-zookeeper-spring-boot-starter-example</module>
     </modules>
 
 </project>
