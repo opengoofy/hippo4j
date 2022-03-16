@@ -100,17 +100,28 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
      * @param bindableCoreProperties
      */
     private void refreshWebExecutor(BootstrapCoreProperties bindableCoreProperties) {
-        WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
-        WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
+        boolean isNullFlag = bindableCoreProperties.getJetty() == null
+                || bindableCoreProperties.getUndertow() == null
+                || bindableCoreProperties.getTomcat() == null;
+        if (isNullFlag) {
+            return;
+        }
 
-        PoolParameterInfo nowParameter = buildWebPoolParameter(bindableCoreProperties);
-        if (nowParameter != null) {
-            PoolParameter beforeParameter = webThreadPoolService.getWebThreadPoolParameter();
-            if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
-                    || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
-                    || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())) {
-                webThreadPoolService.updateWebThreadPool(nowParameter);
+        try {
+            PoolParameterInfo nowParameter = buildWebPoolParameter(bindableCoreProperties);
+            if (nowParameter != null) {
+                WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
+                WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
+
+                PoolParameter beforeParameter = webThreadPoolService.getWebThreadPoolParameter();
+                if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
+                        || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
+                        || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())) {
+                    webThreadPoolService.updateWebThreadPool(nowParameter);
+                }
             }
+        } catch (Exception ex) {
+            log.error("Failed to modify web thread pool.", ex);
         }
     }
 
