@@ -144,8 +144,7 @@ public class ThreadPoolController {
             leases.stream().map(each -> each.getHolder()).filter(each -> StringUtil.isNotBlank(each.getActive()))
                 .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getActive));
 
-        Map<String,
-            String> clientBasePathMap = leases.stream().map(each -> each.getHolder())
+        Map<String, String> clientBasePathMap = leases.stream().map(each -> each.getHolder())
                 .filter(each -> StringUtil.isNotBlank(each.getClientBasePath()))
                 .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getClientBasePath));
 
