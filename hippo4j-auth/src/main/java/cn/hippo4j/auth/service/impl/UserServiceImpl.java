@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     public IPage<UserRespDTO> listUser(UserQueryPageReqDTO reqDTO) {
         LambdaQueryWrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class)
                 .eq(StringUtil.isNotBlank(reqDTO.getUserName()), UserInfo::getUserName, reqDTO.getUserName());
-        IPage<UserInfo> selectPage = userMapper.selectPage(reqDTO, queryWrapper);
+        IPage<UserInfo> selectPage = userMapper.selectPage((IPage)reqDTO, queryWrapper);
 
         return selectPage.convert(each -> BeanUtil.toBean(each, UserRespDTO.class));
     }

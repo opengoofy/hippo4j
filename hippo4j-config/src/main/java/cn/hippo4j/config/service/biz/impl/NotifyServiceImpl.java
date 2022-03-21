@@ -63,7 +63,7 @@ public class NotifyServiceImpl implements NotifyService {
                 .eq(StrUtil.isNotBlank(reqDTO.getTpId()), NotifyInfo::getTpId, reqDTO.getTpId())
                 .orderByDesc(NotifyInfo::getGmtCreate);
 
-        IPage<NotifyInfo> resultPage = notifyInfoMapper.selectPage(reqDTO, queryWrapper);
+        IPage<NotifyInfo> resultPage = notifyInfoMapper.selectPage((IPage)reqDTO, queryWrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, NotifyRespDTO.class));
     }
 

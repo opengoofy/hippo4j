@@ -47,7 +47,7 @@ public class ThreadPoolStatusHandler {
                 Method runStateAtLeast = ReflectUtil.getMethodByName(ThreadPoolExecutor.class, "runStateAtLeast");
                 cn.hippo4j.common.toolkit.ReflectUtil.setAccessible(runStateAtLeast);
                 int terminated = (int) ReflectUtil.getFieldValue(executor, "TERMINATED");
-                String resultStatus = ReflectUtil.invoke(executor, runStateAtLeast, ctl.get(), terminated) ? TERMINATED : SHUTTING_DOWN;
+                String resultStatus = (boolean)ReflectUtil.invoke(executor, runStateAtLeast, ctl.get(), terminated) ? TERMINATED : SHUTTING_DOWN;
                 return resultStatus;
             } catch (Exception ex) {
                 log.error("Failed to get thread pool status.", ex);

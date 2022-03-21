@@ -43,7 +43,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
                 .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL)
                 .orderByDesc(ConfigAllInfo::getGmtCreate);
 
-        return configInfoMapper.selectPage(reqDTO, wrapper).convert(each -> BeanUtil.convert(each, ThreadPoolRespDTO.class));
+        return configInfoMapper.selectPage((IPage)reqDTO, wrapper).convert(each -> BeanUtil.convert(each, ThreadPoolRespDTO.class));
     }
 
     @Override

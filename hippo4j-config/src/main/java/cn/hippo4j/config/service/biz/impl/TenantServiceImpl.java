@@ -62,7 +62,7 @@ public class TenantServiceImpl implements TenantService {
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantName()), TenantInfo::getTenantName, reqDTO.getTenantName())
                 .eq(!StringUtils.isEmpty(reqDTO.getOwner()), TenantInfo::getOwner, reqDTO.getOwner());
 
-        Page resultPage = tenantInfoMapper.selectPage(reqDTO, wrapper);
+        Page resultPage = tenantInfoMapper.selectPage((Page)reqDTO, wrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, TenantRespDTO.class));
     }
 

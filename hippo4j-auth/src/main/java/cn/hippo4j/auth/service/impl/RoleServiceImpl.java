@@ -36,7 +36,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public IPage<RoleRespDTO> listRole(int pageNo, int pageSize) {
         RoleQueryPageReqDTO queryPage = new RoleQueryPageReqDTO(pageNo, pageSize);
-        IPage<RoleInfo> selectPage = roleMapper.selectPage(queryPage, null);
+        IPage<RoleInfo> selectPage = roleMapper.selectPage((IPage)queryPage, null);
 
         return selectPage.convert(each -> BeanUtil.toBean(each, RoleRespDTO.class));
     }

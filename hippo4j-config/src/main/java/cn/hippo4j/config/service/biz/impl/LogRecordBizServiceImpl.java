@@ -32,7 +32,7 @@ public class LogRecordBizServiceImpl implements LogRecordBizService {
                 .eq(StrUtil.isNotBlank(pageQuery.getCategory()), LogRecordInfo::getCategory, pageQuery.getCategory())
                 .eq(StrUtil.isNotBlank(pageQuery.getOperator()), LogRecordInfo::getOperator, pageQuery.getOperator())
                 .orderByDesc(LogRecordInfo::getCreateTime);
-        IPage<LogRecordInfo> selectPage = logRecordMapper.selectPage(pageQuery, queryWrapper);
+        IPage<LogRecordInfo> selectPage = logRecordMapper.selectPage((IPage)pageQuery, queryWrapper);
         return selectPage.convert(each -> BeanUtil.convert(each, LogRecordRespDTO.class));
     }
 
