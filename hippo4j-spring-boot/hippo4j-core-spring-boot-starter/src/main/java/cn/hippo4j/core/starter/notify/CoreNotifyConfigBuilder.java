@@ -1,7 +1,7 @@
 package cn.hippo4j.core.starter.notify;
 
-import cn.hippo4j.common.notify.AlarmControlHandler;
 import cn.hippo4j.common.api.NotifyConfigBuilder;
+import cn.hippo4j.common.notify.AlarmControlHandler;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Core notify config builder.
@@ -60,16 +61,13 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setThreadPoolId(threadPoolId);
             notifyConfig.setType("ALARM");
             notifyConfig.setSecretKey(platformProperties.getSecretKey());
-            notifyConfig.setInterval(executor.getNotify().getInterval());
-            Map<String, String> receives = executor.receives();
-            String receive = receives.get(platformProperties.getPlatform());
-            if (StrUtil.isBlank(receive)) {
-                receive = platformProperties.getReceives();
-            }
-            notifyConfig.setReceives(receive);
+            int interval = Optional.ofNullable(executor.getNotify())
+                    .map(each -> each.getInterval())
+                    .orElseGet(() -> bootstrapCoreProperties.getInterval() != null ? bootstrapCoreProperties.getInterval() : 5);
+            notifyConfig.setInterval(interval);
+            notifyConfig.setReceives(buildReceive(executor, platformProperties));
             alarmNotifyConfigs.add(notifyConfig);
         }
-
         resultMap.put(alarmBuildKey, alarmNotifyConfigs);
 
         String changeBuildKey = threadPoolId + "+CONFIG";
@@ -81,16 +79,9 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setThreadPoolId(threadPoolId);
             notifyConfig.setType("CONFIG");
             notifyConfig.setSecretKey(platformProperties.getSecretKey());
-
-            Map<String, String> receives = executor.receives();
-            String receive = receives.get(platformProperties.getPlatform());
-            if (StrUtil.isBlank(receive)) {
-                receive = platformProperties.getReceives();
-            }
-            notifyConfig.setReceives(receive);
+            notifyConfig.setReceives(buildReceive(executor, platformProperties));
             changeNotifyConfigs.add(notifyConfig);
         }
-
         resultMap.put(changeBuildKey, changeNotifyConfigs);
 
         resultMap.forEach(
@@ -100,6 +91,28 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         );
 
         return resultMap;
+    }
+
+    private String buildReceive(ExecutorProperties executor, NotifyPlatformProperties platformProperties) {
+        String receive;
+        if (executor.getNotify() != null) {
+            receive = executor.getNotify().getReceive();
+            if (StrUtil.isBlank(receive)) {
+                receive = bootstrapCoreProperties.getReceive();
+                if (StrUtil.isBlank(receive)) {
+                    Map<String, String> receives = executor.getNotify().getReceives();
+                    receive = receives.get(platformProperties.getPlatform());
+                }
+            }
+        } else {
+            receive = bootstrapCoreProperties.getReceive();
+            if (StrUtil.isBlank(receive)) {
+                Map<String, String> receives = executor.getNotify().getReceives();
+                receive = receives.get(platformProperties.getPlatform());
+            }
+        }
+
+        return receive;
     }
 
 }

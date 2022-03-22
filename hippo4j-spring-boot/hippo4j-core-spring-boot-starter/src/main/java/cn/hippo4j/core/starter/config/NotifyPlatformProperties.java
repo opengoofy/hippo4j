@@ -12,18 +12,13 @@ import lombok.Data;
 public class NotifyPlatformProperties {
 
     /**
-     * platform
+     * Platform.
      */
     private String platform;
 
     /**
-     * secretKey
+     * Secret key.
      */
     private String secretKey;
-
-    /**
-     * Default configuration
-     */
-    private String receives;
 
 }

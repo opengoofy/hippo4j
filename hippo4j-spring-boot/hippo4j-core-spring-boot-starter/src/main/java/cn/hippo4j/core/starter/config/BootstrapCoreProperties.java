@@ -84,6 +84,31 @@ public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
     private List<NotifyPlatformProperties> notifyPlatforms;
 
     /**
+     * Is alarm.
+     */
+    private Boolean isAlarm;
+
+    /**
+     * Active alarm.
+     */
+    private Integer activeAlarm;
+
+    /**
+     * Capacity alarm.
+     */
+    private Integer capacityAlarm;
+
+    /**
+     * Interval.
+     */
+    private Integer interval;
+
+    /**
+     * Receive.
+     */
+    private String receive;
+
+    /**
      * Executors.
      */
     private List<ExecutorProperties> executors;

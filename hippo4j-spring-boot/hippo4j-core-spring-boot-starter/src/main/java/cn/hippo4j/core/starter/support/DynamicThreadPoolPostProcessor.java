@@ -118,28 +118,31 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                     if (Objects.isNull(dynamicThreadPoolWrap.getExecutor())) {
                         dynamicThreadPoolWrap.setExecutor(CommonDynamicThreadPool.getInstance(threadPoolId));
                     }
-
                     dynamicThreadPoolWrap.setInitFlag(Boolean.TRUE);
                 }
             }
 
-            // 设置动态线程池增强参数
-            ThreadPoolNotifyAlarm notify = Optional.ofNullable(executorProperties)
-                    .map(each -> each.getNotify())
-                    .orElseGet(() -> {
-                        ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(true, 80, 80);
-                        threadPoolNotifyAlarm.setInterval(2);
-                        return threadPoolNotifyAlarm;
-                    });
             if (dynamicThreadPoolWrap.getExecutor() instanceof AbstractDynamicExecutorSupport) {
-                ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
-                        notify.getIsAlarm(),
-                        notify.getCapacityAlarm(),
-                        notify.getActiveAlarm()
-                );
-
-                threadPoolNotifyAlarm.setInterval(notify.getInterval());
-                threadPoolNotifyAlarm.setReceives(notify.getReceives());
+                // 设置动态线程池增强参数
+                ThreadPoolNotifyAlarm notify = executorProperties.getNotify();
+                boolean isAlarm = Optional.ofNullable(notify)
+                        .map(each -> each.getIsAlarm())
+                        .orElseGet(() -> bootstrapCoreProperties.getIsAlarm() != null ? bootstrapCoreProperties.getIsAlarm() : true);
+                int activeAlarm = Optional.ofNullable(notify)
+                        .map(each -> each.getActiveAlarm())
+                        .orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
+                int capacityAlarm = Optional.ofNullable(notify)
+                        .map(each -> each.getActiveAlarm())
+                        .orElseGet(() -> bootstrapCoreProperties.getCapacityAlarm() != null ? bootstrapCoreProperties.getCapacityAlarm() : 80);
+                int interval = Optional.ofNullable(notify)
+                        .map(each -> each.getInterval())
+                        .orElseGet(() -> bootstrapCoreProperties.getInterval() != null ? bootstrapCoreProperties.getInterval() : 5);
+                String receive = Optional.ofNullable(notify)
+                        .map(each -> each.getReceive())
+                        .orElseGet(() -> bootstrapCoreProperties.getReceive() != null ? bootstrapCoreProperties.getReceive() : null);
+                ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(isAlarm, activeAlarm, capacityAlarm);
+                threadPoolNotifyAlarm.setInterval(interval);
+                threadPoolNotifyAlarm.setReceive(receive);
                 GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
 
                 TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();

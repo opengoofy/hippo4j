@@ -42,8 +42,15 @@ public class ThreadPoolNotifyAlarm {
     private Integer interval;
 
     /**
-     * receives
+     * receive
      */
+    private String receive;
+
+    /**
+     * receives
+     * ps：暂不启用该配置，后续如果开发邮箱时或许有用
+     */
+    @Deprecated
     private Map<String, String> receives;
 
 }
