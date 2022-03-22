@@ -61,7 +61,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setType("ALARM");
             notifyConfig.setSecretKey(platformProperties.getSecretKey());
             notifyConfig.setInterval(executor.getNotify().getInterval());
-            Map<String, String> receives = executor.getNotify().getReceives();
+            Map<String, String> receives = executor.receives();
             String receive = receives.get(platformProperties.getPlatform());
             if (StrUtil.isBlank(receive)) {
                 receive = platformProperties.getReceives();
@@ -82,7 +82,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setType("CONFIG");
             notifyConfig.setSecretKey(platformProperties.getSecretKey());
 
-            Map<String, String> receives = executor.getNotify().getReceives();
+            Map<String, String> receives = executor.receives();
             String receive = receives.get(platformProperties.getPlatform());
             if (StrUtil.isBlank(receive)) {
                 receive = platformProperties.getReceives();
