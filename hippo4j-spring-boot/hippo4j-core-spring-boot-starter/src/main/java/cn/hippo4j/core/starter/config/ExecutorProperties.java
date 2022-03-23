@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Executor properties.
@@ -73,7 +74,7 @@ public class ExecutorProperties {
     private ThreadPoolNotifyAlarm notify;
 
     public Map<String, String> receives() {
-        return this.notify.getReceives() == null ? Maps.newHashMap() : this.notify.getReceives();
+        return Objects.isNull(this.notify) || this.notify.getReceives() == null ? Maps.newHashMap() : this.notify.getReceives();
     }
 
 }
