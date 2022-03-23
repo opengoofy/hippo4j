@@ -1,8 +1,12 @@
 package cn.hippo4j.core.starter.config;
 
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
+import com.google.common.collect.Maps;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Executor properties.
@@ -68,5 +72,9 @@ public class ExecutorProperties {
      * Notify
      */
     private ThreadPoolNotifyAlarm notify;
+
+    public Map<String, String> receives() {
+        return Objects.isNull(this.notify) || this.notify.getReceives() == null ? Maps.newHashMap() : this.notify.getReceives();
+    }
 
 }

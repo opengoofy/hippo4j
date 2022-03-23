@@ -3,6 +3,7 @@ package cn.hippo4j.core.starter.notify;
 import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.notify.AlarmControlHandler;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
 import cn.hippo4j.core.starter.config.NotifyPlatformProperties;
@@ -100,14 +101,14 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             if (StrUtil.isBlank(receive)) {
                 receive = bootstrapCoreProperties.getReceive();
                 if (StrUtil.isBlank(receive)) {
-                    Map<String, String> receives = executor.getNotify().getReceives();
+                    Map<String, String> receives = executor.receives();
                     receive = receives.get(platformProperties.getPlatform());
                 }
             }
         } else {
             receive = bootstrapCoreProperties.getReceive();
             if (StrUtil.isBlank(receive)) {
-                Map<String, String> receives = executor.getNotify().getReceives();
+                Map<String, String> receives = executor.receives();
                 receive = receives.get(platformProperties.getPlatform());
             }
         }

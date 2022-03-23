@@ -89,7 +89,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             );
 
             threadPoolNotifyAlarm.setInterval(executorProperties.getNotify().getInterval());
-            threadPoolNotifyAlarm.setReceives(executorProperties.getNotify().getReceives());
+            threadPoolNotifyAlarm.setReceives(executorProperties.receives());
             GlobalNotifyAlarmManage.put(executorProperties.getThreadPoolId(), threadPoolNotifyAlarm);
         });
     }
