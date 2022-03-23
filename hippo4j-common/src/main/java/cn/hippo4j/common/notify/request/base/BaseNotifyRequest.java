@@ -41,4 +41,5 @@ public class BaseNotifyRequest implements NotifyRequest {
      */
     private String receives;
 
+
 }
