@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.handler;
+package cn.hippo4j.starter.core;
 
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.model.ThreadDetailStateInfo;

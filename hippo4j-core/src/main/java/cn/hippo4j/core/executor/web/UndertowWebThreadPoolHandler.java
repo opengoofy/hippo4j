@@ -1,7 +1,11 @@
-package cn.hippo4j.common.web.executor;
+package cn.hippo4j.core.executor.web;
 
 import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.toolkit.CalculateUtil;
+import cn.hutool.core.date.DateUtil;
 import io.undertow.Undertow;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.embedded.undertow.UndertowWebServer;
@@ -11,6 +15,8 @@ import org.xnio.Options;
 import org.xnio.XnioWorker;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -54,6 +60,53 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
         }
 
         return parameterInfo;
+    }
+
+    @Override
+    public PoolRunStateInfo getWebRunStateInfo() {
+        PoolRunStateInfo stateInfo = new PoolRunStateInfo();
+        XnioWorker xnioWorker = (XnioWorker) executor;
+
+        // private final TaskPool taskPool;
+        Field field = ReflectionUtils.findField(XnioWorker.class, "taskPool");
+        ReflectionUtils.makeAccessible(field);
+        Object fieldObject = ReflectionUtils.getField(field, xnioWorker);
+        // 核心线程数
+        Method getCorePoolSize = ReflectionUtils.findMethod(fieldObject.getClass(), "getCorePoolSize");
+        ReflectionUtils.makeAccessible(getCorePoolSize);
+        int corePoolSize = (int) ReflectionUtils.invokeMethod(getCorePoolSize, fieldObject);
+        // 最大线程数
+        Method getMaximumPoolSize = ReflectionUtils.findMethod(fieldObject.getClass(), "getMaximumPoolSize");
+        ReflectionUtils.makeAccessible(getMaximumPoolSize);
+        int maximumPoolSize = (int) ReflectionUtils.invokeMethod(getMaximumPoolSize, fieldObject);
+        // 线程池当前线程数 (有锁)
+        Method getPoolSize = ReflectionUtils.findMethod(fieldObject.getClass(), "getPoolSize");
+        ReflectionUtils.makeAccessible(getPoolSize);
+        int poolSize = (int) ReflectionUtils.invokeMethod(getPoolSize, fieldObject);
+        // 活跃线程数 (有锁)
+        Method getActiveCount = ReflectionUtils.findMethod(fieldObject.getClass(), "getActiveCount");
+        ReflectionUtils.makeAccessible(getActiveCount);
+        int activeCount = (int) ReflectionUtils.invokeMethod(getActiveCount, fieldObject);
+        activeCount = (activeCount <= 0) ? 0 : activeCount;
+        // 当前负载
+        String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
+        // 峰值负载
+        // 没有峰值记录，直接使用当前数据
+        String peakLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
+
+        stateInfo.setCoreSize(corePoolSize);
+        stateInfo.setPoolSize(poolSize);
+        stateInfo.setMaximumSize(maximumPoolSize);
+        stateInfo.setActiveSize(activeCount);
+        stateInfo.setCurrentLoad(currentLoad);
+        stateInfo.setPeakLoad(peakLoad);
+
+        long rejectCount = fieldObject instanceof DynamicThreadPoolExecutor
+                ? ((DynamicThreadPoolExecutor) fieldObject).getRejectCountNum() : -1L;
+        stateInfo.setRejectCount(rejectCount);
+        stateInfo.setClientLastRefreshTime(DateUtil.formatDateTime(new Date()));
+        stateInfo.setTimestamp(System.currentTimeMillis());
+        return stateInfo;
     }
 
     @Override

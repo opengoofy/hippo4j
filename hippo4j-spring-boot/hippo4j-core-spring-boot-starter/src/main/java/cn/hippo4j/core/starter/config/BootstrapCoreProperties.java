@@ -1,6 +1,7 @@
 package cn.hippo4j.core.starter.config;
 
 import cn.hippo4j.core.config.BootstrapPropertiesInterface;
+import cn.hippo4j.core.starter.monitor.DynamicThreadPoolMonitor;
 import cn.hippo4j.core.starter.parser.ConfigFileTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,14 +34,25 @@ public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
     private Boolean banner = Boolean.TRUE;
 
     /***
-     * Enabled collect.
+     * Collect thread pool runtime indicators.
      */
     private Boolean collect = Boolean.TRUE;
 
     /**
-     * Check state interval.
+     * Type of collection thread pool running data. eg: log,metric. Multiple can be used at the same time.
+     * Custom SPI support {@link DynamicThreadPoolMonitor}.
      */
-    private Integer checkStateInterval;
+    private String collectType;
+
+    /**
+     * Delay starting data acquisition task. unit: ms
+     */
+    private Long initialDelay = 10000L;
+
+    /**
+     * Collect interval. unit: ms
+     */
+    private Long collectInterval = 5000L;
 
     /**
      * Config file type.
@@ -84,9 +96,14 @@ public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
     private List<NotifyPlatformProperties> notifyPlatforms;
 
     /**
-     * Is alarm.
+     * Whether to enable thread pool running alarm.
      */
-    private Boolean isAlarm;
+    private Boolean alarm = Boolean.TRUE;
+
+    /**
+     * Check thread pool running status interval.
+     */
+    private Integer checkStateInterval;
 
     /**
      * Active alarm.
@@ -99,9 +116,9 @@ public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
     private Integer capacityAlarm;
 
     /**
-     * Interval.
+     * Thread pool run alarm interval. unit: s
      */
-    private Integer interval;
+    private Integer alarmInterval;
 
     /**
      * Receive.

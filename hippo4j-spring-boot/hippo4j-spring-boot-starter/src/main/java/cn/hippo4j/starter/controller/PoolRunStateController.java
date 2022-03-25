@@ -5,7 +5,7 @@ import cn.hippo4j.common.model.PoolRunStateInfo;
 import cn.hippo4j.common.model.ThreadDetailStateInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
-import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
+import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

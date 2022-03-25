@@ -1,4 +1,4 @@
-package cn.hippo4j.starter.toolkit;
+package cn.hippo4j.common.toolkit;
 
 /**
  * 字节转换工具类.

@@ -1,4 +1,4 @@
-package cn.hippo4j.common.web.executor;
+package cn.hippo4j.core.executor.web;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.web.exception.ServiceException;

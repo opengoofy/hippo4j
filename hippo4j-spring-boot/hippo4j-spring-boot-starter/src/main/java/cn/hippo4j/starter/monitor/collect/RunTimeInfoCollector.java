@@ -7,7 +7,7 @@ import cn.hippo4j.common.monitor.MessageTypeEnum;
 import cn.hippo4j.common.monitor.RuntimeMessage;
 import cn.hippo4j.starter.config.BootstrapProperties;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.starter.handler.AbstractThreadPoolRuntime;
+import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
 import cn.hutool.core.bean.BeanUtil;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;

@@ -3,7 +3,6 @@ package cn.hippo4j.core.starter.notify;
 import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.notify.AlarmControlHandler;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
-import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
 import cn.hippo4j.core.starter.config.NotifyPlatformProperties;
@@ -64,7 +63,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setSecretKey(platformProperties.getSecretKey());
             int interval = Optional.ofNullable(executor.getNotify())
                     .map(each -> each.getInterval())
-                    .orElseGet(() -> bootstrapCoreProperties.getInterval() != null ? bootstrapCoreProperties.getInterval() : 5);
+                    .orElseGet(() -> bootstrapCoreProperties.getAlarmInterval() != null ? bootstrapCoreProperties.getAlarmInterval() : 5);
             notifyConfig.setInterval(interval);
             notifyConfig.setReceives(buildReceive(executor, platformProperties));
             alarmNotifyConfigs.add(notifyConfig);

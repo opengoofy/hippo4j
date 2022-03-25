@@ -2,7 +2,7 @@ package cn.hippo4j.starter.config;
 
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.web.executor.WebThreadPoolHandlerChoose;
+import cn.hippo4j.core.executor.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.config.WebThreadPoolConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
@@ -13,9 +13,9 @@ import cn.hippo4j.starter.controller.PoolRunStateController;
 import cn.hippo4j.starter.controller.WebThreadPoolController;
 import cn.hippo4j.starter.core.*;
 import cn.hippo4j.starter.event.ApplicationContentPostProcessor;
-import cn.hippo4j.starter.handler.BaseThreadDetailStateHandler;
-import cn.hippo4j.starter.handler.ThreadPoolRunStateHandler;
-import cn.hippo4j.starter.handler.web.WebThreadPoolRunStateHandler;
+import cn.hippo4j.starter.core.BaseThreadDetailStateHandler;
+import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.core.executor.web.WebThreadPoolRunStateHandler;
 import cn.hippo4j.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.starter.monitor.collect.RunTimeInfoCollector;
 import cn.hippo4j.starter.monitor.send.HttpConnectSender;
@@ -86,12 +86,6 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    @SuppressWarnings("all")
-    public ThreadPoolRunStateHandler threadPoolRunStateHandler(InetUtils hippo4JInetUtils) {
-        return new ThreadPoolRunStateHandler(hippo4JInetUtils, environment);
-    }
-
-    @Bean
     @ConditionalOnMissingBean(value = ThreadDetailState.class)
     public ThreadDetailState baseThreadDetailStateHandler() {
         return new BaseThreadDetailStateHandler();
@@ -129,11 +123,6 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     public ApplicationContentPostProcessor applicationContentPostProcessor() {
         return new ApplicationContentPostProcessor();
-    }
-
-    @Bean
-    public WebThreadPoolRunStateHandler webThreadPoolRunStateHandler() {
-        return new WebThreadPoolRunStateHandler();
     }
 
     @Bean

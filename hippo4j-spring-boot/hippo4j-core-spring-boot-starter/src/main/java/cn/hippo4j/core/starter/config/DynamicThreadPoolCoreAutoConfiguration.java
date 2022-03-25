@@ -13,6 +13,10 @@ import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.config.WebThreadPoolConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
+import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.core.starter.monitor.DynamicThreadPoolMonitorExecutor;
+import cn.hippo4j.core.starter.monitor.LogMonitorHandler;
+import cn.hippo4j.core.starter.monitor.MetricMonitorHandler;
 import cn.hippo4j.core.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.starter.refresher.ApolloRefresherHandler;
 import cn.hippo4j.core.starter.refresher.NacosCloudRefresherHandler;
@@ -105,29 +109,41 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @Bean
     @ConditionalOnClass(name = NACOS_CONFIG_KEY)
     @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
-    public NacosRefresherHandler nacosRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                                       BootstrapCoreProperties bootstrapCoreProperties) {
+    public NacosRefresherHandler nacosRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new NacosRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = NACOS_CONFIG_MANAGER_KEY)
-    public NacosCloudRefresherHandler nacosCloudRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                                                 BootstrapCoreProperties bootstrapCoreProperties) {
+    public NacosCloudRefresherHandler nacosCloudRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new NacosCloudRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = APOLLO_CONFIG_KEY)
-    public ApolloRefresherHandler apolloRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                                  BootstrapCoreProperties bootstrapCoreProperties) {
+    public ApolloRefresherHandler apolloRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new ApolloRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = ZK_CONFIG_KEY)
-    public ZookeeperRefresherHandler zookeeperRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                                        BootstrapCoreProperties bootstrapCoreProperties) {
+    public ZookeeperRefresherHandler zookeeperRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new ZookeeperRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
+
+    @Bean
+    public DynamicThreadPoolMonitorExecutor hippo4jDynamicThreadPoolMonitorExecutor() {
+        return new DynamicThreadPoolMonitorExecutor(bootstrapCoreProperties);
+    }
+
+    @Bean
+    public LogMonitorHandler hippo4jLogMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+        return new LogMonitorHandler(threadPoolRunStateHandler);
+    }
+
+    @Bean
+    public MetricMonitorHandler hippo4jMetricMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+        return new MetricMonitorHandler(threadPoolRunStateHandler);
+    }
+
 }

@@ -1,7 +1,8 @@
-package cn.hippo4j.common.web.executor;
+package cn.hippo4j.core.executor.web;
 
 import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.model.PoolRunStateInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.springframework.boot.web.embedded.jetty.JettyWebServer;
@@ -40,6 +41,11 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
         }
 
         return parameterInfo;
+    }
+
+    @Override
+    public PoolRunStateInfo getWebRunStateInfo() {
+        return null;
     }
 
     @Override

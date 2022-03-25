@@ -1,8 +1,10 @@
-package cn.hippo4j.common.web.executor;
+package cn.hippo4j.core.executor.web;
 
 import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
-import lombok.AllArgsConstructor;
+import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
@@ -19,12 +21,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @date 2022/1/19 20:57
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
     private final AtomicBoolean cacheFlag = new AtomicBoolean(Boolean.FALSE);
 
     private static String EXCEPTION_MESSAGE;
+
+    private final AbstractThreadPoolRuntime webThreadPoolRunStateHandler;
 
     @Override
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
@@ -63,6 +67,11 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         }
 
         return parameterInfo;
+    }
+
+    @Override
+    public PoolRunStateInfo getWebRunStateInfo() {
+        return webThreadPoolRunStateHandler.getPoolRunState(null, executor);
     }
 
     @Override

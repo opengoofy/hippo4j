@@ -127,7 +127,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 ThreadPoolNotifyAlarm notify = executorProperties.getNotify();
                 boolean isAlarm = Optional.ofNullable(notify)
                         .map(each -> each.getIsAlarm())
-                        .orElseGet(() -> bootstrapCoreProperties.getIsAlarm() != null ? bootstrapCoreProperties.getIsAlarm() : true);
+                        .orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
                 int activeAlarm = Optional.ofNullable(notify)
                         .map(each -> each.getActiveAlarm())
                         .orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
@@ -136,7 +136,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .orElseGet(() -> bootstrapCoreProperties.getCapacityAlarm() != null ? bootstrapCoreProperties.getCapacityAlarm() : 80);
                 int interval = Optional.ofNullable(notify)
                         .map(each -> each.getInterval())
-                        .orElseGet(() -> bootstrapCoreProperties.getInterval() != null ? bootstrapCoreProperties.getInterval() : 5);
+                        .orElseGet(() -> bootstrapCoreProperties.getAlarmInterval() != null ? bootstrapCoreProperties.getAlarmInterval() : 5);
                 String receive = Optional.ofNullable(notify)
                         .map(each -> each.getReceive())
                         .orElseGet(() -> bootstrapCoreProperties.getReceive() != null ? bootstrapCoreProperties.getReceive() : null);
