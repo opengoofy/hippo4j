@@ -78,6 +78,13 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>1.8.4</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
