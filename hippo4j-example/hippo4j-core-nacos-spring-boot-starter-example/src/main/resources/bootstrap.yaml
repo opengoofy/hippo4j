@@ -3,6 +3,18 @@ server:
   servlet:
     context-path: /example
 
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  server:
+    port: 29999
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 spring:
   profiles:
     active: dev
