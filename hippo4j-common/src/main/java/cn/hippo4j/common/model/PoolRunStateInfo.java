@@ -95,4 +95,12 @@ public class PoolRunStateInfo extends PoolBaseInfo implements Serializable {
      */
     private Long timestamp;
 
+    public Integer getSimpleCurrentLoad() {
+        return Integer.parseInt(getCurrentLoad().replace("%", ""));
+    }
+
+    public Integer getSimplePeakLoad() {
+        return Integer.parseInt(getPeakLoad().replace("%", ""));
+    }
+
 }
