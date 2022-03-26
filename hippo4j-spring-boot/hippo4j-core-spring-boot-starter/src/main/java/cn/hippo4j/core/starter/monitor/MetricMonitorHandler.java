@@ -48,6 +48,9 @@ public class MetricMonitorHandler extends AbstractDynamicThreadPoolMonitor {
                 Tag.of(APPLICATION_NAME_TAG, applicationName)
         );
 
+        // load
+        Metrics.gauge(metricName("current.load"), tags, poolRunStateInfo, PoolRunStateInfo::getSimpleCurrentLoad);
+        Metrics.gauge(metricName("peak.load"), tags, poolRunStateInfo, PoolRunStateInfo::getSimplePeakLoad);
         // thread pool
         Metrics.gauge(metricName("core.size"), tags, poolRunStateInfo, PoolRunStateInfo::getCoreSize);
         Metrics.gauge(metricName("maximum.size"), tags, poolRunStateInfo, PoolRunStateInfo::getMaximumSize);
