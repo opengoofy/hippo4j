@@ -24,17 +24,23 @@ Hippo4J 基于 **美团动态线程池** 设计理念开发，针对线程池增
 自 1.1.0 版本发布后，Hippo4J 分为两种使用模式，用一张图来说明两者的使用差别
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220319154626314.png)
+
+### hippo4j-core-spring-boot-starter
+
+**轻量级动态线程池管理**，依赖 Apollo、Nacos 等三方配置中心（任选其一）完成线程池参数动态变更，同样包含运行时报警、监控功能
+
+> 监控功能配置详见：[线程池监控](https://hippox.cn/pages/2f67ll)
+
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-202203271737049821.png)
+
 ### hippo4j-spring-boot-starter
 
 **部署 hippo4j-server 服务**，通过可视化 Web 界面完成线程池的创建、变更以及查看，不依赖三方中间件
 
 相比较 hippo4j-core，功能会更强大，但是也引入了一定的复杂性。需要部署一个 Java 服务，以及 MySQL 数据库
 
-### hippo4j-core-spring-boot-starter
 
-**轻量级动态线程池管理**，依赖 Apollo、Nacos 等三方配置中心（任选其一）完成线程池参数动态变更，同样包含运行时报警、监控功能
-
-
+### 使用总结
 
 |      | hippo4j-core starter                                 | hippo4j starter                                              |
 | ---- | ---------------------------------------------------- | ------------------------------------------------------------ |
@@ -77,8 +83,6 @@ Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池
     </td>
   </tr>
 </table>
-
-### 
 
 ## 快速开始
 
