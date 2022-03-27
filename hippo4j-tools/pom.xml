@@ -22,9 +22,6 @@
     <modules>
         <!-- 日志记录 -->
         <module>log-record-tool</module>
-
-        <!-- 监控 GitHub 项目变更 -->
-        <module>open-change-tool</module>
     </modules>
 
 </project>
