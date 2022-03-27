@@ -1,5 +1,6 @@
 package cn.hippo4j.core.executor.web;
 
+import cn.hippo4j.common.model.PoolBaseInfo;
 import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
@@ -40,6 +41,27 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
         Undertow undertow = (Undertow) ReflectionUtils.getField(undertowField, undertowWebServer);
         return Objects.isNull(undertow) ? null : undertow.getWorker();
+    }
+
+    @Override
+    public PoolBaseInfo simpleInfo() {
+        PoolBaseInfo poolBaseInfo = new PoolBaseInfo();
+        XnioWorker xnioWorker = (XnioWorker) executor;
+        try {
+            int coreSize = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
+            int maximumPoolSize = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
+            int keepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);
+
+            poolBaseInfo.setCoreSize(coreSize);
+            poolBaseInfo.setMaximumSize(maximumPoolSize);
+            poolBaseInfo.setKeepAliveTime((long) keepAliveTime);
+            poolBaseInfo.setRejectedName("-");
+            poolBaseInfo.setQueueType("-");
+        } catch (Exception ex) {
+            log.error("The undertow container failed to get thread pool parameters.", ex);
+        }
+
+        return poolBaseInfo;
     }
 
     @Override

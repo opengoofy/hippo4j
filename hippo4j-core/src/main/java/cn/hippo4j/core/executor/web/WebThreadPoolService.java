@@ -1,5 +1,6 @@
 package cn.hippo4j.core.executor.web;
 
+import cn.hippo4j.common.model.PoolBaseInfo;
 import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
@@ -20,6 +21,13 @@ public interface WebThreadPoolService {
      * @return Tomcat、Jetty、Undertow ThreadPoolExecutor
      */
     Executor getWebThreadPool();
+
+    /**
+     * Simple info.
+     *
+     * @return
+     */
+    PoolBaseInfo simpleInfo();
 
     /**
      * Get web thread pool parameter.

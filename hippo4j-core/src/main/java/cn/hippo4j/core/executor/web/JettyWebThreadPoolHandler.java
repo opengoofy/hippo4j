@@ -1,13 +1,16 @@
 package cn.hippo4j.core.executor.web;
 
+import cn.hippo4j.common.model.PoolBaseInfo;
 import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.toolkit.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.springframework.boot.web.embedded.jetty.JettyWebServer;
 import org.springframework.boot.web.server.WebServer;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
 /**
@@ -22,6 +25,23 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
         JettyWebServer jettyWebServer = (JettyWebServer) webServer;
         return jettyWebServer.getServer().getThreadPool();
+    }
+
+    @Override
+    public PoolBaseInfo simpleInfo() {
+        PoolBaseInfo poolBaseInfo = new PoolBaseInfo();
+        QueuedThreadPool queuedThreadPool = (QueuedThreadPool) executor;
+        poolBaseInfo.setCoreSize(queuedThreadPool.getMinThreads());
+        poolBaseInfo.setMaximumSize(queuedThreadPool.getMaxThreads());
+
+        BlockingQueue jobs = (BlockingQueue) ReflectUtil.getFieldValue(queuedThreadPool, "_jobs");
+        int queueCapacity = jobs.remainingCapacity() + jobs.size();
+
+        poolBaseInfo.setQueueCapacity(queueCapacity);
+        poolBaseInfo.setQueueType(jobs.getClass().getSimpleName());
+        poolBaseInfo.setKeepAliveTime((long) queuedThreadPool.getIdleTimeout());
+        poolBaseInfo.setRejectedName("RejectedExecutionException");
+        return poolBaseInfo;
     }
 
     @Override

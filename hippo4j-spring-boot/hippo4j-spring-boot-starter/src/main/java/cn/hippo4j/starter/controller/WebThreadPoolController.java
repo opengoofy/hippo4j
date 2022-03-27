@@ -6,11 +6,8 @@ import cn.hippo4j.common.model.PoolRunStateInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.core.executor.web.WebThreadPoolHandlerChoose;
-import cn.hippo4j.core.executor.web.WebThreadPoolRunStateHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.Executor;
 
 /**
  * Web thread pool controller.
@@ -27,12 +24,9 @@ public class WebThreadPoolController {
 
     private final WebThreadPoolHandlerChoose webThreadPoolServiceChoose;
 
-    private final WebThreadPoolRunStateHandler webThreadPoolRunStateHandler;
-
     @GetMapping("/web/base/info")
     public Result<PoolBaseInfo> getPoolBaseState() {
-        Executor webThreadPool = webThreadPoolServiceChoose.choose().getWebThreadPool();
-        PoolBaseInfo poolBaseInfo = webThreadPoolRunStateHandler.simpleInfo(webThreadPool);
+        PoolBaseInfo poolBaseInfo = webThreadPoolServiceChoose.choose().simpleInfo();
         return Results.success(poolBaseInfo);
     }
 

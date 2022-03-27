@@ -1,5 +1,6 @@
 package cn.hippo4j.core.executor.web;
 
+import cn.hippo4j.common.model.PoolBaseInfo;
 import cn.hippo4j.common.model.PoolParameter;
 import cn.hippo4j.common.model.PoolParameterInfo;
 import cn.hippo4j.common.model.PoolRunStateInfo;
@@ -10,7 +11,9 @@ import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.server.WebServer;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -47,6 +50,30 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         }
 
         return tomcatExecutor;
+    }
+
+    @Override
+    public PoolBaseInfo simpleInfo() {
+        PoolBaseInfo poolBaseInfo = new PoolBaseInfo();
+        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) executor;
+        int corePoolSize = threadPoolExecutor.getCorePoolSize();
+        int maximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
+        RejectedExecutionHandler rejectedExecutionHandler = threadPoolExecutor.getRejectedExecutionHandler();
+        long keepAliveTime = threadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
+
+        BlockingQueue<Runnable> queue = threadPoolExecutor.getQueue();
+        int queueSize = queue.size();
+        int remainingCapacity = queue.remainingCapacity();
+        int queueCapacity = queueSize + remainingCapacity;
+
+        poolBaseInfo.setCoreSize(corePoolSize);
+        poolBaseInfo.setMaximumSize(maximumPoolSize);
+        poolBaseInfo.setKeepAliveTime(keepAliveTime);
+        poolBaseInfo.setQueueType(queue.getClass().getSimpleName());
+        poolBaseInfo.setQueueCapacity(queueCapacity);
+        poolBaseInfo.setRejectedName(rejectedExecutionHandler.getClass().getSimpleName());
+
+        return poolBaseInfo;
     }
 
     @Override
