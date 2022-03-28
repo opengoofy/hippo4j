@@ -1,0 +1,72 @@
+server:
+  port: 8089
+  servlet:
+    context-path: /example
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  server:
+    port: 29999
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: dynamic-threadpool-example
+
+  cloud:
+    nacos:
+      config:
+        password: nacos
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        extension-configs:
+          - data-id: hippo4j-nacos.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+
+  dynamic:
+    thread-pool:
+      enable: true
+      banner: true
+      collect: true
+      check-state-interval: 5
+      notify-platforms:
+        - platform: 'WECHAT'
+          secret-key: ac0426a5-c712-474c-9bff-72b8b8f5caff
+        - platform: 'DING'
+          secret-key: 56417ebba6a27ca352f0de77a2ae9da66d01f39610b5ee8a6033c60ef9071c55
+        - platform: 'LARK'
+          secret-key: 2cbf2808-3839-4c26-a04d-fd201dd51f9e
+      nacos:
+        data-id: 'hippo4j-nacos.yaml'
+        group: 'DEFAULT_GROUP'
+      config-file-type: yml
+      executors:
+        - thread-pool-id: 'message-consume'
+          core-pool-size: 1
+          maximum-pool-size: 1
+          queue-capacity: 1
+          blocking-queue: 'LinkedBlockingQueue'
+          execute-time-out: 1000
+          rejected-handler: 'AbortPolicy'
+          keep-alive-time: 6691
+          allow-core-thread-time-out: true
+          thread-name-prefix: 'message-consume'
+          notify:
+            is-alarm: true
+            active-alarm: 80
+            capacity-alarm: 80
+            interval: 8
+            receives:
+              WECHAT: 'xxx' # Fill in the enterprise weChat userId
+              DING: 'xxx' # phone
+              LARK: 'xxx'
