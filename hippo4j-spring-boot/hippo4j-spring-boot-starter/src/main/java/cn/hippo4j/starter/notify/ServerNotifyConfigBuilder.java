@@ -68,7 +68,7 @@ public class ServerNotifyConfigBuilder implements NotifyConfigBuilder {
 
             resultMap.forEach((key, val) ->
                     val.stream().filter(each -> StrUtil.equals("ALARM", each.getType()))
-                            .forEach(each -> alarmControlHandler.initCacheAndLock(each.getThreadPoolId(), each.getPlatform(), each.getInterval()))
+                            .forEach(each -> alarmControlHandler.initCacheAndLock(each.getTpId(), each.getPlatform(), each.getInterval()))
             );
         }
 

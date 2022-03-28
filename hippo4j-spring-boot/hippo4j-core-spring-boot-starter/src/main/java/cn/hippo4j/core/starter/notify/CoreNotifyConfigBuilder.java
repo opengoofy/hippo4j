@@ -58,7 +58,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         for (NotifyPlatformProperties platformProperties : notifyPlatforms) {
             NotifyConfigDTO notifyConfig = new NotifyConfigDTO();
             notifyConfig.setPlatform(platformProperties.getPlatform());
-            notifyConfig.setThreadPoolId(threadPoolId);
+            notifyConfig.setTpId(threadPoolId);
             notifyConfig.setType("ALARM");
             notifyConfig.setSecretKey(platformProperties.getSecretKey());
             int interval = Optional.ofNullable(executor.getNotify())
@@ -76,7 +76,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         for (NotifyPlatformProperties platformProperties : notifyPlatforms) {
             NotifyConfigDTO notifyConfig = new NotifyConfigDTO();
             notifyConfig.setPlatform(platformProperties.getPlatform());
-            notifyConfig.setThreadPoolId(threadPoolId);
+            notifyConfig.setTpId(threadPoolId);
             notifyConfig.setType("CONFIG");
             notifyConfig.setSecretKey(platformProperties.getSecretKey());
             notifyConfig.setReceives(buildReceive(executor, platformProperties));
@@ -87,7 +87,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         resultMap.forEach(
                 (key, val) -> val.stream()
                         .filter(each -> StrUtil.equals("ALARM", each.getType()))
-                        .forEach(each -> alarmControlHandler.initCacheAndLock(each.getThreadPoolId(), each.getPlatform(), each.getInterval()))
+                        .forEach(each -> alarmControlHandler.initCacheAndLock(each.getTpId(), each.getPlatform(), each.getInterval()))
         );
 
         return resultMap;

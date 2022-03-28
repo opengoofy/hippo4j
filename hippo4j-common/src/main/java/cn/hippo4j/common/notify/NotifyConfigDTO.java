@@ -26,7 +26,7 @@ public class NotifyConfigDTO {
     /**
      * 线程池id
      */
-    private String threadPoolId;
+    private String tpId;
 
     /**
      * 通知平台

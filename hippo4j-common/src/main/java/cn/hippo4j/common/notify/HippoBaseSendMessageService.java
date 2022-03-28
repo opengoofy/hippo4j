@@ -49,7 +49,7 @@ public class HippoBaseSendMessageService implements HippoSendMessageService, Com
                     return;
                 }
 
-                if (isSendAlarm(each.getThreadPoolId(), each.getPlatform(), typeEnum)) {
+                if (isSendAlarm(each.getTpId(), each.getPlatform(), typeEnum)) {
                     alarmNotifyRequest.setNotifyTypeEnum(typeEnum);
                     messageHandler.sendAlarmMessage(each, alarmNotifyRequest);
                 }
