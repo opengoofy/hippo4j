@@ -158,29 +158,11 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             if (!checkConsistency(threadPoolId, properties)) {
                 continue;
             }
-
+            // refresh executor pool
             dynamicRefreshPool(threadPoolId, properties);
-
+            // old properties
             ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
-            ChangeParameterNotifyRequest changeRequest = new ChangeParameterNotifyRequest();
-            changeRequest.setBeforeCorePoolSize(beforeProperties.getCorePoolSize());
-            changeRequest.setBeforeMaximumPoolSize(beforeProperties.getMaximumPoolSize());
-            changeRequest.setBeforeAllowsCoreThreadTimeOut(beforeProperties.getAllowCoreThreadTimeOut());
-            changeRequest.setBeforeKeepAliveTime(beforeProperties.getKeepAliveTime());
-            changeRequest.setBlockingQueueName(beforeProperties.getBlockingQueue());
-            changeRequest.setBeforeQueueCapacity(beforeProperties.getQueueCapacity());
-            changeRequest.setBeforeRejectedName(beforeProperties.getRejectedHandler());
-            changeRequest.setBeforeExecuteTimeOut(beforeProperties.getExecuteTimeOut());
-            changeRequest.setThreadPoolId(beforeProperties.getThreadPoolId());
-
-            changeRequest.setNowCorePoolSize(properties.getCorePoolSize());
-            changeRequest.setNowMaximumPoolSize(properties.getMaximumPoolSize());
-            changeRequest.setNowAllowsCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut());
-            changeRequest.setNowKeepAliveTime(properties.getKeepAliveTime());
-            changeRequest.setNowQueueCapacity(properties.getQueueCapacity());
-            changeRequest.setNowRejectedName(properties.getRejectedHandler());
-            changeRequest.setNowExecuteTimeOut(properties.getExecuteTimeOut());
-
+            // refresh executor properties
             GlobalCoreThreadPoolManage.refresh(threadPoolId, properties);
             log.info(
                     "[{}] Changed thread pool. " +
@@ -204,11 +186,39 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             );
 
             try {
-                threadPoolNotifyAlarmHandler.sendPoolConfigChange(changeRequest);
+                threadPoolNotifyAlarmHandler.sendPoolConfigChange(newChangeRequest(beforeProperties,properties));
             } catch (Throwable ex) {
                 log.error("Failed to send change notice. Message :: {}", ex.getMessage());
             }
         }
+    }
+
+    /**
+     * construct ChangeParameterNotifyRequest instance
+     *
+     * @param beforeProperties old properties
+     * @param properties       new properties
+     * @return instance
+     */
+    private ChangeParameterNotifyRequest newChangeRequest(ExecutorProperties beforeProperties, ExecutorProperties properties) {
+        ChangeParameterNotifyRequest changeRequest = new ChangeParameterNotifyRequest();
+        changeRequest.setBeforeCorePoolSize(beforeProperties.getCorePoolSize());
+        changeRequest.setBeforeMaximumPoolSize(beforeProperties.getMaximumPoolSize());
+        changeRequest.setBeforeAllowsCoreThreadTimeOut(beforeProperties.getAllowCoreThreadTimeOut());
+        changeRequest.setBeforeKeepAliveTime(beforeProperties.getKeepAliveTime());
+        changeRequest.setBlockingQueueName(beforeProperties.getBlockingQueue());
+        changeRequest.setBeforeQueueCapacity(beforeProperties.getQueueCapacity());
+        changeRequest.setBeforeRejectedName(beforeProperties.getRejectedHandler());
+        changeRequest.setBeforeExecuteTimeOut(beforeProperties.getExecuteTimeOut());
+        changeRequest.setThreadPoolId(beforeProperties.getThreadPoolId());
+        changeRequest.setNowCorePoolSize(properties.getCorePoolSize());
+        changeRequest.setNowMaximumPoolSize(properties.getMaximumPoolSize());
+        changeRequest.setNowAllowsCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut());
+        changeRequest.setNowKeepAliveTime(properties.getKeepAliveTime());
+        changeRequest.setNowQueueCapacity(properties.getQueueCapacity());
+        changeRequest.setNowRejectedName(properties.getRejectedHandler());
+        changeRequest.setNowExecuteTimeOut(properties.getExecuteTimeOut());
+        return changeRequest;
     }
 
     /**
