@@ -3,6 +3,7 @@ package cn.hippo4j.core.starter.notify;
 import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.notify.AlarmControlHandler;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
 import cn.hippo4j.core.starter.config.NotifyPlatformProperties;
@@ -60,7 +61,8 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setPlatform(platformProperties.getPlatform());
             notifyConfig.setTpId(threadPoolId);
             notifyConfig.setType("ALARM");
-            notifyConfig.setSecretKey(platformProperties.getSecretKey());
+            notifyConfig.setSecret(platformProperties.getSecret());
+            notifyConfig.setSecretKey(getToken(platformProperties));
             int interval = Optional.ofNullable(executor.getNotify())
                     .map(each -> each.getInterval())
                     .orElseGet(() -> bootstrapCoreProperties.getAlarmInterval() != null ? bootstrapCoreProperties.getAlarmInterval() : 5);
@@ -78,7 +80,8 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setPlatform(platformProperties.getPlatform());
             notifyConfig.setTpId(threadPoolId);
             notifyConfig.setType("CONFIG");
-            notifyConfig.setSecretKey(platformProperties.getSecretKey());
+            notifyConfig.setSecretKey(getToken(platformProperties));
+            notifyConfig.setSecret(platformProperties.getSecret());
             notifyConfig.setReceives(buildReceive(executor, platformProperties));
             changeNotifyConfigs.add(notifyConfig);
         }
@@ -113,6 +116,10 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         }
 
         return receive;
+    }
+
+    private String getToken(NotifyPlatformProperties platformProperties) {
+        return StringUtil.isNotBlank(platformProperties.getToken()) ? platformProperties.getToken() : platformProperties.getSecretKey();
     }
 
 }
