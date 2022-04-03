@@ -39,6 +39,7 @@ Hippo4J 基于 **美团动态线程池** 设计理念开发，针对线程池增
 
 相比较 hippo4j-core，功能会更强大，但是也引入了一定的复杂性。需要部署一个 Java 服务，以及 MySQL 数据库。
 
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/1644032018254-min.gif)
 
 ### 使用总结
 
