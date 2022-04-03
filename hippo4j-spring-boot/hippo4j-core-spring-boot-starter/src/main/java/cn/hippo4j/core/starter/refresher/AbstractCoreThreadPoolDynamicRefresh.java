@@ -116,7 +116,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                 PoolParameter beforeParameter = webThreadPoolService.getWebThreadPoolParameter();
                 if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
                         || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
-                        || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())) {
+                        || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())) {
                     webThreadPoolService.updateWebThreadPool(nowParameter);
                 }
             }
