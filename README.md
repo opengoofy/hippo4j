@@ -29,7 +29,7 @@ Hippo4J 基于 **美团动态线程池** 设计理念开发，针对线程池增
 
 **轻量级动态线程池管理**，依赖 Apollo、Nacos 等三方配置中心（任选其一）完成线程池参数动态变更，同样包含运行时报警、监控功能。
 
-> 监控功能配置详见：[线程池监控](https://hippox.cn/pages/2f67ll)
+> 监控功能配置详见：[线程池监控](https://hippo4j.cn/pages/2f67ll)
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-202203271737049821.png)
 
@@ -87,13 +87,13 @@ Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池
 
 ## 快速开始
 
-[运行 Hippo4J 自带 Demo 参考文档](https://hippox.cn/pages/793dcb/)
+[运行 Hippo4J 自带 Demo 参考文档](https://hippo4j.cn/pages/793dcb/)
 
 [在线体验地址](http://console.hippox.cn:6691/index.html) 用户名密码：hippo4j / hippo4j
 
 ## 联系我
 
-对于这个项目，是否有什么不一样看法，同 [作者](https://hippox.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通。
+对于这个项目，是否有什么不一样看法，同 [作者](https://hippo4j.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通。
 
 
 ## 公众号
