@@ -2,14 +2,14 @@
 
 
 <p>
-  <a href="https://github.com/acmenlt/dynamic-threadpool" target="_blank">
-    <img alt="GitHub" src="https://img.shields.io/github/stars/acmenlt/dynamic-threadpool?label=Stars&style=flat-square&logo=GitHub">
+  <a href="https://github.com/longtai-cn/hippo4j" target="_blank">
+    <img alt="GitHub" src="https://img.shields.io/github/stars/longtai-cn/hippo4j?label=Stars&style=flat-square&logo=GitHub">
   </a>
-  <a href="https://github.com/acmenlt/dynamic-threadpool/blob/develop/LICENSE">
-    <img src="https://img.shields.io/github/license/acmenlt/dynamic-threadpool?color=42b883&style=flat-square" alt="LICENSE">
+  <a href="https://github.com/longtai-cn/hippo4j/blob/develop/LICENSE">
+    <img src="https://img.shields.io/github/license/longtai-cn/hippo4j?color=42b883&style=flat-square" alt="LICENSE">
   </a>
-  <a title="Hits" target="_blank" href="https://github.com/acmenlt/dynamic-threadpool">
-    <img src="https://hits.b3log.org/acmenlt/dynamic-threadpool.svg">
+  <a title="Hits" target="_blank" href="https://github.com/longtai-cn/hippo4j">
+    <img src="https://hits.b3log.org/longtai-cn/hippo4j.svg">
   </a>
 </p>
 
@@ -71,13 +71,13 @@ Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池
 <table>
   <tr>
     <td align="center" style="width: 400px;">
-      <a href="https://github.com/acmenlt">
+      <a href="https://github.com/longtai-cn">
         <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213443242.png" style="width: 400px;"><br>
         <sub>配置变更</sub>
       </a><br>
     </td>
     <td align="center" style="width: 400px;">
-      <a href="https://github.com/acmenlt">
+      <a href="https://github.com/longtai-cn">
         <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213512019.png" style="width: 400px;"><br>
         <sub>报警通知</sub>
       </a><br>
@@ -93,8 +93,7 @@ Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池
 
 ## 联系我
 
-对于这个项目，是否有什么不一样看法，同 [作者](https://hippo4j.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通。
-
+对于这个项目，是否有什么不一样看法，同 [作者](https://hippo4j.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/longtai-cn/hippo4j/issues) 沟通。
 
 ## 公众号
 
@@ -104,8 +103,7 @@ Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池
 
 ## Stars 趋势
 
-[![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool)
-
+[![Stargazers over time](https://starchart.cc/longtai-cn/hippo4j.svg)](https://starchart.cc/longtai-cn/hippo4j)
 
 ## 友情链接
 
@@ -115,7 +113,6 @@ Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池
 - [**Austin**](https://github.com/ZhongFuCheng3y/austin)：消息推送平台📝 推送下发【邮件】【短信】【微信服务号】【微信小程序】等消息类型。所使用的技术栈包括：SpringBoot、SpringDataJPA、MySQL、Docker、docker-compose、Kafka、Redis、Apollo、prometheus、Grafana、GrayLog、Flink、Xxl-job、Echarts等等
 
 ## 鸣谢
-
 
 Hippo4J 项目基于或参考以下项目：[**Nacos**](https://github.com/alibaba/nacos)、[**Eureka**](https://github.com/Netflix/Eureka)、[**Mzt-Biz-Log**](https://github.com/mouzt/mzt-biz-log)、[**Equator**](https://github.com/dadiyang/equator)。
 
