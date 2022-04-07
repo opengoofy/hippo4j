@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/github/license/longtai-cn/hippo4j?color=42b883&style=flat-square" alt="LICENSE">
   </a>
   <a title="Hits" target="_blank" href="https://github.com/longtai-cn/hippo4j">
-    <img src="https://hits.b3log.org/longtai-cn/hippo4j.svg">
+    <img src="https://hits.b3log.org/acmenlt/dynamic-threadpool.svg">
   </a>
 </p>
 
