@@ -256,12 +256,13 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
         ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
 
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
-        if (!Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize())) {
-            executor.setCorePoolSize(properties.getCorePoolSize());
-        }
 
         if (!Objects.equals(beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize())) {
             executor.setMaximumPoolSize(properties.getMaximumPoolSize());
+        }
+
+        if (!Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize())) {
+            executor.setCorePoolSize(properties.getCorePoolSize());
         }
 
         if (!Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())) {
