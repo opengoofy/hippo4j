@@ -89,8 +89,8 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
         try {
             long startTime = this.startTime.get();
             long endTime = System.currentTimeMillis();
-            long executeTime;
-            boolean executeTimeAlarm = (executeTime = (endTime - startTime)) > executeTimeOut;
+            long executeTime = endTime - startTime;
+            boolean executeTimeAlarm = executeTime > executeTimeOut * 1000;
             if (executeTimeAlarm && ApplicationContextHolder.getInstance() != null) {
                 ThreadPoolNotifyAlarmHandler notifyAlarmHandler = ApplicationContextHolder.getBean(ThreadPoolNotifyAlarmHandler.class);
                 if (notifyAlarmHandler != null) {
