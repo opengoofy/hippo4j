@@ -226,7 +226,7 @@
 
     <issueManagement>
         <system>Github Issue</system>
-        <url>https://github.com/acmenlt/dynamic-threadpool/issues</url>
+        <url>https://github.com/longtai-cn/hippo4j/issues</url>
     </issueManagement>
 
     <build>
