@@ -51,7 +51,6 @@ public class DiscoveryConfiguration {
         instanceInfo.setInstanceId(instanceId)
                 .setIpApplicationName(getIpApplicationName(environment, hippo4JInetUtils))
                 .setHostName(InetAddress.getLocalHost().getHostAddress())
-                .setGroupKey(itemId + GROUP_KEY_DELIMITER + namespace)
                 .setAppName(applicationName)
                 .setPort(port)
                 .setClientBasePath(contextPath)
