@@ -1,7 +1,9 @@
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/hippo4j-logo-logoly.png)
 
-
 <p>
+  <a href="https://gitee.com/longtai-cn/hippo4j" target="_blank">
+    <img alt="Gitee" src="https://gitee.com/longtai-cn/hippo4j/badge/star.svg?theme=gvp">
+  </a>
   <a href="https://github.com/longtai-cn/hippo4j" target="_blank">
     <img alt="GitHub" src="https://img.shields.io/github/stars/longtai-cn/hippo4j?label=Stars&style=flat-square&logo=GitHub">
   </a>
@@ -21,13 +23,13 @@ Hippo4J 基于 **美团动态线程池** 设计理念开发，针对线程池增
 
 按照租户、项目、线程池的维度划分，配合系统权限，让不同的开发、管理人员负责自己系统的线程池。
 
-自 1.1.0 版本发布后，Hippo4J 分为两种使用模式，用一张图来说明两者的使用差别。
+1.1.0 版本发布后，Hippo4J 分为两种使用模式：轻量级依赖配置中心以及无中间件依赖版本。
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220319154626314.png)
 
 ### hippo4j-core
 
-**轻量级动态线程池管理**，依赖 Apollo、Nacos 等三方配置中心（任选其一）完成线程池参数动态变更，同样包含运行时报警、监控功能。
+**轻量级动态线程池管理**，依赖 Apollo、Nacos、Zookeeper 等三方配置中心（任选其一）完成线程池参数动态变更，支持运行时报警、监控等功能。
 
 > 监控功能配置详见：[线程池监控](https://hippo4j.cn/pages/2f67ll)
 
@@ -37,7 +39,7 @@ Hippo4J 基于 **美团动态线程池** 设计理念开发，针对线程池增
 
 **部署 hippo4j-server 服务**，通过可视化 Web 界面完成线程池的创建、变更以及查看，不依赖三方中间件。
 
-相比较 hippo4j-core，功能会更强大，但是也引入了一定的复杂性。需要部署一个 Java 服务，以及 MySQL 数据库。
+相比较 hippo4j-core，功能会更强大，但同时也引入了一定的复杂性。需要部署一个 Java 服务，以及依赖 MySQL 数据库。
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/1644032018254-min.gif)
 
@@ -45,15 +47,13 @@ Hippo4J 基于 **美团动态线程池** 设计理念开发，针对线程池增
 
 |      | hippo4j-core                                 | hippo4j-server                                              |
 | ---- | ---------------------------------------------------- | ------------------------------------------------------------ |
-| 依赖 | Nacos、Apollo 等配置中心（任选其一） | 部署 Hippo4J Server（内部无依赖中间件） |
+| 依赖 | Nacos、Apollo、Zookeeper 等配置中心（任选其一） | 部署 Hippo4J Server（内部无依赖中间件） |
 | 使用 | 配置中心补充线程池相关参数                 | Hippo4J Server Web 控制台添加线程池记录                                                         |
 | 功能 | 包含基础功能：参数动态化、运行时监控、报警等         | 基础功能之外扩展控制台界面、线程池堆栈查看、线程池运行信息实时查看、历史运行信息查看、线程池配置集群个性化等 |
 
 使用建议：根据公司情况选择，如果基本功能可以满足使用，选择 hippo4j-core 使用即可；如果希望更多的功能，可以选择 hippo4j-server。
 
 **两者在进行替换的时候，无需修改业务代码**。
-
-
 
 ## 解决什么问题
 
