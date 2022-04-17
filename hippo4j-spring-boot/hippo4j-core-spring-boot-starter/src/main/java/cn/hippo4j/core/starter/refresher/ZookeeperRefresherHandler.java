@@ -3,9 +3,11 @@ package cn.hippo4j.core.starter.refresher;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import com.google.common.base.Charsets;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.api.CuratorEvent;
 import org.apache.curator.framework.api.CuratorListener;
 import org.apache.curator.framework.api.GetChildrenBuilder;
 import org.apache.curator.framework.api.GetDataBuilder;
@@ -13,10 +15,12 @@ import org.apache.curator.framework.state.ConnectionState;
 import org.apache.curator.framework.state.ConnectionStateListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.utils.ZKPaths;
-import org.apache.zookeeper.WatchedEvent;
+import org.apache.zookeeper.Watcher;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Redick01
@@ -24,6 +28,13 @@ import java.util.Map;
  */
 @Slf4j
 public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
+
+
+    private final static Set<Watcher.Event.EventType> watcherEventTypeSet = Sets.newHashSet(Watcher.Event.EventType.NodeChildrenChanged,
+            Watcher.Event.EventType.NodeDataChanged);
+
+    private final static Set<ConnectionState> connectionStateSet = Sets.newHashSet(ConnectionState.CONNECTED,
+            ConnectionState.RECONNECTED);
 
     private CuratorFramework curatorFramework;
 
@@ -39,25 +50,18 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
         String nodePath = ZKPaths.makePath(ZKPaths.makePath(zkConfigs.get("root-node"),
                 zkConfigs.get("config-version")), zkConfigs.get("node"));
         final ConnectionStateListener connectionStateListener = (client, newState) -> {
-            if (newState == ConnectionState.CONNECTED) {
-                loadNode(nodePath);
-            } else if (newState == ConnectionState.RECONNECTED) {
+            if (connectionStateSet.contains(newState)) {
                 loadNode(nodePath);
             }
         };
 
         final CuratorListener curatorListener = (client, curatorEvent) -> {
-            final WatchedEvent watchedEvent = curatorEvent.getWatchedEvent();
-            if (null != watchedEvent) {
-                switch (watchedEvent.getType()) {
-                    case NodeChildrenChanged:
-                    case NodeDataChanged:
+            Optional.ofNullable(curatorEvent)
+                    .map(CuratorEvent::getWatchedEvent)
+                    .filter(ele -> watcherEventTypeSet.contains(ele.getType()))
+                    .ifPresent(ele -> {
                         loadNode(nodePath);
-                        break;
-                    default:
-                        break;
-                }
-            }
+                    });
         };
 
         curatorFramework.getConnectionStateListenable().addListener(connectionStateListener);
