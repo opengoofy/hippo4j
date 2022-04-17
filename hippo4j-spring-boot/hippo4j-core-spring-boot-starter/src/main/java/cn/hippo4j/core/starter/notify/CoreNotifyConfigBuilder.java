@@ -3,6 +3,7 @@ package cn.hippo4j.core.starter.notify;
 import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.notify.AlarmControlHandler;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
+import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.starter.config.ExecutorProperties;
@@ -11,9 +12,11 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -97,29 +100,28 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
     }
 
     private String buildReceive(ExecutorProperties executor, NotifyPlatformProperties platformProperties) {
-        String receive;
-        if (executor.getNotify() != null) {
-            receive = executor.getNotify().getReceive();
-            if (StrUtil.isBlank(receive)) {
-                receive = bootstrapCoreProperties.getReceive();
-                if (StrUtil.isBlank(receive)) {
-                    Map<String, String> receives = executor.receives();
-                    receive = receives.get(platformProperties.getPlatform());
-                }
-            }
-        } else {
-            receive = bootstrapCoreProperties.getReceive();
-            if (StrUtil.isBlank(receive)) {
-                Map<String, String> receives = executor.receives();
-                receive = receives.get(platformProperties.getPlatform());
-            }
-        }
 
-        return receive;
+        Optional<String> optional = Optional.ofNullable(executor)
+                .map(ExecutorProperties::getNotify)
+                .map(ThreadPoolNotifyAlarm::getReceive)
+                .filter(StringUtil::isNotBlank);
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+        if (StringUtils.isNotBlank(bootstrapCoreProperties.getReceive())) {
+            return bootstrapCoreProperties.getReceive();
+        }
+        if (Objects.nonNull(executor)) {
+            Map<String, String> receives = executor.receives();
+            return receives.get(platformProperties.getPlatform());
+        }
+        return null;
     }
 
     private String getToken(NotifyPlatformProperties platformProperties) {
-        return StringUtil.isNotBlank(platformProperties.getToken()) ? platformProperties.getToken() : platformProperties.getSecretKey();
+        return Optional.ofNullable(platformProperties.getToken())
+                .filter(StringUtil::isNotBlank)
+                .orElseGet(platformProperties::getSecretKey);
     }
 
 }
