@@ -95,6 +95,8 @@ Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池
 
 对于这个项目，是否有什么不一样看法，同 [作者](https://hippo4j.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/longtai-cn/hippo4j/issues) 沟通。
 
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/64E583A0-B1DD-49A3-9AEC-8D246E9D5C12-mini.png)
+
 ## 公众号
 
 如果大家想要实时关注 Hippo4J 最新动态以及干货分享的话，可以关注我的公众号。
