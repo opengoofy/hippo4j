@@ -123,12 +123,21 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
      * @param parameter
      */
     public void changePoolInfo(ThreadPoolExecutor executor, PoolParameter parameter) {
-        if (parameter.getCoreSize() != null) {
-            executor.setCorePoolSize(parameter.getCoreSize());
-        }
-
-        if (parameter.getMaxSize() != null) {
-            executor.setMaximumPoolSize(parameter.getMaxSize());
+        if (parameter.getCoreSize() != null && parameter.getMaxSize() != null) {
+            if (parameter.getMaxSize() < executor.getMaximumPoolSize()) {
+                executor.setCorePoolSize(parameter.getCoreSize());
+                executor.setMaximumPoolSize(parameter.getMaxSize());
+            } else {
+                executor.setMaximumPoolSize(parameter.getMaxSize());
+                executor.setCorePoolSize(parameter.getCoreSize());
+            }
+        } else {
+            if (parameter.getMaxSize() != null) {
+                executor.setMaximumPoolSize(parameter.getMaxSize());
+            }
+            if (parameter.getCoreSize() != null) {
+                executor.setCorePoolSize(parameter.getCoreSize());
+            }
         }
 
         if (parameter.getCapacity() != null
