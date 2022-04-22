@@ -68,7 +68,6 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
         }
 
         BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
-
         // web pool
         refreshWebExecutor(bindableCoreProperties);
         // platforms
@@ -87,7 +86,6 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                     executorProperties.getNotify().getCapacityAlarm(),
                     executorProperties.getNotify().getActiveAlarm()
             );
-
             threadPoolNotifyAlarm.setInterval(executorProperties.getNotify().getInterval());
             threadPoolNotifyAlarm.setReceives(executorProperties.receives());
             GlobalNotifyAlarmManage.put(executorProperties.getThreadPoolId(), threadPoolNotifyAlarm);
@@ -106,7 +104,6 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
         if (isNullFlag) {
             return;
         }
-
         try {
             PoolParameterInfo nowParameter = buildWebPoolParameter(bindableCoreProperties);
             if (nowParameter != null) {
@@ -140,7 +137,6 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                 CoreNotifyConfigBuilder configBuilder = ApplicationContextHolder.getBean(CoreNotifyConfigBuilder.class);
                 Map<String, List<NotifyConfigDTO>> notifyConfig = configBuilder.buildSingleNotifyConfig(executor);
                 sendMessageService.putPlatform(notifyConfig);
-
                 wrapper.setInitFlag(Boolean.TRUE);
             }
         }
@@ -186,7 +182,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             );
 
             try {
-                threadPoolNotifyAlarmHandler.sendPoolConfigChange(newChangeRequest(beforeProperties,properties));
+                threadPoolNotifyAlarmHandler.sendPoolConfigChange(newChangeRequest(beforeProperties, properties));
             } catch (Throwable ex) {
                 log.error("Failed to send change notice. Message :: {}", ex.getMessage());
             }
@@ -194,7 +190,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
     }
 
     /**
-     * construct ChangeParameterNotifyRequest instance
+     * Construct ChangeParameterNotifyRequest instance
      *
      * @param beforeProperties old properties
      * @param properties       new properties
@@ -242,7 +238,6 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                         !Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
                                 && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.name, executor.getQueue().getClass().getSimpleName())
                 );
-
         return result;
     }
 
@@ -254,27 +249,21 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
      */
     private void dynamicRefreshPool(String threadPoolId, ExecutorProperties properties) {
         ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
-
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
-
         if (!Objects.equals(beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize())) {
             executor.setMaximumPoolSize(properties.getMaximumPoolSize());
         }
-
         if (!Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize())) {
             executor.setCorePoolSize(properties.getCorePoolSize());
         }
-
         if (!Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())) {
             executor.allowCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut());
         }
-
         if (!Objects.equals(beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut())) {
             if (executor instanceof AbstractDynamicExecutorSupport) {
                 ((DynamicThreadPoolExecutor) executor).setExecuteTimeOut(properties.getExecuteTimeOut());
             }
         }
-
         if (!Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())) {
             RejectedExecutionHandler rejectedExecutionHandler = RejectedTypeEnum.createPolicy(properties.getRejectedHandler());
             if (executor instanceof AbstractDynamicExecutorSupport) {
@@ -283,14 +272,11 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                 AtomicLong rejectCount = dynamicExecutor.getRejectCount();
                 rejectedExecutionHandler = RejectedProxyUtil.createProxy(rejectedExecutionHandler, threadPoolId, rejectCount);
             }
-
             executor.setRejectedExecutionHandler(rejectedExecutionHandler);
         }
-
         if (!Objects.equals(beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime())) {
             executor.setKeepAliveTime(properties.getKeepAliveTime(), TimeUnit.SECONDS);
         }
-
         if (!Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
                 && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.name, executor.getQueue().getClass().getSimpleName())) {
             if (executor.getQueue() instanceof ResizableCapacityLinkedBlockIngQueue) {
@@ -318,15 +304,12 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
         } else if (bindableCoreProperties.getJetty() != null) {
             poolProperties = bindableCoreProperties.getJetty();
         }
-
         if (poolProperties != null) {
             parameterInfo = new PoolParameterInfo();
             parameterInfo.setCoreSize(poolProperties.getCorePoolSize());
             parameterInfo.setMaxSize(poolProperties.getMaximumPoolSize());
             parameterInfo.setKeepAliveTime(poolProperties.getKeepAliveTime());
         }
-
         return parameterInfo;
     }
-
 }
