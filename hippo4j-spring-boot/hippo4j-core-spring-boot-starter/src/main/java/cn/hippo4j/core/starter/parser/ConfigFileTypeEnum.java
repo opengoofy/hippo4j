@@ -10,11 +10,34 @@ import lombok.Getter;
 @Getter
 public enum ConfigFileTypeEnum {
 
+    /**
+     * properties
+     */
     PROPERTIES("properties"),
+
+    /**
+     * xml
+     */
     XML("xml"),
+
+    /**
+     * json
+     */
     JSON("json"),
+
+    /**
+     * yml
+     */
     YML("yml"),
+
+    /**
+     * yaml
+     */
     YAML("yaml"),
+
+    /**
+     * txt
+     */
     TXT("txt");
 
     private final String value;
