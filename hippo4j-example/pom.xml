@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cn.hippo4j</groupId>
+        <artifactId>hippo4j-all</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>hippo4j-example</artifactId>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>${project.artifactId}</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
+    <modules>
+        <!-- 抽象测试用例 -->
+        <module>hippo4j-example-core</module>
+        <!-- 测试 Hippo4J-Server 部署方式 -->
+        <module>hippo4j-spring-boot-starter-example</module>
+        <!-- 测试 Hippo4J-Core Nacos 配置中心 -->
+        <module>hippo4j-core-nacos-spring-boot-starter-example</module>
+        <!-- 测试 Hippo4J-Core Apollo 配置中心 -->
+        <module>hippo4j-core-apollo-spring-boot-starter-example</module>
+        <module>hippo4j-core-zookeeper-spring-boot-starter-example</module>
+    </modules>
+
+</project>

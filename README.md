@@ -1,190 +1,125 @@
-<div align=center>
-   <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/Dynamic-Thread-Pool-Main.jpeg"  />
-</div>
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/hippo4j-logo-logoly.png)
 
-<p align="center">
-   <strong> :fire: &nbsp; 动态线程池（DTP）系统，包含 <a href="https://github.com/acmenlt/dynamic-threadpool/tree/develop/dynamic-threadpool-server">Server</a> 端及 SpringBoot Client 端需引入的 <a href="https://github.com/acmenlt/dynamic-threadpool/tree/develop/dynamic-threadpool-spring-boot-starter">Starter</a>.</strong>
-</p>
-<p align="center">
 
-<img src="https://img.shields.io/badge/Author-龙台-blue.svg" />
-
-<a target="_blank" href="http://mp.weixin.qq.com/s?__biz=Mzg4NDU0Mjk5OQ==&mid=100007373&idx=1&sn=3b375f97a576820e3e540810e720aeb0&chksm=4fb7c6b578c04fa35fab488d8dd6ddd12cfd0ef70290f3b285261fba0750785ea2725a50d508&scene=18#wechat_redirect">
-     <img src="https://img.shields.io/badge/公众号-龙台 blog-yellow.svg" />
-</a>
-
-<a target="_blank" href="https://github.com/acmenlt/dynamic-threadpool">
-     <img src="https://img.shields.io/badge/⭐-github-orange.svg" />
-</a>
-
-<a href="https://github.com/acmenlt/dynamic-threadpool/blob/develop/LICENSE">
+<p>
+  <a href="https://github.com/acmenlt/dynamic-threadpool" target="_blank">
+    <img alt="GitHub" src="https://img.shields.io/github/stars/acmenlt/dynamic-threadpool?label=Stars&style=flat-square&logo=GitHub">
+  </a>
+  <a href="https://github.com/acmenlt/dynamic-threadpool/blob/develop/LICENSE">
     <img src="https://img.shields.io/github/license/acmenlt/dynamic-threadpool?color=42b883&style=flat-square" alt="LICENSE">
-</a>
-
-<img src="https://img.shields.io/badge/JDK-1.8+-green?logo=appveyor" />
-
-<img src="https://tokei.rs/b1/github/acmenlt/dynamic-threadpool?category=lines" />
-
-<img src="https://img.shields.io/badge/version-v0.4.0-DeepSkyBlue.svg" />
-
-<img src="https://img.shields.io/github/stars/acmenlt/dynamic-threadpool.svg" />
-
+  </a>
+  <a title="Hits" target="_blank" href="https://github.com/acmenlt/dynamic-threadpool">
+    <img src="https://hits.b3log.org/acmenlt/dynamic-threadpool.svg">
+  </a>
 </p>
 
-<br/>
+## Hippo4J
 
-## 为什么写这个项目？
+Hippo4J 基于 **美团动态线程池** 设计理念开发，针对线程池增强 **动态调参、监控、报警功能**。
 
-[美团线程池文章](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html "美团线程池文章") 介绍中，因为业务对线程池参数没有合理配置，触发过几起生产事故，进而引发了一系列思考。最终决定封装线程池动态参数调整，扩展线程池监控以及消息报警等功能
+通过 Web 控制台对线程池参数进行动态调整，支持 **集群内线程池的差异化配置**。内置线程池参数变更通知，以及 **运行过载报警** 功能（支持多通知平台）。
 
-在开源平台找了挺多动态线程池项目，从功能性以及健壮性而言，个人感觉不满足企业级应用
+按照租户、项目、线程池的维度划分，配合系统权限，让不同的开发、管理人员负责自己系统的线程池。
 
-因为对动态线程池比较感兴趣，加上想写一个有意义的项目，所以决定自己来造一个轻量级的轮子
+自 1.1.0 版本发布后，Hippo4J 分为两种使用模式，用一张图来说明两者的使用差别。
 
-想给项目起一个简单易记的名字，类似于 Eureka、Nacos、Redis；后和朋友商量，决定以动物命名：**Hippo**
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220319154626314.png)
 
-![](https://user-images.githubusercontent.com/77398366/139575361-87a0a1b5-716a-4c98-b467-f8f130d30163.png)
+### hippo4j-core
 
-<br/>
+**轻量级动态线程池管理**，依赖 Apollo、Nacos 等三方配置中心（任选其一）完成线程池参数动态变更，同样包含运行时报警、监控功能。
 
-## 它解决了什么问题？
+> 监控功能配置详见：[线程池监控](https://hippox.cn/pages/2f67ll)
 
-线程池在业务系统应该都有使用到，帮助业务流程提升效率以及管理线程，多数场景应用于大量的异步任务处理
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-202203271737049821.png)
 
-虽然线程池提供了我们许多便利，但也并非尽善尽美，比如下面这些问题就无法很好解决
+### hippo4j-server
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211023160830084.png)
+**部署 hippo4j-server 服务**，通过可视化 Web 界面完成线程池的创建、变更以及查看，不依赖三方中间件。
 
-<br/>
-
-如果线程池的配置涉及到上述问题，那么就有可能需要发布业务系统来解决；如果发布后参数仍不合理，继续发布......
-
-Hippo 很好解决了这个问题，它将业务中所有线程池统一管理，遇到上述问题不需要发布系统就可以替换线程池参数
-
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211023142726818.png)
-
-<br/>
-
-##  它有什么特性？
-
-应用系统中线程池并不容易管理。参考美团的设计，Hippo 按照租户、项目、线程池的维度划分。再加上系统权限，让不同的开发、管理人员负责自己系统的线程池操作
-
-举个例子，小编在一家公司的公共组件团队，团队中负责消息、短链接网关等项目。公共组件是租户，消息或短链接就是项目
-
-<br/>
-
-| 模块                                   | 模块名称           | 注释                                     |
-| -------------------------------------- | ------------------ | ---------------------------------------- |
-| dynamic-threadpool-auth              | 用户权限           | -                                        |
-| dynamic-threadpool-common              | 公共模块           | -                                        |
-| dynamic-threadpool-config              | 配置中心           | 提供线程池准实时更新功能                 |
-| dynamic-threadpool-console             | 控制台             | 对接前端项目                             |
-| dynamic-threadpool-discovery           | 注册中心           | 提供线程池项目实例注册、续约、下线等功能 |
-| dynamic-threadpool-spring-boot-starter | SpringBoot Starter | -                                        |
-| dynamic-threadpool-example             | 示例项目           | -                                        |
-| dynamic-threadpool-server              | 服务端             | Server 集成各组件                        |
-| dynamic-threadpool-tools               | 抽象工具类         | GitHub 变更监控、操作日志等组件                  |
+相比较 hippo4j-core，功能会更强大，但是也引入了一定的复杂性。需要部署一个 Java 服务，以及 MySQL 数据库。
 
 
-<br/>
+### 使用总结
 
-Hippo 除去动态修改线程池，还包含实时查看线程池运行时指标、负载报警、配置日志管理等
+|      | hippo4j-core                                 | hippo4j-server                                              |
+| ---- | ---------------------------------------------------- | ------------------------------------------------------------ |
+| 依赖 | Nacos、Apollo 等配置中心（任选其一） | 部署 Hippo4J Server（内部无依赖中间件） |
+| 使用 | 配置中心补充线程池相关参数                 | Hippo4J Server Web 控制台添加线程池记录                                                         |
+| 功能 | 包含基础功能：参数动态化、运行时监控、报警等         | 基础功能之外扩展控制台界面、线程池堆栈查看、线程池运行信息实时查看、历史运行信息查看、线程池配置集群个性化等 |
+
+使用建议：根据公司情况选择，如果基本功能可以满足使用，选择 hippo4j-core 使用即可；如果希望更多的功能，可以选择 hippo4j-server。
+
+**两者在进行替换的时候，无需修改业务代码**。
 
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211023101844619.png)
 
-<br/>
+## 解决什么问题
 
-## 如何运行 Demo？
+简单来说，Hippo4J 主要为我们解决了下面这些使用原生线程池存在的问题：
 
-目前动态线程池功能已经完成，可以直接把代码拉到本地运行。导入 [Hippo 初始化 SQL 语句](https://github.com/acmenlt/dynamic-threadpool/blob/develop/server/src/main/resources/hippo_manager.sql)
+- **原生线程池创建时无法合理评估参数问题**。比如功能使用到线程池，遇到突发流量洪峰，频繁拒绝任务。Hippo4J 提供动态修改参数功能，**避免修改线程池参数后重启线上应用**；
+- 当线程池运行过程中无法再接受新的任务，此时你想知道 **线程池内线程都在做什么**？Hippo4J 提供查看线程池堆栈功能；
+- 某接口频繁超时，内部依赖线程池执行，想要 **查看过去一段时间线程池运行参数情况**。Hippo4J 提供历史数据图表查看功能；
+- **原生线程池无任务报警策略**。Hippo4J 内置四种报警策略，分别是：活跃度报警、队列容量报警、拒绝策略报警和运行时间过长报警。
 
-1. 启动 `dynamic-threadpool-server` 模块下 ServerApplication 应用类
-2. 启动 `dynamic-threadpool-example` 模块下 ExampleApplication 应用类
+## 报警通知
 
-<br/>
-
-通过接口修改线程池中的配置。HTTP POST 路径：http://localhost:6691/v1/cs/configs ，Body 请求体如下：
-
-```json
-{
-    "ignore": "tenantId、itemId、tpId 代表唯一线程池，请不要修改",
-    "tenantId": "prescription",
-    "itemId": "dynamic-threadpool-example",
-    "tpId": "message-produce",
-    "coreSize": 10,
-    "maxSize": 15,
-    "queueType": 9,
-    "capacity": 100,
-    "keepAliveTime": 10,
-    "rejectedType": 3,
-    "isAlarm": 0,
-    "capacityAlarm": 81,
-    "livenessAlarm": 82
-}
-```
-
-<br/>
-
-接口调用成功后，观察 dynamic-threadpool-example 控制台日志输出，日志输出包括不限于此信息即为成功
-
-```tex
-[🔥 MESSAGE-PRODUCE] Changed thread pool. coreSize :: [11=>10], maxSize :: [15=>15], queueType :: [9=>9]
-capacity :: [100=>100], keepAliveTime :: [10000=>10000], rejectedType :: [7=>7]
-```
-
-<br/>
-
-现阶段已集成钉钉消息推送，后续会持续接入企业微信、邮箱、飞书、短信等通知渠道。可以通过添加钉钉群体验消息推送，群号：31764717
+Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池参数变更通知** 和 **运行时报警** 功能。示例如下：
 
 <table>
   <tr>
-    <td align="center" style="width: 200px;">
+    <td align="center" style="width: 400px;">
       <a href="https://github.com/acmenlt">
-        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211013122816688.png" style="width: 400px;"><br>
+        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213443242.png" style="width: 400px;"><br>
         <sub>配置变更</sub>
       </a><br>
     </td>
-    <td align="center" style="width: 200px;">
+    <td align="center" style="width: 400px;">
       <a href="https://github.com/acmenlt">
-        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211013113649068.png" style="width: 400px;"><br>
+        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213512019.png" style="width: 400px;"><br>
         <sub>报警通知</sub>
       </a><br>
     </td>
   </tr>
 </table>
 
-<br/>
+## 快速开始
 
-项目代码功能还在持续开发，初定发布 1.0.0 RELEASE 完成以下功能。部署了 Server 服务，只需要引入 Starter 组件到业务系统中，即可完成动态修改、监控、报警等特性
+[运行 Hippo4J 自带 Demo 参考文档](https://hippox.cn/pages/793dcb/)
 
-<br/>
+[在线体验地址](http://console.hippox.cn:6691/index.html) 用户名密码：hippo4j / hippo4j
 
-## 查看源码能收获什么？
+## 联系我
 
-目前还没有发布 Release 版本，小伙伴可以阅读框架源码，查看框架中好的设计理念或者编码技巧
-
-在项目开发过程中，借鉴了 Nacos、Eureka、Seata、ShardingSphere 等中间件项目的优雅设计
-
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211023143632685.png)
-
-<br/>
+对于这个项目，是否有什么不一样看法，同 [作者](https://hippox.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通。
 
 
-## Github Stars 趋势
+## 公众号
 
-如果小伙伴查看源码设计有所收获，辛苦点个 🚀 Star ，方便后续查看
+如果大家想要实时关注 Hippo4J 最新动态以及干货分享的话，可以关注我的公众号。
 
-[![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool) 
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/43_65f6020ed111b6bb3808ec338576bd6b.png)
 
- <br/>
+## Stars 趋势
 
-
-## 最后
-
-小编是个有代码洁癖的程序员，项目中的代码开发完全遵守阿里巴巴代码规约，也推荐大家使用，培养好的编码习惯
-
-对于这个项目，是否有什么不一样看法，欢迎在 Issue 一起沟通交流；或者添加小编微信进交流群
+[![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool)
 
 
-![](https://user-images.githubusercontent.com/77398366/138920260-e9dd1268-797f-4d42-9abb-62353d08ea6a.png)
+## 友情链接
+
+- [**JavaGuide**](https://github.com/Snailclimb/JavaGuide)：「Java学习+面试指南」一份涵盖大部分 Java 程序员所需要掌握的核心知识。准备 Java 面试，首选 JavaGuide！
+- [**Guide-Rpc-Framework**](https://github.com/Snailclimb/guide-rpc-framework)：A custom RPC framework implemented by Netty+Kyro+Zookeeper.（一款基于 Netty+Kyro+Zookeeper 实现的自定义 RPC 框架-附详细实现过程和相关教程。）
+- [**toBeBetterJavaer**](https://github.com/itwanger/toBeBetterJavaer)：Java 程序员进阶之路，据说每一个优秀的 Java 程序员都喜欢她，风趣幽默、通俗易懂。内容包括 Java 基础、Java 并发编程、Java 虚拟机、Java 企业级开发、Java 面试等核心知识点
+- [**Austin**](https://github.com/ZhongFuCheng3y/austin)：消息推送平台📝 推送下发【邮件】【短信】【微信服务号】【微信小程序】等消息类型。所使用的技术栈包括：SpringBoot、SpringDataJPA、MySQL、Docker、docker-compose、Kafka、Redis、Apollo、prometheus、Grafana、GrayLog、Flink、Xxl-job、Echarts等等
+
+## 鸣谢
+
+
+Hippo4J 项目基于或参考以下项目：[**Nacos**](https://github.com/alibaba/nacos)、[**Eureka**](https://github.com/Netflix/Eureka)、[**Mzt-Biz-Log**](https://github.com/mouzt/mzt-biz-log)、[**Equator**](https://github.com/dadiyang/equator)。
+
+感谢 JetBrains 提供的免费开源 License：
+
+<p>
+    <img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
+</p>
