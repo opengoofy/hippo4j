@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <url>https://github.com/acmenlt/dynamic-threadpool</url>
+    <url>https://github.com/longtai-cn/hippo4j</url>
     <description>动态可观测线程池框架, 为业务系统提高线上运行保障能力.</description>
 
     <modules>
@@ -26,7 +26,7 @@
     </modules>
 
     <properties>
-        <revision>1.2.0</revision>
+        <revision>1.2.0-RC4</revision>
         <java.version>1.8</java.version>
 
         <dozer.version>6.5.0</dozer.version>
@@ -139,12 +139,6 @@
             </dependency>
 
             <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>open-change-tool</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
@@ -232,7 +226,7 @@
 
     <issueManagement>
         <system>Github Issue</system>
-        <url>https://github.com/acmenlt/dynamic-threadpool/issues</url>
+        <url>https://github.com/longtai-cn/hippo4j/issues</url>
     </issueManagement>
 
     <build>
@@ -351,9 +345,9 @@
     </profiles>
 
     <scm>
-        <connection>scm:git@github.com:acmenlt/dynamic-threadpool</connection>
-        <developerConnection>scm:git@github.com:acmenlt/dynamic-threadpool.git</developerConnection>
-        <url>git@github.com:acmenlt/dynamic-threadpool.git</url>
+        <connection>scm:git@github.com:longtai-cn/hippo4j</connection>
+        <developerConnection>scm:git@github.com:longtai-cn/hippo4j.git</developerConnection>
+        <url>git@github.com:longtai-cn/hippo4j.git</url>
     </scm>
 
     <distributionManagement>

@@ -26,22 +26,22 @@ import static cn.hippo4j.common.constant.Constants.BASE_PATH;
 @RequestMapping(BASE_PATH + "/apps")
 public class ApplicationController {
 
-    private final InstanceRegistry instanceRegistry;
+    private final InstanceRegistry<InstanceInfo> instanceRegistry;
 
     @GetMapping("/{appName}")
-    public Result applications(@PathVariable String appName) {
+    public Result<List<Lease<InstanceInfo>>> applications(@PathVariable String appName) {
         List<Lease<InstanceInfo>> resultInstanceList = instanceRegistry.listInstance(appName);
         return Results.success(resultInstanceList);
     }
 
     @PostMapping("/register")
-    public Result addInstance(@RequestBody InstanceInfo instanceInfo) {
+    public Result<Void> addInstance(@RequestBody InstanceInfo instanceInfo) {
         instanceRegistry.register(instanceInfo);
         return Results.success();
     }
 
     @PostMapping("/renew")
-    public Result renew(@RequestBody InstanceInfo.InstanceRenew instanceRenew) {
+    public Result<Void> renew(@RequestBody InstanceInfo.InstanceRenew instanceRenew) {
         boolean isSuccess = instanceRegistry.renew(instanceRenew);
         if (!isSuccess) {
             log.warn("Not Found (Renew) :: {} - {}", instanceRenew.getAppName(), instanceRenew.getInstanceId());
@@ -51,7 +51,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/remove")
-    public Result remove(@RequestBody InstanceInfo instanceInfo) {
+    public Result<Void> remove(@RequestBody InstanceInfo instanceInfo) {
         instanceRegistry.remove(instanceInfo);
         return Results.success();
     }

@@ -35,7 +35,7 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
 
         ConfigChangeListener configChangeListener = configChangeEvent -> {
             ConfigFile configFile = ConfigService.getConfigFile(
-                    namespace,
+                    this.namespace.replaceAll("." + bootstrapCoreProperties.getConfigFileType().getValue(), ""),
                     ConfigFileFormat.fromString(bootstrapCoreProperties.getConfigFileType().getValue())
             );
 

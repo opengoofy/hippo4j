@@ -18,7 +18,19 @@ public class NotifyPlatformProperties {
 
     /**
      * Secret key.
+     * {@link NotifyPlatformProperties#token}
      */
+    @Deprecated
     private String secretKey;
+
+    /**
+     * Token.
+     */
+    private String token;
+
+    /**
+     * Secret.
+     */
+    private String secret;
 
 }

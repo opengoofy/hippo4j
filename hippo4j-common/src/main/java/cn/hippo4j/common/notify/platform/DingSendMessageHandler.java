@@ -1,6 +1,9 @@
 package cn.hippo4j.common.notify.platform;
 
-import cn.hippo4j.common.notify.*;
+import cn.hippo4j.common.notify.NotifyConfigDTO;
+import cn.hippo4j.common.notify.NotifyPlatformEnum;
+import cn.hippo4j.common.notify.NotifyTypeEnum;
+import cn.hippo4j.common.notify.SendMessageHandler;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.StringUtil;
@@ -13,7 +16,12 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
@@ -102,7 +110,7 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 DateUtil.now()
         );
 
-        execute(notifyConfig.getSecretKey(), DingAlarmConstants.DING_ALARM_TITLE, text, Lists.newArrayList(receives));
+        execute(notifyConfig, DingAlarmConstants.DING_ALARM_TITLE, text, Lists.newArrayList(receives));
     }
 
     @Override
@@ -148,25 +156,35 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 DateUtil.now()
         );
 
-        execute(notifyConfig.getSecretKey(), DingAlarmConstants.DING_NOTICE_TITLE, text, Lists.newArrayList(receives));
+        execute(notifyConfig, DingAlarmConstants.DING_NOTICE_TITLE, text, Lists.newArrayList(receives));
     }
 
-    private void execute(String secretKey, String title, String text, List<String> mobiles) {
-        String serverUrl = DingAlarmConstants.DING_ROBOT_SERVER_URL + secretKey;
+    private void execute(NotifyConfigDTO notifyConfig, String title, String text, List<String> mobiles) {
+        String serverUrl = DingAlarmConstants.DING_ROBOT_SERVER_URL + notifyConfig.getSecretKey();
+        String secret = notifyConfig.getSecret();
+        if (StringUtil.isNotBlank(secret)) {
+            long timestamp = System.currentTimeMillis();
+            String stringToSign = timestamp + "\n" + secret;
+            try {
+                Mac mac = Mac.getInstance("HmacSHA256");
+                mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+                byte[] signData = mac.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8));
+                String sign = URLEncoder.encode(new String(Base64.encodeBase64(signData)), StandardCharsets.UTF_8.name());
+                serverUrl = serverUrl + "&timestamp=" + timestamp + "&sign=" + sign;
+            } catch (Exception ex) {
+                log.error("Failed to sign the message sent by nailing.", ex);
+            }
+        }
         DingTalkClient dingTalkClient = new DefaultDingTalkClient(serverUrl);
         OapiRobotSendRequest request = new OapiRobotSendRequest();
         request.setMsgtype("markdown");
-
         OapiRobotSendRequest.Markdown markdown = new OapiRobotSendRequest.Markdown();
         markdown.setTitle(title);
         markdown.setText(text);
-
         OapiRobotSendRequest.At at = new OapiRobotSendRequest.At();
         at.setAtMobiles(mobiles);
-
         request.setAt(at);
         request.setMarkdown(markdown);
-
         try {
             dingTalkClient.execute(request);
         } catch (ApiException ex) {

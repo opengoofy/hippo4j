@@ -24,9 +24,9 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
 
     private final String DYNAMIC_THREAD_POOL = " :: Dynamic ThreadPool :: ";
 
-    private final String HIPPO4J_GITHUB = "GitHub:  https://github.com/acmenlt/dynamic-threadpool";
+    private final String HIPPO4J_GITHUB = "GitHub:  https://github.com/longtai-cn/hippo4j";
 
-    private final String HIPPO4J_SITE = "Site:    https://hippox.cn";
+    private final String HIPPO4J_SITE = "Site:    https://hippo4j.cn";
 
     private final int STRAP_LINE_SIZE = 50;
 

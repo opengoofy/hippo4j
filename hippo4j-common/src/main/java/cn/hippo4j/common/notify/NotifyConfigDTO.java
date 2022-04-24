@@ -44,6 +44,11 @@ public class NotifyConfigDTO {
     private String secretKey;
 
     /**
+     * 加签
+     */
+    private String secret;
+
+    /**
      * 报警间隔
      */
     private Integer interval;

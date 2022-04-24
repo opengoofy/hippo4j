@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# maven plugin ignore
+*.gpg
