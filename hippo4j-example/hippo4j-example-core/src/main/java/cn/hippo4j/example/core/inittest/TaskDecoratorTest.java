@@ -9,7 +9,9 @@ import org.slf4j.MDC;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * TaskDecorator test.
@@ -23,12 +25,26 @@ public class TaskDecoratorTest {
 
     public static final String PLACEHOLDER = "site";
 
+    private final ThreadPoolExecutor taskDecoratorTestExecutor = new ThreadPoolExecutor(
+            1,
+            1,
+            0L,
+            TimeUnit.MILLISECONDS,
+            new SynchronousQueue<>(),
+            r -> {
+                Thread t = new Thread(r);
+                t.setName("client.example.taskDecorator.test");
+                t.setDaemon(true);
+                return t;
+            },
+            new ThreadPoolExecutor.AbortPolicy());
+
     /**
      * 测试动态线程池传递 {@link TaskDecorator}
      * 如果需要运行此单测, 方法上添加 @PostConstruct
      */
     public void taskDecoratorTest() {
-        new Thread(() -> {
+        taskDecoratorTestExecutor.execute(() -> {
             MDC.put(PLACEHOLDER, "查看官网: https://www.hippox.cn");
             ThreadUtil.sleep(5000);
             DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
@@ -40,7 +56,7 @@ public class TaskDecoratorTest {
                  */
                 log.info("通过 taskDecorator MDC 传递上下文 :: {}", MDC.get(PLACEHOLDER));
             });
-        }).start();
+        });
 
     }
 
