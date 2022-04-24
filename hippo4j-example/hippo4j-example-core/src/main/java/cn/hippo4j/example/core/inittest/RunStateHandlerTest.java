@@ -9,7 +9,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static cn.hippo4j.common.constant.Constants.EXECUTE_TIMEOUT_TRACE;
 
@@ -29,6 +31,20 @@ public class RunStateHandlerTest {
     @Resource
     private ThreadPoolExecutor messageProduceDynamicThreadPool;
 
+    private final ThreadPoolExecutor runStateHandlerTestExecutor = new ThreadPoolExecutor(
+            2,
+            2,
+            0L,
+            TimeUnit.MILLISECONDS,
+            new SynchronousQueue<>(),
+            r -> {
+                Thread t = new Thread(r);
+                t.setName("client.example.runStateHandler.test");
+                t.setDaemon(true);
+                return t;
+            },
+            new ThreadPoolExecutor.AbortPolicy());
+
     @PostConstruct
     @SuppressWarnings("all")
     public void runStateHandlerTest() {
@@ -43,7 +59,7 @@ public class RunStateHandlerTest {
 
     private void runTask(ExecutorService executorService) {
         // 模拟任务运行
-        new Thread(() -> {
+        runStateHandlerTestExecutor.execute(() -> {
             /**
              * 当线程池任务执行超时, 向 MDC 放入 Trace 标识, 报警时打印出来.
              */
@@ -73,7 +89,7 @@ public class RunStateHandlerTest {
                 ThreadUtil.sleep(500);
             }
 
-        }).start();
+        });
     }
 
 }
