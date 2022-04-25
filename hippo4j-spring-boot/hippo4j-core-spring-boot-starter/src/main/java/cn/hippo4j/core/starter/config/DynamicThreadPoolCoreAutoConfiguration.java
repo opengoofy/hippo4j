@@ -109,24 +109,28 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @Bean
     @ConditionalOnClass(name = NACOS_CONFIG_KEY)
     @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
+    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "nacos")
     public NacosRefresherHandler nacosRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new NacosRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = NACOS_CONFIG_MANAGER_KEY)
+    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "nacos")
     public NacosCloudRefresherHandler nacosCloudRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new NacosCloudRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = APOLLO_CONFIG_KEY)
+    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "apollo")
     public ApolloRefresherHandler apolloRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new ApolloRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = ZK_CONFIG_KEY)
+    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "zookeeper")
     public ZookeeperRefresherHandler zookeeperRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new ZookeeperRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
     }
