@@ -3,6 +3,7 @@ package cn.hippo4j.core.executor;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
+import cn.hippo4j.core.toolkit.SystemClock;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -37,7 +38,7 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
     @Getter
     private final AtomicLong rejectCount = new AtomicLong();
 
-    private final ThreadLocal<Long> startTime = new ThreadLocal();
+    private final ThreadLocal<Long> startTime = new ThreadLocal<>();
 
     public DynamicThreadPoolExecutor(int corePoolSize,
                                      int maximumPoolSize,
@@ -77,7 +78,7 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
             return;
         }
 
-        this.startTime.set(System.currentTimeMillis());
+        this.startTime.set(SystemClock.now());
     }
 
     @Override
@@ -88,7 +89,7 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
 
         try {
             long startTime = this.startTime.get();
-            long endTime = System.currentTimeMillis();
+            long endTime = SystemClock.now();
             long executeTime;
             boolean executeTimeAlarm = (executeTime = (endTime - startTime)) > executeTimeOut;
             if (executeTimeAlarm && ApplicationContextHolder.getInstance() != null) {
