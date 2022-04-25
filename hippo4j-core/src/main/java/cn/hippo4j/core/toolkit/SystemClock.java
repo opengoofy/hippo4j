@@ -1,7 +1,6 @@
 package cn.hippo4j.core.toolkit;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -15,6 +14,8 @@ public class SystemClock {
     private final int period;
 
     private final AtomicLong now;
+
+    private static final String THREAD_NAME ="system.clock";
 
     private static class InstanceHolder {
         private static final SystemClock INSTANCE = new SystemClock(1);
@@ -31,8 +32,8 @@ public class SystemClock {
     }
 
     private void scheduleClockUpdating() {
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(runnable -> {
-            Thread thread = new Thread(runnable, "System Clock");
+        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1, r -> {
+            Thread thread = new Thread(r, THREAD_NAME);
             thread.setDaemon(true);
             return thread;
         });
