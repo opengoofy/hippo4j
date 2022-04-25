@@ -109,7 +109,7 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
         Method getActiveCount = ReflectionUtils.findMethod(fieldObject.getClass(), "getActiveCount");
         ReflectionUtils.makeAccessible(getActiveCount);
         int activeCount = (int) ReflectionUtils.invokeMethod(getActiveCount, fieldObject);
-        activeCount = (activeCount <= 0) ? 0 : activeCount;
+        activeCount = Math.max(activeCount, 0);
         // 当前负载
         String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
         // 峰值负载
