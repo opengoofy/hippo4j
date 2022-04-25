@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
@@ -118,8 +135,7 @@ public class ConfigServiceImpl implements ConfigService {
                 .condition(
                         existConfig == null,
                         () -> configService.addConfigInfo(configInfo),
-                        () -> configService.updateConfigInfo(identify, configInfo)
-                );
+                        () -> configService.updateConfigInfo(identify, configInfo));
 
         ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configInfo)));
     }
@@ -141,8 +157,7 @@ public class ConfigServiceImpl implements ConfigService {
                 ConfigAllInfo configAllInfo = configInfoMapper.selectOne(
                         Wrappers.lambdaQuery(ConfigAllInfo.class)
                                 .eq(ConfigAllInfo::getTpId, config.getTpId())
-                                .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode())
-                );
+                                .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
                 Assert.isNull(configAllInfo, "线程池配置已存在.");
 
                 if (SqlHelper.retBool(configInfoMapper.insert(config))) {
@@ -157,12 +172,7 @@ public class ConfigServiceImpl implements ConfigService {
         return null;
     }
 
-    @LogRecord(
-            bizNo = "{{#config.itemId}}_{{#config.tpId}}",
-            category = "THREAD_POOL_UPDATE",
-            success = "核心线程: {{#config.coreSize}}, 最大线程: {{#config.maxSize}}, 队列类型: {{#config.queueType}}, 队列容量: {{#config.capacity}}, 拒绝策略: {{#config.rejectedType}}",
-            detail = "{{#config.toString()}}"
-    )
+    @LogRecord(bizNo = "{{#config.itemId}}_{{#config.tpId}}", category = "THREAD_POOL_UPDATE", success = "核心线程: {{#config.coreSize}}, 最大线程: {{#config.maxSize}}, 队列类型: {{#config.queueType}}, 队列容量: {{#config.capacity}}, 拒绝策略: {{#config.rejectedType}}", detail = "{{#config.toString()}}")
     public void updateConfigInfo(String identify, ConfigAllInfo config) {
         LambdaUpdateWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaUpdate(ConfigAllInfo.class)
                 .eq(ConfigAllInfo::getTpId, config.getTpId())

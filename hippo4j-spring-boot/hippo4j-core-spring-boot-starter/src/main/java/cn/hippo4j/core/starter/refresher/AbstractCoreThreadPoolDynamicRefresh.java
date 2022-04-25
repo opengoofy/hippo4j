@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.core.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
@@ -84,8 +101,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
                     executorProperties.getNotify().getIsAlarm(),
                     executorProperties.getNotify().getCapacityAlarm(),
-                    executorProperties.getNotify().getActiveAlarm()
-            );
+                    executorProperties.getNotify().getActiveAlarm());
             threadPoolNotifyAlarm.setInterval(executorProperties.getNotify().getInterval());
             threadPoolNotifyAlarm.setReceives(executorProperties.receives());
             GlobalNotifyAlarmManage.put(executorProperties.getThreadPoolId(), threadPoolNotifyAlarm);
@@ -178,8 +194,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                     String.format("%s => %s", beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime()),
                     String.format("%s => %s", beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut()),
                     String.format("%s => %s", beforeProperties.getRejectedHandler(), properties.getRejectedHandler()),
-                    String.format("%s => %s", beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())
-            );
+                    String.format("%s => %s", beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut()));
 
             try {
                 threadPoolNotifyAlarmHandler.sendPoolConfigChange(newChangeRequest(beforeProperties, properties));
@@ -234,10 +249,8 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
                 || !Objects.equals(beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime())
                 || !Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())
                 ||
-                (
-                        !Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
-                                && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.name, executor.getQueue().getClass().getSimpleName())
-                );
+                (!Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
+                        && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.name, executor.getQueue().getClass().getSimpleName()));
         return result;
     }
 

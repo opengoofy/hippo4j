@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.starter.test;
 
 import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
@@ -24,15 +41,11 @@ public class ResizableCapacityLinkedBlockIngQueueTest {
                 TimeUnit.SECONDS,
                 blockIngQueue);
 
-        /*Runnable runnable = new Runnable() {
-            @SneakyThrows
-            public void run() {
-                Thread.sleep(10000);
-            }
-        };
-        for (int i = 0; i <; i++) {
-            threadPoolExecutor.execute(runnable);
-        }*/
+        /*
+         * Runnable runnable = new Runnable() {
+         * 
+         * @SneakyThrows public void run() { Thread.sleep(10000); } }; for (int i = 0; i <; i++) { threadPoolExecutor.execute(runnable); }
+         */
 
         print(threadPoolExecutor);
 
@@ -46,14 +59,14 @@ public class ResizableCapacityLinkedBlockIngQueueTest {
         LinkedBlockingQueue queue = (LinkedBlockingQueue) executor.getQueue();
 
         log.info("核心线程数 :: {}," +
-                        " 活动线程数 :: {}," +
-                        " 最大线程数 :: {}," +
-                        " 线程池活跃度 :: {}," +
-                        " 任务完成数 :: {}," +
-                        " 队列大小 :: {}," +
-                        " 当前排队线程数 :: {}," +
-                        " 队列剩余大小 :: {}," +
-                        " 队列使用度 :: {}",
+                " 活动线程数 :: {}," +
+                " 最大线程数 :: {}," +
+                " 线程池活跃度 :: {}," +
+                " 任务完成数 :: {}," +
+                " 队列大小 :: {}," +
+                " 当前排队线程数 :: {}," +
+                " 队列剩余大小 :: {}," +
+                " 队列使用度 :: {}",
                 executor.getCorePoolSize(),
                 executor.getActiveCount(),
                 executor.getMaximumPoolSize(),
