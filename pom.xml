@@ -60,6 +60,7 @@
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
+        <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -325,6 +326,31 @@
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless-maven-plugin.version}</version>
+                <configuration>
+                    <java>
+                        <eclipse>
+                            <file>
+                                ${maven.multiModuleProjectDirectory}/dev-support/hippo4j_eclipse_formatter.xml
+                            </file>
+                        </eclipse>
+                        <licenseHeader>
+                            <file>${maven.multiModuleProjectDirectory}/dev-support/license-header</file>
+                        </licenseHeader>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                        <phase>compile</phase>
                     </execution>
                 </executions>
             </plugin>
