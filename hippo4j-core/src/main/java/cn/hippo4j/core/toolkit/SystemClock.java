@@ -15,7 +15,7 @@ public class SystemClock {
 
     private final AtomicLong now;
 
-    private static final String THREAD_NAME ="system.clock";
+    private static final String THREAD_NAME = "system.clock";
 
     private static class InstanceHolder {
         private static final SystemClock INSTANCE = new SystemClock(1);
@@ -44,9 +44,6 @@ public class SystemClock {
         return now.get();
     }
 
-    /**
-     * 用来替换原来的System.currentTimeMillis()
-     */
     public static long now() {
         return instance().currentTimeMillis();
     }
