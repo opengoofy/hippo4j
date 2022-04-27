@@ -65,7 +65,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             try {
                 dynamicThreadPool = ApplicationContextHolder.findAnnotationOnBean(beanName, DynamicThreadPool.class);
                 if (Objects.isNull(dynamicThreadPool)) {
-                    // 适配低版本 SpringBoot
+                    // Adapt to lower versions of SpringBoot.
                     dynamicThreadPool = DynamicThreadPoolAnnotationUtil.findAnnotationOnBean(beanName, DynamicThreadPool.class);
                     if (Objects.isNull(dynamicThreadPool)) {
                         return bean;
@@ -75,18 +75,15 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 log.error("Failed to create dynamic thread pool in annotation mode.", ex);
                 return bean;
             }
-
             DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) bean;
             DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(dynamicExecutor.getThreadPoolId(), dynamicExecutor);
             ThreadPoolExecutor remoteExecutor = fillPoolAndRegister(wrap);
             return remoteExecutor;
         }
-
         if (bean instanceof DynamicThreadPoolWrapper) {
             DynamicThreadPoolWrapper wrap = (DynamicThreadPoolWrapper) bean;
             registerAndSubscribe(wrap);
         }
-
         return bean;
     }
 
@@ -143,20 +140,15 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 // 设置动态线程池增强参数
                 ThreadPoolNotifyAlarm notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
                 boolean isAlarm = Optional.ofNullable(notify)
-                        .map(each -> each.getIsAlarm())
-                        .orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
+                        .map(each -> each.getIsAlarm()).orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
                 int activeAlarm = Optional.ofNullable(notify)
-                        .map(each -> each.getActiveAlarm())
-                        .orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
+                        .map(each -> each.getActiveAlarm()).orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
                 int capacityAlarm = Optional.ofNullable(notify)
-                        .map(each -> each.getActiveAlarm())
-                        .orElseGet(() -> bootstrapCoreProperties.getCapacityAlarm() != null ? bootstrapCoreProperties.getCapacityAlarm() : 80);
+                        .map(each -> each.getActiveAlarm()).orElseGet(() -> bootstrapCoreProperties.getCapacityAlarm() != null ? bootstrapCoreProperties.getCapacityAlarm() : 80);
                 int interval = Optional.ofNullable(notify)
-                        .map(each -> each.getInterval())
-                        .orElseGet(() -> bootstrapCoreProperties.getAlarmInterval() != null ? bootstrapCoreProperties.getAlarmInterval() : 5);
+                        .map(each -> each.getInterval()).orElseGet(() -> bootstrapCoreProperties.getAlarmInterval() != null ? bootstrapCoreProperties.getAlarmInterval() : 5);
                 String receive = Optional.ofNullable(notify)
-                        .map(each -> each.getReceive())
-                        .orElseGet(() -> bootstrapCoreProperties.getReceive() != null ? bootstrapCoreProperties.getReceive() : null);
+                        .map(each -> each.getReceive()).orElseGet(() -> bootstrapCoreProperties.getReceive() != null ? bootstrapCoreProperties.getReceive() : null);
                 ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(isAlarm, activeAlarm, capacityAlarm);
                 threadPoolNotifyAlarm.setInterval(interval);
                 threadPoolNotifyAlarm.setReceive(receive);
@@ -169,7 +161,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 boolean waitForTasksToCompleteOnShutdown = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).waitForTasksToCompleteOnShutdown;
                 ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setSupportParam(awaitTerminationMillis, waitForTasksToCompleteOnShutdown);
             }
-
             dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);
         }
 
@@ -179,7 +170,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 executorProperties == null
                         ? buildExecutorProperties(threadPoolId, newDynamicPoolExecutor)
                         : executorProperties);
-
         return newDynamicPoolExecutor;
     }
 
@@ -197,7 +187,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         String queueType = queue.getClass().getSimpleName();
         int remainingCapacity = queue.remainingCapacity();
         int queueCapacity = queueSize + remainingCapacity;
-
         executorProperties.setCorePoolSize(executor.getCorePoolSize())
                 .setMaximumPoolSize(executor.getMaximumPoolSize())
                 .setAllowCoreThreadTimeOut(executor.allowsCoreThreadTimeOut())
@@ -207,7 +196,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 .setQueueCapacity(queueCapacity)
                 .setRejectedHandler(((DynamicThreadPoolExecutor) executor).getRedundancyHandler().getClass().getSimpleName())
                 .setThreadPoolId(threadPoolId);
-
         return executorProperties;
     }
 }

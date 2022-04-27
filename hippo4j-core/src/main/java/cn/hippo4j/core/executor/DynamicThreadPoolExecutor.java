@@ -85,7 +85,6 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
         if (taskDecorator != null) {
             command = taskDecorator.decorate(command);
         }
-
         super.execute(command);
     }
 
@@ -94,7 +93,6 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
         if (executeTimeOut == null || executeTimeOut <= 0) {
             return;
         }
-
         this.startTime.set(SystemClock.now());
     }
 
@@ -103,7 +101,6 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
         if (executeTimeOut == null || executeTimeOut <= 0) {
             return;
         }
-
         try {
             long startTime = this.startTime.get();
             long endTime = SystemClock.now();
@@ -125,13 +122,7 @@ public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
         return this;
     }
 
-    /**
-     * Get reject count.
-     *
-     * @return
-     */
     public Long getRejectCountNum() {
         return rejectCount.get();
     }
-
 }

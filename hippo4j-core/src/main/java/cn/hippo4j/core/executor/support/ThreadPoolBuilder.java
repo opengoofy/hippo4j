@@ -123,6 +123,8 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
      */
     private Boolean allowCoreThreadTimeOut = false;
 
+    private Boolean prestartCoreThread = false;
+
     /**
      * 计算公式：CPU 核数 / (1 - 阻塞系数 0.8)
      *
