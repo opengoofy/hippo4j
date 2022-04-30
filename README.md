@@ -89,7 +89,7 @@ Hippo4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程池
 
 [运行 Hippo4J 自带 Demo 参考文档](https://hippo4j.cn/pages/793dcb/)
 
-[在线体验地址](http://console.hippox.cn:6691/index.html) 用户名密码：hippo4j / hippo4j
+[在线体验地址](http://console.hippo4j.cn/index.html) 用户名密码：hippo4j / hippo4j
 
 ## 联系我
 
