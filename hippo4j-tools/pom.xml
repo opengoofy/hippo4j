@@ -15,13 +15,12 @@
     <name>tools</name>
     <description>动态线程池工具类模块</description>
 
-    <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
-    </properties>
-
     <modules>
         <!-- 日志记录 -->
         <module>log-record-tool</module>
     </modules>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 </project>

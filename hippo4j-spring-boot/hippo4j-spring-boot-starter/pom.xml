@@ -57,8 +57,8 @@
             <!-- 用户反馈其中 javax.jms 无法下载, 未发现 log4j 用处, 暂且排除 -->
             <exclusions>
                 <exclusion>
-                    <artifactId>log4j</artifactId>
                     <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -116,5 +116,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

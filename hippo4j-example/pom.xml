@@ -15,10 +15,6 @@
     <name>${project.artifactId}</name>
     <description>${project.artifactId}</description>
 
-    <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
-    </properties>
-
     <modules>
         <!-- 抽象测试用例 -->
         <module>hippo4j-example-core</module>
@@ -31,4 +27,7 @@
         <module>hippo4j-core-zookeeper-spring-boot-starter-example</module>
     </modules>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 </project>

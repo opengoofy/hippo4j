@@ -44,14 +44,14 @@
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>alibaba-dingtalk-service-sdk</artifactId>
+            <optional>true</optional>
             <!-- 用户反馈其中 javax.jms 无法下载, 未发现 log4j 用处, 暂且排除 -->
             <exclusions>
                 <exclusion>
-                    <artifactId>log4j</artifactId>
                     <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
                 </exclusion>
             </exclusions>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -92,5 +92,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
