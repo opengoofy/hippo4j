@@ -9,8 +9,7 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <url>https://github.com/longtai-cn/hippo4j</url>
-    <description>动态可观测线程池框架, 为业务系统提高线上运行保障能力.</description>
+    <description>动态可观测线程池框架，为业务系统提高线上运行保障能力</description>
 
     <modules>
         <module>hippo4j-auth</module>
@@ -208,28 +207,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>acmenlt</id>
-            <name>chen.ma</name>
-            <email>m7798432@163.com</email>
-            <url>https://github.com/acmenlt</url>
-        </developer>
-    </developers>
-
-    <issueManagement>
-        <system>Github Issue</system>
-        <url>https://github.com/longtai-cn/hippo4j/issues</url>
-    </issueManagement>
-
     <build>
         <finalName>${project.artifactId}</finalName>
 
@@ -269,17 +246,17 @@
                 <executions>
                     <execution>
                         <id>flatten</id>
-                        <phase>process-resources</phase>
                         <goals>
                             <goal>flatten</goal>
                         </goals>
+                        <phase>process-resources</phase>
                     </execution>
                     <execution>
                         <id>flatten.clean</id>
-                        <phase>clean</phase>
                         <goals>
                             <goal>clean</goal>
                         </goals>
+                        <phase>clean</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -296,10 +273,10 @@
                 <version>1.6</version>
                 <executions>
                     <execution>
-                        <phase>verify</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -322,10 +299,10 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>package</phase>
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>
+                        <phase>package</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -336,14 +313,27 @@
                 <configuration>
                     <java>
                         <eclipse>
-                            <file>
-                                ${maven.multiModuleProjectDirectory}/dev-support/hippo4j_eclipse_formatter.xml
-                            </file>
+                            <file>${maven.multiModuleProjectDirectory}/dev-support/hippo4j_eclipse_formatter.xml</file>
                         </eclipse>
                         <licenseHeader>
                             <file>${maven.multiModuleProjectDirectory}/dev-support/license-header</file>
                         </licenseHeader>
                     </java>
+                    <pom>
+                        <sortPom>
+                            <encoding>UTF-8</encoding>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                            <keepBlankLines>true</keepBlankLines>
+                            <indentBlankLines>false</indentBlankLines>
+                            <indentSchemaLocation>true</indentSchemaLocation>
+                            <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                            <sortModules>false</sortModules>
+                            <sortExecutions>false</sortExecutions>
+                            <predefinedSortOrder>custom_1</predefinedSortOrder>
+                            <expandEmptyElements>false</expandEmptyElements>
+                            <sortProperties>false</sortProperties>
+                        </sortPom>
+                    </pom>
                 </configuration>
                 <executions>
                     <execution>
@@ -357,6 +347,47 @@
         </plugins>
     </build>
 
+    <url>https://github.com/longtai-cn/hippo4j</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>acmenlt</id>
+            <name>chen.ma</name>
+            <email>m7798432@163.com</email>
+            <url>https://github.com/acmenlt</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git@github.com:longtai-cn/hippo4j</connection>
+        <developerConnection>scm:git@github.com:longtai-cn/hippo4j.git</developerConnection>
+        <url>git@github.com:longtai-cn/hippo4j.git</url>
+    </scm>
+
+    <issueManagement>
+        <system>Github Issue</system>
+        <url>https://github.com/longtai-cn/hippo4j/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <profiles>
         <!-- 禁用注释检查 -->
         <profile>
@@ -369,22 +400,4 @@
             </properties>
         </profile>
     </profiles>
-
-    <scm>
-        <connection>scm:git@github.com:longtai-cn/hippo4j</connection>
-        <developerConnection>scm:git@github.com:longtai-cn/hippo4j.git</developerConnection>
-        <url>git@github.com:longtai-cn/hippo4j.git</url>
-    </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
 </project>
