@@ -101,18 +101,15 @@ public enum RejectedTypeEnum {
                 .filter(each -> Objects.equals(each.name, name))
                 .findFirst()
                 .orElse(null);
-
         if (rejectedTypeEnum != null) {
             return rejectedTypeEnum.rejectedHandler;
         }
-
         Collection<CustomRejectedExecutionHandler> customRejectedExecutionHandlers = DynamicThreadPoolServiceLoader
                 .getSingletonServiceInstances(CustomRejectedExecutionHandler.class);
         Optional<RejectedExecutionHandler> customRejected = customRejectedExecutionHandlers.stream()
                 .filter(each -> Objects.equals(name, each.getName()))
                 .map(each -> each.generateRejected())
                 .findFirst();
-
         return customRejected.orElse(ABORT_POLICY.rejectedHandler);
     }
 
@@ -127,7 +124,6 @@ public enum RejectedTypeEnum {
                 .filter(each -> Objects.equals(type, each.type))
                 .map(each -> each.rejectedHandler)
                 .findFirst();
-
         // 使用 SPI 匹配拒绝策略
         RejectedExecutionHandler resultRejected = rejectedTypeEnum.orElseGet(() -> {
             Collection<CustomRejectedExecutionHandler> customRejectedExecutionHandlers = DynamicThreadPoolServiceLoader
@@ -136,10 +132,8 @@ public enum RejectedTypeEnum {
                     .filter(each -> Objects.equals(type, each.getType()))
                     .map(each -> each.generateRejected())
                     .findFirst();
-
             return customRejected.orElse(ABORT_POLICY.rejectedHandler);
         });
-
         return resultRejected;
     }
 
@@ -152,5 +146,4 @@ public enum RejectedTypeEnum {
     public static String getRejectedNameByType(int type) {
         return createPolicy(type).getClass().getSimpleName();
     }
-
 }

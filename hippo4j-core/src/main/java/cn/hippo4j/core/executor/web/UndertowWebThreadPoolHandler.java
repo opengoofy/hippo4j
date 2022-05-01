@@ -38,6 +38,8 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
+import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
+
 /**
  * Undertow web thread pool handler.
  *
@@ -77,7 +79,6 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
         } catch (Exception ex) {
             log.error("The undertow container failed to get thread pool parameters.", ex);
         }
-
         return poolBaseInfo;
     }
 
@@ -97,7 +98,6 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
         } catch (Exception ex) {
             log.error("Failed to get the undertow thread pool parameter.", ex);
         }
-
         return parameterInfo;
     }
 
@@ -106,7 +106,6 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
         PoolRunStateInfo stateInfo = new PoolRunStateInfo();
         XnioWorker xnioWorker = (XnioWorker) executor;
 
-        // private final TaskPool taskPool;
         Field field = ReflectionUtils.findField(XnioWorker.class, "taskPool");
         ReflectionUtils.makeAccessible(field);
         Object fieldObject = ReflectionUtils.getField(field, xnioWorker);
@@ -153,15 +152,12 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
         try {
             XnioWorker xnioWorker = (XnioWorker) executor;
-
             Integer coreSize = poolParameterInfo.getCoreSize();
             Integer maxSize = poolParameterInfo.getMaxSize();
             Integer keepAliveTime = poolParameterInfo.getKeepAliveTime();
-
             int originalCoreSize = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int originalMaximumPoolSize = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
             int originalKeepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);
-
             xnioWorker.setOption(Options.WORKER_TASK_CORE_THREADS, coreSize);
             xnioWorker.setOption(Options.WORKER_TASK_MAX_THREADS, maxSize);
             xnioWorker.setOption(Options.WORKER_TASK_KEEPALIVE, keepAliveTime);
@@ -170,13 +166,11 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
                             "\n    coreSize :: [{}]" +
                             "\n    maxSize :: [{}]" +
                             "\n    keepAliveTime :: [{}]",
-                    String.format("%s => %s", originalCoreSize, coreSize),
-                    String.format("%s => %s", originalMaximumPoolSize, maxSize),
-                    String.format("%s => %s", originalKeepAliveTime, keepAliveTime));
-
+                    String.format(CHANGE_DELIMITER, originalCoreSize, coreSize),
+                    String.format(CHANGE_DELIMITER, originalMaximumPoolSize, maxSize),
+                    String.format(CHANGE_DELIMITER, originalKeepAliveTime, keepAliveTime));
         } catch (Exception ex) {
             log.error("Failed to modify the undertow thread pool parameter.", ex);
         }
     }
-
 }

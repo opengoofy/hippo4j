@@ -49,5 +49,4 @@ public interface CustomRejectedExecutionHandler {
      * @return
      */
     RejectedExecutionHandler generateRejected();
-
 }

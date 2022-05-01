@@ -53,14 +53,12 @@ public class ThreadPoolStatusHandler {
             try {
                 Method runStateLessThan = ReflectUtil.getMethodByName(ThreadPoolExecutor.class, "runStateLessThan");
                 cn.hippo4j.common.toolkit.ReflectUtil.setAccessible(runStateLessThan);
-
                 AtomicInteger ctl = (AtomicInteger) ReflectUtil.getFieldValue(executor, "ctl");
                 int shutdown = (int) ReflectUtil.getFieldValue(executor, "SHUTDOWN");
                 boolean runStateLessThanBool = ReflectUtil.invoke(executor, runStateLessThan, ctl.get(), shutdown);
                 if (runStateLessThanBool) {
                     return RUNNING;
                 }
-
                 Method runStateAtLeast = ReflectUtil.getMethodByName(ThreadPoolExecutor.class, "runStateAtLeast");
                 cn.hippo4j.common.toolkit.ReflectUtil.setAccessible(runStateAtLeast);
                 int terminated = (int) ReflectUtil.getFieldValue(executor, "TERMINATED");
@@ -68,12 +66,9 @@ public class ThreadPoolStatusHandler {
                 return resultStatus;
             } catch (Exception ex) {
                 log.error("Failed to get thread pool status.", ex);
-
                 EXCEPTION_FLAG.set(Boolean.FALSE);
             }
         }
-
         return "UNKNOWN";
     }
-
 }

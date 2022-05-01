@@ -39,5 +39,4 @@ public class ConfigEmptyException extends RuntimeException {
      * action
      */
     private String action;
-
 }

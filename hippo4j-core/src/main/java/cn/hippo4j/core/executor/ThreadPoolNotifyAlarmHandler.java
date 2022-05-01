@@ -107,10 +107,8 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         if (hippoSendMessageService == null) {
             return;
         }
-
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
         BlockingQueue blockIngQueue = threadPoolExecutor.getQueue();
-
         int queueSize = blockIngQueue.size();
         int capacity = queueSize + blockIngQueue.remainingCapacity();
         int divide = CalculateUtil.divide(queueSize, capacity);
@@ -133,7 +131,6 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         int activeCount = threadPoolExecutor.getActiveCount();
         int maximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
         int divide = CalculateUtil.divide(activeCount, maximumPoolSize);
-
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
         boolean isSend = threadPoolNotifyAlarm.getIsAlarm()
                 && divide > threadPoolNotifyAlarm.getActiveAlarm();
@@ -154,7 +151,6 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         if (Objects.isNull(threadPoolNotifyAlarm) || !threadPoolNotifyAlarm.getIsAlarm()) {
             return;
         }
-
         ThreadPoolExecutor threadPoolExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
         checkPoolRejectedAlarm(threadPoolId, threadPoolExecutor);
     }
@@ -186,19 +182,16 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         if (Objects.isNull(threadPoolNotifyAlarm) || !threadPoolNotifyAlarm.getIsAlarm()) {
             return;
         }
-
         if (threadPoolExecutor instanceof DynamicThreadPoolExecutor) {
             try {
                 AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
                 alarmNotifyRequest.setThreadPoolId(threadPoolId);
                 alarmNotifyRequest.setExecuteTime(executeTime);
                 alarmNotifyRequest.setExecuteTimeOut(executeTimeOut);
-
                 String executeTimeoutTrace = TraceContextUtil.getAndRemove();
                 if (StringUtil.isNotBlank(executeTimeoutTrace)) {
                     alarmNotifyRequest.setExecuteTimeoutTrace(executeTimeoutTrace);
                 }
-
                 Runnable task = () -> hippoSendMessageService.sendAlarmMessage(NotifyTypeEnum.TIMEOUT, alarmNotifyRequest);
                 EXECUTE_TIMEOUT_EXECUTOR.execute(task);
             } catch (Throwable ex) {
@@ -217,7 +210,6 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         String appName = StrUtil.isBlank(itemId) ? applicationName : itemId;
         request.setAppName(appName);
         request.setIdentify(IdentifyUtil.getIdentify());
-
         hippoSendMessageService.sendChangeMessage(request);
     }
 
@@ -229,10 +221,8 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      */
     public AlarmNotifyRequest buildAlarmNotifyReq(ThreadPoolExecutor threadPoolExecutor) {
         AlarmNotifyRequest request = new AlarmNotifyRequest();
-
         String appName = StrUtil.isBlank(itemId) ? applicationName : itemId;
         request.setAppName(appName);
-
         // 核心线程数
         int corePoolSize = threadPoolExecutor.getCorePoolSize();
         // 最大线程数
@@ -245,7 +235,6 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         int largestPoolSize = threadPoolExecutor.getLargestPoolSize();
         // 线程池中执行任务总数量 (有锁)
         long completedTaskCount = threadPoolExecutor.getCompletedTaskCount();
-
         request.setActive(active.toUpperCase());
         request.setIdentify(IdentifyUtil.getIdentify());
         request.setCorePoolSize(corePoolSize);
@@ -254,7 +243,6 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         request.setActiveCount(activeCount);
         request.setLargestPoolSize(largestPoolSize);
         request.setCompletedTaskCount(completedTaskCount);
-
         BlockingQueue<Runnable> queue = threadPoolExecutor.getQueue();
         // 队列元素个数
         int queueSize = queue.size();
@@ -268,18 +256,14 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         request.setCapacity(queueCapacity);
         request.setQueueSize(queueSize);
         request.setRemainingCapacity(remainingCapacity);
-
         RejectedExecutionHandler rejectedExecutionHandler = threadPoolExecutor instanceof DynamicThreadPoolExecutor
                 ? ((DynamicThreadPoolExecutor) threadPoolExecutor).getRedundancyHandler()
                 : threadPoolExecutor.getRejectedExecutionHandler();
         request.setRejectedExecutionHandlerName(rejectedExecutionHandler.getClass().getSimpleName());
-
         long rejectCount = threadPoolExecutor instanceof DynamicThreadPoolExecutor
                 ? ((DynamicThreadPoolExecutor) threadPoolExecutor).getRejectCountNum()
                 : -1L;
         request.setRejectCountNum(rejectCount);
-
         return request;
     }
-
 }

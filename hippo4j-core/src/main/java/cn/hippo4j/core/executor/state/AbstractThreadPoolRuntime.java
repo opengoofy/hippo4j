@@ -83,7 +83,6 @@ public abstract class AbstractThreadPoolRuntime {
         String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
         // 峰值负载
         String peakLoad = CalculateUtil.divide(largestPoolSize, maximumPoolSize) + "";
-
         BlockingQueue<Runnable> queue = pool.getQueue();
         // 队列元素个数
         int queueSize = queue.size();
@@ -93,7 +92,6 @@ public abstract class AbstractThreadPoolRuntime {
         int remainingCapacity = queue.remainingCapacity();
         // 队列容量
         int queueCapacity = queueSize + remainingCapacity;
-
         stateInfo.setCoreSize(corePoolSize);
         stateInfo.setTpId(threadPoolId);
         stateInfo.setPoolSize(poolSize);
@@ -107,7 +105,6 @@ public abstract class AbstractThreadPoolRuntime {
         stateInfo.setQueueRemainingCapacity(remainingCapacity);
         stateInfo.setLargestPoolSize(largestPoolSize);
         stateInfo.setCompletedTaskCount(completedTaskCount);
-
         long rejectCount =
                 pool instanceof DynamicThreadPoolExecutor ? ((DynamicThreadPoolExecutor) pool).getRejectCountNum() : -1L;
         stateInfo.setRejectCount(rejectCount);
@@ -115,5 +112,4 @@ public abstract class AbstractThreadPoolRuntime {
         stateInfo.setTimestamp(System.currentTimeMillis());
         return supplement(stateInfo);
     }
-
 }

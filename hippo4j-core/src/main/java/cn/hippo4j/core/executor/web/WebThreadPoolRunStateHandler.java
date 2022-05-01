@@ -51,5 +51,4 @@ public class WebThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
 
         return poolRunStateInfo;
     }
-
 }

@@ -60,7 +60,6 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
                 }
             }
         }
-
         return executor;
     }
 
@@ -72,5 +71,4 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
             // ignore. Adaptation unit test.
         }
     }
-
 }

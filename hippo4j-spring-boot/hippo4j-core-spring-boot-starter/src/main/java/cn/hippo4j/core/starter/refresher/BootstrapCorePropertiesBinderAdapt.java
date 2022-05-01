@@ -66,7 +66,6 @@ public class BootstrapCorePropertiesBinderAdapt {
                 bindableCoreProperties = adapt(configInfo);
             }
         }
-
         return bindableCoreProperties;
     }
 
@@ -86,14 +85,13 @@ public class BootstrapCorePropertiesBinderAdapt {
                 boolean containFlag = key != null
                         && StringUtil.isNotBlank((String) key)
                         && (((String) key).indexOf(PREFIX + ".executors") != -1
-                                || ((String) key).indexOf(PREFIX + ".notify-platforms") != -1
-                                || ((String) key).indexOf(PREFIX + ".notifyPlatforms") != -1);
+                        || ((String) key).indexOf(PREFIX + ".notify-platforms") != -1
+                        || ((String) key).indexOf(PREFIX + ".notifyPlatforms") != -1);
                 if (containFlag) {
                     String targetKey = key.toString().replace(PREFIX + ".", "");
                     targetMap.put(targetKey, val);
                 }
             });
-
             // convert
             List<ExecutorProperties> executorPropertiesList = Lists.newArrayList();
             List<NotifyPlatformProperties> notifyPropertiesList = Lists.newArrayList();
@@ -111,7 +109,6 @@ public class BootstrapCorePropertiesBinderAdapt {
                             if (notifyKeySplit != null && notifyKeySplit.length > 0) {
                                 key = key.replace("-", "_");
                             }
-
                             notifySingleMap.put(key, entry.getValue());
                         } else {
                             key = key.replace("executors[" + i + "].", "");
@@ -123,27 +120,22 @@ public class BootstrapCorePropertiesBinderAdapt {
                             executorSingleMap.put(key, entry.getValue());
                         }
                     }
-
                     if (key.indexOf("notify-platforms[" + i + "].") != -1 || key.indexOf("notifyPlatforms[" + i + "].") != -1) {
                         if (key.indexOf("notify-platforms[" + i + "].") != -1) {
                             key = key.replace("notify-platforms[" + i + "].", "");
                         } else {
                             key = key.replace("notifyPlatforms[" + i + "].", "");
                         }
-
                         String[] keySplit = key.split("-");
                         if (keySplit != null && keySplit.length > 0) {
                             key = key.replace("-", "_");
                         }
-
                         platformSingleMap.put(key, entry.getValue());
                     }
                 }
-
                 if (CollectionUtil.isEmpty(executorSingleMap) && CollectionUtil.isEmpty(platformSingleMap)) {
                     break;
                 }
-
                 if (CollectionUtil.isNotEmpty(executorSingleMap)) {
                     ExecutorProperties executorProperties = BeanUtil.mapToBean(executorSingleMap, ExecutorProperties.class, true, CopyOptions.create());
                     if (executorProperties != null) {
@@ -156,15 +148,12 @@ public class BootstrapCorePropertiesBinderAdapt {
                                     notifyReceivesMap.put(value.name(), (String) receives);
                                 }
                             }
-
                             alarm.setReceives(notifyReceivesMap);
                             executorProperties.setNotify(alarm);
                         }
-
                         executorPropertiesList.add(executorProperties);
                     }
                 }
-
                 if (CollectionUtil.isNotEmpty(platformSingleMap)) {
                     NotifyPlatformProperties notifyPlatformProperties = BeanUtil.mapToBean(platformSingleMap, NotifyPlatformProperties.class, true, CopyOptions.create());
                     if (notifyPlatformProperties != null) {
@@ -172,15 +161,12 @@ public class BootstrapCorePropertiesBinderAdapt {
                     }
                 }
             }
-
             bindableCoreProperties = new BootstrapCoreProperties();
             bindableCoreProperties.setExecutors(executorPropertiesList);
             bindableCoreProperties.setNotifyPlatforms(notifyPropertiesList);
         } catch (Exception ex) {
             throw ex;
         }
-
         return bindableCoreProperties;
     }
-
 }

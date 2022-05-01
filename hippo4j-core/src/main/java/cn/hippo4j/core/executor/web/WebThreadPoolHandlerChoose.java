@@ -42,8 +42,6 @@ public class WebThreadPoolHandlerChoose {
         } catch (Exception ex) {
             throw new ServiceException("Web thread pool service bean not found.", ex);
         }
-
         return webThreadPoolService;
     }
-
 }

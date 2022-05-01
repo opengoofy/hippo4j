@@ -40,6 +40,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
+import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
+
 /**
  * Thread pool dynamic refresh.
  *
@@ -110,26 +113,17 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         request.setNowExecuteTimeOut(originalExecuteTimeOut);
         threadPoolNotifyAlarmHandler.sendPoolConfigChange(request);
 
-        log.info(
-                "[{}] Changed thread pool. " +
-                        "\n    coreSize :: [{}]" +
-                        "\n    maxSize :: [{}]" +
-                        "\n    queueType :: [{}]" +
-                        "\n    capacity :: [{}]" +
-                        "\n    keepAliveTime :: [{}]" +
-                        "\n    executeTimeOut :: [{}]" +
-                        "\n    rejectedType :: [{}]" +
-                        "\n    allowCoreThreadTimeOut :: [{}]",
+        log.info(CHANGE_THREAD_POOL_TEXT,
                 threadPoolId.toUpperCase(),
-                String.format("%s => %s", originalCoreSize, afterExecutor.getCorePoolSize()),
-                String.format("%s => %s", originalMaximumPoolSize, afterExecutor.getMaximumPoolSize()),
-                String.format("%s => %s", originalQuery, QueueTypeEnum.getBlockingQueueNameByType(parameter.getQueueType())),
-                String.format("%s => %s", originalCapacity,
+                String.format(CHANGE_DELIMITER, originalCoreSize, afterExecutor.getCorePoolSize()),
+                String.format(CHANGE_DELIMITER, originalMaximumPoolSize, afterExecutor.getMaximumPoolSize()),
+                String.format(CHANGE_DELIMITER, originalQuery, QueueTypeEnum.getBlockingQueueNameByType(parameter.getQueueType())),
+                String.format(CHANGE_DELIMITER, originalCapacity,
                         (afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size())),
-                String.format("%s => %s", originalKeepAliveTime, afterExecutor.getKeepAliveTime(TimeUnit.SECONDS)),
-                String.format("%s => %s", originalExecuteTimeOut, originalExecuteTimeOut),
-                String.format("%s => %s", originalRejected, RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType())),
-                String.format("%s => %s", originalAllowCoreThreadTimeOut, EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut())));
+                String.format(CHANGE_DELIMITER, originalKeepAliveTime, afterExecutor.getKeepAliveTime(TimeUnit.SECONDS)),
+                String.format(CHANGE_DELIMITER, originalExecuteTimeOut, originalExecuteTimeOut),
+                String.format(CHANGE_DELIMITER, originalRejected, RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType())),
+                String.format(CHANGE_DELIMITER, originalAllowCoreThreadTimeOut, EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut())));
     }
 
     /**

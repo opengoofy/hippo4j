@@ -59,19 +59,15 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
                 ByteConvertUtil.getPrintSize(runtimeInfo.getTotalMemory()),
                 " / 最大可用: ",
                 ByteConvertUtil.getPrintSize(runtimeInfo.getMaxMemory())).toString();
-
         poolRunStateInfo.setCurrentLoad(poolRunStateInfo.getCurrentLoad() + "%");
         poolRunStateInfo.setPeakLoad(poolRunStateInfo.getPeakLoad() + "%");
-
         String ipAddress = hippo4JInetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
         poolRunStateInfo.setHost(ipAddress);
         poolRunStateInfo.setMemoryProportion(memoryProportion);
         poolRunStateInfo.setFreeMemory(ByteConvertUtil.getPrintSize(runtimeInfo.getFreeMemory()));
-
         String threadPoolId = poolRunStateInfo.getTpId();
         DynamicThreadPoolWrapper executorService = GlobalThreadPoolManage.getExecutorService(threadPoolId);
         ThreadPoolExecutor pool = executorService.getExecutor();
-
         String rejectedName;
         if (pool instanceof AbstractDynamicExecutorSupport) {
             rejectedName = ((DynamicThreadPoolExecutor) pool).getRedundancyHandler().getClass().getSimpleName();
@@ -79,17 +75,12 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
             rejectedName = pool.getRejectedExecutionHandler().getClass().getSimpleName();
         }
         poolRunStateInfo.setRejectedName(rejectedName);
-
         ManyPoolRunStateInfo manyPoolRunStateInfo = BeanUtil.toBean(poolRunStateInfo, ManyPoolRunStateInfo.class);
         manyPoolRunStateInfo.setIdentify(CLIENT_IDENTIFICATION_VALUE);
-
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
         manyPoolRunStateInfo.setActive(active.toUpperCase());
-
         String threadPoolState = ThreadPoolStatusHandler.getThreadPoolState(pool);
         manyPoolRunStateInfo.setState(threadPoolState);
-
         return manyPoolRunStateInfo;
     }
-
 }

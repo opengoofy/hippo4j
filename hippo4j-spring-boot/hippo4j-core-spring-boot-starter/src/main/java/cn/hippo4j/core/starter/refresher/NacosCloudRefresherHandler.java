@@ -61,5 +61,4 @@ public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRef
                     }
                 });
     }
-
 }

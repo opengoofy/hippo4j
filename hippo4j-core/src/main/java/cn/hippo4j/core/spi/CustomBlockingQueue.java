@@ -49,5 +49,4 @@ public interface CustomBlockingQueue {
      * @return
      */
     BlockingQueue generateBlockingQueue();
-
 }

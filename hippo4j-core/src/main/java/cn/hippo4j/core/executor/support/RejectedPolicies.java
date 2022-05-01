@@ -52,7 +52,6 @@ public class RejectedPolicies {
                 executor.execute(r);
             }
         }
-
     }
 
     /**
@@ -71,7 +70,5 @@ public class RejectedPolicies {
                 log.error("Adding Queue task to thread pool failed.", e);
             }
         }
-
     }
-
 }

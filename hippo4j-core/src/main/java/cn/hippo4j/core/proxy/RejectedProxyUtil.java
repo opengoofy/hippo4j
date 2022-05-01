@@ -43,8 +43,6 @@ public class RejectedProxyUtil {
                         rejectedExecutionHandler.getClass().getClassLoader(),
                         new Class[]{RejectedExecutionHandler.class},
                         new RejectedProxyInvocationHandler(rejectedExecutionHandler, threadPoolId, rejectedNum));
-
         return rejectedProxy;
     }
-
 }

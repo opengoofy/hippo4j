@@ -96,14 +96,12 @@ public enum QueueTypeEnum {
                 .filter(each -> Objects.equals(each.name, blockingQueueName))
                 .findFirst()
                 .orElse(null);
-
         if (queueTypeEnum != null) {
             blockingQueue = createBlockingQueue(queueTypeEnum.type, capacity);
             if (Objects.equals(blockingQueue.getClass().getSimpleName(), blockingQueueName)) {
                 return blockingQueue;
             }
         }
-
         Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
                 .getSingletonServiceInstances(CustomBlockingQueue.class);
         blockingQueue = Optional.ofNullable(blockingQueue)
@@ -120,7 +118,6 @@ public enum QueueTypeEnum {
 
                                     return new LinkedBlockingQueue(temCapacity);
                                 }));
-
         return blockingQueue;
     }
 
@@ -148,7 +145,6 @@ public enum QueueTypeEnum {
         } else if (Objects.equals(type, RESIZABLE_LINKED_BLOCKING_QUEUE.type)) {
             blockingQueue = new ResizableCapacityLinkedBlockIngQueue(capacity);
         }
-
         Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
                 .getSingletonServiceInstances(CustomBlockingQueue.class);
         blockingQueue = Optional.ofNullable(blockingQueue).orElseGet(() -> customBlockingQueues.stream()
@@ -156,7 +152,6 @@ public enum QueueTypeEnum {
                 .map(each -> each.generateBlockingQueue())
                 .findFirst()
                 .orElse(new LinkedBlockingQueue(capacity)));
-
         return blockingQueue;
     }
 
@@ -170,8 +165,6 @@ public enum QueueTypeEnum {
         Optional<QueueTypeEnum> queueTypeEnum = Arrays.stream(QueueTypeEnum.values())
                 .filter(each -> each.type == type)
                 .findFirst();
-
         return queueTypeEnum.map(each -> each.name).orElse("");
     }
-
 }

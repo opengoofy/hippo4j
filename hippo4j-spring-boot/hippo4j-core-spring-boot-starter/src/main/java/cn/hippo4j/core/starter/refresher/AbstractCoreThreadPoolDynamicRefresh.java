@@ -54,6 +54,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
+import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
+
 /**
  * Abstract core thread pool dynamic refresh.
  *
@@ -68,10 +71,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
     protected final BootstrapCoreProperties bootstrapCoreProperties;
 
-    protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder()
-            .threadFactory("client.dynamic.refresh")
-            .singlePool()
-            .build();
+    protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder().singlePool("client.dynamic.refresh").build();
 
     @Override
     public void dynamicRefresh(String content) {
@@ -176,26 +176,16 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
             // refresh executor properties
             GlobalCoreThreadPoolManage.refresh(threadPoolId, properties);
-            log.info(
-                    "[{}] Changed thread pool. " +
-                            "\n    coreSize :: [{}]" +
-                            "\n    maxSize :: [{}]" +
-                            "\n    queueType :: [{}]" +
-                            "\n    capacity :: [{}]" +
-                            "\n    keepAliveTime :: [{}]" +
-                            "\n    executeTimeOut :: [{}]" +
-                            "\n    rejectedType :: [{}]" +
-                            "\n    allowCoreThreadTimeOut :: [{}]",
+            log.info(CHANGE_THREAD_POOL_TEXT,
                     threadPoolId.toUpperCase(),
-                    String.format("%s => %s", beforeProperties.getCorePoolSize(), properties.getCorePoolSize()),
-                    String.format("%s => %s", beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize()),
-                    String.format("%s => %s", beforeProperties.getBlockingQueue(), properties.getBlockingQueue()),
-                    String.format("%s => %s", beforeProperties.getQueueCapacity(), properties.getQueueCapacity()),
-                    String.format("%s => %s", beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime()),
-                    String.format("%s => %s", beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut()),
-                    String.format("%s => %s", beforeProperties.getRejectedHandler(), properties.getRejectedHandler()),
-                    String.format("%s => %s", beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut()));
-
+                    String.format(CHANGE_DELIMITER, beforeProperties.getCorePoolSize(), properties.getCorePoolSize()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getBlockingQueue(), properties.getBlockingQueue()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getQueueCapacity(), properties.getQueueCapacity()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getRejectedHandler(), properties.getRejectedHandler()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut()));
             try {
                 threadPoolNotifyAlarmHandler.sendPoolConfigChange(newChangeRequest(beforeProperties, properties));
             } catch (Throwable ex) {
@@ -241,7 +231,6 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
     private boolean checkConsistency(String threadPoolId, ExecutorProperties properties) {
         ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
-
         boolean result = !Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize())
                 || !Objects.equals(beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize())
                 || !Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())

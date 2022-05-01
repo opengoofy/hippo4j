@@ -30,6 +30,8 @@ import org.springframework.boot.web.server.WebServer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
+import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
+
 /**
  * @author : wh
  * @date : 2022/2/28 16:55
@@ -50,10 +52,8 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
         QueuedThreadPool queuedThreadPool = (QueuedThreadPool) executor;
         poolBaseInfo.setCoreSize(queuedThreadPool.getMinThreads());
         poolBaseInfo.setMaximumSize(queuedThreadPool.getMaxThreads());
-
         BlockingQueue jobs = (BlockingQueue) ReflectUtil.getFieldValue(queuedThreadPool, "_jobs");
         int queueCapacity = jobs.remainingCapacity() + jobs.size();
-
         poolBaseInfo.setQueueCapacity(queueCapacity);
         poolBaseInfo.setQueueType(jobs.getClass().getSimpleName());
         poolBaseInfo.setKeepAliveTime((long) queuedThreadPool.getIdleTimeout());
@@ -67,16 +67,13 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
         try {
             parameterInfo = new PoolParameterInfo();
             QueuedThreadPool jettyExecutor = (QueuedThreadPool) executor;
-
             int minThreads = jettyExecutor.getMinThreads();
             int maxThreads = jettyExecutor.getMaxThreads();
-
             parameterInfo.setCoreSize(minThreads);
             parameterInfo.setMaxSize(maxThreads);
         } catch (Exception ex) {
             log.error("Failed to get the jetty thread pool parameter.", ex);
         }
-
         return parameterInfo;
     }
 
@@ -89,25 +86,20 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
     public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
         try {
             QueuedThreadPool jettyExecutor = (QueuedThreadPool) executor;
-
             int minThreads = jettyExecutor.getMinThreads();
             int maxThreads = jettyExecutor.getMaxThreads();
-
             Integer coreSize = poolParameterInfo.getCoreSize();
             Integer maxSize = poolParameterInfo.getMaxSize();
-
             jettyExecutor.setMinThreads(coreSize);
             jettyExecutor.setMaxThreads(maxSize);
-
             log.info(
                     "[JETTY] Changed web thread pool. " +
                             "\n    coreSize :: [{}]" +
                             "\n    maxSize :: [{}]",
-                    String.format("%s => %s", minThreads, jettyExecutor.getMinThreads()),
-                    String.format("%s => %s", maxThreads, jettyExecutor.getMaxThreads()));
+                    String.format(CHANGE_DELIMITER, minThreads, jettyExecutor.getMinThreads()),
+                    String.format(CHANGE_DELIMITER, maxThreads, jettyExecutor.getMaxThreads()));
         } catch (Exception ex) {
             log.error("Failed to modify the jetty thread pool parameter.", ex);
         }
     }
-
 }

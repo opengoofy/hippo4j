@@ -66,5 +66,4 @@ public interface WebThreadPoolService {
      * @param poolParameterInfo
      */
     void updateWebThreadPool(PoolParameterInfo poolParameterInfo);
-
 }

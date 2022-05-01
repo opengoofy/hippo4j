@@ -51,35 +51,30 @@ public class BeforeCheckConfiguration {
                         "Web server failed to start. The dynamic thread pool username is empty.",
                         "Please check whether the [spring.dynamic.thread-pool.username] configuration is empty or an empty string.");
             }
-
             String password = properties.getPassword();
             if (StringUtil.isBlank(password)) {
                 throw new ConfigEmptyException(
                         "Web server failed to start. The dynamic thread pool password is empty.",
                         "Please check whether the [spring.dynamic.thread-pool.password] configuration is empty or an empty string.");
             }
-
             String namespace = properties.getNamespace();
             if (StringUtil.isBlank(namespace)) {
                 throw new ConfigEmptyException(
                         "Web server failed to start. The dynamic thread pool namespace is empty.",
                         "Please check whether the [spring.dynamic.thread-pool.namespace] configuration is empty or an empty string.");
             }
-
             String itemId = properties.getItemId();
             if (StringUtil.isBlank(itemId)) {
                 throw new ConfigEmptyException(
                         "Web server failed to start. The dynamic thread pool item id is empty.",
                         "Please check whether the [spring.dynamic.thread-pool.item-id] configuration is empty or an empty string.");
             }
-
             String serverAddr = properties.getServerAddr();
             if (StringUtil.isBlank(serverAddr)) {
                 throw new ConfigEmptyException(
                         "Web server failed to start. The dynamic thread pool server addr is empty.",
                         "Please check whether the [spring.dynamic.thread-pool.server-addr] configuration is empty or an empty string.");
             }
-
             String applicationName = environment.getProperty("spring.application.name");
             if (StringUtil.isBlank(applicationName)) {
                 throw new ConfigEmptyException(
@@ -94,5 +89,4 @@ public class BeforeCheckConfiguration {
     public class BeforeCheck {
 
     }
-
 }

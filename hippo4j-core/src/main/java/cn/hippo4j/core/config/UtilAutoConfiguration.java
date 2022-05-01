@@ -37,5 +37,4 @@ public class UtilAutoConfiguration {
     public InetUtils hippo4JInetUtils(InetUtilsProperties properties) {
         return new InetUtils(properties);
     }
-
 }

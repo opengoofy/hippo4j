@@ -77,5 +77,4 @@ public class WebThreadPoolConfiguration {
     public WebThreadPoolHandlerChoose webThreadPoolServiceChoose() {
         return new WebThreadPoolHandlerChoose();
     }
-
 }

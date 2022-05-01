@@ -54,5 +54,4 @@ public class GlobalNotifyAlarmManage {
     public static void put(String key, ThreadPoolNotifyAlarm val) {
         NOTIFY_ALARM_MAP.put(key, val);
     }
-
 }

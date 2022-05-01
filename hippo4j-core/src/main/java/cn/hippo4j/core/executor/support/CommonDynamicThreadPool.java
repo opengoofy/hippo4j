@@ -45,5 +45,4 @@ public class CommonDynamicThreadPool {
                 .build();
         return poolExecutor;
     }
-
 }

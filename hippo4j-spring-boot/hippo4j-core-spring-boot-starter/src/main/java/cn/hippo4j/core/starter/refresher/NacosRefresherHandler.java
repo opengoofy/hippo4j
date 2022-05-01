@@ -61,5 +61,4 @@ public class NacosRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh 
                     }
                 });
     }
-
 }

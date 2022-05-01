@@ -112,5 +112,4 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
             log.error("load zk node error, nodePath is {}", nodePath, e);
         }
     }
-
 }

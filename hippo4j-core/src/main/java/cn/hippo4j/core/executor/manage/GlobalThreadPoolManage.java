@@ -113,5 +113,4 @@ public class GlobalThreadPoolManage {
     public static Integer getThreadPoolNum() {
         return listThreadPoolId().size();
     }
-
 }

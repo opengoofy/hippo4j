@@ -92,5 +92,4 @@ public class DynamicThreadPoolServiceLoader {
             throw new ServiceLoaderInstantiationException(clazz, ex);
         }
     }
-
 }

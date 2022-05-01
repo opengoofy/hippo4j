@@ -61,7 +61,6 @@ public class IdentifyUtil {
                 port,
                 IDENTIFY_SLICER_SYMBOL,
                 CLIENT_IDENTIFICATION_VALUE).toString();
-
         IDENTIFY = identification;
         return identification;
     }
@@ -76,15 +75,12 @@ public class IdentifyUtil {
         while (StrUtil.isBlank(IDENTIFY)) {
             ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
             InetUtils inetUtils = ApplicationContextHolder.getBean(InetUtils.class);
-
             if (environment != null && inetUtils != null) {
                 String identify = generate(environment, inetUtils);
                 return identify;
             }
-
             Thread.sleep(500);
         }
-
         return IDENTIFY;
     }
 
@@ -99,8 +95,6 @@ public class IdentifyUtil {
     public static String getThreadPoolIdentify(String threadPoolId, String itemId, String namespace) {
         ArrayList<String> params = Lists.newArrayList(
                 threadPoolId, itemId, namespace, getIdentify());
-
         return Joiner.on(GROUP_KEY_DELIMITER).join(params);
     }
-
 }

@@ -77,7 +77,6 @@ public class AbstractBuildThreadPoolTemplate {
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException("Error creating thread pool parameter.", ex);
         }
-
         executorService.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return executorService;
     }
@@ -111,7 +110,6 @@ public class AbstractBuildThreadPoolTemplate {
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException("Error creating thread pool parameter.", ex);
         }
-
         taskQueue.setExecutor(fastThreadPoolExecutor);
         fastThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return fastThreadPoolExecutor;
@@ -142,7 +140,6 @@ public class AbstractBuildThreadPoolTemplate {
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(String.format("Error creating thread pool parameter. threadPool id :: %s", initParam.getThreadPoolId()), ex);
         }
-
         dynamicThreadPoolExecutor.setTaskDecorator(initParam.getTaskDecorator());
         dynamicThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return dynamicThreadPoolExecutor;

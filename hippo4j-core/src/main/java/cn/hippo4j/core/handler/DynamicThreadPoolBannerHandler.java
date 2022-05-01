@@ -58,16 +58,13 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
                 "| |) | || | ' \\/ _` | '  \\| / _|   | | |  _/\n" +
                 "|___/ \\_, |_||_\\__,_|_|_|_|_\\__|   |_| |_|  \n" +
                 "      |__/                                  \n";
-
         if (properties.getBanner()) {
             String version = getVersion();
             version = (version != null) ? " (v" + version + ")" : "no version.";
-
             StringBuilder padding = new StringBuilder();
             while (padding.length() < STRAP_LINE_SIZE - (version.length() + DYNAMIC_THREAD_POOL.length())) {
                 padding.append(" ");
             }
-
             System.out.println(AnsiOutput.toString(banner, AnsiColor.GREEN, DYNAMIC_THREAD_POOL, AnsiColor.DEFAULT,
                     padding.toString(), AnsiStyle.FAINT, version, "\n\n", HIPPO4J_GITHUB, "\n", HIPPO4J_SITE, "\n"));
 
@@ -78,5 +75,4 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
         final Package pkg = DynamicThreadPoolBannerHandler.class.getPackage();
         return pkg != null ? pkg.getImplementationVersion() : "";
     }
-
 }

@@ -87,5 +87,4 @@ public interface BootstrapPropertiesInterface {
     default Boolean getBanner() {
         return null;
     }
-
 }

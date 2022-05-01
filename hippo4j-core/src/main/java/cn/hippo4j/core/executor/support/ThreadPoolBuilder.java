@@ -173,6 +173,14 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
+    public ThreadPoolBuilder singlePool(String threadNamePrefix) {
+        int singleNum = 1;
+        this.corePoolSize = singleNum;
+        this.maxPoolSize = singleNum;
+        this.threadNamePrefix = threadNamePrefix;
+        return this;
+    }
+
     public ThreadPoolBuilder poolThreadSize(int corePoolSize, int maxPoolSize) {
         this.corePoolSize = corePoolSize;
         this.maxPoolSize = maxPoolSize;

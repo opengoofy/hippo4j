@@ -30,6 +30,8 @@ import org.springframework.boot.web.server.WebServer;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
+
 /**
  * Tomcat web thread pool handler.
  *
@@ -52,7 +54,6 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
             log.warn("Exception getting Tomcat thread pool. Exception message :: {}", EXCEPTION_MESSAGE);
             return null;
         }
-
         Executor tomcatExecutor = null;
         try {
             tomcatExecutor = ((TomcatWebServer) webServer).getTomcat().getConnector().getProtocolHandler().getExecutor();
@@ -61,7 +62,6 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
             EXCEPTION_MESSAGE = ex.getMessage();
             log.error("Failed to get Tomcat thread pool. Message :: {}", EXCEPTION_MESSAGE);
         }
-
         return tomcatExecutor;
     }
 
@@ -85,7 +85,6 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         poolBaseInfo.setQueueType(queue.getClass().getSimpleName());
         poolBaseInfo.setQueueCapacity(queueCapacity);
         poolBaseInfo.setRejectedName(rejectedExecutionHandler.getClass().getSimpleName());
-
         return poolBaseInfo;
     }
 
@@ -105,7 +104,6 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         } catch (Exception ex) {
             log.error("Failed to get the tomcat thread pool parameter.", ex);
         }
-
         return parameterInfo;
     }
 
@@ -121,7 +119,6 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
             int originalCoreSize = tomcatExecutor.getCorePoolSize();
             int originalMaximumPoolSize = tomcatExecutor.getMaximumPoolSize();
             long originalKeepAliveTime = tomcatExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-
             tomcatExecutor.setCorePoolSize(poolParameterInfo.getCoreSize());
             tomcatExecutor.setMaximumPoolSize(poolParameterInfo.getMaxSize());
             tomcatExecutor.setKeepAliveTime(poolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
@@ -130,12 +127,11 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
                             "\n    coreSize :: [{}]" +
                             "\n    maxSize :: [{}]" +
                             "\n    keepAliveTime :: [{}]",
-                    String.format("%s => %s", originalCoreSize, poolParameterInfo.getCoreSize()),
-                    String.format("%s => %s", originalMaximumPoolSize, poolParameterInfo.getMaxSize()),
-                    String.format("%s => %s", originalKeepAliveTime, poolParameterInfo.getKeepAliveTime()));
+                    String.format(CHANGE_DELIMITER, originalCoreSize, poolParameterInfo.getCoreSize()),
+                    String.format(CHANGE_DELIMITER, originalMaximumPoolSize, poolParameterInfo.getMaxSize()),
+                    String.format(CHANGE_DELIMITER, originalKeepAliveTime, poolParameterInfo.getKeepAliveTime()));
         } catch (Exception ex) {
             log.error("Failed to modify the Tomcat thread pool parameter.", ex);
         }
     }
-
 }

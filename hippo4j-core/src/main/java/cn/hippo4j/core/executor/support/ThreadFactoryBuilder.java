@@ -171,5 +171,4 @@ public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
             return thread;
         };
     }
-
 }

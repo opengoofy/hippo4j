@@ -62,5 +62,4 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
         config.addChangeListener(configChangeListener);
         log.info("dynamic-thread-pool refresher, add apollo listener success, namespace: {}", namespace);
     }
-
 }
