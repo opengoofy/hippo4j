@@ -76,13 +76,13 @@ Hippo-4J 已接入钉钉、企业微信以及飞书平台，提供了 **线程�
   <tr>
     <td align="center" style="width: 400px;">
       <a href="https://github.com/longtai-cn">
-        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213443242.png" style="width: 400px;"><br>
+        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220501162931154.png" style="width: 400px;"><br>
         <sub>配置变更</sub>
       </a><br>
     </td>
     <td align="center" style="width: 400px;">
       <a href="https://github.com/longtai-cn">
-        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213512019.png" style="width: 400px;"><br>
+        <img src="https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220501162751367.png" style="width: 400px;"><br>
         <sub>报警通知</sub>
       </a><br>
     </td>
