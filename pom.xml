@@ -45,7 +45,7 @@
         <slf4j-api.version>1.7.7</slf4j-api.version>
         <logback.version>1.2.3</logback.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
-        <spring-boot.version>2.5.13</spring-boot.version>
+        <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
 
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
