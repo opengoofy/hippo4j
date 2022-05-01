@@ -135,7 +135,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      * @param dynamicThreadPoolWrap
      */
     protected ThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
-        String tpId = dynamicThreadPoolWrap.getTpId();
+        String tpId = dynamicThreadPoolWrap.getThreadPoolId();
         Map<String, String> queryStrMap = new HashMap(3);
         queryStrMap.put(TP_ID, tpId);
         queryStrMap.put(ITEM_ID, properties.getItemId());
@@ -201,7 +201,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             dynamicThreadPoolWrap.setSubscribeFlag(isSubscribe);
         }
 
-        GlobalThreadPoolManage.register(dynamicThreadPoolWrap.getTpId(), ppi, dynamicThreadPoolWrap);
+        GlobalThreadPoolManage.register(dynamicThreadPoolWrap.getThreadPoolId(), ppi, dynamicThreadPoolWrap);
         return newDynamicPoolExecutor;
     }
 
@@ -212,7 +212,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      */
     protected void subscribeConfig(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
         if (dynamicThreadPoolWrap.isSubscribeFlag()) {
-            threadPoolOperation.subscribeConfig(dynamicThreadPoolWrap.getTpId(), executorService, config -> threadPoolDynamicRefresh.dynamicRefresh(config));
+            threadPoolOperation.subscribeConfig(dynamicThreadPoolWrap.getThreadPoolId(), executorService, config -> threadPoolDynamicRefresh.dynamicRefresh(config));
         }
     }
 

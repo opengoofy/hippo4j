@@ -102,7 +102,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      * @param dynamicThreadPoolWrap
      */
     protected ThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
-        String threadPoolId = dynamicThreadPoolWrap.getTpId();
+        String threadPoolId = dynamicThreadPoolWrap.getThreadPoolId();
         ThreadPoolExecutor newDynamicPoolExecutor = dynamicThreadPoolWrap.getExecutor();
         ExecutorProperties executorProperties = null;
         if (null != bootstrapCoreProperties.getExecutors()) {
@@ -164,7 +164,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);
         }
 
-        GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrap.getTpId(), dynamicThreadPoolWrap);
+        GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrap.getThreadPoolId(), dynamicThreadPoolWrap);
         GlobalCoreThreadPoolManage.register(
                 threadPoolId,
                 executorProperties == null
