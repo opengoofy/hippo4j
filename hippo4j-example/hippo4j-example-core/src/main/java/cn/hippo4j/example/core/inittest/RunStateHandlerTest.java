@@ -69,7 +69,6 @@ public class RunStateHandlerTest {
 
         // 启动动态线程池模拟运行任务
         runTask(messageConsumeDynamicThreadPool);
-
         // 启动动态线程池模拟运行任务
         runTask(messageProduceDynamicThreadPool);
     }
@@ -102,11 +101,8 @@ public class RunStateHandlerTest {
                 } catch (Exception ex) {
                     // ignore
                 }
-
                 ThreadUtil.sleep(500);
             }
-
         });
     }
-
 }

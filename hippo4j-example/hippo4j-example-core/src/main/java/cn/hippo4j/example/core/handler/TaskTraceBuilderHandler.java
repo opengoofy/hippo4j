@@ -34,7 +34,6 @@ public final class TaskTraceBuilderHandler implements TaskDecorator {
     @Override
     public Runnable decorate(Runnable runnable) {
         String executeTimeoutTrace = MDC.get(EXECUTE_TIMEOUT_TRACE);
-
         Runnable taskRun = () -> {
             if (StringUtil.isNotBlank(executeTimeoutTrace)) {
                 MDC.put(EXECUTE_TIMEOUT_TRACE, executeTimeoutTrace);
@@ -42,8 +41,6 @@ public final class TaskTraceBuilderHandler implements TaskDecorator {
             runnable.run();
             // 此处不用进行清理操作, 统一在线程任务执行后清理
         };
-
         return taskRun;
     }
-
 }

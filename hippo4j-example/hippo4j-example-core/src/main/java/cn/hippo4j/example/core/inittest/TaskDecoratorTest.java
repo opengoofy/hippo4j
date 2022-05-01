@@ -74,7 +74,6 @@ public class TaskDecoratorTest {
                 log.info("通过 taskDecorator MDC 传递上下文 :: {}", MDC.get(PLACEHOLDER));
             });
         });
-
     }
 
     public static class ContextCopyingDecorator implements TaskDecorator {
@@ -93,5 +92,4 @@ public class TaskDecoratorTest {
             };
         }
     }
-
 }

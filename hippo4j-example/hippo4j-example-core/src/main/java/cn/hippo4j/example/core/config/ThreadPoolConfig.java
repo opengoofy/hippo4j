@@ -53,7 +53,6 @@ public class ThreadPoolConfig {
                 .awaitTerminationMillis(5000L)
                 .taskDecorator(new TaskTraceBuilderHandler())
                 .build();
-
         return customExecutor;
     }
 
@@ -69,12 +68,10 @@ public class ThreadPoolConfig {
                 .waitForTasksToCompleteOnShutdown(true)
                 .awaitTerminationMillis(5000L)
                 /**
-                 * 测试线程任务装饰器.
-                 * 如果需要查看详情, 跳转 {@link TaskDecoratorTest}
+                 * 上下文传递，测试用例：{@link TaskDecoratorTest}
                  */
                 .taskDecorator(new TaskDecoratorTest.ContextCopyingDecorator())
                 .build();
-
         return produceExecutor;
     }
 

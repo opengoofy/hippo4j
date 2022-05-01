@@ -56,5 +56,4 @@ public class AlarmSendMessageTest {
             }
         }, 3, 1, TimeUnit.SECONDS);
     }
-
 }

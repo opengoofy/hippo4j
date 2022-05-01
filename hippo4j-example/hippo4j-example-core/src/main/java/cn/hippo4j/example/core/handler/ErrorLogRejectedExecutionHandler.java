@@ -49,7 +49,5 @@ public class ErrorLogRejectedExecutionHandler implements CustomRejectedExecution
             Logger logger = LoggerFactory.getLogger(this.getClass());
             logger.error("线程池抛出拒绝策略.");
         }
-
     }
-
 }
