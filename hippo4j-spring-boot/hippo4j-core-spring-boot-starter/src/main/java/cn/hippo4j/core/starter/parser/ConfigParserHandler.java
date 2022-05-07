@@ -61,5 +61,4 @@ public class ConfigParserHandler {
     private static class ConfigParserHandlerHolder {
         private static final ConfigParserHandler INSTANCE = new ConfigParserHandler();
     }
-
 }

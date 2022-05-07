@@ -59,5 +59,4 @@ public class PoolBaseInfo {
      * keepAliveTime
      */
     private Long keepAliveTime;
-
 }

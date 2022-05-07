@@ -61,5 +61,4 @@ public enum ConfigFileTypeEnum {
      * @return
      */
     public abstract String type();
-
 }

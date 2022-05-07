@@ -53,7 +53,5 @@ public interface ClientCloseHookExecute {
          * groupKey
          */
         private String groupKey;
-
     }
-
 }

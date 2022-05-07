@@ -137,5 +137,4 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
     private String getToken(NotifyPlatformProperties platformProperties) {
         return StringUtil.isNotBlank(platformProperties.getToken()) ? platformProperties.getToken() : platformProperties.getSecretKey();
     }
-
 }

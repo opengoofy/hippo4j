@@ -32,5 +32,4 @@ public class RobotAlarmNotifyRequest extends AlarmNotifyRequest {
      * secretKey
      */
     private String secretKey;
-
 }

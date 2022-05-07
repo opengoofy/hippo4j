@@ -84,5 +84,4 @@ public class RuntimeMessage extends AbstractMessage {
      * timestamp
      */
     private Long timestamp;
-
 }

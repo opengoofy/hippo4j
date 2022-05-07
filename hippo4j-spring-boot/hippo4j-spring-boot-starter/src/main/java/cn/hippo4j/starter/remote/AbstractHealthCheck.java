@@ -109,11 +109,9 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
                 healthMainLock.unlock();
             }
         }
-
         if (!healthStatus) {
             throw new ShutdownExecuteException();
         }
-
         return healthStatus;
     }
 
@@ -142,12 +140,14 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        // 添加钩子函数, Client 端停止时, 如果 Server 端是非健康状态, Client 销毁函数会暂停运行
+        /**
+         * Add a hook function, when the client stops, if the server is in an unhealthy state,
+         * the client destroy function will suspend operation
+         */
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             clientShutdownHook = true;
             signalAllBizThread();
         }));
-
         healthCheckExecutor.scheduleWithFixedDelay(() -> healthCheck(), 0, HEALTH_CHECK_INTERVAL, TimeUnit.SECONDS);
     }
 
@@ -155,5 +155,4 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
     public void onApplicationEvent(ApplicationCompleteEvent event) {
         contextInitComplete = true;
     }
-
 }

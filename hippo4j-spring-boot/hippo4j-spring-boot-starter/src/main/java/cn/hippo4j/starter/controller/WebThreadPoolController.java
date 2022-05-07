@@ -58,5 +58,4 @@ public class WebThreadPoolController {
         webThreadPoolServiceChoose.choose().updateWebThreadPool(poolParameterInfo);
         return Results.success();
     }
-
 }

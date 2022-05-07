@@ -41,5 +41,4 @@ public interface ConfigService {
      * @return
      */
     String getServerStatus();
-
 }

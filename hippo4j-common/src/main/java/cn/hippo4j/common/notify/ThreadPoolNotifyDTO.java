@@ -39,5 +39,4 @@ public class ThreadPoolNotifyDTO {
      * notifyList
      */
     private List<NotifyConfigDTO> notifyList;
-
 }

@@ -46,5 +46,4 @@ public abstract class AbstractMessage<T extends Message> implements Message {
      * message
      */
     private List<T> messages;
-
 }

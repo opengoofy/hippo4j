@@ -45,5 +45,4 @@ public interface ThreadDetailState {
      * @return
      */
     List<ThreadDetailStateInfo> getThreadDetailStateInfo(ThreadPoolExecutor threadPoolExecutor);
-
 }

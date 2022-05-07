@@ -64,5 +64,4 @@ public class ChangeParameterNotifyRequest extends BaseNotifyRequest {
     private String beforeRejectedName;
 
     private String nowRejectedName;
-
 }

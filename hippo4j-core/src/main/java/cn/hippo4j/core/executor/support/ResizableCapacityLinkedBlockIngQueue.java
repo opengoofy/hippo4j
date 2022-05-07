@@ -24,7 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Resizable capacity linkedBlockIngQueue.
+ * Resizable capacity linked-blocking-queue.
  *
  * @author chen.ma
  * @date 2021/6/20 14:24

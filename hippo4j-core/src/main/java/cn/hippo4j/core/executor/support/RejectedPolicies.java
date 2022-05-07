@@ -32,9 +32,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Slf4j
 public class RejectedPolicies {
 
-    /**
-     * 发生拒绝事件时, 添加新任务并运行最早的任务.
-     */
     public static class RunsOldestTaskPolicy implements RejectedExecutionHandler {
 
         @Override
@@ -54,9 +51,6 @@ public class RejectedPolicies {
         }
     }
 
-    /**
-     * 使用阻塞方法将拒绝任务添加队列, 可保证任务不丢失.
-     */
     public static class SyncPutQueuePolicy implements RejectedExecutionHandler {
 
         @Override

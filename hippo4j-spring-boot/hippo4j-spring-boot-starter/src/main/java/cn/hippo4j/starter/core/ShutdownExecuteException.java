@@ -28,5 +28,4 @@ public class ShutdownExecuteException extends Exception {
     public ShutdownExecuteException() {
         super("Execute task when stopped.");
     }
-
 }

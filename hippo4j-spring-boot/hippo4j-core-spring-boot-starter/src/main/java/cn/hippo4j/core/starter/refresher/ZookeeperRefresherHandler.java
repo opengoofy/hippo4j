@@ -83,7 +83,7 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
     }
 
     /**
-     * load config info and refresh.
+     * Load config info and refresh.
      *
      * @param nodePath zk config node path.
      */

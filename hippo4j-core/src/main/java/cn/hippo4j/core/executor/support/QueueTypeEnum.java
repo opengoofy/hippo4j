@@ -83,13 +83,6 @@ public enum QueueTypeEnum {
         DynamicThreadPoolServiceLoader.register(CustomBlockingQueue.class);
     }
 
-    /**
-     * Create blocking queue.
-     *
-     * @param blockingQueueName
-     * @param capacity
-     * @return
-     */
     public static BlockingQueue createBlockingQueue(String blockingQueueName, Integer capacity) {
         BlockingQueue blockingQueue = null;
         QueueTypeEnum queueTypeEnum = Stream.of(QueueTypeEnum.values())
@@ -121,13 +114,6 @@ public enum QueueTypeEnum {
         return blockingQueue;
     }
 
-    /**
-     * Create blocking queue.
-     *
-     * @param type
-     * @param capacity
-     * @return
-     */
     public static BlockingQueue createBlockingQueue(int type, Integer capacity) {
         BlockingQueue blockingQueue = null;
         if (Objects.equals(type, ARRAY_BLOCKING_QUEUE.type)) {
@@ -155,12 +141,6 @@ public enum QueueTypeEnum {
         return blockingQueue;
     }
 
-    /**
-     * Get blocking queue name by type.
-     *
-     * @param type
-     * @return
-     */
     public static String getBlockingQueueNameByType(int type) {
         Optional<QueueTypeEnum> queueTypeEnum = Arrays.stream(QueueTypeEnum.values())
                 .filter(each -> each.type == type)

@@ -96,5 +96,4 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
      * JSON serialization type.
      */
     private String jsonSerializeType = "JACKSON";
-
 }

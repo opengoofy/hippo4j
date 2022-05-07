@@ -90,5 +90,4 @@ public class MetricMonitorHandler extends AbstractDynamicThreadPoolMonitor {
     public String getType() {
         return "metric";
     }
-
 }

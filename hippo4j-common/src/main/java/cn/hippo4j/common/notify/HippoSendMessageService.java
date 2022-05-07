@@ -42,5 +42,4 @@ public interface HippoSendMessageService {
      * @param changeParameterNotifyRequest
      */
     void sendChangeMessage(ChangeParameterNotifyRequest changeParameterNotifyRequest);
-
 }

@@ -59,5 +59,4 @@ public enum EnableEnum {
     public static boolean getBool(Integer intStatusCode) {
         return Objects.equals(intStatusCode, EnableEnum.YES.getIntCode()) ? true : false;
     }
-
 }

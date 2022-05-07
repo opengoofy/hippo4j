@@ -33,5 +33,4 @@ public class ConfigEmptyAnalyzer extends AbstractFailureAnalyzer<ConfigEmptyExce
     protected FailureAnalysis analyze(Throwable rootFailure, ConfigEmptyException cause) {
         return new FailureAnalysis(cause.getDescription(), cause.getAction(), cause);
     }
-
 }

@@ -26,12 +26,5 @@ package cn.hippo4j.common.function;
 @FunctionalInterface
 public interface Matcher<T> {
 
-    /**
-     * Match.
-     *
-     * @param t
-     * @return
-     */
     boolean match(T t);
-
 }

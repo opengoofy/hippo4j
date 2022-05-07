@@ -70,5 +70,4 @@ public class JacksonHandler implements JsonFacade {
         CollectionType collectionType = MAPPER.getTypeFactory().constructCollectionType(ArrayList.class, clazz);
         return MAPPER.readValue(text, collectionType);
     }
-
 }

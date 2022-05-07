@@ -57,7 +57,5 @@ public class UserContext {
         private String username;
 
         private String userRole;
-
     }
-
 }

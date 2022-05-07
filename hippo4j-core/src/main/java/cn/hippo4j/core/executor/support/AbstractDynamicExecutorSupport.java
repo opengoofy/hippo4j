@@ -30,10 +30,7 @@ import java.util.concurrent.*;
  * @date 2021/11/28 12:17
  */
 @Slf4j
-public abstract class AbstractDynamicExecutorSupport extends ThreadPoolExecutor
-        implements
-            InitializingBean,
-            DisposableBean {
+public abstract class AbstractDynamicExecutorSupport extends ThreadPoolExecutor implements InitializingBean, DisposableBean {
 
     private String threadPoolId;
 

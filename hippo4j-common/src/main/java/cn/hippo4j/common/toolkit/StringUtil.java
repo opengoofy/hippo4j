@@ -37,20 +37,16 @@ public class StringUtil {
      */
     public static boolean isBlank(CharSequence str) {
         int length;
-
         if ((str == null) || ((length = str.length()) == 0)) {
             return true;
         }
-
         for (int i = 0; i < length; i++) {
             char c = str.charAt(i);
-
             boolean charNotBlank = Character.isWhitespace(c) || Character.isSpaceChar(c) || c == '\ufeff' || c == '\u202a';
             if (charNotBlank == false) {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -163,8 +159,6 @@ public class StringUtil {
                 sb.append(c);
             }
         }
-
         return sb.toString();
     }
-
 }

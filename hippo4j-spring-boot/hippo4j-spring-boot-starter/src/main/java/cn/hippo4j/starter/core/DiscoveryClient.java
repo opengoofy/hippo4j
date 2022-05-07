@@ -61,13 +61,10 @@ public class DiscoveryClient implements DisposableBean {
         this.httpAgent = httpAgent;
         this.instanceInfo = instanceInfo;
         this.appPathIdentifier = instanceInfo.getAppName().toUpperCase() + "/" + instanceInfo.getInstanceId();
-
         this.scheduler = new ScheduledThreadPoolExecutor(
                 new Integer(1),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.discovery.scheduler").build());
-
         register();
-
         // init the schedule tasks
         initScheduledTasks();
     }
@@ -78,7 +75,6 @@ public class DiscoveryClient implements DisposableBean {
 
     boolean register() {
         log.info("{}{} - registering service...", PREFIX, appPathIdentifier);
-
         String urlPath = BASE_PATH + "/apps/register/";
         Result registerResult;
         try {
@@ -87,11 +83,9 @@ public class DiscoveryClient implements DisposableBean {
             registerResult = Results.failure(ErrorCodeEnum.SERVICE_ERROR);
             log.error("{}{} - registration failed :: {}", PREFIX, appPathIdentifier, ex.getMessage());
         }
-
         if (log.isInfoEnabled()) {
             log.info("{}{} - registration status :: {}", PREFIX, appPathIdentifier, registerResult.isSuccess() ? "success" : "fail");
         }
-
         return registerResult.isSuccess();
     }
 
@@ -106,12 +100,10 @@ public class DiscoveryClient implements DisposableBean {
                     .append(Constants.GROUP_KEY_DELIMITER)
                     .append(instanceInfo.getIdentify())
                     .toString();
-
             ClientCloseHookExecute.ClientCloseHookReq clientCloseHookReq = new ClientCloseHookExecute.ClientCloseHookReq();
             clientCloseHookReq.setAppName(instanceInfo.getAppName())
                     .setInstanceId(instanceInfo.getInstanceId())
                     .setGroupKey(groupKeyIp);
-
             clientCloseResult = httpAgent.httpPostByDiscovery(clientCloseUrlPath, clientCloseHookReq);
             if (clientCloseResult.isSuccess()) {
                 log.info("{}{} -client close hook success.", PREFIX, appPathIdentifier);
@@ -120,7 +112,6 @@ public class DiscoveryClient implements DisposableBean {
             if (ex instanceof ShutdownExecuteException) {
                 return;
             }
-
             log.error("{}{} - client close hook fail.", PREFIX, appPathIdentifier, ex);
         }
     }
@@ -143,7 +134,6 @@ public class DiscoveryClient implements DisposableBean {
                     .setInstanceId(instanceInfo.getInstanceId())
                     .setLastDirtyTimestamp(instanceInfo.getLastDirtyTimestamp().toString())
                     .setStatus(instanceInfo.getStatus().toString());
-
             renewResult = httpAgent.httpPostByDiscovery(BASE_PATH + "/apps/renew", instanceRenew);
             if (StrUtil.equals(ErrorCodeEnum.NOT_FOUND.getCode(), renewResult.getCode())) {
                 long timestamp = instanceInfo.setIsDirtyWithTime();
@@ -153,12 +143,10 @@ public class DiscoveryClient implements DisposableBean {
                 }
                 return success;
             }
-
             return renewResult.isSuccess();
         } catch (Exception ex) {
             log.error(PREFIX + "{} - was unable to send heartbeat!", appPathIdentifier, ex);
             return false;
         }
     }
-
 }

@@ -146,5 +146,4 @@ public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
      * Executors.
      */
     private List<ExecutorProperties> executors;
-
 }

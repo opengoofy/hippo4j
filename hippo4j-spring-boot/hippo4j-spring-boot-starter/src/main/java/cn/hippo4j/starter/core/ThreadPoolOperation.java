@@ -22,7 +22,7 @@ import cn.hippo4j.starter.config.BootstrapProperties;
 import java.util.concurrent.Executor;
 
 /**
- * ThreadPool operation.
+ * Thread-pool operation.
  *
  * @author chen.ma
  * @date 2021/6/22 20:25
@@ -50,10 +50,7 @@ public class ThreadPoolOperation {
                 return executor;
             }
         };
-
         configService.addListener(properties.getNamespace(), properties.getItemId(), tpId, configListener);
-
         return configListener;
     }
-
 }

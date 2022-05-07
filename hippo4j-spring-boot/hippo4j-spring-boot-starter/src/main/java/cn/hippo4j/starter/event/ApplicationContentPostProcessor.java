@@ -45,5 +45,4 @@ public class ApplicationContentPostProcessor implements ApplicationListener<Appl
             }
         }
     }
-
 }

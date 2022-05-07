@@ -52,7 +52,6 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
         String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on("><@").join(receives);
-
         String weChatAlarmTxt;
         String weChatAlarmTimoutReplaceTxt;
         if (Objects.equals(alarmNotifyRequest.getNotifyTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
@@ -63,7 +62,6 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
             } else {
                 weChatAlarmTimoutReplaceTxt = StrUtil.replace(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
             }
-
             weChatAlarmTimoutReplaceTxt = String.format(weChatAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
             weChatAlarmTxt = StrUtil.replace(WE_CHAT_ALARM_TXT, WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, weChatAlarmTimoutReplaceTxt);
         } else {
@@ -118,10 +116,8 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
     @Override
     public void sendChangeMessage(NotifyConfigDTO notifyConfig, ChangeParameterNotifyRequest changeParameterNotifyRequest) {
         String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
-
         String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on("><@").join(receives);
-
         String text = String.format(
                 WE_CHAT_NOTICE_TXT,
                 // 环境
@@ -153,7 +149,6 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
                 afterReceives,
                 // 当前时间
                 DateUtil.now());
-
         execute(notifyConfig.getSecretKey(), text);
     }
 
@@ -165,15 +160,12 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
      */
     private void execute(String secretKey, String text) {
         String serverUrl = WE_CHAT_SERVER_URL + secretKey;
-
         try {
             WeChatReqDTO weChatReq = new WeChatReqDTO();
             weChatReq.setMsgtype("markdown");
-
             Markdown markdown = new Markdown();
             markdown.setContent(text);
             weChatReq.setMarkdown(markdown);
-
             HttpRequest.post(serverUrl).body(JSONUtil.toJSONString(weChatReq)).execute();
         } catch (Exception ex) {
             log.error("WeChat failed to send message", ex);
@@ -184,26 +176,14 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
     @Accessors(chain = true)
     public static class WeChatReqDTO {
 
-        /**
-         * msgType
-         */
         private String msgtype;
 
-        /**
-         * markdown
-         */
         private Markdown markdown;
-
     }
 
     @Data
     public static class Markdown {
 
-        /**
-         * content
-         */
         private String content;
-
     }
-
 }

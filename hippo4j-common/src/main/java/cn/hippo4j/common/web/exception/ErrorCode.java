@@ -18,7 +18,7 @@
 package cn.hippo4j.common.web.exception;
 
 /**
- * 错误码抽象接口.
+ * Error code abstract interface.
  *
  * @author chen.ma
  * @date 2021/9/16 15:39
@@ -26,17 +26,16 @@ package cn.hippo4j.common.web.exception;
 public interface ErrorCode {
 
     /**
-     * 错误码.
+     * Get code.
      *
      * @return
      */
     String getCode();
 
     /**
-     * 错误信息.
+     * Get message.
      *
      * @return
      */
     String getMessage();
-
 }

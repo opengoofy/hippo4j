@@ -32,5 +32,4 @@ public class RobotChangeParameterNotifyRequest extends ChangeParameterNotifyRequ
      * secretKey
      */
     private String secretKey;
-
 }

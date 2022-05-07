@@ -34,5 +34,4 @@ public class AbstractException extends RuntimeException {
         super(message, throwable);
         this.errorCode = errorCode;
     }
-
 }

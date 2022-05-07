@@ -121,5 +121,4 @@ public class InetUtilsProperties {
     public void setPreferredNetworks(List<String> preferredNetworks) {
         this.preferredNetworks = preferredNetworks;
     }
-
 }

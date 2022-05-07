@@ -48,5 +48,4 @@ public interface MessageRequest<T extends Message> {
      * @return
      */
     MessageTypeEnum getMessageType();
-
 }

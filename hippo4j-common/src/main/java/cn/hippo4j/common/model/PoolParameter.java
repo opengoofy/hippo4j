@@ -115,5 +115,4 @@ public interface PoolParameter {
      * @return
      */
     Integer getAllowCoreThreadTimeOut();
-
 }

@@ -50,5 +50,4 @@ public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadP
             execute(poolRunState);
         }
     }
-
 }

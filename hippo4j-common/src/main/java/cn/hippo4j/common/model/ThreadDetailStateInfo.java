@@ -51,5 +51,4 @@ public class ThreadDetailStateInfo {
      * threadStack
      */
     private List<String> threadStack;
-
 }

@@ -69,25 +69,18 @@ public class ClientWorker {
         this.identification = identification;
         this.timeout = CONFIG_LONG_POLL_TIMEOUT;
         this.serverHealthCheck = serverHealthCheck;
-
         this.executor = Executors.newScheduledThreadPool(1, r -> {
             Thread t = new Thread(r);
             t.setName("client.worker.executor");
             t.setDaemon(true);
             return t;
         });
-
         this.executorService = Executors.newSingleThreadScheduledExecutor(
                 ThreadFactoryBuilder.builder().prefix("client.long.polling.executor").daemon(true).build());
-
         log.info("Client identity :: {}", identification);
-
         this.executor.scheduleWithFixedDelay(() -> {
             try {
-                // 等待 spring 容器启动成功
                 awaitApplicationComplete.await();
-
-                // 检查动态线程池配置是否被更新
                 checkConfigInfo();
             } catch (Throwable e) {
                 log.error("Sub check rotate check error.", e);
@@ -99,7 +92,6 @@ public class ClientWorker {
         int listenerSize = cacheMap.size();
         double perTaskConfigSize = 3000D;
         int longingTaskCount = (int) Math.ceil(listenerSize / perTaskConfigSize);
-
         if (longingTaskCount > currentLongingTaskCount) {
             for (int i = (int) currentLongingTaskCount; i < longingTaskCount; i++) {
                 executorService.execute(new LongPollingRunnable());
@@ -114,7 +106,6 @@ public class ClientWorker {
         @SneakyThrows
         public void run() {
             serverHealthCheck.isHealthStatus();
-
             List<CacheData> cacheDataList = new ArrayList();
             List<String> inInitializingCacheList = new ArrayList();
             cacheMap.forEach((key, val) -> cacheDataList.add(val));
@@ -125,7 +116,6 @@ public class ClientWorker {
                 String tpId = keys[0];
                 String itemId = keys[1];
                 String namespace = keys[2];
-
                 try {
                     String content = getServerConfig(namespace, itemId, tpId, 3000L);
                     CacheData cacheData = cacheMap.get(tpId);
@@ -144,7 +134,6 @@ public class ClientWorker {
                     cacheData.setInitializing(false);
                 }
             }
-
             inInitializingCacheList.clear();
             executorService.execute(this);
         }
@@ -158,12 +147,10 @@ public class ClientWorker {
             sb.append(cacheData.tenantId).append(WORD_SEPARATOR);
             sb.append(identification).append(WORD_SEPARATOR);
             sb.append(cacheData.getMd5()).append(LINE_SEPARATOR);
-
             if (cacheData.isInitializing()) {
                 inInitializingCacheList.add(GroupKey.getKeyTenant(cacheData.tpId, cacheData.itemId, cacheData.tenantId));
             }
         }
-
         boolean isInitializingCacheList = !inInitializingCacheList.isEmpty();
         return checkUpdateTpIds(sb.toString(), isInitializingCacheList);
     }
@@ -174,23 +161,18 @@ public class ClientWorker {
         params.put(WEIGHT_CONFIGS, IdUtil.simpleUUID());
         Map<String, String> headers = new HashMap(2);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
-
-        // 确认客户端身份, 修改线程池配置时可单独修改
+        // Confirm the identity of the client, and can be modified separately when modifying the thread pool configuration.
         headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, identification);
-
         // told server do not hang me up if new initializing cacheData added in
         if (isInitializingCacheList) {
             headers.put(LONG_PULLING_TIMEOUT_NO_HANGUP, "true");
         }
-
         if (StringUtils.isEmpty(probeUpdateString)) {
             return Collections.emptyList();
         }
-
         try {
             long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
             Result result = agent.httpPostByConfig(LISTENER_PATH, headers, params, readTimeoutMs);
-
             if (result != null && result.isSuccess()) {
                 return parseUpdateDataIdResponse(result.getData().toString());
             }
@@ -198,7 +180,6 @@ public class ClientWorker {
             setHealthServer(false);
             log.error("Check update get changed dataId exception. error message :: {}", ex.getMessage());
         }
-
         return Collections.emptyList();
     }
 
@@ -208,12 +189,10 @@ public class ClientWorker {
         params.put("itemId", itemId);
         params.put("tpId", tpId);
         params.put("instanceId", identification);
-
         Result result = agent.httpGetByConfig(CONFIG_CONTROLLER_PATH, null, params, readTimeout);
         if (result.isSuccess()) {
             return JSONUtil.toJSONString(result.getData());
         }
-
         log.error("Sub server namespace :: {}, itemId :: {}, tpId :: {}, result code :: {}",
                 namespace, itemId, tpId, result.getCode());
         return NULL;
@@ -223,13 +202,11 @@ public class ClientWorker {
         if (StringUtils.isEmpty(response)) {
             return Collections.emptyList();
         }
-
         try {
             response = URLDecoder.decode(response, "UTF-8");
         } catch (Exception e) {
             log.error("Polling resp decode modifiedDataIdsString error.", e);
         }
-
         List<String> updateList = new LinkedList();
         for (String dataIdAndGroup : response.split(LINE_SEPARATOR)) {
             if (!StringUtils.isEmpty(dataIdAndGroup)) {
@@ -245,7 +222,6 @@ public class ClientWorker {
                 }
             }
         }
-
         return updateList;
     }
 
@@ -261,7 +237,6 @@ public class ClientWorker {
         if (cacheData != null) {
             return cacheData;
         }
-
         cacheData = new CacheData(namespace, itemId, tpId);
         CacheData lastCacheData = cacheMap.putIfAbsent(tpId, cacheData);
         if (lastCacheData == null) {
@@ -273,13 +248,10 @@ public class ClientWorker {
             } catch (Exception ex) {
                 log.error("Cache Data Error. Service Unavailable :: {}", ex.getMessage());
             }
-
             int taskId = cacheMap.size() / CONFIG_LONG_POLL_TIMEOUT;
             cacheData.setTaskId(taskId);
-
             lastCacheData = cacheData;
         }
-
         return lastCacheData;
     }
 
@@ -290,5 +262,4 @@ public class ClientWorker {
     protected void notifyApplicationComplete() {
         awaitApplicationComplete.countDown();
     }
-
 }

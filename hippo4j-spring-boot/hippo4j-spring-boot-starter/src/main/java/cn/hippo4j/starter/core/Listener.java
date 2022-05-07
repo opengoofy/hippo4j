@@ -40,5 +40,4 @@ public interface Listener {
      * @param configInfo
      */
     void receiveConfigInfo(String configInfo);
-
 }

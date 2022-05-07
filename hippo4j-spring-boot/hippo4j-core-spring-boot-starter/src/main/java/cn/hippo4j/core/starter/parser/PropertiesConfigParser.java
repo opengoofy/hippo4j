@@ -43,5 +43,4 @@ public class PropertiesConfigParser extends AbstractConfigParser {
     public List<ConfigFileTypeEnum> getConfigFileTypes() {
         return Lists.newArrayList(ConfigFileTypeEnum.PROPERTIES);
     }
-
 }

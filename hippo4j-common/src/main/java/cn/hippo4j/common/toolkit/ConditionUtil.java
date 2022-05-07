@@ -34,5 +34,4 @@ public class ConditionUtil {
             falseConsumer.accept();
         }
     }
-
 }

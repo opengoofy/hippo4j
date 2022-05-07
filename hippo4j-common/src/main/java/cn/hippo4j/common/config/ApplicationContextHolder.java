@@ -93,5 +93,4 @@ public class ApplicationContextHolder implements ApplicationContextAware {
     public static ApplicationContext getInstance() {
         return CONTEXT;
     }
-
 }

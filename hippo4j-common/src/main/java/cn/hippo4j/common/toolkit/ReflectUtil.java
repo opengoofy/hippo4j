@@ -37,7 +37,6 @@ public class ReflectUtil {
         if (null == obj || StringUtil.isBlank(fieldName)) {
             return null;
         }
-
         Field field = getField(obj instanceof Class ? (Class<?>) obj : obj.getClass(), fieldName);
         return getFieldValue(obj, field);
     }
@@ -49,7 +48,6 @@ public class ReflectUtil {
         if (obj instanceof Class) {
             obj = null;
         }
-
         setAccessible(field);
         Object result;
         try {
@@ -58,7 +56,6 @@ public class ReflectUtil {
             String exceptionMsg = String.format("IllegalAccess for %s.%s", field.getDeclaringClass(), field.getName());
             throw new RuntimeException(exceptionMsg, e);
         }
-
         return result;
     }
 
@@ -79,7 +76,6 @@ public class ReflectUtil {
         if (null != allFields) {
             return allFields;
         }
-
         allFields = getFieldsDirectly(beanClass, true);
         FIELDS_CACHE.put(beanClass, allFields);
         return allFields;
@@ -87,7 +83,6 @@ public class ReflectUtil {
 
     public static Field[] getFieldsDirectly(Class<?> beanClass, boolean withSuperClassFields) throws SecurityException {
         Assert.notNull(beanClass);
-
         Field[] allFields = null;
         Class<?> searchType = beanClass;
         Field[] declaredFields;
@@ -112,8 +107,6 @@ public class ReflectUtil {
         if (null == field) {
             return null;
         }
-
         return field.getName();
     }
-
 }

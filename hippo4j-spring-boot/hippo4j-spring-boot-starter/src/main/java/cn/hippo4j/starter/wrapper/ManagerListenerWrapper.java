@@ -44,5 +44,4 @@ public class ManagerListenerWrapper {
      * Listener
      */
     private Listener listener;
-
 }

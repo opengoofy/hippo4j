@@ -50,7 +50,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 /**
- * Dynamic thread pool auto configuration.
+ * Dynamic thread-pool auto configuration.
  *
  * @author chen.ma
  * @date 2022/2/25 00:21
@@ -163,5 +163,4 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     public MetricMonitorHandler hippo4jMetricMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
         return new MetricMonitorHandler(threadPoolRunStateHandler);
     }
-
 }

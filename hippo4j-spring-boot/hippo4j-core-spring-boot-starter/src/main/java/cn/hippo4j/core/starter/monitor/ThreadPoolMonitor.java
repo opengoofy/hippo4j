@@ -36,5 +36,4 @@ public interface ThreadPoolMonitor {
      * Collect data.
      */
     void collect();
-
 }

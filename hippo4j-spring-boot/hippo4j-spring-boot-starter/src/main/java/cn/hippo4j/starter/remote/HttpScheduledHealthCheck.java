@@ -52,5 +52,4 @@ public class HttpScheduledHealthCheck extends AbstractHealthCheck {
 
         return healthStatus;
     }
-
 }

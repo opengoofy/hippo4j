@@ -79,5 +79,4 @@ public class NotifyConfigDTO {
      * 报警类型
      */
     private NotifyTypeEnum typeEnum;
-
 }

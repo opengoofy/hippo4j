@@ -20,7 +20,7 @@ package cn.hippo4j.core.spi;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Custom blockingQueue.
+ * Custom blocking-queue.
  *
  * @author chen.ma
  * @date 2021/7/11 00:51

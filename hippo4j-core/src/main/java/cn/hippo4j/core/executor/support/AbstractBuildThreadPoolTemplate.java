@@ -58,11 +58,6 @@ public class AbstractBuildThreadPoolTemplate {
         return buildPool(initParam);
     }
 
-    /**
-     * 构建线程池.
-     *
-     * @return
-     */
     public static ThreadPoolExecutor buildPool(ThreadPoolInitParam initParam) {
         Assert.notNull(initParam);
         ThreadPoolExecutor executorService;
@@ -81,21 +76,11 @@ public class AbstractBuildThreadPoolTemplate {
         return executorService;
     }
 
-    /**
-     * 构建快速执行线程池.
-     *
-     * @return
-     */
     public static ThreadPoolExecutor buildFastPool() {
         ThreadPoolInitParam initParam = initParam();
         return buildFastPool(initParam);
     }
 
-    /**
-     * 构建快速执行线程池.
-     *
-     * @return
-     */
     public static ThreadPoolExecutor buildFastPool(ThreadPoolInitParam initParam) {
         TaskQueue<Runnable> taskQueue = new TaskQueue(initParam.getCapacity());
         FastThreadPoolExecutor fastThreadPoolExecutor;
@@ -115,12 +100,6 @@ public class AbstractBuildThreadPoolTemplate {
         return fastThreadPoolExecutor;
     }
 
-    /**
-     * 构建动态线程池.
-     *
-     * @param initParam
-     * @return
-     */
     public static DynamicThreadPoolExecutor buildDynamicPool(ThreadPoolInitParam initParam) {
         Assert.notNull(initParam);
         DynamicThreadPoolExecutor dynamicThreadPoolExecutor;
@@ -149,74 +128,32 @@ public class AbstractBuildThreadPoolTemplate {
     @Accessors(chain = true)
     public static class ThreadPoolInitParam {
 
-        /**
-         * 核心线程数量
-         */
         private Integer corePoolNum;
 
-        /**
-         * 最大线程数量
-         */
         private Integer maxPoolNum;
 
-        /**
-         * 线程存活时间
-         */
         private Long keepAliveTime;
 
-        /**
-         * 线程存活时间单位
-         */
         private TimeUnit timeUnit;
 
-        /**
-         * 执行超时时间
-         */
         private Long executeTimeOut;
 
-        /**
-         * 队列最大容量
-         */
         private Integer capacity;
 
-        /**
-         * 阻塞队列
-         */
         private BlockingQueue<Runnable> workQueue;
 
-        /**
-         * 线程池任务满时拒绝任务策略
-         */
         private RejectedExecutionHandler rejectedExecutionHandler;
 
-        /**
-         * 创建线程工厂
-         */
         private ThreadFactory threadFactory;
 
-        /**
-         * 线程 ID
-         */
         private String threadPoolId;
 
-        /**
-         * 线程任务装饰器
-         */
         private TaskDecorator taskDecorator;
 
-        /**
-         * 等待终止毫秒
-         */
         private Long awaitTerminationMillis;
 
-        /**
-         * 等待任务在关机时完成
-         */
         private Boolean waitForTasksToCompleteOnShutdown;
 
-        /**
-         * 允许核心线程超时
-         */
         private Boolean allowCoreThreadTimeOut = false;
 
         public ThreadPoolInitParam(String threadNamePrefix, boolean isDaemon) {

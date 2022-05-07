@@ -26,11 +26,11 @@ package cn.hippo4j.common.toolkit;
 public class ThreadUtil {
 
     /**
-     * 创建新线程.
+     * New thread.
      *
-     * @param runnable {@link Runnable}
-     * @param name     线程名
-     * @param isDaemon 是否守护线程
+     * @param runnable
+     * @param name
+     * @param isDaemon
      * @return {@link Thread}
      */
     public static Thread newThread(Runnable runnable, String name, boolean isDaemon) {
@@ -40,9 +40,9 @@ public class ThreadUtil {
     }
 
     /**
-     * 挂起当前线程.
+     * Suspend the current thread.
      *
-     * @param millis 毫秒
+     * @param millis
      * @return
      */
     public static boolean sleep(long millis) {
@@ -53,8 +53,6 @@ public class ThreadUtil {
                 return false;
             }
         }
-
         return true;
     }
-
 }

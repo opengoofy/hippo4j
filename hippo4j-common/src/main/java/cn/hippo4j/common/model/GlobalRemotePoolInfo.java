@@ -98,5 +98,4 @@ public class GlobalRemotePoolInfo implements Serializable {
      * content
      */
     private String content;
-
 }

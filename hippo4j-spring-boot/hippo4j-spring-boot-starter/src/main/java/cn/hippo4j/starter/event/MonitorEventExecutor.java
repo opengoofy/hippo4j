@@ -46,11 +46,6 @@ public class MonitorEventExecutor {
             .rejected(new ThreadPoolExecutor.AbortPolicy())
             .build();
 
-    /**
-     * 发布事件.
-     *
-     * @param consumer
-     */
     public static void publishEvent(NoArgsConsumer consumer) {
         try {
             EVENT_EXECUTOR.execute(consumer::accept);
@@ -58,5 +53,4 @@ public class MonitorEventExecutor {
             log.error("Monitoring thread pool run events exceeded load.");
         }
     }
-
 }

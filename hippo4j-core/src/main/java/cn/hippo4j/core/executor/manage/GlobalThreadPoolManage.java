@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Global threadPool manage.
+ * Global thread-pool manage.
  *
  * @author chen.ma
  * @date 2021/6/20 15:57
@@ -34,17 +34,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GlobalThreadPoolManage {
 
     /**
-     * 动态线程池参数容器.
+     * Dynamic thread pool parameter container.
      */
     private static final Map<String, PoolParameter> POOL_PARAMETER = new ConcurrentHashMap();
 
     /**
-     * 动态线程池包装容器.
+     * Dynamic thread pool wrapper.
      */
     private static final Map<String, DynamicThreadPoolWrapper> EXECUTOR_MAP = new ConcurrentHashMap();
 
     /**
-     * 获取动态线程池包装类.
+     * Get the dynamic thread pool wrapper class.
      *
      * @param threadPoolId
      * @return
@@ -54,7 +54,7 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 获取动态线程池参数.
+     * Get dynamic thread pool parameters.
      *
      * @param threadPoolId
      * @return
@@ -64,7 +64,7 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 注册动态线程池包装以及参数.
+     * Register dynamic thread pool wrapper and parameters.
      *
      * @param threadPoolId
      * @param poolParameter
@@ -76,7 +76,7 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 注册动态线程池.
+     * Register dynamic thread pool.
      *
      * @param threadPoolId
      * @param executor
@@ -86,7 +86,7 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 注册动态线程池参数.
+     * Register dynamic thread pool parameters.
      *
      * @param threadPoolId
      * @param poolParameter
@@ -96,7 +96,7 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 获取动态线程池标识集合.
+     * Get the dynamic thread pool identifier collection.
      *
      * @return
      */
@@ -105,8 +105,10 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 获取动态线程池数量.
-     * 数据在项目最初启动的时候可能不准确, 因为是异步进行注册.
+     * Get the number of dynamic thread pools.
+     *
+     * The data may be inaccurate when the project is initially
+     * launched because registration is done asynchronously.
      *
      * @return
      */

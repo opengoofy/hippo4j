@@ -22,7 +22,7 @@ import org.slf4j.MDC;
 import static cn.hippo4j.common.constant.Constants.EXECUTE_TIMEOUT_TRACE;
 
 /**
- * MD util.
+ * Trace context util.
  *
  * @author chen.ma
  * @date 2022/3/3 08:30

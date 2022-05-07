@@ -102,5 +102,4 @@ public class Constants {
     public static final String EXECUTE_TIMEOUT_TRACE = "executeTimeoutTrace";
 
     public static final int HTTP_EXECUTE_TIMEOUT = 5000;
-
 }

@@ -54,5 +54,4 @@ public interface JsonFacade {
      * @return
      */
     <T> List<T> parseArray(String text, Class<T> clazz);
-
 }

@@ -36,5 +36,4 @@ public class ThreadPoolNotifyRequest {
      * groupKeys
      */
     private List<String> groupKeys;
-
 }

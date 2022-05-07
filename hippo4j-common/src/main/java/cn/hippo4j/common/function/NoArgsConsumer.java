@@ -26,9 +26,5 @@ package cn.hippo4j.common.function;
 @FunctionalInterface
 public interface NoArgsConsumer {
 
-    /**
-     * 方法执行
-     */
     void accept();
-
 }

@@ -67,12 +67,10 @@ public class Md5Util {
     public static String encodeHexString(byte[] bytes) {
         int l = bytes.length;
         char[] out = new char[l << 1];
-
         for (int i = 0, j = 0; i < l; i++) {
             out[j++] = DIGITS_LOWER[(0xF0 & bytes[i]) >>> 4];
             out[j++] = DIGITS_LOWER[0x0F & bytes[i]];
         }
-
         return new String(out);
     }
 
@@ -84,9 +82,7 @@ public class Md5Util {
         if (null == changedGroupKeys) {
             return "";
         }
-
         StringBuilder sb = new StringBuilder();
-
         for (String groupKey : changedGroupKeys) {
             String[] dataIdGroupId = GroupKey.parseKey(groupKey);
             sb.append(dataIdGroupId[0]);
@@ -106,9 +102,7 @@ public class Md5Util {
             }
             sb.append(Constants.LINE_SEPARATOR);
         }
-
         // To encode WORD_SEPARATOR and LINE_SEPARATOR invisible characters, encoded value is %02 and %01
         return URLEncoder.encode(sb.toString(), "UTF-8");
     }
-
 }

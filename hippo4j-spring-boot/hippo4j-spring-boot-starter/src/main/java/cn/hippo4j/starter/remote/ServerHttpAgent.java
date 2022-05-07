@@ -59,12 +59,10 @@ public class ServerHttpAgent implements HttpAgent {
         this.httpClientUtil = httpClientUtil;
         this.serverListManager = new ServerListManager(dynamicThreadPoolProperties);
         this.securityProxy = new SecurityProxy(httpClientUtil, properties);
-
         this.securityProxy.applyToken(this.serverListManager.getServerUrls());
         this.executorService = new ScheduledThreadPoolExecutor(
                 new Integer(1),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.token.security.updater").build());
-
         this.executorService.scheduleWithFixedDelay(
                 () -> securityProxy.applyToken(serverListManager.getServerUrls()),
                 0,
@@ -134,7 +132,6 @@ public class ServerHttpAgent implements HttpAgent {
         if (serverHealthCheck == null) {
             serverHealthCheck = ApplicationContextHolder.getBean(ServerHealthCheck.class);
         }
-
         serverHealthCheck.isHealthStatus();
     }
 
@@ -142,7 +139,6 @@ public class ServerHttpAgent implements HttpAgent {
         if (StrUtil.isNotBlank(securityProxy.getAccessToken())) {
             params.put(Constants.ACCESS_TOKEN, securityProxy.getAccessToken());
         }
-
         return params;
     }
 
@@ -151,5 +147,4 @@ public class ServerHttpAgent implements HttpAgent {
         String resultPath = httpClientUtil.buildUrl(path, injectSecurityInfo(Maps.newHashMap()));
         return resultPath;
     }
-
 }

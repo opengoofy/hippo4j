@@ -26,110 +26,49 @@ import java.util.Optional;
 import java.util.concurrent.*;
 
 /**
- * ThreadPool builder.
+ * Thread-pool builder.
  *
  * @author chen.ma
  * @date 2021/6/28 17:29
  */
 public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
-    /**
-     * 是否创建快速消费线程池
-     */
     private boolean isFastPool;
 
-    /**
-     * 是否动态线程池
-     */
     private boolean isDynamicPool;
 
-    /**
-     * 核心线程数量
-     */
     private int corePoolSize = calculateCoreNum();
 
-    /**
-     * 最大线程数量
-     */
     private int maxPoolSize = corePoolSize + (corePoolSize >> 1);
 
-    /**
-     * 线程存活时间
-     */
     private long keepAliveTime = 30000L;
 
-    /**
-     * 线程存活时间单位
-     */
     private TimeUnit timeUnit = TimeUnit.MILLISECONDS;
 
-    /**
-     * 线程执行超时时间
-     */
     private long executeTimeOut = 10000L;
 
-    /**
-     * 队列最大容量
-     */
     private int capacity = 512;
 
-    /**
-     * 队列类型枚举
-     */
     private QueueTypeEnum queueType;
 
-    /**
-     * 阻塞队列
-     */
     private BlockingQueue workQueue = new LinkedBlockingQueue(capacity);
 
-    /**
-     * 线程池任务满时拒绝任务策略
-     */
     private RejectedExecutionHandler rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
 
-    /**
-     * 是否守护线程
-     */
     private boolean isDaemon = false;
 
-    /**
-     * 线程名称前缀
-     */
     private String threadNamePrefix;
 
-    /**
-     * 线程池 ID
-     */
     private String threadPoolId;
 
-    /**
-     * 线程任务装饰器
-     */
     private TaskDecorator taskDecorator;
 
-    /**
-     * 等待终止毫秒
-     */
     private Long awaitTerminationMillis = 5000L;
 
-    /**
-     * 等待任务在关机时完成
-     */
     private Boolean waitForTasksToCompleteOnShutdown = true;
 
-    /**
-     * 允许核心线程超时
-     */
     private Boolean allowCoreThreadTimeOut = false;
 
-    private Boolean prestartCoreThread = false;
-
-    /**
-     * 计算公式：CPU 核数 / (1 - 阻塞系数 0.8)
-     *
-     * @return 线程池核心线程数
-     */
     private Integer calculateCoreNum() {
         int cpuCoreNum = Runtime.getRuntime().availableProcessors();
         return new BigDecimal(cpuCoreNum).divide(new BigDecimal("0.2")).intValue();
@@ -265,11 +204,6 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
-    /**
-     * 构建.
-     *
-     * @return
-     */
     @Override
     public ThreadPoolExecutor build() {
         if (isDynamicPool) {
@@ -278,56 +212,26 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return isFastPool ? buildFastPool(this) : buildPool(this);
     }
 
-    /**
-     * 创建.
-     *
-     * @return
-     */
     public static ThreadPoolBuilder builder() {
         return new ThreadPoolBuilder();
     }
 
-    /**
-     * 构建普通线程池.
-     *
-     * @param builder
-     * @return
-     */
     private static ThreadPoolExecutor buildPool(ThreadPoolBuilder builder) {
         return AbstractBuildThreadPoolTemplate.buildPool(buildInitParam(builder));
     }
 
-    /**
-     * 构建快速消费线程池.
-     *
-     * @param builder
-     * @return
-     */
     private static ThreadPoolExecutor buildFastPool(ThreadPoolBuilder builder) {
         return AbstractBuildThreadPoolTemplate.buildFastPool(buildInitParam(builder));
     }
 
-    /**
-     * 构建动态线程池.
-     *
-     * @param builder
-     * @return
-     */
     private static ThreadPoolExecutor buildDynamicPool(ThreadPoolBuilder builder) {
         return AbstractBuildThreadPoolTemplate.buildDynamicPool(buildInitParam(builder));
     }
 
-    /**
-     * 构建初始化参数.
-     *
-     * @param builder
-     * @return
-     */
     private static AbstractBuildThreadPoolTemplate.ThreadPoolInitParam buildInitParam(ThreadPoolBuilder builder) {
         Assert.notEmpty(builder.threadNamePrefix, "The thread name prefix cannot be empty or an empty string.");
         AbstractBuildThreadPoolTemplate.ThreadPoolInitParam initParam =
                 new AbstractBuildThreadPoolTemplate.ThreadPoolInitParam(builder.threadNamePrefix, builder.isDaemon);
-
         initParam.setCorePoolNum(builder.corePoolSize)
                 .setMaxPoolNum(builder.maxPoolSize)
                 .setKeepAliveTime(builder.keepAliveTime)
@@ -337,22 +241,18 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
                 .setTimeUnit(builder.timeUnit)
                 .setAllowCoreThreadTimeOut(builder.allowCoreThreadTimeOut)
                 .setTaskDecorator(builder.taskDecorator);
-
         if (builder.isDynamicPool) {
             String threadPoolId = Optional.ofNullable(builder.threadPoolId).orElse(builder.threadNamePrefix);
             initParam.setThreadPoolId(threadPoolId);
             initParam.setWaitForTasksToCompleteOnShutdown(builder.waitForTasksToCompleteOnShutdown);
             initParam.setAwaitTerminationMillis(builder.awaitTerminationMillis);
         }
-
         if (!builder.isFastPool) {
             if (builder.queueType != null) {
                 builder.workQueue = QueueTypeEnum.createBlockingQueue(builder.queueType.type, builder.capacity);
             }
             initParam.setWorkQueue(builder.workQueue);
         }
-
         return initParam;
     }
-
 }

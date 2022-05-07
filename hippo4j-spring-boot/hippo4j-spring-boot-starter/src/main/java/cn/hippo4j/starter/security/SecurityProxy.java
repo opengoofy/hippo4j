@@ -68,7 +68,6 @@ public class SecurityProxy {
                     .toMillis(tokenTtl - tokenRefreshWindow)) {
                 return true;
             }
-
             for (String server : servers) {
                 if (applyToken(server)) {
                     lastRefreshTime = System.currentTimeMillis();
@@ -78,28 +77,23 @@ public class SecurityProxy {
         } catch (Throwable ignore) {
             // ignore
         }
-
         return false;
     }
 
     public boolean applyToken(String server) {
         if (StringUtil.isAllNotEmpty(username, password)) {
             String url = server + APPLY_TOKEN_URL;
-
             Map<String, String> bodyMap = new HashMap(2);
             bodyMap.put("userName", username);
             bodyMap.put("password", password);
-
             try {
                 Result<String> result = httpClientUtil.restApiPost(url, bodyMap, Result.class);
                 if (!result.isSuccess()) {
                     log.error("Error getting access token. message :: {}", result.getMessage());
                     return false;
                 }
-
                 String tokenJsonStr = JSONUtil.toJSONString(result.getData());
                 TokenInfo tokenInfo = JSONUtil.parseObject(tokenJsonStr, TokenInfo.class);
-
                 accessToken = tokenInfo.getAccessToken();
                 tokenTtl = tokenInfo.getTokenTtl();
                 tokenRefreshWindow = tokenTtl / 10;
@@ -108,12 +102,10 @@ public class SecurityProxy {
                 return false;
             }
         }
-
         return true;
     }
 
     public String getAccessToken() {
         return accessToken;
     }
-
 }

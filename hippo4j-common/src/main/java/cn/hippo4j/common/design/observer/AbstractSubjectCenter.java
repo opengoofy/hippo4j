@@ -145,7 +145,5 @@ public class AbstractSubjectCenter {
          * Clear config cache.
          */
         CLEAR_CONFIG_CACHE
-
     }
-
 }

@@ -31,5 +31,4 @@ public interface ThreadPoolSubscribeCallback {
      * @param config
      */
     void callback(String config);
-
 }

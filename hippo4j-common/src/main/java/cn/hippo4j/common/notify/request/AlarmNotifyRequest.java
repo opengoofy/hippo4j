@@ -131,5 +131,4 @@ public class AlarmNotifyRequest extends BaseNotifyRequest {
      * executeTimeoutTrace
      */
     private String executeTimeoutTrace;
-
 }

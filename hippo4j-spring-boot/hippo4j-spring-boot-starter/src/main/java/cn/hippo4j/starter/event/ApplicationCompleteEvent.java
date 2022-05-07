@@ -36,5 +36,4 @@ public class ApplicationCompleteEvent extends ApplicationEvent {
     public ApplicationCompleteEvent(Object source) {
         super(source);
     }
-
 }

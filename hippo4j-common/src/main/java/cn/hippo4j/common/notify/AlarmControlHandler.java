@@ -52,7 +52,6 @@ public class AlarmControlHandler {
         if (cache == null) {
             return false;
         }
-
         String pkId = cache.getIfPresent(alarmControl.getTypeEnum().name());
         if (StrUtil.isBlank(pkId)) {
             ReentrantLock lock = threadPoolLock.get(threadPoolKey);
@@ -68,7 +67,6 @@ public class AlarmControlHandler {
                 lock.unlock();
             }
         }
-
         return false;
     }
 
@@ -85,10 +83,8 @@ public class AlarmControlHandler {
                 .expireAfterWrite(interval, TimeUnit.MINUTES)
                 .build();
         threadPoolAlarmCache.put(threadPoolKey, cache);
-
         // Set the lock to prevent false sending of alarm information.
         ReentrantLock reentrantLock = new ReentrantLock();
         threadPoolLock.put(threadPoolKey, reentrantLock);
     }
-
 }

@@ -49,5 +49,4 @@ public class NotifyPlatformProperties {
      * Secret.
      */
     private String secret;
-
 }

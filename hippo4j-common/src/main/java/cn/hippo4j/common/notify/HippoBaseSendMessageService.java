@@ -57,7 +57,6 @@ public class HippoBaseSendMessageService implements HippoSendMessageService, Com
         if (CollUtil.isEmpty(notifyList)) {
             return;
         }
-
         notifyList.forEach(each -> {
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
@@ -65,7 +64,6 @@ public class HippoBaseSendMessageService implements HippoSendMessageService, Com
                     log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
                     return;
                 }
-
                 if (isSendAlarm(each.getTpId(), each.getPlatform(), typeEnum)) {
                     alarmNotifyRequest.setNotifyTypeEnum(typeEnum);
                     messageHandler.sendAlarmMessage(each, alarmNotifyRequest);
@@ -85,7 +83,6 @@ public class HippoBaseSendMessageService implements HippoSendMessageService, Com
             log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
             return;
         }
-
         notifyList.forEach(each -> {
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
@@ -93,7 +90,6 @@ public class HippoBaseSendMessageService implements HippoSendMessageService, Com
                     log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
                     return;
                 }
-
                 messageHandler.sendChangeMessage(each, changeParameterNotifyRequest);
             } catch (Exception ex) {
                 log.warn("Failed to send thread pool change notification. key :: [{}]", threadPoolId, ex);
@@ -115,7 +111,6 @@ public class HippoBaseSendMessageService implements HippoSendMessageService, Com
                 .platform(platform)
                 .typeEnum(typeEnum)
                 .build();
-
         return alarmControlHandler.isSendAlarm(alarmControl);
     }
 
@@ -124,7 +119,6 @@ public class HippoBaseSendMessageService implements HippoSendMessageService, Com
         Map<String, SendMessageHandler> sendMessageHandlerMap =
                 ApplicationContextHolder.getBeansOfType(SendMessageHandler.class);
         sendMessageHandlerMap.values().forEach(each -> sendMessageHandlers.put(each.getType(), each));
-
         Map<String, List<NotifyConfigDTO>> buildNotify = notifyConfigBuilder.buildNotify();
         notifyConfigs.putAll(buildNotify);
     }
@@ -137,5 +131,4 @@ public class HippoBaseSendMessageService implements HippoSendMessageService, Com
     public synchronized void putPlatform(Map<String, List<NotifyConfigDTO>> notifyConfigs) {
         this.notifyConfigs.putAll(notifyConfigs);
     }
-
 }

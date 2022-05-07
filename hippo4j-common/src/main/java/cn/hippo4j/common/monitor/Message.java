@@ -48,5 +48,4 @@ public interface Message<T extends Message> extends Serializable {
      * @return
      */
     List<T> getMessages();
-
 }

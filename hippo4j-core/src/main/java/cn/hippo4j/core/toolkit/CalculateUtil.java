@@ -25,13 +25,6 @@ package cn.hippo4j.core.toolkit;
  */
 public class CalculateUtil {
 
-    /**
-     * Divide.
-     *
-     * @param num1
-     * @param num2
-     * @return
-     */
     public static int divide(int num1, int num2) {
         return ((int) (Double.parseDouble(num1 + "") / Double.parseDouble(num2 + "") * 100));
     }

@@ -25,7 +25,7 @@ import org.springframework.context.ApplicationListener;
 import java.util.Arrays;
 
 /**
- * ThreadPool config service.
+ * Thread-pool config service.
  *
  * @author chen.ma
  * @date 2021/6/21 21:50
@@ -59,5 +59,4 @@ public class ThreadPoolConfigService implements ConfigService, ApplicationListen
     public void onApplicationEvent(ApplicationCompleteEvent event) {
         clientWorker.notifyApplicationComplete();
     }
-
 }

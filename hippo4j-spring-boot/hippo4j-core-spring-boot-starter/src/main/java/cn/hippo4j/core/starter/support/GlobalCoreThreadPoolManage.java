@@ -23,7 +23,7 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 /**
- * Global core thread pool manage.
+ * Global core thread-pool manage.
  *
  * @author chen.ma
  * @date 2022/2/26 19:47
@@ -61,5 +61,4 @@ public class GlobalCoreThreadPoolManage {
     public static void refresh(String threadPoolId, ExecutorProperties executorProperties) {
         EXECUTOR_PROPERTIES.put(threadPoolId, executorProperties);
     }
-
 }

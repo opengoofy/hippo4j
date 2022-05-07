@@ -88,7 +88,6 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
             originalExecuteTimeOut = dynamicExecutor.getExecuteTimeOut();
         }
         String originalRejected = rejectedExecutionHandler.getClass().getSimpleName();
-
         // Send change message.
         ChangeParameterNotifyRequest request = new ChangeParameterNotifyRequest();
         request.setBeforeCorePoolSize(originalCoreSize);
@@ -103,7 +102,6 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
 
         changePoolInfo(executor, parameter);
         ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
-
         request.setNowCorePoolSize(afterExecutor.getCorePoolSize());
         request.setNowMaximumPoolSize(afterExecutor.getMaximumPoolSize());
         request.setNowAllowsCoreThreadTimeOut(EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()));
@@ -112,7 +110,6 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         request.setNowRejectedName(RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType()));
         request.setNowExecuteTimeOut(originalExecuteTimeOut);
         threadPoolNotifyAlarmHandler.sendPoolConfigChange(request);
-
         log.info(CHANGE_THREAD_POOL_TEXT,
                 threadPoolId.toUpperCase(),
                 String.format(CHANGE_DELIMITER, originalCoreSize, afterExecutor.getCorePoolSize()),
@@ -149,7 +146,6 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 executor.setCorePoolSize(parameter.getCoreSize());
             }
         }
-
         if (parameter.getCapacity() != null
                 && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.type, parameter.getQueueType())) {
             if (executor.getQueue() instanceof ResizableCapacityLinkedBlockIngQueue) {
@@ -159,11 +155,9 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type :: {}", executor.getQueue().getClass().getSimpleName());
             }
         }
-
         if (parameter.getKeepAliveTime() != null) {
             executor.setKeepAliveTime(parameter.getKeepAliveTime(), TimeUnit.SECONDS);
         }
-
         if (parameter.getRejectedType() != null) {
             RejectedExecutionHandler rejectedExecutionHandler = RejectedTypeEnum.createPolicy(parameter.getRejectedType());
             if (executor instanceof AbstractDynamicExecutorSupport) {
@@ -172,13 +166,10 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 AtomicLong rejectCount = dynamicExecutor.getRejectCount();
                 rejectedExecutionHandler = RejectedProxyUtil.createProxy(rejectedExecutionHandler, parameter.getTpId(), rejectCount);
             }
-
             executor.setRejectedExecutionHandler(rejectedExecutionHandler);
         }
-
         if (parameter.getAllowCoreThreadTimeOut() != null) {
             executor.allowCoreThreadTimeOut(EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()));
         }
     }
-
 }

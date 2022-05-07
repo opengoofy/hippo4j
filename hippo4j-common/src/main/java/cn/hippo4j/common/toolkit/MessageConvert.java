@@ -44,7 +44,6 @@ public class MessageConvert {
         MessageWrapper wrapper = new MessageWrapper();
         wrapper.setResponseClass(message.getClass());
         wrapper.setMessageType(message.getMessageType());
-
         List<Map<String, Object>> messageMapList = new ArrayList();
         List<Message> messages = message.getMessages();
         messages.forEach(each -> {
@@ -52,7 +51,6 @@ public class MessageConvert {
             Map mapObj = JSONUtil.parseObject(eachVal, Map.class);
             messageMapList.add(mapObj);
         });
-
         wrapper.setContentParams(messageMapList);
         return wrapper;
     }
@@ -67,17 +65,14 @@ public class MessageConvert {
     public static Message convert(MessageWrapper messageWrapper) {
         AbstractMessage message = (AbstractMessage) messageWrapper.getResponseClass().newInstance();
         List<Map<String, Object>> contentParams = messageWrapper.getContentParams();
-
         List<Message> messages = new ArrayList();
         contentParams.forEach(each -> {
             String eachVal = JSONUtil.toJSONString(each);
             Message messageObj = JSONUtil.parseObject(eachVal, messageWrapper.getResponseClass());
             messages.add(messageObj);
         });
-
         message.setMessages(messages);
         message.setMessageType(messageWrapper.getMessageType());
         return message;
     }
-
 }

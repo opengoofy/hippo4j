@@ -57,5 +57,4 @@ public class PoolRunStateController {
         List<ThreadDetailStateInfo> detailStateInfo = threadDetailState.getThreadDetailStateInfo(threadPoolId);
         return Results.success(detailStateInfo);
     }
-
 }

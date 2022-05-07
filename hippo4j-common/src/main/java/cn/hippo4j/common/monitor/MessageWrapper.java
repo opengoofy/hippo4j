@@ -64,5 +64,4 @@ public class MessageWrapper implements MessageRequest<Message> {
     public MessageTypeEnum getMessageType() {
         return messageType;
     }
-
 }

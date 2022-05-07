@@ -51,7 +51,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
- * DynamicTp auto configuration.
+ * Dynamic thread-pool auto configuration.
  *
  * @author chen.ma
  * @date 2021/6/22 09:20
@@ -144,5 +144,4 @@ public class DynamicThreadPoolAutoConfiguration {
     public WebThreadPoolController webThreadPoolController(WebThreadPoolHandlerChoose webThreadPoolServiceChoose) {
         return new WebThreadPoolController(webThreadPoolServiceChoose);
     }
-
 }

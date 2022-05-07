@@ -33,5 +33,4 @@ public interface MessageSender {
      * @param message
      */
     void send(Message message);
-
 }

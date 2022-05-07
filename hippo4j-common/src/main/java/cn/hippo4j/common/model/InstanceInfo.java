@@ -184,7 +184,5 @@ public class InstanceInfo {
         private String lastDirtyTimestamp;
 
         private String status;
-
     }
-
 }

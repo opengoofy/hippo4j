@@ -45,7 +45,7 @@ public class HttpClientUtil {
     private static int HTTP_OK_CODE = 200;
 
     /**
-     * Get 请求.
+     * Get.
      *
      * @param url
      * @return
@@ -61,10 +61,10 @@ public class HttpClientUtil {
     }
 
     /**
-     * Get 请求, 支持添加查询字符串.
+     * Get request, supports adding query string.
      *
      * @param url
-     * @param queryString 查询字符串
+     * @param queryString
      * @return
      */
     public String get(String url, Map<String, String> queryString) {
@@ -73,7 +73,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * 获取 Json 后直接反序列化.
+     * Deserialize directly after getting Json.
      *
      * @param url
      * @param clazz
@@ -85,7 +85,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * 调用健康检查.
+     * Call health check.
      *
      * @param url
      * @param clazz
@@ -99,7 +99,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * Get 请求, 支持查询字符串.
+     * Get request, supports query string.
      *
      * @param url
      * @param queryString
@@ -114,7 +114,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * Rest 接口 Post 调用.
+     * Rest interface Post call.
      *
      * @param url
      * @param body
@@ -130,8 +130,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * Rest 接口 Post 调用.
-     * 对返回值直接反序列化.
+     * Rest interface Post call. Deserialize the return value directly.
      *
      * @param url
      * @param body
@@ -143,7 +142,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * 根据查询字符串构造完整的 Url.
+     * Constructs a complete Url from the query string.
      *
      * @param url
      * @param queryString
@@ -153,10 +152,8 @@ public class HttpClientUtil {
         if (null == queryString) {
             return url;
         }
-
         StringBuilder builder = new StringBuilder(url);
         boolean isFirst = true;
-
         for (Map.Entry<String, String> entry : queryString.entrySet()) {
             String key = entry.getKey();
             if (key != null && entry.getValue() != null) {
@@ -171,7 +168,6 @@ public class HttpClientUtil {
                         .append(queryString.get(key));
             }
         }
-
         return builder.toString();
     }
 
@@ -189,7 +185,6 @@ public class HttpClientUtil {
                     String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s [body] %s", resp.code(), url, jsonBody);
                     throw new ServiceException(msg);
                 }
-
                 return responseBody.string();
             }
         }
@@ -213,16 +208,13 @@ public class HttpClientUtil {
     public <T> T restApiGetByThreadPool(String url, Map<String, String> headers, Map<String, String> paramValues, Long readTimeoutMs, Class<T> clazz) {
         String buildUrl = buildUrl(url, paramValues);
         Request.Builder builder = new Request.Builder().get();
-
         if (!CollectionUtils.isEmpty(headers)) {
             builder.headers(Headers.of(headers));
         }
-
         Request request = builder.url(buildUrl).build();
-
         Call call = hippo4JOkHttpClient.newCall(request);
+        // TODO Plan to optimize the timout api because its version is too high.
         call.timeout().timeout(readTimeoutMs, TimeUnit.MILLISECONDS);
-
         try (Response resp = call.execute()) {
             try (ResponseBody responseBody = resp.body()) {
                 if (resp.code() != HTTP_OK_CODE) {
@@ -230,7 +222,6 @@ public class HttpClientUtil {
                     log.error(msg);
                     throw new ServiceException(msg);
                 }
-
                 return JSONUtil.parseObject(responseBody.string(), clazz);
             }
         }
@@ -239,16 +230,14 @@ public class HttpClientUtil {
     @SneakyThrows
     public <T> T restApiPostByThreadPool(String url, Map<String, String> headers, Map<String, String> paramValues, Long readTimeoutMs, Class<T> clazz) {
         String buildUrl = buildUrl(url, paramValues);
-
         Request request = new Request.Builder()
                 .url(buildUrl)
                 .headers(Headers.of(headers))
                 .post(RequestBody.create(jsonMediaType, ""))
                 .build();
-
         Call call = hippo4JOkHttpClient.newCall(request);
+        // TODO Plan to optimize the timout api because its version is too high.
         call.timeout().timeout(readTimeoutMs, TimeUnit.MILLISECONDS);
-
         try (Response resp = call.execute()) {
             try (ResponseBody responseBody = resp.body()) {
                 if (resp.code() != HTTP_OK_CODE) {
@@ -256,10 +245,8 @@ public class HttpClientUtil {
                     log.error(msg);
                     throw new ServiceException(msg);
                 }
-
                 return JSONUtil.parseObject(responseBody.string(), clazz);
             }
         }
     }
-
 }

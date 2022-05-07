@@ -31,5 +31,4 @@ public interface Observer<T> {
      * @param observerMessage
      */
     void accept(ObserverMessage<T> observerMessage);
-
 }

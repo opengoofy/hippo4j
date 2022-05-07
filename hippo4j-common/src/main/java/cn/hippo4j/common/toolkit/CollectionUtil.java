@@ -125,5 +125,4 @@ public class CollectionUtil {
     public static boolean isNotEmpty(Collection<?> collection) {
         return !isEmpty(collection);
     }
-
 }

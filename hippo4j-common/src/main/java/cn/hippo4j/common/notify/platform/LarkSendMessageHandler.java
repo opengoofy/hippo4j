@@ -56,7 +56,6 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     @SneakyThrows
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
         String afterReceives = getReceives(notifyConfig.getReceives());
-
         String larkAlarmTxt;
         String larkAlarmTimoutReplaceTxt;
         if (Objects.equals(alarmNotifyRequest.getNotifyTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
@@ -67,7 +66,6 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
             } else {
                 larkAlarmTimoutReplaceTxt = StrUtil.replace(LARK_ALARM_TIMOUT_REPLACE_TXT, LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
             }
-
             larkAlarmTimoutReplaceTxt = String.format(larkAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
             larkAlarmTxt = StrUtil.replace(LARK_ALARM_JSON_STR, LARK_ALARM_TIMOUT_REPLACE_TXT, larkAlarmTimoutReplaceTxt);
         } else {
@@ -115,7 +113,6 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 DateUtil.now(),
                 // 报警频率
                 notifyConfig.getInterval());
-
         execute(notifyConfig.getSecretKey(), text);
     }
 
@@ -125,10 +122,6 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
         String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
         String afterReceives = getReceives(notifyConfig.getReceives());
         String larkNoticeJson = LARK_NOTICE_JSON_STR;
-
-        /**
-         * hesitant e.g. ➲  ➜  ⇨  ➪
-         */
         String text = String.format(larkNoticeJson,
                 // 环境
                 changeParameterNotifyRequest.getActive(),
@@ -159,7 +152,6 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 afterReceives,
                 // 当前时间
                 DateUtil.now());
-
         execute(notifyConfig.getSecretKey(), text);
     }
 
@@ -174,12 +166,10 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
 
     private void execute(String secretKey, String text) {
         String serverUrl = LARK_BOT_URL + secretKey;
-
         try {
             HttpRequest.post(serverUrl).body(text).execute();
         } catch (Exception ex) {
             log.error("Lark failed to send message", ex);
         }
     }
-
 }

@@ -80,5 +80,4 @@ public class MessageNotifyConfiguration {
     public ServerThreadPoolDynamicRefresh threadPoolDynamicRefresh(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new ServerThreadPoolDynamicRefresh(threadPoolNotifyAlarmHandler);
     }
-
 }

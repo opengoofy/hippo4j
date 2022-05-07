@@ -53,5 +53,4 @@ public enum DelEnum {
     public String toString() {
         return statusCode;
     }
-
 }

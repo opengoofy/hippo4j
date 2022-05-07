@@ -25,11 +25,5 @@ package cn.hippo4j.common.design.observer;
  */
 public interface ObserverMessage<T> {
 
-    /**
-     * Message.
-     *
-     * @return
-     */
     T message();
-
 }

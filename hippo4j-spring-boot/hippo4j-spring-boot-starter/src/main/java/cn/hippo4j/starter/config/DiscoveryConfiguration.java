@@ -31,7 +31,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.net.InetAddress;
 
-import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
 import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 import static cn.hippo4j.starter.toolkit.CloudCommonIdUtil.getDefaultInstanceId;
 import static cn.hippo4j.starter.toolkit.CloudCommonIdUtil.getIpApplicationName;
@@ -89,5 +88,4 @@ public class DiscoveryConfiguration {
     public DiscoveryClient hippo4JDiscoveryClient(HttpAgent httpAgent, InstanceInfo instanceInfo) {
         return new DiscoveryClient(httpAgent, instanceInfo);
     }
-
 }

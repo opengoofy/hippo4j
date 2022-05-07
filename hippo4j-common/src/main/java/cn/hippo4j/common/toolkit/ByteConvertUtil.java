@@ -25,12 +25,6 @@ package cn.hippo4j.common.toolkit;
  */
 public class ByteConvertUtil {
 
-    /**
-     * 字节转换.
-     *
-     * @param size
-     * @return
-     */
     public static String getPrintSize(long size) {
         long covertNum = 1024;
         if (size < covertNum) {
@@ -51,5 +45,4 @@ public class ByteConvertUtil {
             return (size / 100) + "." + (size % 100) + "GB";
         }
     }
-
 }

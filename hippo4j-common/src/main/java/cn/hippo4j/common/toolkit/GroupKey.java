@@ -41,11 +41,9 @@ public class GroupKey {
     public static String getKey(String... params) {
         StringBuilder groupKey = new StringBuilder();
         groupKey.append(params[0]).append(GROUP_KEY_DELIMITER);
-
         for (int i = 1; i < params.length - 1; i++) {
             groupKey.append(params[i]).append(GROUP_KEY_DELIMITER);
         }
-
         groupKey.append(params[params.length]);
         return groupKey.toString();
     }
@@ -63,7 +61,6 @@ public class GroupKey {
             sb.append(GROUP_KEY_DELIMITER);
             urlEncode(datumStr, sb);
         }
-
         return sb.toString();
     }
 
@@ -83,5 +80,4 @@ public class GroupKey {
             }
         }
     }
-
 }

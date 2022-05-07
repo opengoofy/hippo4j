@@ -62,7 +62,6 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
         String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on(", @").join(receives);
-
         String dingAlarmTxt;
         String dingAlarmTimoutReplaceTxt;
         if (Objects.equals(alarmNotifyRequest.getNotifyTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
@@ -73,7 +72,6 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
             } else {
                 dingAlarmTimoutReplaceTxt = StrUtil.replace(DING_ALARM_TIMOUT_REPLACE_TXT, DING_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
             }
-
             dingAlarmTimoutReplaceTxt = String.format(dingAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
             dingAlarmTxt = StrUtil.replace(DING_ALARM_TXT, DING_ALARM_TIMOUT_REPLACE_TXT, dingAlarmTimoutReplaceTxt);
         } else {
@@ -125,20 +123,14 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 notifyConfig.getInterval(),
                 // 当前时间
                 DateUtil.now());
-
         execute(notifyConfig, DingAlarmConstants.DING_ALARM_TITLE, text, Lists.newArrayList(receives));
     }
 
     @Override
     public void sendChangeMessage(NotifyConfigDTO notifyConfig, ChangeParameterNotifyRequest changeParameterNotifyRequest) {
         String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
-
         String[] receives = notifyConfig.getReceives().split(",");
         String afterReceives = Joiner.on(", @").join(receives);
-
-        /**
-         * hesitant e.g. ➲  ➜  ⇨  ➪
-         */
         String text = String.format(
                 DING_NOTICE_TXT,
                 // 环境
@@ -206,5 +198,4 @@ public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
             log.error("Ding failed to send message", ex);
         }
     }
-
 }

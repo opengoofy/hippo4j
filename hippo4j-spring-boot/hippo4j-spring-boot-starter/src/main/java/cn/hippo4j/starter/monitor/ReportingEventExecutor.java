@@ -43,9 +43,9 @@ import java.util.concurrent.TimeUnit;
 import static cn.hippo4j.core.executor.manage.GlobalThreadPoolManage.getThreadPoolNum;
 
 /**
- * 动态线程池采集上报事件执行器.
+ * Dynamic thread pool collection and reporting event executor.
  * <p>
- * {@link BlockingQueue} 充当缓冲容器, 实现生产-消费模型.
+ * {@link BlockingQueue} Act as a buffer container, enabling a production-consumption model.
  *
  * @author chen.ma
  * @date 2021/12/6 20:23
@@ -64,17 +64,19 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
     private final ServerHealthCheck serverHealthCheck;
 
     /**
-     * 数据采集组件集合
+     * Collection of data collection components.
      */
     private Map<String, Collector> collectors;
 
     /**
-     * 数据采集的缓冲容器, 等待 ReportingEventExecutor 上报服务端
+     * Buffer container for data collection, waiting
+     * for ReportingEventExecutor to report to the server.
      */
     private BlockingQueue<Message> messageCollectVessel;
 
     /**
-     * 数据采集定时执行器, Spring 启动后延时一段时间进行采集动态线程池的运行数据
+     * Data collection timing executor, after Spring starts,
+     * it delays for a period of time to collect the running data of the dynamic thread pool.
      */
     private ScheduledThreadPoolExecutor collectVesselExecutor;
 
@@ -96,27 +98,21 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
         if (properties.getCollect()) {
             Integer bufferSize = properties.getTaskBufferSize();
             messageCollectVessel = new ArrayBlockingQueue(bufferSize);
-
             String collectVesselTaskName = "client.scheduled.collect.data";
             collectVesselExecutor = new ScheduledThreadPoolExecutor(
                     new Integer(1),
                     ThreadFactoryBuilder.builder().daemon(true).prefix(collectVesselTaskName).build());
-
-            // 延迟 initialDelay 后循环调用. scheduleWithFixedDelay 每次执行时间为上一次任务结束时, 向后推一个时间间隔
             collectVesselExecutor.scheduleWithFixedDelay(
                     () -> runTimeGatherTask(),
                     properties.getInitialDelay(),
                     properties.getCollectInterval(),
                     TimeUnit.MILLISECONDS);
-
-            // 启动上报监控数据线程
+            // Start reporting monitoring data thread
             String reportingTaskName = "client.thread.reporting.task";
             ThreadUtil.newThread(this, reportingTaskName, Boolean.TRUE).start();
-
-            // 获取所有数据采集组件, 目前仅有历史运行数据采集
+            // Get all data collection components, currently only historical operation data collection.
             collectors = ApplicationContextHolder.getBeansOfType(Collector.class);
         }
-
         log.info("Dynamic thread pool :: [{}]. The dynamic thread pool starts data collection and reporting. ", getThreadPoolNum());
     }
 
@@ -126,14 +122,13 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
     }
 
     /**
-     * 采集动态线程池数据, 并添加缓冲队列.
+     * Collect dynamic thread pool data and add buffer queues.
      */
     private void runTimeGatherTask() {
         boolean healthStatus = serverHealthCheck.isHealthStatus();
         if (!healthStatus || CollUtil.isEmpty(collectors)) {
             return;
         }
-
         collectors.forEach((beanName, collector) -> {
             Message message = collector.collectMessage();
             boolean offer = messageCollectVessel.offer(message);
@@ -142,5 +137,4 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
             }
         });
     }
-
 }

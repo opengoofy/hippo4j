@@ -42,5 +42,4 @@ public class WebThreadPoolProperties {
      * Keep alive time
      */
     private Integer keepAliveTime;
-
 }

@@ -83,7 +83,6 @@ public class CacheData {
 
     private void safeNotifyListener(String content, String md5, ManagerListenerWrapper wrap) {
         Listener listener = wrap.getListener();
-
         Runnable runnable = () -> {
             wrap.setLastCallMd5(md5);
             listener.receiveConfigInfo(content);
@@ -120,5 +119,4 @@ public class CacheData {
     public void setInitializing(boolean isInitializing) {
         this.isInitializing = isInitializing;
     }
-
 }

@@ -38,5 +38,4 @@ public interface ServerHealthCheck {
      * @param healthStatus
      */
     void setHealthStatus(boolean healthStatus);
-
 }

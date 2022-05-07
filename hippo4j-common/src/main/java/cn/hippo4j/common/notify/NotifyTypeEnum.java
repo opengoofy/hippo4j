@@ -49,5 +49,4 @@ public enum NotifyTypeEnum {
      * TIMEOUT
      */
     TIMEOUT
-
 }

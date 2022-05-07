@@ -49,5 +49,4 @@ public class YamlConfigParser extends AbstractConfigParser {
     public List<ConfigFileTypeEnum> getConfigFileTypes() {
         return Lists.newArrayList(ConfigFileTypeEnum.YML, ConfigFileTypeEnum.YAML);
     }
-
 }

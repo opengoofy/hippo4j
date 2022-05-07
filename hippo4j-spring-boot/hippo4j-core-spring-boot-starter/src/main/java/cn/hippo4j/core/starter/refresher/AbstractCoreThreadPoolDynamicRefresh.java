@@ -58,7 +58,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
 
 /**
- * Abstract core thread pool dynamic refresh.
+ * Abstract core thread-pool dynamic refresh.
  *
  * @author chen.ma
  * @date 2022/2/26 12:42
@@ -94,7 +94,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
     }
 
     /**
-     * register notify alarm manage
+     * Register notify alarm manage.
      */
     public void registerNotifyAlarmManage() {
         bootstrapCoreProperties.getExecutors().forEach(executorProperties -> {
@@ -125,7 +125,6 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             if (nowParameter != null) {
                 WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
                 WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
-
                 PoolParameter beforeParameter = webThreadPoolService.getWebThreadPoolParameter();
                 if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
                         || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())

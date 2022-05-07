@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * Dynamic threadPool service loader.
+ * Dynamic thread-pool service loader.
  *
  * @author chen.ma
  * @date 2021/7/10 23:45

@@ -39,5 +39,4 @@ public enum NotifyPlatformEnum {
      * WECHAT
      */
     WECHAT
-
 }

@@ -51,5 +51,4 @@ public interface ConfigParser {
      * @return
      */
     List<ConfigFileTypeEnum> getConfigFileTypes();
-
 }

@@ -49,5 +49,4 @@ public interface SendMessageHandler<T extends NotifyRequest, R extends NotifyReq
      * @param changeParameterNotifyRequest
      */
     void sendChangeMessage(NotifyConfigDTO notifyConfig, R changeParameterNotifyRequest);
-
 }

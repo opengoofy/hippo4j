@@ -110,5 +110,4 @@ public class DingAlarmConstants {
                     "<font color=#708090 size=2>OWNER：@%s</font> \n\n" +
                     " --- \n\n  " +
                     "**播报时间：%s**";
-
 }

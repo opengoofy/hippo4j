@@ -54,5 +54,4 @@ public class AlarmControlDTO {
     public String buildPk() {
         return StrUtil.builder(threadPool, "+", platform).toString();
     }
-
 }

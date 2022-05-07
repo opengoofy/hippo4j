@@ -41,5 +41,4 @@ public class TokenInfo {
      * tokenTtl
      */
     private Long tokenTtl;
-
 }

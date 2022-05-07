@@ -20,7 +20,7 @@ package cn.hippo4j.core.spi;
 import java.util.concurrent.RejectedExecutionHandler;
 
 /**
- * Custom rejectedExecution handler.
+ * Custom rejected execution handler.
  *
  * @author chen.ma
  * @date 2021/7/10 23:51

@@ -103,5 +103,4 @@ public class PoolParameterInfo implements PoolParameter, Serializable {
      * allowCoreThreadTimeOut
      */
     private Integer allowCoreThreadTimeOut;
-
 }

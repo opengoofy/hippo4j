@@ -82,5 +82,4 @@ public class HttpClientConfiguration {
         builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
         builder.hostnameVerifier((hostname, session) -> true);
     }
-
 }

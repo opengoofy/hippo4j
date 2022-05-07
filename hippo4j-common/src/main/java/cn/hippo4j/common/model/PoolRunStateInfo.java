@@ -119,5 +119,4 @@ public class PoolRunStateInfo extends PoolBaseInfo implements Serializable {
     public Integer getSimplePeakLoad() {
         return Integer.parseInt(getPeakLoad().replace("%", ""));
     }
-
 }

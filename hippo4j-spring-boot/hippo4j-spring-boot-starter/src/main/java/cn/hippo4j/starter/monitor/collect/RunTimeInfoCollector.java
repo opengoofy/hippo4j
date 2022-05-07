@@ -47,7 +47,6 @@ public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements C
     @Override
     public Message collectMessage() {
         AbstractMessage message = new RuntimeMessage();
-
         List<Message> runtimeMessages = Lists.newArrayList();
         List<String> listThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
         for (String each : listThreadPoolId) {
@@ -56,10 +55,8 @@ public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements C
             runtimeMessage.setGroupKey(getThreadPoolIdentify(each, properties.getItemId(), properties.getNamespace()));
             runtimeMessages.add(runtimeMessage);
         }
-
         message.setMessageType(MessageTypeEnum.RUNTIME);
         message.setMessages(runtimeMessages);
-
         return message;
     }
 
@@ -67,5 +64,4 @@ public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements C
     protected PoolRunStateInfo supplement(PoolRunStateInfo basePoolRunStateInfo) {
         return basePoolRunStateInfo;
     }
-
 }

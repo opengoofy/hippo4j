@@ -67,7 +67,6 @@ public class ArrayUtil {
                 }
             }
         }
-
         return null;
     }
 
@@ -115,5 +114,4 @@ public class ArrayUtil {
         }
         return array.clone();
     }
-
 }

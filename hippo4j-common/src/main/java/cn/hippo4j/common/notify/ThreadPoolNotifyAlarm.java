@@ -69,5 +69,4 @@ public class ThreadPoolNotifyAlarm {
      */
     @Deprecated
     private Map<String, String> receives;
-
 }

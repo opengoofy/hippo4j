@@ -59,7 +59,6 @@ public class ThreadPoolManager {
                 lockers.put(tenantId, new Object());
             }
         }
-
         final Object monitor = lockers.get(tenantId);
         synchronized (monitor) {
             Map<String, Set<ExecutorService>> map = resourcesManager.get(tenantId);
@@ -76,5 +75,4 @@ public class ThreadPoolManager {
             map.get(group).add(executor);
         }
     }
-
 }

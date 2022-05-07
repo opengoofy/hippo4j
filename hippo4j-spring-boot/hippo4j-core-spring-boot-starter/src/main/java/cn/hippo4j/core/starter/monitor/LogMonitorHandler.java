@@ -44,5 +44,4 @@ public class LogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
     public String getType() {
         return "log";
     }
-
 }

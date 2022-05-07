@@ -54,5 +54,4 @@ public class JSONUtil {
 
         return JSON_FACADE.parseArray(text, clazz);
     }
-
 }

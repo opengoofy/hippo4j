@@ -93,5 +93,4 @@ public class ExecutorProperties {
     public Map<String, String> receives() {
         return Objects.isNull(this.notify) || this.notify.getReceives() == null ? Maps.newHashMap() : this.notify.getReceives();
     }
-
 }

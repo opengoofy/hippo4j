@@ -94,8 +94,6 @@ public class BaseThreadDetailStateHandler implements ThreadDetailState {
         } catch (Exception ex) {
             log.error("Failed to get thread status.", ex);
         }
-
         return resultThreadState;
     }
-
 }

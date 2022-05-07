@@ -99,5 +99,4 @@ public enum ErrorCodeEnum implements ErrorCode {
             return "登录时间过长, 请退出重新登录";
         }
     }
-
 }

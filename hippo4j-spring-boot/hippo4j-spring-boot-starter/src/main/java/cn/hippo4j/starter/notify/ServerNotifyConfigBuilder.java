@@ -64,20 +64,17 @@ public class ServerNotifyConfigBuilder implements NotifyConfigBuilder {
             log.warn("The client does not have a dynamic thread pool instance configured.");
             return resultMap;
         }
-
         List<String> groupKeys = Lists.newArrayList();
         threadPoolIds.forEach(each -> {
             String groupKey = GroupKey.getKeyTenant(each, properties.getItemId(), properties.getNamespace());
             groupKeys.add(groupKey);
         });
-
         Result result = null;
         try {
             result = httpAgent.httpPostByDiscovery(BASE_PATH + "/notify/list/config", new ThreadPoolNotifyRequest(groupKeys));
         } catch (Throwable ex) {
             log.error("Get dynamic thread pool notify configuration error. message :: {}", ex.getMessage());
         }
-
         if (result != null && result.isSuccess() && result.getData() != null) {
             String resultDataStr = JSONUtil.toJSONString(result.getData());
             List<ThreadPoolNotifyDTO> resultData = JSONUtil.parseArray(resultDataStr, ThreadPoolNotifyDTO.class);
@@ -86,8 +83,6 @@ public class ServerNotifyConfigBuilder implements NotifyConfigBuilder {
             resultMap.forEach((key, val) -> val.stream().filter(each -> StrUtil.equals("ALARM", each.getType()))
                     .forEach(each -> alarmControlHandler.initCacheAndLock(each.getTpId(), each.getPlatform(), each.getInterval())));
         }
-
         return resultMap;
     }
-
 }

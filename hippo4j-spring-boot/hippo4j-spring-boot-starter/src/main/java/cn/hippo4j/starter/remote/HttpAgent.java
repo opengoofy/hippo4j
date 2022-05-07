@@ -109,5 +109,4 @@ public interface HttpAgent {
      */
     Result httpDeleteByConfig(String path, Map<String, String> headers, Map<String, String> paramValues,
                               long readTimeoutMs);
-
 }

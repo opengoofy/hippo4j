@@ -88,5 +88,4 @@ public class WeChatAlarmConstants {
                     "> OWNER：<@%s> \n" +
                     "> 提示：动态线程池配置变更实时通知（无限制） \n\n" +
                     "**播报时间：%s**";
-
 }

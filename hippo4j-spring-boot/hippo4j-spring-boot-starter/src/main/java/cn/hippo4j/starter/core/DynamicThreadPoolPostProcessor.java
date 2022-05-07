@@ -92,7 +92,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             try {
                 dynamicThreadPool = ApplicationContextHolder.findAnnotationOnBean(beanName, DynamicThreadPool.class);
                 if (Objects.isNull(dynamicThreadPool)) {
-                    // 适配低版本 SpringBoot
+                    // Adapt to lower versions of SpringBoot.
                     dynamicThreadPool = DynamicThreadPoolAnnotationUtil.findAnnotationOnBean(beanName, DynamicThreadPool.class);
                     if (Objects.isNull(dynamicThreadPool)) {
                         return bean;
@@ -102,20 +102,16 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 log.error("Failed to create dynamic thread pool in annotation mode.", ex);
                 return bean;
             }
-
             DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) bean;
             DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(dynamicExecutor.getThreadPoolId(), dynamicExecutor);
             ThreadPoolExecutor remoteExecutor = fillPoolAndRegister(wrap);
             subscribeConfig(wrap);
-
             return remoteExecutor;
         }
-
         if (bean instanceof DynamicThreadPoolWrapper) {
             DynamicThreadPoolWrapper wrap = (DynamicThreadPoolWrapper) bean;
             registerAndSubscribe(wrap);
         }
-
         return bean;
     }
 
@@ -145,13 +141,12 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         boolean isSubscribe = false;
         ThreadPoolExecutor newDynamicPoolExecutor = null;
         PoolParameterInfo ppi = new PoolParameterInfo();
-
         try {
             result = httpAgent.httpGetByConfig(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 5000L);
             if (result.isSuccess() && result.getData() != null) {
                 String resultJsonStr = JSONUtil.toJSONString(result.getData());
                 if ((ppi = JSONUtil.parseObject(resultJsonStr, PoolParameterInfo.class)) != null) {
-                    // 使用相关参数创建线程池
+                    // Create a thread pool with relevant parameters.
                     BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
                     newDynamicPoolExecutor = ThreadPoolBuilder.builder()
                             .dynamicPool()
@@ -162,45 +157,36 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                             .rejected(RejectedTypeEnum.createPolicy(ppi.getRejectedType()))
                             .allowCoreThreadTimeOut(EnableEnum.getBool(ppi.getAllowCoreThreadTimeOut()))
                             .build();
-
-                    // 设置动态线程池增强参数
+                    // Set dynamic thread pool enhancement parameters.
                     if (dynamicThreadPoolWrap.getExecutor() instanceof AbstractDynamicExecutorSupport) {
                         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
                                 BooleanUtil.toBoolean(ppi.getIsAlarm().toString()),
                                 ppi.getCapacityAlarm(),
                                 ppi.getLivenessAlarm());
                         GlobalNotifyAlarmManage.put(tpId, threadPoolNotifyAlarm);
-
                         TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getTaskDecorator();
                         ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setTaskDecorator(taskDecorator);
-
                         long awaitTerminationMillis = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).awaitTerminationMillis;
                         boolean waitForTasksToCompleteOnShutdown = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).waitForTasksToCompleteOnShutdown;
                         ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setSupportParam(awaitTerminationMillis, waitForTasksToCompleteOnShutdown);
-
                         long executeTimeOut = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrap.getExecutor()).getExecuteTimeOut();
                         ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setExecuteTimeOut(executeTimeOut);
                     }
-
                     dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);
                     isSubscribe = true;
-
                 }
             }
         } catch (Exception ex) {
             newDynamicPoolExecutor = dynamicThreadPoolWrap.getExecutor() != null ? dynamicThreadPoolWrap.getExecutor() : CommonDynamicThreadPool.getInstance(tpId);
             dynamicThreadPoolWrap.setExecutor(newDynamicPoolExecutor);
-
             log.error("Failed to initialize thread pool configuration. error message :: {}", ex.getMessage());
         } finally {
             if (Objects.isNull(dynamicThreadPoolWrap.getExecutor())) {
                 dynamicThreadPoolWrap.setExecutor(CommonDynamicThreadPool.getInstance(tpId));
             }
-
-            // 设置是否订阅远端线程池配置
+            // Set whether to subscribe to the remote thread pool configuration.
             dynamicThreadPoolWrap.setSubscribeFlag(isSubscribe);
         }
-
         GlobalThreadPoolManage.register(dynamicThreadPoolWrap.getThreadPoolId(), ppi, dynamicThreadPoolWrap);
         return newDynamicPoolExecutor;
     }
@@ -215,5 +201,4 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             threadPoolOperation.subscribeConfig(dynamicThreadPoolWrap.getThreadPoolId(), executorService, config -> threadPoolDynamicRefresh.dynamicRefresh(config));
         }
     }
-
 }

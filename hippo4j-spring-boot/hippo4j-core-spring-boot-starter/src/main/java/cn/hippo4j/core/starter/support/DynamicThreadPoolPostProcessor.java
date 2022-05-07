@@ -42,7 +42,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Dynamic threadPool post processor.
+ * Dynamic thread-pool post processor.
  *
  * @author chen.ma
  * @date 2021/8/2 20:40
@@ -113,7 +113,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                     .orElse(null);
             if (executorProperties != null) {
                 try {
-                    // 使用相关参数创建线程池
                     BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(executorProperties.getBlockingQueue(), executorProperties.getQueueCapacity());
                     String threadNamePrefix = executorProperties.getThreadNamePrefix();
                     newDynamicPoolExecutor = ThreadPoolBuilder.builder()
@@ -137,7 +136,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             }
 
             if (dynamicThreadPoolWrap.getExecutor() instanceof AbstractDynamicExecutorSupport) {
-                // 设置动态线程池增强参数
                 ThreadPoolNotifyAlarm notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
                 boolean isAlarm = Optional.ofNullable(notify)
                         .map(each -> each.getIsAlarm()).orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);

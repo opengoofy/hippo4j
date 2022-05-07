@@ -28,5 +28,4 @@ public abstract class AbstractConfigParser implements ConfigParser {
     public boolean supports(ConfigFileTypeEnum type) {
         return getConfigFileTypes().contains(type);
     }
-
 }

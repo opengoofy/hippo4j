@@ -52,22 +52,18 @@ public class ServerListManager {
     public ServerListManager(BootstrapProperties dynamicThreadPoolProperties) {
         this.properties = dynamicThreadPoolProperties;
         serverAddrsStr = properties.getServerAddr();
-
         if (!StringUtils.isEmpty(serverAddrsStr)) {
             List<String> serverAddrList = new ArrayList();
             String[] serverAddrListArr = this.serverAddrsStr.split(",");
-
             for (String serverAddr : serverAddrListArr) {
                 boolean whetherJoint = StrUtil.isNotBlank(serverAddr)
                         && !serverAddr.startsWith(HTTPS) && !serverAddr.startsWith(HTTP);
                 if (whetherJoint) {
                     serverAddr = HTTP + serverAddr;
                 }
-
                 currentServerAddr = serverAddr;
                 serverAddrList.add(serverAddr);
             }
-
             this.serverUrls = serverAddrList;
         }
     }
@@ -141,5 +137,4 @@ public class ServerListManager {
             }
         }
     }
-
 }

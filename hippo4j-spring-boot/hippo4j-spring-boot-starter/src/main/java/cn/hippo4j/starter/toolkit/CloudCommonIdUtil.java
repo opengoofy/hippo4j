@@ -57,5 +57,4 @@ public class CloudCommonIdUtil {
         }
         return combined;
     }
-
 }

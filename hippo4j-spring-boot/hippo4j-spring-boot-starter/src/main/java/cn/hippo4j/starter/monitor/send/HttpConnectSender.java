@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import static cn.hippo4j.common.constant.Constants.MONITOR_PATH;
 
 /**
- * Http mvc sender.
+ * Http sender.
  *
  * @author chen.ma
  * @date 2021/12/7 20:53
@@ -47,5 +47,4 @@ public class HttpConnectSender implements MessageSender {
             log.error("Failed to push dynamic thread pool runtime data.", ex);
         }
     }
-
 }
