@@ -8,7 +8,7 @@ package cn.hippo4j.common.constant;
  */
 public class ChangeThreadPoolConstants {
 
-    public static final String CHANGE_THREAD_POOL_TEXT = "[{}] Changed thread pool. " +
+    public static final String CHANGE_THREAD_POOL_TEXT = "[{}] Changing thread pool parameters. " +
             "\n    coreSize :: [{}]" +
             "\n    maxSize :: [{}]" +
             "\n    queueType :: [{}]" +
