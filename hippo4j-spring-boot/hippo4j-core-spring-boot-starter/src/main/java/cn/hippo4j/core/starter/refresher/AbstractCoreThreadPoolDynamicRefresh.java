@@ -251,12 +251,24 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
     private void dynamicRefreshPool(String threadPoolId, ExecutorProperties properties) {
         ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
-        if (!Objects.equals(beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize())) {
-            executor.setMaximumPoolSize(properties.getMaximumPoolSize());
+        
+        if (properties.getMaximumPoolSize() != null && properties.getCorePoolSize() !=null) {
+            if (properties.getMaximumPoolSize() < executor.getMaximumPoolSize()) {
+                executor.setMaximumPoolSize(properties.getMaximumPoolSize());
+                executor.setCorePoolSize(properties.getCorePoolSize());
+            } else {
+                executor.setMaximumPoolSize(properties.getMaximumPoolSize());
+                executor.setCorePoolSize(properties.getCorePoolSize());
+            }
+        } else {
+            if (properties.getMaximumPoolSize() != null) {
+                executor.setMaximumPoolSize(properties.getMaximumPoolSize());
+            }
+            if (properties.getCorePoolSize() !=null) {
+                executor.setCorePoolSize(properties.getCorePoolSize());
+            }
         }
-        if (!Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize())) {
-            executor.setCorePoolSize(properties.getCorePoolSize());
-        }
+        
         if (!Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())) {
             executor.allowCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut());
         }
