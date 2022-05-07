@@ -30,5 +30,4 @@ public class Constants {
     public static final String SPLIT_COMMA = ",";
 
     public static final long TOKEN_VALIDITY_IN_SECONDS = 18000L;
-
 }

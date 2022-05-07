@@ -61,7 +61,6 @@ public class PermissionServiceImpl implements PermissionService {
         if (existPermissionInfo != null) {
             throw new RuntimeException("权限重复");
         }
-
         PermissionInfo insertPermission = new PermissionInfo();
         insertPermission.setRole(role);
         insertPermission.setResource(resource);
@@ -75,8 +74,6 @@ public class PermissionServiceImpl implements PermissionService {
                 .eq(StrUtil.isNotBlank(role), PermissionInfo::getRole, role)
                 .eq(StrUtil.isNotBlank(resource), PermissionInfo::getResource, resource)
                 .eq(StrUtil.isNotBlank(action), PermissionInfo::getAction, action);
-
         permissionMapper.delete(updateWrapper);
     }
-
 }

@@ -32,5 +32,4 @@ public class PermissionQueryPageReqDTO extends Page {
     public PermissionQueryPageReqDTO(long current, long size) {
         super(current, size);
     }
-
 }

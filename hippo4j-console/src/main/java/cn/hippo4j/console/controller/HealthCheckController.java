@@ -44,5 +44,4 @@ public class HealthCheckController {
     public Result<String> healthCheck() {
         return Results.success(UP);
     }
-
 }

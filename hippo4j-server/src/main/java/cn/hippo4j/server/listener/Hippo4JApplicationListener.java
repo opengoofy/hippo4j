@@ -53,5 +53,4 @@ public interface Hippo4JApplicationListener {
      * @param exception
      */
     void failed(ConfigurableApplicationContext context, Throwable exception);
-
 }

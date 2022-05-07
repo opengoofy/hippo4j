@@ -54,7 +54,6 @@ public class RoleServiceImpl implements RoleService {
     public IPage<RoleRespDTO> listRole(int pageNo, int pageSize) {
         RoleQueryPageReqDTO queryPage = new RoleQueryPageReqDTO(pageNo, pageSize);
         IPage<RoleInfo> selectPage = roleMapper.selectPage(queryPage, null);
-
         return selectPage.convert(each -> BeanUtil.toBean(each, RoleRespDTO.class));
     }
 
@@ -66,7 +65,6 @@ public class RoleServiceImpl implements RoleService {
         if (roleInfo != null) {
             throw new RuntimeException("角色名重复");
         }
-
         RoleInfo insertRole = new RoleInfo();
         insertRole.setRole(role);
         insertRole.setUserName(userName);
@@ -80,12 +78,10 @@ public class RoleServiceImpl implements RoleService {
             LambdaQueryWrapper<RoleInfo> queryWrapper = Wrappers.lambdaQuery(RoleInfo.class).eq(RoleInfo::getUserName, userName);
             roleStrList = roleMapper.selectList(queryWrapper).stream().map(RoleInfo::getRole).collect(Collectors.toList());
         }
-
         LambdaUpdateWrapper<RoleInfo> updateWrapper = Wrappers.lambdaUpdate(RoleInfo.class)
                 .eq(StrUtil.isNotBlank(role), RoleInfo::getRole, role)
                 .eq(StrUtil.isNotBlank(userName), RoleInfo::getUserName, userName);
         roleMapper.delete(updateWrapper);
-
         roleStrList.forEach(each -> permissionService.deletePermission(each, "", ""));
     }
 
@@ -94,11 +90,8 @@ public class RoleServiceImpl implements RoleService {
         LambdaQueryWrapper<RoleInfo> queryWrapper = Wrappers.lambdaQuery(RoleInfo.class)
                 .like(RoleInfo::getRole, role)
                 .select(RoleInfo::getRole);
-
         List<RoleInfo> roleInfos = roleMapper.selectList(queryWrapper);
         List<String> roleNames = roleInfos.stream().map(RoleInfo::getRole).collect(Collectors.toList());
-
         return roleNames;
     }
-
 }

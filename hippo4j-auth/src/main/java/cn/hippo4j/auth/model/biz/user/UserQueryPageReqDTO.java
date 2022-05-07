@@ -35,5 +35,4 @@ public class UserQueryPageReqDTO extends Page {
      * userName
      */
     private String userName;
-
 }

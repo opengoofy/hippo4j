@@ -71,5 +71,4 @@ public class TenantController {
         tenantService.deleteTenantById(tenantId);
         return Results.success(Boolean.TRUE);
     }
-
 }

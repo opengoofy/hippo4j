@@ -70,5 +70,4 @@ public class ItemController {
         itemService.deleteItem(tenantId, itemId);
         return Results.success();
     }
-
 }

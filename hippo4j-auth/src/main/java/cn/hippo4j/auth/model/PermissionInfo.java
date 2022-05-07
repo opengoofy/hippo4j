@@ -71,5 +71,4 @@ public class PermissionInfo {
     @TableLogic
     @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
-
 }

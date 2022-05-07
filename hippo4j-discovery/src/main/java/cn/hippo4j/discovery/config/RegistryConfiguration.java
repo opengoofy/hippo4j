@@ -39,5 +39,4 @@ public class RegistryConfiguration {
     public void registryInit() {
         baseInstanceRegistry.postInit();
     }
-
 }

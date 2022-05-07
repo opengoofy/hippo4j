@@ -77,14 +77,11 @@ public class MonitorController {
             Message message = MessageConvert.convert(messageWrapper);
             queryMonitorExecuteChoose.chooseAndExecute(message);
         };
-
         try {
             monitorThreadPoolTaskExecutor.execute(task);
         } catch (Exception ex) {
             log.error("Monitoring data insertion database task overflow.", ex);
         }
-
         return Results.success();
     }
-
 }

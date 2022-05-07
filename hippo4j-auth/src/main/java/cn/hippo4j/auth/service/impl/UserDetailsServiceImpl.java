@@ -44,16 +44,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         UserInfo userInfo = userMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, userName));
-
         JwtUser jwtUser = new JwtUser();
         jwtUser.setId(userInfo.getId());
         jwtUser.setUsername(userName);
         jwtUser.setPassword(userInfo.getPassword());
-
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(userInfo.getRole() + ""));
         jwtUser.setAuthorities(authorities);
-
         return jwtUser;
     }
-
 }

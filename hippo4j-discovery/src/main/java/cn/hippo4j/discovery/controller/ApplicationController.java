@@ -72,5 +72,4 @@ public class ApplicationController {
         instanceRegistry.remove(instanceInfo);
         return Results.success();
     }
-
 }

@@ -55,5 +55,4 @@ public class PermissionController {
         permissionService.deletePermission(role, resource, action);
         return Results.success();
     }
-
 }

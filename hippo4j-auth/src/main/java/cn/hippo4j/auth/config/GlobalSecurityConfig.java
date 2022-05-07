@@ -43,7 +43,7 @@ import javax.annotation.Resource;
 import java.util.stream.Stream;
 
 /**
- * 安全配置.
+ * Global security config.
  *
  * @author chen.ma
  * @date 2021/11/9 21:10
@@ -108,5 +108,4 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
         String[] ignores = Stream.of("/hippo4j/v1/cs/auth/users/apply/token/**", "/hippo4j/v1/cs/configs/**").toArray(String[]::new);
         web.ignoring().antMatchers(ignores);
     }
-
 }

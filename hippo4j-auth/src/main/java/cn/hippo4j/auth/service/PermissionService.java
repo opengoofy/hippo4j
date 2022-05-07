@@ -29,7 +29,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 public interface PermissionService {
 
     /**
-     * 分页查询权限列表.
+     * Paging query permission list.
      *
      * @param pageNo
      * @param pageSize
@@ -38,7 +38,7 @@ public interface PermissionService {
     IPage<PermissionRespDTO> listPermission(int pageNo, int pageSize);
 
     /**
-     * 新增权限.
+     * Add permission.
      *
      * @param role
      * @param resource
@@ -47,12 +47,11 @@ public interface PermissionService {
     void addPermission(String role, String resource, String action);
 
     /**
-     * 删除权限.
+     * Remove permission.
      *
      * @param role
      * @param resource
      * @param action
      */
     void deletePermission(String role, String resource, String action);
-
 }

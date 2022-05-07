@@ -51,7 +51,6 @@ public class GlobalExceptionHandler {
             log.error("[{}] {} [ex] {}", request.getMethod(), request.getRequestURL().toString(), ex.toString(), ex.getCause());
             return Results.failure(ex);
         }
-
         log.info("[{}] {} [ex] {}", request.getMethod(), request.getRequestURL().toString(), ex.toString());
         return Results.failure(ex);
     }
@@ -64,7 +63,6 @@ public class GlobalExceptionHandler {
         String exceptionStr = Optional.ofNullable(firstFieldError)
                 .map(FieldError::getDefaultMessage)
                 .orElse(StringUtil.EMPTY);
-
         log.error("[{}] {} [ex] {}", request.getMethod(), getUrl(request), exceptionStr);
         return Results.failure(new ServiceException(exceptionStr));
     }
@@ -79,8 +77,6 @@ public class GlobalExceptionHandler {
         if (StringUtils.isEmpty(request.getQueryString())) {
             return request.getRequestURL().toString();
         }
-
         return request.getRequestURL().toString() + "?" + request.getQueryString();
     }
-
 }

@@ -32,5 +32,4 @@ public class RoleQueryPageReqDTO extends Page {
     public RoleQueryPageReqDTO(long current, long size) {
         super(current, size);
     }
-
 }

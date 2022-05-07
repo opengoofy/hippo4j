@@ -47,5 +47,4 @@ public class LogRecordController {
     public Result<IPage<LogRecordRespDTO>> queryPage(@RequestBody LogRecordQueryReqDTO queryReqDTO) {
         return Results.success(logRecordBizService.queryPage(queryReqDTO));
     }
-
 }

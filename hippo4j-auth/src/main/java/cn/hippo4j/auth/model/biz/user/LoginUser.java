@@ -42,5 +42,4 @@ public class LoginUser {
      * rememberMe
      */
     private Integer rememberMe;
-
 }

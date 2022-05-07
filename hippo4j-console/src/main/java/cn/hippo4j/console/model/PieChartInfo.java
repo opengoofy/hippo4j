@@ -44,5 +44,4 @@ public class PieChartInfo {
      * pieDataList
      */
     private List<Map<String, Object>> pieDataList;
-
 }

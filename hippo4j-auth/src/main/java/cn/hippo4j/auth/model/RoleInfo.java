@@ -66,5 +66,4 @@ public class RoleInfo {
     @TableLogic
     @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
-
 }

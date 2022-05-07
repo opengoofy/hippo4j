@@ -45,5 +45,4 @@ public class UserReqDTO extends Page {
      * role
      */
     private String role;
-
 }

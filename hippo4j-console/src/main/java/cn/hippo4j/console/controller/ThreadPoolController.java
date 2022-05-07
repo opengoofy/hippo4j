@@ -147,7 +147,6 @@ public class ThreadPoolController {
         if (first == null) {
             return Results.success(Lists.newArrayList());
         }
-
         InstanceInfo holder = first.getHolder();
         String itemTenantKey = holder.getGroupKey();
         String groupKey = getGroupKey(tpId, itemTenantKey);
@@ -155,11 +154,9 @@ public class ThreadPoolController {
         Map<String, String> activeMap =
                 leases.stream().map(each -> each.getHolder()).filter(each -> StringUtil.isNotBlank(each.getActive()))
                         .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getActive));
-
         Map<String, String> clientBasePathMap = leases.stream().map(each -> each.getHolder())
                 .filter(each -> StringUtil.isNotBlank(each.getClientBasePath()))
                 .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getClientBasePath));
-
         List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
         content.forEach((key, val) -> {
             ThreadPoolInstanceInfo threadPoolInstanceInfo =
@@ -170,7 +167,6 @@ public class ThreadPoolController {
             threadPoolInstanceInfo.setClientBasePath(clientBasePathMap.get(key));
             returnThreadPool.add(threadPoolInstanceInfo);
         });
-
         return Results.success(returnThreadPool);
     }
 
@@ -181,7 +177,6 @@ public class ThreadPoolController {
         if (first == null) {
             return Results.success(Lists.newArrayList());
         }
-
         List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
         leases.forEach(each -> {
             InstanceInfo holder = each.getHolder();
@@ -189,11 +184,8 @@ public class ThreadPoolController {
             threadPoolInstanceInfo.setActive(holder.getActive());
             threadPoolInstanceInfo.setClientAddress(holder.getCallBackUrl());
             threadPoolInstanceInfo.setIdentify(holder.getIdentify());
-
             returnThreadPool.add(threadPoolInstanceInfo);
         });
-
         return Results.success(returnThreadPool);
     }
-
 }

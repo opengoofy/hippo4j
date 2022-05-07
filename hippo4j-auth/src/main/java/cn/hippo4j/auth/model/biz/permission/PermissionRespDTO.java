@@ -42,5 +42,4 @@ public class PermissionRespDTO {
      * action
      */
     private String action;
-
 }

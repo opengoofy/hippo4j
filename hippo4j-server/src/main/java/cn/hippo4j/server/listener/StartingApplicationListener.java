@@ -54,7 +54,6 @@ public class StartingApplicationListener implements Hippo4JApplicationListener {
                         thread.setName("server.hippo4j-starting");
                         return thread;
                     });
-
             scheduledExecutorService.scheduleWithFixedDelay(() -> {
                 if (starting) {
                     log.info("Hippo4J is starting...");
@@ -66,9 +65,7 @@ public class StartingApplicationListener implements Hippo4JApplicationListener {
     @Override
     public void started(ConfigurableApplicationContext context) {
         starting = false;
-
         closeExecutor();
-
         if (EnvUtil.getStandaloneMode()) {
             log.info("Hippo4J started successfully...");
         }
@@ -77,10 +74,8 @@ public class StartingApplicationListener implements Hippo4JApplicationListener {
     @Override
     public void failed(ConfigurableApplicationContext context, Throwable exception) {
         log.error("Startup errors : {}", exception);
-
         closeExecutor();
         context.close();
-
         log.error("Hippo4J failed to start, please see {} for more details.",
                 Paths.get(EnvUtil.getHippo4JHome(), "logs/hippo4j.log"));
     }
@@ -90,5 +85,4 @@ public class StartingApplicationListener implements Hippo4JApplicationListener {
             scheduledExecutorService.shutdownNow();
         }
     }
-
 }

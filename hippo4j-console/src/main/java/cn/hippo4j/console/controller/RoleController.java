@@ -63,5 +63,4 @@ public class RoleController {
         List<String> resultRole = roleService.getRoleLike(role);
         return Results.success(resultRole);
     }
-
 }

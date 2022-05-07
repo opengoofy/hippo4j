@@ -37,5 +37,4 @@ public class RoleRespDTO {
      * userName
      */
     private String userName;
-
 }

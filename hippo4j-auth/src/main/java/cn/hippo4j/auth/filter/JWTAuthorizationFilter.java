@@ -62,30 +62,27 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-        // 验证客户端交互时 Token
+        // Token when verifying client interaction.
         String accessToken = request.getParameter(ACCESS_TOKEN);
         if (StrUtil.isNotBlank(accessToken)) {
             tokenManager.validateToken(accessToken);
-
             Authentication authentication = this.tokenManager.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
             chain.doFilter(request, response);
             return;
         }
 
-        // 如果请求头中没有 Authorization 信息则直接放行
+        // If there is no Authorization information in the request header, it will be released directly.
         String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
         if (tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
 
-        // 如果请求头中有 Token, 则进行解析, 并且设置认证信息
+        // If there is a Token in the request header, it is parsed and the authentication information is set.
         try {
             SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader));
         } catch (Exception ex) {
-            // 返回 Json 形式的错误信息
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
             String resultStatus = "-1";
@@ -97,7 +94,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             response.getWriter().flush();
             return;
         }
-
         try {
             super.doFilterInternal(request, response, chain);
         } finally {
@@ -106,7 +102,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     /**
-     * Token 中获取用户信息并新建一个 Token.
+     * Obtain user information from Token and create a new Token.
      *
      * @param tokenHeader
      * @return
@@ -117,18 +113,14 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         if (expiration) {
             throw new ServiceException(LOGIN_TIMEOUT);
         }
-
         String username = JwtTokenUtil.getUsername(token);
         String userRole = JwtTokenUtil.getUserRole(token);
         UserContext.setUserInfo(username, userRole);
-
         String role = JwtTokenUtil.getUserRole(token);
         if (username != null) {
             return new UsernamePasswordAuthenticationToken(username, null,
                     Collections.singleton(new SimpleGrantedAuthority(role)));
         }
-
         return null;
     }
-
 }

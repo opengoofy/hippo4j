@@ -45,5 +45,4 @@ public class ClientCloseHookController {
         clientCloseHookExecuteMap.forEach((key, execute) -> execute.closeHook(req));
         return Results.success();
     }
-
 }

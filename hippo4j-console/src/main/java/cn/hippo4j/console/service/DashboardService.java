@@ -61,5 +61,4 @@ public interface DashboardService {
      * @return
      */
     RankingChart getRankingChart();
-
 }

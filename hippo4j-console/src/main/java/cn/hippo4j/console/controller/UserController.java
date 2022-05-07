@@ -92,5 +92,4 @@ public class UserController {
         List<String> resultUserNames = userService.getUserLikeUsername(userName);
         return Results.success(resultUserNames);
     }
-
 }

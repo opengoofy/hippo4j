@@ -31,7 +31,7 @@ import java.util.List;
 public interface RoleService {
 
     /**
-     * 分页查询角色列表.
+     * Paging query role list.
      *
      * @param pageNo
      * @param pageSize
@@ -40,7 +40,7 @@ public interface RoleService {
     IPage<RoleRespDTO> listRole(int pageNo, int pageSize);
 
     /**
-     * 新增角色.
+     * Add role.
      *
      * @param role
      * @param userName
@@ -48,7 +48,7 @@ public interface RoleService {
     void addRole(String role, String userName);
 
     /**
-     * 删除角色.
+     * Delete role.
      *
      * @param role
      * @param userName
@@ -56,11 +56,10 @@ public interface RoleService {
     void deleteRole(String role, String userName);
 
     /**
-     * 根据角色模糊搜索.
+     * Fuzzy search by role.
      *
      * @param role
      * @return
      */
     List<String> getRoleLike(String role);
-
 }

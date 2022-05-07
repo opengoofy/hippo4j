@@ -56,7 +56,5 @@ public class RankingChart {
          * inst
          */
         private Integer inst;
-
     }
-
 }

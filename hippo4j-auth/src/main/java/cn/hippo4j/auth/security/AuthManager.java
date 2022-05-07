@@ -56,8 +56,6 @@ public class AuthManager {
         } catch (AuthenticationException e) {
             throw new AccessException("Unknown user.");
         }
-
         return jwtTokenManager.createToken(userName);
     }
-
 }

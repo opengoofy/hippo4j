@@ -53,5 +53,4 @@ public class LineChartInfo {
      * fourList
      */
     private List<Object> fourList;
-
 }

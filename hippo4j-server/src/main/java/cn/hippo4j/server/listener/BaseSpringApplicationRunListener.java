@@ -72,5 +72,4 @@ public class BaseSpringApplicationRunListener implements SpringApplicationRunLis
     public int getOrder() {
         return HIGHEST_PRECEDENCE;
     }
-
 }

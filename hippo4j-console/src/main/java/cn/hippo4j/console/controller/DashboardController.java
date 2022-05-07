@@ -68,5 +68,4 @@ public class DashboardController {
         RankingChart rankingChart = dashboardService.getRankingChart();
         return Results.success(rankingChart);
     }
-
 }

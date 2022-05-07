@@ -79,5 +79,4 @@ public class NotifyController {
         notifyService.enableNotify(id, status);
         return Results.success();
     }
-
 }

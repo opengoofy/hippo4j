@@ -33,7 +33,7 @@ import java.util.List;
 public interface UserService {
 
     /**
-     * 分页查询用户列表.
+     * Paging query user list.
      *
      * @param reqDTO
      * @return
@@ -41,28 +41,28 @@ public interface UserService {
     IPage<UserRespDTO> listUser(UserQueryPageReqDTO reqDTO);
 
     /**
-     * 新增用户.
+     * New users.
      *
      * @param reqDTO
      */
     void addUser(UserReqDTO reqDTO);
 
     /**
-     * 修改用户.
+     * Modify user.
      *
      * @param reqDTO
      */
     void updateUser(UserReqDTO reqDTO);
 
     /**
-     * 删除用户.
+     * Delete users.
      *
      * @param userName
      */
     void deleteUser(String userName);
 
     /**
-     * 根据用户名模糊搜索.
+     * Fuzzy search by username.
      *
      * @param userName
      * @return
@@ -70,11 +70,10 @@ public interface UserService {
     List<String> getUserLikeUsername(String userName);
 
     /**
-     * 获取用户详情.
+     * Get user details.
      *
      * @param reqDTO
      * @return
      */
     UserRespDTO getUser(UserReqDTO reqDTO);
-
 }

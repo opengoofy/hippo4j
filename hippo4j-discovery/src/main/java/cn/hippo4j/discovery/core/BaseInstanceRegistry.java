@@ -110,13 +110,11 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
     public boolean renew(InstanceInfo.InstanceRenew instanceRenew) {
         String appName = instanceRenew.getAppName();
         String instanceId = instanceRenew.getInstanceId();
-
         Map<String, Lease<InstanceInfo>> registryMap = registry.get(appName);
         Lease<InstanceInfo> leaseToRenew;
         if (registryMap == null || (leaseToRenew = registryMap.get(instanceId)) == null) {
             return false;
         }
-
         leaseToRenew.renew();
         return true;
     }
@@ -130,13 +128,11 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
             log.warn("Failed to remove unhealthy node, no application found :: {}", appName);
             return;
         }
-
         Lease<InstanceInfo> remove = leaseMap.remove(instanceId);
         if (remove == null) {
             log.warn("Failed to remove unhealthy node, no instance found :: {}", instanceId);
             return;
         }
-
         log.info("Remove unhealthy node, node ID :: {}", instanceId);
     }
 
@@ -153,7 +149,6 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
                 }
             }
         }
-
         for (Lease<InstanceInfo> expiredLease : expiredLeases) {
             String appName = expiredLease.getHolder().getAppName();
             String id = expiredLease.getHolder().getInstanceId();
@@ -167,10 +162,8 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         if (!CollectionUtils.isEmpty(registerMap)) {
             registerMap.remove(id);
             AbstractSubjectCenter.notify(AbstractSubjectCenter.SubjectType.CLEAR_CONFIG_CACHE, () -> identify);
-
             log.info("Clean up unhealthy nodes. Node id :: {}", id);
         }
-
         return true;
     }
 
@@ -195,7 +188,6 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
             if (lastNanos == 0L) {
                 return 0L;
             }
-
             long elapsedMs = TimeUnit.NANOSECONDS.toMillis(currNanos - lastNanos);
             long compensationTime = elapsedMs - EVICTION_INTERVAL_TIMER_IN_MS;
             return compensationTime <= 0L ? 0L : compensationTime;
@@ -221,5 +213,4 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         scheduledExecutorService.scheduleWithFixedDelay(evictionTaskRef.get(),
                 EVICTION_INTERVAL_TIMER_IN_MS, EVICTION_INTERVAL_TIMER_IN_MS, TimeUnit.MILLISECONDS);
     }
-
 }

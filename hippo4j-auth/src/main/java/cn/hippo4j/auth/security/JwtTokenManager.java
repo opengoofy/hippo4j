@@ -46,10 +46,8 @@ public class JwtTokenManager {
 
     public String createToken(String userName) {
         long now = System.currentTimeMillis();
-
         Date validity;
         validity = new Date(now + TOKEN_VALIDITY_IN_SECONDS * 1000L);
-
         Claims claims = Jwts.claims().setSubject(userName);
         return Jwts.builder().setClaims(claims).setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS512, SECRET).compact();
@@ -67,12 +65,9 @@ public class JwtTokenManager {
      */
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-
         List<GrantedAuthority> authorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList((String) claims.get(AUTHORITIES_KEY));
-
         User principal = new User(claims.getSubject(), StrUtil.EMPTY, authorities);
         return new UsernamePasswordAuthenticationToken(principal, StrUtil.EMPTY, authorities);
     }
-
 }

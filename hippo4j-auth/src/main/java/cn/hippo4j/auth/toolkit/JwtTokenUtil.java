@@ -45,22 +45,22 @@ public class JwtTokenUtil {
     public static final String ISS = "admin";
 
     /**
-     * 角色的 Key
+     * Character key.
      */
     private static final String ROLE_CLAIMS = "rol";
 
     /**
-     * 过期时间是 3600 秒, 既 24 小时
+     * Expiration time is 3600 seconds, which is 24 hours.
      */
     private static final long EXPIRATION = 86400L;
 
     /**
-     * 选择了记住我之后的过期时间为 7 天
+     * 7 days after selecting Remember me.
      */
     private static final long EXPIRATION_REMEMBER = 7 * EXPIRATION;
 
     /**
-     * 创建 Token.
+     * Create Token.
      *
      * @param id
      * @param username
@@ -83,7 +83,7 @@ public class JwtTokenUtil {
     }
 
     /**
-     * Token 中获取用户名.
+     * Get the username from Token.
      *
      * @param token
      * @return
@@ -94,7 +94,7 @@ public class JwtTokenUtil {
     }
 
     /**
-     * Token 中获取用户名.
+     * Get the username from Token.
      *
      * @param token
      * @return
@@ -105,7 +105,7 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 获取用户角色.
+     * Get user role.
      *
      * @param token
      * @return
@@ -115,7 +115,7 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 是否已过期.
+     * Has it expired.
      *
      * @param token
      * @return
@@ -131,5 +131,4 @@ public class JwtTokenUtil {
     private static Claims getTokenBody(String token) {
         return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
     }
-
 }

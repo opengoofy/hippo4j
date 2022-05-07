@@ -31,23 +31,22 @@ import lombok.experimental.Accessors;
 public class ChartInfo {
 
     /**
-     * 租户统计
+     * tenantCount
      */
     private Integer tenantCount;
 
     /**
-     * 项目统计
+     * itemCount
      */
     private Integer itemCount;
 
     /**
-     * 线程池统计
+     * threadPoolCount
      */
     private Integer threadPoolCount;
 
     /**
-     * 线程池实例统计
+     * threadPoolInstanceCount
      */
     private Integer threadPoolInstanceCount;
-
 }

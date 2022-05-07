@@ -42,7 +42,6 @@ public class ClientCloseHookRemoveNode implements ClientCloseHookExecute {
         log.info(
                 "Remove Node, Execute client hook function. Req :: {}",
                 JSONUtil.toJSONString(req));
-
         try {
             InstanceInfo instanceInfo = new InstanceInfo();
             instanceInfo.setAppName(req.getAppName()).setInstanceId(req.getInstanceId());
@@ -51,5 +50,4 @@ public class ClientCloseHookRemoveNode implements ClientCloseHookExecute {
             log.error("Failed to delete node hook.", ex);
         }
     }
-
 }

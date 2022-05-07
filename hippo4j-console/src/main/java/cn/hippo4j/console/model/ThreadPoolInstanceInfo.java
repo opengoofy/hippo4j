@@ -48,5 +48,4 @@ public class ThreadPoolInstanceInfo extends ConfigAllInfo {
      * active
      */
     private String active;
-
 }

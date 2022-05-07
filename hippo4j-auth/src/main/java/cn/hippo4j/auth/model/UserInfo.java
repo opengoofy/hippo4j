@@ -71,5 +71,4 @@ public class UserInfo {
     @TableLogic
     @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
-
 }

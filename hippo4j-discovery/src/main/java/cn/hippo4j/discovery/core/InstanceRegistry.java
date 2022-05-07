@@ -58,5 +58,4 @@ public interface InstanceRegistry<T> {
      * @param info
      */
     void remove(T info);
-
 }

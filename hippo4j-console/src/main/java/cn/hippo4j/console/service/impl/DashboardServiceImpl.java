@@ -17,16 +17,15 @@
 
 package cn.hippo4j.console.service.impl;
 
+import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.GroupKey;
-import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.HisRunDataMapper;
 import cn.hippo4j.config.mapper.ItemInfoMapper;
 import cn.hippo4j.config.mapper.TenantInfoMapper;
 import cn.hippo4j.config.model.*;
 import cn.hippo4j.config.service.ConfigCacheService;
-import cn.hippo4j.config.service.biz.HisRunDataService;
 import cn.hippo4j.console.model.*;
 import cn.hippo4j.console.service.DashboardService;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
@@ -65,8 +64,6 @@ public class DashboardServiceImpl implements DashboardService {
 
     private final ConfigInfoMapper configInfoMapper;
 
-    private final HisRunDataService hisRunDataService;
-
     private final HisRunDataMapper hisRunDataMapper;
 
     private final BaseInstanceRegistry baseInstanceRegistry;
@@ -76,7 +73,6 @@ public class DashboardServiceImpl implements DashboardService {
         Integer tenantCount = tenantInfoMapper.selectCount(Wrappers.lambdaQuery(TenantInfo.class).eq(TenantInfo::getDelFlag, DelEnum.NORMAL));
         Integer itemCount = itemInfoMapper.selectCount(Wrappers.lambdaQuery(ItemInfo.class).eq(ItemInfo::getDelFlag, DelEnum.NORMAL));
         Integer threadPoolCount = configInfoMapper.selectCount(Wrappers.lambdaQuery(ConfigAllInfo.class).eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL));
-
         ChartInfo chartInfo = new ChartInfo();
         chartInfo.setTenantCount(tenantCount)
                 .setItemCount(itemCount)
@@ -89,14 +85,11 @@ public class DashboardServiceImpl implements DashboardService {
     public LineChartInfo getLineChatInfo() {
         Date currentDate = new Date();
         DateTime startTime = DateUtil.offsetMinute(currentDate, -10);
-
         List<HisRunDataMapper.ThreadPoolTaskRanking> threadPoolTaskRankings = hisRunDataMapper.queryThreadPoolMaxRanking(startTime.getTime(), currentDate.getTime());
-
         List<Object> oneList = Lists.newArrayList();
         List<Object> twoList = Lists.newArrayList();
         List<Object> threeList = Lists.newArrayList();
         List<Object> fourList = Lists.newArrayList();
-
         ArrayList<List<Object>> lists = Lists.newArrayList(oneList, twoList, threeList, fourList);
         for (int i = 0; i < threadPoolTaskRankings.size(); i++) {
             List<Object> eachList = lists.get(i);
@@ -106,7 +99,6 @@ public class DashboardServiceImpl implements DashboardService {
             eachList.add(taskRanking.getMaxRejectCount());
             eachList.add(taskRanking.getMaxCompletedTaskCount());
         }
-
         return new LineChartInfo(oneList, twoList, threeList, fourList);
     }
 
@@ -126,16 +118,13 @@ public class DashboardServiceImpl implements DashboardService {
                 Integer threadPoolCount = configInfoMapper.selectCount(threadPoolQueryWrapper);
                 tenantThreadPoolNum += threadPoolCount;
             }
-
             Dict dict = Dict.create().set("name", tenant.getTenantId()).set("value", tenantThreadPoolNum);
             tenantChartList.add(dict);
         }
-
         List resultTenantChartList = tenantChartList.stream()
                 .sorted((one, two) -> (int) two.get("value") - (int) one.get("value"))
                 .limit(5)
                 .collect(Collectors.toList());
-
         return new TenantChart(resultTenantChartList);
     }
 
@@ -143,7 +132,6 @@ public class DashboardServiceImpl implements DashboardService {
     public PieChartInfo getPieChart() {
         LambdaQueryWrapper<ItemInfo> itemQueryWrapper = Wrappers.lambdaQuery(ItemInfo.class).eq(ItemInfo::getDelFlag, DelEnum.NORMAL).select(ItemInfo::getItemId);
         List<Object> itemNameList = itemInfoMapper.selectObjs(itemQueryWrapper);
-
         List<Map<String, Object>> pieDataList = Lists.newArrayList();
         for (Object each : itemNameList) {
             LambdaQueryWrapper<ConfigAllInfo> threadPoolQueryWrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
@@ -155,9 +143,7 @@ public class DashboardServiceImpl implements DashboardService {
                 pieDataList.add(dict);
             }
         }
-
         pieDataList.sort((one, two) -> (int) two.get("value") - (int) one.get("value"));
-
         List<String> resultItemIds = Lists.newArrayList();
         List<Map<String, Object>> resultPieDataList = pieDataList.stream()
                 .limit(5)
@@ -166,7 +152,6 @@ public class DashboardServiceImpl implements DashboardService {
                     return each;
                 })
                 .collect(Collectors.toList());
-
         return new PieChartInfo(resultItemIds, resultPieDataList);
     }
 
@@ -174,7 +159,6 @@ public class DashboardServiceImpl implements DashboardService {
     public RankingChart getRankingChart() {
         Date currentDate = new Date();
         DateTime tenTime = DateUtil.offsetMinute(currentDate, -10);
-
         List<RankingChart.RankingChartInfo> resultList = Lists.newArrayList();
         List<HisRunDataMapper.ThreadPoolTaskRanking> threadPoolTaskRankings = hisRunDataMapper.queryThreadPoolTaskSumRanking(tenTime.getTime(), currentDate.getTime());
         threadPoolTaskRankings.forEach(each -> {
@@ -191,14 +175,10 @@ public class DashboardServiceImpl implements DashboardService {
                 Map<String, CacheItem> content = ConfigCacheService.getContent(groupKey);
                 rankingChartInfo.setInst(content.keySet().size());
             }
-
             String keyTenant = GroupKey.getKeyTenant(each.getTenantId(), each.getItemId(), each.getTpId());
             rankingChartInfo.setGroupKey(keyTenant);
-
             resultList.add(rankingChartInfo);
         });
-
         return new RankingChart(resultList);
     }
-
 }

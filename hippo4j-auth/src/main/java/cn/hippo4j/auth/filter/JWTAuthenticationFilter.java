@@ -67,7 +67,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-        // 从输入流中获取到登录的信息
+        // Get logged in information from the input stream.
         try {
             LoginUser loginUser = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
             rememberMe.set(loginUser.getRememberMe());
@@ -87,13 +87,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
             boolean isRemember = rememberMe.get() == 1;
-
             String role = "";
             Collection<? extends GrantedAuthority> authorities = jwtUser.getAuthorities();
             for (GrantedAuthority authority : authorities) {
                 role = authority.getAuthority();
             }
-
             String token = JwtTokenUtil.createToken(jwtUser.getId(), jwtUser.getUsername(), role, isRemember);
             response.setHeader("token", JwtTokenUtil.TOKEN_PREFIX + token);
             response.setCharacterEncoding("UTF-8");
@@ -111,5 +109,4 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(JSONUtil.toJsonStr(new ReturnT(-1, "Server Error")));
     }
-
 }

@@ -39,5 +39,4 @@ public class TenantChart {
      * tenantCharts
      */
     private List<Map<String, Object>> tenantCharts;
-
 }
