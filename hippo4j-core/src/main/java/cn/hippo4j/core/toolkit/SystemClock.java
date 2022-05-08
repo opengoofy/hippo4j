@@ -35,6 +35,7 @@ public class SystemClock {
     private static final String THREAD_NAME = "system.clock";
 
     private static class InstanceHolder {
+
         private static final SystemClock INSTANCE = new SystemClock(1);
     }
 

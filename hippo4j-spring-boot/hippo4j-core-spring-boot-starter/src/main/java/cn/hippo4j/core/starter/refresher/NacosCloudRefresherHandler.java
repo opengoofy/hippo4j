@@ -50,6 +50,7 @@ public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRef
 
         nacosConfigManager.getConfigService().addListener(nacosConfig.get("data-id"),
                 nacosConfig.get("group"), new Listener() {
+
                     @Override
                     public Executor getExecutor() {
                         return dynamicRefreshExecutorService;

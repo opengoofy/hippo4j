@@ -40,6 +40,7 @@ public class ThreadPoolOperation {
 
     public Listener subscribeConfig(String tpId, Executor executor, ThreadPoolSubscribeCallback threadPoolSubscribeCallback) {
         Listener configListener = new Listener() {
+
             @Override
             public void receiveConfigInfo(String config) {
                 threadPoolSubscribeCallback.callback(config);

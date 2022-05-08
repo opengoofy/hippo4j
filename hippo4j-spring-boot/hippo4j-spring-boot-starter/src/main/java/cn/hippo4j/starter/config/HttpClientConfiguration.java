@@ -62,6 +62,7 @@ public class HttpClientConfiguration {
     @SneakyThrows
     private void supportHttps(OkHttpClient.Builder builder) {
         final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+
             @Override
             public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
             }

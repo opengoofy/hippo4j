@@ -29,6 +29,7 @@ public enum ErrorCodeEnum implements ErrorCode {
      * UNKNOWN_ERROR
      */
     UNKNOWN_ERROR {
+
         @Override
         public String getCode() {
             return "1";
@@ -44,6 +45,7 @@ public enum ErrorCodeEnum implements ErrorCode {
      * VALIDATION_ERROR
      */
     VALIDATION_ERROR {
+
         @Override
         public String getCode() {
             return "2";
@@ -59,6 +61,7 @@ public enum ErrorCodeEnum implements ErrorCode {
      * SERVICE_ERROR
      */
     SERVICE_ERROR {
+
         @Override
         public String getCode() {
             return "3";
@@ -74,6 +77,7 @@ public enum ErrorCodeEnum implements ErrorCode {
      * NOT_FOUND
      */
     NOT_FOUND {
+
         @Override
         public String getCode() {
             return "404";
@@ -89,6 +93,7 @@ public enum ErrorCodeEnum implements ErrorCode {
      * LOGIN_TIMEOUT
      */
     LOGIN_TIMEOUT {
+
         @Override
         public String getCode() {
             return "A000004";

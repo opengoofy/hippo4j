@@ -29,6 +29,7 @@ public enum ConfigFileTypeEnum {
      * PROPERTIES
      */
     PROPERTIES {
+
         @Override
         public String type() {
             return "properties";
@@ -39,6 +40,7 @@ public enum ConfigFileTypeEnum {
      * YML
      */
     YML {
+
         @Override
         public String type() {
             return "yml";
@@ -49,6 +51,7 @@ public enum ConfigFileTypeEnum {
      * YAML
      */
     YAML {
+
         @Override
         public String type() {
             return "yaml";
