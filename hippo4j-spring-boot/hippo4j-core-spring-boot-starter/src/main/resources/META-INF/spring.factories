@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.core.spring.boot.starter.config.DynamicThreadPoolCoreAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.core.springboot.starter.config.DynamicThreadPoolCoreAutoConfiguration
