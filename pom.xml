@@ -21,7 +21,7 @@
         <module>hippo4j-example</module>
         <module>hippo4j-server</module>
         <module>hippo4j-spring-boot</module>
-        <module>hippo4j-tools</module>
+        <module>hippo4j-tool</module>
     </modules>
 
     <properties>

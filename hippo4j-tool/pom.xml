@@ -9,14 +9,13 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>hippo4j-tools</artifactId>
+    <artifactId>hippo4j-tool</artifactId>
     <packaging>pom</packaging>
 
     <name>tools</name>
-    <description>动态线程池工具类模块</description>
+    <description>Dynamic thread pool tool class module</description>
 
     <modules>
-        <!-- 日志记录 -->
         <module>log-record-tool</module>
     </modules>
 
