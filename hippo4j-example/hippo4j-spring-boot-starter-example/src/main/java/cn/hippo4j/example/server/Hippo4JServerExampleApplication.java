@@ -28,5 +28,4 @@ public class Hippo4JServerExampleApplication {
     public static void main(String[] args) {
         SpringApplication.run(Hippo4JServerExampleApplication.class, args);
     }
-
 }
