@@ -2,18 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>cn.hippo4j</groupId>
         <artifactId>hippo4j-tool</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>log-record-tool</artifactId>
     <packaging>jar</packaging>
-
-    <name>${project.artifactId}</name>
-    <description>操作日志记录工具类.</description>
+    <name>log-record-tool</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
@@ -56,5 +52,4 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
     </dependencies>
-
 </project>
