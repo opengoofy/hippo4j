@@ -17,10 +17,10 @@
 
 package cn.hippo4j.core.executor.web;
 
-import cn.hippo4j.common.model.PoolBaseInfo;
-import cn.hippo4j.common.model.PoolParameter;
-import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolBaseInfo;
+import cn.hippo4j.common.model.ThreadPoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.toolkit.CalculateUtil;
 import cn.hutool.core.date.DateUtil;
@@ -63,8 +63,8 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     }
 
     @Override
-    public PoolBaseInfo simpleInfo() {
-        PoolBaseInfo poolBaseInfo = new PoolBaseInfo();
+    public ThreadPoolBaseInfo simpleInfo() {
+        ThreadPoolBaseInfo poolBaseInfo = new ThreadPoolBaseInfo();
         XnioWorker xnioWorker = (XnioWorker) executor;
         try {
             int coreSize = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
@@ -83,10 +83,10 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     }
 
     @Override
-    public PoolParameter getWebThreadPoolParameter() {
-        PoolParameterInfo parameterInfo = null;
+    public ThreadPoolParameter getWebThreadPoolParameter() {
+        ThreadPoolParameterInfo parameterInfo = null;
         try {
-            parameterInfo = new PoolParameterInfo();
+            parameterInfo = new ThreadPoolParameterInfo();
             XnioWorker xnioWorker = (XnioWorker) executor;
             int minThreads = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int maxThreads = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
@@ -102,8 +102,8 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     }
 
     @Override
-    public PoolRunStateInfo getWebRunStateInfo() {
-        PoolRunStateInfo stateInfo = new PoolRunStateInfo();
+    public ThreadPoolRunStateInfo getWebRunStateInfo() {
+        ThreadPoolRunStateInfo stateInfo = new ThreadPoolRunStateInfo();
         XnioWorker xnioWorker = (XnioWorker) executor;
 
         Field field = ReflectionUtils.findField(XnioWorker.class, "taskPool");
@@ -149,12 +149,12 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     }
 
     @Override
-    public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
+    public void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo) {
         try {
             XnioWorker xnioWorker = (XnioWorker) executor;
-            Integer coreSize = poolParameterInfo.getCoreSize();
-            Integer maxSize = poolParameterInfo.getMaxSize();
-            Integer keepAliveTime = poolParameterInfo.getKeepAliveTime();
+            Integer coreSize = threadPoolParameterInfo.getCoreSize();
+            Integer maxSize = threadPoolParameterInfo.getMaxSize();
+            Integer keepAliveTime = threadPoolParameterInfo.getKeepAliveTime();
             int originalCoreSize = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int originalMaximumPoolSize = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
             int originalKeepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);

@@ -18,7 +18,7 @@
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.model.PoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameter;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -74,7 +74,7 @@ public class Md5Util {
         return new String(out);
     }
 
-    public static String getTpContentMd5(PoolParameter config) {
+    public static String getTpContentMd5(ThreadPoolParameter config) {
         return Md5Util.md5Hex(ContentUtil.getPoolContent(config), "UTF-8");
     }
 

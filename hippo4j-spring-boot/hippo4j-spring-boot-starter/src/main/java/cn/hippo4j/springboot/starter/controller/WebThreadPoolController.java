@@ -17,9 +17,9 @@
 
 package cn.hippo4j.springboot.starter.controller;
 
-import cn.hippo4j.common.model.PoolBaseInfo;
-import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolBaseInfo;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.core.executor.web.WebThreadPoolHandlerChoose;
@@ -42,20 +42,20 @@ public class WebThreadPoolController {
     private final WebThreadPoolHandlerChoose webThreadPoolServiceChoose;
 
     @GetMapping("/web/base/info")
-    public Result<PoolBaseInfo> getPoolBaseState() {
-        PoolBaseInfo poolBaseInfo = webThreadPoolServiceChoose.choose().simpleInfo();
+    public Result<ThreadPoolBaseInfo> getPoolBaseState() {
+        ThreadPoolBaseInfo poolBaseInfo = webThreadPoolServiceChoose.choose().simpleInfo();
         return Results.success(poolBaseInfo);
     }
 
     @GetMapping("/web/run/state")
-    public Result<PoolRunStateInfo> getPoolRunState() {
-        PoolRunStateInfo poolRunState = webThreadPoolServiceChoose.choose().getWebRunStateInfo();
+    public Result<ThreadPoolRunStateInfo> getPoolRunState() {
+        ThreadPoolRunStateInfo poolRunState = webThreadPoolServiceChoose.choose().getWebRunStateInfo();
         return Results.success(poolRunState);
     }
 
     @PostMapping("/web/update/pool")
-    public Result<Void> updateWebThreadPool(@RequestBody PoolParameterInfo poolParameterInfo) {
-        webThreadPoolServiceChoose.choose().updateWebThreadPool(poolParameterInfo);
+    public Result<Void> updateWebThreadPool(@RequestBody ThreadPoolParameterInfo threadPoolParameterInfo) {
+        webThreadPoolServiceChoose.choose().updateWebThreadPool(threadPoolParameterInfo);
         return Results.success();
     }
 }

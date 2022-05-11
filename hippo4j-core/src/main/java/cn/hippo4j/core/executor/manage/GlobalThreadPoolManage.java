@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.manage;
 
-import cn.hippo4j.common.model.PoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import com.google.common.collect.Lists;
 
@@ -36,7 +36,7 @@ public class GlobalThreadPoolManage {
     /**
      * Dynamic thread pool parameter container.
      */
-    private static final Map<String, PoolParameter> POOL_PARAMETER = new ConcurrentHashMap();
+    private static final Map<String, ThreadPoolParameter> POOL_PARAMETER = new ConcurrentHashMap();
 
     /**
      * Dynamic thread pool wrapper.
@@ -59,7 +59,7 @@ public class GlobalThreadPoolManage {
      * @param threadPoolId
      * @return
      */
-    public static PoolParameter getPoolParameter(String threadPoolId) {
+    public static ThreadPoolParameter getPoolParameter(String threadPoolId) {
         return POOL_PARAMETER.get(threadPoolId);
     }
 
@@ -67,12 +67,12 @@ public class GlobalThreadPoolManage {
      * Register dynamic thread pool wrapper and parameters.
      *
      * @param threadPoolId
-     * @param poolParameter
+     * @param threadPoolParameter
      * @param executor
      */
-    public static void register(String threadPoolId, PoolParameter poolParameter, DynamicThreadPoolWrapper executor) {
+    public static void register(String threadPoolId, ThreadPoolParameter threadPoolParameter, DynamicThreadPoolWrapper executor) {
         registerPool(threadPoolId, executor);
-        registerPoolParameter(threadPoolId, poolParameter);
+        registerPoolParameter(threadPoolId, threadPoolParameter);
     }
 
     /**
@@ -91,7 +91,7 @@ public class GlobalThreadPoolManage {
      * @param threadPoolId
      * @param poolParameter
      */
-    public static void registerPoolParameter(String threadPoolId, PoolParameter poolParameter) {
+    public static void registerPoolParameter(String threadPoolId, ThreadPoolParameter poolParameter) {
         POOL_PARAMETER.put(threadPoolId, poolParameter);
     }
 

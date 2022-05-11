@@ -17,7 +17,7 @@
 
 package cn.hippo4j.springboot.starter.monitor.collect;
 
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.monitor.AbstractMessage;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageTypeEnum;
@@ -50,7 +50,7 @@ public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements C
         List<Message> runtimeMessages = Lists.newArrayList();
         List<String> listThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
         for (String each : listThreadPoolId) {
-            PoolRunStateInfo poolRunState = getPoolRunState(each);
+            ThreadPoolRunStateInfo poolRunState = getPoolRunState(each);
             RuntimeMessage runtimeMessage = BeanUtil.toBean(poolRunState, RuntimeMessage.class);
             runtimeMessage.setGroupKey(getThreadPoolIdentify(each, properties.getItemId(), properties.getNamespace()));
             runtimeMessages.add(runtimeMessage);
@@ -61,7 +61,7 @@ public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements C
     }
 
     @Override
-    protected PoolRunStateInfo supplement(PoolRunStateInfo basePoolRunStateInfo) {
-        return basePoolRunStateInfo;
+    protected ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo threadPoolRunStateInfo) {
+        return threadPoolRunStateInfo;
     }
 }

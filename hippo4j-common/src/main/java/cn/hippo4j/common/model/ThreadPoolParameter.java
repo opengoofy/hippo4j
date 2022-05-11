@@ -18,12 +18,12 @@
 package cn.hippo4j.common.model;
 
 /**
- * Pool parameter.
+ * Thread-pool parameter.
  *
  * @author chen.ma
  * @date 2021/6/24 16:04
  */
-public interface PoolParameter {
+public interface ThreadPoolParameter {
 
     /**
      * tenantId

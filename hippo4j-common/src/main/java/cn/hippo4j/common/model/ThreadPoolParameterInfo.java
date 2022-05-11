@@ -30,7 +30,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-public class PoolParameterInfo implements PoolParameter, Serializable {
+public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializable {
 
     private static final long serialVersionUID = -7123935122108553864L;
 

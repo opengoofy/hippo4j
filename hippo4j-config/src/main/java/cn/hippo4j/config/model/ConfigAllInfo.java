@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.model;
 
-import cn.hippo4j.common.model.PoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -36,7 +36,7 @@ import java.util.Date;
  */
 @Data
 @TableName("config")
-public class ConfigAllInfo extends ConfigInfo implements PoolParameter {
+public class ConfigAllInfo extends ConfigInfo implements ThreadPoolParameter {
 
     private static final long serialVersionUID = -2417394244017463665L;
 

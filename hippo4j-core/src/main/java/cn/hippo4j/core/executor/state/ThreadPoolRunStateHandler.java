@@ -17,8 +17,8 @@
 
 package cn.hippo4j.core.executor.state;
 
-import cn.hippo4j.common.model.ManyPoolRunStateInfo;
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ManyThreadPoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.ByteConvertUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
@@ -51,8 +51,7 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
     private final ConfigurableEnvironment environment;
 
     @Override
-    protected PoolRunStateInfo supplement(PoolRunStateInfo poolRunStateInfo) {
-        // 内存占比: 使用内存 / 最大内存
+    protected ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo poolRunStateInfo) {
         RuntimeInfo runtimeInfo = new RuntimeInfo();
         String memoryProportion = StrUtil.builder(
                 "已分配: ",
@@ -75,12 +74,12 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
             rejectedName = pool.getRejectedExecutionHandler().getClass().getSimpleName();
         }
         poolRunStateInfo.setRejectedName(rejectedName);
-        ManyPoolRunStateInfo manyPoolRunStateInfo = BeanUtil.toBean(poolRunStateInfo, ManyPoolRunStateInfo.class);
-        manyPoolRunStateInfo.setIdentify(CLIENT_IDENTIFICATION_VALUE);
+        ManyThreadPoolRunStateInfo manyThreadPoolRunStateInfo = BeanUtil.toBean(poolRunStateInfo, ManyThreadPoolRunStateInfo.class);
+        manyThreadPoolRunStateInfo.setIdentify(CLIENT_IDENTIFICATION_VALUE);
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
-        manyPoolRunStateInfo.setActive(active.toUpperCase());
+        manyThreadPoolRunStateInfo.setActive(active.toUpperCase());
         String threadPoolState = ThreadPoolStatusHandler.getThreadPoolState(pool);
-        manyPoolRunStateInfo.setState(threadPoolState);
-        return manyPoolRunStateInfo;
+        manyThreadPoolRunStateInfo.setState(threadPoolState);
+        return manyThreadPoolRunStateInfo;
     }
 }

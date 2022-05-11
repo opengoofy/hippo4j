@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.springboot.starter.monitor;
 
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class LogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
     }
 
     @Override
-    protected void execute(PoolRunStateInfo poolRunStateInfo) {
+    protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
         log.info("{}", JSONUtil.toJSONString(poolRunStateInfo));
     }
 

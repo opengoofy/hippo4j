@@ -18,8 +18,8 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.enums.EnableEnum;
-import cn.hippo4j.common.model.PoolParameter;
-import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
@@ -57,7 +57,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
 
     @Override
     public void dynamicRefresh(String content) {
-        PoolParameterInfo parameter = JSONUtil.parseObject(content, PoolParameterInfo.class);
+        ThreadPoolParameterInfo parameter = JSONUtil.parseObject(content, ThreadPoolParameterInfo.class);
 
         String threadPoolId = parameter.getTpId();
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
@@ -71,7 +71,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
      * @param parameter
      * @param executor
      */
-    public void refreshDynamicPool(PoolParameter parameter, ThreadPoolExecutor executor) {
+    public void refreshDynamicPool(ThreadPoolParameter parameter, ThreadPoolExecutor executor) {
         String threadPoolId = parameter.getTpId();
         int originalCoreSize = executor.getCorePoolSize();
         int originalMaximumPoolSize = executor.getMaximumPoolSize();
@@ -129,7 +129,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
      * @param executor
      * @param parameter
      */
-    public void changePoolInfo(ThreadPoolExecutor executor, PoolParameter parameter) {
+    public void changePoolInfo(ThreadPoolExecutor executor, ThreadPoolParameter parameter) {
         if (parameter.getCoreSize() != null && parameter.getMaxSize() != null) {
             if (parameter.getMaxSize() < executor.getMaximumPoolSize()) {
                 executor.setCorePoolSize(parameter.getCoreSize());

@@ -19,7 +19,7 @@ package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
@@ -132,9 +132,9 @@ public class ThreadPoolController {
 
     @PostMapping("/web/update/pool")
     public Result<Void> updateWebThreadPool(@RequestParam(value = "clientAddress") String clientAddress,
-                                            @RequestBody PoolParameterInfo poolParameterInfo) {
+                                            @RequestBody ThreadPoolParameterInfo threadPoolParameterInfo) {
         String urlString = StrBuilder.create("http://", clientAddress, "/web/update/pool").toString();
-        String data = HttpUtil.post(urlString, JSONUtil.toJSONString(poolParameterInfo), HTTP_EXECUTE_TIMEOUT);
+        String data = HttpUtil.post(urlString, JSONUtil.toJSONString(threadPoolParameterInfo), HTTP_EXECUTE_TIMEOUT);
         Result result = JSONUtil.parseObject(data, Result.class);
         return result;
     }

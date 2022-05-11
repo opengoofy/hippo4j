@@ -18,8 +18,8 @@
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.model.PoolParameter;
-import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 
 /**
  * Content util.
@@ -29,9 +29,9 @@ import cn.hippo4j.common.model.PoolParameterInfo;
  */
 public class ContentUtil {
 
-    public static String getPoolContent(PoolParameter parameter) {
-        PoolParameterInfo poolInfo = new PoolParameterInfo();
-        poolInfo.setTenantId(parameter.getTenantId())
+    public static String getPoolContent(ThreadPoolParameter parameter) {
+        ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
+        threadPoolParameterInfo.setTenantId(parameter.getTenantId())
                 .setItemId(parameter.getItemId())
                 .setTpId(parameter.getTpId())
                 .setCoreSize(parameter.getCoreSize())
@@ -44,10 +44,10 @@ public class ContentUtil {
                 .setLivenessAlarm(parameter.getLivenessAlarm())
                 .setAllowCoreThreadTimeOut(parameter.getAllowCoreThreadTimeOut())
                 .setRejectedType(parameter.getRejectedType());
-        return JSONUtil.toJSONString(poolInfo);
+        return JSONUtil.toJSONString(threadPoolParameterInfo);
     }
 
-    public static String getGroupKey(PoolParameter parameter) {
+    public static String getGroupKey(ThreadPoolParameter parameter) {
         StringBuilder stringBuilder = new StringBuilder();
         String resultStr = stringBuilder.append(parameter.getTpId())
                 .append(Constants.GROUP_KEY_DELIMITER)

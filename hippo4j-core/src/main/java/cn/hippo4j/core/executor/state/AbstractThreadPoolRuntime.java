@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.state;
 
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
@@ -40,10 +40,10 @@ public abstract class AbstractThreadPoolRuntime {
     /**
      * Supplement.
      *
-     * @param basePoolRunStateInfo
+     * @param threadPoolRunStateInfo
      * @return
      */
-    protected abstract PoolRunStateInfo supplement(PoolRunStateInfo basePoolRunStateInfo);
+    protected abstract ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo threadPoolRunStateInfo);
 
     /**
      * Get pool run state.
@@ -51,7 +51,7 @@ public abstract class AbstractThreadPoolRuntime {
      * @param threadPoolId
      * @return
      */
-    public PoolRunStateInfo getPoolRunState(String threadPoolId) {
+    public ThreadPoolRunStateInfo getPoolRunState(String threadPoolId) {
         DynamicThreadPoolWrapper executorService = GlobalThreadPoolManage.getExecutorService(threadPoolId);
         ThreadPoolExecutor pool = executorService.getExecutor();
         return getPoolRunState(threadPoolId, pool);
@@ -64,8 +64,8 @@ public abstract class AbstractThreadPoolRuntime {
      * @param executor
      * @return
      */
-    public PoolRunStateInfo getPoolRunState(String threadPoolId, Executor executor) {
-        PoolRunStateInfo stateInfo = new PoolRunStateInfo();
+    public ThreadPoolRunStateInfo getPoolRunState(String threadPoolId, Executor executor) {
+        ThreadPoolRunStateInfo stateInfo = new ThreadPoolRunStateInfo();
         ThreadPoolExecutor pool = (ThreadPoolExecutor) executor;
         // 核心线程数
         int corePoolSize = pool.getCorePoolSize();

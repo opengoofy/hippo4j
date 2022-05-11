@@ -17,10 +17,10 @@
 
 package cn.hippo4j.core.executor.web;
 
-import cn.hippo4j.common.model.PoolBaseInfo;
-import cn.hippo4j.common.model.PoolParameter;
-import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolBaseInfo;
+import cn.hippo4j.common.model.ThreadPoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 
 import java.util.concurrent.Executor;
 
@@ -44,26 +44,26 @@ public interface WebThreadPoolService {
      *
      * @return
      */
-    PoolBaseInfo simpleInfo();
+    ThreadPoolBaseInfo simpleInfo();
 
     /**
      * Get web thread pool parameter.
      *
      * @return
      */
-    PoolParameter getWebThreadPoolParameter();
+    ThreadPoolParameter getWebThreadPoolParameter();
 
     /**
      * Get web run state info.
      *
      * @return
      */
-    PoolRunStateInfo getWebRunStateInfo();
+    ThreadPoolRunStateInfo getWebRunStateInfo();
 
     /**
      * Update web thread pool.
      *
-     * @param poolParameterInfo
+     * @param threadPoolParameterInfo
      */
-    void updateWebThreadPool(PoolParameterInfo poolParameterInfo);
+    void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo);
 }

@@ -18,28 +18,45 @@
 package cn.hippo4j.common.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
- * Many pool run state info.
+ * Thread-pool base info.
  *
  * @author chen.ma
- * @date 2022/1/8 12:54
+ * @date 2022/1/22 12:10
  */
 @Data
-public class ManyPoolRunStateInfo extends PoolRunStateInfo {
+@Accessors(chain = true)
+public class ThreadPoolBaseInfo {
 
     /**
-     * identify
+     * coreSize
      */
-    private String identify;
+    private Integer coreSize;
 
     /**
-     * active
+     * maximumSize
      */
-    private String active;
+    private Integer maximumSize;
 
     /**
-     * state
+     * queueType
      */
-    private String state;
+    private String queueType;
+
+    /**
+     * queueCapacity
+     */
+    private Integer queueCapacity;
+
+    /**
+     * rejectedName
+     */
+    private String rejectedName;
+
+    /**
+     * keepAliveTime
+     */
+    private Long keepAliveTime;
 }

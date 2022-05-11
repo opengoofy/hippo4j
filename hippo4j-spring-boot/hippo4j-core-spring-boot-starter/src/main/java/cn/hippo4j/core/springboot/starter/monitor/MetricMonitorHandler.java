@@ -18,7 +18,7 @@
 package cn.hippo4j.core.springboot.starter.monitor;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hutool.core.bean.BeanUtil;
 import com.google.common.collect.Lists;
@@ -43,15 +43,15 @@ public class MetricMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     private final static String APPLICATION_NAME_TAG = "application.name";
 
-    private final Map<String, PoolRunStateInfo> RUN_STATE_CACHE = Maps.newConcurrentMap();
+    private final Map<String, ThreadPoolRunStateInfo> RUN_STATE_CACHE = Maps.newConcurrentMap();
 
     public MetricMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
         super(threadPoolRunStateHandler);
     }
 
     @Override
-    protected void execute(PoolRunStateInfo poolRunStateInfo) {
-        PoolRunStateInfo stateInfo = RUN_STATE_CACHE.get(poolRunStateInfo.getTpId());
+    protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
+        ThreadPoolRunStateInfo stateInfo = RUN_STATE_CACHE.get(poolRunStateInfo.getTpId());
         if (stateInfo == null) {
             RUN_STATE_CACHE.put(poolRunStateInfo.getTpId(), poolRunStateInfo);
         } else {
@@ -65,21 +65,21 @@ public class MetricMonitorHandler extends AbstractDynamicThreadPoolMonitor {
                 Tag.of(APPLICATION_NAME_TAG, applicationName));
 
         // load
-        Metrics.gauge(metricName("current.load"), tags, poolRunStateInfo, PoolRunStateInfo::getSimpleCurrentLoad);
-        Metrics.gauge(metricName("peak.load"), tags, poolRunStateInfo, PoolRunStateInfo::getSimplePeakLoad);
+        Metrics.gauge(metricName("current.load"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getSimpleCurrentLoad);
+        Metrics.gauge(metricName("peak.load"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getSimplePeakLoad);
         // thread pool
-        Metrics.gauge(metricName("core.size"), tags, poolRunStateInfo, PoolRunStateInfo::getCoreSize);
-        Metrics.gauge(metricName("maximum.size"), tags, poolRunStateInfo, PoolRunStateInfo::getMaximumSize);
-        Metrics.gauge(metricName("current.size"), tags, poolRunStateInfo, PoolRunStateInfo::getPoolSize);
-        Metrics.gauge(metricName("largest.size"), tags, poolRunStateInfo, PoolRunStateInfo::getLargestPoolSize);
-        Metrics.gauge(metricName("active.size"), tags, poolRunStateInfo, PoolRunStateInfo::getActiveSize);
+        Metrics.gauge(metricName("core.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getCoreSize);
+        Metrics.gauge(metricName("maximum.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getMaximumSize);
+        Metrics.gauge(metricName("current.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getPoolSize);
+        Metrics.gauge(metricName("largest.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getLargestPoolSize);
+        Metrics.gauge(metricName("active.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getActiveSize);
         // queue
-        Metrics.gauge(metricName("queue.size"), tags, poolRunStateInfo, PoolRunStateInfo::getQueueSize);
-        Metrics.gauge(metricName("queue.capacity"), tags, poolRunStateInfo, PoolRunStateInfo::getQueueCapacity);
-        Metrics.gauge(metricName("queue.remaining.capacity"), tags, poolRunStateInfo, PoolRunStateInfo::getQueueRemainingCapacity);
+        Metrics.gauge(metricName("queue.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getQueueSize);
+        Metrics.gauge(metricName("queue.capacity"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getQueueCapacity);
+        Metrics.gauge(metricName("queue.remaining.capacity"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getQueueRemainingCapacity);
         // other
-        Metrics.gauge(metricName("completed.task.count"), tags, poolRunStateInfo, PoolRunStateInfo::getCompletedTaskCount);
-        Metrics.gauge(metricName("reject.count"), tags, poolRunStateInfo, PoolRunStateInfo::getRejectCount);
+        Metrics.gauge(metricName("completed.task.count"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getCompletedTaskCount);
+        Metrics.gauge(metricName("reject.count"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getRejectCount);
     }
 
     private String metricName(String name) {

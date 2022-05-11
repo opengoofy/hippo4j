@@ -17,10 +17,10 @@
 
 package cn.hippo4j.core.executor.web;
 
-import cn.hippo4j.common.model.PoolBaseInfo;
-import cn.hippo4j.common.model.PoolParameter;
-import cn.hippo4j.common.model.PoolParameterInfo;
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolBaseInfo;
+import cn.hippo4j.common.model.ThreadPoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
@@ -47,8 +47,8 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
     }
 
     @Override
-    public PoolBaseInfo simpleInfo() {
-        PoolBaseInfo poolBaseInfo = new PoolBaseInfo();
+    public ThreadPoolBaseInfo simpleInfo() {
+        ThreadPoolBaseInfo poolBaseInfo = new ThreadPoolBaseInfo();
         QueuedThreadPool queuedThreadPool = (QueuedThreadPool) executor;
         poolBaseInfo.setCoreSize(queuedThreadPool.getMinThreads());
         poolBaseInfo.setMaximumSize(queuedThreadPool.getMaxThreads());
@@ -62,10 +62,10 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
     }
 
     @Override
-    public PoolParameter getWebThreadPoolParameter() {
-        PoolParameterInfo parameterInfo = null;
+    public ThreadPoolParameter getWebThreadPoolParameter() {
+        ThreadPoolParameterInfo parameterInfo = null;
         try {
-            parameterInfo = new PoolParameterInfo();
+            parameterInfo = new ThreadPoolParameterInfo();
             QueuedThreadPool jettyExecutor = (QueuedThreadPool) executor;
             int minThreads = jettyExecutor.getMinThreads();
             int maxThreads = jettyExecutor.getMaxThreads();
@@ -78,18 +78,18 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
     }
 
     @Override
-    public PoolRunStateInfo getWebRunStateInfo() {
+    public ThreadPoolRunStateInfo getWebRunStateInfo() {
         return null;
     }
 
     @Override
-    public void updateWebThreadPool(PoolParameterInfo poolParameterInfo) {
+    public void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo) {
         try {
             QueuedThreadPool jettyExecutor = (QueuedThreadPool) executor;
             int minThreads = jettyExecutor.getMinThreads();
             int maxThreads = jettyExecutor.getMaxThreads();
-            Integer coreSize = poolParameterInfo.getCoreSize();
-            Integer maxSize = poolParameterInfo.getMaxSize();
+            Integer coreSize = threadPoolParameterInfo.getCoreSize();
+            Integer maxSize = threadPoolParameterInfo.getMaxSize();
             jettyExecutor.setMinThreads(coreSize);
             jettyExecutor.setMaxThreads(maxSize);
             log.info(

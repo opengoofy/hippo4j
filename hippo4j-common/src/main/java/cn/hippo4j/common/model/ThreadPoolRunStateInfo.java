@@ -30,7 +30,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class PoolRunStateInfo extends PoolBaseInfo implements Serializable {
+public class ThreadPoolRunStateInfo extends ThreadPoolBaseInfo implements Serializable {
 
     /**
      * currentLoad

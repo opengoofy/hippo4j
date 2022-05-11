@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.springboot.starter.monitor;
 
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import lombok.RequiredArgsConstructor;
@@ -40,13 +40,13 @@ public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadP
      *
      * @param poolRunStateInfo
      */
-    protected abstract void execute(PoolRunStateInfo poolRunStateInfo);
+    protected abstract void execute(ThreadPoolRunStateInfo poolRunStateInfo);
 
     @Override
     public void collect() {
         List<String> listDynamicThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
         for (String each : listDynamicThreadPoolId) {
-            PoolRunStateInfo poolRunState = threadPoolRunStateHandler.getPoolRunState(each);
+            ThreadPoolRunStateInfo poolRunState = threadPoolRunStateHandler.getPoolRunState(each);
             execute(poolRunState);
         }
     }

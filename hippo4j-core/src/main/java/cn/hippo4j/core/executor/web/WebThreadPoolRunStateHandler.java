@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.web;
 
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.ByteConvertUtil;
 import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
 import cn.hutool.core.util.StrUtil;
@@ -34,8 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WebThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
 
     @Override
-    protected PoolRunStateInfo supplement(PoolRunStateInfo poolRunStateInfo) {
-        // 内存占比: 使用内存 / 最大内存
+    protected ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo poolRunStateInfo) {
         RuntimeInfo runtimeInfo = new RuntimeInfo();
         String memoryProportion = StrUtil.builder(
                 "已分配: ",

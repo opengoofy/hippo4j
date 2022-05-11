@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.controller;
 
 import cn.hippo4j.common.api.ThreadDetailState;
-import cn.hippo4j.common.model.PoolRunStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.model.ThreadDetailStateInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
@@ -47,8 +47,8 @@ public class PoolRunStateController {
     private final ThreadDetailState threadDetailState;
 
     @GetMapping("/run/state/{threadPoolId}")
-    public Result<PoolRunStateInfo> getPoolRunState(@PathVariable("threadPoolId") String threadPoolId) {
-        PoolRunStateInfo poolRunState = threadPoolRunStateHandler.getPoolRunState(threadPoolId);
+    public Result<ThreadPoolRunStateInfo> getPoolRunState(@PathVariable("threadPoolId") String threadPoolId) {
+        ThreadPoolRunStateInfo poolRunState = threadPoolRunStateHandler.getPoolRunState(threadPoolId);
         return Results.success(poolRunState);
     }
 

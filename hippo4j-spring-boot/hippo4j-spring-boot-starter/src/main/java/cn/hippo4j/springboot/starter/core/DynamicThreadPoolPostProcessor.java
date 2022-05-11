@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.core;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.enums.EnableEnum;
-import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
@@ -140,12 +140,12 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         Result result;
         boolean isSubscribe = false;
         ThreadPoolExecutor newDynamicPoolExecutor = null;
-        PoolParameterInfo ppi = new PoolParameterInfo();
+        ThreadPoolParameterInfo ppi = new ThreadPoolParameterInfo();
         try {
             result = httpAgent.httpGetByConfig(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 5000L);
             if (result.isSuccess() && result.getData() != null) {
                 String resultJsonStr = JSONUtil.toJSONString(result.getData());
-                if ((ppi = JSONUtil.parseObject(resultJsonStr, PoolParameterInfo.class)) != null) {
+                if ((ppi = JSONUtil.parseObject(resultJsonStr, ThreadPoolParameterInfo.class)) != null) {
                     // Create a thread pool with relevant parameters.
                     BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(ppi.getQueueType(), ppi.getCapacity());
                     newDynamicPoolExecutor = ThreadPoolBuilder.builder()

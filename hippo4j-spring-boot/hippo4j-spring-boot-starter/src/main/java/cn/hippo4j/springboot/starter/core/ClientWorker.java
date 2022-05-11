@@ -17,7 +17,7 @@
 
 package cn.hippo4j.springboot.starter.core;
 
-import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.JSONUtil;
@@ -119,7 +119,7 @@ public class ClientWorker {
                 try {
                     String content = getServerConfig(namespace, itemId, tpId, 3000L);
                     CacheData cacheData = cacheMap.get(tpId);
-                    String poolContent = ContentUtil.getPoolContent(JSONUtil.parseObject(content, PoolParameterInfo.class));
+                    String poolContent = ContentUtil.getPoolContent(JSONUtil.parseObject(content, ThreadPoolParameterInfo.class));
                     cacheData.setContent(poolContent);
                 } catch (Exception ex) {
                     // ignore
@@ -243,7 +243,7 @@ public class ClientWorker {
             String serverConfig;
             try {
                 serverConfig = getServerConfig(namespace, itemId, tpId, 3000L);
-                PoolParameterInfo poolInfo = JSONUtil.parseObject(serverConfig, PoolParameterInfo.class);
+                ThreadPoolParameterInfo poolInfo = JSONUtil.parseObject(serverConfig, ThreadPoolParameterInfo.class);
                 cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
             } catch (Exception ex) {
                 log.error("Cache Data Error. Service Unavailable :: {}", ex.getMessage());

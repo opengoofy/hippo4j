@@ -19,8 +19,8 @@ package cn.hippo4j.core.springboot.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.model.PoolParameter;
-import cn.hippo4j.common.model.PoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.notify.HippoBaseSendMessageService;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
@@ -121,11 +121,11 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             return;
         }
         try {
-            PoolParameterInfo nowParameter = buildWebPoolParameter(bindableCoreProperties);
+            ThreadPoolParameterInfo nowParameter = buildWebPoolParameter(bindableCoreProperties);
             if (nowParameter != null) {
                 WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
                 WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
-                PoolParameter beforeParameter = webThreadPoolService.getWebThreadPoolParameter();
+                ThreadPoolParameter beforeParameter = webThreadPoolService.getWebThreadPoolParameter();
                 if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
                         || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
                         || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())) {
@@ -305,8 +305,8 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
      * @param bindableCoreProperties
      * @return
      */
-    private PoolParameterInfo buildWebPoolParameter(BootstrapCoreProperties bindableCoreProperties) {
-        PoolParameterInfo parameterInfo = null;
+    private ThreadPoolParameterInfo buildWebPoolParameter(BootstrapCoreProperties bindableCoreProperties) {
+        ThreadPoolParameterInfo parameterInfo = null;
         WebThreadPoolProperties poolProperties = null;
         if (bindableCoreProperties.getTomcat() != null) {
             poolProperties = bindableCoreProperties.getTomcat();
@@ -316,7 +316,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             poolProperties = bindableCoreProperties.getJetty();
         }
         if (poolProperties != null) {
-            parameterInfo = new PoolParameterInfo();
+            parameterInfo = new ThreadPoolParameterInfo();
             parameterInfo.setCoreSize(poolProperties.getCorePoolSize());
             parameterInfo.setMaxSize(poolProperties.getMaximumPoolSize());
             parameterInfo.setKeepAliveTime(poolProperties.getKeepAliveTime());
