@@ -79,12 +79,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
@@ -184,12 +178,6 @@
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.dtflys.forest</groupId>
-                <artifactId>forest-spring-boot-starter</artifactId>
-                <version>${forest.version}</version>
             </dependency>
 
             <dependency>
@@ -401,7 +389,6 @@
     </distributionManagement>
 
     <profiles>
-        <!-- 禁用注释检查 -->
         <profile>
             <id>disable-javadoc-doclint</id>
             <activation>
