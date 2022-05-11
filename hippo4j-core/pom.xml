@@ -10,9 +10,7 @@
 
     <artifactId>hippo4j-core</artifactId>
     <packaging>jar</packaging>
-
     <name>${project.artifactId}</name>
-    <description>HIPPO4J HIPPO4J-CORE 核心代码库.</description>
 
     <dependencies>
         <dependency>

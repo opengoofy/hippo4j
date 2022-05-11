@@ -8,7 +8,7 @@
 
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>动态可观测线程池框架，为业务系统提高线上运行保障能力</description>
+    <description>Dynamic observable thread pool framework</description>
 
     <modules>
         <module>hippo4j-adapter</module>
