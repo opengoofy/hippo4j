@@ -27,7 +27,7 @@ public class ChangeThreadPoolConstants {
 
     public static final String CHANGE_THREAD_POOL_TEXT = "[{}] Changing thread pool parameters. " +
             "\n    coreSize :: [{}]" +
-            "\n    maxSize :: [{}]" +
+            "\n    maximumSize :: [{}]" +
             "\n    queueType :: [{}]" +
             "\n    capacity :: [{}]" +
             "\n    keepAliveTime :: [{}]" +

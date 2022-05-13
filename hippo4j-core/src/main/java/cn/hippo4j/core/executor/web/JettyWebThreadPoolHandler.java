@@ -95,7 +95,7 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
             log.info(
                     "[JETTY] Changed web thread pool. " +
                             "\n    coreSize :: [{}]" +
-                            "\n    maxSize :: [{}]",
+                            "\n    maximumSize :: [{}]",
                     String.format(CHANGE_DELIMITER, minThreads, jettyExecutor.getMinThreads()),
                     String.format(CHANGE_DELIMITER, maxThreads, jettyExecutor.getMaxThreads()));
         } catch (Exception ex) {

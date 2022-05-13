@@ -164,7 +164,7 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
             log.info(
                     "[UNDERTOW] Changed web thread pool. " +
                             "\n    coreSize :: [{}]" +
-                            "\n    maxSize :: [{}]" +
+                            "\n    maximumSize :: [{}]" +
                             "\n    keepAliveTime :: [{}]",
                     String.format(CHANGE_DELIMITER, originalCoreSize, coreSize),
                     String.format(CHANGE_DELIMITER, originalMaximumPoolSize, maxSize),

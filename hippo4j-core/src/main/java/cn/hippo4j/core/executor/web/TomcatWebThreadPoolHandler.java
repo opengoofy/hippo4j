@@ -125,7 +125,7 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
             log.info(
                     "[TOMCAT] Changed web thread pool. " +
                             "\n    coreSize :: [{}]" +
-                            "\n    maxSize :: [{}]" +
+                            "\n    maximumSize :: [{}]" +
                             "\n    keepAliveTime :: [{}]",
                     String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolParameterInfo.getCoreSize()),
                     String.format(CHANGE_DELIMITER, originalMaximumPoolSize, threadPoolParameterInfo.getMaxSize()),
