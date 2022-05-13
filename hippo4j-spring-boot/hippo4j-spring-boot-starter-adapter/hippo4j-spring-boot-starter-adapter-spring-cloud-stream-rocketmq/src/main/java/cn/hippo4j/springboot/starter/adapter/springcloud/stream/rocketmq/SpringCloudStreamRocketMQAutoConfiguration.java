@@ -18,6 +18,7 @@
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq;
 
 import cn.hippo4j.adapter.springcloud.stream.rocketmq.SpringCloudStreamRocketMQThreadPoolAdapter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,6 +29,7 @@ import org.springframework.context.annotation.Configuration;
 public class SpringCloudStreamRocketMQAutoConfiguration {
 
     @Bean
+    @ConditionalOnProperty(name = "spring.cloud.stream.rocketmq.binder.name-server")
     public SpringCloudStreamRocketMQThreadPoolAdapter springCloudStreamRocketMQThreadPoolAdapter() {
         return new SpringCloudStreamRocketMQThreadPoolAdapter();
     }
