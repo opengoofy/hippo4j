@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq;
+package cn.hippo4j.adapter.springcloud.stream.rocketmq;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
