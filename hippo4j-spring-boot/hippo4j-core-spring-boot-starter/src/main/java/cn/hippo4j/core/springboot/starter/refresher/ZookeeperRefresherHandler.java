@@ -17,7 +17,6 @@
 
 package cn.hippo4j.core.springboot.starter.refresher;
 
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +43,8 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
 
     private CuratorFramework curatorFramework;
 
-    public ZookeeperRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler, BootstrapCoreProperties bootstrapCoreProperties) {
-        super(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
+    public ZookeeperRefresherHandler(BootstrapCoreProperties bootstrapCoreProperties) {
+        super(bootstrapCoreProperties);
     }
 
     @Override
@@ -62,7 +61,6 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
                 loadNode(nodePath);
             }
         };
-
         final CuratorListener curatorListener = (client, curatorEvent) -> {
             final WatchedEvent watchedEvent = curatorEvent.getWatchedEvent();
             if (null != watchedEvent) {
@@ -76,7 +74,6 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
                 }
             }
         };
-
         curatorFramework.getConnectionStateListenable().addListener(connectionStateListener);
         curatorFramework.getCuratorListenable().addListener(curatorListener);
         curatorFramework.start();
@@ -102,10 +99,8 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 content.append(nodeName).append("=").append(value).append("\n");
             });
-
             dynamicRefresh(content.toString());
             registerNotifyAlarmManage();
         } catch (Exception e) {

@@ -18,21 +18,17 @@
 package cn.hippo4j.core.springboot.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
-import cn.hippo4j.core.springboot.starter.event.ThreadPoolDynamicRefreshEvent;
 import cn.hippo4j.core.springboot.starter.parser.ConfigParserHandler;
+import cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
@@ -44,32 +40,23 @@ import java.util.concurrent.ExecutorService;
  */
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean, ApplicationContextAware {
-
-    private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
+public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean {
 
     protected final BootstrapCoreProperties bootstrapCoreProperties;
 
     protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder().singlePool("client.dynamic.refresh").build();
-
-    private ApplicationContext applicationContext;
 
     @Override
     public void dynamicRefresh(String content) {
         Map<Object, Object> configInfo;
         try {
             configInfo = ConfigParserHandler.getInstance().parseConfig(content, bootstrapCoreProperties.getConfigFileType());
-        } catch (IOException e) {
-            log.error("dynamic-thread-pool parse config file error, content: {}, fileType: {}",
-                    content, bootstrapCoreProperties.getConfigFileType(), e);
+        } catch (Exception ex) {
+            log.error("dynamic-thread-pool parse config file error, content: {}, fileType: {}", content, bootstrapCoreProperties.getConfigFileType(), ex);
             return;
         }
-        
         BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
-        // web pool
-        ThreadPoolDynamicRefreshEvent event = new ThreadPoolDynamicRefreshEvent(this);
-        event.setBootstrapCoreProperties(bindableCoreProperties);
-        applicationContext.publishEvent(event);
+        ApplicationContextHolder.getInstance().publishEvent(new Hippo4jCoreDynamicRefreshEvent(this, bindableCoreProperties));
     }
 
     /**
@@ -86,11 +73,4 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             GlobalNotifyAlarmManage.put(executorProperties.getThreadPoolId(), threadPoolNotifyAlarm);
         });
     }
-    
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
-    
 }

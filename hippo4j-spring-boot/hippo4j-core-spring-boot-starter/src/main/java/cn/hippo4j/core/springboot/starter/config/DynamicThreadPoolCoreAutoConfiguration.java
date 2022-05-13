@@ -34,15 +34,21 @@ import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.core.springboot.starter.monitor.DynamicThreadPoolMonitorExecutor;
 import cn.hippo4j.core.springboot.starter.monitor.LogMonitorHandler;
 import cn.hippo4j.core.springboot.starter.monitor.MetricMonitorHandler;
+import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.springboot.starter.refresher.ApolloRefresherHandler;
 import cn.hippo4j.core.springboot.starter.refresher.NacosCloudRefresherHandler;
 import cn.hippo4j.core.springboot.starter.refresher.NacosRefresherHandler;
-import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolPostProcessor;
-import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.springboot.starter.refresher.ZookeeperRefresherHandler;
+import cn.hippo4j.core.springboot.starter.refresher.event.ExecutorsListener;
+import cn.hippo4j.core.springboot.starter.refresher.event.PlatformsListener;
+import cn.hippo4j.core.springboot.starter.refresher.event.WebExecutorListener;
+import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -124,29 +130,29 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @ConditionalOnClass(name = NACOS_CONFIG_KEY)
     @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
     @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "nacos.data-id")
-    public NacosRefresherHandler nacosRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
-        return new NacosRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
+    public NacosRefresherHandler nacosRefresherHandler() {
+        return new NacosRefresherHandler(bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = NACOS_CONFIG_MANAGER_KEY)
     @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "nacos.data-id")
-    public NacosCloudRefresherHandler nacosCloudRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
-        return new NacosCloudRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
+    public NacosCloudRefresherHandler nacosCloudRefresherHandler() {
+        return new NacosCloudRefresherHandler(bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = APOLLO_CONFIG_KEY)
     @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "apollo.namespace")
-    public ApolloRefresherHandler apolloRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
-        return new ApolloRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
+    public ApolloRefresherHandler apolloRefresher() {
+        return new ApolloRefresherHandler(bootstrapCoreProperties);
     }
 
     @Bean
     @ConditionalOnClass(name = ZK_CONFIG_KEY)
     @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "zookeeper.zk-connect-str")
-    public ZookeeperRefresherHandler zookeeperRefresher(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
-        return new ZookeeperRefresherHandler(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
+    public ZookeeperRefresherHandler zookeeperRefresher() {
+        return new ZookeeperRefresherHandler(bootstrapCoreProperties);
     }
 
     @Bean
@@ -162,5 +168,20 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @Bean
     public MetricMonitorHandler hippo4jMetricMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
         return new MetricMonitorHandler(threadPoolRunStateHandler);
+    }
+
+    @Bean
+    public ExecutorsListener hippo4jExecutorsListener(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
+        return new ExecutorsListener(threadPoolNotifyAlarmHandler);
+    }
+
+    @Bean
+    public PlatformsListener hippo4jPlatformsListener() {
+        return new PlatformsListener();
+    }
+
+    @Bean
+    public WebExecutorListener hippo4jWebExecutorListener() {
+        return new WebExecutorListener();
     }
 }

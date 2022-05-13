@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.springboot.starter.event;
+package cn.hippo4j.core.springboot.starter.refresher.event;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.notify.HippoBaseSendMessageService;
@@ -27,25 +27,20 @@ import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
-import static cn.hippo4j.core.springboot.starter.event.ThreadPoolDynamicRefreshEventOrder.PLATFORMS_LISTENER;
+import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEventOrder.PLATFORMS_LISTENER;
 
 /**
- * @author : wh
- * @date : 2022/5/13 10:03
- * @description:
+ * Platforms listener.
  */
-@Component
 @Order(PLATFORMS_LISTENER)
-public class PlatformsListener implements ApplicationListener<ThreadPoolDynamicRefreshEvent> {
+public class PlatformsListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
 
-    
     @Override
-    public void onApplicationEvent(ThreadPoolDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
+    public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
         BootstrapCoreProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapCoreProperties();
         List<ExecutorProperties> executors = bindableCoreProperties.getExecutors();
         for (ExecutorProperties executor : executors) {
@@ -59,6 +54,5 @@ public class PlatformsListener implements ApplicationListener<ThreadPoolDynamicR
                 wrapper.setInitFlag(Boolean.TRUE);
             }
         }
-
     }
 }

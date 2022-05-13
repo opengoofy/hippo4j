@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.springboot.starter.event;
+package cn.hippo4j.core.springboot.starter.refresher.event;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
@@ -27,29 +27,24 @@ import cn.hippo4j.core.springboot.starter.config.WebThreadPoolProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-import static cn.hippo4j.core.springboot.starter.event.ThreadPoolDynamicRefreshEventOrder.WEB_EXECUTOR_LISTENER;
+import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEventOrder.WEB_EXECUTOR_LISTENER;
 
 /**
- * @author : wh
- * @date : 2022/5/13 09:53
- * @description:
+ * Web executor listener.
  */
 @Slf4j
-@Component
 @Order(WEB_EXECUTOR_LISTENER)
-public class WebExecutorListener implements ApplicationListener<ThreadPoolDynamicRefreshEvent> {
-
+public class WebExecutorListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
 
     @Override
-    public void onApplicationEvent(ThreadPoolDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
+    public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
         BootstrapCoreProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapCoreProperties();
         boolean isNullFlag = bindableCoreProperties.getJetty() == null
-                || bindableCoreProperties.getUndertow() == null
-                || bindableCoreProperties.getTomcat() == null;
+                && bindableCoreProperties.getUndertow() == null
+                && bindableCoreProperties.getTomcat() == null;
         if (isNullFlag) {
             return;
         }
@@ -68,7 +63,7 @@ public class WebExecutorListener implements ApplicationListener<ThreadPoolDynami
         } catch (Exception ex) {
             log.error("Failed to modify web thread pool.", ex);
         }
-        
+
     }
 
     private ThreadPoolParameterInfo buildWebPoolParameter(BootstrapCoreProperties bindableCoreProperties) {

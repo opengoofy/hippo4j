@@ -17,7 +17,6 @@
 
 package cn.hippo4j.core.springboot.starter.refresher;
 
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigChangeListener;
@@ -40,8 +39,8 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
     @Value(APOLLO_PROPERTY)
     private String namespace;
 
-    public ApolloRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler, BootstrapCoreProperties bootstrapCoreProperties) {
-        super(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
+    public ApolloRefresherHandler(BootstrapCoreProperties bootstrapCoreProperties) {
+        super(bootstrapCoreProperties);
     }
 
     @Override
@@ -49,16 +48,13 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
         String[] apolloNamespaces = this.namespace.split(",");
         this.namespace = apolloNamespaces[0];
         Config config = ConfigService.getConfig(namespace);
-
         ConfigChangeListener configChangeListener = configChangeEvent -> {
             ConfigFile configFile = ConfigService.getConfigFile(
                     this.namespace.replaceAll("." + bootstrapCoreProperties.getConfigFileType().getValue(), ""),
                     ConfigFileFormat.fromString(bootstrapCoreProperties.getConfigFileType().getValue()));
-
             String configInfo = configFile.getContent();
             dynamicRefresh(configInfo);
         };
-
         config.addChangeListener(configChangeListener);
         log.info("dynamic-thread-pool refresher, add apollo listener success, namespace: {}", namespace);
     }

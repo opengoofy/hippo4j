@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.springboot.starter.event;
+package cn.hippo4j.core.springboot.starter.refresher.event;
 
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
@@ -33,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
@@ -44,23 +43,20 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
-import static cn.hippo4j.core.springboot.starter.event.ThreadPoolDynamicRefreshEventOrder.EXECUTORS_LISTENER;
+import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEventOrder.EXECUTORS_LISTENER;
 
 /**
- * @author : wh
- * @date : 2022/5/13 10:06
- * @description:
+ * Executors listener.
  */
 @Slf4j
-@Component
 @RequiredArgsConstructor
 @Order(EXECUTORS_LISTENER)
-public class ExecutorsListener implements ApplicationListener<ThreadPoolDynamicRefreshEvent> {
+public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
     @Override
-    public void onApplicationEvent(ThreadPoolDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
+    public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
         BootstrapCoreProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapCoreProperties();
         List<ExecutorProperties> executors = bindableCoreProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
@@ -90,7 +86,6 @@ public class ExecutorsListener implements ApplicationListener<ThreadPoolDynamicR
                 log.error("Failed to send changSmartApplicationListenere notice. Message :: {}", ex.getMessage());
             }
         }
-
     }
 
     /**
@@ -198,5 +193,4 @@ public class ExecutorsListener implements ApplicationListener<ThreadPoolDynamicR
             }
         }
     }
-
 }

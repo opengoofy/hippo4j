@@ -15,25 +15,16 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.springboot.starter.event;
-
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.context.ApplicationEvent;
+package cn.hippo4j.core.springboot.starter.refresher.event;
 
 /**
- * @author : wh
- * @date : 2022/5/13 09:49
- * @description:
+ * Hippo4j core dynamic refresh event order.
  */
-public class ThreadPoolDynamicRefreshEvent extends ApplicationEvent {
-    
-    @Getter
-    @Setter
-    private BootstrapCoreProperties bootstrapCoreProperties;
-    
-    public ThreadPoolDynamicRefreshEvent(Object source) {
-        super(source);
-    }
+public interface Hippo4jCoreDynamicRefreshEventOrder {
+
+    int WEB_EXECUTOR_LISTENER = 0;
+
+    int PLATFORMS_LISTENER = 1;
+
+    int EXECUTORS_LISTENER = 2;
 }

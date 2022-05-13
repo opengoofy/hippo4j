@@ -18,7 +18,6 @@
 package cn.hippo4j.core.springboot.starter.refresher;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
@@ -38,9 +37,8 @@ public class NacosRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh 
 
     private final ConfigService configService;
 
-    public NacosRefresherHandler(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                 BootstrapCoreProperties bootstrapCoreProperties) {
-        super(threadPoolNotifyAlarmHandler, bootstrapCoreProperties);
+    public NacosRefresherHandler(BootstrapCoreProperties bootstrapCoreProperties) {
+        super(bootstrapCoreProperties);
         configService = ApplicationContextHolder.getBean(ConfigService.class);
     }
 
