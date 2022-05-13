@@ -13,6 +13,7 @@
     <description>Define the adapter management of thread pool of tripartite framework</description>
 
     <modules>
+        <module>hippo4j-spring-boot-starter-adapter-all</module>
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</module>
     </modules>
 </project>
