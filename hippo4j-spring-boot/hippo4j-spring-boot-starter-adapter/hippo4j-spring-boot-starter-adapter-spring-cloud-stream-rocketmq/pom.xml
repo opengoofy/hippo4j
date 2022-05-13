@@ -4,16 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-adapter</artifactId>
+        <artifactId>hippo4j-spring-boot-starter-adapter</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>hippo4j-adapter-base</artifactId>
-    <name>hippo4j-adapter-base</name>
+
+    <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</artifactId>
+    <name>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</name>
 
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-common</artifactId>
+            <artifactId>hippo4j-adapter-spring-cloud-stream-rocketmq</artifactId>
         </dependency>
     </dependencies>
 </project>
