@@ -27,7 +27,7 @@ import cn.hippo4j.core.executor.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
-import cn.hippo4j.springboot.starter.controller.PoolRunStateController;
+import cn.hippo4j.springboot.starter.controller.WebThreadPoolRunStateController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
 import cn.hippo4j.springboot.starter.core.*;
 import cn.hippo4j.springboot.starter.event.ApplicationContentPostProcessor;
@@ -107,9 +107,9 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public PoolRunStateController poolRunStateController(ThreadPoolRunStateHandler threadPoolRunStateHandler,
-                                                         ThreadDetailState threadDetailState) {
-        return new PoolRunStateController(threadPoolRunStateHandler, threadDetailState);
+    public WebThreadPoolRunStateController poolRunStateController(ThreadPoolRunStateHandler threadPoolRunStateHandler,
+                                                                  ThreadDetailState threadDetailState) {
+        return new WebThreadPoolRunStateController(threadPoolRunStateHandler, threadDetailState);
     }
 
     @Bean
