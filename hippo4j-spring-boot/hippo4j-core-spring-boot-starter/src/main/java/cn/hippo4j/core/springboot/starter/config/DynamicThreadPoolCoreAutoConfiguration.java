@@ -45,10 +45,7 @@ import cn.hippo4j.core.springboot.starter.refresher.event.WebExecutorListener;
 import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -80,6 +77,7 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     private static final String ZK_CONFIG_KEY = "org.apache.curator.framework.CuratorFramework";
 
     @Bean
+    @ConditionalOnMissingBean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public ApplicationContextHolder hippo4JApplicationContextHolder() {
         return new ApplicationContextHolder();

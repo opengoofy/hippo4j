@@ -18,6 +18,7 @@
 package cn.hippo4j.config.config;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -35,7 +36,8 @@ import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
 public class CommonConfig {
 
     @Bean
-    public ApplicationContextHolder simpleApplicationContextHolder() {
+    @ConditionalOnMissingBean
+    public ApplicationContextHolder hippo4JApplicationContextHolder() {
         return new ApplicationContextHolder();
     }
 

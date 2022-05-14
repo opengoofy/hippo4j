@@ -17,31 +17,25 @@
 
 package cn.hippo4j.adapter.base;
 
-import lombok.Data;
+import cn.hippo4j.common.config.ApplicationContextHolder;
+import com.google.common.collect.Maps;
+import org.springframework.beans.factory.InitializingBean;
+
+import java.util.Map;
 
 /**
- * Thread pool adapter parameter info.
+ * Thread-pool adapter bean container.
  */
-@Data
-public class ThreadPoolAdapterParameter {
+public class ThreadPoolAdapterBeanContainer implements InitializingBean {
 
     /**
-     * mark
+     * Store three-party thread pool framework bean instances.
      */
-    private String mark;
+    public static final Map<String, ThreadPoolAdapter> THREAD_POOL_ADAPTER_BEAN_CONTAINER = Maps.newConcurrentMap();
 
-    /**
-     * identify
-     */
-    private String identify;
-
-    /**
-     * Core size.
-     */
-    private Integer coreSize;
-
-    /**
-     * Maximum size.
-     */
-    private Integer maximumSize;
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
+        threadPoolAdapterMap.forEach((key, val) -> THREAD_POOL_ADAPTER_BEAN_CONTAINER.put(val.mark(), val));
+    }
 }

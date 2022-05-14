@@ -18,6 +18,8 @@
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq;
 
 import cn.hippo4j.adapter.springcloud.stream.rocketmq.SpringCloudStreamRocketMQThreadPoolAdapter;
+import cn.hippo4j.common.config.ApplicationContextHolder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,8 +31,15 @@ import org.springframework.context.annotation.Configuration;
 public class SpringCloudStreamRocketMQAutoConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
+    public ApplicationContextHolder simpleApplicationContextHolder() {
+        return new ApplicationContextHolder();
+    }
+
+    @Bean
+    @SuppressWarnings("all")
     @ConditionalOnProperty(name = "spring.cloud.stream.rocketmq.binder.name-server")
-    public SpringCloudStreamRocketMQThreadPoolAdapter springCloudStreamRocketMQThreadPoolAdapter() {
+    public SpringCloudStreamRocketMQThreadPoolAdapter springCloudStreamRocketMQThreadPoolAdapter(ApplicationContextHolder applicationContextHolder) {
         return new SpringCloudStreamRocketMQThreadPoolAdapter();
     }
 }

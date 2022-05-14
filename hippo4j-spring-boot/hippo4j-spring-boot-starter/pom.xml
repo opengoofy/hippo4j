@@ -9,9 +9,6 @@
     </parent>
 
     <artifactId>hippo4j-spring-boot-starter</artifactId>
-    <packaging>jar</packaging>
-
-    <name>${project.artifactId}</name>
     <description>Thread pool dynamic parameter adjustment, alarming, status viewing and monitoring functions</description>
 
     <dependencies>
@@ -83,6 +80,11 @@
             <artifactId>spring-boot-starter-undertow</artifactId>
             <scope>compile</scope>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-adapter-base</artifactId>
         </dependency>
     </dependencies>
 

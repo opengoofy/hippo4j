@@ -40,9 +40,8 @@ public interface ThreadPoolAdapter {
     /**
      * Modify the core parameters of the framework thread pool.
      *
-     * @param identify                   {@link ThreadPoolAdapter#mark} + Thread pool unique id
      * @param threadPoolAdapterParameter Thread pool parameters to be modified
      * @return
      */
-    boolean updateThreadPool(String identify, ThreadPoolAdapterParameter threadPoolAdapterParameter);
+    boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter);
 }

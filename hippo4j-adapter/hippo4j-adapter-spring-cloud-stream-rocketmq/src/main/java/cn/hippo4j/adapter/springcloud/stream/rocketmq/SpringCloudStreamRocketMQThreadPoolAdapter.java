@@ -20,15 +20,29 @@ package cn.hippo4j.adapter.springcloud.stream.rocketmq;
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.ReflectUtil;
+import com.alibaba.cloud.stream.binder.rocketmq.consuming.RocketMQListenerBindingContainer;
+import com.alibaba.cloud.stream.binder.rocketmq.integration.RocketMQInboundChannelAdapter;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
+import org.apache.rocketmq.client.impl.consumer.ConsumeMessageConcurrentlyService;
+import org.apache.rocketmq.client.impl.consumer.DefaultMQPushConsumerImpl;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.cloud.stream.binder.Binding;
+import org.springframework.cloud.stream.binder.DefaultBinding;
+import org.springframework.cloud.stream.binding.InputBindingLifecycle;
 import org.springframework.context.ApplicationListener;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
+import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 
 /**
  * Spring cloud stream rocketMQ thread-pool adapter.
@@ -40,7 +54,7 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
 
     @Override
     public String mark() {
-        return "RocketMQ_SpringCloud_Stream";
+        return "RocketMQSpringCloudStream";
     }
 
     @Override
@@ -57,7 +71,8 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
     }
 
     @Override
-    public boolean updateThreadPool(String identify, ThreadPoolAdapterParameter threadPoolAdapterParameter) {
+    public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
+        String identify = threadPoolAdapterParameter.getIdentify();
         ThreadPoolExecutor rocketMQConsumeExecutor = ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.get(identify);
         if (rocketMQConsumeExecutor != null) {
             int originalCoreSize = rocketMQConsumeExecutor.getCorePoolSize();
@@ -76,6 +91,22 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        // TODO Get rocketMQ consumer thread pool collection
+        InputBindingLifecycle bindingLifecycle = ApplicationContextHolder.getBean(InputBindingLifecycle.class);
+        Collection<Binding<Object>> inputBindings = Optional.ofNullable(ReflectUtil.getFieldValue(bindingLifecycle, "inputBindings")).map(each -> (Collection<Binding<Object>>) each).orElse(null);
+        if (CollectionUtil.isEmpty(inputBindings)) {
+            log.info("InputBindings record not found.");
+        }
+        for (Binding<Object> each : inputBindings) {
+            String bindingName = each.getBindingName();
+            String buildKey = mark() + IDENTIFY_SLICER_SYMBOL + bindingName;
+            DefaultBinding defaultBinding = (DefaultBinding) each;
+            RocketMQInboundChannelAdapter lifecycle = (RocketMQInboundChannelAdapter) cn.hutool.core.util.ReflectUtil.getFieldValue(defaultBinding, "lifecycle");
+            RocketMQListenerBindingContainer rocketMQListenerContainer = (RocketMQListenerBindingContainer) cn.hutool.core.util.ReflectUtil.getFieldValue(lifecycle, "rocketMQListenerContainer");
+            DefaultMQPushConsumer consumer = rocketMQListenerContainer.getConsumer();
+            DefaultMQPushConsumerImpl defaultMQPushConsumerImpl = consumer.getDefaultMQPushConsumerImpl();
+            ConsumeMessageConcurrentlyService consumeMessageService = (ConsumeMessageConcurrentlyService) defaultMQPushConsumerImpl.getConsumeMessageService();
+            ThreadPoolExecutor consumeExecutor = (ThreadPoolExecutor) cn.hutool.core.util.ReflectUtil.getFieldValue(consumeMessageService, "consumeExecutor");
+            ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.put(buildKey, consumeExecutor);
+        }
     }
 }

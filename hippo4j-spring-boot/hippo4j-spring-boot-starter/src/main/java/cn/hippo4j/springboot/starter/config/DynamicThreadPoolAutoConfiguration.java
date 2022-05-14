@@ -17,6 +17,7 @@
 
 package cn.hippo4j.springboot.starter.config;
 
+import cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer;
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
@@ -27,8 +28,9 @@ import cn.hippo4j.core.executor.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
-import cn.hippo4j.springboot.starter.controller.WebThreadPoolRunStateController;
+import cn.hippo4j.springboot.starter.controller.ThreadPoolAdapterController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
+import cn.hippo4j.springboot.starter.controller.WebThreadPoolRunStateController;
 import cn.hippo4j.springboot.starter.core.*;
 import cn.hippo4j.springboot.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.springboot.starter.monitor.ReportingEventExecutor;
@@ -74,6 +76,7 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public ApplicationContextHolder hippo4JApplicationContextHolder() {
         return new ApplicationContextHolder();
@@ -133,6 +136,16 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     public RunTimeInfoCollector runTimeInfoCollector() {
         return new RunTimeInfoCollector(properties);
+    }
+
+    @Bean
+    public ThreadPoolAdapterController threadPoolAdapterController() {
+        return new ThreadPoolAdapterController();
+    }
+
+    @Bean
+    public ThreadPoolAdapterBeanContainer threadPoolAdapterBeanContainer() {
+        return new ThreadPoolAdapterBeanContainer();
     }
 
     @Bean

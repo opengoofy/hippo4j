@@ -7,7 +7,6 @@
         <artifactId>hippo4j-spring-boot-starter-adapter</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</artifactId>
     <name>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</name>
 
