@@ -32,15 +32,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Pool run state controller.
- *
- * @author chen.ma
- * @date 2021/7/7 21:34
+ * Web thread-pool run state controller.
  */
 @CrossOrigin
 @RestController
 @AllArgsConstructor
-public class PoolRunStateController {
+public class WebThreadPoolRunStateController {
 
     private final ThreadPoolRunStateHandler threadPoolRunStateHandler;
 

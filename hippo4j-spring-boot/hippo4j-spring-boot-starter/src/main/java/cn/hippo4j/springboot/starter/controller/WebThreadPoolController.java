@@ -30,9 +30,6 @@ import org.springframework.web.bind.annotation.*;
  * Web thread pool controller.
  *
  * <p> At present, only Tomcat is well supported, and other web containers need to be improved.
- *
- * @author chen.ma
- * @date 2022/1/19 20:54
  */
 @CrossOrigin
 @RestController
