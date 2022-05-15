@@ -31,9 +31,6 @@ import static cn.hippo4j.common.constant.Constants.WEIGHT_CONFIGS;
 
 /**
  * Config servlet inner.
- *
- * @author chen.ma
- * @date 2021/6/22 23:13
  */
 @Service
 @RequiredArgsConstructor
@@ -47,7 +44,7 @@ public class ConfigServletInner {
             .build();
 
     /**
-     * 轮询配置.
+     * Poll configuration.
      *
      * @param request
      * @param response
@@ -60,15 +57,14 @@ public class ConfigServletInner {
             longPollingService.addLongPollingClient(request, response, clientMd5Map, probeRequestSize);
             return HttpServletResponse.SC_OK + "";
         }
-
         return HttpServletResponse.SC_OK + "";
     }
 
     /**
-     * 校验复请求是否重.
+     * Check whether the repeat request is repeated.
      * <p>
-     * 有使用者提出在公司环境部署时, 会出现相同的请求重复调用.
-     * 此问题属于极其个别场景. 由于复现不出, 所以先以这种方式解决问题.
+     * When a user proposes to deploy in the company environment, the same request will be called repeatedly.
+     * This problem belongs to an extremely individual scenario. Since it cannot be reproduced, so first solve the problem in this way.
      *
      * @param request
      * @return
@@ -80,8 +76,6 @@ public class ConfigServletInner {
             deWeightCache.put(clientIdentify, System.currentTimeMillis());
             return true;
         }
-
         return false;
     }
-
 }

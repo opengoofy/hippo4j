@@ -22,9 +22,6 @@ import cn.hippo4j.config.event.LocalDataChangeEvent;
 
 /**
  * Config change publisher.
- *
- * @author chen.ma
- * @date 2021/6/24 23:34
  */
 public class ConfigChangePublisher {
 
@@ -36,5 +33,4 @@ public class ConfigChangePublisher {
     public static void notifyConfigChange(LocalDataChangeEvent event) {
         NotifyCenter.publishEvent(event);
     }
-
 }

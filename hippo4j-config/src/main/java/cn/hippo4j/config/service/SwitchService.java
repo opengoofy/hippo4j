@@ -25,9 +25,6 @@ import java.util.Map;
 
 /**
  * Switch service.
- *
- * @author chen.ma
- * @date 2021/6/23 18:23
  */
 @Slf4j
 @Service
@@ -64,5 +61,4 @@ public class SwitchService {
         }
         return rtn;
     }
-
 }
