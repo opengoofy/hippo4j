@@ -22,6 +22,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
@@ -63,6 +64,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
             cacheConfig.setMark(val.mark());
             String tenantItemKey = properties.getNamespace() + IDENTIFY_SLICER_SYMBOL + properties.getItemId();
             cacheConfig.setTenantItemKey(tenantItemKey);
+            cacheConfig.setClientIdentify(IdentifyUtil.getIdentify());
             String clientAddress = CloudCommonIdUtil.getDefaultInstanceId(environment, hippo4JInetUtils);
             cacheConfig.setClientAddress(clientAddress);
             cacheConfig.setThreadPoolAdapterStates(val.getThreadPoolStates());
