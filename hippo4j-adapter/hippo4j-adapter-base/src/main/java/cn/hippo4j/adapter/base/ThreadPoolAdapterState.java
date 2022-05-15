@@ -26,12 +26,42 @@ import lombok.Data;
 public class ThreadPoolAdapterState {
 
     /**
-     * Core size.
+     * Thread-pool keu
+     */
+    private String threadPoolKey;
+
+    /**
+     * Active
+     */
+    private String active;
+
+    /**
+     * identify
+     */
+    private String identify;
+
+    /**
+     * Client address
+     */
+    private String clientAddress;
+
+    /**
+     * Core size
      */
     private Integer coreSize;
 
     /**
-     * Maximum size.
+     * Maximum size
      */
     private Integer maximumSize;
+
+    /**
+     * Blocking queue type
+     */
+    private String blockingQueueType;
+
+    /**
+     * Blocking queue capacity
+     */
+    private Integer blockingQueueCapacity;
 }

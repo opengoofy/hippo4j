@@ -26,22 +26,22 @@ import lombok.Data;
 public class ThreadPoolAdapterParameter {
 
     /**
-     * mark
+     * Mark
      */
     private String mark;
 
     /**
-     * identify
+     * Thread-pool key
      */
-    private String identify;
+    private String threadPoolKey;
 
     /**
-     * Core size.
+     * Core size
      */
     private Integer coreSize;
 
     /**
-     * Maximum size.
+     * Maximum size
      */
     private Integer maximumSize;
 }

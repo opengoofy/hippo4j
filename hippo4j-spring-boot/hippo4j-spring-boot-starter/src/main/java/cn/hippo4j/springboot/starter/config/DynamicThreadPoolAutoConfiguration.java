@@ -33,6 +33,7 @@ import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolRunStateController;
 import cn.hippo4j.springboot.starter.core.*;
 import cn.hippo4j.springboot.starter.event.ApplicationContentPostProcessor;
+import cn.hippo4j.springboot.starter.core.ThreadPoolAdapterRegister;
 import cn.hippo4j.springboot.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.springboot.starter.monitor.collect.RunTimeInfoCollector;
 import cn.hippo4j.springboot.starter.monitor.send.HttpConnectSender;
@@ -139,8 +140,9 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ThreadPoolAdapterController threadPoolAdapterController() {
-        return new ThreadPoolAdapterController();
+    @SuppressWarnings("all")
+    public ThreadPoolAdapterController threadPoolAdapterController(InetUtils hippo4JInetUtils) {
+        return new ThreadPoolAdapterController(environment, hippo4JInetUtils);
     }
 
     @Bean
@@ -154,7 +156,14 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("all")
     public WebThreadPoolController webThreadPoolController(WebThreadPoolHandlerChoose webThreadPoolServiceChoose) {
         return new WebThreadPoolController(webThreadPoolServiceChoose);
+    }
+
+    @Bean
+    @SuppressWarnings("all")
+    public ThreadPoolAdapterRegister threadPoolAdapterRegister(HttpAgent httpAgent, InetUtils hippo4JInetUtils) {
+        return new ThreadPoolAdapterRegister(httpAgent, properties, environment, hippo4JInetUtils);
     }
 }

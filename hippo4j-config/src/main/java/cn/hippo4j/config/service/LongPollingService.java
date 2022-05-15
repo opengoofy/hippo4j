@@ -114,7 +114,7 @@ public class LongPollingService {
         @Override
         public void run() {
             try {
-                for (Iterator<ClientLongPolling> iter = allSubs.iterator(); iter.hasNext(); ) {
+                for (Iterator<ClientLongPolling> iter = allSubs.iterator(); iter.hasNext();) {
                     ClientLongPolling clientSub = iter.next();
                     String identity = groupKey + GROUP_KEY_DELIMITER + identify;
                     List<String> parseMapForFilter = Lists.newArrayList(identity);

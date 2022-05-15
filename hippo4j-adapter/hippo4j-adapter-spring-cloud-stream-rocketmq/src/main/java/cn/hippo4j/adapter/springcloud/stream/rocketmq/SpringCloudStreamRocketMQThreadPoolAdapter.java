@@ -25,6 +25,7 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import com.alibaba.cloud.stream.binder.rocketmq.consuming.RocketMQListenerBindingContainer;
 import com.alibaba.cloud.stream.binder.rocketmq.integration.RocketMQInboundChannelAdapter;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
@@ -37,12 +38,12 @@ import org.springframework.cloud.stream.binding.InputBindingLifecycle;
 import org.springframework.context.ApplicationListener;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
-import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 
 /**
  * Spring cloud stream rocketMQ thread-pool adapter.
@@ -58,10 +59,12 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
     }
 
     @Override
-    public ThreadPoolAdapterState getThreadPoolStateInfo(String identify) {
+    public ThreadPoolAdapterState getThreadPoolState(String identify) {
         ThreadPoolAdapterState result = new ThreadPoolAdapterState();
         ThreadPoolExecutor rocketMQConsumeExecutor = ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.get(identify);
         if (rocketMQConsumeExecutor != null) {
+            result.setThreadPoolKey(mark());
+            result.setThreadPoolKey(identify);
             result.setCoreSize(rocketMQConsumeExecutor.getCorePoolSize());
             result.setMaximumSize(rocketMQConsumeExecutor.getMaximumPoolSize());
             return result;
@@ -71,21 +74,29 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
     }
 
     @Override
+    public List<ThreadPoolAdapterState> getThreadPoolStates() {
+        List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
+        ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.forEach(
+                (key, val) -> adapterStateList.add(getThreadPoolState(key)));
+        return adapterStateList;
+    }
+
+    @Override
     public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
-        String identify = threadPoolAdapterParameter.getIdentify();
-        ThreadPoolExecutor rocketMQConsumeExecutor = ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.get(identify);
+        String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
+        ThreadPoolExecutor rocketMQConsumeExecutor = ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.get(threadPoolKey);
         if (rocketMQConsumeExecutor != null) {
             int originalCoreSize = rocketMQConsumeExecutor.getCorePoolSize();
             int originalMaximumPoolSize = rocketMQConsumeExecutor.getMaximumPoolSize();
             rocketMQConsumeExecutor.setCorePoolSize(threadPoolAdapterParameter.getCoreSize());
             rocketMQConsumeExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumSize());
             log.info("[{}] RocketMQ consumption thread pool parameter change. coreSize :: {}, maximumSize :: {}",
-                    identify,
+                    threadPoolKey,
                     String.format(CHANGE_DELIMITER, originalCoreSize, rocketMQConsumeExecutor.getCorePoolSize()),
                     String.format(CHANGE_DELIMITER, originalMaximumPoolSize, rocketMQConsumeExecutor.getMaximumPoolSize()));
             return true;
         }
-        log.warn("[{}] RocketMQ consuming thread pool not found.", identify);
+        log.warn("[{}] RocketMQ consuming thread pool not found.", threadPoolKey);
         return false;
     }
 
@@ -99,7 +110,6 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
         try {
             for (Binding<Object> each : inputBindings) {
                 String bindingName = each.getBindingName();
-                String buildKey = mark() + IDENTIFY_SLICER_SYMBOL + bindingName;
                 DefaultBinding defaultBinding = (DefaultBinding) each;
                 RocketMQInboundChannelAdapter lifecycle = (RocketMQInboundChannelAdapter) ReflectUtil.getFieldValue(defaultBinding, "lifecycle");
                 RocketMQListenerBindingContainer rocketMQListenerContainer = (RocketMQListenerBindingContainer) ReflectUtil.getFieldValue(lifecycle, "rocketMQListenerContainer");
@@ -107,7 +117,7 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
                 DefaultMQPushConsumerImpl defaultMQPushConsumerImpl = consumer.getDefaultMQPushConsumerImpl();
                 ConsumeMessageConcurrentlyService consumeMessageService = (ConsumeMessageConcurrentlyService) defaultMQPushConsumerImpl.getConsumeMessageService();
                 ThreadPoolExecutor consumeExecutor = (ThreadPoolExecutor) ReflectUtil.getFieldValue(consumeMessageService, "consumeExecutor");
-                ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.put(buildKey, consumeExecutor);
+                ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.put(bindingName, consumeExecutor);
             }
         } catch (Exception ex) {
             log.error("Failed to get input-bindings thread pool.", ex);

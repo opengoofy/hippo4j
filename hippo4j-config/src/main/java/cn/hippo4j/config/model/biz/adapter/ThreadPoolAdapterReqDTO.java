@@ -15,44 +15,55 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.adapter.base;
+package cn.hippo4j.config.model.biz.adapter;
+
+import lombok.Data;
 
 import java.util.List;
 
 /**
- * Adapt to the thread pool of the third-party framework.
+ * Thread-pool adapter req DTO.
  */
-public interface ThreadPoolAdapter {
+@Data
+public class ThreadPoolAdapterReqDTO {
 
     /**
-     * Framework thread pool identification.
-     *
-     * @return
+     * Mark
      */
-    String mark();
+    private String mark;
 
     /**
-     * Get the core parameters of the framework thread pool.
-     *
-     * @param identify Thread pool unique id
-     * @return
+     * Tenant
      */
-    ThreadPoolAdapterState getThreadPoolState(String identify);
+    private String tenant;
 
     /**
-     * Get the core parameters of the framework thread pool.
-     *
-     * @return
+     * Item
      */
-    default List<ThreadPoolAdapterState> getThreadPoolStates() {
-        return null;
-    }
+    private String item;
 
     /**
-     * Modify the core parameters of the framework thread pool.
-     *
-     * @param threadPoolAdapterParameter Thread pool parameters to be modified
-     * @return
+     * Thread pool key
      */
-    boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter);
+    private String threadPoolKey;
+
+    /**
+     * Identify
+     */
+    private String identify;
+
+    /**
+     * Core size
+     */
+    private Integer coreSize;
+
+    /**
+     * Maximum size
+     */
+    private Integer maximumSize;
+
+    /**
+     * Client address list
+     */
+    private List<String> clientAddressList;
 }

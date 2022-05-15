@@ -17,42 +17,43 @@
 
 package cn.hippo4j.adapter.base;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
- * Adapt to the thread pool of the third-party framework.
+ * Thread-pool adapter cache config.
  */
-public interface ThreadPoolAdapter {
+@Data
+public class ThreadPoolAdapterCacheConfig {
 
     /**
-     * Framework thread pool identification.
-     *
-     * @return
+     * Mark
      */
-    String mark();
+    private String mark;
 
     /**
-     * Get the core parameters of the framework thread pool.
-     *
-     * @param identify Thread pool unique id
-     * @return
+     * Tenant item key
      */
-    ThreadPoolAdapterState getThreadPoolState(String identify);
+    private String tenantItemKey;
 
     /**
-     * Get the core parameters of the framework thread pool.
-     *
-     * @return
+     * Client identify
      */
-    default List<ThreadPoolAdapterState> getThreadPoolStates() {
-        return null;
-    }
+    private String clientIdentify;
 
     /**
-     * Modify the core parameters of the framework thread pool.
-     *
-     * @param threadPoolAdapterParameter Thread pool parameters to be modified
-     * @return
+     * Active
      */
-    boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter);
+    private String active;
+
+    /**
+     * Client address
+     */
+    private String clientAddress;
+
+    /**
+     * Thread-pool adapter states
+     */
+    private List<ThreadPoolAdapterState> threadPoolAdapterStates;
 }

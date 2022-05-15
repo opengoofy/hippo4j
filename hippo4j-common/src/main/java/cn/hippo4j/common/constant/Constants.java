@@ -67,6 +67,10 @@ public class Constants {
 
     public static final String MONITOR_PATH = BASE_PATH + "/monitor";
 
+    public static final String REGISTER_ADAPTER_BASE_PATH = BASE_PATH + "/adapter/thread-pool";
+
+    public static final String REGISTER_ADAPTER_PATH = REGISTER_ADAPTER_BASE_PATH + "/register";
+
     public static final String HEALTH_CHECK_PATH = BASE_PATH + "/health/check";
 
     public static final String PROBE_MODIFY_REQUEST = "Listening-Configs";
