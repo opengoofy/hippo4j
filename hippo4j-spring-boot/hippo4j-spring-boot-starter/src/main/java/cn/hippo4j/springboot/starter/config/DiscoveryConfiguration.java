@@ -32,6 +32,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.net.InetAddress;
 
+import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 
 /**
@@ -60,7 +61,7 @@ public class DiscoveryConfiguration {
 
         InstanceInfo instanceInfo = new InstanceInfo();
         String instanceId = CloudCommonIdUtil.getDefaultInstanceId(environment, hippo4JInetUtils);
-        instanceId = StrBuilder.create().append(instanceId).append(":").append(CLIENT_IDENTIFICATION_VALUE).toString();
+        instanceId = StrBuilder.create().append(instanceId).append(IDENTIFY_SLICER_SYMBOL).append(CLIENT_IDENTIFICATION_VALUE).toString();
 
         String contextPath = environment.getProperty("server.servlet.context-path", "");
         instanceInfo.setInstanceId(instanceId)
