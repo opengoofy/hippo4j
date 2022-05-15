@@ -96,17 +96,21 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
         if (CollectionUtil.isEmpty(inputBindings)) {
             log.info("InputBindings record not found.");
         }
-        for (Binding<Object> each : inputBindings) {
-            String bindingName = each.getBindingName();
-            String buildKey = mark() + IDENTIFY_SLICER_SYMBOL + bindingName;
-            DefaultBinding defaultBinding = (DefaultBinding) each;
-            RocketMQInboundChannelAdapter lifecycle = (RocketMQInboundChannelAdapter) cn.hutool.core.util.ReflectUtil.getFieldValue(defaultBinding, "lifecycle");
-            RocketMQListenerBindingContainer rocketMQListenerContainer = (RocketMQListenerBindingContainer) cn.hutool.core.util.ReflectUtil.getFieldValue(lifecycle, "rocketMQListenerContainer");
-            DefaultMQPushConsumer consumer = rocketMQListenerContainer.getConsumer();
-            DefaultMQPushConsumerImpl defaultMQPushConsumerImpl = consumer.getDefaultMQPushConsumerImpl();
-            ConsumeMessageConcurrentlyService consumeMessageService = (ConsumeMessageConcurrentlyService) defaultMQPushConsumerImpl.getConsumeMessageService();
-            ThreadPoolExecutor consumeExecutor = (ThreadPoolExecutor) cn.hutool.core.util.ReflectUtil.getFieldValue(consumeMessageService, "consumeExecutor");
-            ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.put(buildKey, consumeExecutor);
+        try {
+            for (Binding<Object> each : inputBindings) {
+                String bindingName = each.getBindingName();
+                String buildKey = mark() + IDENTIFY_SLICER_SYMBOL + bindingName;
+                DefaultBinding defaultBinding = (DefaultBinding) each;
+                RocketMQInboundChannelAdapter lifecycle = (RocketMQInboundChannelAdapter) cn.hutool.core.util.ReflectUtil.getFieldValue(defaultBinding, "lifecycle");
+                RocketMQListenerBindingContainer rocketMQListenerContainer = (RocketMQListenerBindingContainer) cn.hutool.core.util.ReflectUtil.getFieldValue(lifecycle, "rocketMQListenerContainer");
+                DefaultMQPushConsumer consumer = rocketMQListenerContainer.getConsumer();
+                DefaultMQPushConsumerImpl defaultMQPushConsumerImpl = consumer.getDefaultMQPushConsumerImpl();
+                ConsumeMessageConcurrentlyService consumeMessageService = (ConsumeMessageConcurrentlyService) defaultMQPushConsumerImpl.getConsumeMessageService();
+                ThreadPoolExecutor consumeExecutor = (ThreadPoolExecutor) cn.hutool.core.util.ReflectUtil.getFieldValue(consumeMessageService, "consumeExecutor");
+                ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.put(buildKey, consumeExecutor);
+            }
+        } catch (Exception ex) {
+            log.error("Failed to get input-bindings thread pool.", ex);
         }
     }
 }
