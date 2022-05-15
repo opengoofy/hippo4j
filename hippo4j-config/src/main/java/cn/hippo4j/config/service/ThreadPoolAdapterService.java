@@ -115,25 +115,28 @@ public class ThreadPoolAdapterService {
         return result;
     }
 
+    public static void remove(String identify) {
+        synchronized (ThreadPoolAdapterService.class) {
+            THREAD_POOL_ADAPTER_MAP.values().forEach(each -> each.forEach((key, val) -> {
+                val.forEach((threadPoolKey, states) -> {
+                    Iterator<ThreadPoolAdapterState> iterator = states.iterator();
+                    while (iterator.hasNext()) {
+                        ThreadPoolAdapterState adapterState = iterator.next();
+                        if (Objects.equals(adapterState.getIdentify(), identify)) {
+                            iterator.remove();
+                        }
+                    }
+                });
+            }));
+        }
+    }
+
     static class ClearThreadPoolAdapterCache implements Observer<String> {
 
         @Override
         public void accept(ObserverMessage<String> observerMessage) {
-            log.info("Clean up the configuration cache. Key :: {}", observerMessage.message());
-            String identify = observerMessage.message();
-            synchronized (ThreadPoolAdapterService.class) {
-                THREAD_POOL_ADAPTER_MAP.values().forEach(each -> each.forEach((key, val) -> {
-                    val.forEach((threadPoolKey, states) -> {
-                        Iterator<ThreadPoolAdapterState> iterator = states.iterator();
-                        while (iterator.hasNext()) {
-                            ThreadPoolAdapterState adapterState = iterator.next();
-                            if (Objects.equals(adapterState.getIdentify(), identify)) {
-                                iterator.remove();
-                            }
-                        }
-                    });
-                }));
-            }
+            log.info("Clean up the thread-pool adapter cache. Key :: {}", observerMessage.message());
+            remove(observerMessage.message());
         }
     }
 }
