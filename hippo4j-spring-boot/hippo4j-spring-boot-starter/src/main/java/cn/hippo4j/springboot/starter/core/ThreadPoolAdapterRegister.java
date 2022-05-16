@@ -57,6 +57,10 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        register();
+    }
+
+    public void register() {
         Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
         List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
         threadPoolAdapterMap.forEach((key, val) -> {

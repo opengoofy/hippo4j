@@ -18,13 +18,14 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.api.ClientCloseHookExecute;
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
-import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
+import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -138,6 +139,9 @@ public class DiscoveryClient implements DisposableBean {
             if (StrUtil.equals(ErrorCodeEnum.NOT_FOUND.getCode(), renewResult.getCode())) {
                 long timestamp = instanceInfo.setIsDirtyWithTime();
                 boolean success = register();
+                // TODO Abstract server registration logic
+                ThreadPoolAdapterRegister adapterRegister = ApplicationContextHolder.getBean(ThreadPoolAdapterRegister.class);
+                adapterRegister.register();
                 if (success) {
                     instanceInfo.unsetIsDirty(timestamp);
                 }
