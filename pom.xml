@@ -47,6 +47,7 @@
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
+        <rocketmq.version>2.2.2</rocketmq.version>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
 
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
@@ -142,6 +143,12 @@
             <dependency>
                 <groupId>cn.hippo4j</groupId>
                 <artifactId>hippo4j-adapter-spring-cloud-stream-rocketmq</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-adapter-rocketmq</artifactId>
                 <version>${revision}</version>
             </dependency>
 
