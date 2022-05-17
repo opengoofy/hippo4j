@@ -25,10 +25,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Spring cloud stream rocketMQ auto configuration.
+ * Spring cloud stream rocketMQ adapter auto configuration.
  */
 @Configuration
-public class SpringCloudStreamRocketMQAutoConfiguration {
+public class SpringCloudStreamRocketMQAdapterAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

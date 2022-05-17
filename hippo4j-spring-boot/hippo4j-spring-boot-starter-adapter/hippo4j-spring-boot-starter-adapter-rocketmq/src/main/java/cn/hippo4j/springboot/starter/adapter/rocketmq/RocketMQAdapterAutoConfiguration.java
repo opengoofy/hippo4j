@@ -25,10 +25,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * RocketMQ auto configuration.
+ * RocketMQ adapter auto configuration.
  */
 @Configuration
-public class RocketMQAutoConfiguration {
+public class RocketMQAdapterAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
