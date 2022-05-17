@@ -10,6 +10,7 @@
     <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq-example</artifactId>
 
     <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
     </properties>
 
