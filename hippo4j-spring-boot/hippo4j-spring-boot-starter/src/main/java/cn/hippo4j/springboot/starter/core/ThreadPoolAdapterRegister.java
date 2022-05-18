@@ -19,6 +19,7 @@ package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.web.base.Result;
@@ -64,6 +65,10 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
         Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
         List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
         threadPoolAdapterMap.forEach((key, val) -> {
+            List<ThreadPoolAdapterState> threadPoolStates = val.getThreadPoolStates();
+            if (CollectionUtil.isEmpty(threadPoolStates)) {
+                return;
+            }
             ThreadPoolAdapterCacheConfig cacheConfig = new ThreadPoolAdapterCacheConfig();
             cacheConfig.setMark(val.mark());
             String tenantItemKey = properties.getNamespace() + IDENTIFY_SLICER_SYMBOL + properties.getItemId();
@@ -71,7 +76,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
             cacheConfig.setClientIdentify(IdentifyUtil.getIdentify());
             String clientAddress = CloudCommonIdUtil.getDefaultInstanceId(environment, hippo4JInetUtils);
             cacheConfig.setClientAddress(clientAddress);
-            cacheConfig.setThreadPoolAdapterStates(val.getThreadPoolStates());
+            cacheConfig.setThreadPoolAdapterStates(threadPoolStates);
             cacheConfigList.add(cacheConfig);
         });
         if (CollectionUtil.isNotEmpty(cacheConfigList)) {
