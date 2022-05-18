@@ -31,6 +31,12 @@ public class CloudCommonIdUtil {
 
     private static final String SEPARATOR = ":";
 
+    public static String getClientIpPort(PropertyResolver resolver, InetUtils inetUtils) {
+        String hostname = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+        String port = resolver.getProperty("server.port", "8080");
+         return combineParts(hostname, SEPARATOR, port);
+    }
+
     @SneakyThrows
     public static String getDefaultInstanceId(PropertyResolver resolver, InetUtils inetUtils) {
         String namePart = getIpApplicationName(resolver, inetUtils);

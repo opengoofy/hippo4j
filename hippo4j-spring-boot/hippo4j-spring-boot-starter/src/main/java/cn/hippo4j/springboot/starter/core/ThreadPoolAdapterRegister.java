@@ -74,7 +74,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
             String tenantItemKey = properties.getNamespace() + IDENTIFY_SLICER_SYMBOL + properties.getItemId();
             cacheConfig.setTenantItemKey(tenantItemKey);
             cacheConfig.setClientIdentify(IdentifyUtil.getIdentify());
-            String clientAddress = CloudCommonIdUtil.getDefaultInstanceId(environment, hippo4JInetUtils);
+            String clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4JInetUtils);
             cacheConfig.setClientAddress(clientAddress);
             cacheConfig.setThreadPoolAdapterStates(threadPoolStates);
             cacheConfigList.add(cacheConfig);
