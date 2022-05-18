@@ -63,7 +63,6 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
         ThreadPoolAdapterState result = new ThreadPoolAdapterState();
         ThreadPoolExecutor rocketMQConsumeExecutor = ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.get(identify);
         if (rocketMQConsumeExecutor != null) {
-            result.setThreadPoolKey(mark());
             result.setThreadPoolKey(identify);
             result.setCoreSize(rocketMQConsumeExecutor.getCorePoolSize());
             result.setMaximumSize(rocketMQConsumeExecutor.getMaximumPoolSize());
