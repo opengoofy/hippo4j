@@ -34,7 +34,7 @@ public class CloudCommonIdUtil {
     public static String getClientIpPort(PropertyResolver resolver, InetUtils inetUtils) {
         String hostname = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
         String port = resolver.getProperty("server.port", "8080");
-         return combineParts(hostname, SEPARATOR, port);
+        return combineParts(hostname, SEPARATOR, port);
     }
 
     @SneakyThrows
