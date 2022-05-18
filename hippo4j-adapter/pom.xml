@@ -16,6 +16,7 @@
 
     <modules>
         <module>hippo4j-adapter-base</module>
+        <module>hippo4j-adapter-dubbo</module>
         <module>hippo4j-adapter-rocketmq</module>
         <module>hippo4j-adapter-spring-cloud-stream-rocketmq</module>
     </modules>
