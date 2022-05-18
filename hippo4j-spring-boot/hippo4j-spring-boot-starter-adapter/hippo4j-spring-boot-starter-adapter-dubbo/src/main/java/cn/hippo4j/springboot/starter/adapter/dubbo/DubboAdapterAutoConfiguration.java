@@ -17,7 +17,7 @@
 
 package cn.hippo4j.springboot.starter.adapter.dubbo;
 
-import cn.hippo4j.adapter.rocketmq.RocketMQThreadPoolAdapter;
+import cn.hippo4j.adapter.dubbo.DubboThreadPoolAdapter;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -39,7 +39,7 @@ public class DubboAdapterAutoConfiguration {
     @Bean
     @SuppressWarnings("all")
     @ConditionalOnProperty(name = "dubbo.application.name")
-    public RocketMQThreadPoolAdapter rocketMQThreadPoolAdapter(ApplicationContextHolder applicationContextHolder) {
-        return new RocketMQThreadPoolAdapter();
+    public DubboThreadPoolAdapter dubboThreadPoolAdapter(ApplicationContextHolder applicationContextHolder) {
+        return new DubboThreadPoolAdapter();
     }
 }
