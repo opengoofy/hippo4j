@@ -7,17 +7,14 @@
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-adapter</artifactId>
     <packaging>pom</packaging>
-
-    <name>hippo4j-adapter</name>
-    <description>Define the adapter management of thread pool of tripartite framework</description>
 
     <modules>
         <module>hippo4j-adapter-base</module>
         <module>hippo4j-adapter-dubbo</module>
         <module>hippo4j-adapter-kafka</module>
+        <module>hippo4j-adapter-rabbitmq</module>
         <module>hippo4j-adapter-rocketmq</module>
         <module>hippo4j-adapter-spring-cloud-stream-rocketmq</module>
     </modules>
