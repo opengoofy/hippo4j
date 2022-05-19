@@ -20,6 +20,7 @@
         <module>hippo4j-core-nacos-spring-boot-starter-example</module>
         <module>hippo4j-core-apollo-spring-boot-starter-example</module>
         <module>hippo4j-core-zookeeper-spring-boot-starter-example</module>
+        <module>hippo4j-spring-boot-starter-adapter-rabbitmq-example</module>
     </modules>
 
     <properties>
