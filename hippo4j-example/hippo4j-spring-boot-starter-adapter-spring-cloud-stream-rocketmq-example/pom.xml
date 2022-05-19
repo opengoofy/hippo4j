@@ -52,5 +52,11 @@
             <artifactId>hippo4j-spring-boot-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-example-core</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 </project>

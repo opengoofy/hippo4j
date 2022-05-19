@@ -1,5 +1,6 @@
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq.example;
 
+import cn.hippo4j.example.core.dto.SendMessageDTO;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.StreamListener;

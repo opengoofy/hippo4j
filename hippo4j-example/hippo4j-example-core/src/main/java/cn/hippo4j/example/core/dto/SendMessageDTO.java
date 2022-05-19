@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq.example;
+package cn.hippo4j.example.core.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

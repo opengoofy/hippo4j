@@ -8,9 +8,9 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 
 @Slf4j
-@SpringBootApplication
 @EnableDynamicThreadPool
 @EnableBinding({Source.class, MySink.class})
+@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.core")
 public class Hippo4jAdapterSpringCloudStreamRocketMQApplication {
 
     public static void main(String[] args) {
