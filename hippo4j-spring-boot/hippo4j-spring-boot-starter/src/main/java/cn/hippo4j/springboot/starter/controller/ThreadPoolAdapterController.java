@@ -56,7 +56,7 @@ public class ThreadPoolAdapterController {
             ThreadPoolAdapterState threadPoolState = each.getThreadPoolState(requestParameter.getThreadPoolKey());
             String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
             threadPoolState.setActive(active.toUpperCase());
-            String clientAddress = CloudCommonIdUtil.getDefaultInstanceId(environment, hippo4JInetUtils);
+            String clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4JInetUtils);
             threadPoolState.setClientAddress(clientAddress);
             threadPoolState.setIdentify(IdentifyUtil.getIdentify());
             return threadPoolState;
