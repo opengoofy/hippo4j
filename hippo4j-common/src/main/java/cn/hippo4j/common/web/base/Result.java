@@ -24,9 +24,6 @@ import java.io.Serializable;
 
 /**
  * Result.
- *
- * @author chen.ma
- * @date 2021/3/19 16:12
  */
 @Data
 @Accessors(chain = true)

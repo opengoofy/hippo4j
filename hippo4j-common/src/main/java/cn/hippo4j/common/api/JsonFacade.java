@@ -21,9 +21,6 @@ import java.util.List;
 
 /**
  * Json facade.
- *
- * @author chen.ma
- * @date 2021/12/13 20:01
  */
 public interface JsonFacade {
 

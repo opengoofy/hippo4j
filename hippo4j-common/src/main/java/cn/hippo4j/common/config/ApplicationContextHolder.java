@@ -26,9 +26,6 @@ import java.util.Map;
 
 /**
  * Application context holder.
- *
- * @author chen.ma
- * @date 2021/6/20 18:49
  */
 public class ApplicationContextHolder implements ApplicationContextAware {
 

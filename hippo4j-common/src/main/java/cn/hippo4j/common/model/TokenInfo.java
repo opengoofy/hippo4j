@@ -23,9 +23,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * Token info.
- *
- * @author chen.ma
- * @date 2021/12/20 20:02
  */
 @Data
 @NoArgsConstructor

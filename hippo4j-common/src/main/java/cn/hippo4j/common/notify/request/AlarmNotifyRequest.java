@@ -24,9 +24,6 @@ import lombok.experimental.Accessors;
 
 /**
  * Alarm notify request.
- *
- * @author chen.ma
- * @date 2022/2/22 19:41
  */
 @Data
 @Accessors(chain = true)

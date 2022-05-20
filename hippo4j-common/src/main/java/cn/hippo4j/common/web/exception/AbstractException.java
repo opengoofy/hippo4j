@@ -21,9 +21,6 @@ import lombok.Getter;
 
 /**
  * Abstract exception.
- *
- * @author chen.ma
- * @date 2022/3/2 20:01
  */
 public class AbstractException extends RuntimeException {
 

@@ -24,9 +24,6 @@ import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
 
 /**
  * Group key.
- *
- * @author chen.ma
- * @date 2021/6/24 21:12
  */
 public class GroupKey {
 

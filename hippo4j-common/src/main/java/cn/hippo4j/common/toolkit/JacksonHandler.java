@@ -33,9 +33,6 @@ import java.util.List;
 
 /**
  * Jackson util.
- *
- * @author chen.ma
- * @date 2021/12/13 20:02
  */
 public class JacksonHandler implements JsonFacade {
 

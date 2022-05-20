@@ -39,9 +39,6 @@ import static cn.hippo4j.common.notify.platform.LarkAlarmConstants.*;
 
 /**
  * Send lark notification message.
- *
- * @author imyzt
- * @date 2021/11/22 21:12
  */
 @Slf4j
 @AllArgsConstructor

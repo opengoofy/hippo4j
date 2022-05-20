@@ -24,9 +24,6 @@ import java.util.Map;
 
 /**
  * Collection util.
- *
- * @author chen.ma
- * @date 2021/12/22 20:43
  */
 public class CollectionUtil {
 

@@ -24,9 +24,6 @@ import java.util.Map;
 
 /**
  * Notify config builder.
- *
- * @author chen.ma
- * @date 2022/2/24 19:50
  */
 public interface NotifyConfigBuilder {
 

@@ -19,9 +19,6 @@ package cn.hippo4j.common.model;
 
 /**
  * Thread-pool parameter.
- *
- * @author chen.ma
- * @date 2021/6/24 16:04
  */
 public interface ThreadPoolParameter {
 

@@ -32,10 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Base send message service impl.
- *
- * @author chen.ma
- * @date 2022/2/22 21:32
+ * Hippo base send message service.
  */
 @Slf4j
 @RequiredArgsConstructor

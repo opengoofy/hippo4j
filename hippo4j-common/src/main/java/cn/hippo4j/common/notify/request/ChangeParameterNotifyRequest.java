@@ -22,9 +22,6 @@ import lombok.Data;
 
 /**
  * Change parameter notify request.
- *
- * @author chen.ma
- * @date 2022/2/22 20:22
  */
 @Data
 public class ChangeParameterNotifyRequest extends BaseNotifyRequest {

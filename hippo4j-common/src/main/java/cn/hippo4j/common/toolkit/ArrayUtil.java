@@ -23,9 +23,6 @@ import java.lang.reflect.Array;
 
 /**
  * Array util.
- *
- * @author chen.ma
- * @date 2021/12/30 21:42
  */
 public class ArrayUtil {
 
@@ -85,8 +82,7 @@ public class ArrayUtil {
             return clone(array1);
         }
         final Class<?> type1 = array1.getClass().getComponentType();
-        @SuppressWarnings("unchecked")
-        final T[] joinedArray = (T[]) Array.newInstance(type1, array1.length + array2.length);
+        @SuppressWarnings("unchecked") final T[] joinedArray = (T[]) Array.newInstance(type1, array1.length + array2.length);
         System.arraycopy(array1, 0, joinedArray, 0, array1.length);
         try {
             System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);

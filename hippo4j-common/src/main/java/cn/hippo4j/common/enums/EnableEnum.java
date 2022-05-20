@@ -21,9 +21,6 @@ import java.util.Objects;
 
 /**
  * Enable enum.
- *
- * @author chen.ma
- * @date 2021/12/21 20:34
  */
 public enum EnableEnum {
 

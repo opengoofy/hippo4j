@@ -19,9 +19,6 @@ package cn.hippo4j.common.toolkit;
 
 /**
  * Thread util.
- *
- * @author chen.ma
- * @date 2021/12/6 23:34
  */
 public class ThreadUtil {
 

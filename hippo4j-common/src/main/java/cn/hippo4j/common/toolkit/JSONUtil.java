@@ -23,9 +23,6 @@ import java.util.List;
 
 /**
  * JSON util.
- *
- * @author chen.ma
- * @date 2021/12/13 20:27
  */
 public class JSONUtil {
 

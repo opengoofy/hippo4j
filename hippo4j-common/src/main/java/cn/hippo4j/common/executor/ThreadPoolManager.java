@@ -26,10 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Thread Pool Manager.
- *
- * @author chen.ma
- * @date 2021/6/23 18:36
+ * Thread-pool manager.
  */
 public class ThreadPoolManager {
 

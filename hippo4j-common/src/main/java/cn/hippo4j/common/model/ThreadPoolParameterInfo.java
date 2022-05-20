@@ -24,9 +24,6 @@ import java.io.Serializable;
 
 /**
  * Thread pool parameter info.
- *
- * @author chen.ma
- * @date 2021/6/16 23:18
  */
 @Data
 @Accessors(chain = true)

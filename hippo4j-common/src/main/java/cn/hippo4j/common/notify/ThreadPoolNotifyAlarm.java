@@ -26,9 +26,6 @@ import java.util.Map;
 
 /**
  * Thread pool notify alarm.
- *
- * @author chen.ma
- * @date 2021/8/15 19:13
  */
 @Data
 @NoArgsConstructor

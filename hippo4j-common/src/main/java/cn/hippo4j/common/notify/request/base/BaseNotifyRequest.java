@@ -21,9 +21,6 @@ import lombok.Data;
 
 /**
  * Base notify request.
- *
- * @author chen.ma
- * @date 2022/2/22 19:35
  */
 @Data
 public class BaseNotifyRequest implements NotifyRequest {

@@ -24,9 +24,6 @@ import java.util.List;
 
 /**
  * Thread detail state info.
- *
- * @author chen.ma
- * @date 2022/1/9 12:36
  */
 @Data
 @Accessors(chain = true)

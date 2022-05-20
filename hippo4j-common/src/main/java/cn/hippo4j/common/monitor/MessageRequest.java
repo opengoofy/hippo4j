@@ -22,9 +22,6 @@ import java.util.Map;
 
 /**
  * Message request.
- *
- * @author chen.ma
- * @date 2021/12/10 21:17
  */
 public interface MessageRequest<T extends Message> {
 

@@ -18,10 +18,7 @@
 package cn.hippo4j.common.notify.platform;
 
 /**
- * lark alarm constants.
- *
- * @author imyzt
- * @date 2021-11-23 19:29
+ * Lark alarm constants.
  */
 public class LarkAlarmConstants {
 

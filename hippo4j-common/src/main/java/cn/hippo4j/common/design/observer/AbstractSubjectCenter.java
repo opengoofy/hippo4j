@@ -28,9 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Send observer notification.
- *
- * @author chen.ma
- * @date 2021/12/25 19:47
  */
 @Slf4j
 public class AbstractSubjectCenter {

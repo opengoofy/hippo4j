@@ -23,9 +23,6 @@ import java.util.List;
 
 /**
  * Thread pool notify DTO.
- *
- * @author chen.ma
- * @date 2022/2/24 19:08
  */
 @Data
 public class ThreadPoolNotifyDTO {

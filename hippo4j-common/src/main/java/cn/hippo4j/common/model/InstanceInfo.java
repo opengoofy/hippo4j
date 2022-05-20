@@ -25,9 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Instance info.
- *
- * @author chen.ma
- * @date 2021/7/13 22:10
  */
 @Slf4j
 @Getter

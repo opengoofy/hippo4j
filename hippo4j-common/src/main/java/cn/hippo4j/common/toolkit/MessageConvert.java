@@ -28,9 +28,6 @@ import java.util.Map;
 
 /**
  * Message convert.
- *
- * @author chen.ma
- * @date 2021/12/10 21:27
  */
 public class MessageConvert {
 

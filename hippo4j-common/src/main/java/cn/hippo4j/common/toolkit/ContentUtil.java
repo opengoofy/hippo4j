@@ -23,9 +23,6 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 
 /**
  * Content util.
- *
- * @author chen.ma
- * @date 2021/6/24 16:13
  */
 public class ContentUtil {
 

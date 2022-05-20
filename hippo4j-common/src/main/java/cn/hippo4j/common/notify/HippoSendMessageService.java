@@ -21,10 +21,7 @@ import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
 
 /**
- * Send message service.
- *
- * @author chen.ma
- * @date 2022/2/22 19:56
+ * Hippo4j send message service.
  */
 public interface HippoSendMessageService {
 

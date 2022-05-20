@@ -30,9 +30,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Alarm control assembly.
- *
- * @author chen.ma
- * @date 2021/10/28 21:24
  */
 public class AlarmControlHandler {
 

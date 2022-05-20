@@ -19,9 +19,6 @@ package cn.hippo4j.common.constant;
 
 /**
  * Change thread-pool constants.
- *
- * @author chen.ma
- * @date 2022/5/1 17:25
  */
 public class ChangeThreadPoolConstants {
 

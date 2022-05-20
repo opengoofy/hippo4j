@@ -22,10 +22,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * 报警控制实体.
- *
- * @author chen.ma
- * @date 2021/10/28 22:15
+ * Alarm control dto.
  */
 @Data
 @Builder

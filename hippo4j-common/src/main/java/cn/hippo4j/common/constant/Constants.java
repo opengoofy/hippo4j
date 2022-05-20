@@ -19,9 +19,6 @@ package cn.hippo4j.common.constant;
 
 /**
  * Constants.
- *
- * @author chen.ma
- * @date 2021/6/16 23:01
  */
 public class Constants {
 

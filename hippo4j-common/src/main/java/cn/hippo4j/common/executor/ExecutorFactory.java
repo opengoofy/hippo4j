@@ -23,9 +23,6 @@ import java.util.concurrent.ThreadFactory;
 
 /**
  * Executor factory.
- *
- * @author chen.ma
- * @date 2021/6/23 18:35
  */
 public class ExecutorFactory {
 

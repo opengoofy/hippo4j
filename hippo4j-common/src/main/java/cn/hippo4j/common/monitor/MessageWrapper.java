@@ -26,9 +26,6 @@ import java.util.Map;
 
 /**
  * Message wrapper.
- *
- * @author chen.ma
- * @date 2021/12/7 22:42
  */
 @Data
 @NoArgsConstructor

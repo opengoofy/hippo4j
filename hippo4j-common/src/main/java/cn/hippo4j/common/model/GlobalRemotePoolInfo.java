@@ -24,9 +24,6 @@ import java.io.Serializable;
 
 /**
  * Global remote pool info.
- *
- * @author chen.ma
- * @date 2021/6/23 21:08
  */
 @Getter
 @Setter

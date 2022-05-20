@@ -19,9 +19,6 @@ package cn.hippo4j.common.web.exception;
 
 /**
  * Error code abstract interface.
- *
- * @author chen.ma
- * @date 2021/9/16 15:39
  */
 public interface ErrorCode {
 

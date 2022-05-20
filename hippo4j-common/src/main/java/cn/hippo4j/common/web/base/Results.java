@@ -25,9 +25,6 @@ import java.util.Optional;
 
 /**
  * Results.
- *
- * @author chen.ma
- * @date 2021/3/19 16:12
  */
 public final class Results {
 

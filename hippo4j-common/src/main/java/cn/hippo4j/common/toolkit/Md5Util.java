@@ -28,9 +28,6 @@ import java.util.List;
 
 /**
  * MD5 util.
- *
- * @author chen.ma
- * @date 2021/6/22 17:55
  */
 public class Md5Util {
 

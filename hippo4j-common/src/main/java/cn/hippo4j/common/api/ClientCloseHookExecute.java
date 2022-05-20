@@ -22,9 +22,6 @@ import lombok.experimental.Accessors;
 
 /**
  * Client close hook execute.
- *
- * @author chen.ma
- * @date 2022/1/6 22:14
  */
 public interface ClientCloseHookExecute {
 

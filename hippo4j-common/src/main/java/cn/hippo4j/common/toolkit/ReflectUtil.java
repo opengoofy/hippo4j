@@ -25,9 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Reflect util.
- *
- * @author chen.ma
- * @date 2022/1/9 13:16
  */
 public class ReflectUtil {
 

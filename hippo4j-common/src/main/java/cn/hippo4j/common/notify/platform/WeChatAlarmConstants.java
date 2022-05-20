@@ -19,9 +19,6 @@ package cn.hippo4j.common.notify.platform;
 
 /**
  * We chat alarm constants.
- *
- * @author chen.ma
- * @date 2021/11/26 20:03
  */
 public class WeChatAlarmConstants {
 

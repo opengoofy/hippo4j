@@ -25,9 +25,6 @@ import java.util.Optional;
 
 /**
  * User context (Transition scheme).
- *
- * @author chen.ma
- * @date 2021/11/17 21:13
  */
 public class UserContext {
 

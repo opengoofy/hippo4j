@@ -21,9 +21,6 @@ import lombok.Data;
 
 /**
  * Many pool run state info.
- *
- * @author chen.ma
- * @date 2022/1/8 12:54
  */
 @Data
 public class ManyThreadPoolRunStateInfo extends ThreadPoolRunStateInfo {

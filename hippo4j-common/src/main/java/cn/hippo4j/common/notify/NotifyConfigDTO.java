@@ -21,10 +21,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * 通知实体.
- *
- * @author chen.ma
- * @date 2021/11/17 22:12
+ * Notify config dto.
  */
 @Data
 @Accessors(chain = true)

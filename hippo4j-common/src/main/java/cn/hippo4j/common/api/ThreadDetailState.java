@@ -24,9 +24,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Get thread status in thread pool.
- *
- * @author chen.ma
- * @date 2022/1/9 12:47
  */
 public interface ThreadDetailState {
 

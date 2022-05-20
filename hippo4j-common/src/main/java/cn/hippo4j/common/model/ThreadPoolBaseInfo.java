@@ -22,9 +22,6 @@ import lombok.experimental.Accessors;
 
 /**
  * Thread-pool base info.
- *
- * @author chen.ma
- * @date 2022/1/22 12:10
  */
 @Data
 @Accessors(chain = true)

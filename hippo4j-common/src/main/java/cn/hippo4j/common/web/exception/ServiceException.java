@@ -21,9 +21,6 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Service exception.
- *
- * @author chen.ma
- * @date 2021/3/19 16:14
  */
 @EqualsAndHashCode(callSuper = true)
 public class ServiceException extends AbstractException {

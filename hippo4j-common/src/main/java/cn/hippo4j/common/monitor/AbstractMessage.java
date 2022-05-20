@@ -24,9 +24,6 @@ import java.util.List;
 
 /**
  * Base message.
- *
- * @author chen.ma
- * @date 2021/12/7 20:31
  */
 @Data
 @NoArgsConstructor

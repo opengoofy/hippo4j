@@ -22,9 +22,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * Dynamic thread pool runtime data.
- *
- * @author chen.ma
- * @date 2021/12/6 18:18
  */
 @Data
 @NoArgsConstructor

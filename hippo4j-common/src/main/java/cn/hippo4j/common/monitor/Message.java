@@ -22,9 +22,6 @@ import java.util.List;
 
 /**
  * Abstract message monitoring interface.
- *
- * @author chen.ma
- * @date 2021/12/6 20:16
  */
 public interface Message<T extends Message> extends Serializable {
 

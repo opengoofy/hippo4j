@@ -19,9 +19,6 @@ package cn.hippo4j.common.enums;
 
 /**
  * Del enum.
- *
- * @author chen.ma
- * @date 2021/3/26 18:45
  */
 public enum DelEnum {
 

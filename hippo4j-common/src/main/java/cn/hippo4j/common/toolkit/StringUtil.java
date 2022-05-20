@@ -19,9 +19,6 @@ package cn.hippo4j.common.toolkit;
 
 /**
  * String util.
- *
- * @author chen.ma
- * @date 2021/12/22 20:58
  */
 public class StringUtil {
 

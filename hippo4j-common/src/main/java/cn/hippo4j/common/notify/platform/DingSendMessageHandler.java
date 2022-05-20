@@ -46,9 +46,6 @@ import static cn.hippo4j.common.notify.platform.DingAlarmConstants.*;
 
 /**
  * Send ding notification message.
- *
- * @author chen.ma
- * @date 2021/8/15 15:49
  */
 @Slf4j
 public class DingSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {

@@ -18,10 +18,7 @@
 package cn.hippo4j.common.toolkit;
 
 /**
- * 字节转换工具类.
- *
- * @author chen.ma
- * @date 2021/11/20 12:21
+ * Byte conversion tool class
  */
 public class ByteConvertUtil {
 

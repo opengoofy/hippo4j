@@ -25,9 +25,6 @@ import java.util.Map;
 
 /**
  * Assert.
- *
- * @author chen.ma
- * @date 2021/6/29 09:36
  */
 public class Assert {
 

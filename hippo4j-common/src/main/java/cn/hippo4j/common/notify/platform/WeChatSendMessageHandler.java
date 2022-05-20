@@ -36,9 +36,6 @@ import static cn.hippo4j.common.notify.platform.WeChatAlarmConstants.*;
 
 /**
  * WeChat send message handler.
- *
- * @author chen.ma
- * @date 2021/11/26 20:06
  */
 @Slf4j
 public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
