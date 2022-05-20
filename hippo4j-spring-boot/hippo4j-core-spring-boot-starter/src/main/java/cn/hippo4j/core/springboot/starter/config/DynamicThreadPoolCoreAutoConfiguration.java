@@ -39,10 +39,12 @@ import cn.hippo4j.core.springboot.starter.refresher.ApolloRefresherHandler;
 import cn.hippo4j.core.springboot.starter.refresher.NacosCloudRefresherHandler;
 import cn.hippo4j.core.springboot.starter.refresher.NacosRefresherHandler;
 import cn.hippo4j.core.springboot.starter.refresher.ZookeeperRefresherHandler;
+import cn.hippo4j.core.springboot.starter.refresher.event.AdapterExecutorsListener;
 import cn.hippo4j.core.springboot.starter.refresher.event.ExecutorsListener;
 import cn.hippo4j.core.springboot.starter.refresher.event.PlatformsListener;
 import cn.hippo4j.core.springboot.starter.refresher.event.WebExecutorListener;
 import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolPostProcessor;
+import cn.hippo4j.core.springboot.starter.support.ThreadPoolAdapterRegister;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.*;
@@ -174,6 +176,11 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     }
 
     @Bean
+    public AdapterExecutorsListener hippo4jAdapterExecutorsListener() {
+        return new AdapterExecutorsListener();
+    }
+
+    @Bean
     public PlatformsListener hippo4jPlatformsListener() {
         return new PlatformsListener();
     }
@@ -181,5 +188,10 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @Bean
     public WebExecutorListener hippo4jWebExecutorListener() {
         return new WebExecutorListener();
+    }
+
+    @Bean
+    public ThreadPoolAdapterRegister threadPoolAdapterRegister() {
+        return new ThreadPoolAdapterRegister(bootstrapCoreProperties);
     }
 }

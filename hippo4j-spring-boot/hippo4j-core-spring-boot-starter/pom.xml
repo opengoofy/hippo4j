@@ -12,7 +12,8 @@
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>Thread pool dynamic parameter adjustment, alarming, status viewing and monitoring functions</description>
+    <description>Thread pool dynamic parameter adjustment, alarming, status viewing and monitoring functions
+    </description>
 
     <dependencies>
         <dependency>
@@ -84,6 +85,11 @@
             <artifactId>micrometer-core</artifactId>
             <version>1.8.4</version>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-adapter-base</artifactId>
         </dependency>
     </dependencies>
 

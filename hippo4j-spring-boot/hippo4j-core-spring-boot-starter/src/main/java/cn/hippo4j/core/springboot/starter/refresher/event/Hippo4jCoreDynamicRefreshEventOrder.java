@@ -27,4 +27,6 @@ public interface Hippo4jCoreDynamicRefreshEventOrder {
     int PLATFORMS_LISTENER = 1;
 
     int EXECUTORS_LISTENER = 2;
+
+    int ADAPTER_EXECUTORS_LISTENER = 3;
 }
