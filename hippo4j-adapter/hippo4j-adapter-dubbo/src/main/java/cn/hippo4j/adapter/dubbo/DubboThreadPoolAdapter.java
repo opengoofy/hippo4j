@@ -37,6 +37,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
+
 /**
  * Dubbo thread-pool adapter.
  */
@@ -55,6 +57,7 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
         ThreadPoolAdapterState threadPoolAdapterState = new ThreadPoolAdapterState();
         final ThreadPoolExecutor executor = DUBBO_PROTOCOL_EXECUTOR.get(identify);
         if (executor == null) {
+            log.warn("[{}] Dubbo consuming thread pool not found.", identify);
             return threadPoolAdapterState;
         }
         threadPoolAdapterState.setThreadPoolKey(identify);
@@ -72,12 +75,20 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
 
     @Override
     public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
-        final ThreadPoolExecutor executor = DUBBO_PROTOCOL_EXECUTOR.get(threadPoolAdapterParameter.getThreadPoolKey());
+        String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
+        ThreadPoolExecutor executor = DUBBO_PROTOCOL_EXECUTOR.get(threadPoolAdapterParameter.getThreadPoolKey());
         if (executor == null) {
+            log.warn("[{}] Dubbo consuming thread pool not found.", threadPoolKey);
             return false;
         }
+        int originalCoreSize = executor.getCorePoolSize();
+        int originalMaximumPoolSize = executor.getMaximumPoolSize();
         executor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
         executor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
+        log.info("[{}] Dubbo consumption thread pool parameter change. coreSize :: {}, maximumSize :: {}",
+                threadPoolKey,
+                String.format(CHANGE_DELIMITER, originalCoreSize, executor.getCorePoolSize()),
+                String.format(CHANGE_DELIMITER, originalMaximumPoolSize, executor.getMaximumPoolSize()));
         return true;
     }
 
