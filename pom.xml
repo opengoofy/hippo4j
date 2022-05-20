@@ -340,7 +340,7 @@
                 <configuration>
                     <java>
                         <eclipse>
-                            <file>${maven.multiModuleProjectDirectory}/dev-support/hippo4j_eclipse_formatter.xml</file>
+                            <file>${maven.multiModuleProjectDirectory}/dev-support/hippo4j_spotless_formatter.xml</file>
                         </eclipse>
                         <licenseHeader>
                             <file>${maven.multiModuleProjectDirectory}/dev-support/license-header</file>
