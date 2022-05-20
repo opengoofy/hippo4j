@@ -55,7 +55,7 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
     @Override
     public ThreadPoolAdapterState getThreadPoolState(String identify) {
         ThreadPoolAdapterState threadPoolAdapterState = new ThreadPoolAdapterState();
-        final ThreadPoolExecutor executor = DUBBO_PROTOCOL_EXECUTOR.get(identify);
+        ThreadPoolExecutor executor = DUBBO_PROTOCOL_EXECUTOR.get(identify);
         if (executor == null) {
             log.warn("[{}] Dubbo consuming thread pool not found.", identify);
             return threadPoolAdapterState;
