@@ -19,7 +19,6 @@ package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
@@ -33,6 +32,8 @@ import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hippo4j.console.model.ThreadPoolInstanceInfo;
+import cn.hippo4j.console.model.WebThreadPoolReqDTO;
+import cn.hippo4j.console.model.WebThreadPoolRespDTO;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
 import cn.hutool.core.collection.CollUtil;
@@ -111,6 +112,25 @@ public class ThreadPoolController {
         return result;
     }
 
+    @GetMapping("/list/client/instance/{itemId}")
+    public Result listClientInstance(@PathVariable("itemId") String itemId) {
+        List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
+        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+        if (first == null) {
+            return Results.success(Lists.newArrayList());
+        }
+        List<WebThreadPoolRespDTO> returnThreadPool = Lists.newArrayList();
+        for (Lease<InstanceInfo> each : leases) {
+            Result poolBaseState = getPoolBaseState(each.getHolder().getCallBackUrl());
+            WebThreadPoolRespDTO result = BeanUtil.convert(poolBaseState.getData(), WebThreadPoolRespDTO.class);
+            result.setActive(each.getHolder().getActive());
+            result.setIdentify(each.getHolder().getIdentify());
+            result.setClientAddress(each.getHolder().getCallBackUrl());
+            returnThreadPool.add(result);
+        }
+        return Results.success(returnThreadPool);
+    }
+
     @GetMapping("/web/base/info")
     public Result getPoolBaseState(@RequestParam(value = "clientAddress") String clientAddress) {
         String urlString = StrBuilder.create("http://", clientAddress, "/web/base/info").toString();
@@ -128,12 +148,12 @@ public class ThreadPoolController {
     }
 
     @PostMapping("/web/update/pool")
-    public Result<Void> updateWebThreadPool(@RequestParam(value = "clientAddress") String clientAddress,
-                                            @RequestBody ThreadPoolParameterInfo threadPoolParameterInfo) {
-        String urlString = StrBuilder.create("http://", clientAddress, "/web/update/pool").toString();
-        String data = HttpUtil.post(urlString, JSONUtil.toJSONString(threadPoolParameterInfo), HTTP_EXECUTE_TIMEOUT);
-        Result result = JSONUtil.parseObject(data, Result.class);
-        return result;
+    public Result<Void> updateWebThreadPool(@RequestBody WebThreadPoolReqDTO requestParam) {
+        for (String each : requestParam.getClientAddressList()) {
+            String urlString = StrBuilder.create("http://", each, "/web/update/pool").toString();
+            HttpUtil.post(urlString, JSONUtil.toJSONString(requestParam), HTTP_EXECUTE_TIMEOUT);
+        }
+        return Results.success();
     }
 
     @GetMapping("/list/instance/{itemId}/{tpId}")
@@ -162,25 +182,6 @@ public class ThreadPoolController {
             threadPoolInstanceInfo.setActive(activeMap.get(key));
             threadPoolInstanceInfo.setIdentify(key);
             threadPoolInstanceInfo.setClientBasePath(clientBasePathMap.get(key));
-            returnThreadPool.add(threadPoolInstanceInfo);
-        });
-        return Results.success(returnThreadPool);
-    }
-
-    @GetMapping("/list/client/instance/{itemId}")
-    public Result listClientInstance(@PathVariable("itemId") String itemId) {
-        List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
-        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
-        if (first == null) {
-            return Results.success(Lists.newArrayList());
-        }
-        List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
-        leases.forEach(each -> {
-            InstanceInfo holder = each.getHolder();
-            ThreadPoolInstanceInfo threadPoolInstanceInfo = new ThreadPoolInstanceInfo();
-            threadPoolInstanceInfo.setActive(holder.getActive());
-            threadPoolInstanceInfo.setClientAddress(holder.getCallBackUrl());
-            threadPoolInstanceInfo.setIdentify(holder.getIdentify());
             returnThreadPool.add(threadPoolInstanceInfo);
         });
         return Results.success(returnThreadPool);
