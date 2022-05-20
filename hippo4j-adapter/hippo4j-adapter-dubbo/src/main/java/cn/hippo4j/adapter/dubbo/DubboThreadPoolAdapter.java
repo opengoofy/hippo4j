@@ -53,61 +53,55 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
     @Override
     public ThreadPoolAdapterState getThreadPoolState(String identify) {
         ThreadPoolAdapterState threadPoolAdapterState = new ThreadPoolAdapterState();
-        final ThreadPoolExecutor tp = DUBBO_PROTOCOL_EXECUTOR.get(identify);
-        if (tp == null) {
+        final ThreadPoolExecutor executor = DUBBO_PROTOCOL_EXECUTOR.get(identify);
+        if (executor == null) {
             return threadPoolAdapterState;
         }
         threadPoolAdapterState.setThreadPoolKey(identify);
-        threadPoolAdapterState.setActive(tp.getActiveCount() + "");
-        threadPoolAdapterState.setCoreSize(tp.getCorePoolSize());
-        threadPoolAdapterState.setMaximumSize(tp.getMaximumPoolSize());
+        threadPoolAdapterState.setActive(executor.getActiveCount() + "");
+        threadPoolAdapterState.setCoreSize(executor.getCorePoolSize());
+        threadPoolAdapterState.setMaximumSize(executor.getMaximumPoolSize());
         return threadPoolAdapterState;
     }
 
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
         List<ThreadPoolAdapterState> threadPoolAdapterStates = new ArrayList<>();
-        DUBBO_PROTOCOL_EXECUTOR.forEach((k, v) -> threadPoolAdapterStates.add(getThreadPoolState(String.valueOf(k))));
+        DUBBO_PROTOCOL_EXECUTOR.forEach((kel, val) -> threadPoolAdapterStates.add(getThreadPoolState(String.valueOf(val))));
         return threadPoolAdapterStates;
     }
 
     @Override
     public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
-        final ThreadPoolExecutor tp = DUBBO_PROTOCOL_EXECUTOR.get(threadPoolAdapterParameter.getThreadPoolKey());
-        if (tp == null) {
+        final ThreadPoolExecutor executor = DUBBO_PROTOCOL_EXECUTOR.get(threadPoolAdapterParameter.getThreadPoolKey());
+        if (executor == null) {
             return false;
         }
-        tp.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
-        tp.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
+        executor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
+        executor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
         return true;
     }
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        boolean is2x = false;
-        String poolKey = "java.util.concurrent.ExecutorService";
+        boolean is2xVersion = false;
+        String poolKey = ExecutorService.class.getName();
         if (Version.getIntVersion(Version.getVersion()) < 3000000) {
-            is2x = true;
+            is2xVersion = true;
         }
-
-        if (is2x) {
-            try {
+        try {
+            if (is2xVersion) {
                 DataStore dataStore = ExtensionLoader.getExtensionLoader(DataStore.class).getDefaultExtension();
                 Map<String, Object> executors = dataStore.get(poolKey);
                 executors.forEach((key, value) -> DUBBO_PROTOCOL_EXECUTOR.put(key, (ThreadPoolExecutor) value));
-            } catch (Exception e) {
-                log.error("Failed to get Dubbo 2.X protocol thread pool", e);
+                return;
             }
-        } else {
-            try {
-                final ExecutorRepository executorRepository = ExtensionLoader.getExtensionLoader(ExecutorRepository.class).getDefaultExtension();
-                final ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>> data = (ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>>) ReflectUtil.getFieldValue(executorRepository, "data");
-                final ConcurrentMap<Integer, ExecutorService> executorServiceMap = data.get(poolKey);
-                executorServiceMap.forEach((key, value) -> DUBBO_PROTOCOL_EXECUTOR.put(String.valueOf(key), (ThreadPoolExecutor) value));
-            } catch (Exception e) {
-                log.error("Failed to get Dubbo 3.X protocol thread pool", e);
-            }
+            ExecutorRepository executorRepository = ExtensionLoader.getExtensionLoader(ExecutorRepository.class).getDefaultExtension();
+            ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>> data = (ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>>) ReflectUtil.getFieldValue(executorRepository, "data");
+            ConcurrentMap<Integer, ExecutorService> executorServiceMap = data.get(poolKey);
+            executorServiceMap.forEach((key, value) -> DUBBO_PROTOCOL_EXECUTOR.put(String.valueOf(key), (ThreadPoolExecutor) value));
+        } catch (Exception ex) {
+            log.error("Failed to get Dubbo {}.X protocol thread pool", is2xVersion ? "2" : "3", ex);
         }
-
     }
 }
