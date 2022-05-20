@@ -21,9 +21,6 @@ import lombok.Data;
 
 /**
  * Login user.
- *
- * @author chen.ma
- * @date 2021/11/9 22:41
  */
 @Data
 public class LoginUser {

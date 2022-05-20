@@ -22,9 +22,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
  * Permission service.
- *
- * @author chen.ma
- * @date 2021/10/30 22:13
  */
 public interface PermissionService {
 

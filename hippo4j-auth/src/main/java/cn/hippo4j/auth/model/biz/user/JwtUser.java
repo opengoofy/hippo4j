@@ -25,9 +25,6 @@ import java.util.Collection;
 
 /**
  * Jwt user.
- *
- * @author chen.ma
- * @date 2021/11/9 22:34
  */
 @Data
 public class JwtUser implements UserDetails {

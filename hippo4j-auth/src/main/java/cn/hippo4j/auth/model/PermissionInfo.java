@@ -24,9 +24,6 @@ import java.util.Date;
 
 /**
  * Permission info.
- *
- * @author chen.ma
- * @date 2021/10/30 22:33
  */
 @Data
 @TableName("permission")

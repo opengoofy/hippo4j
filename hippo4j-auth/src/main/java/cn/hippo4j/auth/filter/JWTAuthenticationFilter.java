@@ -48,9 +48,6 @@ import static cn.hippo4j.common.constant.Constants.MAP_INITIAL_CAPACITY;
 
 /**
  * JWT authentication filter.
- *
- * @author chen.ma
- * @date 2021/11/9 22:21
  */
 @Slf4j
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {

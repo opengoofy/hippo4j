@@ -24,9 +24,6 @@ import java.util.Date;
 
 /**
  * Role info.
- *
- * @author chen.ma
- * @date 2021/10/30 22:54
  */
 @Data
 @TableName("role")

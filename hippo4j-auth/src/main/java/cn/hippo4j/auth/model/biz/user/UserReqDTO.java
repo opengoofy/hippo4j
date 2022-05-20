@@ -23,9 +23,6 @@ import lombok.experimental.Accessors;
 
 /**
  * User req dto.
- *
- * @author chen.ma
- * @date 2021/11/11 20:30
  */
 @Data
 @Accessors(chain = true)

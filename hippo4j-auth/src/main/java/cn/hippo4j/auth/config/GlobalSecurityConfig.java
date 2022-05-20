@@ -44,9 +44,6 @@ import java.util.stream.Stream;
 
 /**
  * Global security config.
- *
- * @author chen.ma
- * @date 2021/11/9 21:10
  */
 @Configuration
 @EnableWebSecurity

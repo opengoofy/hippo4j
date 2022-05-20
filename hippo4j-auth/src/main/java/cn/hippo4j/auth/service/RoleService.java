@@ -24,9 +24,6 @@ import java.util.List;
 
 /**
  * Role service.
- *
- * @author chen.ma
- * @date 2021/10/30 22:45
  */
 public interface RoleService {
 

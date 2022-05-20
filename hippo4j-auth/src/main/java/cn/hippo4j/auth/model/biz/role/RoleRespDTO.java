@@ -21,20 +21,17 @@ import lombok.Data;
 
 /**
  * Role resp dto.
- *
- * @author chen.ma
- * @date 2021/10/30 22:49
  */
 @Data
 public class RoleRespDTO {
 
     /**
-     * role
+     * Role
      */
     private String role;
 
     /**
-     * userName
+     * User name
      */
     private String userName;
 }

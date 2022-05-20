@@ -32,9 +32,6 @@ import java.util.Set;
 
 /**
  * User details service impl.
- *
- * @author chen.ma
- * @date 2021/11/9 22:26
  */
 public class UserDetailsServiceImpl implements UserDetailsService {
 

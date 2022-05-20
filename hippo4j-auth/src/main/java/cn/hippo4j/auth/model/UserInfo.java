@@ -24,9 +24,6 @@ import java.util.Date;
 
 /**
  * User info.
- *
- * @author chen.ma
- * @date 2021/10/30 21:37
  */
 @Data
 @TableName("user")

@@ -37,9 +37,6 @@ import static cn.hippo4j.common.constant.Constants.AUTHORITIES_KEY;
 
 /**
  * Jwt token manager.
- *
- * @author chen.ma
- * @date 2021/12/20 20:36
  */
 @Component
 public class JwtTokenManager {

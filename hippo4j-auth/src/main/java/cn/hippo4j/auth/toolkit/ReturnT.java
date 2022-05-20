@@ -24,9 +24,6 @@ import java.io.Serializable;
 
 /**
  * ReturnT.
- *
- * @author chen.ma
- * @date 2021/11/10 00:00
  */
 @Data
 @NoArgsConstructor

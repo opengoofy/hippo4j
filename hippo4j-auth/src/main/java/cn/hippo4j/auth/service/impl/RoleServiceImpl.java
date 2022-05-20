@@ -38,9 +38,6 @@ import java.util.stream.Collectors;
 
 /**
  * Role service impl.
- *
- * @author chen.ma
- * @date 2021/10/30 22:53
  */
 @Service
 @AllArgsConstructor

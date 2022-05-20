@@ -26,10 +26,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 /**
- * Auth manager
- *
- * @author chen.ma
- * @date 2021/12/20 20:34
+ * Auth manager.
  */
 @Component
 @AllArgsConstructor

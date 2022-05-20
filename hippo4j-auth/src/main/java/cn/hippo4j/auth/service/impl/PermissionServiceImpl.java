@@ -33,9 +33,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * Permission service impl.
- *
- * @author chen.ma
- * @date 2021/10/30 22:32
  */
 @Service
 @AllArgsConstructor

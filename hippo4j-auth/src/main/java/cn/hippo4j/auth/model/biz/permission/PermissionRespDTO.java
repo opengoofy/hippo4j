@@ -21,9 +21,6 @@ import lombok.Data;
 
 /**
  * Permission resp dto.
- *
- * @author chen.ma
- * @date 2021/10/30 22:21
  */
 @Data
 public class PermissionRespDTO {

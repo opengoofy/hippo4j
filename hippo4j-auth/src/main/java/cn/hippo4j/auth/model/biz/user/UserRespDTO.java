@@ -24,9 +24,6 @@ import java.util.Date;
 
 /**
  * User resp dto.
- *
- * @author chen.ma
- * @date 2021/10/30 21:51
  */
 @Data
 public class UserRespDTO {

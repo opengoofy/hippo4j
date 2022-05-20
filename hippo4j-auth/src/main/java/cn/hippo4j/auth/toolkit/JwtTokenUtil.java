@@ -31,10 +31,7 @@ import java.util.List;
 import static cn.hippo4j.common.constant.Constants.MAP_INITIAL_CAPACITY;
 
 /**
- * Jwt token util.
- *
- * @author chen.ma
- * @date 2021/11/9 22:43
+ * JWT token util.
  */
 public class JwtTokenUtil {
 

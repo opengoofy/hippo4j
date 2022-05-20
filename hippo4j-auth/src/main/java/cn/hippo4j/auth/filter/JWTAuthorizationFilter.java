@@ -44,9 +44,6 @@ import static cn.hippo4j.common.web.exception.ErrorCodeEnum.LOGIN_TIMEOUT;
 
 /**
  * JWT authorization filter.
- *
- * @author chen.ma
- * @date 2021/11/9 22:21
  */
 @Slf4j
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {

@@ -26,9 +26,6 @@ import java.util.List;
 
 /**
  * User service.
- *
- * @author chen.ma
- * @date 2021/10/30 21:34
  */
 public interface UserService {
 

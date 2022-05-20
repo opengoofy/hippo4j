@@ -23,9 +23,6 @@ import lombok.experimental.Accessors;
 
 /**
  * User query page.
- *
- * @author chen.ma
- * @date 2021/10/30 21:47
  */
 @Data
 @Accessors(chain = true)

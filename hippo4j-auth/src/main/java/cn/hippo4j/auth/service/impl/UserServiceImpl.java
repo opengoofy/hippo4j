@@ -43,9 +43,6 @@ import java.util.stream.Collectors;
 
 /**
  * User service impl.
- *
- * @author chen.ma
- * @date 2021/10/30 21:40
  */
 @Service
 @AllArgsConstructor
