@@ -21,9 +21,6 @@ import cn.hippo4j.console.model.*;
 
 /**
  * Dashboard service.
- *
- * @author chen.ma
- * @date 2021/11/1 21:06
  */
 public interface DashboardService {
 

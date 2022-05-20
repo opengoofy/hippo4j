@@ -37,9 +37,6 @@ import java.util.List;
 
 /**
  * Monitor controller.
- *
- * @author chen.ma
- * @date 2021/12/7 22:29
  */
 @Slf4j
 @RestController

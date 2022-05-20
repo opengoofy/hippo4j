@@ -31,9 +31,6 @@ import java.util.Map;
 
 /**
  * Client close hook controller.
- *
- * @author chen.ma
- * @date 2022/1/6 22:30
  */
 @RestController
 @RequestMapping(Constants.BASE_PATH + "/client/close")

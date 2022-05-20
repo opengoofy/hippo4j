@@ -30,9 +30,6 @@ import static cn.hippo4j.common.constant.Constants.UP;
 
 /**
  * Health check controller.
- *
- * @author chen.ma
- * @date 2021/12/8 21:02
  */
 @Slf4j
 @RestController

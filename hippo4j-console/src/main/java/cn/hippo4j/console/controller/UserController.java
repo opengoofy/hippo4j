@@ -37,9 +37,6 @@ import static cn.hippo4j.auth.constant.Constants.TOKEN_VALIDITY_IN_SECONDS;
 
 /**
  * User controller.
- *
- * @author chen.ma
- * @date 2021/10/30 21:15
  */
 @RestController
 @AllArgsConstructor

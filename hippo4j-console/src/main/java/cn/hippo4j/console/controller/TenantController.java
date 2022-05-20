@@ -32,9 +32,6 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * Tenant controller.
- *
- * @author chen.ma
- * @date 2021/6/25 18:31
  */
 @RestController
 @AllArgsConstructor

@@ -26,9 +26,6 @@ import java.util.Map;
 
 /**
  * Tenant chart.
- *
- * @author chen.ma
- * @date 2021/12/11 16:35
  */
 @Data
 @NoArgsConstructor

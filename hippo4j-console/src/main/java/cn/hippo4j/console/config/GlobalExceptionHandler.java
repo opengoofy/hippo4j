@@ -36,10 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 /**
- * 全局异常捕获器.
- *
- * @author chen.ma
- * @date 2021/11/18 22:18
+ * Global exception handler.
  */
 @Slf4j
 @RestControllerAdvice

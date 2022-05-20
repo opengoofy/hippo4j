@@ -25,9 +25,6 @@ import java.util.List;
 
 /**
  * Line chart info.
- *
- * @author chen.ma
- * @date 2021/12/11 12:49
  */
 @Data
 @NoArgsConstructor

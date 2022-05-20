@@ -22,9 +22,6 @@ import lombok.experimental.Accessors;
 
 /**
  * Char info.
- *
- * @author chen.ma
- * @date 2021/11/10 21:06
  */
 @Data
 @Accessors(chain = true)

@@ -26,9 +26,6 @@ import java.util.Map;
 
 /**
  * Pie chart info.
- *
- * @author chen.ma
- * @date 2021/12/11 14:27
  */
 @Data
 @NoArgsConstructor

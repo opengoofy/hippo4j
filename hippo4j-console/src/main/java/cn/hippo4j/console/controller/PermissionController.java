@@ -27,9 +27,6 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * Permission controller.
- *
- * @author chen.ma
- * @date 2021/10/30 22:08
  */
 @RestController
 @AllArgsConstructor

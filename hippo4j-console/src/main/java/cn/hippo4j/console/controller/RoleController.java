@@ -29,9 +29,6 @@ import java.util.List;
 
 /**
  * Role controller.
- *
- * @author chen.ma
- * @date 2021/10/30 22:16
  */
 @RestController
 @AllArgsConstructor

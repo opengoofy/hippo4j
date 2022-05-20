@@ -32,9 +32,6 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * Item controller.
- *
- * @author chen.ma
- * @date 2021/6/29 21:42
  */
 @RestController
 @AllArgsConstructor

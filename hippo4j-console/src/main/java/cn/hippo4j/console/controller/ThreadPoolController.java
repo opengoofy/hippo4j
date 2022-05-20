@@ -54,9 +54,6 @@ import static cn.hippo4j.common.toolkit.ContentUtil.getGroupKey;
 
 /**
  * Thread pool controller.
- *
- * @author chen.ma
- * @date 2021/6/30 20:54
  */
 @RestController
 @AllArgsConstructor

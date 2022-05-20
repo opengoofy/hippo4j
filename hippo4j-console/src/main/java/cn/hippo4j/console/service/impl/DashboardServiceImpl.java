@@ -50,9 +50,6 @@ import static cn.hippo4j.common.toolkit.ContentUtil.getGroupKey;
 
 /**
  * Dashboard service impl.
- *
- * @author chen.ma
- * @date 2021/11/10 21:08
  */
 @Service
 @AllArgsConstructor

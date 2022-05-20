@@ -32,10 +32,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 通知管理.
- *
- * @author chen.ma
- * @date 2021/11/17 22:00
+ * Notify controller.
  */
 @RestController
 @AllArgsConstructor

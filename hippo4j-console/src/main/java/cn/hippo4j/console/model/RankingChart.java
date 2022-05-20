@@ -25,9 +25,6 @@ import java.util.List;
 
 /**
  * Ranking chart.
- *
- * @author chen.ma
- * @date 2021/12/11 19:39
  */
 @Data
 @NoArgsConstructor

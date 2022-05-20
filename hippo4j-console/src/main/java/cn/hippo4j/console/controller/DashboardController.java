@@ -29,9 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Dash board controller.
- *
- * @author chen.ma
- * @date 2021/11/10 21:03
  */
 @RestController
 @AllArgsConstructor

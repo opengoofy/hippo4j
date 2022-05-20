@@ -32,9 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Log record controller.
- *
- * @author chen.ma
- * @date 2021/11/17 21:10
  */
 @RestController
 @AllArgsConstructor
