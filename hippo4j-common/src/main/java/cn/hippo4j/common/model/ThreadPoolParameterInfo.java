@@ -54,12 +54,24 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
     /**
      * coreSize
      */
+    @Deprecated
     private Integer coreSize;
 
     /**
      * maxSize
      */
+    @Deprecated
     private Integer maxSize;
+
+    /**
+     * Core pool size
+     */
+    private Integer corePoolSize;
+
+    /**
+     * Maximum pool size
+     */
+    private Integer maximumPoolSize;
 
     /**
      * queueType

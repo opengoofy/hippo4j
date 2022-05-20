@@ -152,8 +152,8 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     public void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo) {
         try {
             XnioWorker xnioWorker = (XnioWorker) executor;
-            Integer coreSize = threadPoolParameterInfo.getCoreSize();
-            Integer maxSize = threadPoolParameterInfo.getMaxSize();
+            Integer coreSize = threadPoolParameterInfo.getCorePoolSize();
+            Integer maxSize = threadPoolParameterInfo.getMaximumPoolSize();
             Integer keepAliveTime = threadPoolParameterInfo.getKeepAliveTime();
             int originalCoreSize = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int originalMaximumPoolSize = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
@@ -163,8 +163,8 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
             xnioWorker.setOption(Options.WORKER_TASK_KEEPALIVE, keepAliveTime);
             log.info(
                     "[UNDERTOW] Changed web thread pool. " +
-                            "\n    coreSize :: [{}]" +
-                            "\n    maximumSize :: [{}]" +
+                            "\n    corePoolSize :: [{}]" +
+                            "\n    maximumPoolSize :: [{}]" +
                             "\n    keepAliveTime :: [{}]",
                     String.format(CHANGE_DELIMITER, originalCoreSize, coreSize),
                     String.format(CHANGE_DELIMITER, originalMaximumPoolSize, maxSize),

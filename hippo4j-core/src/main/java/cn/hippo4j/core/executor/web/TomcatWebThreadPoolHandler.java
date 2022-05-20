@@ -119,13 +119,13 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
             int originalCoreSize = tomcatExecutor.getCorePoolSize();
             int originalMaximumPoolSize = tomcatExecutor.getMaximumPoolSize();
             long originalKeepAliveTime = tomcatExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-            tomcatExecutor.setCorePoolSize(threadPoolParameterInfo.getCoreSize());
-            tomcatExecutor.setMaximumPoolSize(threadPoolParameterInfo.getMaxSize());
+            tomcatExecutor.setCorePoolSize(threadPoolParameterInfo.getCorePoolSize());
+            tomcatExecutor.setMaximumPoolSize(threadPoolParameterInfo.getMaximumPoolSize());
             tomcatExecutor.setKeepAliveTime(threadPoolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
             log.info(
                     "[TOMCAT] Changed web thread pool. " +
-                            "\n    coreSize :: [{}]" +
-                            "\n    maximumSize :: [{}]" +
+                            "\n    corePoolSize :: [{}]" +
+                            "\n    maximumPoolSize :: [{}]" +
                             "\n    keepAliveTime :: [{}]",
                     String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolParameterInfo.getCoreSize()),
                     String.format(CHANGE_DELIMITER, originalMaximumPoolSize, threadPoolParameterInfo.getMaxSize()),
