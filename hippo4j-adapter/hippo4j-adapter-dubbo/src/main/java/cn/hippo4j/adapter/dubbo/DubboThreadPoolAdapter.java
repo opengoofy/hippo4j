@@ -20,7 +20,7 @@ package cn.hippo4j.adapter.dubbo;
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
-import cn.hutool.core.util.ReflectUtil;
+import cn.hippo4j.common.toolkit.ReflectUtil;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.common.Version;
@@ -97,7 +97,8 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
                 return;
             }
             ExecutorRepository executorRepository = ExtensionLoader.getExtensionLoader(ExecutorRepository.class).getDefaultExtension();
-            ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>> data = (ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>>) ReflectUtil.getFieldValue(executorRepository, "data");
+            ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>> data =
+                    (ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>>) ReflectUtil.getFieldValue(executorRepository, "data");
             ConcurrentMap<Integer, ExecutorService> executorServiceMap = data.get(poolKey);
             executorServiceMap.forEach((key, value) -> DUBBO_PROTOCOL_EXECUTOR.put(String.valueOf(key), (ThreadPoolExecutor) value));
         } catch (Exception ex) {
