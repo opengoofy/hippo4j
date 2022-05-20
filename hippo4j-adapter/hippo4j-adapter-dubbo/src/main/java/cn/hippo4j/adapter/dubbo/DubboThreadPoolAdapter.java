@@ -77,8 +77,8 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
         if (tp == null) {
             return false;
         }
-        tp.setCorePoolSize(threadPoolAdapterParameter.getCoreSize());
-        tp.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumSize());
+        tp.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
+        tp.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
         return true;
     }
 

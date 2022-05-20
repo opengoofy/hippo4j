@@ -67,7 +67,7 @@ public class ThreadPoolAdapterController {
     @PostMapping("/adapter/thread-pool/update")
     public Result<Void> updateAdapterThreadPool(@RequestBody ThreadPoolAdapterParameter requestParameter) {
         log.info("[{}] Change third-party thread pool data. key: {}, coreSize: {}, maximumSize: {}",
-                requestParameter.getMark(), requestParameter.getThreadPoolKey(), requestParameter.getCoreSize(), requestParameter.getMaximumSize());
+                requestParameter.getMark(), requestParameter.getThreadPoolKey(), requestParameter.getCorePoolSize(), requestParameter.getMaximumPoolSize());
         ThreadPoolAdapter threadPoolAdapter = THREAD_POOL_ADAPTER_BEAN_CONTAINER.get(requestParameter.getMark());
         Optional.ofNullable(threadPoolAdapter).ifPresent(each -> each.updateThreadPool(requestParameter));
         return Results.success();

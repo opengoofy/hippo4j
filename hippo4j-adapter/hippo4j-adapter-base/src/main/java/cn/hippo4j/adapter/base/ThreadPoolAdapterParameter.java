@@ -36,12 +36,12 @@ public class ThreadPoolAdapterParameter {
     private String threadPoolKey;
 
     /**
-     * Core size
+     * Core pool size
      */
-    private Integer coreSize;
+    private Integer corePoolSize;
 
     /**
-     * Maximum size
+     * Maximum pool size
      */
-    private Integer maximumSize;
+    private Integer maximumPoolSize;
 }

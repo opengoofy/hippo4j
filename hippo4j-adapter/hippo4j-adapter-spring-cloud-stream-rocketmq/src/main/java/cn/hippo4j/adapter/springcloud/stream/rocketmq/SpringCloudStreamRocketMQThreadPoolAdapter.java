@@ -87,8 +87,8 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
         if (rocketMQConsumeExecutor != null) {
             int originalCoreSize = rocketMQConsumeExecutor.getCorePoolSize();
             int originalMaximumPoolSize = rocketMQConsumeExecutor.getMaximumPoolSize();
-            rocketMQConsumeExecutor.setCorePoolSize(threadPoolAdapterParameter.getCoreSize());
-            rocketMQConsumeExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumSize());
+            rocketMQConsumeExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
+            rocketMQConsumeExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
             log.info("[{}] RocketMQ consumption thread pool parameter change. coreSize :: {}, maximumSize :: {}",
                     threadPoolKey,
                     String.format(CHANGE_DELIMITER, originalCoreSize, rocketMQConsumeExecutor.getCorePoolSize()),
