@@ -121,7 +121,12 @@ public class ThreadPoolController {
         }
         List<WebThreadPoolRespDTO> returnThreadPool = Lists.newArrayList();
         for (Lease<InstanceInfo> each : leases) {
-            Result poolBaseState = getPoolBaseState(each.getHolder().getCallBackUrl());
+            Result poolBaseState;
+            try {
+                poolBaseState = getPoolBaseState(each.getHolder().getCallBackUrl());
+            } catch (Throwable ignored) {
+                continue;
+            }
             WebThreadPoolRespDTO result = BeanUtil.convert(poolBaseState.getData(), WebThreadPoolRespDTO.class);
             result.setActive(each.getHolder().getActive());
             result.setIdentify(each.getHolder().getIdentify());
