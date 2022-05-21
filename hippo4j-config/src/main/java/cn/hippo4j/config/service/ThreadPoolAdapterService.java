@@ -96,8 +96,8 @@ public class ThreadPoolAdapterService {
                 .map(each -> each.get(requestParameter.getThreadPoolKey()))
                 .orElse(Lists.newArrayList());
         List<String> addressList = actual.stream().map(ThreadPoolAdapterState::getClientAddress).collect(Collectors.toList());
-        List<ThreadPoolAdapterRespDTO> result = Lists.newCopyOnWriteArrayList();
-        addressList.parallelStream().forEach(each -> {
+        List<ThreadPoolAdapterRespDTO> result = new ArrayList<>(addressList.size());
+        addressList.forEach(each -> {
             String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/info").toString();
             Map<String, Object> param = Maps.newHashMap();
             param.put("mark", requestParameter.getMark());
