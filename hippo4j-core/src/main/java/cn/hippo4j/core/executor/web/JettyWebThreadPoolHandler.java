@@ -92,10 +92,7 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
             Integer maxSize = threadPoolParameterInfo.getMaximumPoolSize();
             jettyExecutor.setMinThreads(coreSize);
             jettyExecutor.setMaxThreads(maxSize);
-            log.info(
-                    "[JETTY] Changed web thread pool. " +
-                            "\n    corePoolSize :: [{}]" +
-                            "\n    maximumPoolSize :: [{}]",
+            log.info("[JETTY] Changed web thread pool. corePoolSize :: [{}], maximumPoolSize :: [{}]",
                     String.format(CHANGE_DELIMITER, minThreads, jettyExecutor.getMinThreads()),
                     String.format(CHANGE_DELIMITER, maxThreads, jettyExecutor.getMaxThreads()));
         } catch (Exception ex) {
