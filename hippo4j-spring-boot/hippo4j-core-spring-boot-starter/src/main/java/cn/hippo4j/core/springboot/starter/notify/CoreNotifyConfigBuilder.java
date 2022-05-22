@@ -20,6 +20,7 @@ package cn.hippo4j.core.springboot.starter.notify;
 import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.notify.AlarmControlHandler;
 import cn.hippo4j.common.notify.NotifyConfigDTO;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
@@ -32,6 +33,7 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Core notify config builder.
@@ -49,14 +51,17 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
     @Override
     public Map<String, List<NotifyConfigDTO>> buildNotify() {
         Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
-
+        boolean globalAlarm = bootstrapCoreProperties.getAlarm();
         List<ExecutorProperties> executors = bootstrapCoreProperties.getExecutors();
-        if (null != executors) {
+        List<ExecutorProperties> actual = executors.stream().filter(each -> Optional.ofNullable(each.getNotify()).map(notify -> notify.getIsAlarm()).orElse(false)).collect(Collectors.toList());
+        if (!globalAlarm && CollectionUtil.isEmpty(actual)) {
+            return resultMap;
+        }
+        if (CollectionUtil.isNotEmpty(executors)) {
             for (ExecutorProperties executor : executors) {
                 resultMap.putAll(buildSingleNotifyConfig(executor));
             }
         }
-
         return resultMap;
     }
 
