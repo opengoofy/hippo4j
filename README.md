@@ -26,7 +26,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 功能扩展：支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务；
 - 容器管理：Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
 - 中间件适配：Apache RocketMQ、Dubbo 消费线程池运行时数据查看和线程数变更；
-- 多种模式：内置两种使用模式：[依赖配置中心](https://hippo4j.cn/pages/2f674h/) 和 [无中间件依赖](https://hippo4j.cn/pages/2f674a/)。。
+- 多种模式：内置两种使用模式：[依赖配置中心](https://hippo4j.cn/pages/2f674h/) 和 [无中间件依赖](https://hippo4j.cn/pages/2f674a/)。
 
 ## 快速开始
 
