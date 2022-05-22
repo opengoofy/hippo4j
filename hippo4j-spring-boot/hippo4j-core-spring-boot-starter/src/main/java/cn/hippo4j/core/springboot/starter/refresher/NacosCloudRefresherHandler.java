@@ -18,7 +18,6 @@
 package cn.hippo4j.core.springboot.starter.refresher;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.config.listener.Listener;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +36,7 @@ public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRef
 
     private final NacosConfigManager nacosConfigManager;
 
-    public NacosCloudRefresherHandler(BootstrapCoreProperties bootstrapCoreProperties) {
-        super(bootstrapCoreProperties);
+    public NacosCloudRefresherHandler() {
         nacosConfigManager = ApplicationContextHolder.getBean(NacosConfigManager.class);
     }
 

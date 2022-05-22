@@ -19,7 +19,6 @@ package cn.hippo4j.core.springboot.starter.refresher;
 
 import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
@@ -44,10 +43,6 @@ import java.util.Map;
 public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
 
     private CuratorFramework curatorFramework;
-
-    public ZookeeperRefresherHandler(BootstrapCoreProperties bootstrapCoreProperties) {
-        super(bootstrapCoreProperties);
-    }
 
     @Override
     public void afterPropertiesSet() {

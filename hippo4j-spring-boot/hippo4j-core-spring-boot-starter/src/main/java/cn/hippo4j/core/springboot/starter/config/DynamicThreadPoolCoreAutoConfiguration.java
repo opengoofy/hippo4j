@@ -138,21 +138,21 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @ConditionalOnClass(name = NACOS_CONFIG_MANAGER_KEY)
     @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "nacos.data-id")
     public NacosCloudRefresherHandler nacosCloudRefresherHandler() {
-        return new NacosCloudRefresherHandler(bootstrapCoreProperties);
+        return new NacosCloudRefresherHandler();
     }
 
     @Bean
     @ConditionalOnClass(name = APOLLO_CONFIG_KEY)
     @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "apollo.namespace")
     public ApolloRefresherHandler apolloRefresher() {
-        return new ApolloRefresherHandler(bootstrapCoreProperties);
+        return new ApolloRefresherHandler();
     }
 
     @Bean
     @ConditionalOnClass(name = ZK_CONFIG_KEY)
     @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "zookeeper.zk-connect-str")
     public ZookeeperRefresherHandler zookeeperRefresher() {
-        return new ZookeeperRefresherHandler(bootstrapCoreProperties);
+        return new ZookeeperRefresherHandler();
     }
 
     @Bean

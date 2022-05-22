@@ -17,7 +17,6 @@
 
 package cn.hippo4j.core.springboot.starter.refresher;
 
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigChangeListener;
 import com.ctrip.framework.apollo.ConfigFile;
@@ -38,10 +37,6 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
 
     @Value(APOLLO_PROPERTY)
     private String namespace;
-
-    public ApolloRefresherHandler(BootstrapCoreProperties bootstrapCoreProperties) {
-        super(bootstrapCoreProperties);
-    }
 
     @Override
     public void afterPropertiesSet() {

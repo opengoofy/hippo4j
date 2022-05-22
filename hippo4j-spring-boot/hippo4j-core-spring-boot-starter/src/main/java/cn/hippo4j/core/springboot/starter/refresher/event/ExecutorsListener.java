@@ -124,7 +124,10 @@ public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamic
      */
     private boolean checkConsistency(String threadPoolId, ExecutorProperties properties) {
         ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
-        ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
+        ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutor(threadPoolId);
+        if (executor == null) {
+            return false;
+        }
         boolean result = !Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize())
                 || !Objects.equals(beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize())
                 || !Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())

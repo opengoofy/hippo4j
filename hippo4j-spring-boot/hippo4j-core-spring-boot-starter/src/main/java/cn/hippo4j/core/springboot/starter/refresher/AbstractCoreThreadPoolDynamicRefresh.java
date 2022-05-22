@@ -44,10 +44,14 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
     protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder().singlePool("client.dynamic.refresh").build();
 
+    public AbstractCoreThreadPoolDynamicRefresh() {
+        bootstrapCoreProperties = ApplicationContextHolder.getBean(BootstrapCoreProperties.class);
+    }
+
     @Override
-    public void dynamicRefresh(String content) {
+    public void dynamicRefresh(String configContent) {
         try {
-            Map<Object, Object> configInfo = ConfigParserHandler.getInstance().parseConfig(content, bootstrapCoreProperties.getConfigFileType());
+            Map<Object, Object> configInfo = ConfigParserHandler.getInstance().parseConfig(configContent, bootstrapCoreProperties.getConfigFileType());
             BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
             ApplicationContextHolder.getInstance().publishEvent(new Hippo4jCoreDynamicRefreshEvent(this, bindableCoreProperties));
         } catch (Exception ex) {
