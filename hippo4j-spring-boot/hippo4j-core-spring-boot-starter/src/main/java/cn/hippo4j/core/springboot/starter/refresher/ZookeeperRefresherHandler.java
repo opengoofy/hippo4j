@@ -17,6 +17,8 @@
 
 package cn.hippo4j.core.springboot.starter.refresher;
 
+import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
+import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
@@ -106,5 +108,20 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
         } catch (Exception e) {
             log.error("load zk node error, nodePath is {}", nodePath, e);
         }
+    }
+
+    /**
+     * Register notify alarm manage.
+     */
+    public void registerNotifyAlarmManage() {
+        bootstrapCoreProperties.getExecutors().forEach(executorProperties -> {
+            ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
+                    executorProperties.getNotify().getIsAlarm(),
+                    executorProperties.getNotify().getCapacityAlarm(),
+                    executorProperties.getNotify().getActiveAlarm());
+            threadPoolNotifyAlarm.setInterval(executorProperties.getNotify().getInterval());
+            threadPoolNotifyAlarm.setReceives(executorProperties.receives());
+            GlobalNotifyAlarmManage.put(executorProperties.getThreadPoolId(), threadPoolNotifyAlarm);
+        });
     }
 }

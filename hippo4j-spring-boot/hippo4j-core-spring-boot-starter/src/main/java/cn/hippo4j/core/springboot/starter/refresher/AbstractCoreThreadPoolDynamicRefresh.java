@@ -19,8 +19,6 @@ package cn.hippo4j.core.springboot.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
-import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.parser.ConfigParserHandler;
@@ -55,20 +53,5 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
         } catch (Exception ex) {
             log.error("Hippo-4J core dynamic refresh failed.", ex);
         }
-    }
-
-    /**
-     * Register notify alarm manage.
-     */
-    public void registerNotifyAlarmManage() {
-        bootstrapCoreProperties.getExecutors().forEach(executorProperties -> {
-            ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
-                    executorProperties.getNotify().getIsAlarm(),
-                    executorProperties.getNotify().getCapacityAlarm(),
-                    executorProperties.getNotify().getActiveAlarm());
-            threadPoolNotifyAlarm.setInterval(executorProperties.getNotify().getInterval());
-            threadPoolNotifyAlarm.setReceives(executorProperties.receives());
-            GlobalNotifyAlarmManage.put(executorProperties.getThreadPoolId(), threadPoolNotifyAlarm);
-        });
     }
 }
