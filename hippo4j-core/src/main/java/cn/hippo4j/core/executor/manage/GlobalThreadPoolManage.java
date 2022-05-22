@@ -23,7 +23,9 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Global thread-pool manage.
@@ -51,6 +53,16 @@ public class GlobalThreadPoolManage {
      */
     public static DynamicThreadPoolWrapper getExecutorService(String threadPoolId) {
         return EXECUTOR_MAP.get(threadPoolId);
+    }
+
+    /**
+     * Get the dynamic thread pool wrapper class.
+     *
+     * @param threadPoolId
+     * @return
+     */
+    public static ThreadPoolExecutor getExecutor(String threadPoolId) {
+        return Optional.ofNullable(EXECUTOR_MAP.get(threadPoolId)).map(each -> each.getExecutor()).orElse(null);
     }
 
     /**
@@ -106,7 +118,7 @@ public class GlobalThreadPoolManage {
 
     /**
      * Get the number of dynamic thread pools.
-     *
+     * <p>
      * The data may be inaccurate when the project is initially
      * launched because registration is done asynchronously.
      *
