@@ -48,15 +48,13 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
     @Override
     public void dynamicRefresh(String content) {
-        Map<Object, Object> configInfo;
         try {
-            configInfo = ConfigParserHandler.getInstance().parseConfig(content, bootstrapCoreProperties.getConfigFileType());
+            Map<Object, Object> configInfo = ConfigParserHandler.getInstance().parseConfig(content, bootstrapCoreProperties.getConfigFileType());
+            BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
+            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jCoreDynamicRefreshEvent(this, bindableCoreProperties));
         } catch (Exception ex) {
-            log.error("dynamic-thread-pool parse config file error, content: {}, fileType: {}", content, bootstrapCoreProperties.getConfigFileType(), ex);
-            return;
+            log.error("Hippo-4J core dynamic refresh failed.", ex);
         }
-        BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
-        ApplicationContextHolder.getInstance().publishEvent(new Hippo4jCoreDynamicRefreshEvent(this, bindableCoreProperties));
     }
 
     /**
