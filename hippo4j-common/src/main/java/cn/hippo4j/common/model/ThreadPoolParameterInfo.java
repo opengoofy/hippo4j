@@ -112,4 +112,12 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
      * allowCoreThreadTimeOut
      */
     private Integer allowCoreThreadTimeOut;
+
+    public Integer getCorePoolSize() {
+        return this.corePoolSize == null ? this.coreSize : null;
+    }
+
+    public Integer getMaximumPoolSize() {
+        return this.maximumPoolSize == null ? this.maxSize : null;
+    }
 }
