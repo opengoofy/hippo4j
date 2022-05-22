@@ -46,7 +46,7 @@ public class PlatformsListener implements ApplicationListener<Hippo4jCoreDynamic
         for (ExecutorProperties executor : executors) {
             String threadPoolId = executor.getThreadPoolId();
             DynamicThreadPoolWrapper wrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
-            if (!wrapper.isInitFlag()) {
+            if (wrapper != null && !wrapper.isInitFlag()) {
                 HippoBaseSendMessageService sendMessageService = ApplicationContextHolder.getBean(HippoBaseSendMessageService.class);
                 CoreNotifyConfigBuilder configBuilder = ApplicationContextHolder.getBean(CoreNotifyConfigBuilder.class);
                 Map<String, List<NotifyConfigDTO>> notifyConfig = configBuilder.buildSingleNotifyConfig(executor);
