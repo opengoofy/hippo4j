@@ -20,6 +20,9 @@ package cn.hippo4j.adapter.rabbitmq;
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.ReflectUtil;
+import com.rabbitmq.client.impl.ConsumerWorkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
@@ -30,9 +33,11 @@ import org.springframework.context.ApplicationListener;
 @Slf4j
 public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
+    private static final String RABBITMQ = "RabbitMQ";
+
     @Override
     public String mark() {
-        return "RabbitMQ";
+        return RABBITMQ;
     }
 
     @Override
@@ -47,6 +52,8 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
+        ConsumerWorkService bindingLifecycle = ApplicationContextHolder.getBean(ConsumerWorkService.class);
+        ReflectUtil.getFieldValue(bindingLifecycle, "inputBindings");
 
     }
 }
