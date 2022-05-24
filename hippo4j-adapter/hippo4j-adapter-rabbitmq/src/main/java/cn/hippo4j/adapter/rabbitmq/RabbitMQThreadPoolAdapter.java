@@ -20,20 +20,40 @@ package cn.hippo4j.adapter.rabbitmq;
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
-import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import com.rabbitmq.client.impl.ConsumerWorkService;
+import com.google.common.collect.Maps;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.config.AbstractRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.Executor;
 
 /**
  * RabbitMQ thread-pool adapter.
  */
 @Slf4j
+@RequiredArgsConstructor
 public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
     private static final String RABBITMQ = "RabbitMQ";
+
+    private static final String FiledName = "taskExecutor";
+
+    private static final String BEAN_NAME_FILED = "beanName";
+
+    private final List<AbstractRabbitListenerContainerFactory<?>> abstractRabbitListenerContainerFactories;
+
+    private final Map<String, SimpleAsyncTaskExecutor> RABBITMQ_EXECUTOR = Maps.newHashMap();
+
+    private final Map<String, ThreadPoolTaskExecutor> RABBITMQ_THREAD_POOL_TASK_EXECUTOR = Maps.newHashMap();
 
     @Override
     public String mark() {
@@ -52,8 +72,25 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        ConsumerWorkService bindingLifecycle = ApplicationContextHolder.getBean(ConsumerWorkService.class);
-        ReflectUtil.getFieldValue(bindingLifecycle, "inputBindings");
+        for (AbstractRabbitListenerContainerFactory<?> consumerWorkService : abstractRabbitListenerContainerFactories) {
+            // 是否为自定义线程池
+            Executor executor = (Executor) ReflectUtil.getFieldValue(consumerWorkService, FiledName);
+            if (Objects.isNull(executor)) {
+                // 获取默认线程池
+                // 优先获取用户配置的
+                AbstractMessageListenerContainer listenerContainer1 = consumerWorkService.createListenerContainer();
+                SimpleAsyncTaskExecutor fieldValue = (SimpleAsyncTaskExecutor) ReflectUtil.getFieldValue(listenerContainer1, FiledName);
+                RABBITMQ_EXECUTOR.put(FiledName, fieldValue);
+            } else {
+                if (executor instanceof ThreadPoolTaskExecutor) {
+                    ThreadPoolTaskExecutor threadPoolTaskExecutor = (ThreadPoolTaskExecutor) executor;
+                    String beanName = (String) ReflectUtil.getFieldValue(threadPoolTaskExecutor, BEAN_NAME_FILED);
+                    RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(beanName, threadPoolTaskExecutor);
+                } else {
+                    log.warn("Custom thread pools only support ThreadPoolTaskExecutor");
+                } 
+            } 
+        }
 
     }
 }
