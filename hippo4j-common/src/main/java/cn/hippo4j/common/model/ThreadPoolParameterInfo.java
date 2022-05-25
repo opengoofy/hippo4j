@@ -118,6 +118,6 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
     }
 
     public Integer getMaximumPoolSize() {
-        return this.maximumPoolSize == null ? this.maxSize : this.corePoolSize;
+        return this.maximumPoolSize == null ? this.maxSize : this.maximumPoolSize;
     }
 }
