@@ -171,6 +171,12 @@
             </dependency>
 
             <dependency>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-adapter-spring-cloud-stream-kafka</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
