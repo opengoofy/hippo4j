@@ -22,6 +22,7 @@
         <module>hippo4j-core-zookeeper-spring-boot-starter-example</module>
         <module>hippo4j-spring-boot-starter-adapter-rabbitmq-example</module>
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq-example</module>
+        <module>hippo4j-spring-boot-starter-adapter-rocketmq-example</module>
     </modules>
 
     <properties>
