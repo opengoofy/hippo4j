@@ -27,7 +27,7 @@ import org.springframework.cloud.stream.messaging.Source;
 @Slf4j
 @EnableDynamicThreadPool
 @EnableBinding({Source.class, MySink.class})
-@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.core")
+@SpringBootApplication
 public class Hippo4jAdapterSpringCloudStreamRocketMQApplication {
 
     public static void main(String[] args) {
