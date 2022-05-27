@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.rabbitmq.example;
+package cn.hippo4j.springboot.starter.adapter.rabbitmq.example.consumer;
 
 import cn.hippo4j.example.core.dto.SendMessageDTO;
+import cn.hippo4j.springboot.starter.adapter.rabbitmq.example.constants.SimpleMQConstant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class MessageConsume {
+public class MessageConsumer {
 
     @RabbitHandler
     @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME), containerFactory = "defaultRabbitListenerContainerFactory")

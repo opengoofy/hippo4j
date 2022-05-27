@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.rabbitmq.example;
+package cn.hippo4j.springboot.starter.adapter.rabbitmq.example.producer;
 
 import cn.hippo4j.example.core.dto.SendMessageDTO;
+import cn.hippo4j.springboot.starter.adapter.rabbitmq.example.constants.SimpleMQConstant;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

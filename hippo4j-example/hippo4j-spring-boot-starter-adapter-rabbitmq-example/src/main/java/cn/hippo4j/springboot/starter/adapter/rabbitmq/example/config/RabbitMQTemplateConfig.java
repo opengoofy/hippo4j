@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.rabbitmq.example;
+package cn.hippo4j.springboot.starter.adapter.rabbitmq.example.config;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
