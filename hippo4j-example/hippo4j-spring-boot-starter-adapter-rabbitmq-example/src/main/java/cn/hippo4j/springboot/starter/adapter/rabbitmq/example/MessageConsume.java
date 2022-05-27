@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 public class MessageConsume {
 
     @RabbitHandler
-    @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME))
+    @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME), containerFactory = "defaultRabbitListenerContainerFactory")
     public void receiveObject(SendMessageDTO simple) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String message = objectMapper.writeValueAsString(simple);
