@@ -27,8 +27,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.config.AbstractRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.ApplicationListener;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -44,7 +43,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
  */
 @Slf4j
 @RequiredArgsConstructor
-public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
+public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, SmartInitializingSingleton {
 
     private static final String RABBITMQ = "RabbitMQ";
 
@@ -96,8 +95,8 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
         if (Objects.nonNull(threadPoolTaskExecutor)) {
             int originalCoreSize = threadPoolTaskExecutor.getCorePoolSize();
             int originalMaximumPoolSize = threadPoolTaskExecutor.getMaxPoolSize();
-            threadPoolTaskExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
             threadPoolTaskExecutor.setMaxPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
+            threadPoolTaskExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
             log.info("[{}] rabbitmq consumption thread pool parameter change. coreSize :: {}, maximumSize :: {}",
                     threadPoolKey,
                     String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolAdapterParameter.getCorePoolSize()),
@@ -117,7 +116,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     }
 
     @Override
-    public void onApplicationEvent(ApplicationStartedEvent event) {
+    public void afterSingletonsInstantiated() {
         for (AbstractRabbitListenerContainerFactory<?> consumerWorkService : abstractRabbitListenerContainerFactories) {
             // 是否为自定义线程池
             Executor executor = (Executor) ReflectUtil.getFieldValue(consumerWorkService, FiledName);
@@ -126,17 +125,18 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
                 // 优先获取用户配置的
                 AbstractMessageListenerContainer listenerContainer1 = consumerWorkService.createListenerContainer();
                 SimpleAsyncTaskExecutor fieldValue = (SimpleAsyncTaskExecutor) ReflectUtil.getFieldValue(listenerContainer1, FiledName);
+                log.info("rabbitmq executor name {}", FiledName);
                 RABBITMQ_EXECUTOR.put(FiledName, fieldValue);
             } else {
                 if (executor instanceof ThreadPoolTaskExecutor) {
                     ThreadPoolTaskExecutor threadPoolTaskExecutor = (ThreadPoolTaskExecutor) executor;
                     String beanName = (String) ReflectUtil.getFieldValue(threadPoolTaskExecutor, BEAN_NAME_FILED);
                     RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(beanName, threadPoolTaskExecutor);
+                    log.info("rabbitmq executor name {}", beanName);
                 } else {
                     log.warn("Custom thread pools only support ThreadPoolTaskExecutor");
                 }
             }
         }
-
     }
 }

@@ -40,13 +40,15 @@ public class MessageProduce {
     private final RabbitTemplate rabbitTemplate;
 
     @GetMapping("/message/send")
-    public String sendMessage() {
-        String keys = UUID.randomUUID().toString();
-        SendMessageDTO payload = SendMessageDTO.builder()
-                .receiver("156011xxx91")
-                .uid(keys)
-                .build();
-        rabbitTemplate.convertAndSend(SimpleMQConstant.QUEUE_NAME, payload);
+    public String sendMessage(Integer count) {
+        for (int i = 0; i < count; i++) {
+            String keys = UUID.randomUUID().toString();
+            SendMessageDTO payload = SendMessageDTO.builder()
+                    .receiver("156011xxx91")
+                    .uid(keys)
+                    .build();
+            rabbitTemplate.convertAndSend(SimpleMQConstant.QUEUE_NAME, payload);
+        }
         return "success";
     }
 }

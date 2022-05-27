@@ -19,13 +19,14 @@ package cn.hippo4j.springboot.starter.adapter.rabbitmq.example.consumer;
 
 import cn.hippo4j.example.core.dto.SendMessageDTO;
 import cn.hippo4j.springboot.starter.adapter.rabbitmq.example.constants.SimpleMQConstant;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Message consume.
@@ -36,9 +37,21 @@ public class MessageConsumer {
 
     @RabbitHandler
     @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME), containerFactory = "defaultRabbitListenerContainerFactory")
-    public void receiveObject(SendMessageDTO simple) throws JsonProcessingException {
+    public void receiveObject(SendMessageDTO simple) throws Exception {
+        log.info("consumer1 start");
+        TimeUnit.SECONDS.sleep(1);
         ObjectMapper objectMapper = new ObjectMapper();
         String message = objectMapper.writeValueAsString(simple);
-        log.info("Message: {}", message);
+        log.info("threadId {} Message: {}", Thread.currentThread().getId(),message);
+    }
+
+    @RabbitHandler
+    @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME), containerFactory = "defaultRabbitListenerContainerFactory")
+    public void receiveObject1(SendMessageDTO simple) throws Exception {
+        log.info("consumer2 start");
+        TimeUnit.SECONDS.sleep(1);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String message = objectMapper.writeValueAsString(simple);
+        log.info("threadId {} Message: {}", Thread.currentThread().getId(),message);
     }
 }
