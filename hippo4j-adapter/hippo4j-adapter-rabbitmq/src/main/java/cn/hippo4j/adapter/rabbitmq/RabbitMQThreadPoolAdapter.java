@@ -21,6 +21,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.toolkit.ReflectUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +77,15 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
             threadPoolAdapterState.setMaximumSize(threadPoolTaskExecutor.getMaxPoolSize());
         }
         return threadPoolAdapterState;
+    }
+    
+    public List<ThreadPoolAdapterState> getThreadPoolStates() {
+        List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
+        RABBITMQ_EXECUTOR.forEach(
+                (key, val) -> adapterStateList.add(getThreadPoolState(key)));
+        RABBITMQ_THREAD_POOL_TASK_EXECUTOR.forEach(
+                (key, val) -> adapterStateList.add(getThreadPoolState(key)));
+        return adapterStateList;
     }
 
     @Override
