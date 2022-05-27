@@ -27,7 +27,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.config.AbstractRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
-import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -43,7 +44,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
  */
 @Slf4j
 @RequiredArgsConstructor
-public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, SmartInitializingSingleton {
+public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
     private static final String RABBITMQ = "RabbitMQ";
 
@@ -95,8 +96,8 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, SmartInitia
         if (Objects.nonNull(threadPoolTaskExecutor)) {
             int originalCoreSize = threadPoolTaskExecutor.getCorePoolSize();
             int originalMaximumPoolSize = threadPoolTaskExecutor.getMaxPoolSize();
-            threadPoolTaskExecutor.setMaxPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
             threadPoolTaskExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
+            threadPoolTaskExecutor.setMaxPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
             log.info("[{}] rabbitmq consumption thread pool parameter change. coreSize :: {}, maximumSize :: {}",
                     threadPoolKey,
                     String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolAdapterParameter.getCorePoolSize()),
@@ -116,7 +117,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, SmartInitia
     }
 
     @Override
-    public void afterSingletonsInstantiated() {
+    public void onApplicationEvent(ApplicationStartedEvent event) {
         for (AbstractRabbitListenerContainerFactory<?> consumerWorkService : abstractRabbitListenerContainerFactories) {
             // 是否为自定义线程池
             Executor executor = (Executor) ReflectUtil.getFieldValue(consumerWorkService, FiledName);
