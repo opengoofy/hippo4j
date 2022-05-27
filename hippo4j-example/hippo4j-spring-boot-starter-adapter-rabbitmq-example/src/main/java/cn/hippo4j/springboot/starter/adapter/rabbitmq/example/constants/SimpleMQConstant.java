@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.rabbitmq.example;
+package cn.hippo4j.springboot.starter.adapter.rabbitmq.example.constants;
 
 /**
  * Simple MQ constant.
  */
-public class SimpleMQConstant {
+public interface SimpleMQConstant {
 
-    public static final String QUEUE_NAME = "framework_message-center_queue";
+    String QUEUE_NAME = "framework_message-center_queue";
 }

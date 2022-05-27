@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.rabbitmq.example;
+package cn.hippo4j.springboot.starter.adapter.rabbitmq.example.consumer;
 
 import cn.hippo4j.example.core.dto.SendMessageDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import cn.hippo4j.springboot.starter.adapter.rabbitmq.example.constants.SimpleMQConstant;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -26,18 +26,30 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Message consume.
  */
 @Slf4j
 @Component
-public class MessageConsume {
+public class MessageConsumer {
 
     @RabbitHandler
-    @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME))
-    public void receiveObject(SendMessageDTO simple) throws JsonProcessingException {
+    @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME), containerFactory = "defaultRabbitListenerContainerFactory")
+    public void receiveObject(SendMessageDTO simple) throws Exception {
+        TimeUnit.SECONDS.sleep(1);
         ObjectMapper objectMapper = new ObjectMapper();
         String message = objectMapper.writeValueAsString(simple);
-        log.info("Message: {}", message);
+        log.info("consumer1 threadId {} Message: {}", Thread.currentThread().getId(),message);
+    }
+
+    @RabbitHandler
+    @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME), containerFactory = "defaultRabbitListenerContainerFactory")
+    public void receiveObject1(SendMessageDTO simple) throws Exception {
+        TimeUnit.SECONDS.sleep(1);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String message = objectMapper.writeValueAsString(simple);
+        log.info("consumer2 threadId {} Message: {}", Thread.currentThread().getId(),message);
     }
 }

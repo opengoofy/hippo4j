@@ -39,7 +39,7 @@ public class RabbitMQThreadPoolConfig {
         // 指定线程的最大数量
         executor.setMaxPoolSize(10);
         // 指定线程池维护线程的最少数量
-        executor.setCorePoolSize(2);
+        executor.setCorePoolSize(10);
         // 指定等待处理的任务数
         executor.setQueueCapacity(20);
         executor.setThreadNamePrefix("RabbitListenerTaskExecutor-");
@@ -52,8 +52,8 @@ public class RabbitMQThreadPoolConfig {
                                                                                            ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         configurer.configure(factory, connectionFactory);
-        factory.setConcurrentConsumers(1);
-        factory.setMaxConcurrentConsumers(10);
+        factory.setConcurrentConsumers(2);
+        factory.setMaxConcurrentConsumers(2);
         factory.setTaskExecutor(rabbitListenerTaskExecutor);
         return factory;
     }

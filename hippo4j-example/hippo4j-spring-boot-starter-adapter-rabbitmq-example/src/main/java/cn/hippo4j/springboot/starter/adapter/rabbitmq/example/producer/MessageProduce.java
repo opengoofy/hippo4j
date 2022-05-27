@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.rabbitmq.example;
+package cn.hippo4j.springboot.starter.adapter.rabbitmq.example.producer;
 
 import cn.hippo4j.example.core.dto.SendMessageDTO;
+import cn.hippo4j.springboot.starter.adapter.rabbitmq.example.constants.SimpleMQConstant;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -39,13 +40,15 @@ public class MessageProduce {
     private final RabbitTemplate rabbitTemplate;
 
     @GetMapping("/message/send")
-    public String sendMessage() {
-        String keys = UUID.randomUUID().toString();
-        SendMessageDTO payload = SendMessageDTO.builder()
-                .receiver("156011xxx91")
-                .uid(keys)
-                .build();
-        rabbitTemplate.convertAndSend(SimpleMQConstant.QUEUE_NAME, payload);
+    public String sendMessage(Integer count) {
+        for (int i = 0; i < count; i++) {
+            String keys = UUID.randomUUID().toString();
+            SendMessageDTO payload = SendMessageDTO.builder()
+                    .receiver("156011xxx91")
+                    .uid(keys)
+                    .build();
+            rabbitTemplate.convertAndSend(SimpleMQConstant.QUEUE_NAME, payload);
+        }
         return "success";
     }
 }

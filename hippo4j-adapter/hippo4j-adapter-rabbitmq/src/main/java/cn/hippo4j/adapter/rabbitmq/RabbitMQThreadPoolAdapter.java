@@ -21,6 +21,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.toolkit.ReflectUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +78,15 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
         }
         return threadPoolAdapterState;
     }
+    
+    public List<ThreadPoolAdapterState> getThreadPoolStates() {
+        List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
+        RABBITMQ_EXECUTOR.forEach(
+                (key, val) -> adapterStateList.add(getThreadPoolState(key)));
+        RABBITMQ_THREAD_POOL_TASK_EXECUTOR.forEach(
+                (key, val) -> adapterStateList.add(getThreadPoolState(key)));
+        return adapterStateList;
+    }
 
     @Override
     public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
@@ -116,17 +126,18 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
                 // 优先获取用户配置的
                 AbstractMessageListenerContainer listenerContainer1 = consumerWorkService.createListenerContainer();
                 SimpleAsyncTaskExecutor fieldValue = (SimpleAsyncTaskExecutor) ReflectUtil.getFieldValue(listenerContainer1, FiledName);
+                log.info("rabbitmq executor name {}", FiledName);
                 RABBITMQ_EXECUTOR.put(FiledName, fieldValue);
             } else {
                 if (executor instanceof ThreadPoolTaskExecutor) {
                     ThreadPoolTaskExecutor threadPoolTaskExecutor = (ThreadPoolTaskExecutor) executor;
                     String beanName = (String) ReflectUtil.getFieldValue(threadPoolTaskExecutor, BEAN_NAME_FILED);
                     RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(beanName, threadPoolTaskExecutor);
+                    log.info("rabbitmq executor name {}", beanName);
                 } else {
                     log.warn("Custom thread pools only support ThreadPoolTaskExecutor");
                 }
             }
         }
-
     }
 }
