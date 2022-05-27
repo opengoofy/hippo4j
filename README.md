@@ -28,6 +28,9 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 中间件适配：Apache RocketMQ、Dubbo、RabbitMQ 消费线程池运行时数据查看和线程数变更；
 - 多种模式：内置两种使用模式：[依赖配置中心](https://hippo4j.cn/pages/2f674h/) 和 [无中间件依赖](https://hippo4j.cn/pages/2f674a/)。
 
+
+> 看完有所收获的话，右上角帮忙点个 Star，谢谢
+
 ## 快速开始
 
 对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/pages/793dcb/)
