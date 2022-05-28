@@ -18,9 +18,9 @@
 package cn.hippo4j.springboot.starter.adapter.rabbitmq.example.config;
 
 import org.springframework.amqp.rabbit.config.AbstractRabbitListenerContainerFactory;
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
+import org.springframework.amqp.rabbit.config.DirectRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -37,24 +37,24 @@ public class RabbitMQThreadPoolConfig {
     public ThreadPoolTaskExecutor rabbitListenerTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 指定线程的最大数量
-        executor.setMaxPoolSize(10);
+        executor.setMaxPoolSize(5);
         // 指定线程池维护线程的最少数量
-        executor.setCorePoolSize(10);
+        executor.setCorePoolSize(5);
         // 指定等待处理的任务数
-        executor.setQueueCapacity(20);
+        executor.setQueueCapacity(1000);
         executor.setThreadNamePrefix("RabbitListenerTaskExecutor-");
         return executor;
     }
 
     @Bean
-    public AbstractRabbitListenerContainerFactory<?> defaultRabbitListenerContainerFactory(SimpleRabbitListenerContainerFactoryConfigurer configurer,
-                                                                                           ThreadPoolTaskExecutor rabbitListenerTaskExecutor,
-                                                                                           ConnectionFactory connectionFactory) {
-        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        configurer.configure(factory, connectionFactory);
-        factory.setConcurrentConsumers(2);
-        factory.setMaxConcurrentConsumers(2);
-        factory.setTaskExecutor(rabbitListenerTaskExecutor);
+    public AbstractRabbitListenerContainerFactory<?> defaultRabbitListenerContainerFactory(ThreadPoolTaskExecutor rabbitListenerTaskExecutor,
+                                                                                           MessageConverter messageConverter, AbstractConnectionFactory abstractConnectionFactory) {
+        DirectRabbitListenerContainerFactory factory = new DirectRabbitListenerContainerFactory();
+        factory.setConnectionFactory(abstractConnectionFactory);
+//        factory.setTaskExecutor(rabbitListenerTaskExecutor);
+        factory.setMessageConverter(messageConverter);
+        factory.setConsumersPerQueue(10);
+        abstractConnectionFactory.setExecutor(rabbitListenerTaskExecutor);
         return factory;
     }
 }

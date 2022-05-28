@@ -20,13 +20,11 @@ package cn.hippo4j.springboot.starter.adapter.rabbitmq;
 import cn.hippo4j.adapter.rabbitmq.RabbitMQThreadPoolAdapter;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.config.AbstractRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 /**
  * Rabbit adapter auto configuration.
@@ -35,7 +33,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RabbitMQAdapterAutoConfiguration {
 
-    private final List<AbstractRabbitListenerContainerFactory<?>> abstractRabbitListenerContainerFactories;
+    
+    private final AbstractConnectionFactory abstractConnectionFactories;
 
     @Bean
     @ConditionalOnMissingBean
@@ -47,6 +46,6 @@ public class RabbitMQAdapterAutoConfiguration {
     @SuppressWarnings("all")
     @ConditionalOnProperty(name = "spring.rabbitmq.host")
     public RabbitMQThreadPoolAdapter rabbitMQThreadPoolAdapter(ApplicationContextHolder applicationContextHolder) {
-        return new RabbitMQThreadPoolAdapter(abstractRabbitListenerContainerFactories);
+        return new RabbitMQThreadPoolAdapter(abstractConnectionFactories);
     }
 }
