@@ -33,7 +33,6 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class RabbitMQAdapterAutoConfiguration {
 
-    
     private final AbstractConnectionFactory abstractConnectionFactories;
 
     @Bean

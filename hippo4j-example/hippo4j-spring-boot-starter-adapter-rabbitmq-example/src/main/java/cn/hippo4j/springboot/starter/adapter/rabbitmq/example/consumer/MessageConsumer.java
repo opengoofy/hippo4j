@@ -37,22 +37,10 @@ public class MessageConsumer {
 
     @RabbitHandler
     @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME), containerFactory = "defaultRabbitListenerContainerFactory")
-//    @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME))
     public void receiveObject(SendMessageDTO simple) throws Exception {
         TimeUnit.SECONDS.sleep(1);
         ObjectMapper objectMapper = new ObjectMapper();
         String message = objectMapper.writeValueAsString(simple);
-        log.info("consumer1 threadId {} Message: {}", Thread.currentThread().getName(),message);
+        log.info("consumer1 threadId {} Message: {}", Thread.currentThread().getName(), message);
     }
-
-//    @RabbitHandler
-//    @RabbitListener(queuesToDeclare = @Queue(SimpleMQConstant.QUEUE_NAME1))
-//    public void receiveObject1(SendMessageDTO simple) throws Exception {
-//        TimeUnit.SECONDS.sleep(1);
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String message = objectMapper.writeValueAsString(simple);
-//        log.info("consumer threadId {} Message: {}", Thread.currentThread().getName(),message);
-//    }
-
-  
 }

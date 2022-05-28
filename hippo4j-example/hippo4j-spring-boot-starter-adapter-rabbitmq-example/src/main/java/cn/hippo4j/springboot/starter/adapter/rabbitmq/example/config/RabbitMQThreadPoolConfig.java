@@ -51,7 +51,6 @@ public class RabbitMQThreadPoolConfig {
                                                                                            MessageConverter messageConverter, AbstractConnectionFactory abstractConnectionFactory) {
         DirectRabbitListenerContainerFactory factory = new DirectRabbitListenerContainerFactory();
         factory.setConnectionFactory(abstractConnectionFactory);
-//        factory.setTaskExecutor(rabbitListenerTaskExecutor);
         factory.setMessageConverter(messageConverter);
         factory.setConsumersPerQueue(10);
         abstractConnectionFactory.setExecutor(rabbitListenerTaskExecutor);

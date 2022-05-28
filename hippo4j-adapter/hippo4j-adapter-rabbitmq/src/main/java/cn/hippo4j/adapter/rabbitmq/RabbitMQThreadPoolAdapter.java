@@ -47,10 +47,11 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     private static final String RABBITMQ = "RabbitMQ";
 
     private static final String FiledName = "executorService";
-    
-    // todo: Configurable name
+
+    /**
+     * TODO Configurable name
+     */
     private static final String RABBITMQ_EXECUTOR_SERVICE = "Rabbitmq_Executor_Service";
-    
 
     private final AbstractConnectionFactory abstractConnectionFactory;
 
@@ -72,7 +73,8 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
         }
         return threadPoolAdapterState;
     }
-    
+
+    @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
         List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
         RABBITMQ_THREAD_POOL_TASK_EXECUTOR.forEach(
@@ -110,7 +112,6 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
             } else {
                 log.warn("Custom thread pools only support ThreadPoolExecutor");
             }
-            
         }
     }
 }
