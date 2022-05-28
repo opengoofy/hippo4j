@@ -72,7 +72,7 @@ public class DynamicThreadPoolCoreAutoConfiguration {
 
     private static final String NACOS_CONFIG_MANAGER_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";
 
-    private static final String NACOS_CONFIG_KEY = "com.alibaba.nacos.api.config";
+    private static final String NACOS_CONFIG_KEY = "com.alibaba.nacos.api.config.ConfigService";
 
     private static final String APOLLO_CONFIG_KEY = "com.ctrip.framework.apollo.ConfigService";
 
