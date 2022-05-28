@@ -47,8 +47,6 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     private static final String RABBITMQ = "RabbitMQ";
 
     private static final String FiledName = "executorService";
-
-    private static final String BEAN_NAME_FILED = "beanName";
     
     // todo: Configurable name
     private static final String RABBITMQ_EXECUTOR_SERVICE = "Rabbitmq_Executor_Service";
@@ -107,7 +105,6 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
         if (Objects.nonNull(executor)) {
             if (executor instanceof ThreadPoolExecutor) {
                 ThreadPoolExecutor threadPoolTaskExecutor = (ThreadPoolExecutor) executor;
-                String beanName = (String) ReflectUtil.getFieldValue(threadPoolTaskExecutor, BEAN_NAME_FILED);
                 RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(RABBITMQ_EXECUTOR_SERVICE, threadPoolTaskExecutor);
                 log.info("rabbitmq executor name {}", RABBITMQ_EXECUTOR_SERVICE);
             } else {
