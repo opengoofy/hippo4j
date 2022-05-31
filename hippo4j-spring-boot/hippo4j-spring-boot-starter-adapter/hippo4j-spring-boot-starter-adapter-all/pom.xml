@@ -21,6 +21,18 @@
             <artifactId>hippo4j-spring-boot-starter-adapter-rocketmq</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-spring-boot-starter-adapter-rabbitmq</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-spring-boot-starter-adapter-dubbo</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
     <build>
