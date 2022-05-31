@@ -34,3 +34,4 @@ build/
 
 # maven plugin ignore
 *.gpg
+.flattened-pom.xml
