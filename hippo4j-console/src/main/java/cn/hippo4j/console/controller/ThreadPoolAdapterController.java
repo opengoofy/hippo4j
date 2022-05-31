@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 import static cn.hippo4j.common.constant.Constants.REGISTER_ADAPTER_BASE_PATH;
@@ -48,6 +49,12 @@ public class ThreadPoolAdapterController {
     @GetMapping(REGISTER_ADAPTER_BASE_PATH + "/query")
     public Result<List<ThreadPoolAdapterRespDTO>> queryAdapterThreadPool(ThreadPoolAdapterReqDTO requestParameter) {
         List<ThreadPoolAdapterRespDTO> result = threadPoolAdapterService.query(requestParameter);
+        return Results.success(result);
+    }
+
+    @GetMapping(REGISTER_ADAPTER_BASE_PATH + "/query/key")
+    public Result<Set<String>> queryAdapterThreadPoolThreadPoolKey(ThreadPoolAdapterReqDTO requestParameter) {
+        Set<String> result = threadPoolAdapterService.queryThreadPoolKey(requestParameter);
         return Results.success(result);
     }
 

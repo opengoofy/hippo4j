@@ -115,6 +115,18 @@ public class ThreadPoolAdapterService {
         return result;
     }
 
+    public Set<String> queryThreadPoolKey(ThreadPoolAdapterReqDTO requestParameter) {
+        Map<String, Map<String, List<ThreadPoolAdapterState>>> threadPoolAdapterStateMap = THREAD_POOL_ADAPTER_MAP.get(requestParameter.getMark());
+        if (CollectionUtil.isNotEmpty(threadPoolAdapterStateMap)) {
+            String buildKey = requestParameter.getTenant() + IDENTIFY_SLICER_SYMBOL + requestParameter.getItem();
+            Map<String, List<ThreadPoolAdapterState>> actual = threadPoolAdapterStateMap.get(buildKey);
+            if (CollectionUtil.isNotEmpty(actual)) {
+                return actual.keySet();
+            }
+        }
+        return new HashSet();
+    }
+
     public static void remove(String identify) {
         synchronized (ThreadPoolAdapterService.class) {
             THREAD_POOL_ADAPTER_MAP.values().forEach(each -> each.forEach((key, val) -> {
