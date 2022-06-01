@@ -37,7 +37,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 演示环境：
 - http://console.hippo4j.cn/index.html
-- 用户/密码：hippo4j/hippo4j
+- 用户名/密码：hippo4j/hippo4j
 
 ## 联系我
 
