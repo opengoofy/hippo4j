@@ -380,7 +380,7 @@
         </plugins>
     </build>
 
-    <url>https://github.com/longtai-cn/hippo4j</url>
+    <url>https://github.com/mabaiwan/hippo4j</url>
 
     <licenses>
         <license>
@@ -395,7 +395,7 @@
             <id>mabaiwan</id>
             <name>chen.ma</name>
             <email>m7798432@163.com</email>
-            <url>https://github.com/longtai-cn</url>
+            <url>https://github.com/mabaiwan</url>
         </developer>
     </developers>
 
@@ -407,7 +407,7 @@
 
     <issueManagement>
         <system>Github Issue</system>
-        <url>https://github.com/longtai-cn/hippo4j/issues</url>
+        <url>https://github.com/mabaiwan/hippo4j/issues</url>
     </issueManagement>
 
     <distributionManagement>

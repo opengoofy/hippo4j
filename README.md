@@ -1,13 +1,13 @@
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/hippo4j-logo-logoly.png)
 
 <p>
-  <a href="https://gitee.com/longtai-cn/hippo4j" target="_blank">
-    <img alt="Gitee" src="https://gitee.com/longtai-cn/hippo4j/badge/star.svg?theme=gvp">
+  <a href="https://gitee.com/mabaiwan-cn/hippo4j" target="_blank">
+    <img alt="Gitee" src="https://gitee.com/mabaiwan-cn/hippo4j/badge/star.svg?theme=gvp">
   </a>
-  <a href="https://github.com/longtai-cn/hippo4j" target="_blank">
+  <a href="https://github.com/mabaiwan/hippo4j" target="_blank">
     <img alt="GitHub" src="https://img.shields.io/github/stars/longtai-cn/hippo4j?label=Stars&style=flat-square&logo=GitHub">
   </a>
-  <a href="https://github.com/longtai-cn/hippo4j/blob/develop/LICENSE">
+  <a href="https://github.com/mabaiwan/hippo4j/blob/develop/LICENSE">
     <img src="https://img.shields.io/github/license/longtai-cn/hippo4j?color=42b883&style=flat-square" alt="LICENSE">
   </a>
   <a title="Hits" target="_blank" href="https://github.com/longtai-cn/hippo4j">
@@ -49,7 +49,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 感谢所有为 Hippo-4J 做出贡献的开发者！
 
-<a href="https://github.com/longtai-cn/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890" /></a>
+<a href="https://github.com/mabaiwan/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890" /></a>
 
 ## 我们的荣誉
 
