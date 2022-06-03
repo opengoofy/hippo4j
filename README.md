@@ -5,12 +5,12 @@
     <img alt="Gitee" src="https://gitee.com/mabaiwan-cn/hippo4j/badge/star.svg?theme=gvp">
   </a>
   <a href="https://github.com/mabaiwan/hippo4j" target="_blank">
-    <img alt="GitHub" src="https://img.shields.io/github/stars/longtai-cn/hippo4j?label=Stars&style=flat-square&logo=GitHub">
+    <img alt="GitHub" src="https://img.shields.io/github/stars/mabaiwan/hippo4j?label=Stars&style=flat-square&logo=GitHub">
   </a>
   <a href="https://github.com/mabaiwan/hippo4j/blob/develop/LICENSE">
-    <img src="https://img.shields.io/github/license/longtai-cn/hippo4j?color=42b883&style=flat-square" alt="LICENSE">
+    <img src="https://img.shields.io/github/license/mabaiwan/hippo4j?color=42b883&style=flat-square" alt="LICENSE">
   </a>
-  <a title="Hits" target="_blank" href="https://github.com/longtai-cn/hippo4j">
+  <a title="Hits" target="_blank" href="https://github.com/mabaiwan/hippo4j">
     <img src="https://hits.b3log.org/acmenlt/dynamic-threadpool.svg">
   </a>
 </p>

@@ -392,7 +392,6 @@
 
     <developers>
         <developer>
-            <id>mabaiwan</id>
             <name>chen.ma</name>
             <email>m7798432@163.com</email>
             <url>https://github.com/mabaiwan</url>
@@ -400,9 +399,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git@github.com:longtai-cn/hippo4j</connection>
-        <developerConnection>scm:git@github.com:longtai-cn/hippo4j.git</developerConnection>
-        <url>git@github.com:ma-bai-wan/hippo4j.git</url>
+        <connection>scm:git@github.com:mabaiwan/hippo4j</connection>
+        <developerConnection>scm:git@github.com:mabaiwan/hippo4j.git</developerConnection>
+        <url>git@github.com:mabaiwan/hippo4j.git</url>
     </scm>
 
     <issueManagement>
