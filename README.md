@@ -1,8 +1,8 @@
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/hippo4j-logo-logoly.png)
 
 <p>
-  <a href="https://gitee.com/mabaiwan-cn/hippo4j" target="_blank">
-    <img alt="Gitee" src="https://gitee.com/mabaiwan-cn/hippo4j/badge/star.svg?theme=gvp">
+  <a href="https://gitee.com/mabaiwancn/hippo4j" target="_blank">
+    <img alt="Gitee" src="https://gitee.com/mabaiwancn/hippo4j/badge/star.svg?theme=gvp">
   </a>
   <a href="https://github.com/mabaiwan/hippo4j" target="_blank">
     <img alt="GitHub" src="https://img.shields.io/github/stars/mabaiwan/hippo4j?label=Stars&style=flat-square&logo=GitHub">
