@@ -24,7 +24,7 @@ import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.core.executor.support.QueueTypeEnum;
 import cn.hippo4j.core.executor.support.RejectedTypeEnum;
-import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
+import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
@@ -188,8 +188,8 @@ public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamic
         }
         if (!Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
                 && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.name, executor.getQueue().getClass().getSimpleName())) {
-            if (executor.getQueue() instanceof ResizableCapacityLinkedBlockIngQueue) {
-                ResizableCapacityLinkedBlockIngQueue<?> queue = (ResizableCapacityLinkedBlockIngQueue<?>) executor.getQueue();
+            if (executor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
+                ResizableCapacityLinkedBlockingQueue<?> queue = (ResizableCapacityLinkedBlockingQueue<?>) executor.getQueue();
                 queue.setCapacity(properties.getQueueCapacity());
             } else {
                 log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type :: {}", executor.getQueue().getClass().getSimpleName());
