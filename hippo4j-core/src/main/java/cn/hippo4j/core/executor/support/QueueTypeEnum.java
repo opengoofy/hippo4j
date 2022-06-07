@@ -66,9 +66,9 @@ public enum QueueTypeEnum {
     PRIORITY_BLOCKING_QUEUE(6, "PriorityBlockingQueue"),
 
     /**
-     * {@link "io.dynamic.threadpool.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue"}
+     * {@link ResizableCapacityLinkedBlockingQueue}
      */
-    RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockIngQueue");
+    RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockingQueue");
 
     public Integer type;
 
