@@ -30,9 +30,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2021/6/20 14:24
  */
 @Slf4j
-public class ResizableCapacityLinkedBlockIngQueue<E> extends LinkedBlockingQueue<E> {
+public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue<E> {
 
-    public ResizableCapacityLinkedBlockIngQueue(int capacity) {
+    public ResizableCapacityLinkedBlockingQueue(int capacity) {
         super(capacity);
     }
 

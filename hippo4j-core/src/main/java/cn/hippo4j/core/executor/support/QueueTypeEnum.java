@@ -129,7 +129,7 @@ public enum QueueTypeEnum {
         } else if (Objects.equals(type, PRIORITY_BLOCKING_QUEUE.type)) {
             blockingQueue = new PriorityBlockingQueue(capacity);
         } else if (Objects.equals(type, RESIZABLE_LINKED_BLOCKING_QUEUE.type)) {
-            blockingQueue = new ResizableCapacityLinkedBlockIngQueue(capacity);
+            blockingQueue = new ResizableCapacityLinkedBlockingQueue(capacity);
         }
         Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
                 .getSingletonServiceInstances(CustomBlockingQueue.class);
