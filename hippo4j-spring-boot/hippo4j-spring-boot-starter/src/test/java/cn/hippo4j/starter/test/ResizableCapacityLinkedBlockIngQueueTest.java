@@ -1,6 +1,6 @@
 package cn.hippo4j.starter.test;
 
-import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
+import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockingQueue;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class ResizableCapacityLinkedBlockIngQueueTest {
 
     public static void main(String[] args) throws InterruptedException {
-        ResizableCapacityLinkedBlockIngQueue blockIngQueue = new ResizableCapacityLinkedBlockIngQueue(5);
+        ResizableCapacityLinkedBlockingQueue blockIngQueue = new ResizableCapacityLinkedBlockingQueue(5);
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1,
                 3,
                 1024,

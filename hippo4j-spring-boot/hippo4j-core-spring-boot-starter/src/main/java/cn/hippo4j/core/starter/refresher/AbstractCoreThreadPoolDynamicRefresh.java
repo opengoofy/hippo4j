@@ -282,8 +282,8 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
         if (!Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
                 && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.name, executor.getQueue().getClass().getSimpleName())) {
-            if (executor.getQueue() instanceof ResizableCapacityLinkedBlockIngQueue) {
-                ResizableCapacityLinkedBlockIngQueue queue = (ResizableCapacityLinkedBlockIngQueue) executor.getQueue();
+            if (executor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
+                ResizableCapacityLinkedBlockingQueue queue = (ResizableCapacityLinkedBlockingQueue) executor.getQueue();
                 queue.setCapacity(properties.getQueueCapacity());
             } else {
                 log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type :: {}", executor.getQueue().getClass().getSimpleName());

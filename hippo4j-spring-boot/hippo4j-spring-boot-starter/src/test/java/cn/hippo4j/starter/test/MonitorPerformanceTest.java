@@ -4,7 +4,7 @@ import cn.hippo4j.common.model.PoolRunStateInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.starter.monitor.collect.RunTimeInfoCollector;
-import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
+import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.common.toolkit.ThreadUtil;
@@ -34,7 +34,7 @@ public class MonitorPerformanceTest {
             .dynamicPool()
             .threadFactory(TEST_FLAG)
             .poolThreadSize(5, 10)
-            .workQueue(new ResizableCapacityLinkedBlockIngQueue(1024))
+            .workQueue(new ResizableCapacityLinkedBlockingQueue(1024))
             .rejected(new ThreadPoolExecutor.AbortPolicy())
             .build();
 
@@ -42,7 +42,7 @@ public class MonitorPerformanceTest {
             .dynamicPool()
             .threadFactory("dynamic.thread.pool")
             .poolThreadSize(5, 10)
-            .workQueue(new ResizableCapacityLinkedBlockIngQueue(1024))
+            .workQueue(new ResizableCapacityLinkedBlockingQueue(1024))
             .rejected(new ThreadPoolExecutor.AbortPolicy())
             .build();
 

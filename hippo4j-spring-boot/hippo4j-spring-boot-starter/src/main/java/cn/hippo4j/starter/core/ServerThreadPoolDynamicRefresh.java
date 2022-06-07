@@ -11,7 +11,7 @@ import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.core.executor.support.QueueTypeEnum;
 import cn.hippo4j.core.executor.support.RejectedTypeEnum;
-import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
+import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import lombok.AllArgsConstructor;
@@ -133,8 +133,8 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
 
         if (parameter.getCapacity() != null
                 && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.type, parameter.getQueueType())) {
-            if (executor.getQueue() instanceof ResizableCapacityLinkedBlockIngQueue) {
-                ResizableCapacityLinkedBlockIngQueue queue = (ResizableCapacityLinkedBlockIngQueue) executor.getQueue();
+            if (executor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
+                ResizableCapacityLinkedBlockingQueue queue = (ResizableCapacityLinkedBlockingQueue) executor.getQueue();
                 queue.setCapacity(parameter.getCapacity());
             } else {
                 log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type :: {}", executor.getQueue().getClass().getSimpleName());
