@@ -31,6 +31,7 @@ import cn.hippo4j.core.config.WebThreadPoolConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.springboot.starter.monitor.DynamicThreadPoolMonitorExecutor;
 import cn.hippo4j.core.springboot.starter.monitor.LogMonitorHandler;
 import cn.hippo4j.core.springboot.starter.monitor.MetricMonitorHandler;
@@ -193,5 +194,10 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @Bean
     public ThreadPoolAdapterRegister threadPoolAdapterRegister() {
         return new ThreadPoolAdapterRegister(bootstrapCoreProperties);
+    }
+
+    @Bean
+    public DynamicThreadPoolBannerHandler threadPoolBannerHandler() {
+        return new DynamicThreadPoolBannerHandler(bootstrapCoreProperties);
     }
 }
