@@ -1,6 +1,6 @@
 ---
-name: "Bug Report"
-about: Something isn't working as expected
+name: "BUG 报告"
+about: 提交问题缺陷帮助我们更好的改进
 ---
 
 ## Bug Report

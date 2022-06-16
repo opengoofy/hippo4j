@@ -1,6 +1,6 @@
 ---
-name: "Question Report"
-about: Usage question that isn't answered in docs or discussion
+name: "问题支持"
+about: 文档或讨论中未回答的使用问题
 ---
 
 ## Question Report
