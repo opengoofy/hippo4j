@@ -40,6 +40,8 @@ public class ServerListManager {
 
     private String serverAddrsStr;
 
+    private String nettyServerPort;
+
     @Getter
     volatile List<String> serverUrls = new ArrayList();
 
@@ -52,6 +54,7 @@ public class ServerListManager {
     public ServerListManager(BootstrapProperties dynamicThreadPoolProperties) {
         this.properties = dynamicThreadPoolProperties;
         serverAddrsStr = properties.getServerAddr();
+        nettyServerPort = properties.getNettyServerPort();
         if (!StringUtils.isEmpty(serverAddrsStr)) {
             List<String> serverAddrList = new ArrayList();
             String[] serverAddrListArr = this.serverAddrsStr.split(",");
@@ -74,6 +77,10 @@ public class ServerListManager {
             currentServerAddr = iterator.next();
         }
         return currentServerAddr;
+    }
+
+    public String getNettyServerPort(){
+        return nettyServerPort;
     }
 
     Iterator<String> iterator() {

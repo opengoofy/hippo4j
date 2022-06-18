@@ -53,6 +53,15 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
     private String serverAddr;
 
     /**
+     * Netty server port
+     */
+    private String nettyServerPort;
+
+    /**
+     * Report type
+     */
+    private String reportType;
+    /**
      * Namespace
      */
     private String namespace;

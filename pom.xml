@@ -49,6 +49,7 @@
         <apollo.version>1.9.1</apollo.version>
         <rocketmq.version>2.2.2</rocketmq.version>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
+        <netty.version>4.1.10.Final</netty.version>
 
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -235,6 +236,12 @@
                 <artifactId>spring-boot-starter-json</artifactId>
                 <version>${spring-boot.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
