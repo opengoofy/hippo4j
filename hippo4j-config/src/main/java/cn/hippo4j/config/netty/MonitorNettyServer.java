@@ -1,6 +1,8 @@
-package cn.hippo4j.console.netty;
+package cn.hippo4j.config.netty;
 
+import cn.hippo4j.config.config.ServerBootstrapProperties;
 import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
+import cn.hippo4j.config.service.biz.HisRunDataService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -20,6 +22,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Netty MonitorNettyServer
@@ -29,19 +32,19 @@ import javax.annotation.PostConstruct;
  */
 @Slf4j
 @AllArgsConstructor
-@Component
 public class MonitorNettyServer {
 
-    private final QueryMonitorExecuteChoose queryMonitorExecuteChoose;
+    private ServerBootstrapProperties serverBootstrapProperties;
 
-    private final ThreadPoolTaskExecutor monitorThreadPoolTaskExecutor;
+    private HisRunDataService hisRunDataService;
+
+    private EventLoopGroup bossGroup;
+
+    private EventLoopGroup workGroup;
 
     @PostConstruct
     public void nettyServerInit(){
         new Thread(() -> {
-            EventLoopGroup bossGroup = new NioEventLoopGroup();
-            EventLoopGroup workGroup = new NioEventLoopGroup();
-
             try {
                 ServerBootstrap serverBootstrap = new ServerBootstrap();
                 serverBootstrap.group(bossGroup,workGroup)
@@ -56,18 +59,17 @@ public class MonitorNettyServer {
                                 pipeline.addLast(new ObjectEncoder());
                                 pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE,
                                         ClassResolvers.cacheDisabled(null)));
-                                pipeline.addLast(new ServerHandler(queryMonitorExecuteChoose,
-                                        monitorThreadPoolTaskExecutor));
+                                pipeline.addLast(new ServerHandler(hisRunDataService));
                             }
                         });
-                ChannelFuture channelFuture = serverBootstrap.bind(8899).sync();
+                ChannelFuture channelFuture = serverBootstrap.bind(Integer.parseInt(serverBootstrapProperties.getNettyServerPort())).sync();
                 channelFuture.channel().closeFuture().sync();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                log.error("nettyServerInit error",e);
             } finally {
                 bossGroup.shutdownGracefully();
                 workGroup.shutdownGracefully();
             }
-        },"netty-server-thread").start();
+        },"nettyServerInit thread").start();
     }
 }

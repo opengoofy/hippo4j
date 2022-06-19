@@ -18,11 +18,14 @@
 package cn.hippo4j.config.service.biz;
 
 import cn.hippo4j.common.monitor.Message;
+import cn.hippo4j.common.monitor.MessageWrapper;
+import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.config.model.HisRunDataInfo;
 import cn.hippo4j.config.model.biz.monitor.MonitorActiveRespDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorQueryReqDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorRespDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -64,5 +67,12 @@ public interface HisRunDataService extends IService<HisRunDataInfo> {
      * @param message
      */
     void save(Message message);
+
+    /**
+     * dataCollect.
+     *
+     * @param messageWrapper
+     */
+    Result<Void> dataCollect(MessageWrapper messageWrapper);
 
 }

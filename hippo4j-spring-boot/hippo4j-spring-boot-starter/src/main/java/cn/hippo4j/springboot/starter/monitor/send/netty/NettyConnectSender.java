@@ -1,4 +1,4 @@
-package cn.hippo4j.springboot.starter.monitor.netty;
+package cn.hippo4j.springboot.starter.monitor.send.netty;
 
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
@@ -53,8 +53,8 @@ public class NettyConnectSender implements MessageSender {
             bootstrap.connect(serverNettyAgent.getNettyServerAddress(), serverNettyAgent.getNettyServerPort()).sync();
         } catch (Exception e) {
             log.error("netty send error ",e);
-        } finally {
+        } /*finally {
             eventLoopGroup.shutdownGracefully();
-        }
+        }*/
     }
 }

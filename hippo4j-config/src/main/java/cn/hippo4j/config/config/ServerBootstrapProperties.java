@@ -48,4 +48,5 @@ public class ServerBootstrapProperties {
      */
     private Integer cleanHistoryDataPeriod = 30;
 
+    private String nettyServerPort = "8899";
 }

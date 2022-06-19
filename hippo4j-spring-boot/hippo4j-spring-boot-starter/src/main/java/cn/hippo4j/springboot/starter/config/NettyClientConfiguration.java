@@ -1,13 +1,10 @@
 package cn.hippo4j.springboot.starter.config;
 
-import cn.hippo4j.springboot.starter.monitor.netty.NettyConnectSender;
+import cn.hippo4j.springboot.starter.monitor.send.netty.NettyConnectSender;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.ServerNettyAgent;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Netty ClientCon figuration
@@ -25,7 +22,7 @@ public class NettyClientConfiguration {
     }
 
     @Bean
-    public MessageSender nettyConnectSender(ServerNettyAgent serverNettyAgent){
+    public MessageSender messageSender(ServerNettyAgent serverNettyAgent){
         return new NettyConnectSender(serverNettyAgent);
     }
 }

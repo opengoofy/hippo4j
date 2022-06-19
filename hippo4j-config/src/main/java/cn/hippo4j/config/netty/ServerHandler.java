@@ -1,9 +1,10 @@
-package cn.hippo4j.console.netty;
+package cn.hippo4j.config.netty;
 
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
 import cn.hippo4j.common.toolkit.MessageConvert;
 import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
+import cn.hippo4j.config.service.biz.HisRunDataService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.AllArgsConstructor;
@@ -20,20 +21,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @AllArgsConstructor
 public class ServerHandler extends SimpleChannelInboundHandler<MessageWrapper> {
 
-    private QueryMonitorExecuteChoose queryMonitorExecuteChoose;
-
-    private ThreadPoolTaskExecutor monitorThreadPoolTaskExecutor;
+    private HisRunDataService hisRunDataService;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageWrapper msg) throws Exception {
-        Runnable task = () -> {
-            Message message = MessageConvert.convert(msg);
-            queryMonitorExecuteChoose.chooseAndExecute(message);
-        };
-        try {
-            monitorThreadPoolTaskExecutor.execute(task);
-        } catch (Exception ex) {
-            log.error("Monitoring data insertion database task overflow.", ex);
-        }
+        hisRunDataService.dataCollect(msg);
     }
 }

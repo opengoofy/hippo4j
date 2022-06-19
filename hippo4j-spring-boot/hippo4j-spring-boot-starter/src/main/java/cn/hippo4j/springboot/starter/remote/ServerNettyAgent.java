@@ -16,13 +16,15 @@ public class ServerNettyAgent {
 
     private final ServerListManager serverListManager;
 
+    private EventLoopGroup eventLoopGroup;
+
     public ServerNettyAgent(BootstrapProperties properties){
         this.dynamicThreadPoolProperties = properties;
         this.serverListManager = new ServerListManager(dynamicThreadPoolProperties);
+        this.eventLoopGroup = new NioEventLoopGroup();
     }
 
     public EventLoopGroup getEventLoopGroup(){
-        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         return eventLoopGroup;
     }
 

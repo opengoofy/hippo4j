@@ -36,13 +36,12 @@ import cn.hippo4j.springboot.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.springboot.starter.core.ThreadPoolAdapterRegister;
 import cn.hippo4j.springboot.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.springboot.starter.monitor.collect.RunTimeInfoCollector;
-import cn.hippo4j.springboot.starter.monitor.send.HttpConnectSender;
+import cn.hippo4j.springboot.starter.monitor.send.http.HttpConnectSender;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -121,7 +120,7 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @SuppressWarnings("all")
-    public MessageSender httpMvcSender(HttpAgent httpAgent) {
+    public MessageSender messageSender(HttpAgent httpAgent) {
         return new HttpConnectSender(httpAgent);
     }
 

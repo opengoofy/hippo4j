@@ -1,4 +1,4 @@
-package cn.hippo4j.springboot.starter.monitor.netty;
+package cn.hippo4j.springboot.starter.monitor.send.netty;
 
 import cn.hippo4j.common.monitor.MessageWrapper;
 import io.netty.channel.ChannelHandlerContext;
