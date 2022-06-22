@@ -19,6 +19,7 @@ package cn.hippo4j.core.springboot.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.parser.ConfigParserHandler;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -50,8 +52,15 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
 
     @Override
     public void dynamicRefresh(String configContent) {
+        dynamicRefresh(configContent, null);
+    }
+
+    public void dynamicRefresh(String configContent, Map<String, Object> newValueChangeMap) {
         try {
             Map<Object, Object> configInfo = ConfigParserHandler.getInstance().parseConfig(configContent, bootstrapCoreProperties.getConfigFileType());
+            if (CollectionUtil.isNotEmpty(newValueChangeMap)) {
+                Optional.ofNullable(configInfo).ifPresent(each -> each.putAll(newValueChangeMap));
+            }
             BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
             ApplicationContextHolder.getInstance().publishEvent(new Hippo4jCoreDynamicRefreshEvent(this, bindableCoreProperties));
         } catch (Exception ex) {
