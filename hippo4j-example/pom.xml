@@ -7,12 +7,8 @@
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-example</artifactId>
     <packaging>pom</packaging>
-
-    <name>${project.artifactId}</name>
-    <description>${project.artifactId}</description>
 
     <modules>
         <module>hippo4j-example-core</module>
@@ -20,6 +16,7 @@
         <module>hippo4j-core-nacos-spring-boot-starter-example</module>
         <module>hippo4j-core-apollo-spring-boot-starter-example</module>
         <module>hippo4j-core-zookeeper-spring-boot-starter-example</module>
+        <module>hippo4j-spring-boot-starter-adapter-kafka-example</module>
         <module>hippo4j-spring-boot-starter-adapter-rabbitmq-example</module>
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq-example</module>
         <module>hippo4j-spring-boot-starter-adapter-rocketmq-example</module>
