@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WebThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
 
     @Override
-    protected ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo poolRunStateInfo) {
+    public ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo poolRunStateInfo) {
         RuntimeInfo runtimeInfo = new RuntimeInfo();
         String memoryProportion = StrUtil.builder(
                 "已分配: ",

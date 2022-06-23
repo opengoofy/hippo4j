@@ -48,6 +48,7 @@
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
         <rocketmq.version>2.2.2</rocketmq.version>
+        <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
 
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
