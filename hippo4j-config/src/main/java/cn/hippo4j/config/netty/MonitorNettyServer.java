@@ -22,6 +22,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -66,10 +67,13 @@ public class MonitorNettyServer {
                 channelFuture.channel().closeFuture().sync();
             } catch (Exception e) {
                 log.error("nettyServerInit error",e);
-            } finally {
-                bossGroup.shutdownGracefully();
-                workGroup.shutdownGracefully();
             }
         },"nettyServerInit thread").start();
+    }
+
+    @PreDestroy
+    public void destroy(){
+        bossGroup.shutdownGracefully();
+        workGroup.shutdownGracefully();
     }
 }
