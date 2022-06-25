@@ -43,7 +43,7 @@ public abstract class AbstractThreadPoolRuntime {
      * @param threadPoolRunStateInfo
      * @return
      */
-    protected abstract ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo threadPoolRunStateInfo);
+    public abstract ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo threadPoolRunStateInfo);
 
     /**
      * Get pool run state.

@@ -22,8 +22,14 @@ import com.ctrip.framework.apollo.ConfigChangeListener;
 import com.ctrip.framework.apollo.ConfigFile;
 import com.ctrip.framework.apollo.ConfigService;
 import com.ctrip.framework.apollo.core.enums.ConfigFileFormat;
+import com.ctrip.framework.apollo.model.ConfigChange;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.util.Map;
+
+import static cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties.PREFIX;
 
 /**
  * @author : wh
@@ -42,13 +48,18 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
     public void afterPropertiesSet() {
         String[] apolloNamespaces = this.namespace.split(",");
         this.namespace = apolloNamespaces[0];
-        Config config = ConfigService.getConfig(namespace);
+        Config config = ConfigService.getConfig(String.format("%s.%s", namespace, bootstrapCoreProperties.getConfigFileType().getValue()));
         ConfigChangeListener configChangeListener = configChangeEvent -> {
-            ConfigFile configFile = ConfigService.getConfigFile(
-                    this.namespace.replaceAll("." + bootstrapCoreProperties.getConfigFileType().getValue(), ""),
-                    ConfigFileFormat.fromString(bootstrapCoreProperties.getConfigFileType().getValue()));
-            String configInfo = configFile.getContent();
-            dynamicRefresh(configInfo);
+            String namespace = this.namespace.replaceAll("." + bootstrapCoreProperties.getConfigFileType().getValue(), "");
+            ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(bootstrapCoreProperties.getConfigFileType().getValue());
+            ConfigFile configFile = ConfigService.getConfigFile(namespace, configFileFormat);
+            Map<String, Object> newChangeValueMap = Maps.newHashMap();
+            configChangeEvent.changedKeys().stream().filter(each -> each.contains(PREFIX)).forEach(each -> {
+                ConfigChange change = configChangeEvent.getChange(each);
+                String newValue = change.getNewValue();
+                newChangeValueMap.put(each, newValue);
+            });
+            dynamicRefresh(configFile.getContent(), newChangeValueMap);
         };
         config.addChangeListener(configChangeListener);
         log.info("dynamic-thread-pool refresher, add apollo listener success, namespace: {}", namespace);

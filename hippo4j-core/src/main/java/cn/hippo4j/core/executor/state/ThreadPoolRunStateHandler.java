@@ -51,7 +51,7 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
     private final ConfigurableEnvironment environment;
 
     @Override
-    protected ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo poolRunStateInfo) {
+    public ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo poolRunStateInfo) {
         RuntimeInfo runtimeInfo = new RuntimeInfo();
         String memoryProportion = StrUtil.builder(
                 "已分配: ",

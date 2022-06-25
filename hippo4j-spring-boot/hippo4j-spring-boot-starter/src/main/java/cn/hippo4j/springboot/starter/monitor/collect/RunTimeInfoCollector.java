@@ -61,7 +61,7 @@ public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements C
     }
 
     @Override
-    protected ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo threadPoolRunStateInfo) {
+    public ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo threadPoolRunStateInfo) {
         return threadPoolRunStateInfo;
     }
 }
