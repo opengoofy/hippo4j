@@ -63,6 +63,11 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
         threadPoolAdapterState.setThreadPoolKey(identify);
         threadPoolAdapterState.setCoreSize(executor.getCorePoolSize());
         threadPoolAdapterState.setMaximumSize(executor.getMaximumPoolSize());
+        threadPoolAdapterState.setPoolSize(executor.getPoolSize());
+        threadPoolAdapterState.setActiveSize(executor.getActiveCount());
+        threadPoolAdapterState.setCompletedTaskCount(executor.getCompletedTaskCount());
+        threadPoolAdapterState.setQueueSize(executor.getQueue().size());
+        threadPoolAdapterState.setRemainingCapacity(executor.getQueue().remainingCapacity());
         return threadPoolAdapterState;
     }
 

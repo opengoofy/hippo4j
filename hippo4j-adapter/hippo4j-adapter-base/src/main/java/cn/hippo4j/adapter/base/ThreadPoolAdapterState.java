@@ -64,4 +64,14 @@ public class ThreadPoolAdapterState {
      * Blocking queue capacity
      */
     private Integer blockingQueueCapacity;
+
+    private Integer poolSize;
+
+    private Integer activeSize;
+
+    private Long completedTaskCount;
+
+    private Integer queueSize;
+
+    private Integer remainingCapacity;
 }

@@ -17,6 +17,7 @@
 
 package cn.hippo4j.core.springboot.starter.config;
 
+import cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer;
 import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.notify.AlarmControlHandler;
@@ -203,5 +204,10 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @Bean
     public DynamicThreadPoolBannerHandler threadPoolBannerHandler() {
         return new DynamicThreadPoolBannerHandler(bootstrapCoreProperties);
+    }
+
+    @Bean
+    public ThreadPoolAdapterBeanContainer threadPoolAdapterBeanContainer() {
+        return new ThreadPoolAdapterBeanContainer();
     }
 }
