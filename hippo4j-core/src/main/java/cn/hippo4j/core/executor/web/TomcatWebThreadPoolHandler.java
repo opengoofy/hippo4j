@@ -71,32 +71,16 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
     @Override
     public ThreadPoolBaseInfo simpleInfo() {
         ThreadPoolBaseInfo poolBaseInfo = new ThreadPoolBaseInfo();
-        int corePoolSize, maximumPoolSize, queueCapacity;
-        long keepAliveTime;
-        String rejectedExecutionHandlerName;
-        BlockingQueue<Runnable> blockingQueue;
-        if (executor instanceof ThreadPoolExecutor) {
-            ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) executor;
-            corePoolSize = threadPoolExecutor.getCorePoolSize();
-            maximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
-            keepAliveTime = threadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-            blockingQueue = threadPoolExecutor.getQueue();
-            int queueSize = blockingQueue.size();
-            int remainingCapacity = blockingQueue.remainingCapacity();
-            queueCapacity = queueSize + remainingCapacity;
-            RejectedExecutionHandler rejectedExecutionHandler = threadPoolExecutor.getRejectedExecutionHandler();
-            rejectedExecutionHandlerName = rejectedExecutionHandler.getClass().getSimpleName();
-        } else {
-            org.apache.tomcat.util.threads.ThreadPoolExecutor tomcatThreadPoolExecutor = (org.apache.tomcat.util.threads.ThreadPoolExecutor) executor;
-            corePoolSize = tomcatThreadPoolExecutor.getCorePoolSize();
-            maximumPoolSize = tomcatThreadPoolExecutor.getMaximumPoolSize();
-            keepAliveTime = tomcatThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-            blockingQueue = tomcatThreadPoolExecutor.getQueue();
-            int queueSize = blockingQueue.size();
-            int remainingCapacity = blockingQueue.remainingCapacity();
-            queueCapacity = queueSize + remainingCapacity;
-            rejectedExecutionHandlerName = tomcatThreadPoolExecutor.getRejectedExecutionHandler().getClass().getSimpleName();
-        }
+        org.apache.tomcat.util.threads.ThreadPoolExecutor tomcatThreadPoolExecutor = (org.apache.tomcat.util.threads.ThreadPoolExecutor) executor;
+        int corePoolSize = tomcatThreadPoolExecutor.getCorePoolSize();
+        int maximumPoolSize = tomcatThreadPoolExecutor.getMaximumPoolSize();
+        long keepAliveTime = tomcatThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
+        BlockingQueue<?> blockingQueue = tomcatThreadPoolExecutor.getQueue();
+        int queueSize = blockingQueue.size();
+        int remainingCapacity = blockingQueue.remainingCapacity();
+        int queueCapacity = queueSize + remainingCapacity;
+        String rejectedExecutionHandlerName = executor instanceof ThreadPoolExecutor ? ((ThreadPoolExecutor) executor).getRejectedExecutionHandler().getClass().getSimpleName()
+                : tomcatThreadPoolExecutor.getRejectedExecutionHandler().getClass().getSimpleName();
         poolBaseInfo.setCoreSize(corePoolSize);
         poolBaseInfo.setMaximumSize(maximumPoolSize);
         poolBaseInfo.setKeepAliveTime(keepAliveTime);
@@ -109,20 +93,11 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
     @Override
     public ThreadPoolParameter getWebThreadPoolParameter() {
         ThreadPoolParameterInfo parameterInfo = new ThreadPoolParameterInfo();
-        int minThreads, maxThreads;
-        long keepAliveTime;
         try {
-            if (executor instanceof ThreadPoolExecutor) {
-                ThreadPoolExecutor tomcatExecutor = (ThreadPoolExecutor) executor;
-                minThreads = tomcatExecutor.getCorePoolSize();
-                maxThreads = tomcatExecutor.getMaximumPoolSize();
-                keepAliveTime = tomcatExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-            } else {
-                org.apache.tomcat.util.threads.ThreadPoolExecutor tomcatThreadPoolExecutor = (org.apache.tomcat.util.threads.ThreadPoolExecutor) executor;
-                minThreads = tomcatThreadPoolExecutor.getCorePoolSize();
-                maxThreads = tomcatThreadPoolExecutor.getMaximumPoolSize();
-                keepAliveTime = tomcatThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-            }
+            org.apache.tomcat.util.threads.ThreadPoolExecutor tomcatThreadPoolExecutor = (org.apache.tomcat.util.threads.ThreadPoolExecutor) executor;
+            int minThreads = tomcatThreadPoolExecutor.getCorePoolSize();
+            int maxThreads = tomcatThreadPoolExecutor.getMaximumPoolSize();
+            long keepAliveTime = tomcatThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
             parameterInfo.setCoreSize(minThreads);
             parameterInfo.setMaxSize(maxThreads);
             parameterInfo.setKeepAliveTime((int) keepAliveTime);
@@ -183,26 +158,14 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
     @Override
     public void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo) {
-        int originalCoreSize, originalMaximumPoolSize;
-        long originalKeepAliveTime;
         try {
-            if (executor instanceof ThreadPoolExecutor) {
-                ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) executor;
-                originalCoreSize = threadPoolExecutor.getCorePoolSize();
-                originalMaximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
-                originalKeepAliveTime = threadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-                threadPoolExecutor.setCorePoolSize(threadPoolParameterInfo.corePoolSizeAdapt());
-                threadPoolExecutor.setMaximumPoolSize(threadPoolParameterInfo.maximumPoolSizeAdapt());
-                threadPoolExecutor.setKeepAliveTime(threadPoolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
-            } else {
-                org.apache.tomcat.util.threads.ThreadPoolExecutor tomcatThreadPoolExecutor = (org.apache.tomcat.util.threads.ThreadPoolExecutor) executor;
-                originalCoreSize = tomcatThreadPoolExecutor.getCorePoolSize();
-                originalMaximumPoolSize = tomcatThreadPoolExecutor.getMaximumPoolSize();
-                originalKeepAliveTime = tomcatThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-                tomcatThreadPoolExecutor.setCorePoolSize(threadPoolParameterInfo.corePoolSizeAdapt());
-                tomcatThreadPoolExecutor.setMaximumPoolSize(threadPoolParameterInfo.maximumPoolSizeAdapt());
-                tomcatThreadPoolExecutor.setKeepAliveTime(threadPoolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
-            }
+            org.apache.tomcat.util.threads.ThreadPoolExecutor tomcatThreadPoolExecutor = (org.apache.tomcat.util.threads.ThreadPoolExecutor) executor;
+            int originalCoreSize = tomcatThreadPoolExecutor.getCorePoolSize();
+            int originalMaximumPoolSize = tomcatThreadPoolExecutor.getMaximumPoolSize();
+            long originalKeepAliveTime = tomcatThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
+            tomcatThreadPoolExecutor.setCorePoolSize(threadPoolParameterInfo.corePoolSizeAdapt());
+            tomcatThreadPoolExecutor.setMaximumPoolSize(threadPoolParameterInfo.maximumPoolSizeAdapt());
+            tomcatThreadPoolExecutor.setKeepAliveTime(threadPoolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
             log.info("[TOMCAT] Changed web thread pool. corePoolSize :: [{}], maximumPoolSize :: [{}], keepAliveTime :: [{}]",
                     String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolParameterInfo.corePoolSizeAdapt()),
                     String.format(CHANGE_DELIMITER, originalMaximumPoolSize, threadPoolParameterInfo.maximumPoolSizeAdapt()),
