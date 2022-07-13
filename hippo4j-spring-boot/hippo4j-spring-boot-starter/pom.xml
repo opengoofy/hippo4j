@@ -86,6 +86,12 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-base</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -15,11 +15,12 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.monitor.send;
+package cn.hippo4j.springboot.starter.monitor.send.http;
 
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
 import cn.hippo4j.common.toolkit.MessageConvert;
+import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

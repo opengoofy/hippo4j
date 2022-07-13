@@ -36,7 +36,7 @@ import cn.hippo4j.springboot.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.springboot.starter.core.ThreadPoolAdapterRegister;
 import cn.hippo4j.springboot.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.springboot.starter.monitor.collect.RunTimeInfoCollector;
-import cn.hippo4j.springboot.starter.monitor.send.HttpConnectSender;
+import cn.hippo4j.springboot.starter.monitor.send.http.HttpConnectSender;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.HttpScheduledHealthCheck;
@@ -64,7 +64,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@ImportAutoConfiguration({HttpClientConfiguration.class, DiscoveryConfiguration.class, MessageNotifyConfiguration.class, UtilAutoConfiguration.class, WebThreadPoolConfiguration.class})
+@ImportAutoConfiguration({HttpClientConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageNotifyConfiguration.class, UtilAutoConfiguration.class, WebThreadPoolConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapProperties properties;
@@ -116,9 +116,11 @@ public class DynamicThreadPoolAutoConfiguration {
         return new WebThreadPoolRunStateController(threadPoolRunStateHandler, threadDetailState);
     }
 
+
     @Bean
+    @ConditionalOnMissingBean
     @SuppressWarnings("all")
-    public HttpConnectSender httpMvcSender(HttpAgent httpAgent) {
+    public MessageSender messageSender(HttpAgent httpAgent) {
         return new HttpConnectSender(httpAgent);
     }
 

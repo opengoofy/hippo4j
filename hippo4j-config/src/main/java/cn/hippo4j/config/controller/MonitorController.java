@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.console.controller;
+package cn.hippo4j.config.controller;
 
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.monitor.Message;
@@ -70,15 +70,6 @@ public class MonitorController {
 
     @PostMapping
     public Result<Void> dataCollect(@RequestBody MessageWrapper messageWrapper) {
-        Runnable task = () -> {
-            Message message = MessageConvert.convert(messageWrapper);
-            queryMonitorExecuteChoose.chooseAndExecute(message);
-        };
-        try {
-            monitorThreadPoolTaskExecutor.execute(task);
-        } catch (Exception ex) {
-            log.error("Monitoring data insertion database task overflow.", ex);
-        }
-        return Results.success();
+        return hisRunDataService.dataCollect(messageWrapper);
     }
 }
