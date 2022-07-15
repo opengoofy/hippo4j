@@ -19,24 +19,21 @@ package cn.hippo4j.adapter.base;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
- * thread pool adapter extra.
+ * thread pool adapter schedule.
  */
 @Slf4j
-public class ThreadPoolAdapterExtra {
+public class ThreadPoolAdapterScheduler {
+
+    private static final int TASK_INTERVAL_SECONDS = 2;
 
     private final ScheduledExecutorService scheduler;
 
 
-    public ThreadPoolAdapterExtra() {
+    public ThreadPoolAdapterScheduler() {
         scheduler = new ScheduledThreadPoolExecutor(2,
                 new ThreadFactoryBuilder()
                         .setNameFormat("threadPoolAdapter")
@@ -46,5 +43,9 @@ public class ThreadPoolAdapterExtra {
 
     public ScheduledExecutorService getScheduler() {
         return scheduler;
+    }
+
+    public int getTaskIntervalSeconds(){
+        return TASK_INTERVAL_SECONDS;
     }
 }

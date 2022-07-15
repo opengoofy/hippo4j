@@ -17,7 +17,7 @@
 
 package cn.hippo4j.springboot.starter.adapter.hystrix;
 
-import cn.hippo4j.adapter.base.ThreadPoolAdapterExtra;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterScheduler;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterExtraAutoConfiguration;
 import cn.hippo4j.adapter.hystrix.HystrixThreadPoolAdapter;
 import cn.hippo4j.common.config.ApplicationContextHolder;
@@ -43,7 +43,7 @@ public class HystrixAdapterAutoConfiguration {
     }
 
     @Bean
-    public HystrixThreadPoolAdapter hystrixThreadPoolAdapter(ThreadPoolAdapterExtra threadPoolAdapterExtra) {
-        return new HystrixThreadPoolAdapter(threadPoolAdapterExtra);
+    public HystrixThreadPoolAdapter hystrixThreadPoolAdapter(ThreadPoolAdapterScheduler threadPoolAdapterScheduler) {
+        return new HystrixThreadPoolAdapter(threadPoolAdapterScheduler);
     }
 }
