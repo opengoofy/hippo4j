@@ -15,31 +15,20 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.config;
+package cn.hippo4j.adapter.base;
 
-import cn.hippo4j.springboot.starter.monitor.send.netty.NettyConnectSender;
-import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
-import cn.hippo4j.springboot.starter.remote.ServerNettyAgent;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * Netty ClientCon figuration
- *
- * @author lk
- * @date 2022/6/18
+ * thread pool adapter extra auto configuration.
  */
-@ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, name = "report-type", matchIfMissing = false, havingValue = "netty")
-public class NettyClientConfiguration {
+@Configuration(proxyBeanMethods = false)
+public class ThreadPoolAdapterExtraAutoConfiguration {
 
     @Bean
-    @SuppressWarnings("all")
-    public ServerNettyAgent serverNettyAgent(BootstrapProperties properties) {
-        return new ServerNettyAgent(properties);
+    public ThreadPoolAdapterExtra threadPoolAdapterExtra() {
+        return new ThreadPoolAdapterExtra();
     }
 
-    @Bean
-    public MessageSender messageSender(ServerNettyAgent serverNettyAgent) {
-        return new NettyConnectSender(serverNettyAgent);
-    }
 }

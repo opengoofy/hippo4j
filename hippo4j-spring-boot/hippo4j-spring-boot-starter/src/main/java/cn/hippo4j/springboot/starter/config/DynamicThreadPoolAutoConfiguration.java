@@ -18,6 +18,7 @@
 package cn.hippo4j.springboot.starter.config;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterExtra;
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
@@ -64,7 +65,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@ImportAutoConfiguration({HttpClientConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageNotifyConfiguration.class, UtilAutoConfiguration.class, WebThreadPoolConfiguration.class})
+@ImportAutoConfiguration({HttpClientConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageNotifyConfiguration.class, UtilAutoConfiguration.class,
+        WebThreadPoolConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapProperties properties;
@@ -116,7 +118,6 @@ public class DynamicThreadPoolAutoConfiguration {
         return new WebThreadPoolRunStateController(threadPoolRunStateHandler, threadDetailState);
     }
 
-
     @Bean
     @ConditionalOnMissingBean
     @SuppressWarnings("all")
@@ -165,7 +166,7 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public ThreadPoolAdapterRegister threadPoolAdapterRegister(HttpAgent httpAgent, InetUtils hippo4JInetUtils) {
-        return new ThreadPoolAdapterRegister(httpAgent, properties, environment, hippo4JInetUtils);
+    public ThreadPoolAdapterRegister threadPoolAdapterRegister(HttpAgent httpAgent, InetUtils hippo4JInetUtils, ThreadPoolAdapterExtra threadPoolAdapterExtra) {
+        return new ThreadPoolAdapterRegister(httpAgent, properties, environment, hippo4JInetUtils, threadPoolAdapterExtra);
     }
 }

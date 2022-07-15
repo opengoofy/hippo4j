@@ -51,6 +51,7 @@
         <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
         <netty.version>4.1.10.Final</netty.version>
+        <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
 
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -169,6 +170,12 @@
             <dependency>
                 <groupId>cn.hippo4j</groupId>
                 <artifactId>hippo4j-adapter-rabbitmq</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-adapter-hystrix</artifactId>
                 <version>${revision}</version>
             </dependency>
 
