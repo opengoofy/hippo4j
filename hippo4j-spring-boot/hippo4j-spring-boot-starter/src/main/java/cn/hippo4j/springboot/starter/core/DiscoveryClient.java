@@ -17,6 +17,7 @@
 
 package cn.hippo4j.springboot.starter.core;
 
+import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.common.api.ClientCloseHookExecute;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
@@ -31,6 +32,7 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -141,7 +143,8 @@ public class DiscoveryClient implements DisposableBean {
                 boolean success = register();
                 // TODO Abstract server registration logic
                 ThreadPoolAdapterRegister adapterRegister = ApplicationContextHolder.getBean(ThreadPoolAdapterRegister.class);
-                adapterRegister.register();
+                Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
+                adapterRegister.register(threadPoolAdapterMap);
                 if (success) {
                     instanceInfo.unsetIsDirty(timestamp);
                 }

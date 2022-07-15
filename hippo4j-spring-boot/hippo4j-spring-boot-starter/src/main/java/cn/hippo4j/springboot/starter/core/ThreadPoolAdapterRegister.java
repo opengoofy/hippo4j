@@ -19,6 +19,7 @@ package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterExtra;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
@@ -56,13 +57,17 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
 
     private final InetUtils hippo4JInetUtils;
 
+    private final ThreadPoolAdapterExtra threadPoolAdapterExtra;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        register();
+        Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
+        register(threadPoolAdapterMap);
+        threadPoolAdapterExtra.extraStart(map -> register(map));
     }
 
-    public void register() {
-        Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
+    public void register(Map<String, ThreadPoolAdapter> threadPoolAdapterMap) {
+
         List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
         threadPoolAdapterMap.forEach((key, val) -> {
             List<ThreadPoolAdapterState> threadPoolStates = val.getThreadPoolStates();

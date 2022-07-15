@@ -15,33 +15,15 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.monitor.send.netty;
+package cn.hippo4j.adapter.base;
 
-import cn.hippo4j.common.monitor.MessageWrapper;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
 
 /**
- * SenderHandler
- *
- * @author lk
- * @date 2022/06/18
- */
-@Slf4j
-@AllArgsConstructor
-public class SenderHandler extends SimpleChannelInboundHandler<MessageWrapper> {
+ * Thread Pool Adapter Extra Handle
+ **/
+@FunctionalInterface
+public interface ThreadPoolAdapterExtraHandle {
 
-    private MessageWrapper messageWrapper;
-
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, MessageWrapper msg) throws Exception {
-
-    }
-
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.channel().writeAndFlush(messageWrapper);
-    }
+    void execute(Map<String, ThreadPoolAdapter> map);
 }

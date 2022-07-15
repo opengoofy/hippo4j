@@ -79,7 +79,7 @@ public class ServerListManager {
         return currentServerAddr;
     }
 
-    public String getNettyServerPort(){
+    public String getNettyServerPort() {
         return nettyServerPort;
     }
 
