@@ -75,7 +75,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     @Override
     public String mark() {
-        return "hystrix";
+        return "Hystrix";
     }
 
     @Override
