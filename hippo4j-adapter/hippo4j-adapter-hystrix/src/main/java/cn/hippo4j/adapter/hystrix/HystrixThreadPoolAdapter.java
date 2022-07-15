@@ -58,19 +58,12 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     private final Map<String, ThreadPoolExecutor> HYSTRIX_CONSUME_EXECUTOR = Maps.newHashMap();
 
-    private final ScheduledExecutorService scheduler;
-
     private ThreadPoolAdapterExtra threadPoolAdapterExtra;
 
     public HystrixThreadPoolAdapter(ThreadPoolAdapterExtra threadPoolAdapterExtra) {
 
         this.threadPoolAdapterExtra = threadPoolAdapterExtra;
 
-        scheduler = new ScheduledThreadPoolExecutor(2,
-                new ThreadFactoryBuilder()
-                        .setNameFormat("hystrixThreadPoolAdapter")
-                        .setDaemon(true)
-                        .build());
     }
 
     @Override
@@ -120,13 +113,13 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
+        ScheduledExecutorService scheduler = threadPoolAdapterExtra.getScheduler();
         HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler);
         scheduler.schedule(hystrixThreadPoolRefreshTask, TASK_INTERVAL_SECONDS, TimeUnit.SECONDS);
     }
 
     public void hystrixThreadPoolRefresh() {
         try {
-            boolean addExtraFlag = false;
             Class<HystrixThreadPool.Factory> factoryClass = HystrixThreadPool.Factory.class;
             Field threadPoolsField = factoryClass.getDeclaredField(THREAD_POOLS_FIELD);
             threadPoolsField.setAccessible(true);
@@ -144,17 +137,9 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
                         threadPoolField.setAccessible(true);
                         ThreadPoolExecutor threadPoolExecutor =
                                 (ThreadPoolExecutor) threadPoolField.get(hystrixThreadPoolDefault);
-                        if (threadPoolExecutor != null && HYSTRIX_CONSUME_EXECUTOR.get(key) == null) {
-                            HYSTRIX_CONSUME_EXECUTOR.put(key, threadPoolExecutor);
-                            addExtraFlag = true;
-                        }
+                        HYSTRIX_CONSUME_EXECUTOR.put(key, threadPoolExecutor);
                     }
                 }
-            }
-            if (addExtraFlag) {
-                Map<String, ThreadPoolAdapter> map = Maps.newHashMap();
-                map.putAll(ApplicationContextHolder.getBeansOfType(HystrixThreadPoolAdapter.class));
-                threadPoolAdapterExtra.offerQueue(map);
             }
         } catch (Exception e) {
             log.error("Failed to get Hystrix thread pool.", e);

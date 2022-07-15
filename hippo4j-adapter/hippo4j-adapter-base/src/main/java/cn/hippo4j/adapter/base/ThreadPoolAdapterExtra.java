@@ -17,11 +17,14 @@
 
 package cn.hippo4j.adapter.base;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,28 +33,18 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class ThreadPoolAdapterExtra {
 
-    private static final int BLOCKING_QUEUE_CAPACITY = 100;
+    private final ScheduledExecutorService scheduler;
 
-    private BlockingQueue<Map<String, ThreadPoolAdapter>> blockingQueue;
 
     public ThreadPoolAdapterExtra() {
-        blockingQueue = new ArrayBlockingQueue(BLOCKING_QUEUE_CAPACITY);
+        scheduler = new ScheduledThreadPoolExecutor(2,
+                new ThreadFactoryBuilder()
+                        .setNameFormat("threadPoolAdapter")
+                        .setDaemon(true)
+                        .build());
     }
 
-    public void offerQueue(Map<String, ThreadPoolAdapter> map) throws InterruptedException {
-        blockingQueue.offer(map, 5, TimeUnit.SECONDS);
-    }
-
-    public void extraStart(ThreadPoolAdapterExtraHandle threadPoolAdapterExtraHandle) {
-        new Thread(() -> {
-            try {
-                for (;;) {
-                    Map<String, ThreadPoolAdapter> map = blockingQueue.take();
-                    threadPoolAdapterExtraHandle.execute(map);
-                }
-            } catch (InterruptedException e) {
-                log.error("extraStart error", e);
-            }
-        }, "threadPoolAdapterExtra").start();
+    public ScheduledExecutorService getScheduler() {
+        return scheduler;
     }
 }
