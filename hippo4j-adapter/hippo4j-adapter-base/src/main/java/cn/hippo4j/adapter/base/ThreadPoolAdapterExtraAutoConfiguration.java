@@ -27,8 +27,8 @@ import org.springframework.context.annotation.Configuration;
 public class ThreadPoolAdapterExtraAutoConfiguration {
 
     @Bean
-    public ThreadPoolAdapterExtra threadPoolAdapterExtra() {
-        return new ThreadPoolAdapterExtra();
+    public ThreadPoolAdapterScheduler threadPoolAdapterExtra() {
+        return new ThreadPoolAdapterScheduler();
     }
 
 }

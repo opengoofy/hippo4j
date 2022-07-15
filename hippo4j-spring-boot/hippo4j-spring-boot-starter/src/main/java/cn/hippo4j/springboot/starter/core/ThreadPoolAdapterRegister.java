@@ -19,7 +19,7 @@ package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterExtra;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterScheduler;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
@@ -62,7 +62,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
 
     private final InetUtils hippo4JInetUtils;
 
-    private final ThreadPoolAdapterExtra threadPoolAdapterExtra;
+    private final ThreadPoolAdapterScheduler threadPoolAdapterScheduler;
 
     private List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
 
@@ -73,7 +73,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        ScheduledExecutorService scheduler = threadPoolAdapterExtra.getScheduler();
+        ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
 
         ThreadPoolAdapterRegisterTask threadPoolAdapterRegisterTask = new ThreadPoolAdapterRegisterTask(scheduler);
 
