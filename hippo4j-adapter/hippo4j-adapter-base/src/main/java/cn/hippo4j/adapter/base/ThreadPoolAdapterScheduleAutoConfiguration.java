@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
  * thread pool adapter extra auto configuration.
  */
 @Configuration(proxyBeanMethods = false)
-public class ThreadPoolAdapterExtraAutoConfiguration {
+public class ThreadPoolAdapterScheduleAutoConfiguration {
 
     @Bean
     public ThreadPoolAdapterScheduler threadPoolAdapterExtra() {
