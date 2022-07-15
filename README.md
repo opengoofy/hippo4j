@@ -26,9 +26,9 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 通知报警：内置四种报警通知策略，线程池活跃度、容量水位、拒绝策略以及任务执行时间超长；
 - 运行监控：实时查看线程池运行时数据，最近半小时线程池运行数据图表展示；
 - 功能扩展：支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务；
-- 容器管理：Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
 - 多种模式：内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/getting-started/hippo4j-core-start) 和 [无中间件依赖](https://hippo4j.cn/docs/getting-started/hippo4j-server-start)。
-- 中间件适配：Apache RocketMQ、Dubbo、RabbitMQ 消费线程池运行时数据查看和线程数变更；
+- 容器管理：Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
+- 中间件适配：Apache RocketMQ、Dubbo、RabbitMQ、Hystrix 消费线程池运行时数据查看和线程数变更；
 
 
 > 看完有所收获的话，右上角帮忙点个 Star，谢谢
