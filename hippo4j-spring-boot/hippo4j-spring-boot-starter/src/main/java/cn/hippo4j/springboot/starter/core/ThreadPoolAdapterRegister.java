@@ -31,6 +31,7 @@ import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -50,6 +51,7 @@ import static cn.hippo4j.common.constant.Constants.REGISTER_ADAPTER_PATH;
  */
 @Slf4j
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class ThreadPoolAdapterRegister implements ApplicationRunner {
 
     private final HttpAgent httpAgent;
