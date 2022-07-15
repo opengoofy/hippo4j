@@ -66,18 +66,16 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
 
     private List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
 
-    private static final int TASK_INTERVAL_SECONDS = 2;
-
 
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
         ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
+        int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
+        ThreadPoolAdapterRegisterTask threadPoolAdapterRegisterTask = new ThreadPoolAdapterRegisterTask(scheduler, taskIntervalSeconds);
 
-        ThreadPoolAdapterRegisterTask threadPoolAdapterRegisterTask = new ThreadPoolAdapterRegisterTask(scheduler);
-
-        scheduler.schedule(threadPoolAdapterRegisterTask, TASK_INTERVAL_SECONDS, TimeUnit.SECONDS);
+        scheduler.schedule(threadPoolAdapterRegisterTask, threadPoolAdapterScheduler.getTaskIntervalSeconds(), TimeUnit.SECONDS);
     }
 
     public List<ThreadPoolAdapterCacheConfig> getThreadPoolAdapterCacheConfigs(){
@@ -123,8 +121,11 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
 
         private ScheduledExecutorService scheduler;
 
-        public ThreadPoolAdapterRegisterTask(ScheduledExecutorService scheduler){
+        private int taskIntervalSeconds;
+
+        public ThreadPoolAdapterRegisterTask(ScheduledExecutorService scheduler, int taskIntervalSeconds){
             this.scheduler = scheduler;
+            this.taskIntervalSeconds = taskIntervalSeconds;
         }
 
         @Override
@@ -166,7 +167,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
                 log.error("Register Task Error",e);
             }finally {
                 if (!scheduler.isShutdown()) {
-                    scheduler.schedule(this, TASK_INTERVAL_SECONDS, TimeUnit.MILLISECONDS);
+                    scheduler.schedule(this, taskIntervalSeconds, TimeUnit.MILLISECONDS);
                 }
             }
         }
