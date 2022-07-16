@@ -143,7 +143,8 @@ public class DiscoveryClient implements DisposableBean {
                 boolean success = register();
                 // TODO Abstract server registration logic
                 ThreadPoolAdapterRegister adapterRegister = ApplicationContextHolder.getBean(ThreadPoolAdapterRegister.class);
-                adapterRegister.register();
+                Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
+                adapterRegister.register(threadPoolAdapterMap);
                 if (success) {
                     instanceInfo.unsetIsDirty(timestamp);
                 }
