@@ -30,5 +30,4 @@ public class ThreadPoolAdapterScheduleAutoConfiguration {
     public ThreadPoolAdapterScheduler threadPoolAdapterExtra() {
         return new ThreadPoolAdapterScheduler();
     }
-
 }

@@ -68,7 +68,6 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
         ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
         int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
         ThreadPoolAdapterRegisterTask threadPoolAdapterRegisterTask = new ThreadPoolAdapterRegisterTask(scheduler, taskIntervalSeconds);
@@ -129,11 +128,8 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
         public void run() {
             try {
                 List<ThreadPoolAdapterCacheConfig> newThreadPoolAdapterCacheConfigs = getThreadPoolAdapterCacheConfigs();
-
                 boolean registerFlag = compareThreadPoolAdapterCacheConfigs(newThreadPoolAdapterCacheConfigs, cacheConfigList);
-
                 cacheConfigList = newThreadPoolAdapterCacheConfigs;
-
                 if (registerFlag) {
                     doRegister(cacheConfigList);
                 }
@@ -150,15 +146,12 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
     private boolean compareThreadPoolAdapterCacheConfigs(List<ThreadPoolAdapterCacheConfig> newThreadPoolAdapterCacheConfigs,
                                                          List<ThreadPoolAdapterCacheConfig> oldThreadPoolAdapterCacheConfigs) {
         boolean registerFlag = false;
-
         Map<String, List<ThreadPoolAdapterState>> newThreadPoolAdapterCacheConfigMap =
                 newThreadPoolAdapterCacheConfigs.stream().collect(Collectors.toMap(
                         ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
-
         Map<String, List<ThreadPoolAdapterState>> oldThreadPoolAdapterCacheConfigMap =
                 oldThreadPoolAdapterCacheConfigs.stream().collect(Collectors.toMap(
                         ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
-
         for (Map.Entry<String, List<ThreadPoolAdapterState>> entry : newThreadPoolAdapterCacheConfigMap.entrySet()) {
             String key = entry.getKey();
             List<ThreadPoolAdapterState> newValue = entry.getValue();
