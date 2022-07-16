@@ -32,7 +32,6 @@ public class ThreadPoolAdapterScheduler {
 
     private final ScheduledExecutorService scheduler;
 
-
     public ThreadPoolAdapterScheduler() {
         scheduler = new ScheduledThreadPoolExecutor(2,
                 new ThreadFactoryBuilder()
@@ -45,7 +44,7 @@ public class ThreadPoolAdapterScheduler {
         return scheduler;
     }
 
-    public int getTaskIntervalSeconds(){
+    public int getTaskIntervalSeconds() {
         return TASK_INTERVAL_SECONDS;
     }
 }
