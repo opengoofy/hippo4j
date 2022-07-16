@@ -66,8 +66,6 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
 
     private List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
 
-
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
@@ -77,7 +75,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
         scheduler.schedule(threadPoolAdapterRegisterTask, threadPoolAdapterScheduler.getTaskIntervalSeconds(), TimeUnit.SECONDS);
     }
 
-    public List<ThreadPoolAdapterCacheConfig> getThreadPoolAdapterCacheConfigs(){
+    public List<ThreadPoolAdapterCacheConfig> getThreadPoolAdapterCacheConfigs() {
         Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
         List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
         threadPoolAdapterMap.forEach((key, val) -> {
@@ -98,7 +96,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
         return cacheConfigList;
     }
 
-    public void doRegister(List<ThreadPoolAdapterCacheConfig> cacheConfigList){
+    public void doRegister(List<ThreadPoolAdapterCacheConfig> cacheConfigList) {
         if (CollectionUtil.isNotEmpty(cacheConfigList)) {
             try {
                 Result result = httpAgent.httpPost(REGISTER_ADAPTER_PATH, cacheConfigList);
@@ -116,13 +114,13 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
         doRegister(threadPoolAdapterCacheConfigs);
     }
 
-    class ThreadPoolAdapterRegisterTask implements Runnable{
+    class ThreadPoolAdapterRegisterTask implements Runnable {
 
         private ScheduledExecutorService scheduler;
 
         private int taskIntervalSeconds;
 
-        public ThreadPoolAdapterRegisterTask(ScheduledExecutorService scheduler, int taskIntervalSeconds){
+        public ThreadPoolAdapterRegisterTask(ScheduledExecutorService scheduler, int taskIntervalSeconds) {
             this.scheduler = scheduler;
             this.taskIntervalSeconds = taskIntervalSeconds;
         }
@@ -139,9 +137,9 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
                 if (registerFlag) {
                     doRegister(cacheConfigList);
                 }
-            }catch (Exception e){
-                log.error("Register Task Error",e);
-            }finally {
+            } catch (Exception e) {
+                log.error("Register Task Error", e);
+            } finally {
                 if (!scheduler.isShutdown()) {
                     scheduler.schedule(this, taskIntervalSeconds, TimeUnit.MILLISECONDS);
                 }
@@ -150,7 +148,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
     }
 
     private boolean compareThreadPoolAdapterCacheConfigs(List<ThreadPoolAdapterCacheConfig> newThreadPoolAdapterCacheConfigs,
-                                                         List<ThreadPoolAdapterCacheConfig> oldThreadPoolAdapterCacheConfigs){
+                                                         List<ThreadPoolAdapterCacheConfig> oldThreadPoolAdapterCacheConfigs) {
         boolean registerFlag = false;
 
         Map<String, List<ThreadPoolAdapterState>> newThreadPoolAdapterCacheConfigMap =
@@ -168,7 +166,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
             if (oldValue == null) {
                 registerFlag = true;
                 break;
-            }else {
+            } else {
                 if (newValue.size() != oldValue.size()) {
                     registerFlag = true;
                     break;
