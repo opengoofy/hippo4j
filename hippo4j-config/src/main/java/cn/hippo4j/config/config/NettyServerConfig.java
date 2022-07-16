@@ -21,10 +21,12 @@ import cn.hippo4j.config.netty.MonitorNettyServer;
 import cn.hippo4j.config.service.biz.HisRunDataService;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnProperty(name = "hippo4j.core.monitor.report-type", havingValue = "netty")
 public class NettyServerConfig {
 
     @Bean
@@ -38,6 +40,7 @@ public class NettyServerConfig {
     }
 
     @Bean
+    @SuppressWarnings("all")
     public MonitorNettyServer monitorNettyServer(ServerBootstrapProperties serverBootstrapProperties,
                                                  HisRunDataService hisRunDataService,
                                                  EventLoopGroup bossGroup,
