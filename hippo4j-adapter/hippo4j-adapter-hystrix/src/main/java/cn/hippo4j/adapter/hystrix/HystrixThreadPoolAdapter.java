@@ -18,13 +18,11 @@
 package cn.hippo4j.adapter.hystrix;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterExtra;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterScheduler;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
-import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.netflix.hystrix.HystrixThreadPool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -32,13 +30,10 @@ import org.springframework.context.ApplicationListener;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -54,23 +49,14 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     private static final String THREAD_POOLS_FIELD = "threadPools";
 
-    private static final int TASK_INTERVAL_SECONDS = 2;
-
     private final Map<String, ThreadPoolExecutor> HYSTRIX_CONSUME_EXECUTOR = Maps.newHashMap();
 
-    private final ScheduledExecutorService scheduler;
+    private ThreadPoolAdapterScheduler threadPoolAdapterScheduler;
 
-    private ThreadPoolAdapterExtra threadPoolAdapterExtra;
+    public HystrixThreadPoolAdapter(ThreadPoolAdapterScheduler threadPoolAdapterScheduler) {
 
-    public HystrixThreadPoolAdapter(ThreadPoolAdapterExtra threadPoolAdapterExtra) {
+        this.threadPoolAdapterScheduler = threadPoolAdapterScheduler;
 
-        this.threadPoolAdapterExtra = threadPoolAdapterExtra;
-
-        scheduler = new ScheduledThreadPoolExecutor(2,
-                new ThreadFactoryBuilder()
-                        .setNameFormat("hystrixThreadPoolAdapter")
-                        .setDaemon(true)
-                        .build());
     }
 
     @Override
@@ -120,13 +106,14 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler);
-        scheduler.schedule(hystrixThreadPoolRefreshTask, TASK_INTERVAL_SECONDS, TimeUnit.SECONDS);
+        ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
+        int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
+        HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler,taskIntervalSeconds);
+        scheduler.schedule(hystrixThreadPoolRefreshTask, taskIntervalSeconds, TimeUnit.SECONDS);
     }
 
     public void hystrixThreadPoolRefresh() {
         try {
-            boolean addExtraFlag = false;
             Class<HystrixThreadPool.Factory> factoryClass = HystrixThreadPool.Factory.class;
             Field threadPoolsField = factoryClass.getDeclaredField(THREAD_POOLS_FIELD);
             threadPoolsField.setAccessible(true);
@@ -144,17 +131,9 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
                         threadPoolField.setAccessible(true);
                         ThreadPoolExecutor threadPoolExecutor =
                                 (ThreadPoolExecutor) threadPoolField.get(hystrixThreadPoolDefault);
-                        if (threadPoolExecutor != null && HYSTRIX_CONSUME_EXECUTOR.get(key) == null) {
-                            HYSTRIX_CONSUME_EXECUTOR.put(key, threadPoolExecutor);
-                            addExtraFlag = true;
-                        }
+                        HYSTRIX_CONSUME_EXECUTOR.put(key, threadPoolExecutor);
                     }
                 }
-            }
-            if (addExtraFlag) {
-                Map<String, ThreadPoolAdapter> map = Maps.newHashMap();
-                map.putAll(ApplicationContextHolder.getBeansOfType(HystrixThreadPoolAdapter.class));
-                threadPoolAdapterExtra.offerQueue(map);
             }
         } catch (Exception e) {
             log.error("Failed to get Hystrix thread pool.", e);
@@ -166,8 +145,11 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
         private ScheduledExecutorService scheduler;
 
-        public HystrixThreadPoolRefreshTask(ScheduledExecutorService scheduler) {
+        private int taskIntervalSeconds;
+
+        public HystrixThreadPoolRefreshTask(ScheduledExecutorService scheduler, int taskIntervalSeconds) {
             this.scheduler = scheduler;
+            this.taskIntervalSeconds = taskIntervalSeconds;
         }
 
         @Override
@@ -176,7 +158,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
                 hystrixThreadPoolRefresh();
             } finally {
                 if (!scheduler.isShutdown()) {
-                    scheduler.schedule(this, TASK_INTERVAL_SECONDS, TimeUnit.MILLISECONDS);
+                    scheduler.schedule(this, taskIntervalSeconds, TimeUnit.MILLISECONDS);
                 }
             }
         }
