@@ -74,7 +74,6 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
         ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
         int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
         ThreadPoolAdapterRegisterTask threadPoolAdapterRegisterTask = new ThreadPoolAdapterRegisterTask(scheduler, taskIntervalSeconds);
-
         scheduler.schedule(threadPoolAdapterRegisterTask, threadPoolAdapterScheduler.getTaskIntervalSeconds(), TimeUnit.SECONDS);
     }
 
@@ -131,32 +130,9 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
         @Override
         public void run() {
             try {
-                boolean registerFlag = false;
-
                 List<ThreadPoolAdapterCacheConfig> newThreadPoolAdapterCacheConfigs = getThreadPoolAdapterCacheConfigs();
 
-                Map<String, List<ThreadPoolAdapterState>> newThreadPoolAdapterCacheConfigMap =
-                        newThreadPoolAdapterCacheConfigs.stream().collect(Collectors.toMap(
-                                ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
-
-                Map<String, List<ThreadPoolAdapterState>> oldThreadPoolAdapterCacheConfigMap =
-                        cacheConfigList.stream().collect(Collectors.toMap(
-                                ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
-
-                for (Map.Entry<String, List<ThreadPoolAdapterState>> entry : newThreadPoolAdapterCacheConfigMap.entrySet()) {
-                    String key = entry.getKey();
-                    List<ThreadPoolAdapterState> newValue = entry.getValue();
-                    List<ThreadPoolAdapterState> oldValue = oldThreadPoolAdapterCacheConfigMap.get(key);
-                    if (oldValue == null) {
-                        registerFlag = true;
-                        break;
-                    }else {
-                        if (newValue.size() != oldValue.size()) {
-                            registerFlag = true;
-                            break;
-                        }
-                    }
-                }
+                boolean registerFlag = compareThreadPoolAdapterCacheConfigs(newThreadPoolAdapterCacheConfigs, cacheConfigList);
 
                 cacheConfigList = newThreadPoolAdapterCacheConfigs;
 
@@ -171,5 +147,34 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner {
                 }
             }
         }
+    }
+
+    private boolean compareThreadPoolAdapterCacheConfigs(List<ThreadPoolAdapterCacheConfig> newThreadPoolAdapterCacheConfigs,
+                                                         List<ThreadPoolAdapterCacheConfig> oldThreadPoolAdapterCacheConfigs){
+        boolean registerFlag = false;
+
+        Map<String, List<ThreadPoolAdapterState>> newThreadPoolAdapterCacheConfigMap =
+                newThreadPoolAdapterCacheConfigs.stream().collect(Collectors.toMap(
+                        ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
+
+        Map<String, List<ThreadPoolAdapterState>> oldThreadPoolAdapterCacheConfigMap =
+                oldThreadPoolAdapterCacheConfigs.stream().collect(Collectors.toMap(
+                        ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
+
+        for (Map.Entry<String, List<ThreadPoolAdapterState>> entry : newThreadPoolAdapterCacheConfigMap.entrySet()) {
+            String key = entry.getKey();
+            List<ThreadPoolAdapterState> newValue = entry.getValue();
+            List<ThreadPoolAdapterState> oldValue = oldThreadPoolAdapterCacheConfigMap.get(key);
+            if (oldValue == null) {
+                registerFlag = true;
+                break;
+            }else {
+                if (newValue.size() != oldValue.size()) {
+                    registerFlag = true;
+                    break;
+                }
+            }
+        }
+        return registerFlag;
     }
 }
