@@ -108,7 +108,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
     public void onApplicationEvent(ApplicationStartedEvent event) {
         ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
         int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
-        HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler,taskIntervalSeconds);
+        HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler, taskIntervalSeconds);
         scheduler.schedule(hystrixThreadPoolRefreshTask, taskIntervalSeconds, TimeUnit.SECONDS);
     }
 
