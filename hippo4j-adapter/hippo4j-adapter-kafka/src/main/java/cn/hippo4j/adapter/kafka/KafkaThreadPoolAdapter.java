@@ -49,4 +49,9 @@ public class KafkaThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
     public void onApplicationEvent(ApplicationStartedEvent event) {
 
     }
+
+    @Override
+    public void extraRefreshRegister() {
+
+    }
 }

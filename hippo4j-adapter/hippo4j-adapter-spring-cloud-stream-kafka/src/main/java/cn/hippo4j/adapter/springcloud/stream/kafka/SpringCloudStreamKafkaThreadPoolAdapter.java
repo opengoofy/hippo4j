@@ -56,4 +56,9 @@ public class SpringCloudStreamKafkaThreadPoolAdapter implements ThreadPoolAdapte
     public void onApplicationEvent(ApplicationStartedEvent event) {
 
     }
+
+    @Override
+    public void extraRefreshRegister() {
+
+    }
 }

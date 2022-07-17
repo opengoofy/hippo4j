@@ -114,4 +114,9 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
             }
         }
     }
+
+    @Override
+    public void extraRefreshRegister() {
+
+    }
 }

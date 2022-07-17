@@ -115,4 +115,9 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
             log.error("Failed to get Dubbo {}.X protocol thread pool", is2xVersion ? "2" : "3", ex);
         }
     }
+
+    @Override
+    public void extraRefreshRegister() {
+
+    }
 }

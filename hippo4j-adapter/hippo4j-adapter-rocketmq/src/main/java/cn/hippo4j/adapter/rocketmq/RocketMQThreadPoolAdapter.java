@@ -108,4 +108,9 @@ public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, Application
         }
 
     }
+
+    @Override
+    public void extraRefreshRegister() {
+
+    }
 }

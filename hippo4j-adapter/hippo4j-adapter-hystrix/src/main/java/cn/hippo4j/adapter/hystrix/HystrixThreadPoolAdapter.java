@@ -163,4 +163,9 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
             }
         }
     }
+
+    @Override
+    public void extraRefreshRegister() {
+
+    }
 }
