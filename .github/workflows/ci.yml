@@ -45,7 +45,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  MAVEN_OPTS: -Dspotless.apply.skip=true
+  MAVEN_OPTS: -Dspotless.apply.skip=true -Dskip.gpg=true
 
 jobs:
   unix:
