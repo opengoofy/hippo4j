@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.adapter.base;
+package cn.hippo4j.adapter.hystrix;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;

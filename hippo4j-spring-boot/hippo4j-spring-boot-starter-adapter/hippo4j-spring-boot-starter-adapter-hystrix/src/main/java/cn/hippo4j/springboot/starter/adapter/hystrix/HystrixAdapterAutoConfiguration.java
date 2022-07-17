@@ -17,9 +17,8 @@
 
 package cn.hippo4j.springboot.starter.adapter.hystrix;
 
-import cn.hippo4j.adapter.base.ThreadPoolAdapterScheduler;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterScheduleAutoConfiguration;
 import cn.hippo4j.adapter.hystrix.HystrixThreadPoolAdapter;
+import cn.hippo4j.adapter.hystrix.ThreadPoolAdapterScheduler;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,13 +32,17 @@ import org.springframework.context.annotation.Configuration;
  * @create: 2022-07-15
  **/
 @Configuration(proxyBeanMethods = false)
-@AutoConfigureAfter(ThreadPoolAdapterScheduleAutoConfiguration.class)
 public class HystrixAdapterAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
     public ApplicationContextHolder simpleApplicationContextHolder() {
         return new ApplicationContextHolder();
+    }
+
+    @Bean
+    public ThreadPoolAdapterScheduler threadPoolAdapterScheduler() {
+        return new ThreadPoolAdapterScheduler();
     }
 
     @Bean
