@@ -52,9 +52,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
     private ThreadPoolAdapterScheduler threadPoolAdapterScheduler;
 
     public HystrixThreadPoolAdapter(ThreadPoolAdapterScheduler threadPoolAdapterScheduler) {
-
         this.threadPoolAdapterScheduler = threadPoolAdapterScheduler;
-
     }
 
     @Override
@@ -146,7 +144,6 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
         } catch (Exception e) {
             log.error("Failed to get Hystrix thread pool.", e);
         }
-
     }
 
     class HystrixThreadPoolRefreshTask implements Runnable {

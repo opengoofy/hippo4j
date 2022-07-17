@@ -134,11 +134,8 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
         public void run() {
             try {
                 List<ThreadPoolAdapterCacheConfig> newThreadPoolAdapterCacheConfigs = getThreadPoolAdapterCacheConfigs(threadPoolAdapterMap);
-
                 boolean registerFlag = compareThreadPoolAdapterCacheConfigs(newThreadPoolAdapterCacheConfigs, cacheConfigList);
-
                 cacheConfigList = newThreadPoolAdapterCacheConfigs;
-
                 if (registerFlag) {
                     doRegister(cacheConfigList);
                 }
@@ -155,15 +152,12 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
     private boolean compareThreadPoolAdapterCacheConfigs(List<ThreadPoolAdapterCacheConfig> newThreadPoolAdapterCacheConfigs,
                                                          List<ThreadPoolAdapterCacheConfig> oldThreadPoolAdapterCacheConfigs) {
         boolean registerFlag = false;
-
         Map<String, List<ThreadPoolAdapterState>> newThreadPoolAdapterCacheConfigMap =
                 newThreadPoolAdapterCacheConfigs.stream().collect(Collectors.toMap(
                         ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
-
         Map<String, List<ThreadPoolAdapterState>> oldThreadPoolAdapterCacheConfigMap =
                 oldThreadPoolAdapterCacheConfigs.stream().collect(Collectors.toMap(
                         ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
-
         for (Map.Entry<String, List<ThreadPoolAdapterState>> entry : newThreadPoolAdapterCacheConfigMap.entrySet()) {
             String key = entry.getKey();
             List<ThreadPoolAdapterState> newValue = entry.getValue();
