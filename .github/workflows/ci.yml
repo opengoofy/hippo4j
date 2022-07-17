@@ -65,4 +65,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build with Maven
-        run: echo y | ./mvnw -B --no-transfer-progress clean install
+        run: echo y | mvn clean install
