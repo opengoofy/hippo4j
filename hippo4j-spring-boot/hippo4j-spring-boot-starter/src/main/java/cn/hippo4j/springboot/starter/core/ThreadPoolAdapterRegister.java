@@ -48,7 +48,6 @@ import static cn.hippo4j.common.constant.Constants.REGISTER_ADAPTER_PATH;
  */
 @Slf4j
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolAdapterRegisterAction {
 
     private final HttpAgent httpAgent;
@@ -61,8 +60,6 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
 
     private final ThreadPoolAdapterScheduler threadPoolAdapterScheduler;
 
-
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
         register();
@@ -70,10 +67,11 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
 
     public List<ThreadPoolAdapterCacheConfig> getThreadPoolAdapterCacheConfigs(Map<String, ThreadPoolAdapter> threadPoolAdapterMap) {
         List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
-        threadPoolAdapterMap.forEach((key, val) -> {
+        for (Map.Entry<String, ThreadPoolAdapter> threadPoolAdapterEntry : threadPoolAdapterMap.entrySet()) {
+            ThreadPoolAdapter val = threadPoolAdapterEntry.getValue();
             List<ThreadPoolAdapterState> threadPoolStates = val.getThreadPoolStates();
-            if (CollectionUtil.isEmpty(threadPoolStates)) {
-                return;
+            if (CollectionUtil.isEmpty(threadPoolStates) || threadPoolStates.size() == 0) {
+                continue;
             }
             ThreadPoolAdapterCacheConfig cacheConfig = new ThreadPoolAdapterCacheConfig();
             cacheConfig.setMark(val.mark());
@@ -84,12 +82,12 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
             cacheConfig.setClientAddress(clientAddress);
             cacheConfig.setThreadPoolAdapterStates(threadPoolStates);
             cacheConfigList.add(cacheConfig);
-        });
+        }
         return cacheConfigList;
     }
 
     public void doRegister(List<ThreadPoolAdapterCacheConfig> cacheConfigList) {
-        if (CollectionUtil.isNotEmpty(cacheConfigList)) {
+        if (CollectionUtil.isNotEmpty(cacheConfigList) && cacheConfigList.size() > 0) {
             try {
                 Result result = httpAgent.httpPost(REGISTER_ADAPTER_PATH, cacheConfigList);
                 if (!result.isSuccess()) {

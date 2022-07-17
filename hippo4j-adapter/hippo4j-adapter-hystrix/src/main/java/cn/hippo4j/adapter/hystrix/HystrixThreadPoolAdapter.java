@@ -104,15 +104,16 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        //Periodically update the Hystrix thread pool
+        // Periodically update the Hystrix thread pool
         HystrixThreadPoolRefresh();
-        //Periodically refresh registration
+        // Periodically refresh registration
         ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction = ApplicationContextHolder.getBean(ThreadPoolAdapterRegisterAction.class);
-        Map<String, ThreadPoolAdapter> map = (Map<String, ThreadPoolAdapter>)ApplicationContextHolder.getBeansOfType(this.getClass());
+        Map<String, ? extends HystrixThreadPoolAdapter> beansOfType = ApplicationContextHolder.getBeansOfType(this.getClass());
+        Map<String, ThreadPoolAdapter> map = Maps.newHashMap(beansOfType);
         threadPoolAdapterRegisterAction.adapterRegister(map);
     }
 
-    public void HystrixThreadPoolRefresh(){
+    public void HystrixThreadPoolRefresh() {
         ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
         int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
         HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler, taskIntervalSeconds);
