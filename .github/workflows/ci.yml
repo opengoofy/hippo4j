@@ -30,7 +30,7 @@ on:
       - '**/src/test/**'
       - '!*.md'
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
     paths:
       - '.github/workflows/ci.yml'
       - '**/pom.xml'
@@ -39,8 +39,6 @@ on:
       - '!*.md'
   repository_dispatch:
     types: [rerun-ci]
-  schedule:
-    - cron: '0 16 */1 * *'  # once a day. UTC time
 
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
@@ -51,7 +49,6 @@ env:
 
 jobs:
   unix:
-    if: (github.event_name == 'schedule' && github.repository == 'mabaiwan/hippo4j') || (github.event_name != 'schedule')
     name: JDK ${{ matrix.java.version }} - on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -68,4 +65,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build with Maven
-        run: echo y | ./mvnw -B --no-transfer-progress clean install ${{ matrix.java.maven_args }}
+        run: echo y | ./mvnw -B --no-transfer-progress clean install
