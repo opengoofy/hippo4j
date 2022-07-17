@@ -17,10 +17,8 @@
 
 package cn.hippo4j.adapter.hystrix;
 
-import cn.hippo4j.adapter.base.ThreadPoolAdapter;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterScheduler;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.adapter.base.*;
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import com.google.common.collect.Maps;
 import com.netflix.hystrix.HystrixThreadPool;
@@ -106,6 +104,15 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
+        //Periodically update the Hystrix thread pool
+        HystrixThreadPoolRefresh();
+        //Periodically refresh registration
+        ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction = ApplicationContextHolder.getBean(ThreadPoolAdapterRegisterAction.class);
+        Map<String, ThreadPoolAdapter> map = (Map<String, ThreadPoolAdapter>)ApplicationContextHolder.getBeansOfType(this.getClass());
+        threadPoolAdapterRegisterAction.adapterRegister(map);
+    }
+
+    public void HystrixThreadPoolRefresh(){
         ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
         int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
         HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler, taskIntervalSeconds);
