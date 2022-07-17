@@ -166,7 +166,7 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public ThreadPoolAdapterRegister threadPoolAdapterRegister(HttpAgent httpAgent, InetUtils hippo4JInetUtils, ThreadPoolAdapterScheduler threadPoolAdapterScheduler) {
-        return new ThreadPoolAdapterRegister(httpAgent, properties, environment, hippo4JInetUtils, threadPoolAdapterScheduler);
+    public ThreadPoolAdapterRegister threadPoolAdapterRegister(HttpAgent httpAgent, InetUtils hippo4JInetUtils) {
+        return new ThreadPoolAdapterRegister(httpAgent, properties, environment, hippo4JInetUtils);
     }
 }
