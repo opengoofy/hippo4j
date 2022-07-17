@@ -53,6 +53,7 @@
         <netty.version>4.1.10.Final</netty.version>
         <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
 
+        <skip.gpg>false</skip.gpg>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -318,6 +319,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
+                <configuration>
+                    <skip>${skip.gpg}</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
