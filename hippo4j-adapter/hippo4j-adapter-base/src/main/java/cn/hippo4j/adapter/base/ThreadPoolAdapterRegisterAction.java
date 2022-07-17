@@ -8,5 +8,10 @@ import java.util.Map;
  */
 public interface ThreadPoolAdapterRegisterAction {
 
+    /**
+     * adapterRegister
+     * @param threadPoolAdapterMap
+     * @return
+     */
     void adapterRegister(Map<String, ThreadPoolAdapter> threadPoolAdapterMap);
 }
