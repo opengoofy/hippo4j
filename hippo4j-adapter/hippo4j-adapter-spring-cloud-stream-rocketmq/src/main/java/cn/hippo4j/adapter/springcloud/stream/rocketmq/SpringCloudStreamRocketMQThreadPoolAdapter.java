@@ -122,9 +122,4 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
             log.error("Failed to get input-bindings thread pool.", ex);
         }
     }
-
-    @Override
-    public void extraRefreshRegister() {
-
-    }
 }

@@ -55,11 +55,4 @@ public interface ThreadPoolAdapter {
      * @return
      */
     boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter);
-
-    /**
-     * Additional refresh registration tasks
-     *
-     * @return
-     */
-    void extraRefreshRegister();
 }
