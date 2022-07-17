@@ -28,7 +28,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 @Slf4j
 public class ThreadPoolAdapterScheduler {
 
-    private static final int TASK_INTERVAL_SECONDS = 2;
+    private static final int TASK_INTERVAL_SECONDS = 10;
 
     private final ScheduledExecutorService scheduler;
 
