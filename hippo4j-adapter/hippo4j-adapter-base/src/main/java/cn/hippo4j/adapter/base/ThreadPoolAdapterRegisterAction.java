@@ -17,6 +17,7 @@
 
 package cn.hippo4j.adapter.base;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,9 +26,18 @@ import java.util.Map;
 public interface ThreadPoolAdapterRegisterAction {
 
     /**
-     * adapterRegister
+     * getThreadPoolAdapterCacheConfigs
+     *
      * @param threadPoolAdapterMap
+     * @return List<ThreadPoolAdapterCacheConfig>
+     */
+    List<ThreadPoolAdapterCacheConfig> getThreadPoolAdapterCacheConfigs(Map<String, ThreadPoolAdapter> threadPoolAdapterMap);
+
+    /**
+     * doRegister
+     *
+     * @param cacheConfigList
      * @return
      */
-    void adapterRegister(Map<String, ThreadPoolAdapter> threadPoolAdapterMap);
+    void doRegister(List<ThreadPoolAdapterCacheConfig> cacheConfigList);
 }

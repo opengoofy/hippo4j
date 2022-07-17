@@ -20,6 +20,7 @@ package cn.hippo4j.adapter.hystrix;
 import cn.hippo4j.adapter.base.*;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.netflix.hystrix.HystrixThreadPool;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 
@@ -102,20 +104,20 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
+        ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
+        int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
+
         // Periodically update the Hystrix thread pool
-        HystrixThreadPoolRefresh();
+        HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler, taskIntervalSeconds);
+        scheduler.schedule(hystrixThreadPoolRefreshTask, taskIntervalSeconds, TimeUnit.SECONDS);
+
         // Periodically refresh registration
         ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction = ApplicationContextHolder.getBean(ThreadPoolAdapterRegisterAction.class);
         Map<String, ? extends HystrixThreadPoolAdapter> beansOfType = ApplicationContextHolder.getBeansOfType(this.getClass());
         Map<String, ThreadPoolAdapter> map = Maps.newHashMap(beansOfType);
-        threadPoolAdapterRegisterAction.adapterRegister(map);
-    }
 
-    public void HystrixThreadPoolRefresh() {
-        ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
-        int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
-        HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler, taskIntervalSeconds);
-        scheduler.schedule(hystrixThreadPoolRefreshTask, taskIntervalSeconds, TimeUnit.SECONDS);
+        ThreadPoolAdapterRegisterTask threadPoolAdapterRegisterTask = new ThreadPoolAdapterRegisterTask(scheduler, taskIntervalSeconds, map, threadPoolAdapterRegisterAction);
+        scheduler.schedule(threadPoolAdapterRegisterTask, threadPoolAdapterScheduler.getTaskIntervalSeconds(), TimeUnit.SECONDS);
     }
 
     public void hystrixThreadPoolRefresh() {
@@ -146,6 +148,32 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
         }
     }
 
+    private boolean compareThreadPoolAdapterCacheConfigs(List<ThreadPoolAdapterCacheConfig> newThreadPoolAdapterCacheConfigs,
+                                                         List<ThreadPoolAdapterCacheConfig> oldThreadPoolAdapterCacheConfigs) {
+        boolean registerFlag = false;
+        Map<String, List<ThreadPoolAdapterState>> newThreadPoolAdapterCacheConfigMap =
+                newThreadPoolAdapterCacheConfigs.stream().collect(Collectors.toMap(
+                        ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
+        Map<String, List<ThreadPoolAdapterState>> oldThreadPoolAdapterCacheConfigMap =
+                oldThreadPoolAdapterCacheConfigs.stream().collect(Collectors.toMap(
+                        ThreadPoolAdapterCacheConfig::getMark, ThreadPoolAdapterCacheConfig::getThreadPoolAdapterStates, (k1, k2) -> k2));
+        for (Map.Entry<String, List<ThreadPoolAdapterState>> entry : newThreadPoolAdapterCacheConfigMap.entrySet()) {
+            String key = entry.getKey();
+            List<ThreadPoolAdapterState> newValue = entry.getValue();
+            List<ThreadPoolAdapterState> oldValue = oldThreadPoolAdapterCacheConfigMap.get(key);
+            if (oldValue == null) {
+                registerFlag = true;
+                break;
+            } else {
+                if (newValue.size() != oldValue.size()) {
+                    registerFlag = true;
+                    break;
+                }
+            }
+        }
+        return registerFlag;
+    }
+
     class HystrixThreadPoolRefreshTask implements Runnable {
 
         private ScheduledExecutorService scheduler;
@@ -161,6 +189,46 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
         public void run() {
             try {
                 hystrixThreadPoolRefresh();
+            } finally {
+                if (!scheduler.isShutdown()) {
+                    scheduler.schedule(this, taskIntervalSeconds, TimeUnit.MILLISECONDS);
+                }
+            }
+        }
+    }
+
+    class ThreadPoolAdapterRegisterTask implements Runnable {
+
+        private ScheduledExecutorService scheduler;
+
+        private int taskIntervalSeconds;
+
+        Map<String, ThreadPoolAdapter> threadPoolAdapterMap;
+
+        ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction;
+
+        private List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
+
+        public ThreadPoolAdapterRegisterTask(ScheduledExecutorService scheduler, int taskIntervalSeconds,
+                                             Map<String, ThreadPoolAdapter> threadPoolAdapterMap,
+                                             ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction) {
+            this.scheduler = scheduler;
+            this.taskIntervalSeconds = taskIntervalSeconds;
+            this.threadPoolAdapterMap = threadPoolAdapterMap;
+            this.threadPoolAdapterRegisterAction = threadPoolAdapterRegisterAction;
+        }
+
+        @Override
+        public void run() {
+            try {
+                List<ThreadPoolAdapterCacheConfig> newThreadPoolAdapterCacheConfigs = threadPoolAdapterRegisterAction.getThreadPoolAdapterCacheConfigs(threadPoolAdapterMap);
+                boolean registerFlag = compareThreadPoolAdapterCacheConfigs(newThreadPoolAdapterCacheConfigs, cacheConfigList);
+                cacheConfigList = newThreadPoolAdapterCacheConfigs;
+                if (registerFlag) {
+                    threadPoolAdapterRegisterAction.doRegister(cacheConfigList);
+                }
+            } catch (Exception e) {
+                log.error("Register Task Error", e);
             } finally {
                 if (!scheduler.isShutdown()) {
                     scheduler.schedule(this, taskIntervalSeconds, TimeUnit.MILLISECONDS);
