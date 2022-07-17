@@ -41,7 +41,7 @@ public class HystrixAdapterAutoConfiguration {
     }
 
     @Bean
-    public ThreadPoolAdapterScheduler threadPoolAdapterExtra() {
+    public ThreadPoolAdapterScheduler threadPoolAdapterScheduler() {
         return new ThreadPoolAdapterScheduler();
     }
 
