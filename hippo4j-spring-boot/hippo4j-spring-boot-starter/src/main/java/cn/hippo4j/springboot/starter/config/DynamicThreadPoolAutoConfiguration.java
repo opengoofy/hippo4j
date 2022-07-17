@@ -18,7 +18,6 @@
 package cn.hippo4j.springboot.starter.config;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterScheduler;
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
