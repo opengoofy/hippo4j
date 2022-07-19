@@ -43,7 +43,7 @@
         <dingtalk-sdk.version>2.0.0</dingtalk-sdk.version>
 
         <slf4j-api.version>1.7.7</slf4j-api.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.9</logback.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
