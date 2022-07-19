@@ -415,6 +415,11 @@
             <email>machen@apache.org</email>
             <url>https://github.com/mabaiwan</url>
         </developer>
+        <developer>
+            <name>shining-stars-lk</name>
+            <email>1031900093@qq.com</email>
+            <url>https://github.com/shining-stars-lk</url>
+        </developer>
     </developers>
 
     <scm>
