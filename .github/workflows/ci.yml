@@ -29,6 +29,7 @@ on:
       - '**/src/main/**'
       - '**/src/test/**'
       - '!*.md'
+      - '!docs/**'
   pull_request:
     branches: [ develop ]
     paths:
@@ -37,6 +38,7 @@ on:
       - '**/src/main/**'
       - '**/src/test/**'
       - '!*.md'
+      - '!docs/**'
   repository_dispatch:
     types: [rerun-ci]
 
