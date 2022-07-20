@@ -45,4 +45,4 @@ Hippo4J 除去动态修改线程池，还包含实时查看线程池运行时指
 - `hippo4j-example` ：示例工程；
 - `hippo4j-server` ：聚合 Server 端发布需要的模块；
 - `hippo4j-spring-boot`：负责与 Server 端交互的依赖组件；
-- `hippo4j-tool` ：操作日志等组件代码；
+- `hippo4j-tool` ：操作日志等组件代码。
