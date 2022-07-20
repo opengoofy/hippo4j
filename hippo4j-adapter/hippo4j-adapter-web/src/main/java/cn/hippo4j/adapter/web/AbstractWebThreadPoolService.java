@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.web;
+package cn.hippo4j.adapter.web;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +29,6 @@ import java.util.concurrent.Executor;
 
 /**
  * Abstract web thread pool service.
- *
- * @author chen.ma
- * @date 2022/1/19 21:20
  */
 @Slf4j
 public abstract class AbstractWebThreadPoolService implements WebThreadPoolService, ApplicationRunner {

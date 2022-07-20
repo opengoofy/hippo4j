@@ -17,12 +17,12 @@
 
 package cn.hippo4j.springboot.starter.controller;
 
+import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
-import cn.hippo4j.core.executor.web.WebThreadPoolHandlerChoose;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -17,11 +17,11 @@
 
 package cn.hippo4j.core.springboot.starter.refresher.event;
 
+import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
+import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.core.executor.web.WebThreadPoolHandlerChoose;
-import cn.hippo4j.core.executor.web.WebThreadPoolService;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.WebThreadPoolProperties;
 import lombok.extern.slf4j.Slf4j;

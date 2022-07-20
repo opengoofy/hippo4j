@@ -27,7 +27,7 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
-import cn.hippo4j.core.toolkit.CalculateUtil;
+import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.NonNull;

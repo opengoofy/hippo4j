@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.web;
+package cn.hippo4j.adapter.web;
 
+import cn.hippo4j.common.constant.ChangeThreadPoolConstants;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
@@ -30,12 +31,8 @@ import org.springframework.boot.web.server.WebServer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
-import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
-
 /**
- * @author : wh
- * @date : 2022/2/28 16:55
- * @description:
+ * Jetty web thread pool handler.
  */
 @Slf4j
 public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
@@ -93,8 +90,8 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
             jettyExecutor.setMinThreads(coreSize);
             jettyExecutor.setMaxThreads(maxSize);
             log.info("[JETTY] Changed web thread pool. corePoolSize :: [{}], maximumPoolSize :: [{}]",
-                    String.format(CHANGE_DELIMITER, minThreads, jettyExecutor.getMinThreads()),
-                    String.format(CHANGE_DELIMITER, maxThreads, jettyExecutor.getMaxThreads()));
+                    String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, minThreads, jettyExecutor.getMinThreads()),
+                    String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, maxThreads, jettyExecutor.getMaxThreads()));
         } catch (Exception ex) {
             log.error("Failed to modify the jetty thread pool parameter.", ex);
         }

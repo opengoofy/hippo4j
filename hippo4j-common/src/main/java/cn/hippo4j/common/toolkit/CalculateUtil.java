@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.toolkit;
+package cn.hippo4j.common.toolkit;
 
 /**
  * Calculate util.

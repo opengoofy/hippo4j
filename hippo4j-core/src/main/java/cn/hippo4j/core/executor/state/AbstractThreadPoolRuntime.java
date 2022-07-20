@@ -21,7 +21,7 @@ import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.toolkit.CalculateUtil;
+import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hutool.core.date.DateUtil;
 
 import java.util.Date;

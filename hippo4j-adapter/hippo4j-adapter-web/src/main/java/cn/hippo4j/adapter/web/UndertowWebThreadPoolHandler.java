@@ -15,14 +15,15 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.web;
+package cn.hippo4j.adapter.web;
 
+import cn.hippo4j.common.constant.ChangeThreadPoolConstants;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.toolkit.CalculateUtil;
 import cn.hutool.core.date.DateUtil;
 import io.undertow.Undertow;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +39,8 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
-import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
-
 /**
  * Undertow web thread pool handler.
- *
- * @author chen.ma
- * @date 2022/1/19 21:19
  */
 @Slf4j
 public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
@@ -162,9 +158,9 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
             xnioWorker.setOption(Options.WORKER_TASK_MAX_THREADS, maxSize);
             xnioWorker.setOption(Options.WORKER_TASK_KEEPALIVE, keepAliveTime);
             log.info("[UNDERTOW] Changed web thread pool. corePoolSize :: [{}], maximumPoolSize :: [{}], keepAliveTime :: [{}]",
-                    String.format(CHANGE_DELIMITER, originalCoreSize, coreSize),
-                    String.format(CHANGE_DELIMITER, originalMaximumPoolSize, maxSize),
-                    String.format(CHANGE_DELIMITER, originalKeepAliveTime, keepAliveTime));
+                    String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalCoreSize, coreSize),
+                    String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalMaximumPoolSize, maxSize),
+                    String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalKeepAliveTime, keepAliveTime));
         } catch (Exception ex) {
             log.error("Failed to modify the undertow thread pool parameter.", ex);
         }

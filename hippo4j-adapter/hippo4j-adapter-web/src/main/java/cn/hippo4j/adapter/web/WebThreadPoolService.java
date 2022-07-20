@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.web;
+package cn.hippo4j.adapter.web;
 
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
@@ -26,9 +26,6 @@ import java.util.concurrent.Executor;
 
 /**
  * Web thread pool service.
- *
- * @author chen.ma
- * @date 2022/1/19 20:51
  */
 public interface WebThreadPoolService {
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.web;
+package cn.hippo4j.adapter.web;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.web.exception.ServiceException;
@@ -23,9 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Web thread pool handler choose.
- *
- * @author chen.ma
- * @date 2022/1/20 20:15
  */
 @Slf4j
 public class WebThreadPoolHandlerChoose {

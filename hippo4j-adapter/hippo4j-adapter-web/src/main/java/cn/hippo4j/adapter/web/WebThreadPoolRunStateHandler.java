@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.web;
+package cn.hippo4j.adapter.web;
 
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.ByteConvertUtil;
@@ -26,9 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Web thread pool run state handler.
- *
- * @author chen.ma
- * @date 2022/1/19 21:05
  */
 @Slf4j
 public class WebThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {

@@ -19,5 +19,6 @@
         <module>hippo4j-adapter-hystrix</module>
         <module>hippo4j-adapter-spring-cloud-stream-rocketmq</module>
         <module>hippo4j-adapter-spring-cloud-stream-kafka</module>
+        <module>hippo4j-adapter-web</module>
     </modules>
 </project>

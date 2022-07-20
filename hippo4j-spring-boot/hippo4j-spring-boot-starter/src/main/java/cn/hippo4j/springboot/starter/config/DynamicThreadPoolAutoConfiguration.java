@@ -18,13 +18,13 @@
 package cn.hippo4j.springboot.starter.config;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer;
+import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.config.WebThreadPoolConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.core.executor.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
@@ -33,11 +33,10 @@ import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolRunStateController;
 import cn.hippo4j.springboot.starter.core.*;
 import cn.hippo4j.springboot.starter.event.ApplicationContentPostProcessor;
-import cn.hippo4j.springboot.starter.core.ThreadPoolAdapterRegister;
 import cn.hippo4j.springboot.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.springboot.starter.monitor.collect.RunTimeInfoCollector;
-import cn.hippo4j.springboot.starter.monitor.send.http.HttpConnectSender;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
+import cn.hippo4j.springboot.starter.monitor.send.http.HttpConnectSender;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
@@ -54,7 +53,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
- * Dynamic thread-pool auto configuration.
+ * Dynamic thread-pool auto-configuration.
  *
  * @author chen.ma
  * @date 2021/6/22 09:20
