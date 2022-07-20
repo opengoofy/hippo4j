@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-all</artifactId>
     <version>${revision}</version>
-
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Dynamic observable thread pool framework</description>
@@ -26,8 +26,8 @@
 
     <properties>
         <revision>1.3.2-SNAPSHOT</revision>
-        <java.version>1.8</java.version>
 
+        <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
         <guava.version>30.0-jre</guava.version>
         <okhttp3.version>3.12.0</okhttp3.version>
@@ -39,9 +39,9 @@
         <forest.version>1.5.11</forest.version>
         <jjwt.version>0.9.0</jjwt.version>
         <jackson-bom.version>2.11.1</jackson-bom.version>
-
         <dingtalk-sdk.version>2.0.0</dingtalk-sdk.version>
 
+        <!-- Framework -->
         <slf4j-api.version>1.7.7</slf4j-api.version>
         <logback.version>1.2.9</logback.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
@@ -53,13 +53,13 @@
         <netty.version>4.1.42.Final</netty.version>
         <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
 
+        <!-- Maven & Build -->
+        <java.version>1.8</java.version>
         <skip.gpg>false</skip.gpg>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- Maven -->
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
         <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
@@ -308,13 +308,11 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -331,7 +329,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -340,7 +337,6 @@
                     <additionalparam>${javadoc.opts}</additionalparam>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -357,7 +353,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
@@ -414,6 +409,11 @@
             <name>chen.ma</name>
             <email>machen@apache.org</email>
             <url>https://github.com/mabaiwan</url>
+            <organization>OpenGoofy</organization>
+            <organizationUrl>https://github.com/opengoofy</organizationUrl>
+            <roles>
+                <role>Project lead</role>
+            </roles>
         </developer>
         <developer>
             <name>shining-stars-lk</name>
