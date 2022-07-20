@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.toolkit.Assert;
@@ -71,26 +88,23 @@ public class TenantServiceImpl implements TenantService {
         LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers.lambdaQuery(TenantInfo.class)
                 .eq(TenantInfo::getTenantId, reqDTO.getTenantId());
 
-        TenantInfo existTenantInfo = tenantInfoMapper.selectOne(queryWrapper);
-        Assert.isNull(existTenantInfo, "租户 ID 不允许重复.");
+        // 当前为单体应用, 后续支持集群部署时切换分布式锁.
+        synchronized (TenantService.class) {
+            TenantInfo existTenantInfo = tenantInfoMapper.selectOne(queryWrapper);
+            Assert.isNull(existTenantInfo, "租户配置已存在.");
 
-        TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
-        int insertResult = tenantInfoMapper.insert(tenantInfo);
+            TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
+            int insertResult = tenantInfoMapper.insert(tenantInfo);
 
-        boolean retBool = SqlHelper.retBool(insertResult);
-        if (!retBool) {
-            throw new RuntimeException("Save Error.");
+            boolean retBool = SqlHelper.retBool(insertResult);
+            if (!retBool) {
+                throw new RuntimeException("Save Error.");
+            }
         }
     }
 
     @Override
-    @LogRecord(
-            prefix = "item",
-            bizNo = "{{#reqDTO.tenantId}}_{{#reqDTO.tenantName}}",
-            category = "TENANT_UPDATE",
-            success = "更新租户, ID :: {{#reqDTO.id}}, 租户名称由 :: {TENANT{#reqDTO.id}} -> {{#reqDTO.tenantName}}",
-            detail = "{{#reqDTO.toString()}}"
-    )
+    @LogRecord(prefix = "item", bizNo = "{{#reqDTO.tenantId}}_{{#reqDTO.tenantName}}", category = "TENANT_UPDATE", success = "更新租户, ID :: {{#reqDTO.id}}, 租户名称由 :: {TENANT{#reqDTO.id}} -> {{#reqDTO.tenantName}}", detail = "{{#reqDTO.toString()}}")
     public void updateTenant(TenantUpdateReqDTO reqDTO) {
         TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
         int updateResult = tenantInfoMapper.update(tenantInfo, Wrappers

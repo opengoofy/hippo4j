@@ -1,7 +1,24 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.model.PoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameter;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -11,9 +28,6 @@ import java.util.List;
 
 /**
  * MD5 util.
- *
- * @author chen.ma
- * @date 2021/6/22 17:55
  */
 public class Md5Util {
 
@@ -50,16 +64,14 @@ public class Md5Util {
     public static String encodeHexString(byte[] bytes) {
         int l = bytes.length;
         char[] out = new char[l << 1];
-
         for (int i = 0, j = 0; i < l; i++) {
             out[j++] = DIGITS_LOWER[(0xF0 & bytes[i]) >>> 4];
             out[j++] = DIGITS_LOWER[0x0F & bytes[i]];
         }
-
         return new String(out);
     }
 
-    public static String getTpContentMd5(PoolParameter config) {
+    public static String getTpContentMd5(ThreadPoolParameter config) {
         return Md5Util.md5Hex(ContentUtil.getPoolContent(config), "UTF-8");
     }
 
@@ -67,9 +79,7 @@ public class Md5Util {
         if (null == changedGroupKeys) {
             return "";
         }
-
         StringBuilder sb = new StringBuilder();
-
         for (String groupKey : changedGroupKeys) {
             String[] dataIdGroupId = GroupKey.parseKey(groupKey);
             sb.append(dataIdGroupId[0]);
@@ -89,9 +99,7 @@ public class Md5Util {
             }
             sb.append(Constants.LINE_SEPARATOR);
         }
-
         // To encode WORD_SEPARATOR and LINE_SEPARATOR invisible characters, encoded value is %02 and %01
         return URLEncoder.encode(sb.toString(), "UTF-8");
     }
-
 }

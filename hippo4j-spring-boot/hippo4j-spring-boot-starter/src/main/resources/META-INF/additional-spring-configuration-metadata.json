@@ -7,6 +7,18 @@
       "description": "dynamic thread-pool server address."
     },
     {
+      "name": "spring.dynamic.thread-pool.netty-server-port",
+      "type": "java.lang.String",
+      "defaultValue": "8899",
+      "description": "dynamic thread-pool server netty port."
+    },
+    {
+      "name": "spring.dynamic.thread-pool.report-type",
+      "type": "java.lang.String",
+      "defaultValue": "http",
+      "description": "dynamic thread-pool report-type."
+    },
+    {
       "name": "spring.dynamic.thread-pool.namespace",
       "type": "java.lang.String",
       "defaultValue": "public",

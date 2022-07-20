@@ -22,8 +22,8 @@ set "HIPPO4J_OPTS=%HIPPO4J_OPTS% -jar %BASE_DIR%\target\%SERVER%.jar"
 
 
 rem set hippo4j spring config location
-set "HIPPO4J_CONFIG_OPTS=--spring.config.location=%CUSTOM_SEARCH_LOCATIONS%"
-set "HIPPO4J_CONFIG_OPTS=%HIPPO4J_OPTS% --server.tomcat.basedir=%BASE_DIR%/bin"
+set "HIPPO4J_CONFIG_OPTS=%HIPPO4J_CONFIG_OPTS% --spring.config.location=%CUSTOM_SEARCH_LOCATIONS%"
+set "HIPPO4J_CONFIG_OPTS=%HIPPO4J_CONFIG_OPTS% --server.tomcat.basedir=%BASE_DIR%/bin"
 
 
 rem set hippo4j logback file location

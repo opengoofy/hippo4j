@@ -1,7 +1,25 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.common.notify.platform;
 
 import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.common.notify.NotifyPlatformEnum;
+import cn.hippo4j.common.notify.NotifyTypeEnum;
 import cn.hippo4j.common.notify.SendMessageHandler;
 import cn.hippo4j.common.notify.request.AlarmNotifyRequest;
 import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
@@ -14,15 +32,13 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static cn.hippo4j.common.notify.platform.LarkAlarmConstants.*;
 
 /**
  * Send lark notification message.
- *
- * @author imyzt
- * @date 2021/11/22 21:12
  */
 @Slf4j
 @AllArgsConstructor
@@ -36,20 +52,34 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     @Override
     @SneakyThrows
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
-        String afterReceives = getReceives(alarmNotifyRequest.getReceives());
-        String larkAlarmJson = LARK_ALARM_JSON_STR;
+        String afterReceives = getReceives(notifyConfig.getReceives());
+        String larkAlarmTxt;
+        String larkAlarmTimoutReplaceTxt;
+        if (Objects.equals(alarmNotifyRequest.getNotifyTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
+            String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
+            if (StringUtil.isNotBlank(executeTimeoutTrace)) {
+                String larkAlarmTimoutTraceReplaceTxt = String.format(LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, executeTimeoutTrace);
+                larkAlarmTimoutReplaceTxt = StrUtil.replace(LARK_ALARM_TIMOUT_REPLACE_TXT, LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, larkAlarmTimoutTraceReplaceTxt);
+            } else {
+                larkAlarmTimoutReplaceTxt = StrUtil.replace(LARK_ALARM_TIMOUT_REPLACE_TXT, LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
+            }
+            larkAlarmTimoutReplaceTxt = String.format(larkAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
+            larkAlarmTxt = StrUtil.replace(LARK_ALARM_JSON_STR, LARK_ALARM_TIMOUT_REPLACE_TXT, larkAlarmTimoutReplaceTxt);
+        } else {
+            larkAlarmTxt = StrUtil.replace(LARK_ALARM_JSON_STR, LARK_ALARM_TIMOUT_REPLACE_TXT, "");
+        }
 
-        String text = String.format(larkAlarmJson,
+        String text = String.format(larkAlarmTxt,
                 // 环境
                 alarmNotifyRequest.getActive(),
+                // 报警类型
+                alarmNotifyRequest.getNotifyTypeEnum(),
                 // 线程池ID
                 alarmNotifyRequest.getThreadPoolId(),
                 // 应用名称
                 alarmNotifyRequest.getAppName(),
                 // 实例信息
                 alarmNotifyRequest.getIdentify(),
-                // 报警类型
-                notifyConfig.getTypeEnum(),
                 // 核心线程数
                 alarmNotifyRequest.getCorePoolSize(),
                 // 最大线程数
@@ -79,9 +109,7 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 // 当前时间
                 DateUtil.now(),
                 // 报警频率
-                notifyConfig.getInterval()
-        );
-
+                notifyConfig.getInterval());
         execute(notifyConfig.getSecretKey(), text);
     }
 
@@ -91,10 +119,6 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
         String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
         String afterReceives = getReceives(notifyConfig.getReceives());
         String larkNoticeJson = LARK_NOTICE_JSON_STR;
-
-        /**
-         * hesitant e.g. ➲  ➜  ⇨  ➪
-         */
         String text = String.format(larkNoticeJson,
                 // 环境
                 changeParameterNotifyRequest.getActive(),
@@ -116,15 +140,15 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 changeParameterNotifyRequest.getBlockingQueueName(),
                 // 阻塞队列容量
                 changeParameterNotifyRequest.getBeforeQueueCapacity() + "  ➲  " + changeParameterNotifyRequest.getNowQueueCapacity(),
+                // 执行超时时间
+                changeParameterNotifyRequest.getBeforeExecuteTimeOut() + "  ➲  " + changeParameterNotifyRequest.getNowExecuteTimeOut(),
                 // 拒绝策略
                 changeParameterNotifyRequest.getBeforeRejectedName(),
                 changeParameterNotifyRequest.getNowRejectedName(),
                 // 告警手机号
                 afterReceives,
                 // 当前时间
-                DateUtil.now()
-        );
-
+                DateUtil.now());
         execute(notifyConfig.getSecretKey(), text);
     }
 
@@ -133,19 +157,16 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
             return "";
         }
         return Arrays.stream(receives.split(","))
-                .map(receive -> StrUtil.startWith(receive, LARK_OPENID_PREFIX) ?
-                        String.format(LARK_AT_FORMAT_OPENID, receive) : String.format(LARK_AT_FORMAT_USERNAME, receive))
+                .map(receive -> StrUtil.startWith(receive, LARK_OPENID_PREFIX) ? String.format(LARK_AT_FORMAT_OPENID, receive) : String.format(LARK_AT_FORMAT_USERNAME, receive))
                 .collect(Collectors.joining(" "));
     }
 
     private void execute(String secretKey, String text) {
         String serverUrl = LARK_BOT_URL + secretKey;
-
         try {
             HttpRequest.post(serverUrl).body(text).execute();
         } catch (Exception ex) {
             log.error("Lark failed to send message", ex);
         }
     }
-
 }

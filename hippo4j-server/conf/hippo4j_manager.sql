@@ -226,3 +226,9 @@ INSERT INTO `user` (`id`, `user_name`, `password`, `role`, `gmt_create`, `gmt_mo
 /* 通知表 */
 INSERT INTO `notify` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `type`, `secret_key`, `interval`, `receives`, `enable`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'CONFIG', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', NULL, '15601166691', '0', '2021-11-18 22:49:50', '2021-11-18 22:49:50', '0'),
 ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'ALARM', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '0', '2021-11-18 22:50:06', '2021-11-18 22:50:06', '0');
+
+/* 1.1.0 Upgrade Start */
+ALTER TABLE `config` DROP INDEX `uk_configinfo_datagrouptenant`;
+ALTER TABLE `item` DROP INDEX `uk_iteminfo_tenantitem`;
+ALTER TABLE `tenant` DROP INDEX `uk_tenantinfo_tenantid`;
+/* 1.1.0 Upgrade End */

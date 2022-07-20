@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>cn.hippo4j</groupId>
         <artifactId>hippo4j-spring-boot</artifactId>
@@ -10,10 +9,7 @@
     </parent>
 
     <artifactId>hippo4j-spring-boot-starter</artifactId>
-    <packaging>jar</packaging>
-
-    <name>${project.artifactId}</name>
-    <description>${project.artifactId}</description>
+    <description>Thread pool dynamic parameter adjustment, alarming, status viewing and monitoring functions</description>
 
     <dependencies>
         <dependency>
@@ -55,13 +51,50 @@
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>alibaba-dingtalk-service-sdk</artifactId>
-            <!-- 用户反馈其中 javax.jms 无法下载, 未发现 log4j 用处, 暂且排除 -->
+            <!-- User feedback that javax.jms cannot be downloaded,
+            and log4j is not found useful, so it is excluded for the time being -->
             <exclusions>
                 <exclusion>
-                    <artifactId>log4j</artifactId>
                     <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-adapter-base</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-spring-boot-starter-adapter-web</artifactId>
         </dependency>
     </dependencies>
 
@@ -96,5 +129,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

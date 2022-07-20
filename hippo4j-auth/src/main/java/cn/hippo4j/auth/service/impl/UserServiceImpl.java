@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.auth.service.impl;
 
 import cn.hippo4j.auth.mapper.UserMapper;
@@ -26,9 +43,6 @@ import java.util.stream.Collectors;
 
 /**
  * User service impl.
- *
- * @author chen.ma
- * @date 2021/10/30 21:40
  */
 @Service
 @AllArgsConstructor
@@ -45,7 +59,6 @@ public class UserServiceImpl implements UserService {
         LambdaQueryWrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class)
                 .eq(StringUtil.isNotBlank(reqDTO.getUserName()), UserInfo::getUserName, reqDTO.getUserName());
         IPage<UserInfo> selectPage = userMapper.selectPage(reqDTO, queryWrapper);
-
         return selectPage.convert(each -> BeanUtil.toBean(each, UserRespDTO.class));
     }
 
@@ -57,7 +70,6 @@ public class UserServiceImpl implements UserService {
         if (existUserInfo != null) {
             throw new RuntimeException("用户名重复");
         }
-
         reqDTO.setPassword(bCryptPasswordEncoder.encode(reqDTO.getPassword()));
         UserInfo insertUser = BeanUtil.toBean(reqDTO, UserInfo.class);
         userMapper.insert(insertUser);
@@ -69,7 +81,6 @@ public class UserServiceImpl implements UserService {
             reqDTO.setPassword(bCryptPasswordEncoder.encode(reqDTO.getPassword()));
         }
         UserInfo updateUser = BeanUtil.toBean(reqDTO, UserInfo.class);
-
         LambdaUpdateWrapper<UserInfo> updateWrapper = Wrappers.lambdaUpdate(UserInfo.class)
                 .eq(UserInfo::getUserName, reqDTO.getUserName());
         userMapper.update(updateUser, updateWrapper);
@@ -80,7 +91,6 @@ public class UserServiceImpl implements UserService {
         LambdaUpdateWrapper<UserInfo> updateWrapper = Wrappers.lambdaUpdate(UserInfo.class)
                 .eq(UserInfo::getUserName, userName);
         userMapper.delete(updateWrapper);
-        // roleService.deleteRole("", userName);
     }
 
     @Override
@@ -88,10 +98,8 @@ public class UserServiceImpl implements UserService {
         LambdaQueryWrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class)
                 .like(UserInfo::getUserName, userName)
                 .select(UserInfo::getUserName);
-
         List<UserInfo> userInfos = userMapper.selectList(queryWrapper);
         List<String> userNames = userInfos.stream().map(UserInfo::getUserName).collect(Collectors.toList());
-
         return userNames;
     }
 
@@ -99,11 +107,9 @@ public class UserServiceImpl implements UserService {
     public UserRespDTO getUser(UserReqDTO reqDTO) {
         Wrapper queryWrapper = Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, reqDTO.getUserName());
         UserInfo userInfo = userMapper.selectOne(queryWrapper);
-
         UserRespDTO respUser = Optional.ofNullable(userInfo)
                 .map(each -> BeanUtil.toBean(each, UserRespDTO.class))
                 .orElseThrow(() -> new ServiceException("查询无此用户, 可以尝试清空缓存或退出登录."));
         return respUser;
     }
-
 }

@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.toolkit.Assert;
@@ -77,15 +94,18 @@ public class ItemServiceImpl implements ItemService {
         LambdaQueryWrapper<ItemInfo> queryWrapper = Wrappers.lambdaQuery(ItemInfo.class)
                 .eq(ItemInfo::getItemId, reqDTO.getItemId());
 
-        ItemInfo existItemInfo = itemInfoMapper.selectOne(queryWrapper);
-        Assert.isNull(existItemInfo, "项目 ID 不允许重复.");
+        // 当前为单体应用, 后续支持集群部署时切换分布式锁.
+        synchronized (ItemService.class) {
+            ItemInfo existItemInfo = itemInfoMapper.selectOne(queryWrapper);
+            Assert.isNull(existItemInfo, "项目配置已存在.");
 
-        ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
-        int insertResult = itemInfoMapper.insert(itemInfo);
+            ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
+            int insertResult = itemInfoMapper.insert(itemInfo);
 
-        boolean retBool = SqlHelper.retBool(insertResult);
-        if (!retBool) {
-            throw new RuntimeException("Save error");
+            boolean retBool = SqlHelper.retBool(insertResult);
+            if (!retBool) {
+                throw new RuntimeException("Save error");
+            }
         }
     }
 

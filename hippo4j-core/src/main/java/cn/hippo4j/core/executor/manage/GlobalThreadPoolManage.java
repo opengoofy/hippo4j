@@ -1,15 +1,34 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.core.executor.manage;
 
-import cn.hippo4j.common.model.PoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Global threadPool manage.
+ * Global thread-pool manage.
  *
  * @author chen.ma
  * @date 2021/6/20 15:57
@@ -17,17 +36,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GlobalThreadPoolManage {
 
     /**
-     * 动态线程池参数容器
+     * Dynamic thread pool parameter container.
      */
-    private static final Map<String, PoolParameter> POOL_PARAMETER = new ConcurrentHashMap();
+    private static final Map<String, ThreadPoolParameter> POOL_PARAMETER = new ConcurrentHashMap();
 
     /**
-     * 动态线程池包装容器
+     * Dynamic thread pool wrapper.
      */
     private static final Map<String, DynamicThreadPoolWrapper> EXECUTOR_MAP = new ConcurrentHashMap();
 
     /**
-     * 获取动态线程池包装类.
+     * Get the dynamic thread pool wrapper class.
      *
      * @param threadPoolId
      * @return
@@ -37,29 +56,39 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 获取动态线程池参数.
+     * Get the dynamic thread pool wrapper class.
      *
      * @param threadPoolId
      * @return
      */
-    public static PoolParameter getPoolParameter(String threadPoolId) {
+    public static ThreadPoolExecutor getExecutor(String threadPoolId) {
+        return Optional.ofNullable(EXECUTOR_MAP.get(threadPoolId)).map(each -> each.getExecutor()).orElse(null);
+    }
+
+    /**
+     * Get dynamic thread pool parameters.
+     *
+     * @param threadPoolId
+     * @return
+     */
+    public static ThreadPoolParameter getPoolParameter(String threadPoolId) {
         return POOL_PARAMETER.get(threadPoolId);
     }
 
     /**
-     * 注册动态线程池包装以及参数.
+     * Register dynamic thread pool wrapper and parameters.
      *
      * @param threadPoolId
-     * @param poolParameter
+     * @param threadPoolParameter
      * @param executor
      */
-    public static void register(String threadPoolId, PoolParameter poolParameter, DynamicThreadPoolWrapper executor) {
+    public static void register(String threadPoolId, ThreadPoolParameter threadPoolParameter, DynamicThreadPoolWrapper executor) {
         registerPool(threadPoolId, executor);
-        registerPoolParameter(threadPoolId, poolParameter);
+        registerPoolParameter(threadPoolId, threadPoolParameter);
     }
 
     /**
-     * 注册动态线程池.
+     * Register dynamic thread pool.
      *
      * @param threadPoolId
      * @param executor
@@ -69,17 +98,17 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 注册动态线程池参数.
+     * Register dynamic thread pool parameters.
      *
      * @param threadPoolId
      * @param poolParameter
      */
-    public static void registerPoolParameter(String threadPoolId, PoolParameter poolParameter) {
+    public static void registerPoolParameter(String threadPoolId, ThreadPoolParameter poolParameter) {
         POOL_PARAMETER.put(threadPoolId, poolParameter);
     }
 
     /**
-     * 获取动态线程池标识集合.
+     * Get the dynamic thread pool identifier collection.
      *
      * @return
      */
@@ -88,13 +117,14 @@ public class GlobalThreadPoolManage {
     }
 
     /**
-     * 获取动态线程池数量.
-     * 数据在项目最初启动的时候可能不准确, 因为是异步进行注册.
+     * Get the number of dynamic thread pools.
+     * <p>
+     * The data may be inaccurate when the project is initially
+     * launched because registration is done asynchronously.
      *
      * @return
      */
     public static Integer getThreadPoolNum() {
         return listThreadPoolId().size();
     }
-
 }

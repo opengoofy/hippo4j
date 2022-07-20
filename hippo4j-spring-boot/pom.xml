@@ -7,20 +7,14 @@
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-spring-boot</artifactId>
-    <name>${project.artifactId}</name>
-
     <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
     <description>Hippo4J Starter List</description>
-
-    <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
-    </properties>
 
     <modules>
         <module>hippo4j-core-spring-boot-starter</module>
         <module>hippo4j-spring-boot-starter</module>
+        <module>hippo4j-spring-boot-starter-adapter</module>
     </modules>
-
 </project>

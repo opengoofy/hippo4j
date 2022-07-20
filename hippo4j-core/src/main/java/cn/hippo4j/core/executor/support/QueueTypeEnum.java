@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.core.executor.support;
 
 import cn.hippo4j.core.spi.CustomBlockingQueue;
@@ -49,9 +66,9 @@ public enum QueueTypeEnum {
     PRIORITY_BLOCKING_QUEUE(6, "PriorityBlockingQueue"),
 
     /**
-     * {@link "io.dynamic.threadpool.starter.toolkit.thread.ResizableCapacityLinkedBlockIngQueue"}
+     * {@link ResizableCapacityLinkedBlockingQueue}
      */
-    RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockIngQueue");
+    RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockingQueue");
 
     public Integer type;
 
@@ -66,27 +83,18 @@ public enum QueueTypeEnum {
         DynamicThreadPoolServiceLoader.register(CustomBlockingQueue.class);
     }
 
-    /**
-     * Create blocking queue.
-     *
-     * @param blockingQueueName
-     * @param capacity
-     * @return
-     */
     public static BlockingQueue createBlockingQueue(String blockingQueueName, Integer capacity) {
         BlockingQueue blockingQueue = null;
         QueueTypeEnum queueTypeEnum = Stream.of(QueueTypeEnum.values())
                 .filter(each -> Objects.equals(each.name, blockingQueueName))
                 .findFirst()
                 .orElse(null);
-
         if (queueTypeEnum != null) {
             blockingQueue = createBlockingQueue(queueTypeEnum.type, capacity);
             if (Objects.equals(blockingQueue.getClass().getSimpleName(), blockingQueueName)) {
                 return blockingQueue;
             }
         }
-
         Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
                 .getSingletonServiceInstances(CustomBlockingQueue.class);
         blockingQueue = Optional.ofNullable(blockingQueue)
@@ -102,19 +110,10 @@ public enum QueueTypeEnum {
                                     }
 
                                     return new LinkedBlockingQueue(temCapacity);
-                                })
-                );
-
+                                }));
         return blockingQueue;
     }
 
-    /**
-     * Create blocking queue.
-     *
-     * @param type
-     * @param capacity
-     * @return
-     */
     public static BlockingQueue createBlockingQueue(int type, Integer capacity) {
         BlockingQueue blockingQueue = null;
         if (Objects.equals(type, ARRAY_BLOCKING_QUEUE.type)) {
@@ -130,9 +129,8 @@ public enum QueueTypeEnum {
         } else if (Objects.equals(type, PRIORITY_BLOCKING_QUEUE.type)) {
             blockingQueue = new PriorityBlockingQueue(capacity);
         } else if (Objects.equals(type, RESIZABLE_LINKED_BLOCKING_QUEUE.type)) {
-            blockingQueue = new ResizableCapacityLinkedBlockIngQueue(capacity);
+            blockingQueue = new ResizableCapacityLinkedBlockingQueue(capacity);
         }
-
         Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
                 .getSingletonServiceInstances(CustomBlockingQueue.class);
         blockingQueue = Optional.ofNullable(blockingQueue).orElseGet(() -> customBlockingQueues.stream()
@@ -140,22 +138,13 @@ public enum QueueTypeEnum {
                 .map(each -> each.generateBlockingQueue())
                 .findFirst()
                 .orElse(new LinkedBlockingQueue(capacity)));
-
         return blockingQueue;
     }
 
-    /**
-     * Get blocking queue name by type.
-     *
-     * @param type
-     * @return
-     */
     public static String getBlockingQueueNameByType(int type) {
         Optional<QueueTypeEnum> queueTypeEnum = Arrays.stream(QueueTypeEnum.values())
                 .filter(each -> each.type == type)
                 .findFirst();
-
         return queueTypeEnum.map(each -> each.name).orElse("");
     }
-
 }

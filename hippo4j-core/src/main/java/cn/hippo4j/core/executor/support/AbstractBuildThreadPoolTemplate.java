@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.core.executor.support;
 
 import cn.hippo4j.common.toolkit.Assert;
@@ -41,11 +58,6 @@ public class AbstractBuildThreadPoolTemplate {
         return buildPool(initParam);
     }
 
-    /**
-     * 构建线程池.
-     *
-     * @return
-     */
     public static ThreadPoolExecutor buildPool(ThreadPoolInitParam initParam) {
         Assert.notNull(initParam);
         ThreadPoolExecutor executorService;
@@ -60,26 +72,15 @@ public class AbstractBuildThreadPoolTemplate {
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException("Error creating thread pool parameter.", ex);
         }
-
         executorService.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return executorService;
     }
 
-    /**
-     * 构建快速执行线程池.
-     *
-     * @return
-     */
     public static ThreadPoolExecutor buildFastPool() {
         ThreadPoolInitParam initParam = initParam();
         return buildFastPool(initParam);
     }
 
-    /**
-     * 构建快速执行线程池.
-     *
-     * @return
-     */
     public static ThreadPoolExecutor buildFastPool(ThreadPoolInitParam initParam) {
         TaskQueue<Runnable> taskQueue = new TaskQueue(initParam.getCapacity());
         FastThreadPoolExecutor fastThreadPoolExecutor;
@@ -94,18 +95,11 @@ public class AbstractBuildThreadPoolTemplate {
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException("Error creating thread pool parameter.", ex);
         }
-
         taskQueue.setExecutor(fastThreadPoolExecutor);
         fastThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return fastThreadPoolExecutor;
     }
 
-    /**
-     * 构建动态线程池.
-     *
-     * @param initParam
-     * @return
-     */
     public static DynamicThreadPoolExecutor buildDynamicPool(ThreadPoolInitParam initParam) {
         Assert.notNull(initParam);
         DynamicThreadPoolExecutor dynamicThreadPoolExecutor;
@@ -115,17 +109,16 @@ public class AbstractBuildThreadPoolTemplate {
                     initParam.getMaxPoolNum(),
                     initParam.getKeepAliveTime(),
                     initParam.getTimeUnit(),
+                    initParam.getExecuteTimeOut(),
                     initParam.getWaitForTasksToCompleteOnShutdown(),
                     initParam.getAwaitTerminationMillis(),
                     initParam.getWorkQueue(),
                     initParam.getThreadPoolId(),
                     initParam.getThreadFactory(),
-                    initParam.getRejectedExecutionHandler()
-            );
+                    initParam.getRejectedExecutionHandler());
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(String.format("Error creating thread pool parameter. threadPool id :: %s", initParam.getThreadPoolId()), ex);
         }
-
         dynamicThreadPoolExecutor.setTaskDecorator(initParam.getTaskDecorator());
         dynamicThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return dynamicThreadPoolExecutor;
@@ -135,69 +128,32 @@ public class AbstractBuildThreadPoolTemplate {
     @Accessors(chain = true)
     public static class ThreadPoolInitParam {
 
-        /**
-         * 核心线程数量
-         */
         private Integer corePoolNum;
 
-        /**
-         * 最大线程数量
-         */
         private Integer maxPoolNum;
 
-        /**
-         * 线程存活时间
-         */
         private Long keepAliveTime;
 
-        /**
-         * 线程存活时间单位
-         */
         private TimeUnit timeUnit;
 
-        /**
-         * 队列最大容量
-         */
+        private Long executeTimeOut;
+
         private Integer capacity;
 
-        /**
-         * 阻塞队列
-         */
         private BlockingQueue<Runnable> workQueue;
 
-        /**
-         * 线程池任务满时拒绝任务策略
-         */
         private RejectedExecutionHandler rejectedExecutionHandler;
 
-        /**
-         * 创建线程工厂
-         */
         private ThreadFactory threadFactory;
 
-        /**
-         * 线程 ID
-         */
         private String threadPoolId;
 
-        /**
-         * 线程任务装饰器
-         */
         private TaskDecorator taskDecorator;
 
-        /**
-         * 等待终止毫秒
-         */
         private Long awaitTerminationMillis;
 
-        /**
-         * 等待任务在关机时完成
-         */
         private Boolean waitForTasksToCompleteOnShutdown;
 
-        /**
-         * 允许核心线程超时
-         */
         private Boolean allowCoreThreadTimeOut = false;
 
         public ThreadPoolInitParam(String threadNamePrefix, boolean isDaemon) {
@@ -208,6 +164,4 @@ public class AbstractBuildThreadPoolTemplate {
                     .build();
         }
     }
-
 }
-

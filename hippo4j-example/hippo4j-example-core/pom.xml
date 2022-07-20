@@ -10,7 +10,6 @@
 
     <artifactId>hippo4j-example-core</artifactId>
     <name>hippo4j-example-core</name>
-    <description>Hippo4J 实例工程核心包.</description>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
@@ -33,5 +32,4 @@
             <artifactId>hippo4j-core</artifactId>
         </dependency>
     </dependencies>
-
 </project>

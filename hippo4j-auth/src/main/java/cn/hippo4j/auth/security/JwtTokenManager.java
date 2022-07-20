@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.auth.security;
 
 import cn.hutool.core.util.StrUtil;
@@ -20,19 +37,14 @@ import static cn.hippo4j.common.constant.Constants.AUTHORITIES_KEY;
 
 /**
  * Jwt token manager.
- *
- * @author chen.ma
- * @date 2021/12/20 20:36
  */
 @Component
 public class JwtTokenManager {
 
     public String createToken(String userName) {
         long now = System.currentTimeMillis();
-
         Date validity;
         validity = new Date(now + TOKEN_VALIDITY_IN_SECONDS * 1000L);
-
         Claims claims = Jwts.claims().setSubject(userName);
         return Jwts.builder().setClaims(claims).setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS512, SECRET).compact();
@@ -50,12 +62,9 @@ public class JwtTokenManager {
      */
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-
         List<GrantedAuthority> authorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList((String) claims.get(AUTHORITIES_KEY));
-
         User principal = new User(claims.getSubject(), StrUtil.EMPTY, authorities);
         return new UsernamePasswordAuthenticationToken(principal, StrUtil.EMPTY, authorities);
     }
-
 }

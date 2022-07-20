@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.auth.filter;
 
 import cn.hippo4j.auth.model.biz.user.JwtUser;
@@ -31,9 +48,6 @@ import static cn.hippo4j.common.constant.Constants.MAP_INITIAL_CAPACITY;
 
 /**
  * JWT authentication filter.
- *
- * @author chen.ma
- * @date 2021/11/9 22:21
  */
 @Slf4j
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -50,13 +64,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-        // 从输入流中获取到登录的信息
+        // Get logged in information from the input stream.
         try {
             LoginUser loginUser = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
             rememberMe.set(loginUser.getRememberMe());
             return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList())
-            );
+                    new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList()));
         } catch (IOException e) {
             logger.error("attemptAuthentication error :{}", e);
             return null;
@@ -71,13 +84,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
             boolean isRemember = rememberMe.get() == 1;
-
             String role = "";
             Collection<? extends GrantedAuthority> authorities = jwtUser.getAuthorities();
             for (GrantedAuthority authority : authorities) {
                 role = authority.getAuthority();
             }
-
             String token = JwtTokenUtil.createToken(jwtUser.getId(), jwtUser.getUsername(), role, isRemember);
             response.setHeader("token", JwtTokenUtil.TOKEN_PREFIX + token);
             response.setCharacterEncoding("UTF-8");
@@ -95,5 +106,4 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(JSONUtil.toJsonStr(new ReturnT(-1, "Server Error")));
     }
-
 }

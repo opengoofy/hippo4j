@@ -1,88 +1,78 @@
+[👉 《小马哥的代码实战课》官方知识星球来啦！！！](https://xiaomage.info/knowledge-planet/)
+
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/hippo4j-logo-logoly.png)
 
-
 <p>
-  <a href="https://github.com/acmenlt/dynamic-threadpool" target="_blank">
-    <img alt="GitHub" src="https://img.shields.io/github/stars/acmenlt/dynamic-threadpool?label=Stars&style=flat-square&logo=GitHub">
+  <a href="https://gitee.com/mabaiwancn/hippo4j" target="_blank">
+    <img alt="Gitee" src="https://gitee.com/mabaiwancn/hippo4j/badge/star.svg?theme=gvp">
   </a>
-  <a href="https://github.com/acmenlt/dynamic-threadpool/blob/develop/LICENSE">
-    <img src="https://img.shields.io/github/license/acmenlt/dynamic-threadpool?color=42b883&style=flat-square" alt="LICENSE">
+  <a href="https://github.com/mabaiwan/hippo4j" target="_blank">
+    <img alt="GitHub" src="https://img.shields.io/github/stars/mabaiwan/hippo4j?label=Stars&style=flat-square&logo=GitHub">
   </a>
-  <a title="Hits" target="_blank" href="https://github.com/acmenlt/dynamic-threadpool">
+  <a href="https://github.com/mabaiwan/hippo4j/blob/develop/LICENSE">
+    <img src="https://img.shields.io/github/license/mabaiwan/hippo4j?color=42b883&style=flat-square" alt="LICENSE">
+  </a>
+  <a title="Hits" target="_blank" href="https://github.com/mabaiwan/hippo4j">
     <img src="https://hits.b3log.org/acmenlt/dynamic-threadpool.svg">
   </a>
 </p>
 
-## Hippo4J 介绍
+## 动态可观测线程池框架
 
-Hippo4J 是基于 [美团线程池](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html) 设计理念开发，针对线程池增强动态调参、监控、报警功能
-C/S 架构部署使用
+Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
 
-部署 Server 端，SpringBoot 项目引入 Starter 与之交互
+- 全局管控：管理应用线程池实例；
+- 动态变更：应用运行时动态变更线程池参数，包括不限于：核心、最大线程数、阻塞队列容量、拒绝策略等；
+- 通知报警：内置四种报警通知策略，线程池活跃度、容量水位、拒绝策略以及任务执行时间超长；
+- 运行监控：实时查看线程池运行时数据，最近半小时线程池运行数据图表展示；
+- 功能扩展：支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务；
+- 多种模式：内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/getting-started/hippo4j-core-start) 和 [无中间件依赖](https://hippo4j.cn/docs/getting-started/hippo4j-server-start)；
+- 容器管理：Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
+- 中间件适配：Apache RocketMQ、Dubbo、RabbitMQ、Hystrix 消费线程池运行时数据查看和线程数变更。
 
-通过 Web 控制台对线程池参数进行动态调整，同时支持集群内线程池的差异化配置
 
-Starter 组件内置线程池参数变更通知，以及运行过载报警功能（支持多通知平台）
-
-按照租户、项目、线程池的维度划分，配合系统权限，让不同的开发、管理人员负责自己系统的线程池操作
-
-## 解决什么问题
-
-简单来说，Hippo4J 主要为我们解决了下面这些使用原生线程池存在的问题：
-
-- **频繁抛出拒绝策略** ：核心线程过小，阻塞队列过小，最大线程过小
-- **线程处理速度下降** ：核心线程过小，阻塞队列过小，最大线程过大
-- **任务堆积** ：核心线程过小，阻塞队列过大
-- **空闲线程资源浪费** ：核心线程或最大线程过大
-- **线程池执行不可知** ：线程池运行过程中无法得知具体的参数信息，包括不限于任务调度及拒绝策略执行次数
-
-## 模块介绍
-
-- `hippo4j-auth`：用户、角色、权限等
-- `hippo4j-common`：多个模块公用代码实现
-- `hippo4j-config`：提供线程池准实时参数更新功能
-- `hippo4j-console`：对接 Web 前端项目
-- `hippo4j-discovery`：提供线程池项目实例注册、续约、下线等功能
-- `hippo4j-spring-boot-starter`：负责与 Server 端交互的依赖组件
-- `hippo4j-example` ：示例工程
-- `hippo4j-server` ：聚合 Server 端发布需要的模块
-- `hippo4j-tools` ：操作日志等组件代码
+> 看完有所收获的话，右上角帮忙点个 Star，谢谢
 
 ## 快速开始
 
-[运行 Hippo4J 自带 Demo 参考文档](https://hippox.cn/pages/793dcb/)
+对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/getting-started/hippo4j-server-start)
 
-[在线体验地址](http://console.hippox.cn:6691/index.html) 用户名密码：hippo4j / hippo4j
+演示环境：
+- http://console.hippo4j.cn/index.html
+- 用户名/密码：hippo4j/hippo4j
 
 ## 联系我
 
-对于这个项目，是否有什么不一样看法，同 [作者](https://hippox.cn/pages/dd137d/) 或者创建 [Issues](https://github.com/acmenlt/dynamic-threadpool/issues) 沟通
+图片加载不出来，访问 [国内站点](https://hippo4j.cn/docs/other/group)
+
+![image](https://user-images.githubusercontent.com/77398366/169202380-6c068acd-700a-41fa-8823-e01c92bb5e88.png)
+
+## 开发者
+
+感谢所有为 Hippo-4J 做出贡献的开发者！
+
+<a href="https://github.com/mabaiwan/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890" /></a>
+
+## 我们的荣誉
+
+Hippo-4J 获得了一些宝贵的荣誉，这属于每一位对 Hippo-4J 做出过贡献的成员，谢谢各位的付出。
+
+![](https://user-images.githubusercontent.com/77398366/170607238-7308c9be-1d63-46a6-852c-eef2e4cf7405.JPG)
 
 
-## 公众号
+## 友情链接
 
-如果大家想要实时关注 Hippo4J 最新动态以及干货分享的话，可以关注我的公众号
-
-![](https://user-images.githubusercontent.com/77398366/148769916-0ee3a9c2-c8ed-4ce8-849e-038b4a546679.png)
-
-## Stars 趋势
-
-[![Stargazers over time](https://starchart.cc/acmenlt/dynamic-threadpool.svg)](https://starchart.cc/acmenlt/dynamic-threadpool)
-
+- [JavaGuide](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
+- [Guide-Rpc-Framework](https://github.com/Snailclimb/guide-rpc-framework)：一款基于 Netty+Kyro+Zookeeper 实现的自定义 RPC 框架。
+- [toBeBetterJavaer](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的Java学习指南，内容涵盖Java基础、Java并发编程等核心知识点。
+- [Austin](https://github.com/ZhongFuCheng3y/austin)：消息推送平台，推送下发【邮件】【短信】【微信服务号】【微信小程序】【企业微信】【钉钉】等消息类型。
 
 ## 鸣谢
 
-
-Hippo4J 项目基于或参考以下项目:
-
-- [Nacos](https://github.com/alibaba/nacos)
-- [Eureka](https://github.com/Netflix/Eureka)
-- [mzt-biz-log](https://github.com/mouzt/mzt-biz-log)
-- [equator](https://github.com/dadiyang/equator)
+Hippo-4J 项目基于或参考以下项目：[Nacos](https://github.com/alibaba/nacos)、[Eureka](https://github.com/Netflix/Eureka)、[Mzt-Biz-Log](https://github.com/mouzt/mzt-biz-log)、[Equator](https://github.com/dadiyang/equator)。
 
 感谢 JetBrains 提供的免费开源 License：
 
 <p>
-<img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
+    <img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
 </p>
-

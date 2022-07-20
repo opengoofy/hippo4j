@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.service;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
@@ -28,9 +45,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Config cache service.
- *
- * @author chen.ma
- * @date 2021/6/24 21:19
  */
 @Slf4j
 public class ConfigCacheService {
@@ -42,8 +56,6 @@ public class ConfigCacheService {
     }
 
     /**
-     * TODO: 数据结构、客户端停机时 remove 操作待重构
-     * <p>
      * key: message-produce+dynamic-threadpool-example+prescription+192.168.20.227:8088_xxx
      * val:
      * key: 192.168.20.227:8088_xxx
@@ -65,12 +77,10 @@ public class ConfigCacheService {
      */
     private synchronized static String getContentMd5IsNullPut(String groupKey, String clientIdentify) {
         Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CLIENT_CONFIG_CACHE.get(groupKey)).orElse(Maps.newHashMap());
-
         CacheItem cacheItem = null;
         if (CollUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(clientIdentify)) != null) {
             return cacheItem.md5;
         }
-
         if (CONFIG_SERVICE == null) {
             CONFIG_SERVICE = ApplicationContextHolder.getBean(ConfigService.class);
         }
@@ -81,7 +91,6 @@ public class ConfigCacheService {
             cacheItemMap.put(clientIdentify, cacheItem);
             CLIENT_CONFIG_CACHE.put(groupKey, cacheItemMap);
         }
-
         return (cacheItem != null) ? cacheItem.md5 : Constants.NULL;
     }
 
@@ -89,14 +98,12 @@ public class ConfigCacheService {
         if (CONFIG_SERVICE == null) {
             CONFIG_SERVICE = ApplicationContextHolder.getBean(ConfigService.class);
         }
-
         String[] params = groupKey.split("\\+");
         ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
         if (config == null || StringUtils.isEmpty(config.getTpId())) {
             String errorMessage = String.format("config is null. tpId :: %s, itemId :: %s, tenantId :: %s", params[0], params[1], params[2]);
             throw new RuntimeException(errorMessage);
         }
-
         return Md5Util.getTpContentMd5(config);
     }
 
@@ -118,12 +125,10 @@ public class ConfigCacheService {
         if (ipCacheItemMap != null && (item = ipCacheItemMap.get(ip)) != null) {
             return item;
         }
-
         CacheItem tmp = new CacheItem(groupKey);
         Map<String, CacheItem> cacheItemMap = Maps.newHashMap();
         cacheItemMap.put(ip, tmp);
         CLIENT_CONFIG_CACHE.putIfAbsent(groupKey, cacheItemMap);
-
         return tmp;
     }
 
@@ -143,19 +148,14 @@ public class ConfigCacheService {
     /**
      * Remove config cache.
      *
-     * @param groupKey 租户 + 项目 + IP
+     * @param groupKey tenant + item + IP
      */
     public static void removeConfigCache(String groupKey) {
         coarseRemove(groupKey);
     }
 
-    /**
-     * Coarse remove.
-     *
-     * @param coarse
-     */
     private synchronized static void coarseRemove(String coarse) {
-        // 模糊搜索
+        // fuzzy search
         List<String> identificationList = MapUtil.parseMapForFilter(CLIENT_CONFIG_CACHE, coarse);
         for (String cacheMapKey : identificationList) {
             Map<String, CacheItem> removeCacheItem = CLIENT_CONFIG_CACHE.remove(cacheMapKey);
@@ -173,7 +173,5 @@ public class ConfigCacheService {
             log.info("Clean up the configuration cache. Key :: {}", observerMessage.message());
             coarseRemove(observerMessage.message());
         }
-
     }
-
 }
