@@ -7,10 +7,7 @@
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-common</artifactId>
-    <packaging>jar</packaging>
-    <name>${project.artifactId}</name>
 
     <dependencies>
         <dependency>
