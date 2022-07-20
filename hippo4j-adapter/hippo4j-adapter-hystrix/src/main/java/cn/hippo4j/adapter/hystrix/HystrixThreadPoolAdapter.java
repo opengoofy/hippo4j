@@ -174,6 +174,9 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
         return registerFlag;
     }
 
+    /**
+     * Hystrix Thread Pool Refresh Task
+     */
     class HystrixThreadPoolRefreshTask implements Runnable {
 
         private ScheduledExecutorService scheduler;
