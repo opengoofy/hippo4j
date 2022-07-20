@@ -35,6 +35,7 @@ Hippo4J 很好解决了这些问题，它将业务中所有线程池统一管理
 
 Hippo4J 除去动态修改线程池，还包含实时查看线程池运行时指标、负载报警、配置日志管理等。
 
+- `hippo4j-adapter`：对第三方框架中的线程池进行监控，如dubbo、rocketmq、hystrix等
 - `hippo4j-auth`：用户、角色、权限等；
 - `hippo4j-common`：多个模块公用代码实现；
 - `hippo4j-config`：提供线程池准实时参数更新功能；
