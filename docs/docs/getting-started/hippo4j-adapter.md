@@ -7,6 +7,7 @@ sidebar_position: 6
 Hippo4J 目前已支持的三方框架线程池列表：
 
 - Dubbo
+- Hystrix
 - RabbitMQ
 - RocketMQ
 - RocketMQSpringCloudStream
@@ -18,6 +19,8 @@ Hippo4J 目前已支持的三方框架线程池列表：
     <groupId>cn.hippo4j</groupId>
     <!-- Dubbo -->
     <artifactId>hippo4j-spring-boot-starter-adapter-dubbo</artifactId>
+    <!-- Hystrix -->
+    <artifactId>hippo4j-spring-boot-starter-adapter-hystrix</artifactId>
     <!-- RabbitMQ -->
     <artifactId>hippo4j-spring-boot-starter-adapter-rabbitmq</artifactId>
     <!-- RocketMQ -->
@@ -34,7 +37,7 @@ Hippo4J 目前已支持的三方框架线程池列表：
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-spring-boot-starter-adapter-all</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 

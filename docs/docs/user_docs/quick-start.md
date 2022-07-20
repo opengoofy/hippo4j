@@ -14,7 +14,7 @@ Clone Hippo4J [源代码](https://github.com/longtai-cn/hippo4j)，导入初始�
 
 1. 导入 [Hippo4J 初始化 SQL 语句](https://github.com/longtai-cn/hippo4j/blob/develop/hippo4j-server/conf/hippo4j_manager.sql)；
 2. 启动 [Hippo4J-Server](https://github.com/longtai-cn/hippo4j/tree/develop/hippo4j-server) 模块下 ServerApplication 应用类；
-3. 启动 [Hippo4J-Example](https://github.com/longtai-cn/hippo4j/tree/develop/hippo4j-example) 模块下 ExampleApplication 应用类。
+3. 启动 [Hippo4J-spring-boot-starter-example](https://github.com/mabaiwan/hippo4j/tree/develop/hippo4j-example/hippo4j-spring-boot-starter-example) 模块下 Hippo4JServerExampleApplication 应用类；
 
 
 通过接口修改线程池中的配置。HTTP POST 路径：`http://localhost:6691/hippo4j/v1/cs/configs`，Body 请求体如下：
