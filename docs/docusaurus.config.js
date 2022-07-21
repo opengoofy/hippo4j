@@ -97,7 +97,7 @@ const config = {
                         position: 'right',
                     },
                     {
-                        href: 'https://github.com/mabaiwan/hippo4j',
+                        href: 'https://github.com/opengoofy/hippo4j',
                         label: 'GitHub',
                         position: 'right',
                     },
@@ -137,11 +137,11 @@ const config = {
                             },
                             {
                                 label: 'GitHub',
-                                href: 'https://github.com/mabaiwan/hippo4j',
+                                href: 'https://github.com/opengoofy/hippo4j',
                             },
                             {
                                 label: '公司登记',
-                                href: 'https://github.com/mabaiwan/hippo4j/issues/13',
+                                href: 'https://github.com/opengoofy/hippo4j/issues/13',
                             },
                         ],
                     },
