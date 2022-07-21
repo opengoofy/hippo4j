@@ -14,6 +14,11 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
