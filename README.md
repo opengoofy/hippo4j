@@ -37,7 +37,6 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 🌈 中间件适配 - Apache RocketMQ、Dubbo、RabbitMQ、Hystrix 消费线程池运行时数据查看和线程数变更。
 
-
 > 看完有所收获的话，右上角帮忙点个 Star，开源作者也不容易 🤣
 
 ## 快速开始
@@ -59,16 +58,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 感谢所有为 Hippo-4J 做出贡献的开发者！
 
-<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://contrib.rocks/image?repo=opengoofy/hippo4j"/></a>
-
-
+<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false"/></a>
 
 ## 我们的荣誉
 
 Hippo-4J 获得了一些宝贵的荣誉，这属于每一位对 Hippo-4J 做出过贡献的成员，谢谢各位的付出。
 
 ![](https://user-images.githubusercontent.com/77398366/170607238-7308c9be-1d63-46a6-852c-eef2e4cf7405.JPG)
-
 
 ## 友情链接
 
