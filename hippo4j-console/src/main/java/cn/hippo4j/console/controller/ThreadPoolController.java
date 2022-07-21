@@ -127,7 +127,11 @@ public class ThreadPoolController {
             } catch (Throwable ignored) {
                 continue;
             }
-            WebThreadPoolRespDTO result = BeanUtil.convert(poolBaseState.getData(), WebThreadPoolRespDTO.class);
+            Object data = poolBaseState.getData();
+            if (data == null) {
+                continue;
+            }
+            WebThreadPoolRespDTO result = BeanUtil.convert(data, WebThreadPoolRespDTO.class);
             result.setActive(each.getHolder().getActive());
             result.setIdentify(each.getHolder().getIdentify());
             result.setClientAddress(each.getHolder().getCallBackUrl());

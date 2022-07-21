@@ -23,10 +23,18 @@ import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.SearchStrategy;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
+
+import javax.servlet.Servlet;
+
+import org.apache.catalina.startup.Tomcat;
+import org.apache.coyote.UpgradeProtocol;
 
 /**
  * Web adapter auto configuration.
@@ -34,8 +42,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @Configuration
 @RequiredArgsConstructor
 public class WebAdapterAutoConfiguration {
-
-    private static final String TOMCAT_SERVLET_WEB_SERVER_FACTORY = "tomcatServletWebServerFactory";
 
     private static final String JETTY_SERVLET_WEB_SERVER_FACTORY = "JettyServletWebServerFactory";
 
@@ -60,8 +66,14 @@ public class WebAdapterAutoConfiguration {
         return new ThreadPoolRunStateHandler(hippo4JInetUtils, environment);
     }
 
+    /**
+     * Refer to the Tomcat loading source code .
+     * This load is performed if the {@link Tomcat} class exists and
+     * the Web embedded server loads the {@link ServletWebServerFactory} top-level interface type at the same time
+     */
     @Bean
-    @ConditionalOnBean(name = TOMCAT_SERVLET_WEB_SERVER_FACTORY)
+    @ConditionalOnClass({Servlet.class, Tomcat.class, UpgradeProtocol.class})
+    @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
     public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler(WebThreadPoolRunStateHandler webThreadPoolRunStateHandler) {
         return new TomcatWebThreadPoolHandler(webThreadPoolRunStateHandler);
     }
