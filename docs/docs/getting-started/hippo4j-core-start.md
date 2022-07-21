@@ -116,13 +116,10 @@ spring:
 package cn.hippo4j.example;
 
 import cn.hippo4j.core.executor.DynamicThreadPool;
-import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class ThreadPoolConfig {
@@ -148,7 +145,7 @@ public class ThreadPoolConfig {
                 .threadPoolId(threadPoolId)
                 .dynamicPool()
                 .build();
-        return dynamicExecutor;
+        return messageProduceDynamicExecutor;
     }
 
 }
