@@ -71,8 +71,8 @@ Hippo-4J 获得了一些宝贵的荣誉，这属于每一位对 Hippo-4J 做出�
 ## 友情链接
 
 - [JavaGuide](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
+- [toBeBetterJavaer](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 - [Guide-Rpc-Framework](https://github.com/Snailclimb/guide-rpc-framework)：一款基于 Netty+Kyro+Zookeeper 实现的自定义 RPC 框架。
-- [toBeBetterJavaer](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的Java学习指南，内容涵盖Java基础、Java并发编程等核心知识点。
 - [Austin](https://github.com/ZhongFuCheng3y/austin)：消息推送平台，支持短信、邮件、微信公众号、企业微信、钉钉等多种消息类型。
 
 ## 鸣谢
