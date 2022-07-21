@@ -30,7 +30,9 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
+
 import javax.servlet.Servlet;
+
 import org.apache.catalina.startup.Tomcat;
 import org.apache.coyote.UpgradeProtocol;
 
@@ -63,12 +65,12 @@ public class WebAdapterAutoConfiguration {
     public ThreadPoolRunStateHandler threadPoolRunStateHandler(InetUtils hippo4JInetUtils) {
         return new ThreadPoolRunStateHandler(hippo4JInetUtils, environment);
     }
+
     /**
      * Refer to the Tomcat loading source code .
      * This load is performed if the {@link Tomcat} class exists and
      * the Web embedded server loads the {@link ServletWebServerFactory} top-level interface type at the same time
-     *
-     * */
+     */
     @Bean
     @ConditionalOnClass({Servlet.class, Tomcat.class, UpgradeProtocol.class})
     @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
