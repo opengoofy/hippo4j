@@ -52,7 +52,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 图片加载不出来，访问 [国内站点](https://hippo4j.cn/docs/other/group)
 
-![image](https://user-images.githubusercontent.com/77398366/180107378-8c6af575-79c3-4452-b652-cad6961aa22d.png)
+![image](https://user-images.githubusercontent.com/77398366/180110548-7a05b74d-0316-4066-96f4-1c9331638633.png)
 
 
 ## 开发者
