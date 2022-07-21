@@ -7,9 +7,7 @@
         <artifactId>hippo4j-example</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-example-core</artifactId>
-    <name>hippo4j-example-core</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
