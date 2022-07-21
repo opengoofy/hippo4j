@@ -27,6 +27,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -64,7 +65,12 @@ public class WebAdapterAutoConfiguration {
     public ThreadPoolRunStateHandler threadPoolRunStateHandler(InetUtils hippo4JInetUtils) {
         return new ThreadPoolRunStateHandler(hippo4JInetUtils, environment);
     }
-
+    /**
+     * Refer to the Tomcat loading source code .
+     * This load is performed if the {@link Tomcat} class exists and
+     * the Web embedded server loads the {@link ServletWebServerFactory} top-level interface type at the same time
+     *
+     * */
     @Bean
     @ConditionalOnClass({Servlet.class, Tomcat.class, UpgradeProtocol.class})
     @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
