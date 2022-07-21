@@ -9,8 +9,6 @@
     </parent>
     <artifactId>hippo4j-spring-boot</artifactId>
     <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
-    <description>Hippo4J Starter List</description>
 
     <modules>
         <module>hippo4j-core-spring-boot-starter</module>
