@@ -36,7 +36,6 @@ import org.springframework.boot.ansi.AnsiStyle;
 @RequiredArgsConstructor
 public class DynamicThreadPoolBannerHandler implements InitializingBean {
 
-    @NonNull
     private final BootstrapPropertiesInterface properties;
 
     private final String DYNAMIC_THREAD_POOL = " :: Dynamic ThreadPool :: ";
