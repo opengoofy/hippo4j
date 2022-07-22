@@ -22,30 +22,21 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.SearchStrategy;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.ConfigurableEnvironment;
-
-import javax.servlet.Servlet;
-
-import org.apache.catalina.startup.Tomcat;
-import org.apache.coyote.UpgradeProtocol;
 
 /**
  * Web adapter auto configuration.
  */
 @Configuration
+@Import({WebThreadPoolHandlerConfiguration.EmbeddedTomcat.class,
+        WebThreadPoolHandlerConfiguration.EmbeddedJetty.class,
+        WebThreadPoolHandlerConfiguration.EmbeddedUndertow.class})
 @RequiredArgsConstructor
 public class WebAdapterAutoConfiguration {
-
-    private static final String JETTY_SERVLET_WEB_SERVER_FACTORY = "JettyServletWebServerFactory";
-
-    private static final String UNDERTOW_SERVLET_WEB_SERVER_FACTORY = "undertowServletWebServerFactory";
 
     private final ConfigurableEnvironment environment;
 
@@ -64,30 +55,6 @@ public class WebAdapterAutoConfiguration {
     @SuppressWarnings("all")
     public ThreadPoolRunStateHandler threadPoolRunStateHandler(InetUtils hippo4JInetUtils) {
         return new ThreadPoolRunStateHandler(hippo4JInetUtils, environment);
-    }
-
-    /**
-     * Refer to the Tomcat loading source code .
-     * This load is performed if the {@link Tomcat} class exists and
-     * the Web embedded server loads the {@link ServletWebServerFactory} top-level interface type at the same time
-     */
-    @Bean
-    @ConditionalOnClass({Servlet.class, Tomcat.class, UpgradeProtocol.class})
-    @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
-    public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler(WebThreadPoolRunStateHandler webThreadPoolRunStateHandler) {
-        return new TomcatWebThreadPoolHandler(webThreadPoolRunStateHandler);
-    }
-
-    @Bean
-    @ConditionalOnBean(name = JETTY_SERVLET_WEB_SERVER_FACTORY)
-    public JettyWebThreadPoolHandler jettyWebThreadPoolHandler() {
-        return new JettyWebThreadPoolHandler();
-    }
-
-    @Bean
-    @ConditionalOnBean(name = UNDERTOW_SERVLET_WEB_SERVER_FACTORY)
-    public UndertowWebThreadPoolHandler undertowWebThreadPoolHandler() {
-        return new UndertowWebThreadPoolHandler();
     }
 
     @Bean
