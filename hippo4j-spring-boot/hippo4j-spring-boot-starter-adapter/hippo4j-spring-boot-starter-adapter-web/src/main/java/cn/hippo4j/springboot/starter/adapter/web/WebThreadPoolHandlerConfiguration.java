@@ -2,6 +2,7 @@ package cn.hippo4j.springboot.starter.adapter.web;
 
 import cn.hippo4j.adapter.web.JettyWebThreadPoolHandler;
 import cn.hippo4j.adapter.web.TomcatWebThreadPoolHandler;
+import cn.hippo4j.adapter.web.UndertowWebThreadPoolHandler;
 import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.coyote.UpgradeProtocol;
@@ -15,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.Loader;
 import org.eclipse.jetty.webapp.WebAppContext;
+import io.undertow.Undertow;
+import org.xnio.SslClientAuthMode;
 
 import javax.servlet.Servlet;
 
@@ -53,6 +56,22 @@ public class WebThreadPoolHandlerConfiguration {
         @Bean
         public JettyWebThreadPoolHandler jettyWebThreadPoolHandler() {
             return new JettyWebThreadPoolHandler();
+        }
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnClass({ Servlet.class, Undertow.class, SslClientAuthMode.class })
+    @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
+    static class EmbeddedUndertow {
+
+        /**
+         * Refer to the Undertow loading source code .
+         * This load is performed if the {@link Undertow} class exists and
+         * the Web embedded server loads the {@link ServletWebServerFactory} top-level interface type at the same time
+         */
+        @Bean
+        public UndertowWebThreadPoolHandler undertowWebThreadPoolHandler() {
+            return new UndertowWebThreadPoolHandler();
         }
     }
 }
