@@ -33,7 +33,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * Web adapter auto configuration.
  */
 @Configuration
-@Import({WebThreadPoolHandlerConfiguration.EmbeddedTomcat.class})
+@Import({WebThreadPoolHandlerConfiguration.EmbeddedTomcat.class,
+        WebThreadPoolHandlerConfiguration.EmbeddedJetty.class})
 @RequiredArgsConstructor
 public class WebAdapterAutoConfiguration {
 
