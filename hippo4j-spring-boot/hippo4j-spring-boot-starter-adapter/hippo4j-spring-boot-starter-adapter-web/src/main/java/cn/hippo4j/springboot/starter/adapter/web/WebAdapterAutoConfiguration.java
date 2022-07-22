@@ -37,8 +37,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @RequiredArgsConstructor
 public class WebAdapterAutoConfiguration {
 
-    private static final String JETTY_SERVLET_WEB_SERVER_FACTORY = "JettyServletWebServerFactory";
-
     private static final String UNDERTOW_SERVLET_WEB_SERVER_FACTORY = "undertowServletWebServerFactory";
 
     private final ConfigurableEnvironment environment;
@@ -60,11 +58,7 @@ public class WebAdapterAutoConfiguration {
         return new ThreadPoolRunStateHandler(hippo4JInetUtils, environment);
     }
 
-    @Bean
-    @ConditionalOnBean(name = JETTY_SERVLET_WEB_SERVER_FACTORY)
-    public JettyWebThreadPoolHandler jettyWebThreadPoolHandler() {
-        return new JettyWebThreadPoolHandler();
-    }
+
 
     @Bean
     @ConditionalOnBean(name = UNDERTOW_SERVLET_WEB_SERVER_FACTORY)
