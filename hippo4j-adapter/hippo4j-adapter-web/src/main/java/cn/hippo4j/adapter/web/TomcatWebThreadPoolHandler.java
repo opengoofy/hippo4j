@@ -152,6 +152,9 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         runStateInfo.setCompletedTaskCount(completedTaskCount);
         runStateInfo.setClientLastRefreshTime(DateUtil.formatDateTime(new Date()));
         runStateInfo.setTimestamp(System.currentTimeMillis());
+        String rejectedExecutionHandlerName = executor instanceof ThreadPoolExecutor ? ((ThreadPoolExecutor) executor).getRejectedExecutionHandler().getClass().getSimpleName()
+                : tomcatThreadPoolExecutor.getRejectedExecutionHandler().getClass().getSimpleName();
+        runStateInfo.setRejectedName(rejectedExecutionHandlerName);
         return webThreadPoolRunStateHandler.supplement(runStateInfo);
     }
 
