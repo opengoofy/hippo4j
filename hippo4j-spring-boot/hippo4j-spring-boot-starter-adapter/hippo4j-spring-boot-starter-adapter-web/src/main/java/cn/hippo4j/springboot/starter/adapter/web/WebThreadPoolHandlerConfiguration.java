@@ -43,7 +43,7 @@ public class WebThreadPoolHandlerConfiguration {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnClass({ Servlet.class, Server.class, Loader.class, WebAppContext.class })
+    @ConditionalOnClass({Servlet.class, Server.class, Loader.class, WebAppContext.class})
     @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
     static class EmbeddedJetty {
 
@@ -59,7 +59,7 @@ public class WebThreadPoolHandlerConfiguration {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnClass({ Servlet.class, Undertow.class, SslClientAuthMode.class })
+    @ConditionalOnClass({Servlet.class, Undertow.class, SslClientAuthMode.class})
     @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
     static class EmbeddedUndertow {
 
