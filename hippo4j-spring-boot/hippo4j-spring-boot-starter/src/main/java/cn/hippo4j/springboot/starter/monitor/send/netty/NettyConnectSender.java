@@ -43,7 +43,6 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @AllArgsConstructor
-@Component
 public class NettyConnectSender implements MessageSender {
 
     private ServerNettyAgent serverNettyAgent;
@@ -59,7 +58,7 @@ public class NettyConnectSender implements MessageSender {
                     .handler(new ChannelInitializer<SocketChannel>() {
 
                         @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
+                        protected void initChannel(SocketChannel ch) {
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new ObjectEncoder());
                             pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE,
@@ -71,8 +70,6 @@ public class NettyConnectSender implements MessageSender {
             bootstrap.connect(serverNettyAgent.getNettyServerAddress(), serverNettyAgent.getNettyServerPort()).sync();
         } catch (Exception e) {
             log.error("netty send error ", e);
-        } /*
-           * finally { eventLoopGroup.shutdownGracefully(); }
-           */
+        }
     }
 }
