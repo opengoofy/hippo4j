@@ -141,7 +141,7 @@ const config = {
                         items: [
                             {
                                 label: '加群沟通',
-                                href: 'https://hippo4j.cn/user_docs/docs/other/group',
+                                href: 'https://hippo4j.cn/docs/user_docs/other/group',
                             },
                             {
                                 label: '微信公众号',
