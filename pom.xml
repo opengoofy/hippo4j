@@ -50,7 +50,7 @@
         <rocketmq.version>2.2.2</rocketmq.version>
         <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
-        <netty.version>4.1.42.Final</netty.version>
+        <netty.version>4.1.56.Final</netty.version>
         <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
 
         <!-- Maven & Build -->
