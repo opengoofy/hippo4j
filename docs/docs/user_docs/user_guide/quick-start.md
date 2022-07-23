@@ -5,7 +5,7 @@ sidebar_position: 3
 # 快速开始
 
 :::tip
-Hippo4J 支持两种运行模式，依赖配置中心（Hippo4J-Core）或 Hippo4J Server，下文描述接入 Hippo4J Server，[Hippo4J-Core 接入参考此处](/docs/getting-started/hippo4j-core-start.md) 。
+Hippo4J 支持两种运行模式，依赖配置中心（Hippo4J-Core）或 Hippo4J Server，下文描述接入 Hippo4J Server，[Hippo4J-Core 接入参考此处](/docs/user_docs/getting-started/hippo4j-core-start.md) 。
 :::
 
 ## 如何运行 Demo
@@ -58,5 +58,5 @@ coreSize :: [2 => 10], maxSize :: [10 => 15], queueType :: [ArrayBlockingQueue =
 
 `identify`：代表客户端唯一标识，参数不传或为空，会修改该线程池 Client 集群下所有线程池实例参数。
 
-线程池参数动态变更通知，或线程池运行时报警，详情参考 [通知报警](/docs/user_docs/alarm.md)。
+线程池参数动态变更通知，或线程池运行时报警，详情参考 [通知报警](/docs/user_docs/user_guide/alarm.md)。
 
