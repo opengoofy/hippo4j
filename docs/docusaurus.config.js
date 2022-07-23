@@ -60,8 +60,8 @@ const config = {
             announcementBar: {
                 id: 'announcementBar-1', // Increment on change
                 // content: `⭐️ If you like hippo4j, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://gitee.com/mabaiwancn/hippo4j">Gitee</a>, thanks.`,
-                // content: `⭐️ 如果你喜欢 hippo4j，请在 <a target="_blank" rel="noopener noreferrer" href="https://gitee.com/mabaiwancn/hippo4j">Gitee</a> 上给它一个 star，谢谢！`,
-                content: `<a target="_blank" rel="noopener noreferrer" href="https://xiaomage.info/knowledge-planet/">👉 《小马哥的代码实战课》官方知识星球来啦！！！</a>`,
+                content: `⭐️ 如果您喜欢 hippo4j，请在 <a target="_blank" rel="noopener noreferrer" href="https://gitee.com/mabaiwancn/hippo4j">Gitee</a> 或 <a target="_blank" rel="noopener noreferrer" href="https://github.com/opengoofy/hippo4j">GitHub</a> 上给它一个 star，谢谢！`,
+                // content: `<a target="_blank" rel="noopener noreferrer" href="https://xiaomage.info/knowledge-planet/">👉 《小马哥的代码实战课》官方知识星球来啦！！！</a>`,
             },
             navbar: {
                 title: 'HIPPO-4J',
@@ -71,36 +71,57 @@ const config = {
                 },
                 items: [
                     {
-                        type: 'doc',
+                        type: 'docSidebar',
                         docId: 'intro',
                         position: 'left',
+                        sidebarId: 'user_docs',
                         label: '文档',
                     },
                     {
-                        to: 'docs/other/group',
+                        type: 'docSidebar',
+                        docId: 'contributor',
                         position: 'left',
-                        label: '加群沟通',
+                        sidebarId: 'community',
+                        label: '社区',
                     },
                     {to: '/blog', label: '博客', position: 'left'},
+                    /*{
+                        type: 'docSidebar',
+                        docId: 'intro',
+                        position: 'left',
+                        sidebarId: 'sponsor',
+                        hideable: true,
+                        label: '支持开源',
+                    },*/
                     {
                         href: 'https://xiaomage.info/knowledge-planet',
                         label: '🥇知识星球',
                         position: 'right',
-                    }, {
+                    },
+                    /* 国际化 */
+                    /*{type: 'localeDropdown', position: 'right'},*/
+                    {
                         href: 'http://console.hippo4j.cn/index.html',
                         label: '控制台样例',
                         position: 'right',
                     },
-                    {
+                    /*{
                         href: 'https://gitee.com/mabaiwancn/hippo4j',
                         label: 'Gitee',
                         position: 'right',
-                    },
+                    },*/
                     {
+                        href: 'https://github.com/opengoofy/hippo4j',
+                        className: 'header-github-link',
+                        'aria-label': 'GitHub repository',
+                        position: 'right',
+                    },
+
+                    /*{
                         href: 'https://github.com/opengoofy/hippo4j',
                         label: 'GitHub',
                         position: 'right',
-                    },
+                    },*/
                 ],
             },
             footer: {
@@ -111,7 +132,7 @@ const config = {
                         items: [
                             {
                                 label: '简介',
-                                to: '/docs/intro',
+                                to: '/docs/user_docs/intro',
                             },
                         ],
                     },
@@ -120,7 +141,7 @@ const config = {
                         items: [
                             {
                                 label: '加群沟通',
-                                href: 'https://hippo4j.cn/docs/other/group',
+                                href: 'https://hippo4j.cn/user_docs/docs/other/group',
                             },
                             {
                                 label: '微信公众号',

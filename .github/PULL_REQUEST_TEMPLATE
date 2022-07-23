@@ -2,7 +2,5 @@ Fixes #ISSUSE_ID
 
 Changes proposed in this pull request:
 - 
--
--
 
-> Check mailbox configuration when submitting. https://hippo4j.cn/docs/other/contributor
+> Check mailbox configuration when submitting. https://hippo4j.cn/docs/community/contributor
