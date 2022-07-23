@@ -15,28 +15,18 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.manage;
+package cn.hippo4j.message.request;
 
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import lombok.Data;
 
 /**
- * Global notify alarm manage.
- *
- * @author chen.ma
- * @date 2022/2/24 20:12
+ * Robot change parameter notify request.
  */
-public class GlobalNotifyAlarmManage {
+@Data
+public class RobotChangeParameterNotifyRequest extends ChangeParameterNotifyRequest {
 
-    private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap();
-
-    public static ThreadPoolNotifyAlarm get(String key) {
-        return NOTIFY_ALARM_MAP.get(key);
-    }
-
-    public static void put(String key, ThreadPoolNotifyAlarm val) {
-        NOTIFY_ALARM_MAP.put(key, val);
-    }
+    /**
+     * secretKey
+     */
+    private String secretKey;
 }

@@ -15,28 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.manage;
-
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+package cn.hippo4j.message.request.base;
 
 /**
- * Global notify alarm manage.
- *
- * @author chen.ma
- * @date 2022/2/24 20:12
+ * Notify request.
  */
-public class GlobalNotifyAlarmManage {
-
-    private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap();
-
-    public static ThreadPoolNotifyAlarm get(String key) {
-        return NOTIFY_ALARM_MAP.get(key);
-    }
-
-    public static void put(String key, ThreadPoolNotifyAlarm val) {
-        NOTIFY_ALARM_MAP.put(key, val);
-    }
+public interface NotifyRequest {
 }

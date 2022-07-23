@@ -10,7 +10,6 @@
 
     <artifactId>hippo4j-discovery</artifactId>
 
-
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>

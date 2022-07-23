@@ -18,13 +18,13 @@
 package cn.hippo4j.core.springboot.starter.refresher.event;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.notify.HippoBaseSendMessageService;
-import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
+import cn.hippo4j.message.dto.NotifyConfigDTO;
+import cn.hippo4j.message.service.HippoBaseSendMessageService;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 

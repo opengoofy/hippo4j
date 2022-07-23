@@ -17,15 +17,7 @@
 
 package cn.hippo4j.core.springboot.starter.config;
 
-import cn.hippo4j.common.api.NotifyConfigBuilder;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.notify.AlarmControlHandler;
-import cn.hippo4j.common.notify.HippoBaseSendMessageService;
-import cn.hippo4j.common.notify.HippoSendMessageService;
-import cn.hippo4j.common.notify.SendMessageHandler;
-import cn.hippo4j.common.notify.platform.DingSendMessageHandler;
-import cn.hippo4j.common.notify.platform.LarkSendMessageHandler;
-import cn.hippo4j.common.notify.platform.WeChatSendMessageHandler;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.config.WebThreadPoolConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
@@ -46,6 +38,10 @@ import cn.hippo4j.core.springboot.starter.refresher.event.PlatformsListener;
 import cn.hippo4j.core.springboot.starter.refresher.event.WebExecutorListener;
 import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.core.springboot.starter.support.ThreadPoolAdapterRegister;
+import cn.hippo4j.message.api.NotifyConfigBuilder;
+import cn.hippo4j.message.config.MessageConfiguration;
+import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.message.service.HippoSendMessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.*;
@@ -65,7 +61,7 @@ import org.springframework.core.annotation.Order;
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapCoreProperties.class)
-@ImportAutoConfiguration({UtilAutoConfiguration.class, WebThreadPoolConfiguration.class})
+@ImportAutoConfiguration({UtilAutoConfiguration.class, MessageConfiguration.class, WebThreadPoolConfiguration.class})
 @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 public class DynamicThreadPoolCoreAutoConfiguration {
 
@@ -87,39 +83,13 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     }
 
     @Bean
-    public AlarmControlHandler alarmControlHandler() {
-        return new AlarmControlHandler();
-    }
-
-    @Bean
     public NotifyConfigBuilder notifyConfigBuilder(AlarmControlHandler alarmControlHandler) {
         return new CoreNotifyConfigBuilder(alarmControlHandler, bootstrapCoreProperties);
     }
 
     @Bean
-    public HippoSendMessageService hippoSendMessageService(NotifyConfigBuilder notifyConfigBuilder,
-                                                           AlarmControlHandler alarmControlHandler) {
-        return new HippoBaseSendMessageService(notifyConfigBuilder, alarmControlHandler);
-    }
-
-    @Bean
     public ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler(HippoSendMessageService hippoSendMessageService) {
         return new ThreadPoolNotifyAlarmHandler(hippoSendMessageService);
-    }
-
-    @Bean
-    public SendMessageHandler dingSendMessageHandler() {
-        return new DingSendMessageHandler();
-    }
-
-    @Bean
-    public SendMessageHandler larkSendMessageHandler() {
-        return new LarkSendMessageHandler();
-    }
-
-    @Bean
-    public SendMessageHandler weChatSendMessageHandler() {
-        return new WeChatSendMessageHandler();
     }
 
     @Bean

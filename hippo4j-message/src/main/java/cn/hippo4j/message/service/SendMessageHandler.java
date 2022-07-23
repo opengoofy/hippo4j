@@ -15,28 +15,36 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.manage;
+package cn.hippo4j.message.service;
 
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import cn.hippo4j.message.dto.NotifyConfigDTO;
+import cn.hippo4j.message.request.base.NotifyRequest;
 
 /**
- * Global notify alarm manage.
- *
- * @author chen.ma
- * @date 2022/2/24 20:12
+ * Send message handler.
  */
-public class GlobalNotifyAlarmManage {
+public interface SendMessageHandler<T extends NotifyRequest, R extends NotifyRequest> {
 
-    private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap();
+    /**
+     * Get type.
+     *
+     * @return
+     */
+    String getType();
 
-    public static ThreadPoolNotifyAlarm get(String key) {
-        return NOTIFY_ALARM_MAP.get(key);
-    }
+    /**
+     * Send alarm message.
+     *
+     * @param notifyConfig
+     * @param alarmNotifyRequest
+     */
+    void sendAlarmMessage(NotifyConfigDTO notifyConfig, T alarmNotifyRequest);
 
-    public static void put(String key, ThreadPoolNotifyAlarm val) {
-        NOTIFY_ALARM_MAP.put(key, val);
-    }
+    /**
+     * Send change message.
+     *
+     * @param notifyConfig
+     * @param changeParameterNotifyRequest
+     */
+    void sendChangeMessage(NotifyConfigDTO notifyConfig, R changeParameterNotifyRequest);
 }

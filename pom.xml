@@ -19,6 +19,7 @@
         <module>hippo4j-core</module>
         <module>hippo4j-discovery</module>
         <module>hippo4j-example</module>
+        <module>hippo4j-message</module>
         <module>hippo4j-server</module>
         <module>hippo4j-spring-boot</module>
         <module>hippo4j-tool</module>
@@ -99,6 +100,12 @@
             <dependency>
                 <groupId>cn.hippo4j</groupId>
                 <artifactId>hippo4j-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-message</artifactId>
                 <version>${revision}</version>
             </dependency>
 

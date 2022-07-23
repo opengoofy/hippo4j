@@ -17,13 +17,13 @@
 
 package cn.hippo4j.core.springboot.starter.refresher;
 
-import cn.hippo4j.common.notify.NotifyPlatformEnum;
-import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.springboot.starter.config.NotifyPlatformProperties;
+import cn.hippo4j.message.enums.NotifyPlatformEnum;
+import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.google.common.collect.Lists;

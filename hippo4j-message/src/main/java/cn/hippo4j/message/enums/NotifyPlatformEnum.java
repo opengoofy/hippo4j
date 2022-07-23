@@ -15,28 +15,25 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.manage;
-
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+package cn.hippo4j.message.enums;
 
 /**
- * Global notify alarm manage.
- *
- * @author chen.ma
- * @date 2022/2/24 20:12
+ * Notify platform enum.
  */
-public class GlobalNotifyAlarmManage {
+public enum NotifyPlatformEnum {
 
-    private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap();
+    /**
+     * DING
+     */
+    DING,
 
-    public static ThreadPoolNotifyAlarm get(String key) {
-        return NOTIFY_ALARM_MAP.get(key);
-    }
+    /**
+     * LARK
+     */
+    LARK,
 
-    public static void put(String key, ThreadPoolNotifyAlarm val) {
-        NOTIFY_ALARM_MAP.put(key, val);
-    }
+    /**
+     * WECHAT
+     */
+    WECHAT
 }

@@ -15,28 +15,29 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.manage;
+package cn.hippo4j.message.service;
 
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import cn.hippo4j.message.enums.NotifyTypeEnum;
+import cn.hippo4j.message.request.AlarmNotifyRequest;
+import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 
 /**
- * Global notify alarm manage.
- *
- * @author chen.ma
- * @date 2022/2/24 20:12
+ * Hippo4j send message service.
  */
-public class GlobalNotifyAlarmManage {
+public interface HippoSendMessageService {
 
-    private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap();
+    /**
+     * Send alarm message.
+     *
+     * @param typeEnum
+     * @param alarmNotifyRequest
+     */
+    void sendAlarmMessage(NotifyTypeEnum typeEnum, AlarmNotifyRequest alarmNotifyRequest);
 
-    public static ThreadPoolNotifyAlarm get(String key) {
-        return NOTIFY_ALARM_MAP.get(key);
-    }
-
-    public static void put(String key, ThreadPoolNotifyAlarm val) {
-        NOTIFY_ALARM_MAP.put(key, val);
-    }
+    /**
+     * Send change message.
+     *
+     * @param changeParameterNotifyRequest
+     */
+    void sendChangeMessage(ChangeParameterNotifyRequest changeParameterNotifyRequest);
 }
