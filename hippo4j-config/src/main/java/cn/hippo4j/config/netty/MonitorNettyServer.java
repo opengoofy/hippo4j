@@ -68,8 +68,8 @@ public class MonitorNettyServer {
                 serverBootstrap.group(bossGroup, workGroup)
                         .channel(NioServerSocketChannel.class)
                         .handler(new LoggingHandler(LogLevel.INFO))
-                        // childHandler的任务由workGroup来执行
-                        // 如果是handler，则由bossGroup来执行
+                        // BossGroup the Thread group is responsible for connection events
+                        // WorkGroup the thread group is responsible for read and write events
                         .childHandler(new ChannelInitializer<SocketChannel>() {
 
                             @Override
