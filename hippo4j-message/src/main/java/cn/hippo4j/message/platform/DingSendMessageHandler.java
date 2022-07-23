@@ -44,7 +44,6 @@ import java.util.Objects;
 
 import static cn.hippo4j.message.platform.DingAlarmConstants.*;
 
-
 /**
  * Send ding notification message.
  */

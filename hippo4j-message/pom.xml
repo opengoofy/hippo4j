@@ -14,7 +14,7 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-common</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

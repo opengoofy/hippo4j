@@ -18,7 +18,6 @@
 package cn.hippo4j.core.springboot.starter.support;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
@@ -29,6 +28,7 @@ import cn.hippo4j.core.executor.support.*;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.toolkit.inet.DynamicThreadPoolAnnotationUtil;
+import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
