@@ -17,14 +17,14 @@
 
 package cn.hippo4j.core.springboot.starter.notify;
 
-import cn.hippo4j.common.api.NotifyConfigBuilder;
-import cn.hippo4j.common.notify.AlarmControlHandler;
-import cn.hippo4j.common.notify.NotifyConfigDTO;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.springboot.starter.config.NotifyPlatformProperties;
+import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.message.dto.NotifyConfigDTO;
+import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

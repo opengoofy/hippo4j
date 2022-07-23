@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.springboot.starter.refresher.event;
 
-import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;

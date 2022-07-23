@@ -17,15 +17,15 @@
 
 package cn.hippo4j.springboot.starter.notify;
 
-import cn.hippo4j.common.notify.AlarmControlHandler;
-import cn.hippo4j.common.api.NotifyConfigBuilder;
-import cn.hippo4j.common.notify.NotifyConfigDTO;
-import cn.hippo4j.common.notify.ThreadPoolNotifyDTO;
-import cn.hippo4j.common.notify.request.ThreadPoolNotifyRequest;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.message.dto.NotifyConfigDTO;
+import cn.hippo4j.message.dto.ThreadPoolNotifyDTO;
+import cn.hippo4j.message.api.NotifyConfigBuilder;
+import cn.hippo4j.message.request.ThreadPoolNotifyRequest;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hutool.core.collection.CollUtil;

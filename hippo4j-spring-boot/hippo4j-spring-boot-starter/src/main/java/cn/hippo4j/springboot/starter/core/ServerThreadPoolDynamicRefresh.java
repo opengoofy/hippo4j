@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.core;
 import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.common.notify.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;

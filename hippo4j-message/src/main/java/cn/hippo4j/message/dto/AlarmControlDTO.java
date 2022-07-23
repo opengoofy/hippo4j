@@ -15,29 +15,40 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.manage;
+package cn.hippo4j.message.dto;
 
-
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import cn.hippo4j.message.enums.NotifyTypeEnum;
+import lombok.Builder;
+import lombok.Data;
 
 /**
- * Global notify alarm manage.
- *
- * @author chen.ma
- * @date 2022/2/24 20:12
+ * Alarm control dto.
  */
-public class GlobalNotifyAlarmManage {
+@Data
+@Builder
+public class AlarmControlDTO {
 
-    private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap();
+    /**
+     * 线程池 Id
+     */
+    private String threadPool;
 
-    public static ThreadPoolNotifyAlarm get(String key) {
-        return NOTIFY_ALARM_MAP.get(key);
-    }
+    /**
+     * 推送报警平台
+     */
+    private String platform;
 
-    public static void put(String key, ThreadPoolNotifyAlarm val) {
-        NOTIFY_ALARM_MAP.put(key, val);
+    /**
+     * 推送报警类型
+     */
+    private NotifyTypeEnum typeEnum;
+
+    /**
+     * 构建线程池报警标识
+     *
+     * @return
+     */
+    public String buildPk() {
+        return threadPool + "+" + platform;
     }
 }

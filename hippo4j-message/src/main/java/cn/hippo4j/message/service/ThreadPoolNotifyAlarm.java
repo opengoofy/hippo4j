@@ -15,29 +15,55 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.manage;
+package cn.hippo4j.message.service;
 
-
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Global notify alarm manage.
- *
- * @author chen.ma
- * @date 2022/2/24 20:12
+ * Thread pool notify alarm.
  */
-public class GlobalNotifyAlarmManage {
+@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
+public class ThreadPoolNotifyAlarm {
 
-    private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap();
+    /**
+     * isAlarm
+     */
+    @NonNull
+    private Boolean isAlarm;
 
-    public static ThreadPoolNotifyAlarm get(String key) {
-        return NOTIFY_ALARM_MAP.get(key);
-    }
+    /**
+     * activeAlarm
+     */
+    @NonNull
+    private Integer activeAlarm;
 
-    public static void put(String key, ThreadPoolNotifyAlarm val) {
-        NOTIFY_ALARM_MAP.put(key, val);
-    }
+    /**
+     * capacityAlarm
+     */
+    @NonNull
+    private Integer capacityAlarm;
+
+    /**
+     * interval
+     */
+    private Integer interval;
+
+    /**
+     * receive
+     */
+    private String receive;
+
+    /**
+     * receives
+     * ps：暂不启用该配置，后续如果开发邮箱时或许有用
+     */
+    @Deprecated
+    private Map<String, String> receives;
 }

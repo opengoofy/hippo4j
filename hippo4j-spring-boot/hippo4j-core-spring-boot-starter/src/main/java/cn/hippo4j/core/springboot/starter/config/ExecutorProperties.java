@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.springboot.starter.config;
 
-import cn.hippo4j.common.notify.ThreadPoolNotifyAlarm;
+import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import com.google.common.collect.Maps;
 import lombok.Data;
 import lombok.experimental.Accessors;
