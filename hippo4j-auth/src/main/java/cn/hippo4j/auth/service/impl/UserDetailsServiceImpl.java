@@ -21,6 +21,7 @@ import cn.hippo4j.auth.mapper.UserMapper;
 import cn.hippo4j.auth.model.UserInfo;
 import cn.hippo4j.auth.model.biz.user.JwtUser;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,11 +29,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.annotation.Resource;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * User details service impl.
  */
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Resource
@@ -41,6 +44,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         UserInfo userInfo = userMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, userName));
+        if (Objects.isNull(userInfo)) {
+            log.warn("User {} not found", userName);
+            throw new UsernameNotFoundException(userName);
+        }
         JwtUser jwtUser = new JwtUser();
         jwtUser.setId(userInfo.getId());
         jwtUser.setUsername(userName);
