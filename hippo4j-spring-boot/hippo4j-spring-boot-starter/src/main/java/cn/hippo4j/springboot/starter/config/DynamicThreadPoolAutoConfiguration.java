@@ -22,7 +22,6 @@ import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.common.api.ThreadDetailState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
-import cn.hippo4j.core.config.WebThreadPoolConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
@@ -69,8 +68,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@ImportAutoConfiguration({HttpClientConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageConfiguration.class, UtilAutoConfiguration.class,
-        WebThreadPoolConfiguration.class})
+@ImportAutoConfiguration({HttpClientConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageConfiguration.class, UtilAutoConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapProperties properties;
