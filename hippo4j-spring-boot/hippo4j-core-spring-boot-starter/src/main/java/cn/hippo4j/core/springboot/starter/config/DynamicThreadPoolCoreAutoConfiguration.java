@@ -27,10 +27,6 @@ import cn.hippo4j.core.springboot.starter.monitor.DynamicThreadPoolMonitorExecut
 import cn.hippo4j.core.springboot.starter.monitor.LogMonitorHandler;
 import cn.hippo4j.core.springboot.starter.monitor.MetricMonitorHandler;
 import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
-import cn.hippo4j.core.springboot.starter.refresher.ApolloRefresherHandler;
-import cn.hippo4j.core.springboot.starter.refresher.NacosCloudRefresherHandler;
-import cn.hippo4j.core.springboot.starter.refresher.NacosRefresherHandler;
-import cn.hippo4j.core.springboot.starter.refresher.ZookeeperRefresherHandler;
 import cn.hippo4j.core.springboot.starter.refresher.event.AdapterExecutorsListener;
 import cn.hippo4j.core.springboot.starter.refresher.event.ExecutorsListener;
 import cn.hippo4j.core.springboot.starter.refresher.event.PlatformsListener;
@@ -43,10 +39,13 @@ import cn.hippo4j.message.service.AlarmControlHandler;
 import cn.hippo4j.message.service.HippoSendMessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
@@ -62,17 +61,13 @@ import org.springframework.core.annotation.Order;
 @EnableConfigurationProperties(BootstrapCoreProperties.class)
 @ImportAutoConfiguration({UtilAutoConfiguration.class, MessageConfiguration.class})
 @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
+@Import({
+        ConfigHandlerConfiguration.EmbeddedNacos.class, ConfigHandlerConfiguration.EmbeddedNacosCloud.class,
+        ConfigHandlerConfiguration.EmbeddedApollo.class, ConfigHandlerConfiguration.EmbeddedZookeeper.class
+})
 public class DynamicThreadPoolCoreAutoConfiguration {
 
     private final BootstrapCoreProperties bootstrapCoreProperties;
-
-    private static final String NACOS_CONFIG_MANAGER_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";
-
-    private static final String NACOS_CONFIG_KEY = "com.alibaba.nacos.api.config.ConfigService";
-
-    private static final String APOLLO_CONFIG_KEY = "com.ctrip.framework.apollo.ConfigService";
-
-    private static final String ZK_CONFIG_KEY = "org.apache.curator.framework.CuratorFramework";
 
     @Bean
     @ConditionalOnMissingBean
@@ -94,35 +89,6 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @Bean
     public DynamicThreadPoolPostProcessor dynamicThreadPoolPostProcessor(ApplicationContextHolder hippo4JApplicationContextHolder) {
         return new DynamicThreadPoolPostProcessor(bootstrapCoreProperties);
-    }
-
-    @Bean
-    @ConditionalOnClass(name = NACOS_CONFIG_KEY)
-    @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
-    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "nacos.data-id")
-    public NacosRefresherHandler nacosRefresherHandler() {
-        return new NacosRefresherHandler(bootstrapCoreProperties);
-    }
-
-    @Bean
-    @ConditionalOnClass(name = NACOS_CONFIG_MANAGER_KEY)
-    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "nacos.data-id")
-    public NacosCloudRefresherHandler nacosCloudRefresherHandler() {
-        return new NacosCloudRefresherHandler();
-    }
-
-    @Bean
-    @ConditionalOnClass(name = APOLLO_CONFIG_KEY)
-    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "apollo.namespace")
-    public ApolloRefresherHandler apolloRefresher() {
-        return new ApolloRefresherHandler();
-    }
-
-    @Bean
-    @ConditionalOnClass(name = ZK_CONFIG_KEY)
-    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = "zookeeper.zk-connect-str")
-    public ZookeeperRefresherHandler zookeeperRefresher() {
-        return new ZookeeperRefresherHandler();
     }
 
     @Bean
