@@ -27,28 +27,16 @@
         </dependency>
 
         <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>alibaba-dingtalk-service-sdk</artifactId>
-            <!-- 用户反馈其中 javax.jms 无法下载, 未发现 log4j 用处, 暂且排除 -->
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
             <groupId>com.alibaba.nacos</groupId>
             <artifactId>nacos-client</artifactId>
-            <version>2.0.4</version>
+            <version>${nacos-client.version}</version>
             <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <version>2.2.5.RELEASE</version>
+            <version>${spring-cloud-starter-alibaba-nacos-config.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -63,7 +51,7 @@
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
-            <version>5.1.0</version>
+            <version>${curator-framework.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
@@ -77,7 +65,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
-            <version>1.8.4</version>
+            <version>${micrometer-core.version}</version>
             <optional>true</optional>
         </dependency>
 

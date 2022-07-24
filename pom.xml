@@ -45,14 +45,18 @@
         <!-- Framework -->
         <slf4j-api.version>1.7.7</slf4j-api.version>
         <logback.version>1.2.9</logback.version>
+        <micrometer-core.version>1.8.4</micrometer-core.version>
+        <nacos-client.version>2.0.4</nacos-client.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
         <rocketmq.version>2.2.2</rocketmq.version>
-        <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
-        <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
         <netty.version>4.1.56.Final</netty.version>
+        <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
+        <curator-framework.version>5.1.0</curator-framework.version>
+        <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
         <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
+        <spring-cloud-starter-alibaba-nacos-config.version>2.2.5.RELEASE</spring-cloud-starter-alibaba-nacos-config.version>
 
         <!-- Maven & Build -->
         <java.version>1.8</java.version>
