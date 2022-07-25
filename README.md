@@ -1,6 +1,6 @@
-[👉 《小马哥的代码实战课》官方知识星球来啦！！！](https://xiaomage.info/knowledge-planet/)
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/hippo4j-logo-logoly.png)
+# HIPPO-4J：Dynamically monitorable thread pool framework
+
 
 <p>
   <a href="https://gitee.com/mabaiwancn/hippo4j" target="_blank">
@@ -17,7 +17,7 @@
   </a>
 </p>
 
-## 动态可观测线程池框架
+-------
 
 Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
 
