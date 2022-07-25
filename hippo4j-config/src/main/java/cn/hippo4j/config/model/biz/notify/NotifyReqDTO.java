@@ -34,6 +34,11 @@ public class NotifyReqDTO {
     private String id;
 
     /**
+     * ids
+     */
+    private String ids;
+
+    /**
      * 租户id
      */
     private String tenantId;
@@ -54,9 +59,14 @@ public class NotifyReqDTO {
     private String platform;
 
     /**
-     * 通知类型
+     * 配置变更通知类型
      */
-    private String type;
+    private Boolean configType;
+
+    /**
+     * 报警消息通知
+     */
+    private Boolean alarmType;
 
     /**
      * 密钥
