@@ -17,9 +17,9 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.web.exception.ServiceException;
-import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.config.mapper.NotifyInfoMapper;
 import cn.hippo4j.config.model.NotifyInfo;
 import cn.hippo4j.config.model.biz.notify.NotifyListRespDTO;
@@ -29,6 +29,7 @@ import cn.hippo4j.config.model.biz.notify.NotifyRespDTO;
 import cn.hippo4j.config.service.biz.NotifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -40,6 +41,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 通知管理.
@@ -62,13 +64,11 @@ public class NotifyServiceImpl implements NotifyService {
             if (CollUtil.isNotEmpty(notifyInfos)) {
                 notifyListRespList.add(new NotifyListRespDTO(StrUtil.builder(parseKey[0], "+", "CONFIG").toString(), notifyInfos));
             }
-
             List<NotifyInfo> alarmInfos = listNotifyCommon("ALARM", parseKey);
             if (CollUtil.isNotEmpty(alarmInfos)) {
                 notifyListRespList.add(new NotifyListRespDTO(StrUtil.builder(parseKey[0], "+", "ALARM").toString(), alarmInfos));
             }
         });
-
         return notifyListRespList;
     }
 
@@ -79,18 +79,35 @@ public class NotifyServiceImpl implements NotifyService {
                 .eq(StrUtil.isNotBlank(reqDTO.getItemId()), NotifyInfo::getItemId, reqDTO.getItemId())
                 .eq(StrUtil.isNotBlank(reqDTO.getTpId()), NotifyInfo::getTpId, reqDTO.getTpId())
                 .orderByDesc(NotifyInfo::getGmtCreate);
-
         IPage<NotifyInfo> resultPage = notifyInfoMapper.selectPage(reqDTO, queryWrapper);
-        return resultPage.convert(each -> BeanUtil.convert(each, NotifyRespDTO.class));
+        return resultPage.convert(each -> {
+            NotifyRespDTO convert = BeanUtil.convert(each, NotifyRespDTO.class);
+            convert.setConfigType(Objects.equals("CONFIG", each.getType()));
+            convert.setAlarmType(Objects.equals("ALARM", each.getType()));
+            return convert;
+        });
     }
 
     @Override
-    public void save(NotifyReqDTO reqDTO) {
-        if (existNotify(reqDTO)) {
-            throw new ServiceException("新增通知报警配置重复.");
+    public void save(NotifyReqDTO requestParam) {
+        if (BooleanUtil.isTrue(requestParam.getConfigType())) {
+            existNotify("CONFIG", requestParam);
         }
-
-        notifyInfoMapper.insert(BeanUtil.convert(reqDTO, NotifyInfo.class));
+        if (BooleanUtil.isTrue(requestParam.getAlarmType())) {
+            existNotify("ALARM", requestParam);
+        }
+        List<NotifyInfo> notifyInfos = Lists.newArrayList();
+        if (BooleanUtil.isTrue(requestParam.getAlarmType())) {
+            NotifyInfo alarmNotifyInfo = BeanUtil.convert(requestParam, NotifyInfo.class);
+            alarmNotifyInfo.setType("ALARM");
+            notifyInfos.add(alarmNotifyInfo);
+        }
+        if (BooleanUtil.isTrue(requestParam.getConfigType())) {
+            NotifyInfo configNotifyInfo = BeanUtil.convert(requestParam, NotifyInfo.class);
+            configNotifyInfo.setType("CONFIG");
+            notifyInfos.add(configNotifyInfo);
+        }
+        notifyInfos.forEach(each -> notifyInfoMapper.insert(each));
     }
 
     @Override
@@ -98,7 +115,6 @@ public class NotifyServiceImpl implements NotifyService {
         NotifyInfo notifyInfo = BeanUtil.convert(reqDTO, NotifyInfo.class);
         LambdaUpdateWrapper<NotifyInfo> updateWrapper = Wrappers.lambdaUpdate(NotifyInfo.class)
                 .eq(NotifyInfo::getId, reqDTO.getId());
-
         try {
             notifyInfoMapper.update(notifyInfo, updateWrapper);
         } catch (DuplicateKeyException ex) {
@@ -110,7 +126,6 @@ public class NotifyServiceImpl implements NotifyService {
     public void delete(NotifyReqDTO reqDTO) {
         LambdaUpdateWrapper<NotifyInfo> updateWrapper = Wrappers.lambdaUpdate(NotifyInfo.class)
                 .eq(NotifyInfo::getId, reqDTO.getId());
-
         notifyInfoMapper.delete(updateWrapper);
     }
 
@@ -133,16 +148,16 @@ public class NotifyServiceImpl implements NotifyService {
         return notifyInfos;
     }
 
-    private boolean existNotify(NotifyReqDTO reqDTO) {
+    private void existNotify(String type, NotifyReqDTO requestParam) {
         LambdaQueryWrapper<NotifyInfo> queryWrapper = Wrappers.lambdaQuery(NotifyInfo.class)
-                .eq(NotifyInfo::getTenantId, reqDTO.getTenantId())
-                .eq(NotifyInfo::getItemId, reqDTO.getItemId())
-                .eq(NotifyInfo::getTpId, reqDTO.getTpId())
-                .eq(NotifyInfo::getPlatform, reqDTO.getPlatform())
-                .eq(NotifyInfo::getType, reqDTO.getType());
-
+                .eq(NotifyInfo::getTenantId, requestParam.getTenantId())
+                .eq(NotifyInfo::getItemId, requestParam.getItemId())
+                .eq(NotifyInfo::getTpId, requestParam.getTpId())
+                .eq(NotifyInfo::getPlatform, requestParam.getPlatform())
+                .eq(NotifyInfo::getType, type);
         List<NotifyInfo> existNotifyInfos = notifyInfoMapper.selectList(queryWrapper);
-        return CollUtil.isNotEmpty(existNotifyInfos);
+        if (CollUtil.isNotEmpty(existNotifyInfos)) {
+            throw new ServiceException(String.format("%s 新增通知报警配置重复", type));
+        }
     }
-
 }
