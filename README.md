@@ -1,5 +1,5 @@
 
-# Dynamic and monitored thread pool framework
+# 动态可观测线程池框架，为业务系统提高线上运行保障能力
 
 
 <p>
