@@ -1,5 +1,5 @@
 
-# HIPPO-4J：Dynamically monitorable thread pool framework
+# Dynamic and monitored thread pool framework
 
 
 <p>
