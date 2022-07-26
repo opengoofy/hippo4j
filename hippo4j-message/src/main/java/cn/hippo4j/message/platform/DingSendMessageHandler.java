@@ -21,9 +21,10 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
-import cn.hippo4j.message.service.SendMessageHandler;
+import cn.hippo4j.message.platform.constant.DingAlarmConstants;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.service.SendMessageHandler;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.dingtalk.api.DefaultDingTalkClient;
@@ -42,7 +43,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
-import static cn.hippo4j.message.platform.DingAlarmConstants.*;
+import static cn.hippo4j.message.platform.constant.DingAlarmConstants.*;
 
 /**
  * Send ding notification message.

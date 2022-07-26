@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static cn.hippo4j.message.platform.LarkAlarmConstants.*;
+import static cn.hippo4j.message.platform.constant.LarkAlarmConstants.*;
 
 /**
  * Send lark notification message.
