@@ -12,7 +12,7 @@
   <a href="https://github.com/opengoofy/hippo4j/blob/develop/LICENSE">
     <img src="https://img.shields.io/github/license/opengoofy/hippo4j?color=42b883&style=flat-square" alt="LICENSE">
   </a>
-  <a title="Hits" target="_blank" href="https://github.com/mabaiwan/hippo4j">
+  <a title="Hits" target="_blank" href="https://github.com/opengoofy/hippo4j">
     <img src="https://hits.b3log.org/acmenlt/dynamic-threadpool.svg">
   </a>
 </p>
