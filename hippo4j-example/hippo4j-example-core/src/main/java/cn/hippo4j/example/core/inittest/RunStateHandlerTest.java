@@ -79,7 +79,7 @@ public class RunStateHandlerTest {
             /**
              * 当线程池任务执行超时, 向 MDC 放入 Trace 标识, 报警时打印出来.
              */
-            MDC.put(EXECUTE_TIMEOUT_TRACE, "https://github.com/mabaiwan/hippo4j 感觉不错来个 Star.");
+            MDC.put(EXECUTE_TIMEOUT_TRACE, "https://github.com/opengoofy/hippo4j 感觉不错来个 Star.");
             ThreadUtil.sleep(5000);
             for (int i = 0; i < Integer.MAX_VALUE; i++) {
                 try {

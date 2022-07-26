@@ -124,7 +124,7 @@ Hippo-4J 获得了一些宝贵的荣誉，这属于每一位对 Hippo-4J 做出�
 
 感谢所有为 Hippo-4J 做出贡献的开发者！
 
-https://github.com/mabaiwan/hippo4j/graphs/contributors
+https://github.com/opengoofy/hippo4j/graphs/contributors
 
 ![图4 Hippo-4J 开发者](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220605151136276.png)
 
@@ -134,12 +134,12 @@ https://github.com/mabaiwan/hippo4j/graphs/contributors
 
 开源不易，如果各位小伙伴看了 Hippo-4J 框架后有所收获，希望能帮忙在 Github、Gitee 点个 star，谢谢。
 
-**Github**：https://github.com/mabaiwan/hippo4j
+**Github**：https://github.com/opengoofy/hippo4j
 
 **Gitee**：https://gitee.com/mabaiwancn/hippo4j
 
 目前已有 **10+** 公司在生产环境使用 Hippo-4J，如果贵公司使用了 Hippo-4J，请在下方 Issue 登记，谢谢。
 
-**Issue**：https://github.com/mabaiwan/hippo4j/issues/13
+**Issue**：https://github.com/opengoofy/hippo4j/issues/13
 
 登记使用不会对公司有任何影响，仅为了扩大 Hippo-4J 影响力，帮助它能走得更远。
