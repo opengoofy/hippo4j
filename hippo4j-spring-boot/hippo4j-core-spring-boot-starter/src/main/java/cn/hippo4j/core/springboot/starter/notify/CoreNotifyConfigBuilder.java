@@ -56,7 +56,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         boolean globalAlarm = bootstrapCoreProperties.getAlarm();
         List<ExecutorProperties> executors = bootstrapCoreProperties.getExecutors();
         if (CollectionUtil.isEmpty(executors)) {
-            log.error("Failed to buildNotify,executors configuration is empty");
+            log.warn("Failed to build notify, executors configuration is empty.");
             return resultMap;
         }
         List<ExecutorProperties> actual = executors.stream().filter(each -> Optional.ofNullable(each.getNotify()).map(notify -> notify.getIsAlarm()).orElse(false)).collect(Collectors.toList());
