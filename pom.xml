@@ -417,7 +417,7 @@
         </plugins>
     </build>
 
-    <url>https://github.com/mabaiwan/hippo4j</url>
+    <url>https://github.com/opengoofy/hippo4j</url>
 
     <licenses>
         <license>
@@ -446,14 +446,14 @@
     </developers>
 
     <scm>
-        <connection>scm:git@github.com:mabaiwan/hippo4j</connection>
-        <developerConnection>scm:git@github.com:mabaiwan/hippo4j.git</developerConnection>
-        <url>git@github.com:mabaiwan/hippo4j.git</url>
+        <connection>scm:git@github.com:opengoofy/hippo4j</connection>
+        <developerConnection>scm:git@github.com:opengoofy/hippo4j.git</developerConnection>
+        <url>git@github.com:opengoofy/hippo4j.git</url>
     </scm>
 
     <issueManagement>
         <system>Github Issue</system>
-        <url>https://github.com/mabaiwan/hippo4j/issues</url>
+        <url>https://github.com/opengoofy/hippo4j/issues</url>
     </issueManagement>
 
     <distributionManagement>
