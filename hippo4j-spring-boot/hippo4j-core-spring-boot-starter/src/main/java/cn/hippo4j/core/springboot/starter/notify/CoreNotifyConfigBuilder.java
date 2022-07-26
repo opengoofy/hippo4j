@@ -29,6 +29,7 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ import java.util.stream.Collectors;
  * @date 2022/2/25 00:24
  */
 @AllArgsConstructor
+@Slf4j
 public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
 
     private final AlarmControlHandler alarmControlHandler;
@@ -53,14 +55,16 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
         boolean globalAlarm = bootstrapCoreProperties.getAlarm();
         List<ExecutorProperties> executors = bootstrapCoreProperties.getExecutors();
+        if (CollectionUtil.isEmpty(executors)) {
+            log.warn("Failed to build notify, executors configuration is empty.");
+            return resultMap;
+        }
         List<ExecutorProperties> actual = executors.stream().filter(each -> Optional.ofNullable(each.getNotify()).map(notify -> notify.getIsAlarm()).orElse(false)).collect(Collectors.toList());
         if (!globalAlarm && CollectionUtil.isEmpty(actual)) {
             return resultMap;
         }
-        if (CollectionUtil.isNotEmpty(executors)) {
-            for (ExecutorProperties executor : executors) {
-                resultMap.putAll(buildSingleNotifyConfig(executor));
-            }
+        for (ExecutorProperties executor : executors) {
+            resultMap.putAll(buildSingleNotifyConfig(executor));
         }
         return resultMap;
     }
