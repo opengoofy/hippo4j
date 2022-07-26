@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-import static cn.hippo4j.message.platform.WeChatAlarmConstants.*;
+import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.*;
 
 /**
  * WeChat send message handler.

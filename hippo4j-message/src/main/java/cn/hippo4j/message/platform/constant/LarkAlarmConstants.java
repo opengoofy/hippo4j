@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.message.platform;
+package cn.hippo4j.message.platform.constant;
 
 /**
  * Lark alarm constants.
