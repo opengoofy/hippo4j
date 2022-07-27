@@ -31,7 +31,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 👐 功能扩展 - 支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务；
 
-👯‍♀️ 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/getting-started/hippo4j-core-start) 和 [无中间件依赖](https://hippo4j.cn/docs/getting-started/hippo4j-server-start)；
+👯‍♀️ 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-core-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-server-start)；
 
 🛠 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
 
@@ -41,7 +41,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 ## 快速开始
 
-对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/getting-started/hippo4j-server-start)
+对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-server-start)
 
 演示环境：
 - http://console.hippo4j.cn/index.html
@@ -49,7 +49,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 ## 联系我
 
-图片加载不出来，访问 [国内站点](https://hippo4j.cn/docs/other/group)
+图片加载不出来，访问 [国内站点](https://hippo4j.cn/docs/user_docs/other/group)
 
 ![image](https://user-images.githubusercontent.com/77398366/180110548-7a05b74d-0316-4066-96f4-1c9331638633.png)
 
