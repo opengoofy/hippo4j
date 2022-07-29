@@ -40,16 +40,16 @@ public class DingAlarmConstants {
     /**
      * Trace 信息
      */
-    public static final String DING_ALARM_TIMOUT_TRACE_REPLACE_TXT = "<font color=#708090 size=2>链路信息：%s</font> \n\n";
+    public static final String DING_ALARM_TIMOUT_TRACE_REPLACE_TXT = "<font color=#708090 size=2>链路信息：%s</font> \n\n ";
 
     /**
      * 替换任务超时模板
      */
     public static final String DING_ALARM_TIMOUT_REPLACE_TXT =
-            "<font color=#708090 size=2>任务执行时间：%d / ms </font> \n\n" +
-                    "<font color=#708090 size=2>超时时间：%d / ms</font> \n\n" +
+            "<font color=#708090 size=2>任务执行时间：%d / ms </font> \n\n " +
+                    "<font color=#708090 size=2>超时时间：%d / ms</font> \n\n " +
                     DING_ALARM_TIMOUT_TRACE_REPLACE_TXT +
-                    " --- \n\n  ";
+                    " --- \n\n ";
 
     /**
      * 线程池报警通知文本
@@ -60,7 +60,6 @@ public class DingAlarmConstants {
                     "<font color=#708090 size=2>线程池ID：%s</font> \n\n " +
                     "<font color=#708090 size=2>应用名称：%s</font> \n\n " +
                     "<font color=#778899 size=2>应用实例：%s</font> \n\n " +
-                    "<font color=#778899 size=2>实例标识：%s</font> \n\n " +
                     " --- \n\n  " +
                     "<font color=#708090 size=2>核心线程数：%d</font> \n\n " +
                     "<font color=#708090 size=2>最大线程数：%d</font> \n\n " +

@@ -15,28 +15,30 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.message.platform.constant;
+package cn.hippo4j.message.platform.base;
+
+import cn.hippo4j.message.dto.NotifyConfigDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * We chat alarm constants.
+ * Robot message execute DTO.
  */
-public class WeChatAlarmConstants {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class RobotMessageExecuteDTO {
 
     /**
-     * 企微机器人 Url
+     * Text
      */
-    public static final String WE_CHAT_SERVER_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=";
+    private String text;
 
     /**
-     * Trace 信息
+     * Notify config
      */
-    public static final String WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT = "\n> 链路信息：%s ";
-
-    /**
-     * 替换任务超时模板
-     */
-    public static final String WE_CHAT_ALARM_TIMOUT_REPLACE_TXT =
-            "\n> 任务执行时间：%s / ms \n" +
-                    "> 超时时间：%s / ms " +
-                    WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT;
+    private NotifyConfigDTO notifyConfig;
 }
