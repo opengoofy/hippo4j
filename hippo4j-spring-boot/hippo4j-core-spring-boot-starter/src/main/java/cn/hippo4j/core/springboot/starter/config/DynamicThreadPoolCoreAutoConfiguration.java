@@ -36,6 +36,7 @@ import cn.hippo4j.core.springboot.starter.support.ThreadPoolAdapterRegister;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.message.service.HippoBaseSendMessageService;
 import cn.hippo4j.message.service.HippoSendMessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -107,8 +108,11 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     }
 
     @Bean
-    public ExecutorsListener hippo4jExecutorsListener(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
-        return new ExecutorsListener(threadPoolNotifyAlarmHandler);
+    @SuppressWarnings("all")
+    public ExecutorsListener hippo4jExecutorsListener(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
+                                                      CoreNotifyConfigBuilder coreNotifyConfigBuilder,
+                                                      HippoBaseSendMessageService hippoBaseSendMessageService) {
+        return new ExecutorsListener(threadPoolNotifyAlarmHandler, coreNotifyConfigBuilder, hippoBaseSendMessageService);
     }
 
     @Bean
