@@ -18,22 +18,15 @@
 package cn.hippo4j.message.platform;
 
 import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
-import cn.hippo4j.message.enums.NotifyTypeEnum;
-import cn.hippo4j.message.service.SendMessageHandler;
-import cn.hippo4j.message.request.AlarmNotifyRequest;
-import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
+import cn.hippo4j.message.platform.base.RobotMessageActualContent;
+import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.http.HttpRequest;
-import com.google.common.base.Joiner;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Objects;
 
 import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.*;
 
@@ -41,7 +34,7 @@ import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.*;
  * WeChat send message handler.
  */
 @Slf4j
-public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
+public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
 
     @Override
     public String getType() {
@@ -49,122 +42,26 @@ public class WeChatSendMessageHandler implements SendMessageHandler<AlarmNotifyR
     }
 
     @Override
-    public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
-        String[] receives = notifyConfig.getReceives().split(",");
-        String afterReceives = Joiner.on("><@").join(receives);
-        String weChatAlarmTxt;
-        String weChatAlarmTimoutReplaceTxt;
-        if (Objects.equals(alarmNotifyRequest.getNotifyTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
-            String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
-            if (StringUtil.isNotBlank(executeTimeoutTrace)) {
-                String weChatAlarmTimoutTraceReplaceTxt = String.format(WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, executeTimeoutTrace);
-                weChatAlarmTimoutReplaceTxt = StrUtil.replace(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, weChatAlarmTimoutTraceReplaceTxt);
-            } else {
-                weChatAlarmTimoutReplaceTxt = StrUtil.replace(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
-            }
-            weChatAlarmTimoutReplaceTxt = String.format(weChatAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
-            weChatAlarmTxt = StrUtil.replace(WE_CHAT_ALARM_TXT, WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, weChatAlarmTimoutReplaceTxt);
-        } else {
-            weChatAlarmTxt = StrUtil.replace(WE_CHAT_ALARM_TXT, WE_CHAT_ALARM_TIMOUT_REPLACE_TXT, "");
-        }
-
-        String text = String.format(
-                weChatAlarmTxt,
-                // 环境
-                alarmNotifyRequest.getActive(),
-                // 报警类型
-                alarmNotifyRequest.getNotifyTypeEnum(),
-                // 线程池ID
-                alarmNotifyRequest.getThreadPoolId(),
-                // 应用名称
-                alarmNotifyRequest.getAppName(),
-                // 实例信息
-                alarmNotifyRequest.getIdentify(),
-                // 核心线程数
-                alarmNotifyRequest.getCorePoolSize(),
-                // 最大线程数
-                alarmNotifyRequest.getMaximumPoolSize(),
-                // 当前线程数
-                alarmNotifyRequest.getPoolSize(),
-                // 活跃线程数
-                alarmNotifyRequest.getActiveCount(),
-                // 最大任务数
-                alarmNotifyRequest.getLargestPoolSize(),
-                // 线程池任务总量
-                alarmNotifyRequest.getCompletedTaskCount(),
-                // 队列类型名称
-                alarmNotifyRequest.getQueueName(),
-                // 队列容量
-                alarmNotifyRequest.getCapacity(),
-                // 队列元素个数
-                alarmNotifyRequest.getQueueSize(),
-                // 队列剩余个数
-                alarmNotifyRequest.getRemainingCapacity(),
-                // 拒绝策略名称
-                alarmNotifyRequest.getRejectedExecutionHandlerName(),
-                // 拒绝策略次数
-                alarmNotifyRequest.getRejectCountNum(),
-                // 告警手机号
-                afterReceives,
-                // 报警频率
-                notifyConfig.getInterval(),
-                // 当前时间
-                DateUtil.now());
-        execute(notifyConfig.getSecretKey(), text);
+    protected RobotMessageActualContent buildMessageActualContent() {
+        RobotMessageActualContent robotMessageActualContent = RobotMessageActualContent.builder()
+                .receiveSeparator("><@")
+                .changeSeparator("  ➲  ")
+                .replaceTxt(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT)
+                .traceReplaceTxt(WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT)
+                .alarmMessageContent(FileUtil.readUtf8String("message/robot/dynamic-thread-pool/wechat-alarm.txt"))
+                .configMessageContent(FileUtil.readUtf8String("message/robot/dynamic-thread-pool/wechat-config.txt"))
+                .build();
+        return robotMessageActualContent;
     }
 
     @Override
-    public void sendChangeMessage(NotifyConfigDTO notifyConfig, ChangeParameterNotifyRequest changeParameterNotifyRequest) {
-        String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
-        String[] receives = notifyConfig.getReceives().split(",");
-        String afterReceives = Joiner.on("><@").join(receives);
-        String text = String.format(
-                WE_CHAT_NOTICE_TXT,
-                // 环境
-                changeParameterNotifyRequest.getActive(),
-                // 线程池名称
-                threadPoolId,
-                // 应用名称
-                changeParameterNotifyRequest.getAppName(),
-                // 实例信息
-                changeParameterNotifyRequest.getIdentify(),
-                // 核心线程数
-                changeParameterNotifyRequest.getBeforeCorePoolSize() + "  ➲  " + changeParameterNotifyRequest.getNowCorePoolSize(),
-                // 最大线程数
-                changeParameterNotifyRequest.getBeforeMaximumPoolSize() + "  ➲  " + changeParameterNotifyRequest.getNowMaximumPoolSize(),
-                // 核心线程超时
-                changeParameterNotifyRequest.getBeforeAllowsCoreThreadTimeOut() + "  ➲  " + changeParameterNotifyRequest.getNowAllowsCoreThreadTimeOut(),
-                // 线程存活时间
-                changeParameterNotifyRequest.getBeforeKeepAliveTime() + "  ➲  " + changeParameterNotifyRequest.getNowKeepAliveTime(),
-                // 执行超时时间
-                changeParameterNotifyRequest.getBeforeExecuteTimeOut() + "  ➲  " + changeParameterNotifyRequest.getNowExecuteTimeOut(),
-                // 阻塞队列
-                changeParameterNotifyRequest.getBlockingQueueName(),
-                // 阻塞队列容量
-                changeParameterNotifyRequest.getBeforeQueueCapacity() + "  ➲  " + changeParameterNotifyRequest.getNowQueueCapacity(),
-                // 拒绝策略
-                changeParameterNotifyRequest.getBeforeRejectedName(),
-                changeParameterNotifyRequest.getNowRejectedName(),
-                // 告警手机号
-                afterReceives,
-                // 当前时间
-                DateUtil.now());
-        execute(notifyConfig.getSecretKey(), text);
-    }
-
-    /**
-     * Execute.
-     *
-     * @param secretKey
-     * @param text
-     */
-    private void execute(String secretKey, String text) {
-        String serverUrl = WE_CHAT_SERVER_URL + secretKey;
+    protected void execute(RobotMessageExecuteDTO robotMessageExecuteDTO) {
+        String serverUrl = WE_CHAT_SERVER_URL + robotMessageExecuteDTO.getNotifyConfig().getSecretKey();
         try {
             WeChatReqDTO weChatReq = new WeChatReqDTO();
             weChatReq.setMsgtype("markdown");
             Markdown markdown = new Markdown();
-            markdown.setContent(text);
+            markdown.setContent(robotMessageExecuteDTO.getText());
             weChatReq.setMarkdown(markdown);
             HttpRequest.post(serverUrl).body(JSONUtil.toJSONString(weChatReq)).execute();
         } catch (Exception ex) {

@@ -1,0 +1,41 @@
+**<font color=#2a9d8f>[通知] </font>%s - 动态线程池参数变更**
+
+ ---
+
+<font color=#708090 size=2>线程池ID：%s</font> 
+
+<font color=#708090 size=2>应用名称：%s</font> 
+
+<font color=#778899 size=2>应用实例：%s</font> 
+
+ ---
+
+<font color=#708090 size=2>核心线程数：%s</font> 
+
+<font color=#708090 size=2>最大线程数：%s</font> 
+
+<font color=#708090 size=2>核心线程超时：%s</font> 
+
+<font color=#708090 size=2>线程存活时间：%s</font> 
+
+<font color=#708090 size=2>执行超时时间：%s</font> 
+
+ ---
+
+<font color=#708090 size=2>队列类型：%s</font> 
+
+<font color=#708090 size=2>队列容量：%s</font> 
+
+<font color=#708090 size=2>AGO 拒绝策略：%s</font> 
+
+<font color=#708090 size=2>NOW 拒绝策略：%s</font> 
+
+ ---
+
+<font color=#708090 size=2>提示：动态线程池配置变更实时通知（无限制）</font> 
+
+<font color=#708090 size=2>OWNER：@%s</font> 
+
+ ---
+
+**播报时间：%s**
