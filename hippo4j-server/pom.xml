@@ -9,9 +9,6 @@
     </parent>
 
     <artifactId>hippo4j-server</artifactId>
-    <packaging>jar</packaging>
-    <name>${project.artifactId}</name>
-    <description>${project.artifactId}</description>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
