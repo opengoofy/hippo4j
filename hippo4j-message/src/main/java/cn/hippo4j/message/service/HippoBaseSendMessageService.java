@@ -27,6 +27,7 @@ import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -45,7 +46,8 @@ public class HippoBaseSendMessageService implements HippoSendMessageService, Com
 
     private final AlarmControlHandler alarmControlHandler;
 
-    private final Map<String, List<NotifyConfigDTO>> notifyConfigs = Maps.newHashMap();
+    @Getter
+    public final Map<String, List<NotifyConfigDTO>> notifyConfigs = Maps.newHashMap();
 
     private final Map<String, SendMessageHandler> sendMessageHandlers = Maps.newHashMap();
 

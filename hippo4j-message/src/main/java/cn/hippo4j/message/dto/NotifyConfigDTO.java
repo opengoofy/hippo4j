@@ -19,62 +19,64 @@ package cn.hippo4j.message.dto;
 
 import cn.hippo4j.message.enums.NotifyTypeEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * Notify config dto.
  */
 @Data
+@EqualsAndHashCode
 @Accessors(chain = true)
 public class NotifyConfigDTO {
 
     /**
-     * 租户id
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * 项目id
+     * Item id
      */
     private String itemId;
 
     /**
-     * 线程池id
+     * Thread-pool id
      */
     private String tpId;
 
     /**
-     * 通知平台
+     * Platform
      */
     private String platform;
 
     /**
-     * 通知类型
+     * Type
      */
     private String type;
 
     /**
-     * 密钥
+     * Secret key
      */
     private String secretKey;
 
     /**
-     * 加签
+     * Secret
      */
     private String secret;
 
     /**
-     * 报警间隔
+     * Interval
      */
     private Integer interval;
 
     /**
-     * 接收者
+     * Receives
      */
     private String receives;
 
     /**
-     * 报警类型
+     * Type enum
      */
     private NotifyTypeEnum typeEnum;
 }

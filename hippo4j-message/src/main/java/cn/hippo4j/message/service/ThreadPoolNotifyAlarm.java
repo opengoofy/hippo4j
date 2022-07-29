@@ -33,36 +33,39 @@ import java.util.Map;
 public class ThreadPoolNotifyAlarm {
 
     /**
-     * isAlarm
+     * Is alarm
      */
     @NonNull
     private Boolean isAlarm;
 
     /**
-     * activeAlarm
+     * Active alarm
      */
     @NonNull
     private Integer activeAlarm;
 
     /**
-     * capacityAlarm
+     * Capacity alarm
      */
     @NonNull
     private Integer capacityAlarm;
 
     /**
-     * interval
+     * Interval
      */
     private Integer interval;
 
     /**
-     * receive
+     * Receive
      */
     private String receive;
 
     /**
-     * receives
-     * ps：暂不启用该配置，后续如果开发邮箱时或许有用
+     * Receives
+     *
+     * <p>
+     * Do not enable this configuration for the time being, it may be useful if you develop mailboxes in the future.
+     * </p>
      */
     @Deprecated
     private Map<String, String> receives;

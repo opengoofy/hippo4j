@@ -17,9 +17,10 @@
 
 package cn.hippo4j.core.springboot.starter.refresher.event;
 
-import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
+import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.core.executor.support.QueueTypeEnum;
@@ -28,13 +29,20 @@ import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
+import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.springboot.starter.support.GlobalCoreThreadPoolManage;
+import cn.hippo4j.message.dto.NotifyConfigDTO;
+import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.service.HippoBaseSendMessageService;
+import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -55,20 +63,27 @@ public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamic
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
+    private final CoreNotifyConfigBuilder coreNotifyConfigBuilder;
+
+    private final HippoBaseSendMessageService hippoBaseSendMessageService;
+
     @Override
     public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
         BootstrapCoreProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapCoreProperties();
         List<ExecutorProperties> executors = bindableCoreProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
+            // Check whether the notification configuration is consistent.
+            // this operation will not trigger the notification.
+            checkNotifyConsistencyAndReplace(properties);
             if (!checkConsistency(threadPoolId, properties)) {
                 continue;
             }
-            // refresh executor pool
+            // refresh executor pool.
             dynamicRefreshPool(threadPoolId, properties);
-            // old properties
+            // old properties.
             ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
-            // refresh executor properties
+            // refresh executor properties.
             GlobalCoreThreadPoolManage.refresh(threadPoolId, properties);
             log.info(CHANGE_THREAD_POOL_TEXT,
                     threadPoolId.toUpperCase(),
@@ -114,6 +129,56 @@ public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamic
         changeRequest.setNowRejectedName(properties.getRejectedHandler());
         changeRequest.setNowExecuteTimeOut(properties.getExecuteTimeOut());
         return changeRequest;
+    }
+
+    /**
+     * Check notify consistency and replace.
+     *
+     * @param properties
+     */
+    private void checkNotifyConsistencyAndReplace(ExecutorProperties properties) {
+        boolean checkNotifyConfig = false;
+        boolean checkNotifyAlarm = false;
+        List<String> changeKeys = Lists.newArrayList();
+        Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap = coreNotifyConfigBuilder.buildSingleNotifyConfig(properties);
+        Map<String, List<NotifyConfigDTO>> notifyConfigs = hippoBaseSendMessageService.getNotifyConfigs();
+        if (CollectionUtil.isNotEmpty(notifyConfigs)) {
+            for (Map.Entry<String, List<NotifyConfigDTO>> each : newDynamicThreadPoolNotifyMap.entrySet()) {
+                if (checkNotifyConfig) {
+                    break;
+                }
+                List<NotifyConfigDTO> notifyConfigDTOS = notifyConfigs.get(each.getKey());
+                for (NotifyConfigDTO notifyConfig : each.getValue()) {
+                    if (!notifyConfigDTOS.contains(notifyConfig)) {
+                        checkNotifyConfig = true;
+                        changeKeys.add(each.getKey());
+                        break;
+                    }
+                }
+            }
+        }
+        if (checkNotifyConfig) {
+            coreNotifyConfigBuilder.initCacheAndLock(newDynamicThreadPoolNotifyMap);
+            hippoBaseSendMessageService.putPlatform(newDynamicThreadPoolNotifyMap);
+        }
+        ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(properties.getThreadPoolId());
+        if (threadPoolNotifyAlarm != null && properties.getNotify() != null) {
+            ThreadPoolNotifyAlarm notify = properties.getNotify();
+            boolean isAlarm = notify.getIsAlarm();
+            Integer activeAlarm = notify.getActiveAlarm();
+            Integer capacityAlarm = notify.getCapacityAlarm();
+            if (threadPoolNotifyAlarm.getIsAlarm() != isAlarm
+                    || threadPoolNotifyAlarm.getActiveAlarm() != activeAlarm
+                    || threadPoolNotifyAlarm.getCapacityAlarm() != capacityAlarm) {
+                checkNotifyAlarm = true;
+                threadPoolNotifyAlarm.setIsAlarm(isAlarm);
+                threadPoolNotifyAlarm.setActiveAlarm(activeAlarm);
+                threadPoolNotifyAlarm.setCapacityAlarm(capacityAlarm);
+            }
+        }
+        if (checkNotifyConfig || checkNotifyAlarm) {
+            log.info("[{}] Dynamic thread pool notification property changes.", properties.getThreadPoolId());
+        }
     }
 
     /**
