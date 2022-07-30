@@ -3,7 +3,7 @@
 
 # 动态可观测线程池框架，提高线上运行保障能力
 
-[![Gitee](https://gitee.com/mabaiwancn/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/mabaiwancn/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![OpenIssue](http://isitmaintained.com/badge/open/opengoofy/hippo4j.svg?color=5470c6)](https://github.com/opengoofy/hippo4j/issues) [![OpenIssue](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=5470c6)](https://github.com/opengoofy/hippo4j/graphs/contributors) [![Hits](https://hits.b3log.org/acmenlt/dynamic-threadpool.svg)](https://github.com/opengoofy/hippo4j)
+[![Gitee](https://gitee.com/mabaiwancn/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/mabaiwancn/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![OpenIssue](http://isitmaintained.com/badge/open/opengoofy/hippo4j.svg?color=5470c6)](https://github.com/opengoofy/hippo4j/issues) [![Hits](https://hits.b3log.org/acmenlt/dynamic-threadpool.svg)](https://github.com/opengoofy/hippo4j) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=5470c6)](https://github.com/opengoofy/hippo4j/graphs/contributors)
 
 -------
 
