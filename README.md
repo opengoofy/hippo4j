@@ -1,8 +1,7 @@
-<img width="641" alt="image" src="https://user-images.githubusercontent.com/77398366/181906454-b46f6a14-7c2c-4b8f-8b0a-40432521bed8.png">
 
+<img align="center" width="420" alt="image" src="https://user-images.githubusercontent.com/77398366/181906454-b46f6a14-7c2c-4b8f-8b0a-40432521bed8.png">
 
 # 动态可观测线程池框架，提高线上运行保障能力
-
 
 <p>
   <a href="https://gitee.com/mabaiwancn/hippo4j" target="_blank">
@@ -24,6 +23,7 @@
 ## 什么是 Hippo-4J
 
 Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
+
 
 🏗 全局管控 - 管理应用线程池实例；
 
