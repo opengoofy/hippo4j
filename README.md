@@ -3,7 +3,7 @@
 
 # 动态可观测线程池框架，提高线上运行保障能力
 
-[![Gitee](https://gitee.com/mabaiwancn/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/mabaiwancn/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![OpenIssue](http://isitmaintained.com/badge/open/opengoofy/hippo4j.svg)](https://github.com/opengoofy/hippo4j/issues) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=3ba272)](https://github.com/opengoofy/hippo4j/graphs/contributors) [![License](https://img.shields.io/npm/l/echarts?color=5470c6)](https://github.com/apache/echarts/blob/master/LICENSE)
+[![Gitee](https://gitee.com/mabaiwancn/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/mabaiwancn/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![OpenIssue](http://isitmaintained.com/badge/open/opengoofy/hippo4j.svg)](https://github.com/opengoofy/hippo4j/issues) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=3ba272)](https://github.com/opengoofy/hippo4j/graphs/contributors) [![License](https://img.shields.io/github/license/opengoofy/hippo4j?color=5470c6)](https://github.com/opengoofy/hippo4j/blob/develop/LICENSE)
 
 -------
 
