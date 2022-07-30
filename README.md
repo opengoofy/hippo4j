@@ -3,20 +3,7 @@
 
 # 动态可观测线程池框架，提高线上运行保障能力
 
-<p>
-  <a href="https://gitee.com/mabaiwancn/hippo4j" target="_blank">
-    <img alt="Gitee" src="https://gitee.com/mabaiwancn/hippo4j/badge/star.svg?theme=gvp">
-  </a>
-  <a href="https://github.com/opengoofy/hippo4j" target="_blank">
-    <img alt="GitHub" src="https://img.shields.io/github/stars/opengoofy/hippo4j?label=Stars&style=flat-square&logo=GitHub">
-  </a>
-  <a href="https://github.com/opengoofy/hippo4j/blob/develop/LICENSE">
-    <img src="https://img.shields.io/github/license/opengoofy/hippo4j?color=42b883&style=flat-square" alt="LICENSE">
-  </a>
-  <a title="Hits" target="_blank" href="https://github.com/opengoofy/hippo4j">
-    <img src="https://hits.b3log.org/acmenlt/dynamic-threadpool.svg">
-  </a>
-</p>
+[![Gitee](https://gitee.com/mabaiwancn/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/mabaiwancn/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![OpenIssue](http://isitmaintained.com/badge/open/opengoofy/hippo4j.svg?color=5470c6)](https://github.com/opengoofy/hippo4j/issues) [![OpenIssue](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=5470c6)](https://github.com/opengoofy/hippo4j/graphs/contributors) [![Hits](https://hits.b3log.org/acmenlt/dynamic-threadpool.svg)](https://github.com/opengoofy/hippo4j)
 
 -------
 
@@ -24,24 +11,23 @@
 
 Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
 
+- 🏗 全局管控 - 管理应用线程池实例；
 
-🏗 全局管控 - 管理应用线程池实例；
+- ⚡️ 动态变更 - 应用运行时动态变更线程池参数，包括不限于：核心、最大线程数、阻塞队列容量、拒绝策略等；
 
-⚡️ 动态变更 - 应用运行时动态变更线程池参数，包括不限于：核心、最大线程数、阻塞队列容量、拒绝策略等；
+- 🐳 通知报警 - 内置四种报警通知策略，线程池活跃度、容量水位、拒绝策略以及任务执行时间超长；
 
-🐳 通知报警 - 内置四种报警通知策略，线程池活跃度、容量水位、拒绝策略以及任务执行时间超长；
+- 👀 运行监控 - 实时查看线程池运行时数据，最近半小时线程池运行数据图表展示；
 
-👀 运行监控 - 实时查看线程池运行时数据，最近半小时线程池运行数据图表展示；
+- 👐 功能扩展 - 支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务；
 
-👐 功能扩展 - 支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务；
+- 👯‍♀️ 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-core-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-server-start)；
 
-👯‍♀️ 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-core-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-server-start)；
+- 🛠 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
 
-🛠 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
+- 🌈 中间件适配 - Apache RocketMQ、Dubbo、RabbitMQ、Hystrix 消费线程池运行时数据查看和线程数变更。
 
-🌈 中间件适配 - Apache RocketMQ、Dubbo、RabbitMQ、Hystrix 消费线程池运行时数据查看和线程数变更。
-
-> 看完有所收获的话，右上角帮忙点个 Star，开源作者也不容易 🤣
+> 看完有收获，右上角帮忙点个小星星，开源作者为爱发电也不容易 🤣
 
 ## 快速开始
 
@@ -53,10 +39,9 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 ## 联系我
 
-图片加载不出来，访问 [国内站点](https://hippo4j.cn/docs/user_docs/other/group)
+图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)
 
 ![image](https://user-images.githubusercontent.com/77398366/180110548-7a05b74d-0316-4066-96f4-1c9331638633.png)
-
 
 ## 开发者
 
