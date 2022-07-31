@@ -12,7 +12,7 @@ const config = {
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
-    favicon: 'img/web.png',
+    favicon: 'img/favicon.png',
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'hippo4j', // Usually your GitHub org/user name.
@@ -64,9 +64,9 @@ const config = {
                 // content: `<a target="_blank" rel="noopener noreferrer" href="https://xiaomage.info/knowledge-planet/">👉 《小马哥的代码实战课》官方知识星球来啦！！！</a>`,
             },
             navbar: {
-                title: 'HIPPO-4J',
+                title: '4J',
                 logo: {
-                    alt: 'My Site Logo',
+                    alt: 'HIPPO-4J 动态可观测线程池框架',
                     src: 'img/web.png',
                 },
                 items: [
