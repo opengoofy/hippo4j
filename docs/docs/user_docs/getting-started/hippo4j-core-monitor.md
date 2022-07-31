@@ -6,11 +6,21 @@ sidebar_position: 2
 
 已完成 hippo4j-core 的 [接入工作](/docs/user_docs/getting-started/hippo4j-core-start) 。
 
-已安装 Grafana + Prometheus 服务。
+## 安装 Grafana + Prometheus
+
+```shell
+docker run -d -p 9090:9090 --name prometheus prom/prometheus
+```
+
+```shell
+docker run -d -p 3000:3000 --name=grafana grafana/grafana
+```
+
+访问 grafana 地址，[http://localhost:3000](http://localhost:3000) 用户名密码：`admin`
 
 ## 线程池监控
 
-1、引入 actuator。spring 2.x 一般都有版本指定，所以这里不用写版本号。
+引入 actuator。spring 2.x 一般都有版本指定，所以这里不用写版本号。
 
 ```xml
 <dependency>
@@ -24,7 +34,7 @@ sidebar_position: 2
 </dependency>
 ```
 
-2、添加相关配置。
+添加相关配置。
 
 ```yaml
 management:
@@ -44,7 +54,7 @@ spring:
       collect-type: metric
 ```
 
-3、Prometheus 配置任务，配置成功后需重启。
+Prometheus 配置任务，配置成功后需重启。
 
 ```yaml
 - job_name: 'dynamic-thread-pool-job'
@@ -54,13 +64,13 @@ spring:
     - targets: ['127.0.0.1:29999'] # 如果是 docker 部署，这里需要写本机的 IP
 ```
 
-4、Grafana 导入数据源。
+Grafana 导入数据源。
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220328231812090.png)
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220328231849537.png)
 
-5、Grafana DashBoard 配置。
+Grafana DashBoard 配置。
 
 关注公众号 `龙台的技术笔记`，回复：`监控`，获取 DashBoard JSON。
 
@@ -75,4 +85,4 @@ spring:
 
 即可使用 Hippo4j 线程池监控大屏。
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220327173704982.png)
+![](./img/grafana-monitor.jpg)
