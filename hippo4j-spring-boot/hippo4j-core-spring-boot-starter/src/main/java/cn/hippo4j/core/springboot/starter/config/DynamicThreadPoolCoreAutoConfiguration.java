@@ -21,11 +21,8 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
-import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.springboot.starter.monitor.DynamicThreadPoolMonitorExecutor;
-import cn.hippo4j.core.springboot.starter.monitor.LogMonitorHandler;
-import cn.hippo4j.core.springboot.starter.monitor.MetricMonitorHandler;
 import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.springboot.starter.refresher.event.AdapterExecutorsListener;
 import cn.hippo4j.core.springboot.starter.refresher.event.ExecutorsListener;
@@ -51,10 +48,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 /**
- * Dynamic thread-pool auto configuration.
- *
- * @author chen.ma
- * @date 2022/2/25 00:21
+ * Dynamic thread-pool core auto-configuration.
  */
 @Configuration
 @AllArgsConstructor
@@ -64,7 +58,8 @@ import org.springframework.core.annotation.Order;
 @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 @Import({
         ConfigHandlerConfiguration.EmbeddedNacos.class, ConfigHandlerConfiguration.EmbeddedNacosCloud.class,
-        ConfigHandlerConfiguration.EmbeddedApollo.class, ConfigHandlerConfiguration.EmbeddedZookeeper.class
+        ConfigHandlerConfiguration.EmbeddedApollo.class, ConfigHandlerConfiguration.EmbeddedZookeeper.class,
+        MonitorHandlerConfiguration.EmbeddedLogMonitor.class, MonitorHandlerConfiguration.EmbeddedPrometheusMonitor.class
 })
 public class DynamicThreadPoolCoreAutoConfiguration {
 
@@ -95,16 +90,6 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @Bean
     public DynamicThreadPoolMonitorExecutor hippo4jDynamicThreadPoolMonitorExecutor() {
         return new DynamicThreadPoolMonitorExecutor(bootstrapCoreProperties);
-    }
-
-    @Bean
-    public LogMonitorHandler hippo4jLogMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        return new LogMonitorHandler(threadPoolRunStateHandler);
-    }
-
-    @Bean
-    public MetricMonitorHandler hippo4jMetricMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        return new MetricMonitorHandler(threadPoolRunStateHandler);
     }
 
     @Bean

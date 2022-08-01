@@ -15,39 +15,31 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.springboot.starter.monitor;
+package cn.hippo4j.monitor.log;
 
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import lombok.RequiredArgsConstructor;
-
-import java.util.List;
+import com.example.monitor.base.AbstractDynamicThreadPoolMonitor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Abstract dynamic thread-pool monitor.
- *
- * @author chen.ma
- * @date 2022/3/25 12:07
+ * Log monitor handler
  */
-@RequiredArgsConstructor
-public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadPoolMonitor {
+@Slf4j
+public class LogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
-    private final ThreadPoolRunStateHandler threadPoolRunStateHandler;
-
-    /**
-     * Execute.
-     *
-     * @param poolRunStateInfo
-     */
-    protected abstract void execute(ThreadPoolRunStateInfo poolRunStateInfo);
+    public LogMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+        super(threadPoolRunStateHandler);
+    }
 
     @Override
-    public void collect() {
-        List<String> listDynamicThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
-        for (String each : listDynamicThreadPoolId) {
-            ThreadPoolRunStateInfo poolRunState = threadPoolRunStateHandler.getPoolRunState(each);
-            execute(poolRunState);
-        }
+    protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
+        log.info("{}", JSONUtil.toJSONString(poolRunStateInfo));
+    }
+
+    @Override
+    public String getType() {
+        return "log";
     }
 }

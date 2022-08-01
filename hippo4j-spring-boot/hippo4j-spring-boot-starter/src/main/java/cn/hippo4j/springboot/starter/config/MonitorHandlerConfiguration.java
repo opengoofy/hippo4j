@@ -15,33 +15,27 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.springboot.starter.monitor;
+package cn.hippo4j.springboot.starter.config;
 
-import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import lombok.extern.slf4j.Slf4j;
+import cn.hippo4j.monitor.prometheus.PrometheusMonitorHandler;
+import cn.hippo4j.springboot.starter.config.condition.PrometheusMonitorCondition;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * Log monitor handler.
- *
- * @author chen.ma
- * @date 2022/3/25 19:22
+ * Monitor handler configuration.
  */
-@Slf4j
-public class LogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
+@Configuration(proxyBeanMethods = false)
+public class MonitorHandlerConfiguration {
 
-    public LogMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        super(threadPoolRunStateHandler);
-    }
+    @Conditional(PrometheusMonitorCondition.class)
+    static class EmbeddedPrometheusMonitor {
 
-    @Override
-    protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
-        log.info("{}", JSONUtil.toJSONString(poolRunStateInfo));
-    }
-
-    @Override
-    public String getType() {
-        return "log";
+        @Bean
+        public PrometheusMonitorHandler prometheusMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+            return new PrometheusMonitorHandler(threadPoolRunStateHandler);
+        }
     }
 }

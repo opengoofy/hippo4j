@@ -15,14 +15,12 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.springboot.starter.monitor;
+package com.example.monitor.base;
 
 /**
- * Dynamic thread-pool monitor.
- *
- * @author chen.ma
- * @date 2022/3/25 19:03
+ * Monitor type enum.
  */
-public interface DynamicThreadPoolMonitor extends ThreadPoolMonitor {
+public enum MonitorTypeEnum {
 
+    LOG, PROMETHEUS, SERVER
 }

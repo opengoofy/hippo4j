@@ -96,6 +96,12 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-monitor-prometheus</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
     <build>

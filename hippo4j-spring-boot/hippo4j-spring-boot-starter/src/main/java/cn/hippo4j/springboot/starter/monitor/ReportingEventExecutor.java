@@ -19,13 +19,17 @@ package cn.hippo4j.springboot.starter.monitor;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.monitor.Message;
+import cn.hippo4j.common.toolkit.ThreadUtil;
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.monitor.collect.Collector;
-import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
-import cn.hippo4j.common.toolkit.ThreadUtil;
+import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import cn.hutool.core.collection.CollUtil;
+import com.example.monitor.base.MonitorTypeEnum;
+import com.example.monitor.base.ThreadPoolMonitor;
+import com.google.common.base.Strings;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -69,6 +73,11 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
     private Map<String, Collector> collectors;
 
     /**
+     * Thread pool monitoring collection.
+     */
+    private Map<String, ThreadPoolMonitor> threadPoolMonitors;
+
+    /**
      * Buffer container for data collection, waiting
      * for ReportingEventExecutor to report to the server.
      */
@@ -95,30 +104,48 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
 
     @Override
     public void run(String... args) {
-        if (properties.getCollect()) {
-            Integer bufferSize = properties.getTaskBufferSize();
-            messageCollectVessel = new ArrayBlockingQueue(bufferSize);
-            String collectVesselTaskName = "client.scheduled.collect.data";
-            collectVesselExecutor = new ScheduledThreadPoolExecutor(
-                    new Integer(1),
-                    ThreadFactoryBuilder.builder().daemon(true).prefix(collectVesselTaskName).build());
+        if (!properties.getCollect()) {
+            return;
+        }
+        String collectType = Optional.ofNullable(Strings.emptyToNull(properties.getCollectType())).orElse(MonitorTypeEnum.SERVER.name().toLowerCase());
+        collectVesselExecutor = new ScheduledThreadPoolExecutor(
+                new Integer(collectType.split(",").length),
+                ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());
+        if (collectType.contains(MonitorTypeEnum.PROMETHEUS.name().toLowerCase())
+                || collectType.contains(MonitorTypeEnum.LOG.name().toLowerCase())) {
+            // Get all dynamic thread pool monitoring components.
+            threadPoolMonitors = ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class);
+            collectVesselExecutor.scheduleWithFixedDelay(
+                    () -> dynamicThreadPoolMonitor(),
+                    properties.getInitialDelay(),
+                    properties.getCollectInterval(),
+                    TimeUnit.MILLISECONDS);
+        }
+        if (collectType.contains(MonitorTypeEnum.SERVER.name().toLowerCase())) {
             collectVesselExecutor.scheduleWithFixedDelay(
                     () -> runTimeGatherTask(),
                     properties.getInitialDelay(),
                     properties.getCollectInterval(),
                     TimeUnit.MILLISECONDS);
-            // Start reporting monitoring data thread
-            String reportingTaskName = "client.thread.reporting.task";
-            ThreadUtil.newThread(this, reportingTaskName, Boolean.TRUE).start();
+            Integer bufferSize = properties.getTaskBufferSize();
+            messageCollectVessel = new ArrayBlockingQueue(bufferSize);
             // Get all data collection components, currently only historical operation data collection.
             collectors = ApplicationContextHolder.getBeansOfType(Collector.class);
+            // Start reporting monitoring data thread.
+            ThreadUtil.newThread(this, "client.thread.reporting.task", Boolean.TRUE).start();
         }
-        log.info("Dynamic thread pool :: [{}]. The dynamic thread pool starts data collection and reporting. ", getThreadPoolNum());
+        if (GlobalThreadPoolManage.getThreadPoolNum() > 0) {
+            log.info("Dynamic thread pool :: [{}]. The dynamic thread pool starts data collection and reporting. ", getThreadPoolNum());
+        }
     }
 
     @Override
     public void destroy() {
         Optional.ofNullable(collectVesselExecutor).ifPresent((each) -> each.shutdown());
+    }
+
+    private void dynamicThreadPoolMonitor() {
+        threadPoolMonitors.forEach((beanName, monitor) -> monitor.collect());
     }
 
     /**
