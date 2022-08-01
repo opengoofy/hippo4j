@@ -15,12 +15,13 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.springboot.starter.monitor;
+package cn.hippo4j.monitor.prometheus;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hutool.core.bean.BeanUtil;
+import com.example.monitor.base.AbstractDynamicThreadPoolMonitor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.micrometer.core.instrument.Metrics;
@@ -30,12 +31,9 @@ import org.springframework.core.env.Environment;
 import java.util.Map;
 
 /**
- * Metric monitor handler.
- *
- * @author chen.ma
- * @date 2022/3/25 20:37
+ * Prometheus monitor handler.
  */
-public class MetricMonitorHandler extends AbstractDynamicThreadPoolMonitor {
+public class PrometheusMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     private final static String METRIC_NAME_PREFIX = "dynamic.thread-pool";
 
@@ -45,7 +43,7 @@ public class MetricMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     private final Map<String, ThreadPoolRunStateInfo> RUN_STATE_CACHE = Maps.newConcurrentMap();
 
-    public MetricMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+    public PrometheusMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
         super(threadPoolRunStateHandler);
     }
 
@@ -57,13 +55,11 @@ public class MetricMonitorHandler extends AbstractDynamicThreadPoolMonitor {
         } else {
             BeanUtil.copyProperties(poolRunStateInfo, stateInfo);
         }
-
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String applicationName = environment.getProperty("spring.application.name", "application");
         Iterable<Tag> tags = Lists.newArrayList(
                 Tag.of(DYNAMIC_THREAD_POOL_ID_TAG, poolRunStateInfo.getTpId()),
                 Tag.of(APPLICATION_NAME_TAG, applicationName));
-
         // load
         Metrics.gauge(metricName("current.load"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getSimpleCurrentLoad);
         Metrics.gauge(metricName("peak.load"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getSimplePeakLoad);
@@ -88,6 +84,6 @@ public class MetricMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     @Override
     public String getType() {
-        return "metric";
+        return "prometheus";
     }
 }

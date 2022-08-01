@@ -18,6 +18,7 @@
 package cn.hippo4j.springboot.starter.config;
 
 import cn.hippo4j.core.config.BootstrapPropertiesInterface;
+import com.example.monitor.base.DynamicThreadPoolMonitor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,7 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
      * Report type
      */
     private String reportType;
+
     /**
      * Namespace
      */
@@ -85,6 +87,12 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
      * Enable client data collect
      */
     private Boolean collect = true;
+
+    /**
+     * Type of collection thread pool running data. eg: server,prometheus. Multiple can be used at the same time.
+     * Custom SPI support {@link DynamicThreadPoolMonitor}.
+     */
+    private String collectType;
 
     /**
      * Task buffer container capacity

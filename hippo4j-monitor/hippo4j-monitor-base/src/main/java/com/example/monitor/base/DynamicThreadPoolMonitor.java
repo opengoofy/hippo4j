@@ -15,25 +15,11 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.springboot.starter.monitor;
+package com.example.monitor.base;
 
 /**
- * Thread-pool monitor.
- *
- * @author chen.ma
- * @date 2022/3/25 19:03
+ * Dynamic thread-pool monitor.
  */
-public interface ThreadPoolMonitor {
+public interface DynamicThreadPoolMonitor extends ThreadPoolMonitor {
 
-    /**
-     * Get type.
-     *
-     * @return
-     */
-    String getType();
-
-    /**
-     * Collect data.
-     */
-    void collect();
 }

@@ -22,6 +22,8 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hippo4j.core.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import com.example.monitor.base.DynamicThreadPoolMonitor;
+import com.example.monitor.base.ThreadPoolMonitor;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,15 +58,11 @@ public class DynamicThreadPoolMonitorExecutor implements ApplicationRunner {
         if (!properties.getCollect() || StringUtil.isBlank(collectType)) {
             return;
         }
-
         log.info("Start monitoring the running status of dynamic thread pool.");
         threadPoolMonitors = Lists.newArrayList();
-
-        String collectTaskName = "client.scheduled.collect.data";
         collectExecutor = new ScheduledThreadPoolExecutor(
                 new Integer(1),
-                ThreadFactoryBuilder.builder().daemon(true).prefix(collectTaskName).build());
-
+                ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());
         // Get dynamic thread pool monitoring component.
         List<String> collectTypes = Arrays.asList(collectType.split(","));
         ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class)
@@ -76,7 +74,6 @@ public class DynamicThreadPoolMonitorExecutor implements ApplicationRunner {
         Collection<DynamicThreadPoolMonitor> dynamicThreadPoolMonitors =
                 DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
         dynamicThreadPoolMonitors.stream().filter(each -> collectTypes.contains(each.getType())).forEach(each -> threadPoolMonitors.add(each));
-
         // Execute dynamic thread pool monitoring component.
         collectExecutor.scheduleWithFixedDelay(
                 () -> scheduleRunnable(),
