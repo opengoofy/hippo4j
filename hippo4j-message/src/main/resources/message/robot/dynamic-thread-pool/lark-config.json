@@ -5,9 +5,9 @@
       "wide_screen_mode": true
     },
     "header": {
-      "template": "red",
+      "template": "greed",
       "title": {
-        "content": "[🔥警报] %s 动态线程池运行告警（%s）",
+        "content": "[通知] %s 动态线程池参数变更",
         "tag": "plain_text"
       }
     },
@@ -60,28 +60,14 @@
           {
             "is_short": true,
             "text": {
-              "content": "** 当前线程数：** %s",
+              "content": "** 核心线程超时：** %s",
               "tag": "lark_md"
             }
           },
           {
             "is_short": true,
             "text": {
-              "content": "** 活跃线程数：** %s",
-              "tag": "lark_md"
-            }
-          },
-          {
-            "is_short": true,
-            "text": {
-              "content": "** 同存最大线程数：** %s",
-              "tag": "lark_md"
-            }
-          },
-          {
-            "is_short": true,
-            "text": {
-              "content": "** 线程池任务总量：** %s",
+              "content": "** 线程存活时间：** %s",
               "tag": "lark_md"
             }
           }
@@ -110,14 +96,7 @@
           {
             "is_short": true,
             "text": {
-              "content": "** 队列元素个数：** %s",
-              "tag": "lark_md"
-            }
-          },
-          {
-            "is_short": true,
-            "text": {
-              "content": "** 队列剩余个数：** %s",
+              "content": "** 执行超时时间：** %s",
               "tag": "lark_md"
             }
           }
@@ -132,43 +111,14 @@
           {
             "is_short": true,
             "text": {
-              "content": "** 任务执行时间：** %s",
+              "content": "** AGO 拒绝策略：** %s",
               "tag": "lark_md"
             }
           },
           {
             "is_short": true,
             "text": {
-              "content": "** 超时时间：** %s",
-              "tag": "lark_md"
-            }
-          },
-          {
-            "is_short": true,
-            "text": {
-              "content": "** 链路信息：** %s",
-              "tag": "lark_md"
-            }
-          }
-        ],
-        "tag": "div"
-      },
-      {
-        "tag": "hr"
-      },
-      {
-        "fields": [
-          {
-            "is_short": true,
-            "text": {
-              "content": "** 拒绝策略：** %s",
-              "tag": "lark_md"
-            }
-          },
-          {
-            "is_short": true,
-            "text": {
-              "content": "** 拒绝策略执行次数：** %s",
+              "content": "** NOW 拒绝策略：** %s",
               "tag": "lark_md"
             }
           },
@@ -197,7 +147,7 @@
         "elements": [
           {
             "tag": "plain_text",
-            "content": "提示： %s 分钟内此线程池不会重复告警（可配置）"
+            "content": "提示：动态线程池配置变更实时通知（无限制）"
           }
         ]
       }
