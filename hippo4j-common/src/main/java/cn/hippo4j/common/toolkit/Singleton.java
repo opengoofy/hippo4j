@@ -43,6 +43,7 @@ public final class Singleton {
         return result == null ? null : (T) result;
     }
 
+
     /**
      * Get a singleton object by key.
      *
