@@ -33,8 +33,8 @@ import cn.hippo4j.core.springboot.starter.support.ThreadPoolAdapterRegister;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;
-import cn.hippo4j.message.service.HippoBaseSendMessageService;
-import cn.hippo4j.message.service.HippoSendMessageService;
+import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
+import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -78,7 +78,7 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     }
 
     @Bean
-    public ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler(HippoSendMessageService hippoSendMessageService) {
+    public ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler(Hippo4jSendMessageService hippoSendMessageService) {
         return new ThreadPoolNotifyAlarmHandler(hippoSendMessageService);
     }
 
@@ -96,7 +96,7 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     @SuppressWarnings("all")
     public ExecutorsListener hippo4jExecutorsListener(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
                                                       CoreNotifyConfigBuilder coreNotifyConfigBuilder,
-                                                      HippoBaseSendMessageService hippoBaseSendMessageService) {
+                                                      Hippo4jBaseSendMessageService hippoBaseSendMessageService) {
         return new ExecutorsListener(threadPoolNotifyAlarmHandler, coreNotifyConfigBuilder, hippoBaseSendMessageService);
     }
 

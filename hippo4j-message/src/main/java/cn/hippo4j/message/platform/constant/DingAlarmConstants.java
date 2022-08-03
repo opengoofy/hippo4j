@@ -23,27 +23,27 @@ package cn.hippo4j.message.platform.constant;
 public class DingAlarmConstants {
 
     /**
-     * 钉钉机器人 Url
+     * DingTalk Robot Url
      */
     public static final String DING_ROBOT_SERVER_URL = "https://oapi.dingtalk.com/robot/send?access_token=";
 
     /**
-     * 线程池报警通知标题
+     * Thread Pool Alert Notification Title
      */
     public static final String DING_ALARM_TITLE = "动态线程池告警";
 
     /**
-     * 线程池参数变更通知标题
+     * Thread pool parameter change notification title
      */
     public static final String DING_NOTICE_TITLE = "动态线程池通知";
 
     /**
-     * Trace 信息
+     * Trace info
      */
     public static final String DING_ALARM_TIMOUT_TRACE_REPLACE_TXT = "<font color=#708090 size=2>链路信息：%s</font> \n\n ";
 
     /**
-     * 替换任务超时模板
+     * Replace task timeout template
      */
     public static final String DING_ALARM_TIMOUT_REPLACE_TXT =
             "<font color=#708090 size=2>任务执行时间：%d / ms </font> \n\n " +

@@ -24,7 +24,7 @@ import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
-import cn.hippo4j.message.service.HippoBaseSendMessageService;
+import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 
@@ -47,7 +47,7 @@ public class PlatformsListener implements ApplicationListener<Hippo4jCoreDynamic
             String threadPoolId = executor.getThreadPoolId();
             DynamicThreadPoolWrapper wrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
             if (wrapper != null && !wrapper.isInitFlag()) {
-                HippoBaseSendMessageService sendMessageService = ApplicationContextHolder.getBean(HippoBaseSendMessageService.class);
+                Hippo4jBaseSendMessageService sendMessageService = ApplicationContextHolder.getBean(Hippo4jBaseSendMessageService.class);
                 CoreNotifyConfigBuilder configBuilder = ApplicationContextHolder.getBean(CoreNotifyConfigBuilder.class);
                 Map<String, List<NotifyConfigDTO>> notifyConfig = configBuilder.buildSingleNotifyConfig(executor);
                 sendMessageService.putPlatform(notifyConfig);

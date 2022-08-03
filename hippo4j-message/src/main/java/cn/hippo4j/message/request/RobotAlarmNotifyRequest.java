@@ -26,7 +26,7 @@ import lombok.Data;
 public class RobotAlarmNotifyRequest extends AlarmNotifyRequest {
 
     /**
-     * secretKey
+     * Secret key
      */
     private String secretKey;
 }

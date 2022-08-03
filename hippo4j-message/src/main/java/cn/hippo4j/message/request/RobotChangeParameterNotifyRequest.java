@@ -26,7 +26,7 @@ import lombok.Data;
 public class RobotChangeParameterNotifyRequest extends ChangeParameterNotifyRequest {
 
     /**
-     * secretKey
+     * Secret key
      */
     private String secretKey;
 }

@@ -36,11 +36,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Hippo base send message service.
+ * Hippo-4j base send message service.
  */
 @Slf4j
 @RequiredArgsConstructor
-public class HippoBaseSendMessageService implements HippoSendMessageService, CommandLineRunner {
+public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService, CommandLineRunner {
 
     private final NotifyConfigBuilder notifyConfigBuilder;
 
