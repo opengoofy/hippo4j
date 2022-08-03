@@ -61,8 +61,8 @@ public class ItemServiceImpl implements ItemService {
                 .eq(!StringUtils.isEmpty(reqDTO.getItemId()), ItemInfo::getItemId, reqDTO.getItemId())
                 .eq(!StringUtils.isEmpty(reqDTO.getItemName()), ItemInfo::getItemName, reqDTO.getItemName())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId())
-                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), ItemInfo::getOwner, reqDTO.getOwner());
-
+                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), ItemInfo::getOwner, reqDTO.getOwner())
+                .orderByDesc(reqDTO.getDesc() != null, ItemInfo::getGmtCreate);
         Page<ItemInfo> resultPage = itemInfoMapper.selectPage(reqDTO, wrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, ItemRespDTO.class));
     }
