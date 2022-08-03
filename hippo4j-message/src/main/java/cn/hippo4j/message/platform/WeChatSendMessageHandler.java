@@ -18,6 +18,7 @@
 package cn.hippo4j.message.platform;
 
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
 import cn.hippo4j.message.platform.base.RobotMessageActualContent;
@@ -43,13 +44,15 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
 
     @Override
     protected RobotMessageActualContent buildMessageActualContent() {
+        String weChatAlarmTxtKet = "message/robot/dynamic-thread-pool/wechat-alarm.txt";
+        String weChatConfigTxtKet = "message/robot/dynamic-thread-pool/wechat-alarm.txt";
         RobotMessageActualContent robotMessageActualContent = RobotMessageActualContent.builder()
                 .receiveSeparator("><@")
                 .changeSeparator("  ➲  ")
                 .replaceTxt(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT)
                 .traceReplaceTxt(WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT)
-                .alarmMessageContent(FileUtil.readUtf8String("message/robot/dynamic-thread-pool/wechat-alarm.txt"))
-                .configMessageContent(FileUtil.readUtf8String("message/robot/dynamic-thread-pool/wechat-config.txt"))
+                .alarmMessageContent(Singleton.get(weChatAlarmTxtKet, () -> FileUtil.readUtf8String(weChatAlarmTxtKet)))
+                .configMessageContent(Singleton.get(weChatConfigTxtKet, () -> FileUtil.readUtf8String(weChatConfigTxtKet)))
                 .build();
         return robotMessageActualContent;
     }

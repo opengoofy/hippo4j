@@ -17,6 +17,7 @@
 
 package cn.hippo4j.message.platform;
 
+import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
@@ -54,13 +55,15 @@ public class DingSendMessageHandler extends AbstractRobotSendMessageHandler {
 
     @Override
     protected RobotMessageActualContent buildMessageActualContent() {
+        String dingAlarmTxtKey = "message/robot/dynamic-thread-pool/ding-alarm.txt";
+        String dingConfigTxtKey = "message/robot/dynamic-thread-pool/ding-config.txt";
         RobotMessageActualContent robotMessageActualContent = RobotMessageActualContent.builder()
                 .receiveSeparator(", @")
                 .changeSeparator(" -> ")
                 .replaceTxt(DING_ALARM_TIMOUT_REPLACE_TXT)
                 .traceReplaceTxt(DING_ALARM_TIMOUT_TRACE_REPLACE_TXT)
-                .alarmMessageContent(FileUtil.readUtf8String("message/robot/dynamic-thread-pool/ding-alarm.txt"))
-                .configMessageContent(FileUtil.readUtf8String("message/robot/dynamic-thread-pool/ding-config.txt"))
+                .alarmMessageContent(Singleton.get(dingAlarmTxtKey, () -> FileUtil.readUtf8String(dingAlarmTxtKey)))
+                .configMessageContent(Singleton.get(dingConfigTxtKey, () -> FileUtil.readUtf8String(dingConfigTxtKey)))
                 .build();
         return robotMessageActualContent;
     }
