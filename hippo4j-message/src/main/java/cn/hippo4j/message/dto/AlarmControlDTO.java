@@ -22,29 +22,29 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * Alarm control dto.
+ * Alarm control DTO.
  */
 @Data
 @Builder
 public class AlarmControlDTO {
 
     /**
-     * 线程池 Id
+     * Thread pool id
      */
     private String threadPool;
 
     /**
-     * 推送报警平台
+     * Push alarm platform
      */
     private String platform;
 
     /**
-     * 推送报警类型
+     * Push Alert Type
      */
     private NotifyTypeEnum typeEnum;
 
     /**
-     * 构建线程池报警标识
+     * Build thread pool alarm id
      *
      * @return
      */

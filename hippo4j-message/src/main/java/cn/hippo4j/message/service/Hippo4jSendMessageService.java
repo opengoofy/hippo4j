@@ -22,12 +22,12 @@ import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 
 /**
- * Hippo4j send message service.
+ * Hippo-4j send message service.
  */
-public interface HippoSendMessageService {
+public interface Hippo4jSendMessageService {
 
     /**
-     * Send alarm message.
+     * Send dynamic thread pool alert notifications.
      *
      * @param typeEnum
      * @param alarmNotifyRequest
@@ -35,7 +35,7 @@ public interface HippoSendMessageService {
     void sendAlarmMessage(NotifyTypeEnum typeEnum, AlarmNotifyRequest alarmNotifyRequest);
 
     /**
-     * Send change message.
+     * Send dynamic thread pool parameter change notification.
      *
      * @param changeParameterNotifyRequest
      */

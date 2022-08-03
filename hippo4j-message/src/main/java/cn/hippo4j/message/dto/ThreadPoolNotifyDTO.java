@@ -28,12 +28,12 @@ import java.util.List;
 public class ThreadPoolNotifyDTO {
 
     /**
-     * notifyKey
+     * Notify key
      */
     private String notifyKey;
 
     /**
-     * notifyList
+     * Notify list
      */
     private List<NotifyConfigDTO> notifyList;
 }

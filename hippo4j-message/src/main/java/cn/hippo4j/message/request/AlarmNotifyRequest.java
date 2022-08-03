@@ -30,102 +30,102 @@ import lombok.experimental.Accessors;
 public class AlarmNotifyRequest extends BaseNotifyRequest {
 
     /**
-     * interval
+     * Interval
      */
     private Integer interval;
 
     /**
-     * notifyTypeEnum
+     * Notify type enum
      */
     private NotifyTypeEnum notifyTypeEnum;
 
     /**
-     * active
+     * Active
      */
     private String active;
 
     /**
-     * appName
+     * App name
      */
     private String appName;
 
     /**
-     * identify
+     * Identify
      */
     private String identify;
 
     /**
-     * corePoolSize
+     * Core pool size
      */
     private Integer corePoolSize;
 
     /**
-     * maximumPoolSize
+     * Maximum pool size
      */
     private Integer maximumPoolSize;
 
     /**
-     * poolSize
+     * Pool size
      */
     private Integer poolSize;
 
     /**
-     * activeCount
+     * Active count
      */
     private Integer activeCount;
 
     /**
-     * largestPoolSize
+     * Largest pool size
      */
     private Integer largestPoolSize;
 
     /**
-     * completedTaskCount
+     * Completed task count
      */
     private Long completedTaskCount;
 
     /**
-     * queueName
+     * Queue name
      */
     private String queueName;
 
     /**
-     * capacity
+     * Capacity
      */
     private Integer capacity;
 
     /**
-     * queueSize
+     * Queue size
      */
     private Integer queueSize;
 
     /**
-     * remainingCapacity
+     * Remaining capacity
      */
     private Integer remainingCapacity;
 
     /**
-     * rejectedExecutionHandlerName
+     * Rejected execution handler name
      */
     private String rejectedExecutionHandlerName;
 
     /**
-     * rejectCountNum
+     * Reject count num
      */
     private Long rejectCountNum;
 
     /**
-     * executeTime
+     * Execute time
      */
     private Long executeTime;
 
     /**
-     * executeTimeOut
+     * Execute timeout
      */
     private Long executeTimeOut;
 
     /**
-     * executeTimeoutTrace
+     * Execute timeout trace
      */
     private String executeTimeoutTrace;
 }

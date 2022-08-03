@@ -23,17 +23,17 @@ package cn.hippo4j.message.platform.constant;
 public class WeChatAlarmConstants {
 
     /**
-     * 企微机器人 Url
+     * Enterprise Micro Robot Url
      */
     public static final String WE_CHAT_SERVER_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=";
 
     /**
-     * Trace 信息
+     * Trace info
      */
     public static final String WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT = "\n> 链路信息：%s ";
 
     /**
-     * 替换任务超时模板
+     * Replace task timeout template
      */
     public static final String WE_CHAT_ALARM_TIMOUT_REPLACE_TXT =
             "\n> 任务执行时间：%s / ms \n" +
