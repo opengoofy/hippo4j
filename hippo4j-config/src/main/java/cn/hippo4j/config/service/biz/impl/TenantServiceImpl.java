@@ -66,7 +66,6 @@ public class TenantServiceImpl implements TenantService {
     public TenantRespDTO getTenantByTenantId(String tenantId) {
         LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers
                 .lambdaQuery(TenantInfo.class).eq(TenantInfo::getTenantId, tenantId);
-
         TenantInfo tenantInfo = tenantInfoMapper.selectOne(queryWrapper);
         TenantRespDTO result = BeanUtil.convert(tenantInfo, TenantRespDTO.class);
         return result;
@@ -77,8 +76,8 @@ public class TenantServiceImpl implements TenantService {
         LambdaQueryWrapper<TenantInfo> wrapper = Wrappers.lambdaQuery(TenantInfo.class)
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), TenantInfo::getTenantId, reqDTO.getTenantId())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantName()), TenantInfo::getTenantName, reqDTO.getTenantName())
-                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), TenantInfo::getOwner, reqDTO.getOwner());
-
+                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), TenantInfo::getOwner, reqDTO.getOwner())
+                .orderByDesc(reqDTO.getDesc() != null, TenantInfo::getGmtCreate);
         Page resultPage = tenantInfoMapper.selectPage(reqDTO, wrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, TenantRespDTO.class));
     }
@@ -87,8 +86,7 @@ public class TenantServiceImpl implements TenantService {
     public void saveTenant(TenantSaveReqDTO reqDTO) {
         LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers.lambdaQuery(TenantInfo.class)
                 .eq(TenantInfo::getTenantId, reqDTO.getTenantId());
-
-        // 当前为单体应用, 后续支持集群部署时切换分布式锁.
+        // Currently it is a single application, and it supports switching distributed locks during cluster deployment in the future.
         synchronized (TenantService.class) {
             TenantInfo existTenantInfo = tenantInfoMapper.selectOne(queryWrapper);
             Assert.isNull(existTenantInfo, "租户配置已存在.");
@@ -109,7 +107,6 @@ public class TenantServiceImpl implements TenantService {
         TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
         int updateResult = tenantInfoMapper.update(tenantInfo, Wrappers
                 .lambdaUpdate(TenantInfo.class).eq(TenantInfo::getTenantId, reqDTO.getTenantId()));
-
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("Update Error.");
@@ -124,7 +121,6 @@ public class TenantServiceImpl implements TenantService {
         if (CollectionUtils.isNotEmpty(itemList)) {
             throw new RuntimeException("租户包含项目引用, 删除失败.");
         }
-
         int updateResult = tenantInfoMapper.update(new TenantInfo(),
                 Wrappers.lambdaUpdate(TenantInfo.class)
                         .eq(TenantInfo::getTenantId, tenantId)
