@@ -17,6 +17,7 @@
 
 package cn.hippo4j.springboot.starter.remote;
 
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
 import cn.hippo4j.springboot.starter.core.ShutdownExecuteException;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
@@ -46,6 +47,11 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
      * Health status
      */
     private volatile boolean healthStatus = true;
+
+    /**
+     * Health check failure count
+     */
+    private volatile int checkFailureCount = 0;
 
     /**
      * Client shutdown hook
@@ -89,11 +95,18 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
         if (healthCheckStatus) {
             if (Objects.equals(healthStatus, false)) {
                 healthStatus = true;
+                checkFailureCount = 0;
                 log.info("The client reconnects to the server successfully.");
                 signalAllBizThread();
             }
         } else {
             healthStatus = false;
+            checkFailureCount++;
+            if (checkFailureCount > 1 && checkFailureCount < 4) {
+                ThreadUtil.sleep(HEALTH_CHECK_INTERVAL * 1000 * (checkFailureCount - 1));
+            } else if (checkFailureCount >= 4) {
+                ThreadUtil.sleep(25000L);
+            }
         }
     }
 
