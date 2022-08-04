@@ -25,7 +25,7 @@ import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
 import cn.hippo4j.message.platform.base.RobotMessageActualContent;
 import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
 import cn.hippo4j.message.platform.constant.DingAlarmConstants;
-import cn.hutool.core.io.FileUtil;
+import cn.hippo4j.common.toolkit.FileUtil;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiRobotSendRequest;

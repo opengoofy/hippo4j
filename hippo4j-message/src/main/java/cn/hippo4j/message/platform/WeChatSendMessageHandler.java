@@ -17,13 +17,13 @@
 
 package cn.hippo4j.message.platform;
 
+import cn.hippo4j.common.toolkit.FileUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
 import cn.hippo4j.message.platform.base.RobotMessageActualContent;
 import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.http.HttpRequest;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -44,15 +44,15 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
 
     @Override
     protected RobotMessageActualContent buildMessageActualContent() {
-        String weChatAlarmTxtKet = "message/robot/dynamic-thread-pool/wechat-alarm.txt";
-        String weChatConfigTxtKet = "message/robot/dynamic-thread-pool/wechat-alarm.txt";
+        String weChatAlarmTxtKey = "message/robot/dynamic-thread-pool/wechat-alarm.txt";
+        String weChatConfigTxtKey = "message/robot/dynamic-thread-pool/wechat-alarm.txt";
         RobotMessageActualContent robotMessageActualContent = RobotMessageActualContent.builder()
                 .receiveSeparator("><@")
                 .changeSeparator("  ➲  ")
                 .replaceTxt(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT)
                 .traceReplaceTxt(WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT)
-                .alarmMessageContent(Singleton.get(weChatAlarmTxtKet, () -> FileUtil.readUtf8String(weChatAlarmTxtKet)))
-                .configMessageContent(Singleton.get(weChatConfigTxtKet, () -> FileUtil.readUtf8String(weChatConfigTxtKet)))
+                .alarmMessageContent(Singleton.get(weChatAlarmTxtKey, () -> FileUtil.readUtf8String(weChatAlarmTxtKey)))
+                .configMessageContent(Singleton.get(weChatConfigTxtKey, () -> FileUtil.readUtf8String(weChatConfigTxtKey)))
                 .build();
         return robotMessageActualContent;
     }
