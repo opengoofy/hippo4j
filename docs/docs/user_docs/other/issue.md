@@ -82,3 +82,7 @@ Hippo4J 发布时可能会涉及到两端发布，分别是 Server 和 Starter�
 ## 设置线程池参数优先级问题
 - 当使用`@DynamicThreadPool`进行修饰的方法中和在管理界面设置中同时存在的话，则管理界面设置的优先级最高；
 - 如果连接service端失败的话，使用`@DynamicThreadPool`进行修饰设置的优先级最高。
+
+## 线程池实例中修改队列容量参数问题
+
+在线程池管理中添加时，只有当选择队列类型为`ResizableCapacityLinkedBlockingQueue`时，后续再进行修改容量大小时才会实时的刷新修改成功。
