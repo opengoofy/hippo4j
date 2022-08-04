@@ -77,3 +77,7 @@ Hippo4J 发布时可能会涉及到两端发布，分别是 Server 和 Starter�
 如果使用 hippo4j-server，请检查在 hippo4j-server 添加的报警通知记录，是否在客户端项目启动前，因为客户端只有在启动时会去 hippo4j-server 拉取报警通知记录。
 
 重启客户端项目，会重新拉取最新报警推送配置，问题解决。
+
+## 设置线程池参数优先级问题
+- 当使用`@DynamicThreadPool`进行修饰的方法中和在管理界面设置中同时存在的话，则管理界面设置的优先级最高；
+- 如果连接service端失败的话，使用`@DynamicThreadPool`进行修饰设置的优先级最高。
