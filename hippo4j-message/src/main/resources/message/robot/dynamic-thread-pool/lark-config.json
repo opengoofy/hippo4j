@@ -1,0 +1,156 @@
+{
+  "msg_type": "interactive",
+  "card": {
+    "config": {
+      "wide_screen_mode": true
+    },
+    "header": {
+      "template": "greed",
+      "title": {
+        "content": "[通知] %s 动态线程池参数变更",
+        "tag": "plain_text"
+      }
+    },
+    "elements": [
+      {
+        "fields": [
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 线程池ID：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 应用名称：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 应用实例：** %s",
+              "tag": "lark_md"
+            }
+          }
+        ],
+        "tag": "div"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "fields": [
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 核心线程数：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 最大线程数：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 核心线程超时：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 线程存活时间：** %s",
+              "tag": "lark_md"
+            }
+          }
+        ],
+        "tag": "div"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "fields": [
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 队列类型：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 队列容量：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 执行超时时间：** %s",
+              "tag": "lark_md"
+            }
+          }
+        ],
+        "tag": "div"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "fields": [
+          {
+            "is_short": true,
+            "text": {
+              "content": "** AGO 拒绝策略：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** NOW 拒绝策略：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** OWNER：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 播报时间： ** %s",
+              "tag": "lark_md"
+            }
+          }
+        ],
+        "tag": "div"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "tag": "note",
+        "elements": [
+          {
+            "tag": "plain_text",
+            "content": "提示：动态线程池配置变更实时通知（无限制）"
+          }
+        ]
+      }
+    ]
+  }
+}

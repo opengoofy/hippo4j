@@ -22,8 +22,8 @@ import cn.hippo4j.message.platform.DingSendMessageHandler;
 import cn.hippo4j.message.platform.LarkSendMessageHandler;
 import cn.hippo4j.message.platform.WeChatSendMessageHandler;
 import cn.hippo4j.message.service.AlarmControlHandler;
-import cn.hippo4j.message.service.HippoBaseSendMessageService;
-import cn.hippo4j.message.service.HippoSendMessageService;
+import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
+import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import cn.hippo4j.message.service.SendMessageHandler;
 import org.springframework.context.annotation.Bean;
 
@@ -33,9 +33,9 @@ import org.springframework.context.annotation.Bean;
 public class MessageConfiguration {
 
     @Bean
-    public HippoSendMessageService hippoSendMessageService(NotifyConfigBuilder serverNotifyConfigBuilder,
-                                                           AlarmControlHandler alarmControlHandler) {
-        return new HippoBaseSendMessageService(serverNotifyConfigBuilder, alarmControlHandler);
+    public Hippo4jSendMessageService hippo4jSendMessageService(NotifyConfigBuilder serverNotifyConfigBuilder,
+                                                               AlarmControlHandler alarmControlHandler) {
+        return new Hippo4jBaseSendMessageService(serverNotifyConfigBuilder, alarmControlHandler);
     }
 
     @Bean

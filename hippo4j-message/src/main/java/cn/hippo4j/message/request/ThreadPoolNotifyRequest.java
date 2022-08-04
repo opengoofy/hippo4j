@@ -30,7 +30,7 @@ import java.util.List;
 public class ThreadPoolNotifyRequest {
 
     /**
-     * groupKeys
+     * Group keys
      */
     private List<String> groupKeys;
 }

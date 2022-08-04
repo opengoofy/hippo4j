@@ -17,6 +17,7 @@
 
 package cn.hippo4j.message.platform;
 
+import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
@@ -25,6 +26,7 @@ import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import lombok.AllArgsConstructor;
@@ -53,20 +55,25 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     @SneakyThrows
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
         String afterReceives = getReceives(notifyConfig.getReceives());
-        String larkAlarmTxt;
         String larkAlarmTimoutReplaceTxt;
+        String larkAlarmTxtKey = "message/robot/dynamic-thread-pool/lark-alarm.json";
+        String larkAlarmTxt = Singleton.get(larkAlarmTxtKey, () -> FileUtil.readUtf8String(larkAlarmTxtKey));
+        String larkAlarmTimoutReplaceJsonKey = "message/robot/dynamic-thread-pool/lark-alarm-timeout-replace.json";
+        String larkAlarmTimoutReplaceJson = Singleton.get(larkAlarmTimoutReplaceJsonKey, () -> FileUtil.readUtf8String(larkAlarmTimoutReplaceJsonKey));
         if (Objects.equals(alarmNotifyRequest.getNotifyTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
             String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
+            String larkAlarmTimoutTraceReplaceJsonKey = "message/robot/dynamic-thread-pool/lark-alarm-trace-replace.json";
+            String larkAlarmTimoutTraceReplaceJson = Singleton.get(larkAlarmTimoutTraceReplaceJsonKey, () -> FileUtil.readUtf8String(larkAlarmTimoutTraceReplaceJsonKey));
             if (StringUtil.isNotBlank(executeTimeoutTrace)) {
-                String larkAlarmTimoutTraceReplaceTxt = String.format(LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, executeTimeoutTrace);
-                larkAlarmTimoutReplaceTxt = StrUtil.replace(LARK_ALARM_TIMOUT_REPLACE_TXT, LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, larkAlarmTimoutTraceReplaceTxt);
+                String larkAlarmTimoutTraceReplaceTxt = String.format(larkAlarmTimoutTraceReplaceJson, executeTimeoutTrace);
+                larkAlarmTimoutReplaceTxt = StrUtil.replace(larkAlarmTimoutReplaceJson, larkAlarmTimoutTraceReplaceJson, larkAlarmTimoutTraceReplaceTxt);
             } else {
-                larkAlarmTimoutReplaceTxt = StrUtil.replace(LARK_ALARM_TIMOUT_REPLACE_TXT, LARK_ALARM_TIMOUT_TRACE_REPLACE_TXT, "");
+                larkAlarmTimoutReplaceTxt = StrUtil.replace(larkAlarmTimoutReplaceJson, larkAlarmTimoutTraceReplaceJson, "");
             }
             larkAlarmTimoutReplaceTxt = String.format(larkAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
-            larkAlarmTxt = StrUtil.replace(LARK_ALARM_JSON_STR, LARK_ALARM_TIMOUT_REPLACE_TXT, larkAlarmTimoutReplaceTxt);
+            larkAlarmTxt = StrUtil.replace(larkAlarmTxt, larkAlarmTimoutReplaceJson, larkAlarmTimoutReplaceTxt);
         } else {
-            larkAlarmTxt = StrUtil.replace(LARK_ALARM_JSON_STR, LARK_ALARM_TIMOUT_REPLACE_TXT, "");
+            larkAlarmTxt = StrUtil.replace(larkAlarmTxt, larkAlarmTimoutReplaceJson, "");
         }
 
         String text = String.format(larkAlarmTxt,
@@ -118,7 +125,8 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     public void sendChangeMessage(NotifyConfigDTO notifyConfig, ChangeParameterNotifyRequest changeParameterNotifyRequest) {
         String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
         String afterReceives = getReceives(notifyConfig.getReceives());
-        String larkNoticeJson = LARK_NOTICE_JSON_STR;
+        String larkNoticeJsonKey = "message/robot/dynamic-thread-pool/lark-config.json";
+        String larkNoticeJson = Singleton.get(larkNoticeJsonKey, () -> FileUtil.readUtf8String(larkNoticeJsonKey));
         String text = String.format(larkNoticeJson,
                 // 环境
                 changeParameterNotifyRequest.getActive(),

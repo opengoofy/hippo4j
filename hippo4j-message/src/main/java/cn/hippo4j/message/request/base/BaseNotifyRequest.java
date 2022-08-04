@@ -26,32 +26,32 @@ import lombok.Data;
 public class BaseNotifyRequest implements NotifyRequest {
 
     /**
-     * tenantId
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * itemId
+     * Item id
      */
     private String itemId;
 
     /**
-     * threadPoolId
+     * Thread pool id
      */
     private String threadPoolId;
 
     /**
-     * platform
+     * Platform
      */
     private String platform;
 
     /**
-     * type
+     * Type
      */
     private String type;
 
     /**
-     * receives
+     * Receives
      */
     private String receives;
 }

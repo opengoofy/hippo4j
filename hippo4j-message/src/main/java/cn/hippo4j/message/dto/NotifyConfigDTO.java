@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * Notify config dto.
+ * Notify config DTO.
  */
 @Data
 @EqualsAndHashCode

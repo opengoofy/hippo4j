@@ -30,23 +30,27 @@ import lombok.Data;
 public class ItemQueryReqDTO extends Page {
 
     /**
-     * tenantId
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * itemId
+     * Item id
      */
     private String itemId;
 
     /**
-     * itemName
+     * Item name
      */
     private String itemName;
 
     /**
-     * owner
+     * Owner
      */
     private String owner;
 
+    /**
+     * Desc
+     */
+    private Boolean desc;
 }

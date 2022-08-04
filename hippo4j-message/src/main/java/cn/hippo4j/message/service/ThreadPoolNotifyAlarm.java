@@ -63,9 +63,7 @@ public class ThreadPoolNotifyAlarm {
     /**
      * Receives
      *
-     * <p>
-     * Do not enable this configuration for the time being, it may be useful if you develop mailboxes in the future.
-     * </p>
+     * <p> Do not enable this configuration for the time being, it may be useful if you develop mailboxes in the future.
      */
     @Deprecated
     private Map<String, String> receives;
