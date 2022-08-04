@@ -13,6 +13,7 @@ sidebar_position: 2
 - <a href="#server-端宕机会影响-client-运行么">Server 端宕机会影响 Client 运行么</a>
 - <a href="#hippo4j-的发布方式是怎样的-如何选择正确的版本">Hippo4J 的发布方式是怎样的？如何选择正确的版本</a>
 - <a href="#群机器人接受不到通知报警">群机器人接受不到通知报警</a>
+- <a href="#设置线程池参数优先级问题">设置线程池参数优先级问题</a>
 
 
 ## 租户和项目在 Hippo4J 中是什么意思
