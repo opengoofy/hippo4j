@@ -61,6 +61,7 @@
         <!-- Maven & Build -->
         <java.version>1.8</java.version>
         <skip.gpg>true</skip.gpg>
+        <skip.spotless.apply>false</skip.spotless.apply>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -381,6 +382,7 @@
                 <artifactId>spotless-maven-plugin</artifactId>
                 <version>${spotless-maven-plugin.version}</version>
                 <configuration>
+                    <applySkip>${skip.spotless.apply}</applySkip>
                     <java>
                         <eclipse>
                             <file>${maven.multiModuleProjectDirectory}/dev-support/hippo4j_spotless_formatter.xml</file>
