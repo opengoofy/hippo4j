@@ -31,7 +31,7 @@ public class EsMonitorCondition implements Condition {
 
     @Override
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        String collectType = context.getEnvironment().getProperty(BootstrapCoreProperties.PREFIX + "collect-type", "");
+        String collectType = context.getEnvironment().getProperty(BootstrapCoreProperties.PREFIX + ".collect-type", "");
         return StringUtil.isNotEmpty(collectType) && collectType.contains(MonitorTypeEnum.ES.name().toLowerCase()) ? true : false;
     }
 }

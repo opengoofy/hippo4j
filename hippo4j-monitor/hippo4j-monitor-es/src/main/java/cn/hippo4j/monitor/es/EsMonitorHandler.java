@@ -19,54 +19,128 @@ package cn.hippo4j.monitor.es;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.monitor.es.model.EsThreadPoolRunStateInfo;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.io.FileUtil;
 import com.example.monitor.base.AbstractDynamicThreadPoolMonitor;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import io.micrometer.core.instrument.Metrics;
-import io.micrometer.core.instrument.Tag;
+import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.admin.indices.alias.Alias;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 
-import java.util.Map;
-
-/**
- * Prometheus monitor handler.
- */
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+@Slf4j
 public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
-
-    private final Map<String, ThreadPoolRunStateInfo> RUN_STATE_CACHE = Maps.newConcurrentMap();
 
     public EsMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
         super(threadPoolRunStateHandler);
     }
 
+    private AtomicBoolean isIndexExist = null;
+
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
-        Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
-        RestHighLevelClient esClient = ApplicationContextHolder.getBean(RestHighLevelClient.class);
+        EsThreadPoolRunStateInfo esThreadPoolRunStateInfo = new EsThreadPoolRunStateInfo();
+        BeanUtil.copyProperties(poolRunStateInfo, esThreadPoolRunStateInfo);
 
+        Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
+        String indexName = environment.getProperty("es.index.name", "thread-pool-state");
         String applicationName = environment.getProperty("spring.application.name", "application");
-        // Iterable<Tag> tags = Lists.newArrayList(
-        // Tag.of(DYNAMIC_THREAD_POOL_ID_TAG, poolRunStateInfo.getTpId()),
-        // Tag.of(APPLICATION_NAME_TAG, applicationName));
-        // // load
-        // Metrics.gauge(metricName("current.load"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getSimpleCurrentLoad);
-        // Metrics.gauge(metricName("peak.load"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getSimplePeakLoad);
-        // // thread pool
-        // Metrics.gauge(metricName("core.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getCoreSize);
-        // Metrics.gauge(metricName("maximum.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getMaximumSize);
-        // Metrics.gauge(metricName("current.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getPoolSize);
-        // Metrics.gauge(metricName("largest.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getLargestPoolSize);
-        // Metrics.gauge(metricName("active.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getActiveSize);
-        // // queue
-        // Metrics.gauge(metricName("queue.size"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getQueueSize);
-        // Metrics.gauge(metricName("queue.capacity"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getQueueCapacity);
-        // Metrics.gauge(metricName("queue.remaining.capacity"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getQueueRemainingCapacity);
-        // // other
-        // Metrics.gauge(metricName("completed.task.count"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getCompletedTaskCount);
-        // Metrics.gauge(metricName("reject.count"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getRejectCount);
+
+        if (!this.isExists(indexName)) {
+            List<String> rawMapping = FileUtil.readLines(new File(Thread.currentThread().getContextClassLoader().getResource("mapping.json").getPath()), StandardCharsets.UTF_8);
+            String mapping = String.join(" ", rawMapping);
+            //if index doesn't exsit, this function may try to create one, but recommend to create index manually.
+            this.createIndex(indexName, "_doc", mapping, null, null, null);
+        }
+
+        esThreadPoolRunStateInfo.setApplicationName(applicationName);
+        esThreadPoolRunStateInfo.setId("thread-pool-state-" + System.currentTimeMillis());
+        this.log2Es(esThreadPoolRunStateInfo, indexName);
+    }
+
+    public void log2Es(EsThreadPoolRunStateInfo esThreadPoolRunStateInfo, String indexName) {
+        RestHighLevelClient client = EsClientHolder.getClient();
+
+        try {
+            IndexRequest request = new IndexRequest(indexName, "_doc");
+            request.id(esThreadPoolRunStateInfo.getId());
+            String stateJson = JSONUtil.toJSONString(esThreadPoolRunStateInfo);
+            request.source(stateJson, XContentType.JSON);
+
+            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+            log.info("write thread-pool state to es:{}", stateJson);
+        } catch (Exception ex) {
+            log.error("es index error, the exception was thrown in create index. name:{},type:{},id:{}. {} ",
+                    indexName,
+                    "_doc",
+                    esThreadPoolRunStateInfo.getId(),
+                    ex);
+        }
+    }
+
+    public synchronized boolean isExists(String index) {
+        if (Objects.isNull(isIndexExist)) {
+            boolean exists = false;
+            GetIndexRequest request = new GetIndexRequest();
+            request.indices(index);
+            try {
+                RestHighLevelClient client = EsClientHolder.getClient();
+                exists = client.indices().exists(request, RequestOptions.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            isIndexExist = new AtomicBoolean(exists);
+        }
+        return isIndexExist.get();
+    }
+
+    public boolean createIndex(String index, String type, String mapping, Integer shards, Integer replicas, String alias) {
+        RestHighLevelClient client = EsClientHolder.getClient();
+        boolean acknowledged = false;
+        CreateIndexRequest request = new CreateIndexRequest(index);
+        if (StringUtils.hasText(mapping)) {
+            request.mapping(type, mapping, XContentType.JSON);
+        }
+        if (!Objects.isNull(shards) && !Objects.isNull(replicas)) {
+            request.settings(Settings.builder()
+                    .put("index.number_of_shards", shards) //5
+                    .put("index.number_of_replicas", replicas));//1
+        }
+        if (StringUtils.hasText(alias)) {
+            request.alias(new Alias(alias));
+        }
+        try {
+            CreateIndexResponse createIndexResponse = client.indices().create(request, RequestOptions.DEFAULT);
+            acknowledged = createIndexResponse.isAcknowledged();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (acknowledged) {
+            log.info("create es index success");
+            isIndexExist.set(true);
+        } else {
+            log.error("create es index fail");
+            throw new RuntimeException("cannot auto create thread-pool state es index");
+        }
+        return acknowledged;
+
     }
 
     @Override
