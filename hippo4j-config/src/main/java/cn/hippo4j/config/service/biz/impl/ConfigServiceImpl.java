@@ -27,6 +27,7 @@ import cn.hippo4j.config.mapper.ConfigInstanceMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.ConfigInfoBase;
 import cn.hippo4j.config.model.ConfigInstanceInfo;
+import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigChangePublisher;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.toolkit.BeanUtil;
@@ -71,7 +72,6 @@ public class ConfigServiceImpl implements ConfigService {
                 .eq(StrUtil.isNotBlank(tpId), ConfigAllInfo::getTpId, tpId)
                 .eq(StrUtil.isNotBlank(itemId), ConfigAllInfo::getItemId, itemId)
                 .eq(StrUtil.isNotBlank(tenantId), ConfigAllInfo::getTenantId, tenantId);
-
         ConfigAllInfo configAllInfo = configInfoMapper.selectOne(wrapper);
         return configAllInfo;
     }
@@ -80,7 +80,6 @@ public class ConfigServiceImpl implements ConfigService {
     public ConfigAllInfo findConfigRecentInfo(String... params) {
         ConfigAllInfo resultConfig;
         ConfigAllInfo configInstance = null;
-
         String instanceId = params[3];
         if (StrUtil.isNotBlank(instanceId)) {
             LambdaQueryWrapper<ConfigInstanceInfo> instanceQueryWrapper = Wrappers.lambdaQuery(ConfigInstanceInfo.class)
@@ -90,7 +89,6 @@ public class ConfigServiceImpl implements ConfigService {
                     .eq(ConfigInstanceInfo::getInstanceId, params[3])
                     .orderByDesc(ConfigInstanceInfo::getGmtCreate)
                     .last("LIMIT 1");
-
             ConfigInstanceInfo instanceInfo = configInstanceMapper.selectOne(instanceQueryWrapper);
             if (instanceInfo != null) {
                 String content = instanceInfo.getContent();
@@ -100,7 +98,6 @@ public class ConfigServiceImpl implements ConfigService {
                 configInstance.setMd5(Md5Util.getTpContentMd5(configInstance));
             }
         }
-
         ConfigAllInfo configAllInfo = findConfigAllInfo(params[0], params[1], params[2]);
         if (configAllInfo == null && configInstance == null) {
             throw new ServiceException("Thread pool configuration is not defined.");
@@ -115,29 +112,27 @@ public class ConfigServiceImpl implements ConfigService {
                 resultConfig = configAllInfo;
             }
         }
-
         return resultConfig;
     }
 
     @Override
-    public void insertOrUpdate(String identify, ConfigAllInfo configInfo) {
+    public void insertOrUpdate(String identify, boolean isChangeNotice, ConfigAllInfo configInfo) {
         verification(identify);
         LambdaQueryWrapper<ConfigAllInfo> queryWrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
                 .eq(ConfigAllInfo::getTenantId, configInfo.getTenantId())
                 .eq(ConfigInfoBase::getItemId, configInfo.getItemId())
                 .eq(ConfigInfoBase::getTpId, configInfo.getTpId());
         ConfigAllInfo existConfig = configInfoMapper.selectOne(queryWrapper);
-
         ConfigServiceImpl configService = ApplicationContextHolder.getBean(this.getClass());
         configInfo.setCapacity(getQueueCapacityByType(configInfo));
-
         ConditionUtil
                 .condition(
                         existConfig == null,
                         () -> configService.addConfigInfo(configInfo),
-                        () -> configService.updateConfigInfo(identify, configInfo));
-
-        ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configInfo)));
+                        () -> configService.updateConfigInfo(identify, isChangeNotice, configInfo));
+        if (isChangeNotice) {
+            ConfigChangePublisher.notifyConfigChange(new LocalDataChangeEvent(identify, ContentUtil.getGroupKey(configInfo)));
+        }
     }
 
     private void verification(String identify) {
@@ -150,7 +145,6 @@ public class ConfigServiceImpl implements ConfigService {
     public Long addConfigInfo(ConfigAllInfo config) {
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
-
         try {
             // 当前为单体应用, 后续支持集群部署时切换分布式锁.
             synchronized (ConfigService.class) {
@@ -159,7 +153,6 @@ public class ConfigServiceImpl implements ConfigService {
                                 .eq(ConfigAllInfo::getTpId, config.getTpId())
                                 .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
                 Assert.isNull(configAllInfo, "线程池配置已存在.");
-
                 if (SqlHelper.retBool(configInfoMapper.insert(config))) {
                     return config.getId();
                 }
@@ -168,30 +161,36 @@ public class ConfigServiceImpl implements ConfigService {
             log.error("[db-error] message :: {}", ex.getMessage(), ex);
             throw ex;
         }
-
         return null;
     }
 
     @LogRecord(bizNo = "{{#config.itemId}}_{{#config.tpId}}", category = "THREAD_POOL_UPDATE", success = "核心线程: {{#config.coreSize}}, 最大线程: {{#config.maxSize}}, 队列类型: {{#config.queueType}}, 队列容量: {{#config.capacity}}, 拒绝策略: {{#config.rejectedType}}", detail = "{{#config.toString()}}")
-    public void updateConfigInfo(String identify, ConfigAllInfo config) {
+    public void updateConfigInfo(String identify, boolean isChangeNotice, ConfigAllInfo config) {
         LambdaUpdateWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaUpdate(ConfigAllInfo.class)
                 .eq(ConfigAllInfo::getTpId, config.getTpId())
                 .eq(ConfigAllInfo::getItemId, config.getItemId())
                 .eq(ConfigAllInfo::getTenantId, config.getTenantId());
-
         config.setGmtCreate(null);
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
-
         try {
             // 创建线程池配置实例临时配置, 也可以当作历史配置, 不过针对的是单节点
-            if (StrUtil.isNotBlank(identify)) {
+            if (StringUtil.isNotBlank(identify)) {
                 ConfigInstanceInfo instanceInfo = BeanUtil.convert(config, ConfigInstanceInfo.class);
                 instanceInfo.setInstanceId(identify);
                 configInstanceMapper.insert(instanceInfo);
                 return;
+            } else if (StringUtil.isEmpty(identify) && isChangeNotice) {
+                List<String> identifyList = ConfigCacheService.getIdentifyList(config.getTenantId(), config.getItemId(), config.getTpId());
+                if (CollectionUtil.isNotEmpty(identifyList)) {
+                    for (String each : identifyList) {
+                        ConfigInstanceInfo instanceInfo = BeanUtil.convert(config, ConfigInstanceInfo.class);
+                        instanceInfo.setInstanceId(each);
+                        configInstanceMapper.insert(instanceInfo);
+                    }
+                }
+                return;
             }
-
             configInfoMapper.update(config, wrapper);
         } catch (Exception ex) {
             log.error("[db-error] message :: {}", ex.getMessage(), ex);
@@ -217,14 +216,11 @@ public class ConfigServiceImpl implements ConfigService {
                 queueCapacity = config.getCapacity();
                 break;
         }
-
         List<Integer> queueTypes = Stream.of(1, 2, 3, 6, 9).collect(Collectors.toList());
         boolean setDefaultFlag = queueTypes.contains(config.getQueueType()) && (config.getCapacity() == null || Objects.equals(config.getCapacity(), 0));
         if (setDefaultFlag) {
             queueCapacity = 1024;
         }
-
         return queueCapacity;
     }
-
 }
