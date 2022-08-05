@@ -101,7 +101,7 @@ public class ThreadPoolConfig {
                 .threadPoolId(threadPoolId)
                 .dynamicPool()
                 .build();
-        return dynamicExecutor;
+        return messageProduceDynamicExecutor;
     }
 
 }
