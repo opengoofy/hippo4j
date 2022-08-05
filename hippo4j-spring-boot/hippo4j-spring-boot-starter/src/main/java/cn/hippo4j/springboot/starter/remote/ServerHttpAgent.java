@@ -34,9 +34,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Server http agent.
- *
- * @author chen.ma
- * @date 2021/6/23 20:50
  */
 public class ServerHttpAgent implements HttpAgent {
 

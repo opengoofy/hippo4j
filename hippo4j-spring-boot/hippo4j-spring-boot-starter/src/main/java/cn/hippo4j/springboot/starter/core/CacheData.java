@@ -28,9 +28,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Cache data.
- *
- * @author chen.ma
- * @date 2021/6/22 20:46
  */
 @Slf4j
 public class CacheData {
@@ -66,7 +63,6 @@ public class CacheData {
         if (null == listener) {
             throw new IllegalArgumentException("Listener is null.");
         }
-
         ManagerListenerWrapper managerListenerWrap = new ManagerListenerWrapper(md5, listener);
         if (listeners.addIfAbsent(managerListenerWrap)) {
             log.info("Add listener status :: ok, thread pool id :: {}, listeners count :: {}", tpId, listeners.size());
@@ -87,7 +83,6 @@ public class CacheData {
             wrap.setLastCallMd5(md5);
             listener.receiveConfigInfo(content);
         };
-
         try {
             listener.getExecutor().execute(runnable);
         } catch (Exception ex) {

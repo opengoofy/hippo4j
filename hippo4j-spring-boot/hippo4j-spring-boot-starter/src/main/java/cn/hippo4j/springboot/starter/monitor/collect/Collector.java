@@ -21,9 +21,6 @@ import cn.hippo4j.common.monitor.Message;
 
 /**
  * Collect thread-pool data.
- *
- * @author chen.ma
- * @date 2021/12/7 20:11
  */
 public interface Collector {
 

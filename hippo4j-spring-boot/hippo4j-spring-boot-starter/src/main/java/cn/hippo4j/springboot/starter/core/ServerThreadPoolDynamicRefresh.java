@@ -45,9 +45,6 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD
 
 /**
  * Thread pool dynamic refresh.
- *
- * @author chen.ma
- * @date 2021/6/20 15:51
  */
 @Slf4j
 @AllArgsConstructor
@@ -58,10 +55,8 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
     @Override
     public void dynamicRefresh(String content) {
         ThreadPoolParameterInfo parameter = JSONUtil.parseObject(content, ThreadPoolParameterInfo.class);
-
         String threadPoolId = parameter.getTpId();
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
-
         refreshDynamicPool(parameter, executor);
     }
 
@@ -79,7 +74,6 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         int originalCapacity = executor.getQueue().remainingCapacity() + executor.getQueue().size();
         long originalKeepAliveTime = executor.getKeepAliveTime(TimeUnit.SECONDS);
         boolean originalAllowCoreThreadTimeOut = executor.allowsCoreThreadTimeOut();
-
         Long originalExecuteTimeOut = null;
         RejectedExecutionHandler rejectedExecutionHandler = executor.getRejectedExecutionHandler();
         if (executor instanceof AbstractDynamicExecutorSupport) {
@@ -99,7 +93,6 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         request.setBeforeRejectedName(originalRejected);
         request.setBeforeExecuteTimeOut(originalExecuteTimeOut);
         request.setThreadPoolId(threadPoolId);
-
         changePoolInfo(executor, parameter);
         ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
         request.setNowCorePoolSize(afterExecutor.getCorePoolSize());

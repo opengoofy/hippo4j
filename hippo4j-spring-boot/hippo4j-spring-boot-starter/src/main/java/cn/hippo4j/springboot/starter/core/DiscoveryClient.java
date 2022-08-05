@@ -17,7 +17,6 @@
 
 package cn.hippo4j.springboot.starter.core;
 
-import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.common.api.ClientCloseHookExecute;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
@@ -32,7 +31,6 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -41,9 +39,6 @@ import static cn.hippo4j.common.constant.Constants.BASE_PATH;
 
 /**
  * Discovery client.
- *
- * @author chen.ma
- * @date 2021/7/13 21:51
  */
 @Slf4j
 public class DiscoveryClient implements DisposableBean {

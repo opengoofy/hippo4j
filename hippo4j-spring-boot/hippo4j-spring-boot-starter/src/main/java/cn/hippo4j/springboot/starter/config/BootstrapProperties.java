@@ -25,9 +25,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Bootstrap properties.
- *
- * @author chen.ma
- * @date 2021/6/22 09:14
  */
 @Slf4j
 @Getter

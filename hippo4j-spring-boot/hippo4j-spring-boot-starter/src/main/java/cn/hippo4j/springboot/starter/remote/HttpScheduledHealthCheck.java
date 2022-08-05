@@ -28,9 +28,6 @@ import static cn.hippo4j.common.constant.Constants.UP;
 
 /**
  * Server health check.
- *
- * @author chen.ma
- * @date 2021/12/8 20:16
  */
 @Slf4j
 @AllArgsConstructor
@@ -49,7 +46,6 @@ public class HttpScheduledHealthCheck extends AbstractHealthCheck {
         } catch (Throwable ex) {
             log.error("Failed to periodically check the health status of the server.", ex.getMessage());
         }
-
         return healthStatus;
     }
 }

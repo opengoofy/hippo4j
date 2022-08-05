@@ -33,13 +33,9 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 /**
- * Netty ConnectSender
- *
- * @author lk
- * @date 2022/06/18
+ * Netty connect sender.
  */
 @Slf4j
 @AllArgsConstructor
@@ -66,7 +62,6 @@ public class NettyConnectSender implements MessageSender {
                             pipeline.addLast(new SenderHandler(messageWrapper));
                         }
                     });
-
             bootstrap.connect(serverNettyAgent.getNettyServerAddress(), serverNettyAgent.getNettyServerPort()).sync();
         } catch (Exception e) {
             log.error("netty send error ", e);

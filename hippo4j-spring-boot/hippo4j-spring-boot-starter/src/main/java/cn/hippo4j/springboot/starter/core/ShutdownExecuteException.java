@@ -19,9 +19,6 @@ package cn.hippo4j.springboot.starter.core;
 
 /**
  * Shutdown execute exception.
- *
- * @author chen.ma
- * @date 2021/12/9 21:48
  */
 public class ShutdownExecuteException extends Exception {
 

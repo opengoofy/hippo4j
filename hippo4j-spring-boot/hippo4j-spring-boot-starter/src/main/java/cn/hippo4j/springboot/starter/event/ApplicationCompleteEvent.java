@@ -21,9 +21,6 @@ import org.springframework.context.ApplicationEvent;
 
 /**
  * Execute after the spring application context is successfully started.
- *
- * @author chen.ma
- * @date 2021/12/25 21:19
  */
 public class ApplicationCompleteEvent extends ApplicationEvent {
 

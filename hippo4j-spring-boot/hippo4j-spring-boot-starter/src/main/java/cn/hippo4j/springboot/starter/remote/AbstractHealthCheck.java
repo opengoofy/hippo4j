@@ -36,9 +36,6 @@ import static cn.hippo4j.common.constant.Constants.HEALTH_CHECK_INTERVAL;
 
 /**
  * Abstract health check.
- *
- * @author chen.ma
- * @date 2021/12/8 20:19
  */
 @Slf4j
 public abstract class AbstractHealthCheck implements ServerHealthCheck, InitializingBean, ApplicationListener<ApplicationCompleteEvent> {

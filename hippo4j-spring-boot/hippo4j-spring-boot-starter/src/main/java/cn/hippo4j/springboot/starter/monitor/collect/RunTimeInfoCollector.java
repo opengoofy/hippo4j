@@ -35,9 +35,6 @@ import static cn.hippo4j.core.toolkit.IdentifyUtil.getThreadPoolIdentify;
 
 /**
  * Thread pool runtime data collection.
- *
- * @author chen.ma
- * @date 2021/12/16 19:46
  */
 @AllArgsConstructor
 public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements Collector {

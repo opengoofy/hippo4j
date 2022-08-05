@@ -22,10 +22,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 
 /**
- * Server Netty Agent
- *
- * @author lk
- * @date 2022/6/18
+ * Server netty agent.
  */
 public class ServerNettyAgent {
 

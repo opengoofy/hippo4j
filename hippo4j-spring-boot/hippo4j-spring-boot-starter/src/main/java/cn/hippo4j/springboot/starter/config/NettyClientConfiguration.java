@@ -25,9 +25,6 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * Netty ClientCon figuration
- *
- * @author lk
- * @date 2022/6/18
  */
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, name = "report-type", matchIfMissing = false, havingValue = "netty")
 public class NettyClientConfiguration {

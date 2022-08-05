@@ -27,9 +27,6 @@ import java.util.*;
 
 /**
  * Server list manager.
- *
- * @author chen.ma
- * @date 2021/6/23 20:42
  */
 @Slf4j
 public class ServerListManager {

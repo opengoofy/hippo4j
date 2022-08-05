@@ -29,9 +29,6 @@ import static cn.hippo4j.common.constant.Constants.MONITOR_PATH;
 
 /**
  * Http sender.
- *
- * @author chen.ma
- * @date 2021/12/7 20:53
  */
 @Slf4j
 @AllArgsConstructor

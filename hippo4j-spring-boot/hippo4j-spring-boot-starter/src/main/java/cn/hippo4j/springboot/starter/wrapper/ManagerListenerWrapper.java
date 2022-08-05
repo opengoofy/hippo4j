@@ -25,9 +25,6 @@ import lombok.Setter;
 
 /**
  * Manager listener wrapper.
- *
- * @author chen.ma
- * @date 2021/6/22 17:47
  */
 @Getter
 @Setter
