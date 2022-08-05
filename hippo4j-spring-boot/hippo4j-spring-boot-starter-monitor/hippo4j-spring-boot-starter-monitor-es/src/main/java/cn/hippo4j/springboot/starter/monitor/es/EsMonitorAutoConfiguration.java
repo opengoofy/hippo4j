@@ -15,27 +15,21 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.config;
+package cn.hippo4j.springboot.starter.monitor.es;
 
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.monitor.prometheus.PrometheusMonitorHandler;
-import cn.hippo4j.springboot.starter.config.condition.PrometheusMonitorCondition;
+import cn.hippo4j.monitor.es.EsMonitorHandler;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Monitor handler configuration.
+ * Es monitor auto configuration.
  */
-@Configuration(proxyBeanMethods = false)
-public class MonitorHandlerConfiguration {
+@Configuration
+public class EsMonitorAutoConfiguration {
 
-    @Conditional(PrometheusMonitorCondition.class)
-    static class EmbeddedPrometheusMonitor {
-
-        @Bean
-        public PrometheusMonitorHandler prometheusMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-            return new PrometheusMonitorHandler(threadPoolRunStateHandler);
-        }
+    @Bean
+    public EsMonitorHandler esMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+        return new EsMonitorHandler(threadPoolRunStateHandler);
     }
 }
