@@ -22,11 +22,13 @@ import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
+import cn.hippo4j.core.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.monitor.collect.Collector;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import cn.hutool.core.collection.CollUtil;
+import com.example.monitor.base.DynamicThreadPoolMonitor;
 import com.example.monitor.base.MonitorTypeEnum;
 import com.example.monitor.base.ThreadPoolMonitor;
 import com.google.common.base.Strings;
@@ -37,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.CommandLineRunner;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -116,6 +119,9 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
                 || collectType.contains(MonitorTypeEnum.ES.name().toLowerCase())) {
             // Get all dynamic thread pool monitoring components.
             threadPoolMonitors = ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class);
+            Collection<DynamicThreadPoolMonitor> dynamicThreadPoolMonitors =
+                    DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
+            dynamicThreadPoolMonitors.stream().filter(each -> collectType.contains(each.getType())).forEach(each -> threadPoolMonitors.put(each.getType(), each));
             collectVesselExecutor.scheduleWithFixedDelay(
                     () -> dynamicThreadPoolMonitor(),
                     properties.getInitialDelay(),
