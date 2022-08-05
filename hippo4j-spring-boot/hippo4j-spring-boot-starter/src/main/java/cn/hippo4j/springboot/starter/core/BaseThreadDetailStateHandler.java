@@ -33,11 +33,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * Base thread detail state handler.
  *
- * <p> The Java 8 implementation is temporarily provided,
- * {@link ThreadDetailState} interface can be customized.
- *
- * @author chen.ma
- * @date 2022/1/9 13:01
+ * <p> The Java 8 implementation is temporarily provided, {@link ThreadDetailState} interface can be customized.
  */
 @Slf4j
 public class BaseThreadDetailStateHandler implements ThreadDetailState {
@@ -62,7 +58,6 @@ public class BaseThreadDetailStateHandler implements ThreadDetailState {
             if (CollectionUtil.isEmpty(workers)) {
                 return resultThreadState;
             }
-
             for (Object worker : workers) {
                 Thread thread;
                 try {
@@ -75,7 +70,6 @@ public class BaseThreadDetailStateHandler implements ThreadDetailState {
                     log.error("Reflection get worker thread exception. Worker :: {}", worker, ex);
                     continue;
                 }
-
                 long threadId = thread.getId();
                 String threadName = thread.getName();
                 String threadStatus = thread.getState().name();

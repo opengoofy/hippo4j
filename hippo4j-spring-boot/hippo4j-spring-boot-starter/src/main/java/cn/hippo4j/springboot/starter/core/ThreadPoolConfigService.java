@@ -26,9 +26,6 @@ import java.util.Arrays;
 
 /**
  * Thread-pool config service.
- *
- * @author chen.ma
- * @date 2021/6/21 21:50
  */
 public class ThreadPoolConfigService implements ConfigService, ApplicationListener<ApplicationCompleteEvent> {
 

@@ -53,11 +53,8 @@ import static cn.hippo4j.core.executor.manage.GlobalThreadPoolManage.getThreadPo
 
 /**
  * Dynamic thread pool collection and reporting event executor.
- * <p>
- * {@link BlockingQueue} Act as a buffer container, enabling a production-consumption model.
  *
- * @author chen.ma
- * @date 2021/12/6 20:23
+ * <p> {@link BlockingQueue} Act as a buffer container, enabling a production-consumption model.
  */
 @Slf4j
 @RequiredArgsConstructor

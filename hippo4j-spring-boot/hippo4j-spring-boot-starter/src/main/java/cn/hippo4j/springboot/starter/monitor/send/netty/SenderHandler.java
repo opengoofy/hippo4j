@@ -24,10 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * SenderHandler
- *
- * @author lk
- * @date 2022/06/18
+ * Sender handler.
  */
 @Slf4j
 @AllArgsConstructor
@@ -37,7 +34,6 @@ public class SenderHandler extends SimpleChannelInboundHandler<MessageWrapper> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageWrapper msg) throws Exception {
-
     }
 
     @Override

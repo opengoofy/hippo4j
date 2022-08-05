@@ -42,9 +42,6 @@ import static cn.hippo4j.common.constant.Constants.BASE_PATH;
 
 /**
  * Server notify config builder.
- *
- * @author chen.ma
- * @date 2022/2/24 19:57
  */
 @Slf4j
 @AllArgsConstructor

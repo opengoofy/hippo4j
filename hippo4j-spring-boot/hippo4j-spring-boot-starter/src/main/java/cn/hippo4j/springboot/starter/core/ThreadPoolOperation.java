@@ -23,9 +23,6 @@ import java.util.concurrent.Executor;
 
 /**
  * Thread-pool operation.
- *
- * @author chen.ma
- * @date 2021/6/22 20:25
  */
 public class ThreadPoolOperation {
 

@@ -19,9 +19,6 @@ package cn.hippo4j.springboot.starter.core;
 
 /**
  * Config service.
- *
- * @author chen.ma
- * @date 2021/6/21 21:49
  */
 public interface ConfigService {
 

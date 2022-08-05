@@ -59,9 +59,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
  * Dynamic thread-pool auto-configuration.
- *
- * @author chen.ma
- * @date 2021/6/22 09:20
  */
 @Configuration
 @AllArgsConstructor

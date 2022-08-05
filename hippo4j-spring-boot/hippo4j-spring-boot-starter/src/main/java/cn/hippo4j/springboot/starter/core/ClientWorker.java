@@ -38,9 +38,6 @@ import static cn.hippo4j.common.constant.Constants.*;
 
 /**
  * Client worker.
- *
- * @author chen.ma
- * @date 2021/6/20 18:34
  */
 @Slf4j
 public class ClientWorker {
@@ -109,7 +106,6 @@ public class ClientWorker {
             List<CacheData> cacheDataList = new ArrayList();
             List<String> inInitializingCacheList = new ArrayList();
             cacheMap.forEach((key, val) -> cacheDataList.add(val));
-
             List<String> changedTpIds = checkUpdateDataIds(cacheDataList, inInitializingCacheList);
             for (String groupKey : changedTpIds) {
                 String[] keys = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
@@ -121,12 +117,10 @@ public class ClientWorker {
                     CacheData cacheData = cacheMap.get(tpId);
                     String poolContent = ContentUtil.getPoolContent(JSONUtil.parseObject(content, ThreadPoolParameterInfo.class));
                     cacheData.setContent(poolContent);
-                } catch (Exception ex) {
-                    // ignore
-                    log.error("Failed to get the latest thread pool configuration.", ex);
+                } catch (Exception ignored) {
+                    log.error("Failed to get the latest thread pool configuration.", ignored);
                 }
             }
-
             for (CacheData cacheData : cacheDataList) {
                 if (!cacheData.isInitializing() || inInitializingCacheList
                         .contains(GroupKey.getKeyTenant(cacheData.tpId, cacheData.itemId, cacheData.tenantId))) {

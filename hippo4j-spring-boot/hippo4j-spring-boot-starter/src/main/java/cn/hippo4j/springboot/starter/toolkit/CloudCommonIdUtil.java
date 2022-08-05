@@ -23,9 +23,6 @@ import org.springframework.core.env.PropertyResolver;
 
 /**
  * Cloud common id util.
- *
- * @author chen.ma
- * @date 2021/8/6 21:02
  */
 public class CloudCommonIdUtil {
 
@@ -51,8 +48,7 @@ public class CloudCommonIdUtil {
         return combineParts(hostname, SEPARATOR, appName);
     }
 
-    public static String combineParts(String firstPart, String separator,
-                                      String secondPart) {
+    public static String combineParts(String firstPart, String separator, String secondPart) {
         String combined = null;
         if (firstPart != null && secondPart != null) {
             combined = firstPart + separator + secondPart;

@@ -23,9 +23,6 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 
 /**
  * Config empty analyzer.
- *
- * @author chen.ma
- * @date 2021/11/28 21:59
  */
 public class ConfigEmptyAnalyzer extends AbstractFailureAnalyzer<ConfigEmptyException> {
 

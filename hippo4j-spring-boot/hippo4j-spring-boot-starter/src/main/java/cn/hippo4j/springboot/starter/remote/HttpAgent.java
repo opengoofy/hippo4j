@@ -23,9 +23,6 @@ import java.util.Map;
 
 /**
  * Http agent.
- *
- * @author chen.ma
- * @date 2021/6/23 20:45
  */
 public interface HttpAgent {
 

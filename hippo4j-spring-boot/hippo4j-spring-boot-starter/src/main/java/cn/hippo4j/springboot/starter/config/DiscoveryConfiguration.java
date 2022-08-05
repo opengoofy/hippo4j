@@ -37,9 +37,6 @@ import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 
 /**
  * Dynamic threadPool discovery config.
- *
- * @author chen.ma
- * @date 2021/8/6 21:35
  */
 @AllArgsConstructor
 public class DiscoveryConfiguration {

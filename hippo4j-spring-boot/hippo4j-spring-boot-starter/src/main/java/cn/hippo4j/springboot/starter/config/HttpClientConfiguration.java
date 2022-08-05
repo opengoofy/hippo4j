@@ -32,9 +32,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Http client config.
- *
- * @author chen.ma
- * @date 2021/6/10 13:28
  */
 public class HttpClientConfiguration {
 

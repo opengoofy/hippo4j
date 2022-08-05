@@ -25,9 +25,6 @@ import javax.annotation.Resource;
 
 /**
  * Application content post processor.
- *
- * @author chen.ma
- * @date 2021/12/25 20:21
  */
 public class ApplicationContentPostProcessor implements ApplicationListener<ApplicationReadyEvent> {
 

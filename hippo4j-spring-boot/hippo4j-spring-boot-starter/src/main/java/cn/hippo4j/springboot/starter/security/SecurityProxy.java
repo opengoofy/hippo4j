@@ -33,9 +33,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Security proxy.
- *
- * @author chen.ma
- * @date 2021/12/20 20:19
  */
 @Slf4j
 public class SecurityProxy {
@@ -74,8 +71,7 @@ public class SecurityProxy {
                     return true;
                 }
             }
-        } catch (Throwable ignore) {
-            // ignore
+        } catch (Throwable ignored) {
         }
         return false;
     }

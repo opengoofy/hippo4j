@@ -30,9 +30,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * HttpClient util.
- *
- * @author chen.ma
- * @date 2021/6/10 13:30
  */
 @Slf4j
 public class HttpClientUtil {
