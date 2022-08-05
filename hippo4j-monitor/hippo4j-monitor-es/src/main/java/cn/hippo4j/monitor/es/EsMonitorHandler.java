@@ -66,7 +66,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
         if (!this.isExists(indexName)) {
             List<String> rawMapping = FileUtil.readLines(new File(Thread.currentThread().getContextClassLoader().getResource("mapping.json").getPath()), StandardCharsets.UTF_8);
             String mapping = String.join(" ", rawMapping);
-            //if index doesn't exsit, this function may try to create one, but recommend to create index manually.
+            // if index doesn't exsit, this function may try to create one, but recommend to create index manually.
             this.createIndex(indexName, "_doc", mapping, null, null, null);
         }
 
@@ -96,7 +96,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
     }
 
     public synchronized boolean isExists(String index) {
-        //cache check result
+        // cache check result
         if (Objects.isNull(isIndexExist)) {
             boolean exists = false;
             GetIndexRequest request = new GetIndexRequest();
@@ -121,8 +121,8 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
         }
         if (!Objects.isNull(shards) && !Objects.isNull(replicas)) {
             request.settings(Settings.builder()
-                    .put("index.number_of_shards", shards) //5
-                    .put("index.number_of_replicas", replicas));//1
+                    .put("index.number_of_shards", shards) // 5
+                    .put("index.number_of_replicas", replicas));// 1
         }
         if (StringUtils.hasText(alias)) {
             request.alias(new Alias(alias));
