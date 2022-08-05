@@ -54,10 +54,10 @@ public class ConfigController {
 
     @GetMapping
     public Result<ConfigInfoBase> detailConfigInfo(
-            @RequestParam("tpId") String tpId,
-            @RequestParam("itemId") String itemId,
-            @RequestParam("namespace") String namespace,
-            @RequestParam(value = "instanceId", required = false) String instanceId) {
+                                                   @RequestParam("tpId") String tpId,
+                                                   @RequestParam("itemId") String itemId,
+                                                   @RequestParam("namespace") String namespace,
+                                                   @RequestParam(value = "instanceId", required = false) String instanceId) {
         ConfigAllInfo configAllInfo = configService.findConfigRecentInfo(tpId, itemId, namespace, instanceId);
         return Results.success(configAllInfo);
     }

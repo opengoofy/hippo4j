@@ -99,13 +99,7 @@
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-monitor-prometheus</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-monitor-es</artifactId>
+            <artifactId>hippo4j-monitor-base</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
