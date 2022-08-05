@@ -49,8 +49,8 @@ public interface ConfigService {
      * Insert or update.
      *
      * @param identify
+     * @param isChangeNotice
      * @param configAllInfo
      */
-    void insertOrUpdate(String identify, ConfigAllInfo configAllInfo);
-
+    void insertOrUpdate(String identify, boolean isChangeNotice, ConfigAllInfo configAllInfo);
 }

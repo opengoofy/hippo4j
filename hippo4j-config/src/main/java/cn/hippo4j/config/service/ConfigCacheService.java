@@ -22,6 +22,7 @@ import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.design.observer.Observer;
 import cn.hippo4j.common.design.observer.ObserverMessage;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
@@ -32,16 +33,18 @@ import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.toolkit.MapUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
+import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER_TRANSLATION;
 
 /**
  * Config cache service.
@@ -84,7 +87,7 @@ public class ConfigCacheService {
         if (CONFIG_SERVICE == null) {
             CONFIG_SERVICE = ApplicationContextHolder.getBean(ConfigService.class);
         }
-        String[] params = groupKey.split("\\+");
+        String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
         ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
         if (config != null && StrUtil.isNotBlank(config.getTpId())) {
             cacheItem = new CacheItem(groupKey, config);
@@ -98,7 +101,7 @@ public class ConfigCacheService {
         if (CONFIG_SERVICE == null) {
             CONFIG_SERVICE = ApplicationContextHolder.getBean(ConfigService.class);
         }
-        String[] params = groupKey.split("\\+");
+        String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
         ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
         if (config == null || StringUtils.isEmpty(config.getTpId())) {
             String errorMessage = String.format("config is null. tpId :: %s, itemId :: %s, tenantId :: %s", params[0], params[1], params[2]);
@@ -111,7 +114,7 @@ public class ConfigCacheService {
         CacheItem cache = makeSure(groupKey, identify);
         if (cache.md5 == null || !cache.md5.equals(md5)) {
             cache.md5 = md5;
-            String[] params = groupKey.split("\\+");
+            String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
             ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
             cache.configAllInfo = config;
             cache.lastModifiedTs = System.currentTimeMillis();
@@ -143,6 +146,22 @@ public class ConfigCacheService {
         AtomicInteger total = new AtomicInteger();
         CLIENT_CONFIG_CACHE.forEach((key, val) -> total.addAndGet(val.values().size()));
         return total.get();
+    }
+
+    public static List<String> getIdentifyList(String tenantId, String itemId, String threadPoolId) {
+        List<String> identifyList = null;
+        String buildKey = Joiner.on(GROUP_KEY_DELIMITER).join(Lists.newArrayList(threadPoolId, itemId, tenantId));
+        List<String> keys = MapUtil.parseMapForFilter(CLIENT_CONFIG_CACHE, buildKey);
+        if (CollectionUtil.isNotEmpty(keys)) {
+            identifyList = new ArrayList(keys.size());
+            for (String each : keys) {
+                String[] keyArray = each.split(GROUP_KEY_DELIMITER_TRANSLATION);
+                if (keyArray != null && keyArray.length > 2) {
+                    identifyList.add(keyArray[3]);
+                }
+            }
+        }
+        return identifyList;
     }
 
     /**
