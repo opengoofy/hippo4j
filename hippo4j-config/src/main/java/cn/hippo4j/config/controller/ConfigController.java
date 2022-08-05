@@ -54,10 +54,10 @@ public class ConfigController {
 
     @GetMapping
     public Result<ConfigInfoBase> detailConfigInfo(
-                                                   @RequestParam("tpId") String tpId,
-                                                   @RequestParam("itemId") String itemId,
-                                                   @RequestParam("namespace") String namespace,
-                                                   @RequestParam(value = "instanceId", required = false) String instanceId) {
+            @RequestParam("tpId") String tpId,
+            @RequestParam("itemId") String itemId,
+            @RequestParam("namespace") String namespace,
+            @RequestParam(value = "instanceId", required = false) String instanceId) {
         ConfigAllInfo configAllInfo = configService.findConfigRecentInfo(tpId, itemId, namespace, instanceId);
         return Results.success(configAllInfo);
     }
@@ -65,7 +65,7 @@ public class ConfigController {
     @PostMapping
     public Result<Boolean> publishConfig(@RequestParam(value = "identify", required = false) String identify,
                                          @RequestBody ConfigAllInfo config) {
-        configService.insertOrUpdate(identify, config);
+        configService.insertOrUpdate(identify, true, config);
         return Results.success(true);
     }
 

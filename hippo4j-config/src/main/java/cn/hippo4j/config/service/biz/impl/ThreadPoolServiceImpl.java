@@ -80,7 +80,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     @Override
     public void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO) {
-        configService.insertOrUpdate(identify, BeanUtil.convert(reqDTO, ConfigAllInfo.class));
+        configService.insertOrUpdate(identify, false, BeanUtil.convert(reqDTO, ConfigAllInfo.class));
     }
 
     @LogRecord(bizNo = "{{#reqDTO.itemId}}_{{#reqDTO.tpId}}", category = "THREAD_POOL_DELETE", success = "删除线程池: {{#reqDTO.tpId}}", detail = "{{#reqDTO.toString()}}")
@@ -98,7 +98,6 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
         ConfigAllInfo configAllInfo = configInfoMapper.selectById(id);
         configAllInfo.setIsAlarm(isAlarm);
         // TODO: 是否报警变更, 虽然通知了客户端, 但是并没有在客户端实时生效, 需要考虑一个好的场景思路
-        configService.insertOrUpdate(null, configAllInfo);
+        configService.insertOrUpdate(null, false, configAllInfo);
     }
-
 }
