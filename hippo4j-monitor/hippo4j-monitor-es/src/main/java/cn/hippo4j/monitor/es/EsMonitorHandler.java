@@ -60,7 +60,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
         BeanUtil.copyProperties(poolRunStateInfo, esThreadPoolRunStateInfo);
 
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
-        String indexName = environment.getProperty("es.index.name", "thread-pool-state");
+        String indexName = environment.getProperty("es.thread-pool-state.index.name", "thread-pool-state");
         String applicationName = environment.getProperty("spring.application.name", "application");
 
         if (!this.isExists(indexName)) {
@@ -71,7 +71,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
         }
 
         esThreadPoolRunStateInfo.setApplicationName(applicationName);
-        esThreadPoolRunStateInfo.setId("thread-pool-state-" + System.currentTimeMillis());
+        esThreadPoolRunStateInfo.setId(indexName + "-" + System.currentTimeMillis());
         this.log2Es(esThreadPoolRunStateInfo, indexName);
     }
 
@@ -85,7 +85,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
             request.source(stateJson, XContentType.JSON);
 
             IndexResponse response = client.index(request, RequestOptions.DEFAULT);
-            log.info("write thread-pool state to es:{}", stateJson);
+            log.info("write thread-pool state to es:{}, id is ", response.getId());
         } catch (Exception ex) {
             log.error("es index error, the exception was thrown in create index. name:{},type:{},id:{}. {} ",
                     indexName,
@@ -96,6 +96,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
     }
 
     public synchronized boolean isExists(String index) {
+        //cache check result
         if (Objects.isNull(isIndexExist)) {
             boolean exists = false;
             GetIndexRequest request = new GetIndexRequest();
@@ -104,14 +105,14 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
                 RestHighLevelClient client = EsClientHolder.getClient();
                 exists = client.indices().exists(request, RequestOptions.DEFAULT);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("check es index fail");
             }
             isIndexExist = new AtomicBoolean(exists);
         }
         return isIndexExist.get();
     }
 
-    public boolean createIndex(String index, String type, String mapping, Integer shards, Integer replicas, String alias) {
+    public void createIndex(String index, String type, String mapping, Integer shards, Integer replicas, String alias) {
         RestHighLevelClient client = EsClientHolder.getClient();
         boolean acknowledged = false;
         CreateIndexRequest request = new CreateIndexRequest(index);
@@ -130,7 +131,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
             CreateIndexResponse createIndexResponse = client.indices().create(request, RequestOptions.DEFAULT);
             acknowledged = createIndexResponse.isAcknowledged();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("create es index exception", e);
         }
         if (acknowledged) {
             log.info("create es index success");
@@ -139,8 +140,6 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
             log.error("create es index fail");
             throw new RuntimeException("cannot auto create thread-pool state es index");
         }
-        return acknowledged;
-
     }
 
     @Override

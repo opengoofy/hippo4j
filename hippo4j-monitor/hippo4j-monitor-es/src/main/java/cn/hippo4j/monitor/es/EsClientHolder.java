@@ -32,10 +32,10 @@ public class EsClientHolder {
     private static RestHighLevelClient initRestClient() {
         try {
             Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
-            host = environment.getProperty("es.host");
-            scheme = environment.getProperty("es.schema");
-            userName = environment.getProperty("es.userName");
-            password = environment.getProperty("es.password");
+            host = environment.getProperty("es.thread-pool-state.host");
+            scheme = environment.getProperty("es.thread-pool-state.schema");
+            userName = environment.getProperty("es.thread-pool-state.userName");
+            password = environment.getProperty("es.thread-pool-state.password");
 
             List<HttpHost> hosts = parseHosts();
 
@@ -70,9 +70,9 @@ public class EsClientHolder {
 
     private static List<HttpHost> parseHosts() {
         String[] hostAndPorts = host.split(",");
-
         List<HttpHost> hosts = Lists.newArrayList();
         for (String hostAndPort : hostAndPorts) {
+            hostAndPort = hostAndPort.trim();
             hosts.add(new HttpHost(hostAndPort.split(":")[0], Integer.parseInt(hostAndPort.split(":")[1]), scheme));
         }
         return hosts;
