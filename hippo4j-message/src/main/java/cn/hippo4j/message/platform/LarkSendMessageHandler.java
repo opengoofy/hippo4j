@@ -26,7 +26,7 @@ import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.io.FileUtil;
+import cn.hippo4j.common.toolkit.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import lombok.AllArgsConstructor;

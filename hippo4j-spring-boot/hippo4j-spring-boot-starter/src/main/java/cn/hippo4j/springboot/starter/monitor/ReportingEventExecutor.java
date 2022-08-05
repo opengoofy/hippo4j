@@ -112,7 +112,8 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
                 new Integer(collectType.split(",").length),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());
         if (collectType.contains(MonitorTypeEnum.PROMETHEUS.name().toLowerCase())
-                || collectType.contains(MonitorTypeEnum.LOG.name().toLowerCase())) {
+                || collectType.contains(MonitorTypeEnum.LOG.name().toLowerCase())
+                || collectType.contains(MonitorTypeEnum.ES.name().toLowerCase())) {
             // Get all dynamic thread pool monitoring components.
             threadPoolMonitors = ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class);
             collectVesselExecutor.scheduleWithFixedDelay(
