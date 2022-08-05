@@ -85,7 +85,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
             request.source(stateJson, XContentType.JSON);
 
             IndexResponse response = client.index(request, RequestOptions.DEFAULT);
-            log.info("write thread-pool state to es:{}, id is ", response.getId());
+            log.info("write thread-pool state to es, id is :{}", response.getId());
         } catch (Exception ex) {
             log.error("es index error, the exception was thrown in create index. name:{},type:{},id:{}. {} ",
                     indexName,
