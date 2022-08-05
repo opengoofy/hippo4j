@@ -18,8 +18,10 @@
 package cn.hippo4j.core.springboot.starter.config;
 
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.core.springboot.starter.config.condition.EsMonitorCondition;
 import cn.hippo4j.core.springboot.starter.config.condition.LogMonitorCondition;
 import cn.hippo4j.core.springboot.starter.config.condition.PrometheusMonitorCondition;
+import cn.hippo4j.monitor.es.EsMonitorHandler;
 import cn.hippo4j.monitor.log.LogMonitorHandler;
 import cn.hippo4j.monitor.prometheus.PrometheusMonitorHandler;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +49,15 @@ public class MonitorHandlerConfiguration {
         @Bean
         public PrometheusMonitorHandler prometheusMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
             return new PrometheusMonitorHandler(threadPoolRunStateHandler);
+        }
+    }
+
+    @Conditional(EsMonitorCondition.class)
+    static class EmbeddedEsMonitor {
+
+        @Bean
+        public EsMonitorHandler EsMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+            return new EsMonitorHandler(threadPoolRunStateHandler);
         }
     }
 }

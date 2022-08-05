@@ -59,7 +59,8 @@ import org.springframework.core.annotation.Order;
 @Import({
         ConfigHandlerConfiguration.EmbeddedNacos.class, ConfigHandlerConfiguration.EmbeddedNacosCloud.class,
         ConfigHandlerConfiguration.EmbeddedApollo.class, ConfigHandlerConfiguration.EmbeddedZookeeper.class,
-        MonitorHandlerConfiguration.EmbeddedLogMonitor.class, MonitorHandlerConfiguration.EmbeddedPrometheusMonitor.class
+        MonitorHandlerConfiguration.EmbeddedLogMonitor.class, MonitorHandlerConfiguration.EmbeddedPrometheusMonitor.class,
+        MonitorHandlerConfiguration.EmbeddedEsMonitor.class
 })
 public class DynamicThreadPoolCoreAutoConfiguration {
 

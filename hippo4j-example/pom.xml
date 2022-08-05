@@ -13,6 +13,7 @@
     <modules>
         <module>hippo4j-example-core</module>
         <module>hippo4j-spring-boot-starter-example</module>
+        <module>hippo4j-spring-boot-starter-es-monitor-example</module>
         <module>hippo4j-core-nacos-spring-boot-starter-example</module>
         <module>hippo4j-core-apollo-spring-boot-starter-example</module>
         <module>hippo4j-core-zookeeper-spring-boot-starter-example</module>
