@@ -61,6 +61,6 @@ Hippo-4J 获得了一些宝贵的荣誉，这属于每一位对 Hippo-4J 做出�
 
 ## 鸣谢
 
-Hippo4J 项目基于或参考以下项目：[Nacos](https://github.com/alibaba/nacos)、[Eureka](https://github.com/Netflix/Eureka)、[Mzt-Biz-Log](https://github.com/mouzt/mzt-biz-log)。
+Hippo4J 项目基于或参考以下项目：[Nacos](https://github.com/alibaba/nacos)、[Eureka](https://github.com/Netflix/Eureka)。
 
 感谢 JetBrains 提供的免费开源 License
