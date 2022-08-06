@@ -28,9 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Starting application listener.
- *
- * @author chen.ma
- * @date 2022/2/9 04:39
  */
 @Slf4j
 public class StartingApplicationListener implements Hippo4JApplicationListener {

@@ -27,9 +27,6 @@ import java.util.List;
 
 /**
  * Base spring application run listener.
- *
- * @author chen.ma
- * @date 2022/2/9 04:29
  */
 public class BaseSpringApplicationRunListener implements SpringApplicationRunListener, Ordered {
 

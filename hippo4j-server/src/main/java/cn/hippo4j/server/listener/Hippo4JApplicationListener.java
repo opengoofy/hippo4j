@@ -21,9 +21,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * Hippo4J application listener.
- *
- * @author chen.ma
- * @date 2022/2/9 04:35
  */
 public interface Hippo4JApplicationListener {
 
