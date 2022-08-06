@@ -24,9 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Global notify alarm manage.
- *
- * @author chen.ma
- * @date 2022/2/24 20:12
  */
 public class GlobalNotifyAlarmManage {
 

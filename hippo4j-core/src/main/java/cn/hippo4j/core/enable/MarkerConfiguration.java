@@ -22,9 +22,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Marker configuration.
- *
- * @author chen.ma
- * @date 2021/7/8 23:30
  */
 @Configuration
 public class MarkerConfiguration {

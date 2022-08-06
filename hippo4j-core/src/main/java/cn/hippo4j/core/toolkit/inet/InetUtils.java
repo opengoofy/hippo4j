@@ -36,9 +36,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Inet utils.
- *
- * @author Spencer Gibb
- * @date 2021/11/12 21:33
  */
 public class InetUtils implements Closeable {
 
@@ -86,7 +83,6 @@ public class InetUtils implements Closeable {
                     } else if (result != null) {
                         continue;
                     }
-
                     // @formatter:off
                     if (!ignoreInterface(ifc.getDisplayName())) {
                         for (Enumeration<InetAddress> addrs = ifc
@@ -107,22 +103,18 @@ public class InetUtils implements Closeable {
         } catch (IOException ex) {
             this.log.error("Cannot get first non-loopback address", ex);
         }
-
         if (result != null) {
             return result;
         }
-
         try {
             return InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
             this.log.warn("Unable to retrieve localhost");
         }
-
         return null;
     }
 
     boolean isPreferredAddress(InetAddress address) {
-
         if (this.properties.isUseOnlySiteLocalInterfaces()) {
             final boolean siteLocalAddress = address.isSiteLocalAddress();
             if (!siteLocalAddress) {

@@ -29,9 +29,6 @@ import java.util.stream.Stream;
 
 /**
  * Queue type enum.
- *
- * @author chen.ma
- * @date 2021/6/25 12:30
  */
 public enum QueueTypeEnum {
 

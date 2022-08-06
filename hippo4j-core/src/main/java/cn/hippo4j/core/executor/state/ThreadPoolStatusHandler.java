@@ -27,9 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * ThreadPool status handler.
- *
- * @author chen.ma
- * @date 2022/1/18 20:54
  */
 @Slf4j
 public class ThreadPoolStatusHandler {

@@ -26,10 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Fast threadPool executor.
- *
- * @author chen.ma
- * @date 2021/7/5 21:00
+ * Fast thread-pool executor.
  */
 @Slf4j
 public class FastThreadPoolExecutor extends ThreadPoolExecutorTemplate {
@@ -76,5 +73,4 @@ public class FastThreadPoolExecutor extends ThreadPoolExecutorTemplate {
             throw t;
         }
     }
-
 }

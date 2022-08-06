@@ -29,9 +29,6 @@ import java.util.stream.Stream;
 
 /**
  * Reject policy type Enum.
- *
- * @author chen.ma
- * @date 2021/7/10 23:16
  */
 public enum RejectedTypeEnum {
 

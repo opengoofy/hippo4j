@@ -27,10 +27,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Dynamic threadPool wrapper.
- *
- * @author chen.ma
- * @date 2021/6/20 16:55
+ * Dynamic thread-pool wrapper.
  */
 @Data
 public class DynamicThreadPoolWrapper implements DisposableBean {

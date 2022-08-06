@@ -57,8 +57,6 @@ public class DynamicThreadPoolAnnotationUtil {
                 .map(definition -> definition.getResolvedFactoryMethod())
                 .map(factoryMethod -> AnnotationUtils.getAnnotation(factoryMethod, annotationType))
                 .orElse(null);
-
         return annotation;
     }
-
 }

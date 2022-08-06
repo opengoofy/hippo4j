@@ -18,7 +18,6 @@
 package cn.hippo4j.core.handler;
 
 import cn.hippo4j.core.config.BootstrapPropertiesInterface;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -28,9 +27,6 @@ import org.springframework.boot.ansi.AnsiStyle;
 
 /**
  * Dynamic thread-pool print banner.
- *
- * @author chen.ma
- * @date 2021/6/20 16:34
  */
 @Slf4j
 @RequiredArgsConstructor

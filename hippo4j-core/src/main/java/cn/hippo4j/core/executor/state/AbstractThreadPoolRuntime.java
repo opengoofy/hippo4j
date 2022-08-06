@@ -31,9 +31,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Abstract threadPool runtime info.
- *
- * @author chen.ma
- * @date 2021/12/7 19:44
  */
 public abstract class AbstractThreadPoolRuntime {
 

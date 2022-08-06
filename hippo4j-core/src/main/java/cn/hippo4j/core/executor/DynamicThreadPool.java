@@ -24,9 +24,6 @@ import java.lang.annotation.Target;
 
 /**
  * Dynamic thread pool.
- *
- * @author chen.ma
- * @date 2021/10/13 21:50
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

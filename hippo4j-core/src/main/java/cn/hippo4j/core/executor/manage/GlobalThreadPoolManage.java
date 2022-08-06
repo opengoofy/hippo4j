@@ -29,9 +29,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Global thread-pool manage.
- *
- * @author chen.ma
- * @date 2021/6/20 15:57
  */
 public class GlobalThreadPoolManage {
 

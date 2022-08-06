@@ -26,9 +26,6 @@ import java.util.List;
 
 /**
  * Inet utils properties.
- *
- * @author chen.ma
- * @date 2021/11/12 21:34
  */
 @ConfigurationProperties(InetUtilsProperties.PREFIX)
 public class InetUtilsProperties {

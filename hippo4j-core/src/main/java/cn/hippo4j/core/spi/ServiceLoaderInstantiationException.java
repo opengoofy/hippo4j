@@ -19,9 +19,6 @@ package cn.hippo4j.core.spi;
 
 /**
  * Service loader instantiation exception.
- *
- * @author chen.ma
- * @date 2021/7/10 23:48
  */
 public class ServiceLoaderInstantiationException extends RuntimeException {
 

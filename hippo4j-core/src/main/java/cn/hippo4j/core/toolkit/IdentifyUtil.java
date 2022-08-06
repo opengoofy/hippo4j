@@ -18,12 +18,12 @@
 package cn.hippo4j.core.toolkit;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import lombok.SneakyThrows;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.ArrayList;
@@ -33,9 +33,6 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 
 /**
  * Identify util.
- *
- * @author chen.ma
- * @date 2021/12/5 22:25
  */
 public class IdentifyUtil {
 
@@ -70,7 +67,6 @@ public class IdentifyUtil {
      *
      * @return
      */
-    @SneakyThrows
     public static String getIdentify() {
         while (StrUtil.isBlank(IDENTIFY)) {
             ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
@@ -79,7 +75,7 @@ public class IdentifyUtil {
                 String identify = generate(environment, inetUtils);
                 return identify;
             }
-            Thread.sleep(500);
+            ThreadUtil.sleep(500);
         }
         return IDENTIFY;
     }
@@ -93,8 +89,7 @@ public class IdentifyUtil {
      * @return
      */
     public static String getThreadPoolIdentify(String threadPoolId, String itemId, String namespace) {
-        ArrayList<String> params = Lists.newArrayList(
-                threadPoolId, itemId, namespace, getIdentify());
+        ArrayList<String> params = Lists.newArrayList(threadPoolId, itemId, namespace, getIdentify());
         return Joiner.on(GROUP_KEY_DELIMITER).join(params);
     }
 }
