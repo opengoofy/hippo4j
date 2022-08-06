@@ -13,6 +13,8 @@
         <spring-context.version>5.2.21.RELEASE</spring-context.version>
         <spring-web.version>5.2.15.RELEASE</spring-web.version>
         <spring-beans.version>5.2.21.RELEASE</spring-beans.version>
+        <spring-core.version>5.2.19.RELEASE</spring-core.version>
+        <jackson-databind.version>2.12.6</jackson-databind.version>
     </properties>
 
     <dependencies>
@@ -32,6 +34,18 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
             <version>${spring-beans.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
         </dependency>
 
         <dependency>
