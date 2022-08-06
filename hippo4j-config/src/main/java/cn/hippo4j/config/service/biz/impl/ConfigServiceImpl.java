@@ -172,7 +172,7 @@ public class ConfigServiceImpl implements ConfigService {
         config.setMd5(Md5Util.getTpContentMd5(config));
         recordOperationLog(config);
         try {
-            // Create a temporary configuration of a thread pool configuration instance, 
+            // Create a temporary configuration of a thread pool configuration instance,
             // which can also be used as a historical configuration, but it is aimed at a single node.
             if (StringUtil.isNotBlank(identify)) {
                 ConfigInstanceInfo instanceInfo = BeanUtil.convert(config, ConfigInstanceInfo.class);
@@ -202,7 +202,8 @@ public class ConfigServiceImpl implements ConfigService {
                 .bizKey(requestParam.getItemId() + "_" + requestParam.getTpId())
                 .bizNo(requestParam.getItemId() + "_" + requestParam.getTpId())
                 .operator(Optional.ofNullable(UserContext.getUserName()).orElse("-"))
-                .action(String.format("核心线程: %d, 最大线程: %d, 队列类型: %d, 队列容量: %d, 拒绝策略: %d", requestParam.getCoreSize(), requestParam.getMaxSize(), requestParam.getQueueType(), requestParam.getCapacity(), requestParam.getRejectedType()))
+                .action(String.format("核心线程: %d, 最大线程: %d, 队列类型: %d, 队列容量: %d, 拒绝策略: %d", requestParam.getCoreSize(), requestParam.getMaxSize(), requestParam.getQueueType(),
+                        requestParam.getCapacity(), requestParam.getRejectedType()))
                 .category("THREAD_POOL_UPDATE")
                 .detail(JSONUtil.toJSONString(requestParam))
                 .createTime(new Date())
