@@ -147,7 +147,7 @@ public class ThreadPoolAdapterService {
 
         @Override
         public void accept(ObserverMessage<String> observerMessage) {
-            log.info("Clean up the thread-pool adapter cache. Key :: {}", observerMessage.message());
+            log.info("Clean up the thread-pool adapter cache. Key: {}", observerMessage.message());
             remove(observerMessage.message());
         }
     }

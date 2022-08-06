@@ -23,87 +23,84 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 消息通知返回.
- *
- * @author chen.ma
- * @date 2021/11/18 20:07
+ * Notify resp DTO.
  */
 @Data
 public class NotifyRespDTO {
 
     /**
-     * id
+     * ID
      */
     private String id;
 
     /**
-     * ids
+     * Ids
      */
     private String ids;
 
     /**
-     * 租户id
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * 项目id
+     * Item id
      */
     private String itemId;
 
     /**
-     * 线程池id
+     * Thread-pool id
      */
     private String tpId;
 
     /**
-     * 通知平台
+     * Platform
      */
     private String platform;
 
     /**
-     * 通知类型
+     * Type
      */
     private String type;
 
     /**
-     * 配置变更通知类型
+     * Config type
      */
     private Boolean configType;
 
     /**
-     * 报警消息通知
+     * Alarm type
      */
     private Boolean alarmType;
 
     /**
-     * 密钥
+     * Secret key
      */
     private String secretKey;
 
     /**
-     * 报警间隔
+     * Interval
      */
     private Integer interval;
 
     /**
-     * 接收者
+     * Receives
      */
     private String receives;
 
     /**
-     * 是否启用
+     * Enable
      */
     private Integer enable;
 
     /**
-     * 创建时间
+     * gmtCreate
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
-     * 修改时间
+     * gmtModified
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModified;

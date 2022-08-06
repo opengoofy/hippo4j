@@ -24,9 +24,6 @@ import java.util.Date;
 
 /**
  * Config instance info.
- *
- * @author chen.ma
- * @date 2021/12/5 19:19
  */
 @Data
 @TableName("inst_config")
@@ -73,5 +70,4 @@ public class ConfigInstanceInfo {
      */
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
-
 }

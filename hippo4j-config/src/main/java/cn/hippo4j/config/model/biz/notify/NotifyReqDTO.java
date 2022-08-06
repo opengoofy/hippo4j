@@ -20,7 +20,7 @@ package cn.hippo4j.config.model.biz.notify;
 import lombok.Data;
 
 /**
- * 消息通知入参实体.
+ * Notify req DTO.
  *
  * @author chen.ma
  * @date 2021/11/18 20:15
@@ -29,63 +29,62 @@ import lombok.Data;
 public class NotifyReqDTO {
 
     /**
-     * id
+     * ID
      */
     private String id;
 
     /**
-     * ids
+     * Ids
      */
     private String ids;
 
     /**
-     * 租户id
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * 项目id
+     * Item id
      */
     private String itemId;
 
     /**
-     * 线程池id
+     * Thread-pool id
      */
     private String tpId;
 
     /**
-     * 通知平台
+     * Platform
      */
     private String platform;
 
     /**
-     * 配置变更通知类型
+     * Config type
      */
     private Boolean configType;
 
     /**
-     * 报警消息通知
+     * Alarm type
      */
     private Boolean alarmType;
 
     /**
-     * 密钥
+     * Secret key
      */
     private String secretKey;
 
     /**
-     * 报警间隔
+     * Interval
      */
     private Integer interval;
 
     /**
-     * 接收者
+     * Receives
      */
     private String receives;
 
     /**
-     * 是否启用
+     * Enable
      */
     private Integer enable;
-
 }

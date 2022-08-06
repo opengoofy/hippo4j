@@ -22,34 +22,30 @@ import lombok.Data;
 import javax.validation.constraints.Pattern;
 
 /**
- * Tenant save req dto.
- *
- * @author chen.ma
- * @date 2021/6/29 20:40
+ * Tenant save req DTO.
  */
 @Data
 public class TenantSaveReqDTO {
 
     /**
-     * tenantId
+     * Tenant id
      */
     @Pattern(regexp = "^((?!\\+).)*$", message = "租户、项目、线程池 ID 包含+号")
     private String tenantId;
 
     /**
-     * tenantName
+     * Tenant mame
      */
     @Pattern(regexp = "^((?!\\+).)*$", message = "租户、项目、线程池 ID 包含+号")
     private String tenantName;
 
     /**
-     * tenantDesc
+     * Tenant desc
      */
     private String tenantDesc;
 
     /**
-     * owner
+     * Owner
      */
     private String owner;
-
 }

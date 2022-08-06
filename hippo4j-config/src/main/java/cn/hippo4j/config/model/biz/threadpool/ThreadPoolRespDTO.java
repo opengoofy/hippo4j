@@ -23,97 +23,94 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Thread pool resp dto.
- *
- * @author chen.ma
- * @date 2021/6/30 21:23
+ * Thread pool resp DTO.
  */
 @Data
 public class ThreadPoolRespDTO {
 
     /**
-     * id
+     * ID
      */
     private String id;
 
     /**
-     * tenantId
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * itemId
+     * Iem id
      */
     private String itemId;
 
     /**
-     * tpId
+     * Thread-pool id
      */
     private String tpId;
 
     /**
-     * coreSize
+     * Core size
      */
     private Integer coreSize;
 
     /**
-     * maxSize
+     * Max size
      */
     private Integer maxSize;
 
     /**
-     * queueType
+     * Queue type
      */
     private Integer queueType;
 
     /**
-     * queueName
+     * Queue name
      */
     private String queueName;
 
     /**
-     * capacity
+     * Capacity
      */
     private Integer capacity;
 
     /**
-     * keepAliveTime
+     * Keep alive time
      */
     private Integer keepAliveTime;
 
     /**
-     * isAlarm
+     * Is alarm
      */
     private Integer isAlarm;
 
     /**
-     * capacityAlarm
+     * Capacity alarm
      */
     private Integer capacityAlarm;
 
     /**
-     * livenessAlarm
+     * Liveness alarm
      */
     private Integer livenessAlarm;
 
     /**
-     * rejectedType
+     * Rejected type
      */
     private Integer rejectedType;
 
     /**
-     * allowCoreThreadTimeOut
+     * AllowCore thread timeout
      */
     private Integer allowCoreThreadTimeOut;
 
     /**
-     * gmtCreate
+     * Gmt create
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
-     * gmtModified
+     * Gmt modified
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModified;

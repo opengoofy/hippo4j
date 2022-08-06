@@ -23,10 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 通知管理.
- *
- * @author chen.ma
- * @date 2021/11/17 22:03
+ * Notify info.
  */
 @Data
 @TableName("notify")
@@ -101,5 +98,4 @@ public class NotifyInfo {
      */
     @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
-
 }

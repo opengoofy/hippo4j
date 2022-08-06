@@ -22,9 +22,6 @@ import cn.hippo4j.config.notify.listener.AbstractSubscriber;
 
 /**
  * Event publisher.
- *
- * @author chen.ma
- * @date 2021/6/23 18:58
  */
 public interface EventPublisher {
 
@@ -58,5 +55,4 @@ public interface EventPublisher {
      * @param event
      */
     void notifySubscriber(AbstractSubscriber subscriber, AbstractEvent event);
-
 }

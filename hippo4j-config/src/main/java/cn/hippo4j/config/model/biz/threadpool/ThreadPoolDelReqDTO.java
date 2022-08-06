@@ -21,26 +21,22 @@ import lombok.Data;
 
 /**
  * ThreadPool del req dto.
- *
- * @author chen.ma
- * @date 2021/11/11 21:40
  */
 @Data
 public class ThreadPoolDelReqDTO {
 
     /**
-     * tenantId
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * itemId
+     * Item id
      */
     private String itemId;
 
     /**
-     * tpId
+     * Thread-pool id
      */
     private String tpId;
-
 }

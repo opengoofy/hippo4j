@@ -23,10 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Tenant resp dto.
- *
- * @author chen.ma
- * @date 2021/6/29 21:16
+ * Tenant resp DTO.
  */
 @Data
 public class TenantRespDTO {
@@ -37,33 +34,33 @@ public class TenantRespDTO {
     private Integer id;
 
     /**
-     * tenantId
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * tenantName
+     * Tenant name
      */
     private String tenantName;
 
     /**
-     * tenantDesc
+     * Tenant desc
      */
     private String tenantDesc;
 
     /**
-     * owner
+     * Owner
      */
     private String owner;
 
     /**
-     * gmtCreate
+     * Gmt create
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
-     * gmtModified
+     * Gmt modified
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModified;

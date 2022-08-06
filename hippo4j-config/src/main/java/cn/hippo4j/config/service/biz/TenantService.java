@@ -25,9 +25,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
  * Tenant service.
- *
- * @author chen.ma
- * @date 2021/6/29 21:59
  */
 public interface TenantService {
 
@@ -75,5 +72,4 @@ public interface TenantService {
      * @param tenantId
      */
     void deleteTenantById(String tenantId);
-
 }

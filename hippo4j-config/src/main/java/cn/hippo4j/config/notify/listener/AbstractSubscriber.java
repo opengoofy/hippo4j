@@ -23,9 +23,6 @@ import java.util.concurrent.Executor;
 
 /**
  * An abstract subscriber class for subscriber interface.
- *
- * @author chen.ma
- * @date 2021/6/23 19:02
  */
 public abstract class AbstractSubscriber<T extends AbstractEvent> {
 
@@ -46,5 +43,4 @@ public abstract class AbstractSubscriber<T extends AbstractEvent> {
     public Executor executor() {
         return null;
     }
-
 }

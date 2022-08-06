@@ -22,9 +22,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * An abstract class for event.
- *
- * @author chen.ma
- * @date 2021/6/23 18:59
  */
 public abstract class AbstractEvent implements Serializable {
 
@@ -40,5 +37,4 @@ public abstract class AbstractEvent implements Serializable {
     public long sequence() {
         return sequence;
     }
-
 }

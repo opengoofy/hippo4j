@@ -27,9 +27,6 @@ import java.util.List;
 
 /**
  * Thread pool service.
- *
- * @author chen.ma
- * @date 2021/6/30 21:26
  */
 public interface ThreadPoolService {
 
@@ -79,5 +76,4 @@ public interface ThreadPoolService {
      * @param isAlarm
      */
     void alarmEnable(String id, Integer isAlarm);
-
 }

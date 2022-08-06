@@ -21,10 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 
 /**
- * Tenant query req dto.
- *
- * @author chen.ma
- * @date 2021/6/29 22:28
+ * Tenant query req DTO.
  */
 @Data
 public class TenantQueryReqDTO extends Page {

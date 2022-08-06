@@ -44,9 +44,6 @@ import java.util.List;
 
 /**
  * Tenant service impl.
- *
- * @author chen.ma
- * @date 2021/6/29 21:12
  */
 @Service
 @AllArgsConstructor
@@ -89,10 +86,8 @@ public class TenantServiceImpl implements TenantService {
         synchronized (TenantService.class) {
             TenantInfo existTenantInfo = tenantInfoMapper.selectOne(queryWrapper);
             Assert.isNull(existTenantInfo, "租户配置已存在.");
-
             TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
             int insertResult = tenantInfoMapper.insert(tenantInfo);
-
             boolean retBool = SqlHelper.retBool(insertResult);
             if (!retBool) {
                 throw new RuntimeException("Save Error.");

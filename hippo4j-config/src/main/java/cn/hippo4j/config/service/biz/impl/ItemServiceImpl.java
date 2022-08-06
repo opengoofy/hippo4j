@@ -43,9 +43,6 @@ import java.util.List;
 
 /**
  * Item service impl.
- *
- * @author chen.ma
- * @date 2021/6/29 21:58
  */
 @Service
 @AllArgsConstructor
@@ -73,7 +70,6 @@ public class ItemServiceImpl implements ItemService {
                 .lambdaQuery(ItemInfo.class)
                 .eq(ItemInfo::getTenantId, tenantId)
                 .eq(ItemInfo::getItemId, itemId);
-
         ItemInfo itemInfo = itemInfoMapper.selectOne(queryWrapper);
         ItemRespDTO result = BeanUtil.convert(itemInfo, ItemRespDTO.class);
         return result;
@@ -84,7 +80,6 @@ public class ItemServiceImpl implements ItemService {
         LambdaQueryWrapper<ItemInfo> wrapper = Wrappers.lambdaQuery(ItemInfo.class)
                 .eq(!StringUtils.isEmpty(reqDTO.getItemId()), ItemInfo::getItemId, reqDTO.getItemId())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId());
-
         List<ItemInfo> itemInfos = itemInfoMapper.selectList(wrapper);
         return BeanUtil.convert(itemInfos, ItemRespDTO.class);
     }
@@ -93,15 +88,12 @@ public class ItemServiceImpl implements ItemService {
     public void saveItem(ItemSaveReqDTO reqDTO) {
         LambdaQueryWrapper<ItemInfo> queryWrapper = Wrappers.lambdaQuery(ItemInfo.class)
                 .eq(ItemInfo::getItemId, reqDTO.getItemId());
-
-        // 当前为单体应用, 后续支持集群部署时切换分布式锁.
+        // It is currently a single application, and it will support switching distributed locks during cluster deployment in the future.
         synchronized (ItemService.class) {
             ItemInfo existItemInfo = itemInfoMapper.selectOne(queryWrapper);
             Assert.isNull(existItemInfo, "项目配置已存在.");
-
             ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
             int insertResult = itemInfoMapper.insert(itemInfo);
-
             boolean retBool = SqlHelper.retBool(insertResult);
             if (!retBool) {
                 throw new RuntimeException("Save error");
@@ -116,7 +108,6 @@ public class ItemServiceImpl implements ItemService {
                 Wrappers.lambdaUpdate(ItemInfo.class)
                         .eq(ItemInfo::getTenantId, reqDTO.getTenantId())
                         .eq(ItemInfo::getItemId, reqDTO.getItemId()));
-
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("Update error.");
@@ -129,17 +120,14 @@ public class ItemServiceImpl implements ItemService {
         if (CollectionUtils.isNotEmpty(itemList)) {
             throw new RuntimeException("项目包含线程池引用, 删除失败.");
         }
-
         int updateResult = itemInfoMapper.update(new ItemInfo(),
                 Wrappers.lambdaUpdate(ItemInfo.class)
                         .eq(ItemInfo::getTenantId, namespace)
                         .eq(ItemInfo::getItemId, itemId)
                         .set(ItemInfo::getDelFlag, DelEnum.DELETE.getIntCode()));
-
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("Delete error.");
         }
     }
-
 }

@@ -21,9 +21,6 @@ import cn.hippo4j.common.monitor.Message;
 
 /**
  * Abstract monitor data execute strategy.
- *
- * @author chen.ma
- * @date 2021/12/10 20:14
  */
 public abstract class AbstractMonitorDataExecuteStrategy<T extends Message> {
 
@@ -40,5 +37,4 @@ public abstract class AbstractMonitorDataExecuteStrategy<T extends Message> {
      * @param message
      */
     public abstract void execute(T message);
-
 }

@@ -24,9 +24,6 @@ import java.util.Objects;
 
 /**
  * Env Util.
- *
- * @author chen.ma
- * @date 2022/2/9 07:46
  */
 public class EnvUtil {
 
@@ -49,10 +46,8 @@ public class EnvUtil {
             if (StringUtils.isBlank(hippo4jHome)) {
                 hippo4jHome = Paths.get(System.getProperty("user.home"), "hippo4j").toString();
             }
-
             return hippo4jHome;
         }
-
         return HIPPO4J_HOME_PATH;
     }
 
@@ -65,8 +60,6 @@ public class EnvUtil {
         if (Objects.isNull(IS_STANDALONE)) {
             IS_STANDALONE = Boolean.getBoolean(STANDALONE_MODE_PROPERTY_NAME);
         }
-
         return IS_STANDALONE;
     }
-
 }

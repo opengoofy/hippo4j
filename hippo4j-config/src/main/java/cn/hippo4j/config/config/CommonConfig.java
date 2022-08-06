@@ -28,9 +28,6 @@ import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
 
 /**
  * Common config.
- *
- * @author chen.ma
- * @date 2021/7/19 21:03
  */
 @Configuration
 public class CommonConfig {
@@ -53,5 +50,4 @@ public class CommonConfig {
         monitorThreadPool.setAwaitTerminationMillis(5000);
         return monitorThreadPool;
     }
-
 }

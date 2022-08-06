@@ -19,9 +19,6 @@ package cn.hippo4j.config.toolkit;
 
 /**
  * Simple read write lock.
- *
- * @author chen.ma
- * @date 2021/6/24 21:26
  */
 public class SimpleReadWriteLock {
 
@@ -60,5 +57,4 @@ public class SimpleReadWriteLock {
     private boolean isFree() {
         return status == 0;
     }
-
 }

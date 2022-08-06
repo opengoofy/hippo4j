@@ -25,9 +25,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Server bootstrap properties.
- *
- * @author chen.ma
- * @date 2021/12/22 08:01
  */
 @Slf4j
 @Getter
@@ -48,5 +45,8 @@ public class ServerBootstrapProperties {
      */
     private Integer cleanHistoryDataPeriod = 30;
 
+    /**
+     * Netty server port.
+     */
     private String nettyServerPort = "8899";
 }

@@ -24,9 +24,6 @@ import java.util.Date;
 
 /**
  * Item info.
- *
- * @author chen.ma
- * @date 2021/6/29 21:53
  */
 @Data
 @TableName("item")
@@ -81,5 +78,4 @@ public class ItemInfo {
     @TableLogic
     @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
-
 }
