@@ -27,11 +27,12 @@ import cn.hippo4j.config.mapper.ConfigInstanceMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.ConfigInfoBase;
 import cn.hippo4j.config.model.ConfigInstanceInfo;
+import cn.hippo4j.config.model.LogRecordInfo;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigChangePublisher;
 import cn.hippo4j.config.service.biz.ConfigService;
+import cn.hippo4j.config.service.biz.OperationLogService;
 import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -41,9 +42,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.stream.Collectors;
@@ -53,9 +52,6 @@ import static cn.hippo4j.config.service.ConfigCacheService.getContent;
 
 /**
  * Config service impl.
- *
- * @author chen.ma
- * @date 2021/6/20 15:21
  */
 @Slf4j
 @Service
@@ -65,6 +61,8 @@ public class ConfigServiceImpl implements ConfigService {
     private final ConfigInfoMapper configInfoMapper;
 
     private final ConfigInstanceMapper configInstanceMapper;
+
+    private final OperationLogService operationLogService;
 
     @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenantId) {
@@ -100,7 +98,7 @@ public class ConfigServiceImpl implements ConfigService {
         }
         ConfigAllInfo configAllInfo = findConfigAllInfo(params[0], params[1], params[2]);
         if (configAllInfo == null && configInstance == null) {
-            throw new ServiceException("Thread pool configuration is not defined.");
+            throw new ServiceException("Thread pool configuration is not defined");
         } else if (configAllInfo != null && configInstance == null) {
             resultConfig = configAllInfo;
         } else if (configAllInfo == null && configInstance != null) {
@@ -138,7 +136,7 @@ public class ConfigServiceImpl implements ConfigService {
     private void verification(String identify) {
         if (StringUtil.isNotBlank(identify)) {
             Map content = getContent(identify);
-            Assert.isTrue(CollectionUtil.isNotEmpty(content), "线程池实例不存在, 请尝试页面刷新.");
+            Assert.isTrue(CollectionUtil.isNotEmpty(content), "线程池实例不存在, 请尝试页面刷新");
         }
     }
 
@@ -146,13 +144,13 @@ public class ConfigServiceImpl implements ConfigService {
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
         try {
-            // 当前为单体应用, 后续支持集群部署时切换分布式锁.
+            // Currently it is a single application, and it supports switching distributed locks during cluster deployment in the future.
             synchronized (ConfigService.class) {
                 ConfigAllInfo configAllInfo = configInfoMapper.selectOne(
                         Wrappers.lambdaQuery(ConfigAllInfo.class)
                                 .eq(ConfigAllInfo::getTpId, config.getTpId())
                                 .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
-                Assert.isNull(configAllInfo, "线程池配置已存在.");
+                Assert.isNull(configAllInfo, "线程池配置已存在");
                 if (SqlHelper.retBool(configInfoMapper.insert(config))) {
                     return config.getId();
                 }
@@ -164,7 +162,6 @@ public class ConfigServiceImpl implements ConfigService {
         return null;
     }
 
-    @LogRecord(bizNo = "{{#config.itemId}}_{{#config.tpId}}", category = "THREAD_POOL_UPDATE", success = "核心线程: {{#config.coreSize}}, 最大线程: {{#config.maxSize}}, 队列类型: {{#config.queueType}}, 队列容量: {{#config.capacity}}, 拒绝策略: {{#config.rejectedType}}", detail = "{{#config.toString()}}")
     public void updateConfigInfo(String identify, boolean isChangeNotice, ConfigAllInfo config) {
         LambdaUpdateWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaUpdate(ConfigAllInfo.class)
                 .eq(ConfigAllInfo::getTpId, config.getTpId())
@@ -173,8 +170,10 @@ public class ConfigServiceImpl implements ConfigService {
         config.setGmtCreate(null);
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
+        recordOperationLog(config);
         try {
-            // 创建线程池配置实例临时配置, 也可以当作历史配置, 不过针对的是单节点
+            // Create a temporary configuration of a thread pool configuration instance, 
+            // which can also be used as a historical configuration, but it is aimed at a single node.
             if (StringUtil.isNotBlank(identify)) {
                 ConfigInstanceInfo instanceInfo = BeanUtil.convert(config, ConfigInstanceInfo.class);
                 instanceInfo.setInstanceId(identify);
@@ -198,10 +197,23 @@ public class ConfigServiceImpl implements ConfigService {
         }
     }
 
+    private void recordOperationLog(ConfigAllInfo requestParam) {
+        LogRecordInfo logRecordInfo = LogRecordInfo.builder()
+                .bizKey(requestParam.getItemId() + "_" + requestParam.getTpId())
+                .bizNo(requestParam.getItemId() + "_" + requestParam.getTpId())
+                .operator(Optional.ofNullable(UserContext.getUserName()).orElse("-"))
+                .action(String.format("核心线程: %d, 最大线程: %d, 队列类型: %d, 队列容量: %d, 拒绝策略: %d", requestParam.getCoreSize(), requestParam.getMaxSize(), requestParam.getQueueType(), requestParam.getCapacity(), requestParam.getRejectedType()))
+                .category("THREAD_POOL_UPDATE")
+                .detail(JSONUtil.toJSONString(requestParam))
+                .createTime(new Date())
+                .build();
+        operationLogService.record(logRecordInfo);
+    }
+
     /**
-     * 根据队列类型获取队列大小.
-     * <p>
-     * 不支持设置队列大小 {@link SynchronousQueue} {@link LinkedTransferQueue}
+     * Get queue size based on queue type.
+     *
+     * <p> 不支持设置队列大小 {@link SynchronousQueue} {@link LinkedTransferQueue}
      *
      * @param config
      * @return

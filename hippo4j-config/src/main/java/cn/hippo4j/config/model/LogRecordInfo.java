@@ -15,35 +15,71 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.tools.logrecord.model;
+package cn.hippo4j.config.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 /**
- * 日志操作记录.
- *
- * @author chen.ma
- * @date 2021/10/24 21:07
+ * Log record info.
  */
 @Data
 @Builder
-public class LogRecordOps {
+@NoArgsConstructor
+@AllArgsConstructor
+@TableName("log_record_info")
+public class LogRecordInfo {
 
-    private String successLogTemplate;
+    /**
+     * ID
+     */
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
-    private String failLogTemplate;
+    /**
+     * Tenant
+     */
+    private String tenant;
 
-    private String operatorId;
-
+    /**
+     * Biz key
+     */
     private String bizKey;
 
+    /**
+     * Biz no
+     */
     private String bizNo;
 
+    /**
+     * Operator
+     */
+    private String operator;
+
+    /**
+     * Action
+     */
+    private String action;
+
+    /**
+     * Category
+     */
     private String category;
 
+    /**
+     * Detail
+     */
     private String detail;
 
-    private String condition;
-
+    /**
+     * Create time
+     */
+    private Date createTime;
 }

@@ -18,16 +18,19 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
+import cn.hippo4j.config.model.LogRecordInfo;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
 import cn.hippo4j.config.service.biz.ConfigService;
+import cn.hippo4j.config.service.biz.OperationLogService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
 import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -35,13 +38,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Thread pool service impl.
- *
- * @author chen.ma
- * @date 2021/6/30 21:26
  */
 @Service
 @AllArgsConstructor
@@ -51,6 +53,8 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     private final ConfigInfoMapper configInfoMapper;
 
+    private final OperationLogService operationLogService;
+
     @Override
     public IPage<ThreadPoolRespDTO> queryThreadPoolPage(ThreadPoolQueryReqDTO reqDTO) {
         LambdaQueryWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
@@ -59,7 +63,6 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
                 .eq(!StringUtils.isBlank(reqDTO.getTpId()), ConfigAllInfo::getTpId, reqDTO.getTpId())
                 .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL)
                 .orderByDesc(ConfigAllInfo::getGmtCreate);
-
         return configInfoMapper.selectPage(reqDTO, wrapper).convert(each -> BeanUtil.convert(each, ThreadPoolRespDTO.class));
     }
 
@@ -73,7 +76,6 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
     public List<ThreadPoolRespDTO> getThreadPoolByItemId(String itemId) {
         LambdaQueryWrapper<ConfigAllInfo> queryWrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
                 .eq(ConfigAllInfo::getItemId, itemId);
-
         List<ConfigAllInfo> selectList = configInfoMapper.selectList(queryWrapper);
         return BeanUtil.convert(selectList, ThreadPoolRespDTO.class);
     }
@@ -83,14 +85,27 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
         configService.insertOrUpdate(identify, false, BeanUtil.convert(reqDTO, ConfigAllInfo.class));
     }
 
-    @LogRecord(bizNo = "{{#reqDTO.itemId}}_{{#reqDTO.tpId}}", category = "THREAD_POOL_DELETE", success = "删除线程池: {{#reqDTO.tpId}}", detail = "{{#reqDTO.toString()}}")
     @Override
-    public void deletePool(ThreadPoolDelReqDTO reqDTO) {
+    public void deletePool(ThreadPoolDelReqDTO requestParam) {
         configInfoMapper.delete(
                 Wrappers.lambdaUpdate(ConfigAllInfo.class)
-                        .eq(ConfigAllInfo::getTenantId, reqDTO.getTenantId())
-                        .eq(ConfigAllInfo::getItemId, reqDTO.getItemId())
-                        .eq(ConfigAllInfo::getTpId, reqDTO.getTpId()));
+                        .eq(ConfigAllInfo::getTenantId, requestParam.getTenantId())
+                        .eq(ConfigAllInfo::getItemId, requestParam.getItemId())
+                        .eq(ConfigAllInfo::getTpId, requestParam.getTpId()));
+        recordOperationLog(requestParam);
+    }
+
+    private void recordOperationLog(ThreadPoolDelReqDTO requestParam) {
+        LogRecordInfo logRecordInfo = LogRecordInfo.builder()
+                .bizKey(requestParam.getItemId() + "_" + requestParam.getTpId())
+                .bizNo(requestParam.getItemId() + "_" + requestParam.getTpId())
+                .operator(Optional.ofNullable(UserContext.getUserName()).orElse("-"))
+                .action("删除线程池: " + requestParam.getTpId())
+                .category("THREAD_POOL_DELETE")
+                .detail(JSONUtil.toJSONString(requestParam))
+                .createTime(new Date())
+                .build();
+        operationLogService.record(logRecordInfo);
     }
 
     @Override

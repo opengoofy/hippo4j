@@ -15,22 +15,18 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.tools.logrecord.service.impl;
+package cn.hippo4j.config.mapper;
 
-import cn.hippo4j.tools.logrecord.model.Operator;
-import cn.hippo4j.tools.logrecord.service.OperatorGetService;
+import cn.hippo4j.config.model.LogRecordInfo;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 默认实现.
+ * Operation log mapper.
  *
  * @author chen.ma
- * @date 2021/10/24 17:58
+ * @date 2021/10/24 21:01
  */
-public class DefaultOperatorGetServiceImpl implements OperatorGetService {
-
-    @Override
-    public Operator getUser() {
-        return new Operator("-");
-    }
-
+@Mapper
+public interface OperationLogMapper extends BaseMapper<LogRecordInfo> {
 }
