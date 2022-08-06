@@ -24,10 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Resizable capacity linked-blocking-queue.
- *
- * @author chen.ma
- * @date 2021/6/20 14:24
+ * Resizable capacity linked-blocking-queue. Options Rabbitmq VariableLinkedBlockingQueue
  */
 @Slf4j
 public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue<E> {
@@ -38,9 +35,6 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue
 
     public synchronized boolean setCapacity(Integer capacity) {
         boolean successFlag = true;
-        /**
-         * TODO：后续考虑切换 Rabbitmq VariableLinkedBlockingQueue
-         */
         try {
             int oldCapacity = (int) ReflectUtil.getFieldValue(this, "capacity");
             AtomicInteger count = (AtomicInteger) ReflectUtil.getFieldValue(this, "count");
@@ -54,7 +48,6 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue
             log.error("Dynamic modification of blocking queue size failed.", ex);
             successFlag = false;
         }
-
         return successFlag;
     }
 

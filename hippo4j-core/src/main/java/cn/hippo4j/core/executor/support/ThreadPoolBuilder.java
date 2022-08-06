@@ -27,9 +27,6 @@ import java.util.concurrent.*;
 
 /**
  * Thread-pool builder.
- *
- * @author chen.ma
- * @date 2021/6/28 17:29
  */
 public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 

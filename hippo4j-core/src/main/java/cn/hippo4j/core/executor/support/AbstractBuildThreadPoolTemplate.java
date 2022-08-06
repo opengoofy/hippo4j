@@ -25,22 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.task.TaskDecorator;
 
 import java.util.concurrent.*;
-import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
 /**
  * Abstract build threadPool template.
- *
- * @author chen.ma
- * @date 2021/7/5 21:45
  */
 @Slf4j
 public class AbstractBuildThreadPoolTemplate {
 
     /**
-     * 线程池构建初始化参数.
-     * <p>
-     * 此处本身是模版设计方法, 但是考虑创建简洁性, 移除 abstract.
-     * 异常参考 {@link AbstractQueuedSynchronizer#tryAcquire}
+     * Thread pool construction initialization parameters.
      *
      * @return
      */
@@ -48,11 +41,6 @@ public class AbstractBuildThreadPoolTemplate {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * 构建线程池.
-     *
-     * @return
-     */
     public static ThreadPoolExecutor buildPool() {
         ThreadPoolInitParam initParam = initParam();
         return buildPool(initParam);

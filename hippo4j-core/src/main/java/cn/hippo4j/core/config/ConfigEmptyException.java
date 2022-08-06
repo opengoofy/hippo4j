@@ -22,21 +22,18 @@ import lombok.Data;
 
 /**
  * Config empty exception.
- *
- * @author chen.ma
- * @date 2021/11/28 21:58
  */
 @Data
 @AllArgsConstructor
 public class ConfigEmptyException extends RuntimeException {
 
     /**
-     * description
+     * Description
      */
     private String description;
 
     /**
-     * action
+     * Action
      */
     private String action;
 }

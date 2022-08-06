@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>alibaba-dingtalk-service-sdk</artifactId>
-            <!-- 用户反馈其中 javax.jms 无法下载, 未发现 log4j 用处, 暂且排除 -->
+            <!-- User feedback that javax.jms cannot be downloaded, log4j is not found useful, so it is excluded for the time being. -->
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>

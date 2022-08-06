@@ -25,9 +25,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Thread-factory builder.
- *
- * @author chen.ma
- * @date 2021/7/5 21:53
  */
 public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
 

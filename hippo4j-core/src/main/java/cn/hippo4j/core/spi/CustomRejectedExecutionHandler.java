@@ -21,9 +21,6 @@ import java.util.concurrent.RejectedExecutionHandler;
 
 /**
  * Custom rejected execution handler.
- *
- * @author chen.ma
- * @date 2021/7/10 23:51
  */
 public interface CustomRejectedExecutionHandler {
 
@@ -35,7 +32,7 @@ public interface CustomRejectedExecutionHandler {
     Integer getType();
 
     /**
-     * Adapt hippo4j core rejected execution handler.
+     * Adapt hippo-4j core rejected execution handler.
      *
      * @return
      */

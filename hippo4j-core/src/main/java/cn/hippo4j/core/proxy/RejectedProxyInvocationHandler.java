@@ -28,9 +28,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Rejected proxy invocation handler.
- *
- * @author chen.ma
- * @date 2022/2/17 19:45
  */
 @AllArgsConstructor
 public class RejectedProxyInvocationHandler implements InvocationHandler {

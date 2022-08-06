@@ -23,9 +23,6 @@ import static cn.hippo4j.common.constant.Constants.EXECUTE_TIMEOUT_TRACE;
 
 /**
  * Trace context util.
- *
- * @author chen.ma
- * @date 2022/3/3 08:30
  */
 public class TraceContextUtil {
 

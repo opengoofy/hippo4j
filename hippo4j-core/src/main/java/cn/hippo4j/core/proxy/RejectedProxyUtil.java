@@ -23,9 +23,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Rejected proxy util.
- *
- * @author chen.ma
- * @date 2022/2/22 21:56
  */
 public class RejectedProxyUtil {
 

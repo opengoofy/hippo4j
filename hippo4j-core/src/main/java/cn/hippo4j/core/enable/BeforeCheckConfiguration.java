@@ -30,9 +30,6 @@ import java.util.Objects;
 
 /**
  * Before check configuration.
- *
- * @author chen.ma
- * @date 2021/11/28 22:44
  */
 @Configuration
 @AllArgsConstructor

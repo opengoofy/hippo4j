@@ -38,9 +38,6 @@ import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 
 /**
  * Thread pool run state service.
- *
- * @author chen.ma
- * @date 2021/7/12 21:25
  */
 @Slf4j
 @AllArgsConstructor

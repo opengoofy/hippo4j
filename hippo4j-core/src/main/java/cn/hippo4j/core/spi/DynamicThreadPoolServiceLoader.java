@@ -23,9 +23,6 @@ import java.util.stream.Collectors;
 
 /**
  * Dynamic thread-pool service loader.
- *
- * @author chen.ma
- * @date 2021/7/10 23:45
  */
 public class DynamicThreadPoolServiceLoader {
 

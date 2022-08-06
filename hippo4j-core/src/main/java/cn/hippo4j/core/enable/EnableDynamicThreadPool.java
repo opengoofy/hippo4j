@@ -23,9 +23,6 @@ import java.lang.annotation.*;
 
 /**
  * Annotation to activate dynamic threadPool related configuration.
- *
- * @author chen.ma
- * @date 2021/7/8 23:28
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

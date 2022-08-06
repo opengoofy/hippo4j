@@ -25,9 +25,6 @@ import java.util.concurrent.*;
 
 /**
  * Dynamic executor configuration support.
- *
- * @author chen.ma
- * @date 2021/11/28 12:17
  */
 @Slf4j
 public abstract class AbstractDynamicExecutorSupport extends ThreadPoolExecutor implements InitializingBean, DisposableBean {

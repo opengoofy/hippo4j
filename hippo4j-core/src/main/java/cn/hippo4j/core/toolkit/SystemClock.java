@@ -22,9 +22,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * @author : wh
- * @date : 2022/4/25 17:03
- * @description:
+ * System clock.
  */
 public class SystemClock {
 
@@ -50,8 +48,8 @@ public class SystemClock {
     }
 
     private void scheduleClockUpdating() {
-        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1, r -> {
-            Thread thread = new Thread(r, THREAD_NAME);
+        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1, runnable -> {
+            Thread thread = new Thread(runnable, THREAD_NAME);
             thread.setDaemon(true);
             return thread;
         });

@@ -19,9 +19,6 @@ package cn.hippo4j.core.config;
 
 /**
  * Bootstrap properties interface.
- *
- * @author chen.ma
- * @date 2022/2/25 19:01
  */
 public interface BootstrapPropertiesInterface {
 

@@ -21,9 +21,6 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  * Custom blocking-queue.
- *
- * @author chen.ma
- * @date 2021/7/11 00:51
  */
 public interface CustomBlockingQueue {
 

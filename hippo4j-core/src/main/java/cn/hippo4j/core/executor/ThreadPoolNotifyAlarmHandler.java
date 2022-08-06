@@ -41,10 +41,7 @@ import java.util.Objects;
 import java.util.concurrent.*;
 
 /**
- * Thread pool alarm notify.
- *
- * @author chen.ma
- * @date 2021/8/15 14:13
+ * Thread-pool alarm notify.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -108,9 +105,9 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
             return;
         }
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
-        BlockingQueue blockIngQueue = threadPoolExecutor.getQueue();
-        int queueSize = blockIngQueue.size();
-        int capacity = queueSize + blockIngQueue.remainingCapacity();
+        BlockingQueue blockingQueue = threadPoolExecutor.getQueue();
+        int queueSize = blockingQueue.size();
+        int capacity = queueSize + blockingQueue.remainingCapacity();
         int divide = CalculateUtil.divide(queueSize, capacity);
         boolean isSend = threadPoolNotifyAlarm.getIsAlarm()
                 && divide > threadPoolNotifyAlarm.getCapacityAlarm();

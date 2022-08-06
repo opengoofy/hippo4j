@@ -25,16 +25,13 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * Util auto configuration.
- *
- * @author Spencer Gibb
- * @date 2021/11/12 21:34
  */
 @EnableConfigurationProperties(InetUtilsProperties.class)
 public class UtilAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public InetUtils hippo4JInetUtils(InetUtilsProperties properties) {
-        return new InetUtils(properties);
+    public InetUtils hippo4JInetUtils(InetUtilsProperties inetUtilsProperties) {
+        return new InetUtils(inetUtilsProperties);
     }
 }

@@ -23,9 +23,6 @@ import java.util.concurrent.*;
 
 /**
  * ThreadPool executor template.
- *
- * @author chen.ma
- * @date 2021/7/5 21:59
  */
 public class ThreadPoolExecutorTemplate extends ThreadPoolExecutor {
 

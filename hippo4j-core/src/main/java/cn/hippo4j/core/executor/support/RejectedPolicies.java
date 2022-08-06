@@ -25,9 +25,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Rejected policies.
- *
- * @author chen.ma
- * @date 2021/7/5 21:23
  */
 @Slf4j
 public class RejectedPolicies {
