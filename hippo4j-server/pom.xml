@@ -7,7 +7,6 @@
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-server</artifactId>
 
     <properties>
@@ -20,6 +19,7 @@
             <artifactId>hippo4j-config</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-console</artifactId>
@@ -57,7 +57,6 @@
             <version>1.1.1</version>
         </dependency>
         <!-- Adapter end -->
-
     </dependencies>
 
     <build>
@@ -77,7 +76,6 @@
                     </archive>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
