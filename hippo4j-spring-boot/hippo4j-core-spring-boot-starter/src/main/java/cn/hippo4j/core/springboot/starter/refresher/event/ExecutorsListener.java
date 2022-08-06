@@ -98,37 +98,38 @@ public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamic
             try {
                 threadPoolNotifyAlarmHandler.sendPoolConfigChange(newChangeRequest(beforeProperties, properties));
             } catch (Throwable ex) {
-                log.error("Failed to send changSmartApplicationListenere notice. Message :: {}", ex.getMessage());
+                log.error("Failed to send Chang smart application listener notice. Message: {}", ex.getMessage());
             }
         }
     }
 
     /**
-     * Construct ChangeParameterNotifyRequest instance
+     * Construct change parameter notify request instance.
      *
      * @param beforeProperties old properties
      * @param properties       new properties
      * @return instance
      */
     private ChangeParameterNotifyRequest newChangeRequest(ExecutorProperties beforeProperties, ExecutorProperties properties) {
-        ChangeParameterNotifyRequest changeRequest = new ChangeParameterNotifyRequest();
-        changeRequest.setBeforeCorePoolSize(beforeProperties.getCorePoolSize());
-        changeRequest.setBeforeMaximumPoolSize(beforeProperties.getMaximumPoolSize());
-        changeRequest.setBeforeAllowsCoreThreadTimeOut(beforeProperties.getAllowCoreThreadTimeOut());
-        changeRequest.setBeforeKeepAliveTime(beforeProperties.getKeepAliveTime());
-        changeRequest.setBlockingQueueName(beforeProperties.getBlockingQueue());
-        changeRequest.setBeforeQueueCapacity(beforeProperties.getQueueCapacity());
-        changeRequest.setBeforeRejectedName(beforeProperties.getRejectedHandler());
-        changeRequest.setBeforeExecuteTimeOut(beforeProperties.getExecuteTimeOut());
-        changeRequest.setThreadPoolId(beforeProperties.getThreadPoolId());
-        changeRequest.setNowCorePoolSize(properties.getCorePoolSize());
-        changeRequest.setNowMaximumPoolSize(properties.getMaximumPoolSize());
-        changeRequest.setNowAllowsCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut());
-        changeRequest.setNowKeepAliveTime(properties.getKeepAliveTime());
-        changeRequest.setNowQueueCapacity(properties.getQueueCapacity());
-        changeRequest.setNowRejectedName(properties.getRejectedHandler());
-        changeRequest.setNowExecuteTimeOut(properties.getExecuteTimeOut());
-        return changeRequest;
+        ChangeParameterNotifyRequest changeParameterNotifyRequest = ChangeParameterNotifyRequest.builder()
+                .beforeCorePoolSize(beforeProperties.getCorePoolSize())
+                .beforeMaximumPoolSize(beforeProperties.getMaximumPoolSize())
+                .beforeAllowsCoreThreadTimeOut(beforeProperties.getAllowCoreThreadTimeOut())
+                .beforeKeepAliveTime(beforeProperties.getKeepAliveTime())
+                .blockingQueueName(beforeProperties.getBlockingQueue())
+                .beforeQueueCapacity(beforeProperties.getQueueCapacity())
+                .beforeRejectedName(beforeProperties.getRejectedHandler())
+                .beforeExecuteTimeOut(beforeProperties.getExecuteTimeOut())
+                .nowCorePoolSize(properties.getCorePoolSize())
+                .nowMaximumPoolSize(properties.getMaximumPoolSize())
+                .nowAllowsCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut())
+                .nowKeepAliveTime(properties.getKeepAliveTime())
+                .nowQueueCapacity(properties.getQueueCapacity())
+                .nowRejectedName(properties.getRejectedHandler())
+                .nowExecuteTimeOut(properties.getExecuteTimeOut())
+                .build();
+        changeParameterNotifyRequest.setThreadPoolId(beforeProperties.getThreadPoolId());
+        return changeParameterNotifyRequest;
     }
 
     /**
@@ -257,7 +258,7 @@ public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamic
                 ResizableCapacityLinkedBlockingQueue<?> queue = (ResizableCapacityLinkedBlockingQueue<?>) executor.getQueue();
                 queue.setCapacity(properties.getQueueCapacity());
             } else {
-                log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type :: {}", executor.getQueue().getClass().getSimpleName());
+                log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type: {}", executor.getQueue().getClass().getSimpleName());
             }
         }
     }

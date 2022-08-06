@@ -48,7 +48,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 /**
- * Dynamic thread-pool core auto-configuration.
+ * Dynamic thread-pool core auto configuration.
  */
 @Configuration
 @AllArgsConstructor

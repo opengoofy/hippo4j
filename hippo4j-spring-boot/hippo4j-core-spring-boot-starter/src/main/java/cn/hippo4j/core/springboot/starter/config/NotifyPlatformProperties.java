@@ -21,32 +21,28 @@ import lombok.Data;
 
 /**
  * Notify platform properties.
- *
- * @author chen.ma
- * @date 2022/2/25 19:29
  */
 @Data
 public class NotifyPlatformProperties {
 
     /**
-     * Platform.
+     * Platform
      */
     private String platform;
 
     /**
-     * Secret key.
-     * {@link NotifyPlatformProperties#token}
+     * Secret key. {@link NotifyPlatformProperties#token}
      */
     @Deprecated
     private String secretKey;
 
     /**
-     * Token.
+     * Token
      */
     private String token;
 
     /**
-     * Secret.
+     * Secret
      */
     private String secret;
 }

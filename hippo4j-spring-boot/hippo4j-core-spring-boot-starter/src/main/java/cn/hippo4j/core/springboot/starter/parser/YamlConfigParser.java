@@ -27,9 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author : wh
- * @date : 2022/3/1 07:57
- * @description:
+ * Yaml config parser.
  */
 public class YamlConfigParser extends AbstractConfigParser {
 
@@ -38,11 +36,9 @@ public class YamlConfigParser extends AbstractConfigParser {
         if (StringUtils.isEmpty(content)) {
             return Maps.newHashMapWithExpectedSize(0);
         }
-
-        YamlPropertiesFactoryBean bean = new YamlPropertiesFactoryBean();
-        bean.setResources(new ByteArrayResource(content.getBytes()));
-
-        return bean.getObject();
+        YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
+        yamlPropertiesFactoryBean.setResources(new ByteArrayResource(content.getBytes()));
+        return yamlPropertiesFactoryBean.getObject();
     }
 
     @Override

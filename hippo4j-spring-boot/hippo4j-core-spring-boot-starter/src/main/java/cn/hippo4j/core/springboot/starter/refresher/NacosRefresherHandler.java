@@ -28,9 +28,6 @@ import java.util.concurrent.Executor;
 
 /**
  * Nacos refresher handler.
- *
- * @author chen.ma
- * @date 2022/2/26 00:10
  */
 @Slf4j
 public class NacosRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
@@ -59,5 +56,7 @@ public class NacosRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh 
                         dynamicRefresh(configInfo);
                     }
                 });
+        log.info("Dynamic thread pool refresher, add nacos listener success. data-id: {}, group: {}", nacosConfig.get("data-id"), nacosConfig.get("group"));
+
     }
 }

@@ -23,7 +23,7 @@ import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
 
 /**
- * Hippo4j core dynamic refresh event.
+ * Hippo-4j core dynamic refresh event.
  */
 public class Hippo4jCoreDynamicRefreshEvent extends ApplicationEvent {
 

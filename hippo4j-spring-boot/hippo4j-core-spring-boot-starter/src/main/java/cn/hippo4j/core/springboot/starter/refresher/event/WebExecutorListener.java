@@ -63,25 +63,25 @@ public class WebExecutorListener implements ApplicationListener<Hippo4jCoreDynam
         } catch (Exception ex) {
             log.error("Failed to modify web thread pool.", ex);
         }
-
     }
 
     private ThreadPoolParameterInfo buildWebPoolParameter(BootstrapCoreProperties bindableCoreProperties) {
-        ThreadPoolParameterInfo parameterInfo = null;
-        WebThreadPoolProperties poolProperties = null;
+        ThreadPoolParameterInfo threadPoolParameterInfo = null;
+        WebThreadPoolProperties webThreadPoolProperties = null;
         if (bindableCoreProperties.getTomcat() != null) {
-            poolProperties = bindableCoreProperties.getTomcat();
+            webThreadPoolProperties = bindableCoreProperties.getTomcat();
         } else if (bindableCoreProperties.getUndertow() != null) {
-            poolProperties = bindableCoreProperties.getUndertow();
+            webThreadPoolProperties = bindableCoreProperties.getUndertow();
         } else if (bindableCoreProperties.getJetty() != null) {
-            poolProperties = bindableCoreProperties.getJetty();
+            webThreadPoolProperties = bindableCoreProperties.getJetty();
         }
-        if (poolProperties != null) {
-            parameterInfo = new ThreadPoolParameterInfo();
-            parameterInfo.setCoreSize(poolProperties.getCorePoolSize());
-            parameterInfo.setMaxSize(poolProperties.getMaximumPoolSize());
-            parameterInfo.setKeepAliveTime(poolProperties.getKeepAliveTime());
+        if (webThreadPoolProperties != null) {
+            threadPoolParameterInfo = ThreadPoolParameterInfo.builder()
+                    .coreSize(webThreadPoolProperties.getCorePoolSize())
+                    .maximumPoolSize(webThreadPoolProperties.getMaximumPoolSize())
+                    .keepAliveTime(webThreadPoolProperties.getKeepAliveTime())
+                    .build();
         }
-        return parameterInfo;
+        return threadPoolParameterInfo;
     }
 }

@@ -43,13 +43,13 @@ public class PlatformsListener implements ApplicationListener<Hippo4jCoreDynamic
     public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
         BootstrapCoreProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapCoreProperties();
         List<ExecutorProperties> executors = bindableCoreProperties.getExecutors();
-        for (ExecutorProperties executor : executors) {
-            String threadPoolId = executor.getThreadPoolId();
+        for (ExecutorProperties executorProperties : executors) {
+            String threadPoolId = executorProperties.getThreadPoolId();
             DynamicThreadPoolWrapper wrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
             if (wrapper != null && !wrapper.isInitFlag()) {
                 Hippo4jBaseSendMessageService sendMessageService = ApplicationContextHolder.getBean(Hippo4jBaseSendMessageService.class);
                 CoreNotifyConfigBuilder configBuilder = ApplicationContextHolder.getBean(CoreNotifyConfigBuilder.class);
-                Map<String, List<NotifyConfigDTO>> notifyConfig = configBuilder.buildSingleNotifyConfig(executor);
+                Map<String, List<NotifyConfigDTO>> notifyConfig = configBuilder.buildSingleNotifyConfig(executorProperties);
                 sendMessageService.putPlatform(notifyConfig);
                 wrapper.setInitFlag(Boolean.TRUE);
             }

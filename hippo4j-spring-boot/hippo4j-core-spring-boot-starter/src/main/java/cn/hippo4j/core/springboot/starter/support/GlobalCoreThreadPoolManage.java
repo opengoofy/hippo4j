@@ -24,9 +24,6 @@ import java.util.Map;
 
 /**
  * Global core thread-pool manage.
- *
- * @author chen.ma
- * @date 2022/2/26 19:47
  */
 public class GlobalCoreThreadPoolManage {
 

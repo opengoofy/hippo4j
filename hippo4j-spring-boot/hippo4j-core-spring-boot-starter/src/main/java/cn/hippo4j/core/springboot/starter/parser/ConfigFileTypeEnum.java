@@ -20,40 +20,38 @@ package cn.hippo4j.core.springboot.starter.parser;
 import lombok.Getter;
 
 /**
- * @author : wh
- * @date : 2022/3/1 07:47
- * @description:
+ * Config file type enum
  */
 @Getter
 public enum ConfigFileTypeEnum {
 
     /**
-     * properties
+     * PROPERTIES
      */
     PROPERTIES("properties"),
 
     /**
-     * xml
+     * XML
      */
     XML("xml"),
 
     /**
-     * json
+     * JSON
      */
     JSON("json"),
 
     /**
-     * yml
+     * YML
      */
     YML("yml"),
 
     /**
-     * yaml
+     * YAML
      */
     YAML("yaml"),
 
     /**
-     * txt
+     * TXT
      */
     TXT("txt");
 
@@ -71,5 +69,4 @@ public enum ConfigFileTypeEnum {
         }
         return PROPERTIES;
     }
-
 }

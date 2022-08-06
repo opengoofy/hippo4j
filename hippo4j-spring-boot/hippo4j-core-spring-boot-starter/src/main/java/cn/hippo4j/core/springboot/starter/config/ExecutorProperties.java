@@ -27,61 +27,58 @@ import java.util.Objects;
 
 /**
  * Executor properties.
- *
- * @author chen.ma
- * @date 2022/2/25 00:40
  */
 @Data
 @Accessors(chain = true)
 public class ExecutorProperties {
 
     /**
-     * threadPoolId
+     * Thread pool id
      */
     private String threadPoolId;
 
     /**
-     * corePoolSize
+     * Core pool size
      */
     private Integer corePoolSize;
 
     /**
-     * maximumPoolSize
+     * Maximum pool size
      */
     private Integer maximumPoolSize;
 
     /**
-     * queueCapacity
+     * Queue capacity
      */
     private Integer queueCapacity;
 
     /**
-     * blockingQueue
+     * Blocking queue
      */
     private String blockingQueue;
 
     /**
-     * rejectedHandler
+     * Rejected handler
      */
     private String rejectedHandler;
 
     /**
-     * keepAliveTime
+     * Keep alive time
      */
     private Long keepAliveTime;
 
     /**
-     * executeTimeOut
+     * Execute timeout
      */
     private Long executeTimeOut;
 
     /**
-     * allowCoreThreadTimeOut
+     * Allow core thread timeout
      */
     private Boolean allowCoreThreadTimeOut;
 
     /**
-     * threadNamePrefix
+     * Thread name prefix
      */
     private String threadNamePrefix;
 

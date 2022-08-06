@@ -18,12 +18,18 @@
 package cn.hippo4j.message.request;
 
 import cn.hippo4j.message.request.base.BaseNotifyRequest;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Change parameter notify request.
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChangeParameterNotifyRequest extends BaseNotifyRequest {
 
     private String active;

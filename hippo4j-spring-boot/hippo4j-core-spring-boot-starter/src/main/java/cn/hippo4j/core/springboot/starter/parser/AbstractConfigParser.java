@@ -18,9 +18,7 @@
 package cn.hippo4j.core.springboot.starter.parser;
 
 /**
- * @author : wh
- * @date : 2022/3/1 07:50
- * @description:
+ * Abstract config parser
  */
 public abstract class AbstractConfigParser implements ConfigParser {
 

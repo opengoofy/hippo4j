@@ -36,8 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Redick01
- * @date 2022/3/14 16:03
+ * Zookeeper refresher handler.
  */
 @Slf4j
 public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
@@ -93,15 +92,15 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
                 String value = "";
                 try {
                     value = new String(data.watched().forPath(n), Charsets.UTF_8);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ex) {
+                    log.error("Load zookeeper node error", ex);
                 }
                 content.append(nodeName).append("=").append(value).append("\n");
             });
             dynamicRefresh(content.toString());
             registerNotifyAlarmManage();
-        } catch (Exception e) {
-            log.error("load zk node error, nodePath is {}", nodePath, e);
+        } catch (Exception ex) {
+            log.error("Load zookeeper node error, nodePath is: {}", nodePath, ex);
         }
     }
 
