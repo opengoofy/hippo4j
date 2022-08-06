@@ -43,13 +43,7 @@ import static cn.hippo4j.common.constant.Constants.SCHEDULED_THREAD_CORE_NUM;
 /**
  * Base instance registry.
  *
- * <p>
- * Reference from Eureka.
- * Service registration, service offline, service renewal.
- * </p>
- *
- * @author chen.ma
- * @date 2021/8/8 22:46
+ * <p> Reference from Eureka. Service registration, service offline, service renewal.
  */
 @Slf4j
 @Service
@@ -65,7 +59,6 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         if (CollectionUtils.isEmpty(appNameLeaseMap)) {
             return Lists.newArrayList();
         }
-
         List<Lease<InstanceInfo>> appNameLeaseList = Lists.newArrayList();
         appNameLeaseMap.values().forEach(each -> appNameLeaseList.add(each));
         return appNameLeaseList;
@@ -81,27 +74,22 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
                 registerMap = registerNewMap;
             }
         }
-
         Lease<InstanceInfo> existingLease = registerMap.get(registrant.getInstanceId());
         if (existingLease != null && (existingLease.getHolder() != null)) {
             Long existingLastDirtyTimestamp = existingLease.getHolder().getLastDirtyTimestamp();
             Long registrationLastDirtyTimestamp = registrant.getLastDirtyTimestamp();
-
             if (existingLastDirtyTimestamp > registrationLastDirtyTimestamp) {
                 registrant = existingLease.getHolder();
             }
         }
-
         Lease<InstanceInfo> lease = new Lease(registrant);
         if (existingLease != null) {
             lease.setServiceUpTimestamp(existingLease.getServiceUpTimestamp());
         }
         registerMap.put(registrant.getInstanceId(), lease);
-
         if (InstanceStatus.UP.equals(registrant.getStatus())) {
             lease.serviceUp();
         }
-
         registrant.setActionType(InstanceInfo.ActionType.ADDED);
         registrant.setLastUpdatedTimestamp();
     }

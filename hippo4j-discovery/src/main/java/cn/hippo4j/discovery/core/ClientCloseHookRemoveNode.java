@@ -26,9 +26,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * Client close hook remove node.
- *
- * @author chen.ma
- * @date 2022/1/6 22:24
  */
 @Slf4j
 @Component
@@ -38,13 +35,11 @@ public class ClientCloseHookRemoveNode implements ClientCloseHookExecute {
     private final InstanceRegistry instanceRegistry;
 
     @Override
-    public void closeHook(ClientCloseHookReq req) {
-        log.info(
-                "Remove Node, Execute client hook function. Req :: {}",
-                JSONUtil.toJSONString(req));
+    public void closeHook(ClientCloseHookReq requestParam) {
+        log.info("Remove Node, Execute client hook function. Request: {}", JSONUtil.toJSONString(requestParam));
         try {
             InstanceInfo instanceInfo = new InstanceInfo();
-            instanceInfo.setAppName(req.getAppName()).setInstanceId(req.getInstanceId());
+            instanceInfo.setAppName(requestParam.getAppName()).setInstanceId(requestParam.getInstanceId());
             instanceRegistry.remove(instanceInfo);
         } catch (Exception ex) {
             log.error("Failed to delete node hook.", ex);
