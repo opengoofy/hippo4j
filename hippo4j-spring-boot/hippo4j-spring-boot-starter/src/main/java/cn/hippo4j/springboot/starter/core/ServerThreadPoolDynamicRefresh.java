@@ -104,7 +104,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         request.setNowExecuteTimeOut(originalExecuteTimeOut);
         threadPoolNotifyAlarmHandler.sendPoolConfigChange(request);
         log.info(CHANGE_THREAD_POOL_TEXT,
-                threadPoolId.toUpperCase(),
+                threadPoolId,
                 String.format(CHANGE_DELIMITER, originalCoreSize, afterExecutor.getCorePoolSize()),
                 String.format(CHANGE_DELIMITER, originalMaximumPoolSize, afterExecutor.getMaximumPoolSize()),
                 String.format(CHANGE_DELIMITER, originalQuery, QueueTypeEnum.getBlockingQueueNameByType(parameter.getQueueType())),

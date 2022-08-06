@@ -113,15 +113,15 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         String instanceId = info.getInstanceId();
         Map<String, Lease<InstanceInfo>> leaseMap = registry.get(appName);
         if (CollectionUtils.isEmpty(leaseMap)) {
-            log.warn("Failed to remove unhealthy node, no application found :: {}", appName);
+            log.warn("Failed to remove unhealthy node, no application found : {}", appName);
             return;
         }
         Lease<InstanceInfo> remove = leaseMap.remove(instanceId);
         if (remove == null) {
-            log.warn("Failed to remove unhealthy node, no instance found :: {}", instanceId);
+            log.warn("Failed to remove unhealthy node, no instance found : {}", instanceId);
             return;
         }
-        log.info("Remove unhealthy node, node ID :: {}", instanceId);
+        log.info("Remove unhealthy node, node ID : {}", instanceId);
     }
 
     public void evict(long additionalLeaseMs) {
@@ -150,7 +150,7 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         if (!CollectionUtils.isEmpty(registerMap)) {
             registerMap.remove(id);
             AbstractSubjectCenter.notify(AbstractSubjectCenter.SubjectType.CLEAR_CONFIG_CACHE, () -> identify);
-            log.info("Clean up unhealthy nodes. Node id :: {}", id);
+            log.info("Clean up unhealthy nodes. Node id : {}", id);
         }
         return true;
     }

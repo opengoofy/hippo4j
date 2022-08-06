@@ -33,7 +33,7 @@ public class ClientCloseHookRemoveConfigCache implements ClientCloseHookExecute 
 
     @Override
     public void closeHook(ClientCloseHookReq requestParam) {
-        log.info("Remove Config Cache, Execute client hook function. Request :: {}", JSONUtil.toJSONString(requestParam));
+        log.info("Remove Config Cache, Execute client hook function. Request : {}", JSONUtil.toJSONString(requestParam));
         try {
             String groupKey = requestParam.getGroupKey();
             if (StrUtil.isNotBlank(groupKey)) {
