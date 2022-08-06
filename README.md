@@ -1,4 +1,3 @@
-
 <img align="center" width="400" alt="image" src="https://user-images.githubusercontent.com/77398366/181906454-b46f6a14-7c2c-4b8f-8b0a-40432521bed8.png">
 
 # 动态可观测线程池框架，提高线上运行保障能力
@@ -37,6 +36,10 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - http://console.hippo4j.cn/index.html
 - 用户名/密码：hippo4j/hippo4j
 
+## 安全检测
+
+[![OSCS Status](https://www.oscs1024.com/platform/badge/opengoofy/hippo4j.svg?size=large)](https://www.murphysec.com/dr/3RKJwuQSx4uZK31UFE)
+
 ## 联系我
 
 图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)
@@ -53,7 +56,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 Hippo-4J 获得了一些宝贵的荣誉，这属于每一位对 Hippo-4J 做出过贡献的成员，谢谢各位的付出。
 
-![](https://user-images.githubusercontent.com/77398366/170607238-7308c9be-1d63-46a6-852c-eef2e4cf7405.JPG)
+<img align="center" width="880" alt="image" src="https://user-images.githubusercontent.com/77398366/170607238-7308c9be-1d63-46a6-852c-eef2e4cf7405.JPG">
 
 ## 友情链接
 
@@ -62,13 +65,3 @@ Hippo-4J 获得了一些宝贵的荣誉，这属于每一位对 Hippo-4J 做出�
 - [toBeBetterJavaer](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 - [Guide-Rpc-Framework](https://github.com/Snailclimb/guide-rpc-framework)：一款基于 Netty+Kyro+Zookeeper 实现的自定义 RPC 框架。
 - [Austin](https://github.com/ZhongFuCheng3y/austin)：消息推送平台，支持短信、邮件、微信公众号、企业微信、钉钉等多种消息类型。
-
-## 鸣谢
-
-Hippo-4J 项目基于或参考以下项目：[nacos](https://github.com/alibaba/nacos)、[eureka](https://github.com/Netflix/Eureka)。
-
-感谢 JetBrains 提供的免费开源 License：
-
-<p>
-    <img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
-</p>
