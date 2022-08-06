@@ -70,7 +70,7 @@ public class ServerNotifyConfigBuilder implements NotifyConfigBuilder {
         try {
             result = httpAgent.httpPostByDiscovery(BASE_PATH + "/notify/list/config", new ThreadPoolNotifyRequest(groupKeys));
         } catch (Throwable ex) {
-            log.error("Get dynamic thread pool notify configuration error. message :: {}", ex.getMessage());
+            log.error("Get dynamic thread pool notify configuration error. message: {}", ex.getMessage());
         }
         if (result != null && result.isSuccess() && result.getData() != null) {
             String resultDataStr = JSONUtil.toJSONString(result.getData());

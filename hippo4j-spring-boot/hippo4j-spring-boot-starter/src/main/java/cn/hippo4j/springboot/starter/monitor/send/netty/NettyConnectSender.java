@@ -64,7 +64,7 @@ public class NettyConnectSender implements MessageSender {
                     });
             bootstrap.connect(serverNettyAgent.getNettyServerAddress(), serverNettyAgent.getNettyServerPort()).sync();
         } catch (Exception e) {
-            log.error("netty send error ", e);
+            log.error("Netty send error.", e);
         }
     }
 }

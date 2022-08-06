@@ -35,7 +35,7 @@ public class ThreadPoolOperation {
         this.configService = configService;
     }
 
-    public Listener subscribeConfig(String tpId, Executor executor, ThreadPoolSubscribeCallback threadPoolSubscribeCallback) {
+    public Listener subscribeConfig(String threadPoolId, Executor executor, ThreadPoolSubscribeCallback threadPoolSubscribeCallback) {
         Listener configListener = new Listener() {
 
             @Override
@@ -48,7 +48,7 @@ public class ThreadPoolOperation {
                 return executor;
             }
         };
-        configService.addListener(properties.getNamespace(), properties.getItemId(), tpId, configListener);
+        configService.addListener(properties.getNamespace(), properties.getItemId(), threadPoolId, configListener);
         return configListener;
     }
 }

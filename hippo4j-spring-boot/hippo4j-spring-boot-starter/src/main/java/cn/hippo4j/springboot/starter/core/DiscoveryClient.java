@@ -63,7 +63,7 @@ public class DiscoveryClient implements DisposableBean {
                 new Integer(1),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.discovery.scheduler").build());
         register();
-        // init the schedule tasks
+        // Init the schedule tasks.
         initScheduledTasks();
     }
 
@@ -79,10 +79,10 @@ public class DiscoveryClient implements DisposableBean {
             registerResult = httpAgent.httpPostByDiscovery(urlPath, instanceInfo);
         } catch (Exception ex) {
             registerResult = Results.failure(ErrorCodeEnum.SERVICE_ERROR);
-            log.error("{}{} - registration failed :: {}", PREFIX, appPathIdentifier, ex.getMessage());
+            log.error("{}{} - registration failed: {}", PREFIX, appPathIdentifier, ex.getMessage());
         }
         if (log.isInfoEnabled()) {
-            log.info("{}{} - registration status :: {}", PREFIX, appPathIdentifier, registerResult.isSuccess() ? "success" : "fail");
+            log.info("{}{} - registration status: {}", PREFIX, appPathIdentifier, registerResult.isSuccess() ? "success" : "fail");
         }
         return registerResult.isSuccess();
     }
@@ -124,7 +124,7 @@ public class DiscoveryClient implements DisposableBean {
         }
     }
 
-    boolean renew() {
+    private boolean renew() {
         Result renewResult;
         try {
             InstanceInfo.InstanceRenew instanceRenew = new InstanceInfo.InstanceRenew()

@@ -48,7 +48,7 @@ public class ClientWorker {
 
     private final HttpAgent agent;
 
-    private final String identification;
+    private final String identify;
 
     private final ServerHealthCheck serverHealthCheck;
 
@@ -61,26 +61,26 @@ public class ClientWorker {
     private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap(16);
 
     @SuppressWarnings("all")
-    public ClientWorker(HttpAgent httpAgent, String identification, ServerHealthCheck serverHealthCheck) {
+    public ClientWorker(HttpAgent httpAgent, String identify, ServerHealthCheck serverHealthCheck) {
         this.agent = httpAgent;
-        this.identification = identification;
+        this.identify = identify;
         this.timeout = CONFIG_LONG_POLL_TIMEOUT;
         this.serverHealthCheck = serverHealthCheck;
-        this.executor = Executors.newScheduledThreadPool(1, r -> {
-            Thread t = new Thread(r);
-            t.setName("client.worker.executor");
-            t.setDaemon(true);
-            return t;
+        this.executor = Executors.newScheduledThreadPool(1, runnable -> {
+            Thread thread = new Thread(runnable);
+            thread.setName("client.worker.executor");
+            thread.setDaemon(true);
+            return thread;
         });
         this.executorService = Executors.newSingleThreadScheduledExecutor(
                 ThreadFactoryBuilder.builder().prefix("client.long.polling.executor").daemon(true).build());
-        log.info("Client identity :: {}", identification);
+        log.info("Client identify: {}", identify);
         this.executor.scheduleWithFixedDelay(() -> {
             try {
                 awaitApplicationComplete.await();
                 checkConfigInfo();
-            } catch (Throwable e) {
-                log.error("Sub check rotate check error.", e);
+            } catch (Throwable ex) {
+                log.error("Sub check rotate check error.", ex);
             }
         }, 1L, 1024L, TimeUnit.MILLISECONDS);
     }
@@ -123,7 +123,7 @@ public class ClientWorker {
             }
             for (CacheData cacheData : cacheDataList) {
                 if (!cacheData.isInitializing() || inInitializingCacheList
-                        .contains(GroupKey.getKeyTenant(cacheData.tpId, cacheData.itemId, cacheData.tenantId))) {
+                        .contains(GroupKey.getKeyTenant(cacheData.threadPoolId, cacheData.itemId, cacheData.tenantId))) {
                     cacheData.checkListenerMd5();
                     cacheData.setInitializing(false);
                 }
@@ -136,13 +136,13 @@ public class ClientWorker {
     private List<String> checkUpdateDataIds(List<CacheData> cacheDataList, List<String> inInitializingCacheList) {
         StringBuilder sb = new StringBuilder();
         for (CacheData cacheData : cacheDataList) {
-            sb.append(cacheData.tpId).append(WORD_SEPARATOR);
+            sb.append(cacheData.threadPoolId).append(WORD_SEPARATOR);
             sb.append(cacheData.itemId).append(WORD_SEPARATOR);
             sb.append(cacheData.tenantId).append(WORD_SEPARATOR);
-            sb.append(identification).append(WORD_SEPARATOR);
+            sb.append(identify).append(WORD_SEPARATOR);
             sb.append(cacheData.getMd5()).append(LINE_SEPARATOR);
             if (cacheData.isInitializing()) {
-                inInitializingCacheList.add(GroupKey.getKeyTenant(cacheData.tpId, cacheData.itemId, cacheData.tenantId));
+                inInitializingCacheList.add(GroupKey.getKeyTenant(cacheData.threadPoolId, cacheData.itemId, cacheData.tenantId));
             }
         }
         boolean isInitializingCacheList = !inInitializingCacheList.isEmpty();
@@ -156,7 +156,7 @@ public class ClientWorker {
         Map<String, String> headers = new HashMap(2);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
         // Confirm the identity of the client, and can be modified separately when modifying the thread pool configuration.
-        headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, identification);
+        headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, identify);
         // told server do not hang me up if new initializing cacheData added in
         if (isInitializingCacheList) {
             headers.put(LONG_PULLING_TIMEOUT_NO_HANGUP, "true");
@@ -172,23 +172,22 @@ public class ClientWorker {
             }
         } catch (Exception ex) {
             setHealthServer(false);
-            log.error("Check update get changed dataId exception. error message :: {}", ex.getMessage());
+            log.error("Check update get changed dataId exception. error message: {}", ex.getMessage());
         }
         return Collections.emptyList();
     }
 
-    public String getServerConfig(String namespace, String itemId, String tpId, long readTimeout) {
+    public String getServerConfig(String namespace, String itemId, String threadPoolId, long readTimeout) {
         Map<String, String> params = new HashMap(3);
         params.put("namespace", namespace);
         params.put("itemId", itemId);
-        params.put("tpId", tpId);
-        params.put("instanceId", identification);
+        params.put("tpId", threadPoolId);
+        params.put("instanceId", identify);
         Result result = agent.httpGetByConfig(CONFIG_CONTROLLER_PATH, null, params, readTimeout);
         if (result.isSuccess()) {
             return JSONUtil.toJSONString(result.getData());
         }
-        log.error("Sub server namespace :: {}, itemId :: {}, tpId :: {}, result code :: {}",
-                namespace, itemId, tpId, result.getCode());
+        log.error("Sub server namespace: {}, itemId: {}, threadPoolId: {}, result code: {}", namespace, itemId, threadPoolId, result.getCode());
         return NULL;
     }
 
@@ -219,28 +218,28 @@ public class ClientWorker {
         return updateList;
     }
 
-    public void addTenantListeners(String namespace, String itemId, String tpId, List<? extends Listener> listeners) {
-        CacheData cacheData = addCacheDataIfAbsent(namespace, itemId, tpId);
+    public void addTenantListeners(String namespace, String itemId, String threadPoolId, List<? extends Listener> listeners) {
+        CacheData cacheData = addCacheDataIfAbsent(namespace, itemId, threadPoolId);
         for (Listener listener : listeners) {
             cacheData.addListener(listener);
         }
     }
 
-    public CacheData addCacheDataIfAbsent(String namespace, String itemId, String tpId) {
-        CacheData cacheData = cacheMap.get(tpId);
+    public CacheData addCacheDataIfAbsent(String namespace, String itemId, String threadPoolId) {
+        CacheData cacheData = cacheMap.get(threadPoolId);
         if (cacheData != null) {
             return cacheData;
         }
-        cacheData = new CacheData(namespace, itemId, tpId);
-        CacheData lastCacheData = cacheMap.putIfAbsent(tpId, cacheData);
+        cacheData = new CacheData(namespace, itemId, threadPoolId);
+        CacheData lastCacheData = cacheMap.putIfAbsent(threadPoolId, cacheData);
         if (lastCacheData == null) {
             String serverConfig;
             try {
-                serverConfig = getServerConfig(namespace, itemId, tpId, 3000L);
+                serverConfig = getServerConfig(namespace, itemId, threadPoolId, 3000L);
                 ThreadPoolParameterInfo poolInfo = JSONUtil.parseObject(serverConfig, ThreadPoolParameterInfo.class);
                 cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
             } catch (Exception ex) {
-                log.error("Cache Data Error. Service Unavailable :: {}", ex.getMessage());
+                log.error("Cache Data Error. Service Unavailable: {}", ex.getMessage());
             }
             int taskId = cacheMap.size() / CONFIG_LONG_POLL_TIMEOUT;
             cacheData.setTaskId(taskId);

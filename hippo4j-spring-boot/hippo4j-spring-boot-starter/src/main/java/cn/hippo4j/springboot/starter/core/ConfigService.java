@@ -27,10 +27,10 @@ public interface ConfigService {
      *
      * @param tenantId
      * @param itemId
-     * @param tpId
+     * @param threadPoolId
      * @param listener
      */
-    void addListener(String tenantId, String itemId, String tpId, Listener listener);
+    void addListener(String tenantId, String itemId, String threadPoolId, Listener listener);
 
     /**
      * Get server status.

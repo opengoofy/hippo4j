@@ -145,7 +145,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 ResizableCapacityLinkedBlockingQueue queue = (ResizableCapacityLinkedBlockingQueue) executor.getQueue();
                 queue.setCapacity(parameter.getCapacity());
             } else {
-                log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type :: {}", executor.getQueue().getClass().getSimpleName());
+                log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type: {}", executor.getQueue().getClass().getSimpleName());
             }
         }
         if (parameter.getKeepAliveTime() != null) {

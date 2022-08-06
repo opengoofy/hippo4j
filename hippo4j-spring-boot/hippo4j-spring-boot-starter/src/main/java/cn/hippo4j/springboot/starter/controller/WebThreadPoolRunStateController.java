@@ -45,13 +45,13 @@ public class WebThreadPoolRunStateController {
 
     @GetMapping("/run/state/{threadPoolId}")
     public Result<ThreadPoolRunStateInfo> getPoolRunState(@PathVariable("threadPoolId") String threadPoolId) {
-        ThreadPoolRunStateInfo poolRunState = threadPoolRunStateHandler.getPoolRunState(threadPoolId);
-        return Results.success(poolRunState);
+        ThreadPoolRunStateInfo result = threadPoolRunStateHandler.getPoolRunState(threadPoolId);
+        return Results.success(result);
     }
 
     @GetMapping("/run/thread/state/{threadPoolId}")
     public Result<List<ThreadDetailStateInfo>> getThreadStateDetail(@PathVariable("threadPoolId") String threadPoolId) {
-        List<ThreadDetailStateInfo> detailStateInfo = threadDetailState.getThreadDetailStateInfo(threadPoolId);
-        return Results.success(detailStateInfo);
+        List<ThreadDetailStateInfo> result = threadDetailState.getThreadDetailStateInfo(threadPoolId);
+        return Results.success(result);
     }
 }

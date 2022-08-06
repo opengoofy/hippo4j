@@ -99,7 +99,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
                 Message message = messageCollectVessel.take();
                 messageSender.send(message);
             } catch (Throwable ex) {
-                log.error("Consumption buffer container task failed. Number of buffer container tasks :: {}", messageCollectVessel.size(), ex);
+                log.error("Consumption buffer container task failed. Number of buffer container tasks: {}", messageCollectVessel.size(), ex);
             }
         }
     }
@@ -143,7 +143,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
             ThreadUtil.newThread(this, "client.thread.reporting.task", Boolean.TRUE).start();
         }
         if (GlobalThreadPoolManage.getThreadPoolNum() > 0) {
-            log.info("Dynamic thread pool :: [{}]. The dynamic thread pool starts data collection and reporting. ", getThreadPoolNum());
+            log.info("Dynamic thread pool: [{}]. The dynamic thread pool starts data collection and reporting.", getThreadPoolNum());
         }
     }
 
