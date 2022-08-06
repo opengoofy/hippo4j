@@ -45,7 +45,7 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
     @Override
     protected RobotMessageActualContent buildMessageActualContent() {
         String weChatAlarmTxtKey = "message/robot/dynamic-thread-pool/wechat-alarm.txt";
-        String weChatConfigTxtKey = "message/robot/dynamic-thread-pool/wechat-alarm.txt";
+        String weChatConfigTxtKey = "message/robot/dynamic-thread-pool/wechat-config.txt";
         RobotMessageActualContent robotMessageActualContent = RobotMessageActualContent.builder()
                 .receiveSeparator("><@")
                 .changeSeparator("  ➲  ")
