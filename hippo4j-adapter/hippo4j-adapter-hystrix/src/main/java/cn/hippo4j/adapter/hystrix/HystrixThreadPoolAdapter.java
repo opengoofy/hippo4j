@@ -72,7 +72,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
             result.setMaximumSize(threadPoolExecutor.getMaximumPoolSize());
             return result;
         }
-        log.warn("[{}] hystrix thread pool not found.", identify);
+        log.warn("[{}] Hystrix thread pool not found.", identify);
         return result;
     }
 
@@ -88,14 +88,14 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
         String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
         ThreadPoolExecutor threadPoolExecutor = HYSTRIX_CONSUME_EXECUTOR.get(threadPoolKey);
         if (threadPoolExecutor == null) {
-            log.warn("[{}] hystrix thread pool not found.", threadPoolKey);
+            log.warn("[{}] Hystrix thread pool not found.", threadPoolKey);
             return false;
         }
         int originalCoreSize = threadPoolExecutor.getCorePoolSize();
         int originalMaximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
         threadPoolExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
         threadPoolExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
-        log.info("[{}] hystrix thread pool parameter change. coreSize :: {}, maximumSize :: {}",
+        log.info("[{}] Hystrix thread pool parameter change. coreSize: {}, maximumSize: {}",
                 threadPoolKey,
                 String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolExecutor.getCorePoolSize()),
                 String.format(CHANGE_DELIMITER, originalMaximumPoolSize, threadPoolExecutor.getMaximumPoolSize()));
@@ -106,16 +106,13 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
     public void onApplicationEvent(ApplicationStartedEvent event) {
         ScheduledExecutorService scheduler = threadPoolAdapterScheduler.getScheduler();
         int taskIntervalSeconds = threadPoolAdapterScheduler.getTaskIntervalSeconds();
-
-        // Periodically update the Hystrix thread pool
+        // Periodically update the Hystrix thread pool.
         HystrixThreadPoolRefreshTask hystrixThreadPoolRefreshTask = new HystrixThreadPoolRefreshTask(scheduler, taskIntervalSeconds);
         scheduler.schedule(hystrixThreadPoolRefreshTask, taskIntervalSeconds, TimeUnit.SECONDS);
-
-        // Periodically refresh registration
+        // Periodically refresh registration.
         ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction = ApplicationContextHolder.getBean(ThreadPoolAdapterRegisterAction.class);
         Map<String, ? extends HystrixThreadPoolAdapter> beansOfType = ApplicationContextHolder.getBeansOfType(this.getClass());
         Map<String, ThreadPoolAdapter> map = Maps.newHashMap(beansOfType);
-
         ThreadPoolAdapterRegisterTask threadPoolAdapterRegisterTask = new ThreadPoolAdapterRegisterTask(scheduler, taskIntervalSeconds, map, threadPoolAdapterRegisterAction);
         scheduler.schedule(threadPoolAdapterRegisterTask, threadPoolAdapterScheduler.getTaskIntervalSeconds(), TimeUnit.SECONDS);
     }
@@ -143,8 +140,8 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
                     }
                 }
             }
-        } catch (Exception e) {
-            log.error("Failed to get Hystrix thread pool.", e);
+        } catch (Exception ex) {
+            log.error("Failed to get Hystrix thread pool.", ex);
         }
     }
 
@@ -230,8 +227,8 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
                 if (registerFlag) {
                     threadPoolAdapterRegisterAction.doRegister(cacheConfigList);
                 }
-            } catch (Exception e) {
-                log.error("Register Task Error", e);
+            } catch (Exception ex) {
+                log.error("Register task error.", ex);
             } finally {
                 if (!scheduler.isShutdown()) {
                     scheduler.schedule(this, taskIntervalSeconds, TimeUnit.MILLISECONDS);

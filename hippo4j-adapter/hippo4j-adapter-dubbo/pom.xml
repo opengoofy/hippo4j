@@ -9,15 +9,20 @@
     </parent>
     <artifactId>hippo4j-adapter-dubbo</artifactId>
 
+    <properties>
+        <dubbo.version>3.0.5</dubbo.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-base</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
-            <version>3.0.5</version>
+            <version>${dubbo.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
@@ -38,7 +43,6 @@
                     </archive>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>

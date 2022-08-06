@@ -62,7 +62,7 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         } catch (Exception ex) {
             cacheFlag.set(Boolean.TRUE);
             EXCEPTION_MESSAGE = ex.getMessage();
-            log.error("Failed to get Tomcat thread pool. Message :: {}", EXCEPTION_MESSAGE);
+            log.error("Failed to get Tomcat thread pool. Message: {}", EXCEPTION_MESSAGE);
         }
         return tomcatExecutor;
     }
@@ -168,7 +168,7 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
             tomcatThreadPoolExecutor.setCorePoolSize(threadPoolParameterInfo.corePoolSizeAdapt());
             tomcatThreadPoolExecutor.setMaximumPoolSize(threadPoolParameterInfo.maximumPoolSizeAdapt());
             tomcatThreadPoolExecutor.setKeepAliveTime(threadPoolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
-            log.info("[TOMCAT] Changed web thread pool. corePoolSize :: [{}], maximumPoolSize :: [{}], keepAliveTime :: [{}]",
+            log.info("[Tomcat] Changed web thread pool. corePoolSize: [{}], maximumPoolSize: [{}], keepAliveTime :: [{}]",
                     String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalCoreSize, threadPoolParameterInfo.corePoolSizeAdapt()),
                     String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalMaximumPoolSize, threadPoolParameterInfo.maximumPoolSizeAdapt()),
                     String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalKeepAliveTime, threadPoolParameterInfo.getKeepAliveTime()));

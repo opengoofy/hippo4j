@@ -64,8 +64,7 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
     public void run(ApplicationArguments args) {
         try {
             getWebThreadPool();
-        } catch (Exception ex) {
-            // ignore. Adaptation unit test.
+        } catch (Exception ignored) {
         }
     }
 }
