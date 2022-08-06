@@ -10,7 +10,7 @@
     <artifactId>hippo4j-monitor-es</artifactId>
 
     <properties>
-        <elasticsearch.version>6.5.0</elasticsearch.version>
+        <elasticsearch.version>6.8.17</elasticsearch.version>
     </properties>
 
     <dependencies>
