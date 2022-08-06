@@ -94,7 +94,7 @@ public class LongPollingService {
 
         @Override
         public void run() {
-            log.info("Dynamic Thread Pool Long pulling client count :: {}", allSubs.size());
+            log.info("Dynamic Thread Pool Long pulling client count: {}", allSubs.size());
         }
     }
 

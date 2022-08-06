@@ -121,7 +121,7 @@ public class HttpClientUtil {
         try {
             return doPost(url, body);
         } catch (Exception e) {
-            log.error("httpPost 调用失败. {} message :: {}", url, e.getMessage());
+            log.error("httpPost 调用失败. {} message : {}", url, e.getMessage());
             throw e;
         }
     }

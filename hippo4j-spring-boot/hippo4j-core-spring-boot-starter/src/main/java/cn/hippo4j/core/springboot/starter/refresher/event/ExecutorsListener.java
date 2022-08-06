@@ -86,7 +86,7 @@ public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamic
             // refresh executor properties.
             GlobalCoreThreadPoolManage.refresh(threadPoolId, properties);
             log.info(CHANGE_THREAD_POOL_TEXT,
-                    threadPoolId.toUpperCase(),
+                    threadPoolId,
                     String.format(CHANGE_DELIMITER, beforeProperties.getCorePoolSize(), properties.getCorePoolSize()),
                     String.format(CHANGE_DELIMITER, beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize()),
                     String.format(CHANGE_DELIMITER, beforeProperties.getBlockingQueue(), properties.getBlockingQueue()),

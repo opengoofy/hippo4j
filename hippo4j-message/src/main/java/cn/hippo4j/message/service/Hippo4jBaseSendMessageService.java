@@ -63,7 +63,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
                 if (messageHandler == null) {
-                    log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
+                    log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
                     return;
                 }
                 if (isSendAlarm(each.getTpId(), each.getPlatform(), typeEnum)) {
@@ -71,7 +71,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
                     messageHandler.sendAlarmMessage(each, alarmNotifyRequest);
                 }
             } catch (Exception ex) {
-                log.warn("Failed to send thread pool alarm notification. key :: [{}]", threadPoolId, ex);
+                log.warn("Failed to send thread pool alarm notification. key: [{}]", threadPoolId, ex);
             }
         });
     }
@@ -82,19 +82,19 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
         String buildKey = StrUtil.builder(threadPoolId, "+", "CONFIG").toString();
         List<NotifyConfigDTO> notifyList = notifyConfigs.get(buildKey);
         if (CollUtil.isEmpty(notifyList)) {
-            log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
+            log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
             return;
         }
         notifyList.forEach(each -> {
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
                 if (messageHandler == null) {
-                    log.warn("Please configure alarm notification on the server. key :: [{}]", threadPoolId);
+                    log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
                     return;
                 }
                 messageHandler.sendChangeMessage(each, changeParameterNotifyRequest);
             } catch (Exception ex) {
-                log.warn("Failed to send thread pool change notification. key :: [{}]", threadPoolId, ex);
+                log.warn("Failed to send thread pool change notification. key: [{}]", threadPoolId, ex);
             }
         });
     }

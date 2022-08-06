@@ -126,7 +126,7 @@ public class AbstractSubjectCenter {
             try {
                 each.accept(observerMessage);
             } catch (Exception ex) {
-                log.error("Notification subject :: {} observer exception", subject);
+                log.error("Notification subject: {} observer exception", subject);
             }
         });
     }

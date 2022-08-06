@@ -105,7 +105,7 @@ public class AbstractBuildThreadPoolTemplate {
                     initParam.getThreadFactory(),
                     initParam.getRejectedExecutionHandler());
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException(String.format("Error creating thread pool parameter. threadPool id :: %s", initParam.getThreadPoolId()), ex);
+            throw new IllegalArgumentException(String.format("Error creating thread pool parameter. threadPool id: %s", initParam.getThreadPoolId()), ex);
         }
         dynamicThreadPoolExecutor.setTaskDecorator(initParam.getTaskDecorator());
         dynamicThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);

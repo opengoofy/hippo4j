@@ -58,7 +58,7 @@ public class ApplicationController {
     public Result<Void> renew(@RequestBody InstanceInfo.InstanceRenew instanceRenew) {
         boolean isSuccess = instanceRegistry.renew(instanceRenew);
         if (!isSuccess) {
-            log.warn("Not Found (Renew) :: {} - {}", instanceRenew.getAppName(), instanceRenew.getInstanceId());
+            log.warn("Not Found (Renew) : {} - {}", instanceRenew.getAppName(), instanceRenew.getInstanceId());
             return Results.failure(ErrorCodeEnum.NOT_FOUND);
         }
         return Results.success();

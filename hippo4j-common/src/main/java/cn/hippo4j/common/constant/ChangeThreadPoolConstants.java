@@ -23,14 +23,14 @@ package cn.hippo4j.common.constant;
 public class ChangeThreadPoolConstants {
 
     public static final String CHANGE_THREAD_POOL_TEXT = "[{}] Changing thread pool parameters. " +
-            "\n    coreSize :: [{}]" +
-            "\n    maximumSize :: [{}]" +
-            "\n    queueType :: [{}]" +
-            "\n    capacity :: [{}]" +
-            "\n    keepAliveTime :: [{}]" +
-            "\n    executeTimeOut :: [{}]" +
-            "\n    rejectedType :: [{}]" +
-            "\n    allowCoreThreadTimeOut :: [{}]";
+            "\n    coreSize: [{}]" +
+            "\n    maximumSize: [{}]" +
+            "\n    queueType: [{}]" +
+            "\n    capacity: [{}]" +
+            "\n    keepAliveTime: [{}]" +
+            "\n    executeTimeOut: [{}]" +
+            "\n    rejectedType: [{}]" +
+            "\n    allowCoreThreadTimeOut: [{}]";
 
     public static final String CHANGE_DELIMITER = "%s => %s";
 }

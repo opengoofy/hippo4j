@@ -156,7 +156,7 @@ public class ConfigServiceImpl implements ConfigService {
                 }
             }
         } catch (Exception ex) {
-            log.error("[db-error] message :: {}", ex.getMessage(), ex);
+            log.error("[db-error] message : {}", ex.getMessage(), ex);
             throw ex;
         }
         return null;
@@ -192,7 +192,7 @@ public class ConfigServiceImpl implements ConfigService {
             }
             configInfoMapper.update(config, wrapper);
         } catch (Exception ex) {
-            log.error("[db-error] message :: {}", ex.getMessage(), ex);
+            log.error("[db-error] message : {}", ex.getMessage(), ex);
             throw ex;
         }
     }
