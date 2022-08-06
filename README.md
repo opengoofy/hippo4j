@@ -38,7 +38,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 ## 安全检测
 
-[![OSCS Status](https://www.oscs1024.com/platform/badge/opengoofy/hippo4j.svg?size=large)](https://www.murphysec.com/dr/3RKJwuQSx4uZK31UFE)
+[![OSCS Status](https://www.oscs1024.com/platform/badge/opengoofy/hippo4j.svg?size=large)](https://www.murphysec.com/dr/s285JA1FVHD7tayWLt)
 
 ## 联系我
 
