@@ -175,12 +175,11 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     }
 
     private final ExecutorService configRefreshExecutorService = ThreadPoolBuilder.builder()
-            .corePoolSize(2)
-            .maxPoolNum(4)
+            .corePoolSize(1)
+            .maxPoolNum(2)
             .keepAliveTime(2000)
             .timeUnit(TimeUnit.MILLISECONDS)
-            .workQueue(QueueTypeEnum.ARRAY_BLOCKING_QUEUE)
-            .capacity(1024)
+            .workQueue(QueueTypeEnum.SYNCHRONOUS_QUEUE)
             .allowCoreThreadTimeOut(true)
             .threadFactory("client.dynamic.threadPool.change.config")
             .rejected(new ThreadPoolExecutor.AbortPolicy())
