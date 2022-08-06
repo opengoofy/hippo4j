@@ -26,7 +26,7 @@ import java.util.Map;
 public interface ThreadPoolAdapterRegisterAction {
 
     /**
-     * getThreadPoolAdapterCacheConfigs
+     * Get thread pool adapter cache configs.
      *
      * @param threadPoolAdapterMap
      * @return List<ThreadPoolAdapterCacheConfig>
@@ -34,7 +34,7 @@ public interface ThreadPoolAdapterRegisterAction {
     List<ThreadPoolAdapterCacheConfig> getThreadPoolAdapterCacheConfigs(Map<String, ThreadPoolAdapter> threadPoolAdapterMap);
 
     /**
-     * doRegister
+     * Do register.
      *
      * @param cacheConfigList
      * @return

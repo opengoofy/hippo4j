@@ -49,7 +49,7 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
     @Override
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
-        // There is no need to consider reflection performance because the fetch is a singleton
+        // There is no need to consider reflection performance because the fetch is a singleton.
         UndertowWebServer undertowWebServer = (UndertowWebServer) webServer;
         Field undertowField = ReflectionUtils.findField(UndertowWebServer.class, UNDERTOW_NAME);
         ReflectionUtils.makeAccessible(undertowField);
@@ -66,7 +66,6 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
             int coreSize = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int maximumPoolSize = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
             int keepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);
-
             poolBaseInfo.setCoreSize(coreSize);
             poolBaseInfo.setMaximumSize(maximumPoolSize);
             poolBaseInfo.setKeepAliveTime((long) keepAliveTime);
@@ -87,7 +86,6 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
             int minThreads = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int maxThreads = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
             int keepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);
-
             parameterInfo.setCoreSize(minThreads);
             parameterInfo.setMaxSize(maxThreads);
             parameterInfo.setKeepAliveTime(keepAliveTime);
@@ -101,7 +99,6 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     public ThreadPoolRunStateInfo getWebRunStateInfo() {
         ThreadPoolRunStateInfo stateInfo = new ThreadPoolRunStateInfo();
         XnioWorker xnioWorker = (XnioWorker) executor;
-
         Field field = ReflectionUtils.findField(XnioWorker.class, "taskPool");
         ReflectionUtils.makeAccessible(field);
         Object fieldObject = ReflectionUtils.getField(field, xnioWorker);
@@ -127,14 +124,12 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
         // 峰值负载
         // 没有峰值记录，直接使用当前数据
         String peakLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
-
         stateInfo.setCoreSize(corePoolSize);
         stateInfo.setPoolSize(poolSize);
         stateInfo.setMaximumSize(maximumPoolSize);
         stateInfo.setActiveSize(activeCount);
         stateInfo.setCurrentLoad(currentLoad);
         stateInfo.setPeakLoad(peakLoad);
-
         long rejectCount = fieldObject instanceof DynamicThreadPoolExecutor
                 ? ((DynamicThreadPoolExecutor) fieldObject).getRejectCountNum()
                 : -1L;
@@ -157,7 +152,7 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
             xnioWorker.setOption(Options.WORKER_TASK_CORE_THREADS, coreSize);
             xnioWorker.setOption(Options.WORKER_TASK_MAX_THREADS, maxSize);
             xnioWorker.setOption(Options.WORKER_TASK_KEEPALIVE, keepAliveTime);
-            log.info("[UNDERTOW] Changed web thread pool. corePoolSize :: [{}], maximumPoolSize :: [{}], keepAliveTime :: [{}]",
+            log.info("[Undertow] Changed web thread pool. corePoolSize: [{}], maximumPoolSize: [{}], keepAliveTime :: [{}]",
                     String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalCoreSize, coreSize),
                     String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalMaximumPoolSize, maxSize),
                     String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalKeepAliveTime, keepAliveTime));

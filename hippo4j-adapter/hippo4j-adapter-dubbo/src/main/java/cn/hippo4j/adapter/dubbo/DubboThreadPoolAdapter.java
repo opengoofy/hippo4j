@@ -85,7 +85,7 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
         int originalMaximumPoolSize = executor.getMaximumPoolSize();
         executor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
         executor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
-        log.info("[{}] Dubbo consumption thread pool parameter change. coreSize :: {}, maximumSize :: {}",
+        log.info("[{}] Dubbo consumption thread pool parameter change. coreSize: {}, maximumSize: {}",
                 threadPoolKey,
                 String.format(CHANGE_DELIMITER, originalCoreSize, executor.getCorePoolSize()),
                 String.format(CHANGE_DELIMITER, originalMaximumPoolSize, executor.getMaximumPoolSize()));

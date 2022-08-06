@@ -38,13 +38,10 @@ public class WebThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
                 ByteConvertUtil.getPrintSize(runtimeInfo.getTotalMemory()),
                 " / 最大可用: ",
                 ByteConvertUtil.getPrintSize(runtimeInfo.getMaxMemory())).toString();
-
         poolRunStateInfo.setCurrentLoad(poolRunStateInfo.getCurrentLoad() + "%");
         poolRunStateInfo.setPeakLoad(poolRunStateInfo.getPeakLoad() + "%");
-
         poolRunStateInfo.setMemoryProportion(memoryProportion);
         poolRunStateInfo.setFreeMemory(ByteConvertUtil.getPrintSize(runtimeInfo.getFreeMemory()));
-
         return poolRunStateInfo;
     }
 }

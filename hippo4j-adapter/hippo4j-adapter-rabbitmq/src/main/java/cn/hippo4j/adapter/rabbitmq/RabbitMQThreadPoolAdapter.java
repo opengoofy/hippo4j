@@ -91,13 +91,13 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
             int originalMaximumPoolSize = threadPoolTaskExecutor.getMaximumPoolSize();
             threadPoolTaskExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
             threadPoolTaskExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
-            log.info("[{}] rabbitmq consumption thread pool parameter change. coreSize :: {}, maximumSize :: {}",
+            log.info("[{}] Rabbitmq consumption thread pool parameter change. coreSize: {}, maximumSize: {}",
                     threadPoolKey,
                     String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolAdapterParameter.getCorePoolSize()),
                     String.format(CHANGE_DELIMITER, originalMaximumPoolSize, threadPoolAdapterParameter.getMaximumPoolSize()));
             return true;
         }
-        log.warn("[{}] rabbitmq consuming thread pool not found.", threadPoolKey);
+        log.warn("[{}] Rabbitmq consuming thread pool not found.", threadPoolKey);
         return false;
     }
 
@@ -108,7 +108,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
             if (executor instanceof ThreadPoolExecutor) {
                 ThreadPoolExecutor threadPoolTaskExecutor = (ThreadPoolExecutor) executor;
                 RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(RABBITMQ_EXECUTOR_SERVICE, threadPoolTaskExecutor);
-                log.info("rabbitmq executor name {}", RABBITMQ_EXECUTOR_SERVICE);
+                log.info("Rabbitmq executor name {}", RABBITMQ_EXECUTOR_SERVICE);
             } else {
                 log.warn("Custom thread pools only support ThreadPoolExecutor");
             }
