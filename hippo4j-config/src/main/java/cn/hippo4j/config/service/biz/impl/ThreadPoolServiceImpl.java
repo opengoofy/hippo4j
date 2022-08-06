@@ -62,7 +62,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
                 .eq(!StringUtils.isBlank(reqDTO.getItemId()), ConfigAllInfo::getItemId, reqDTO.getItemId())
                 .eq(!StringUtils.isBlank(reqDTO.getTpId()), ConfigAllInfo::getTpId, reqDTO.getTpId())
                 .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL)
-                .orderByDesc(ConfigAllInfo::getGmtCreate);
+                .orderByDesc(reqDTO.getDesc() != null, ConfigAllInfo::getGmtCreate);
         return configInfoMapper.selectPage(reqDTO, wrapper).convert(each -> BeanUtil.convert(each, ThreadPoolRespDTO.class));
     }
 
@@ -112,7 +112,6 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
     public void alarmEnable(String id, Integer isAlarm) {
         ConfigAllInfo configAllInfo = configInfoMapper.selectById(id);
         configAllInfo.setIsAlarm(isAlarm);
-        // TODO: 是否报警变更, 虽然通知了客户端, 但是并没有在客户端实时生效, 需要考虑一个好的场景思路
         configService.insertOrUpdate(null, false, configAllInfo);
     }
 }

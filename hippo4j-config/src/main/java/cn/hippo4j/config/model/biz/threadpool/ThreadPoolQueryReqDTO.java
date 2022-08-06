@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 
 /**
- * Thread pool query req dto.
+ * Thread pool query req DTO.
  *
  * @author chen.ma
  * @date 2021/6/30 21:22
@@ -30,18 +30,22 @@ import lombok.Data;
 public class ThreadPoolQueryReqDTO extends Page {
 
     /**
-     * tenantId
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * itemId
+     * Item id
      */
     private String itemId;
 
     /**
-     * tpId
+     * Thread pool id
      */
     private String tpId;
 
+    /**
+     * Desc
+     */
+    private Boolean desc;
 }
