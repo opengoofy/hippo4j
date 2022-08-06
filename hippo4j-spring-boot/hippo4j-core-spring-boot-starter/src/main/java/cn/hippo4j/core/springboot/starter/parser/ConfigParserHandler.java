@@ -26,9 +26,7 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 /**
- * @author : wh
- * @date : 2022/3/1 08:02
- * @description:
+ * Config parser handler.
  */
 public class ConfigParserHandler {
 
@@ -39,7 +37,6 @@ public class ConfigParserHandler {
         for (ConfigParser configParser : loader) {
             PARSERS.add(configParser);
         }
-
         PARSERS.add(new PropertiesConfigParser());
         PARSERS.add(new YamlConfigParser());
     }
@@ -50,7 +47,6 @@ public class ConfigParserHandler {
                 return parser.doParse(content);
             }
         }
-
         return Collections.emptyMap();
     }
 

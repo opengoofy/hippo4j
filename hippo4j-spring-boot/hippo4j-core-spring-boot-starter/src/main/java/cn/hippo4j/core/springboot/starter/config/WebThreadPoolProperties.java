@@ -21,9 +21,6 @@ import lombok.Data;
 
 /**
  * Web thread pool properties.
- *
- * @author chen.ma
- * @date 2022/3/11 19:23
  */
 @Data
 public class WebThreadPoolProperties {

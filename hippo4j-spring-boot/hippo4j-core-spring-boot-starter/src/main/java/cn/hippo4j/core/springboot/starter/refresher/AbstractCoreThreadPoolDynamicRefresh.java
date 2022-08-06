@@ -34,9 +34,6 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * Abstract core thread-pool dynamic refresh.
- *
- * @author chen.ma
- * @date 2022/2/26 12:42
  */
 @Slf4j
 @RequiredArgsConstructor

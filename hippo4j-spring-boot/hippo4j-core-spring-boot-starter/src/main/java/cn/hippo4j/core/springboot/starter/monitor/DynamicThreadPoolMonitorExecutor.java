@@ -38,9 +38,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Dynamic thread-pool monitor executor.
- *
- * @author chen.ma
- * @date 2022/3/25 19:29
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -87,7 +84,7 @@ public class DynamicThreadPoolMonitorExecutor implements ApplicationRunner {
             try {
                 each.collect();
             } catch (Exception ex) {
-                log.error("Error monitoring the running status of dynamic thread pool. Type :: {}", each.getType(), ex);
+                log.error("Error monitoring the running status of dynamic thread pool. Type: {}", each.getType(), ex);
             }
         }
     }

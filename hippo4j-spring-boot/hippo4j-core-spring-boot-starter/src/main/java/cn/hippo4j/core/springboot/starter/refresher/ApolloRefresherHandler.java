@@ -32,9 +32,7 @@ import java.util.Map;
 import static cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties.PREFIX;
 
 /**
- * @author : wh
- * @date : 2022/2/28 21:32
- * @description:
+ * Apollo refresher handler.
  */
 @Slf4j
 public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
@@ -62,6 +60,6 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
             dynamicRefresh(configFile.getContent(), newChangeValueMap);
         };
         config.addChangeListener(configChangeListener);
-        log.info("dynamic-thread-pool refresher, add apollo listener success, namespace: {}", namespace);
+        log.info("Dynamic thread pool refresher, add apollo listener success. namespace: {}", namespace);
     }
 }

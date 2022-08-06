@@ -19,9 +19,6 @@ package cn.hippo4j.core.springboot.starter.common;
 
 /**
  * Config file type enum.
- *
- * @author chen.ma
- * @date 2022/2/26 18:12
  */
 public enum ConfigFileTypeEnum {
 

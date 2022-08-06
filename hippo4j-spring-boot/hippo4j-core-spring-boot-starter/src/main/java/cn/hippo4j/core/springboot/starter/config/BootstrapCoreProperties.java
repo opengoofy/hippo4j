@@ -27,10 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Bootstrap properties.
- *
- * @author chen.ma
- * @date 2022/2/25 00:35
+ * Bootstrap core properties.
  */
 @Getter
 @Setter

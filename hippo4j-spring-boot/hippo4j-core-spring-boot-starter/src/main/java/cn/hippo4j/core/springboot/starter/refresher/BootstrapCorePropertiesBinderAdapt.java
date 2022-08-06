@@ -40,9 +40,6 @@ import static cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties.
 
 /**
  * Bootstrap core properties binder adapt.
- *
- * @author chen.ma
- * @date 2022/3/9 19:04
  */
 public class BootstrapCorePropertiesBinderAdapt {
 

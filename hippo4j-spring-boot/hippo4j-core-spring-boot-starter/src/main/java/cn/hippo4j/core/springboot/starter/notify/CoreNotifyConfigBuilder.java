@@ -38,9 +38,6 @@ import java.util.stream.Collectors;
 
 /**
  * Core notify config builder.
- *
- * @author chen.ma
- * @date 2022/2/25 00:24
  */
 @AllArgsConstructor
 @Slf4j
@@ -139,7 +136,6 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
                 receive = receives.get(platformProperties.getPlatform());
             }
         }
-
         return receive;
     }
 

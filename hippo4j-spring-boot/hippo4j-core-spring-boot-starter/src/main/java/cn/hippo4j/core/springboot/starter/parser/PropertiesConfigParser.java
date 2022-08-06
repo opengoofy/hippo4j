@@ -26,9 +26,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @author : wh
- * @date : 2022/3/1 07:49
- * @description:
+ * Properties config parser.
  */
 public class PropertiesConfigParser extends AbstractConfigParser {
 

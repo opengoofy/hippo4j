@@ -22,9 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author : wh
- * @date : 2022/3/1 07:47
- * @description:
+ * Config parser.
  */
 public interface ConfigParser {
 
