@@ -43,23 +43,21 @@ public class DiscoveryConfiguration {
 
     private final ConfigurableEnvironment environment;
 
-    private final BootstrapProperties properties;
+    private final BootstrapProperties bootstrapProperties;
 
     private final InetUtils hippo4JInetUtils;
 
     @Bean
     @SneakyThrows
     public InstanceInfo instanceConfig() {
-        String namespace = properties.getNamespace();
-        String itemId = properties.getItemId();
+        String namespace = bootstrapProperties.getNamespace();
+        String itemId = bootstrapProperties.getItemId();
         String port = environment.getProperty("server.port", "8080");
         String applicationName = environment.getProperty("spring.dynamic.thread-pool.item-id");
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
-
         InstanceInfo instanceInfo = new InstanceInfo();
         String instanceId = CloudCommonIdUtil.getDefaultInstanceId(environment, hippo4JInetUtils);
         instanceId = StrBuilder.create().append(instanceId).append(IDENTIFY_SLICER_SYMBOL).append(CLIENT_IDENTIFICATION_VALUE).toString();
-
         String contextPath = environment.getProperty("server.servlet.context-path", "");
         instanceInfo.setInstanceId(instanceId)
                 .setIpApplicationName(CloudCommonIdUtil.getIpApplicationName(environment, hippo4JInetUtils))
@@ -68,16 +66,13 @@ public class DiscoveryConfiguration {
                 .setPort(port)
                 .setClientBasePath(contextPath)
                 .setGroupKey(ContentUtil.getGroupKey(itemId, namespace));
-
         String callBackUrl = new StringBuilder().append(instanceInfo.getHostName()).append(":")
                 .append(port).append(instanceInfo.getClientBasePath())
                 .toString();
         instanceInfo.setCallBackUrl(callBackUrl);
-
         String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);
         instanceInfo.setIdentify(identify);
         instanceInfo.setActive(active.toUpperCase());
-
         return instanceInfo;
     }
 

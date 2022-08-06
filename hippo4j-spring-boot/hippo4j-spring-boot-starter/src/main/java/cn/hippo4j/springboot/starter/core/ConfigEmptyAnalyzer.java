@@ -27,7 +27,7 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 public class ConfigEmptyAnalyzer extends AbstractFailureAnalyzer<ConfigEmptyException> {
 
     @Override
-    protected FailureAnalysis analyze(Throwable rootFailure, ConfigEmptyException cause) {
-        return new FailureAnalysis(cause.getDescription(), cause.getAction(), cause);
+    protected FailureAnalysis analyze(Throwable rootFailure, ConfigEmptyException configEmptyException) {
+        return new FailureAnalysis(configEmptyException.getDescription(), configEmptyException.getAction(), configEmptyException);
     }
 }

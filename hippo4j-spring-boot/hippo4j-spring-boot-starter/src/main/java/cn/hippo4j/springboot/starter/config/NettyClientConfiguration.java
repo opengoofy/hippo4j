@@ -24,9 +24,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 /**
- * Netty ClientCon figuration
+ * Netty client configuration.
  */
-@ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, name = "report-type", matchIfMissing = false, havingValue = "netty")
+@ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, name = "report-type", havingValue = "netty")
 public class NettyClientConfiguration {
 
     @Bean

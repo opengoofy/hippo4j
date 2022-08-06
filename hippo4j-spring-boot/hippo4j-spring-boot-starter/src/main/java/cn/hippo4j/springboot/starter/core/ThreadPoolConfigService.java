@@ -33,14 +33,14 @@ public class ThreadPoolConfigService implements ConfigService, ApplicationListen
 
     private final ServerHealthCheck serverHealthCheck;
 
-    public ThreadPoolConfigService(HttpAgent httpAgent, String identification, ServerHealthCheck serverHealthCheck) {
+    public ThreadPoolConfigService(HttpAgent httpAgent, String identify, ServerHealthCheck serverHealthCheck) {
         this.serverHealthCheck = serverHealthCheck;
-        this.clientWorker = new ClientWorker(httpAgent, identification, serverHealthCheck);
+        this.clientWorker = new ClientWorker(httpAgent, identify, serverHealthCheck);
     }
 
     @Override
-    public void addListener(String tenantId, String itemId, String tpId, Listener listener) {
-        clientWorker.addTenantListeners(tenantId, itemId, tpId, Arrays.asList(listener));
+    public void addListener(String tenantId, String itemId, String threadPoolId, Listener listener) {
+        clientWorker.addTenantListeners(tenantId, itemId, threadPoolId, Arrays.asList(listener));
     }
 
     @Override

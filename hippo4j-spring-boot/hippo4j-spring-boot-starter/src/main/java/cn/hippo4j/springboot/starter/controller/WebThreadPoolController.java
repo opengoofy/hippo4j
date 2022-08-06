@@ -40,14 +40,14 @@ public class WebThreadPoolController {
 
     @GetMapping("/web/base/info")
     public Result<ThreadPoolBaseInfo> getPoolBaseState() {
-        ThreadPoolBaseInfo poolBaseInfo = webThreadPoolServiceChoose.choose().simpleInfo();
-        return Results.success(poolBaseInfo);
+        ThreadPoolBaseInfo result = webThreadPoolServiceChoose.choose().simpleInfo();
+        return Results.success(result);
     }
 
     @GetMapping("/web/run/state")
     public Result<ThreadPoolRunStateInfo> getPoolRunState() {
-        ThreadPoolRunStateInfo poolRunState = webThreadPoolServiceChoose.choose().getWebRunStateInfo();
-        return Results.success(poolRunState);
+        ThreadPoolRunStateInfo result = webThreadPoolServiceChoose.choose().getWebRunStateInfo();
+        return Results.success(result);
     }
 
     @PostMapping("/web/update/pool")

@@ -61,8 +61,7 @@ public class SecurityProxy {
 
     public boolean applyToken(List<String> servers) {
         try {
-            if ((System.currentTimeMillis() - lastRefreshTime) < TimeUnit.SECONDS
-                    .toMillis(tokenTtl - tokenRefreshWindow)) {
+            if ((System.currentTimeMillis() - lastRefreshTime) < TimeUnit.SECONDS.toMillis(tokenTtl - tokenRefreshWindow)) {
                 return true;
             }
             for (String server : servers) {
@@ -85,7 +84,7 @@ public class SecurityProxy {
             try {
                 Result<String> result = httpClientUtil.restApiPost(url, bodyMap, Result.class);
                 if (!result.isSuccess()) {
-                    log.error("Error getting access token. message :: {}", result.getMessage());
+                    log.error("Error getting access token. message: {}", result.getMessage());
                     return false;
                 }
                 String tokenJsonStr = JSONUtil.toJSONString(result.getData());
@@ -94,7 +93,7 @@ public class SecurityProxy {
                 tokenTtl = tokenInfo.getTokenTtl();
                 tokenRefreshWindow = tokenTtl / 10;
             } catch (Throwable ex) {
-                log.error("Failed to apply for token. message :: {}", ex.getMessage());
+                log.error("Failed to apply for token. message: {}", ex.getMessage());
                 return false;
             }
         }

@@ -110,8 +110,7 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
     @Override
     @SneakyThrows
     public boolean isHealthStatus() {
-        while (contextInitComplete
-                && !healthStatus && !clientShutdownHook) {
+        while (contextInitComplete && !healthStatus && !clientShutdownHook) {
             healthMainLock.lock();
             try {
                 healthCondition.await();
@@ -152,7 +151,7 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
     public void afterPropertiesSet() throws Exception {
         /**
          * Add a hook function, when the client stops, if the server is in an unhealthy state,
-         * the client destroy function will suspend operation
+         * the client destroy function will suspend operation.
          */
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             clientShutdownHook = true;

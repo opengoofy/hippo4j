@@ -22,6 +22,8 @@ import cn.hippo4j.springboot.starter.wrapper.ManagerListenerWrapper;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.common.constant.Constants;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -32,6 +34,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Slf4j
 public class CacheData {
 
+    @Getter
     public volatile String md5;
 
     public volatile String content;
@@ -40,21 +43,23 @@ public class CacheData {
 
     public final String itemId;
 
-    public final String tpId;
+    public final String threadPoolId;
 
+    @Setter
     private int taskId;
 
+    @Setter
     private volatile boolean isInitializing = true;
 
     private volatile long localConfigLastModified;
 
     private final CopyOnWriteArrayList<ManagerListenerWrapper> listeners;
 
-    public CacheData(String tenantId, String itemId, String tpId) {
+    public CacheData(String tenantId, String itemId, String threadPoolId) {
         this.tenantId = tenantId;
         this.itemId = itemId;
-        this.tpId = tpId;
-        this.content = ContentUtil.getPoolContent(GlobalThreadPoolManage.getPoolParameter(tpId));
+        this.threadPoolId = threadPoolId;
+        this.content = ContentUtil.getPoolContent(GlobalThreadPoolManage.getPoolParameter(threadPoolId));
         this.md5 = getMd5String(content);
         this.listeners = new CopyOnWriteArrayList();
     }
@@ -65,28 +70,28 @@ public class CacheData {
         }
         ManagerListenerWrapper managerListenerWrap = new ManagerListenerWrapper(md5, listener);
         if (listeners.addIfAbsent(managerListenerWrap)) {
-            log.info("Add listener status :: ok, thread pool id :: {}, listeners count :: {}", tpId, listeners.size());
+            log.info("Add listener status: ok, thread pool id: {}, listeners count: {}", threadPoolId, listeners.size());
         }
     }
 
     public void checkListenerMd5() {
-        for (ManagerListenerWrapper wrap : listeners) {
-            if (!md5.equals(wrap.getLastCallMd5())) {
-                safeNotifyListener(content, md5, wrap);
+        for (ManagerListenerWrapper managerListenerWrapper : listeners) {
+            if (!md5.equals(managerListenerWrapper.getLastCallMd5())) {
+                safeNotifyListener(content, md5, managerListenerWrapper);
             }
         }
     }
 
-    private void safeNotifyListener(String content, String md5, ManagerListenerWrapper wrap) {
-        Listener listener = wrap.getListener();
+    private void safeNotifyListener(String content, String md5, ManagerListenerWrapper managerListenerWrapper) {
+        Listener listener = managerListenerWrapper.getListener();
         Runnable runnable = () -> {
-            wrap.setLastCallMd5(md5);
+            managerListenerWrapper.setLastCallMd5(md5);
             listener.receiveConfigInfo(content);
         };
         try {
             listener.getExecutor().execute(runnable);
         } catch (Exception ex) {
-            log.error("Failed to execute listener. message :: {}", ex.getMessage());
+            log.error("Failed to execute listener. message: {}", ex.getMessage());
         }
     }
 
@@ -99,19 +104,7 @@ public class CacheData {
         return (null == config) ? Constants.NULL : Md5Util.md5Hex(config, Constants.ENCODE);
     }
 
-    public String getMd5() {
-        return this.md5;
-    }
-
-    public void setTaskId(Integer taskId) {
-        this.taskId = taskId;
-    }
-
     public boolean isInitializing() {
         return isInitializing;
-    }
-
-    public void setInitializing(boolean isInitializing) {
-        this.isInitializing = isInitializing;
     }
 }

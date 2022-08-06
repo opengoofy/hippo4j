@@ -44,50 +44,50 @@ public class BaseThreadDetailStateHandler implements ThreadDetailState {
 
     @Override
     public List<ThreadDetailStateInfo> getThreadDetailStateInfo(String threadPoolId) {
-        DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
-        ThreadPoolExecutor executor = poolWrapper.getExecutor();
-        return getThreadDetailStateInfo(executor);
+        DynamicThreadPoolWrapper dynamicThreadPoolWrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
+        ThreadPoolExecutor threadPoolExecutor = dynamicThreadPoolWrapper.getExecutor();
+        return getThreadDetailStateInfo(threadPoolExecutor);
     }
 
     @Override
     public List<ThreadDetailStateInfo> getThreadDetailStateInfo(ThreadPoolExecutor threadPoolExecutor) {
-        List<ThreadDetailStateInfo> resultThreadState = new ArrayList();
+        List<ThreadDetailStateInfo> resultThreadStates = new ArrayList();
         try {
-            // TODO: Should the object be copied deeply to avoid the destruction of the worker
             HashSet<Object> workers = (HashSet<Object>) ReflectUtil.getFieldValue(threadPoolExecutor, WORKERS);
             if (CollectionUtil.isEmpty(workers)) {
-                return resultThreadState;
+                return resultThreadStates;
             }
             for (Object worker : workers) {
                 Thread thread;
                 try {
                     thread = (Thread) ReflectUtil.getFieldValue(worker, THREAD);
                     if (thread == null) {
-                        log.warn("Reflection get worker thread is null. Worker :: {}", worker);
+                        log.warn("Reflection get worker thread is null. Worker: {}", worker);
                         continue;
                     }
                 } catch (Exception ex) {
-                    log.error("Reflection get worker thread exception. Worker :: {}", worker, ex);
+                    log.error("Reflection get worker thread exception. Worker: {}", worker, ex);
                     continue;
                 }
                 long threadId = thread.getId();
                 String threadName = thread.getName();
                 String threadStatus = thread.getState().name();
                 StackTraceElement[] stackTrace = thread.getStackTrace();
-                List<String> stacks = new ArrayList(stackTrace.length);
+                List<String> threadStack = new ArrayList(stackTrace.length);
                 for (int i = 0; i < stackTrace.length; i++) {
-                    stacks.add(stackTrace[i].toString());
+                    threadStack.add(stackTrace[i].toString());
                 }
-                ThreadDetailStateInfo threadState = new ThreadDetailStateInfo();
-                threadState.setThreadId(threadId)
-                        .setThreadName(threadName)
-                        .setThreadStatus(threadStatus)
-                        .setThreadStack(stacks);
-                resultThreadState.add(threadState);
+                ThreadDetailStateInfo threadState = ThreadDetailStateInfo.builder()
+                        .threadId(threadId)
+                        .threadName(threadName)
+                        .threadStatus(threadStatus)
+                        .threadStack(threadStack)
+                        .build();
+                resultThreadStates.add(threadState);
             }
         } catch (Exception ex) {
             log.error("Failed to get thread status.", ex);
         }
-        return resultThreadState;
+        return resultThreadStates;
     }
 }

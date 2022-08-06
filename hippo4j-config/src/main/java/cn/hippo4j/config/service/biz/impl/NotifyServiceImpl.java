@@ -29,7 +29,7 @@ import cn.hippo4j.config.model.biz.notify.NotifyRespDTO;
 import cn.hippo4j.config.service.biz.NotifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.BooleanUtil;
+import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;

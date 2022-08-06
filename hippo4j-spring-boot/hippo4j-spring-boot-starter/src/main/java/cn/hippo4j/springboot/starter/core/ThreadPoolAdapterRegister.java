@@ -17,7 +17,10 @@
 
 package cn.hippo4j.springboot.starter.core;
 
-import cn.hippo4j.adapter.base.*;
+import cn.hippo4j.adapter.base.ThreadPoolAdapter;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterRegisterAction;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.web.base.Result;
@@ -28,7 +31,6 @@ import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -36,9 +38,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 import static cn.hippo4j.common.constant.Constants.REGISTER_ADAPTER_PATH;
@@ -65,24 +64,24 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
 
     @Override
     public List<ThreadPoolAdapterCacheConfig> getThreadPoolAdapterCacheConfigs(Map<String, ThreadPoolAdapter> threadPoolAdapterMap) {
-        List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
+        List<ThreadPoolAdapterCacheConfig> adapterCacheConfigList = Lists.newArrayList();
         for (Map.Entry<String, ThreadPoolAdapter> threadPoolAdapterEntry : threadPoolAdapterMap.entrySet()) {
-            ThreadPoolAdapter val = threadPoolAdapterEntry.getValue();
-            List<ThreadPoolAdapterState> threadPoolStates = val.getThreadPoolStates();
+            ThreadPoolAdapter threadPoolAdapter = threadPoolAdapterEntry.getValue();
+            List<ThreadPoolAdapterState> threadPoolStates = threadPoolAdapter.getThreadPoolStates();
             if (CollectionUtil.isEmpty(threadPoolStates) || threadPoolStates.size() == 0) {
                 continue;
             }
             ThreadPoolAdapterCacheConfig cacheConfig = new ThreadPoolAdapterCacheConfig();
-            cacheConfig.setMark(val.mark());
+            cacheConfig.setMark(threadPoolAdapter.mark());
             String tenantItemKey = properties.getNamespace() + IDENTIFY_SLICER_SYMBOL + properties.getItemId();
             cacheConfig.setTenantItemKey(tenantItemKey);
             cacheConfig.setClientIdentify(IdentifyUtil.getIdentify());
             String clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4JInetUtils);
             cacheConfig.setClientAddress(clientAddress);
             cacheConfig.setThreadPoolAdapterStates(threadPoolStates);
-            cacheConfigList.add(cacheConfig);
+            adapterCacheConfigList.add(cacheConfig);
         }
-        return cacheConfigList;
+        return adapterCacheConfigList;
     }
 
     @Override
