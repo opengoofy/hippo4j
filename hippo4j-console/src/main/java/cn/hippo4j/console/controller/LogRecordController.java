@@ -22,7 +22,7 @@ import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.model.biz.log.LogRecordQueryReqDTO;
 import cn.hippo4j.config.model.biz.log.LogRecordRespDTO;
-import cn.hippo4j.config.service.biz.LogRecordBizService;
+import cn.hippo4j.config.service.biz.OperationLogService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,10 +38,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(Constants.BASE_PATH + "/log")
 public class LogRecordController {
 
-    private final LogRecordBizService logRecordBizService;
+    private final OperationLogService operationLogService;
 
     @PostMapping("/query/page")
     public Result<IPage<LogRecordRespDTO>> queryPage(@RequestBody LogRecordQueryReqDTO queryReqDTO) {
-        return Results.success(logRecordBizService.queryPage(queryReqDTO));
+        return Results.success(operationLogService.queryPage(queryReqDTO));
     }
 }

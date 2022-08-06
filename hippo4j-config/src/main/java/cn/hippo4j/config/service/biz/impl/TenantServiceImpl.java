@@ -17,8 +17,8 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.config.mapper.TenantInfoMapper;
 import cn.hippo4j.config.model.TenantInfo;
 import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
@@ -30,7 +30,6 @@ import cn.hippo4j.config.model.biz.tenant.TenantUpdateReqDTO;
 import cn.hippo4j.config.service.biz.ItemService;
 import cn.hippo4j.config.service.biz.TenantService;
 import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -102,7 +101,6 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    @LogRecord(prefix = "item", bizNo = "{{#reqDTO.tenantId}}_{{#reqDTO.tenantName}}", category = "TENANT_UPDATE", success = "更新租户, ID :: {{#reqDTO.id}}, 租户名称由 :: {TENANT{#reqDTO.id}} -> {{#reqDTO.tenantName}}", detail = "{{#reqDTO.toString()}}")
     public void updateTenant(TenantUpdateReqDTO reqDTO) {
         TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
         int updateResult = tenantInfoMapper.update(tenantInfo, Wrappers

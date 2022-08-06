@@ -15,26 +15,30 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.tools.logrecord.model;
+package cn.hippo4j.config.service.biz;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import cn.hippo4j.config.model.LogRecordInfo;
+import cn.hippo4j.config.model.biz.log.LogRecordQueryReqDTO;
+import cn.hippo4j.config.model.biz.log.LogRecordRespDTO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
- * 操作人.
- *
- * @author chen.ma
- * @date 2021/10/24 21:44
+ * Operation log.
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Operator {
+public interface OperationLogService {
 
     /**
-     * 操作人 Id
+     * Query operation log.
+     *
+     * @param pageQuery
+     * @return
      */
-    private String operatorId;
+    IPage<LogRecordRespDTO> queryPage(LogRecordQueryReqDTO pageQuery);
 
+    /**
+     * Record.
+     *
+     * @param requestParam
+     */
+    void record(LogRecordInfo requestParam);
 }

@@ -17,12 +17,12 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.config.mapper.LogRecordMapper;
+import cn.hippo4j.config.mapper.OperationLogMapper;
+import cn.hippo4j.config.model.LogRecordInfo;
 import cn.hippo4j.config.model.biz.log.LogRecordQueryReqDTO;
 import cn.hippo4j.config.model.biz.log.LogRecordRespDTO;
-import cn.hippo4j.config.service.biz.LogRecordBizService;
+import cn.hippo4j.config.service.biz.OperationLogService;
 import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hippo4j.tools.logrecord.model.LogRecordInfo;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -31,16 +31,16 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- * 操作日志.
+ * Operation log service impl.
  *
  * @author chen.ma
  * @date 2021/11/17 21:50
  */
 @Service
 @AllArgsConstructor
-public class LogRecordBizServiceImpl implements LogRecordBizService {
+public class OperationLogServiceImpl implements OperationLogService {
 
-    private final LogRecordMapper logRecordMapper;
+    private final OperationLogMapper operationLogMapper;
 
     @Override
     public IPage<LogRecordRespDTO> queryPage(LogRecordQueryReqDTO pageQuery) {
@@ -49,8 +49,12 @@ public class LogRecordBizServiceImpl implements LogRecordBizService {
                 .eq(StrUtil.isNotBlank(pageQuery.getCategory()), LogRecordInfo::getCategory, pageQuery.getCategory())
                 .eq(StrUtil.isNotBlank(pageQuery.getOperator()), LogRecordInfo::getOperator, pageQuery.getOperator())
                 .orderByDesc(LogRecordInfo::getCreateTime);
-        IPage<LogRecordInfo> selectPage = logRecordMapper.selectPage(pageQuery, queryWrapper);
+        IPage<LogRecordInfo> selectPage = operationLogMapper.selectPage(pageQuery, queryWrapper);
         return selectPage.convert(each -> BeanUtil.convert(each, LogRecordRespDTO.class));
     }
 
+    @Override
+    public void record(LogRecordInfo requestParam) {
+        operationLogMapper.insert(requestParam);
+    }
 }
