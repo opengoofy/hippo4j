@@ -25,9 +25,6 @@ import javax.annotation.PostConstruct;
 
 /**
  * Registry configuration.
- *
- * @author chen.ma
- * @date 2021/8/12 21:48
  */
 @Configuration
 @AllArgsConstructor

@@ -33,9 +33,6 @@ import static cn.hippo4j.common.constant.Constants.BASE_PATH;
 
 /**
  * Application controller.
- *
- * @author chen.ma
- * @date 2021/8/8 22:24
  */
 @Slf4j
 @RestController

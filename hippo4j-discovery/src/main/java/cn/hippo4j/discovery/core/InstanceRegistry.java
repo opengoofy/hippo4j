@@ -23,9 +23,6 @@ import java.util.List;
 
 /**
  * Instance registry.
- *
- * @author chen.ma
- * @date 2021/8/8 22:31
  */
 public interface InstanceRegistry<T> {
 

@@ -19,9 +19,6 @@ package cn.hippo4j.discovery.core;
 
 /**
  * Lease.
- *
- * @author chen.ma
- * @date 2021/8/8 22:49
  */
 public class Lease<T> {
 
