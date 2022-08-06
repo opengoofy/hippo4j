@@ -22,6 +22,7 @@ import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hutool.core.bean.BeanUtil;
 import com.example.monitor.base.AbstractDynamicThreadPoolMonitor;
+import com.example.monitor.base.MonitorTypeEnum;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.micrometer.core.instrument.Metrics;
@@ -84,6 +85,6 @@ public class PrometheusMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     @Override
     public String getType() {
-        return "prometheus";
+        return MonitorTypeEnum.PROMETHEUS.name().toLowerCase();
     }
 }

@@ -55,7 +55,6 @@
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
         <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
         <spring-cloud-starter-alibaba-nacos-config.version>2.2.5.RELEASE</spring-cloud-starter-alibaba-nacos-config.version>
-        <elasticsearch.version>6.5.0</elasticsearch.version>
 
         <!-- Maven & Build -->
         <java.version>1.8</java.version>

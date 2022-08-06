@@ -25,6 +25,7 @@ import cn.hippo4j.monitor.es.model.EsThreadPoolRunStateInfo;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
 import com.example.monitor.base.AbstractDynamicThreadPoolMonitor;
+import com.example.monitor.base.MonitorTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
@@ -144,6 +145,6 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     @Override
     public String getType() {
-        return "es";
+        return MonitorTypeEnum.ES.name().toLowerCase();
     }
 }
