@@ -12,7 +12,7 @@
     <properties>
         <spring-context.version>5.2.21.RELEASE</spring-context.version>
         <spring-web.version>5.2.15.RELEASE</spring-web.version>
-        <spring-beans.version>5.2.20.RELEASE</spring-beans.version>
+        <spring-beans.version>5.2.21.RELEASE</spring-beans.version>
     </properties>
 
     <dependencies>
