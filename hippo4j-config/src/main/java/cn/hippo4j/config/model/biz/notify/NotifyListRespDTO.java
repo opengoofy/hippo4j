@@ -25,22 +25,18 @@ import java.util.List;
 
 /**
  * Notify list resp dto.
- *
- * @author chen.ma
- * @date 2021/11/17 22:53
  */
 @Data
 @AllArgsConstructor
 public class NotifyListRespDTO {
 
     /**
-     * 通知 Key
+     * Notify key
      */
     private String notifyKey;
 
     /**
-     * 通知配置
+     * Notify list
      */
     private List<NotifyInfo> notifyList;
-
 }

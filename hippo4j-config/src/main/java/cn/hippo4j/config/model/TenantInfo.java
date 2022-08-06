@@ -24,9 +24,6 @@ import java.util.Date;
 
 /**
  * Tenant info.
- *
- * @author chen.ma
- * @date 2021/6/29 22:04
  */
 @Data
 @TableName("tenant")
@@ -75,5 +72,4 @@ public class TenantInfo {
      */
     @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
-
 }

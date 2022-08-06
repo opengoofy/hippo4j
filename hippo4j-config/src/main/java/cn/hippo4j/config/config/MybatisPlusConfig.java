@@ -25,9 +25,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Mybatis plus config.
- *
- * @author chen.ma
- * @date 2021/6/29 20:22
  */
 @Configuration
 public class MybatisPlusConfig {
@@ -38,5 +35,4 @@ public class MybatisPlusConfig {
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
     }
-
 }

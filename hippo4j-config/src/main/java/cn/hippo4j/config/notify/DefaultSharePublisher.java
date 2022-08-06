@@ -30,9 +30,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Default share publisher.
- *
- * @author chen.ma
- * @date 2021/6/23 19:05
  */
 public class DefaultSharePublisher extends DefaultPublisher {
 
@@ -45,7 +42,6 @@ public class DefaultSharePublisher extends DefaultPublisher {
     public void addSubscriber(AbstractSubscriber subscriber, Class<? extends AbstractEvent> subscribeType) {
         Class<? extends AbstractSlowEvent> subSlowEventType = (Class<? extends AbstractSlowEvent>) subscribeType;
         subscribers.add(subscriber);
-
         lock.lock();
         try {
             Set<AbstractSubscriber> sets = subMappings.get(subSlowEventType);
@@ -60,5 +56,4 @@ public class DefaultSharePublisher extends DefaultPublisher {
             lock.unlock();
         }
     }
-
 }

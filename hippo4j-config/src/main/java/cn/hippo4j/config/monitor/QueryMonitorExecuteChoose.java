@@ -28,9 +28,6 @@ import java.util.Map;
 
 /**
  * Query monitor execute choose.
- *
- * @author chen.ma
- * @date 2021/12/10 20:12
  */
 @Component
 public class QueryMonitorExecuteChoose implements CommandLineRunner {
@@ -79,8 +76,6 @@ public class QueryMonitorExecuteChoose implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Map<String, AbstractMonitorDataExecuteStrategy> monitorDataExecuteStrategyMap =
                 ApplicationContextHolder.getBeansOfType(AbstractMonitorDataExecuteStrategy.class);
-
         monitorDataExecuteStrategyMap.values().forEach(each -> monitorDataExecuteStrategyChooseMap.put(each.mark(), each));
     }
-
 }

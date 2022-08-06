@@ -25,9 +25,6 @@ import static cn.hippo4j.common.constant.Constants.LONG_PULLING_CLIENT_IDENTIFIC
 
 /**
  * Request util.
- *
- * @author chen.ma
- * @date 2021/6/23 18:28
  */
 public class RequestUtil {
 
@@ -41,5 +38,4 @@ public class RequestUtil {
         String identify = request.getHeader(LONG_PULLING_CLIENT_IDENTIFICATION);
         return StrUtil.isBlank(identify) ? "" : identify;
     }
-
 }

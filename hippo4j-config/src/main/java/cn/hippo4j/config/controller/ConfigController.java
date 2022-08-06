@@ -39,9 +39,6 @@ import java.util.Map;
 
 /**
  * Server configuration controller.
- *
- * @author chen.ma
- * @date 2021/6/20 13:53
  */
 @RestController
 @AllArgsConstructor
@@ -53,8 +50,7 @@ public class ConfigController {
     private final ConfigServletInner configServletInner;
 
     @GetMapping
-    public Result<ConfigInfoBase> detailConfigInfo(
-                                                   @RequestParam("tpId") String tpId,
+    public Result<ConfigInfoBase> detailConfigInfo(@RequestParam("tpId") String tpId,
                                                    @RequestParam("itemId") String itemId,
                                                    @RequestParam("namespace") String namespace,
                                                    @RequestParam(value = "instanceId", required = false) String instanceId) {
@@ -73,21 +69,17 @@ public class ConfigController {
     @PostMapping("/listener")
     public void listener(HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("org.apache.catalina.ASYNC_SUPPORTED", true);
-
         String probeModify = request.getParameter(Constants.LISTENING_CONFIGS);
         if (StringUtils.isEmpty(probeModify)) {
             throw new IllegalArgumentException("invalid probeModify");
         }
-
         probeModify = URLDecoder.decode(probeModify, Constants.ENCODE);
-
         Map<String, String> clientMd5Map;
         try {
             clientMd5Map = Md5ConfigUtil.getClientMd5Map(probeModify);
         } catch (Throwable e) {
             throw new IllegalArgumentException("invalid probeModify");
         }
-
         configServletInner.doPollingConfig(request, response, clientMd5Map, probeModify.length());
     }
 
@@ -97,8 +89,6 @@ public class ConfigController {
         if (StrUtil.isNotBlank(groupKey)) {
             ConfigCacheService.removeConfigCache(groupKey);
         }
-
         return Results.success();
     }
-
 }

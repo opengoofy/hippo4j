@@ -131,7 +131,7 @@ public class LongPollingService {
                     });
                 }
             } catch (Exception ex) {
-                log.error("Data change error :: {}", ex.getMessage(), ex);
+                log.error("Data change error: {}", ex.getMessage(), ex);
             }
         }
     }
@@ -217,7 +217,7 @@ public class LongPollingService {
                         sendResponse(null);
                     }
                 } catch (Exception ex) {
-                    log.error("Long polling error :: {}", ex.getMessage(), ex);
+                    log.error("Long polling error: {}", ex.getMessage(), ex);
                 }
             }, timeoutTime, TimeUnit.MILLISECONDS);
             allSubs.add(this);

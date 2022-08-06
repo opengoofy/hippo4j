@@ -22,9 +22,6 @@ import lombok.Data;
 
 /**
  * Item query req dto.
- *
- * @author chen.ma
- * @date 2021/6/29 22:28
  */
 @Data
 public class ItemQueryReqDTO extends Page {

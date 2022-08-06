@@ -31,9 +31,6 @@ import java.util.function.BiFunction;
 
 /**
  * Unified event notify center.
- *
- * @author chen.ma
- * @date 2021/6/23 18:58
  */
 @Slf4j
 public class NotifyCenter {
@@ -65,7 +62,6 @@ public class NotifyCenter {
                 throw new RuntimeException(ex);
             }
         };
-
         INSTANCE.sharePublisher = new DefaultSharePublisher();
         INSTANCE.sharePublisher.init(AbstractSlowEvent.class, shareBufferSize);
     }
@@ -81,13 +77,11 @@ public class NotifyCenter {
             }
             return;
         }
-
         final Class<? extends AbstractEvent> subscribeType = consumer.subscribeType();
         if (ClassUtil.isAssignableFrom(AbstractSlowEvent.class, subscribeType)) {
             INSTANCE.sharePublisher.addSubscriber(consumer, subscribeType);
             return;
         }
-
         addSubscriber(consumer, subscribeType);
     }
 
@@ -113,9 +107,7 @@ public class NotifyCenter {
         if (ClassUtil.isAssignableFrom(AbstractSlowEvent.class, eventType)) {
             return INSTANCE.sharePublisher.publish(event);
         }
-
         final String topic = ClassUtil.getCanonicalName(eventType);
-
         EventPublisher publisher = INSTANCE.publisherMap.get(topic);
         if (publisher != null) {
             return publisher.publish(event);
@@ -128,12 +120,10 @@ public class NotifyCenter {
         if (ClassUtil.isAssignableFrom(AbstractSlowEvent.class, eventType)) {
             return INSTANCE.sharePublisher;
         }
-
         final String topic = ClassUtil.getCanonicalName(eventType);
         synchronized (NotifyCenter.class) {
             MapUtil.computeIfAbsent(INSTANCE.publisherMap, topic, publisherFactory, eventType, queueMaxSize);
         }
         return INSTANCE.publisherMap.get(topic);
     }
-
 }

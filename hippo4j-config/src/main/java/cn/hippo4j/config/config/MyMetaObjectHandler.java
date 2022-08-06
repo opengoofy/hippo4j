@@ -27,9 +27,6 @@ import java.util.Date;
 
 /**
  * Meta object handler.
- *
- * @author chen.ma
- * @date 2021/7/1 22:43
  */
 @Slf4j
 @Component
@@ -39,7 +36,6 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         this.strictInsertFill(metaObject, "gmtCreate", Date.class, new Date());
         this.strictInsertFill(metaObject, "gmtModified", Date.class, new Date());
-
         this.strictInsertFill(metaObject, "delFlag", Integer.class, DelEnum.NORMAL.getIntCode());
     }
 
@@ -47,5 +43,4 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
         this.strictInsertFill(metaObject, "gmtModified", Date.class, new Date());
     }
-
 }

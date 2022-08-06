@@ -26,9 +26,6 @@ import java.io.Serializable;
 
 /**
  * Config info base.
- *
- * @author chen.ma
- * @date 2021/6/20 14:05
  */
 @Data
 public class ConfigInfoBase implements Serializable {
@@ -117,5 +114,4 @@ public class ConfigInfoBase implements Serializable {
      */
     @JsonIgnore
     private String content;
-
 }

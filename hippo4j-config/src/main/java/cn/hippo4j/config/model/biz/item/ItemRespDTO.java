@@ -24,9 +24,6 @@ import java.util.Date;
 
 /**
  * Item resp dto.
- *
- * @author chen.ma
- * @date 2021/6/29 21:15
  */
 @Data
 public class ItemRespDTO {
@@ -37,38 +34,38 @@ public class ItemRespDTO {
     private Integer id;
 
     /**
-     * tenantId
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * itemId
+     * Item id
      */
     private String itemId;
 
     /**
-     * itemName
+     * Item name
      */
     private String itemName;
 
     /**
-     * itemDesc
+     * Item desc
      */
     private String itemDesc;
 
     /**
-     * owner
+     * Owner
      */
     private String owner;
 
     /**
-     * gmtCreate
+     * Gmt create
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
-     * gmtModified
+     * Gmt modified
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModified;

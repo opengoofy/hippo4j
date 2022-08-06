@@ -23,38 +23,34 @@ import javax.validation.constraints.Pattern;
 
 /**
  * Item save req dto.
- *
- * @author chen.ma
- * @date 2021/6/29 22:05
  */
 @Data
 public class ItemSaveReqDTO {
 
     /**
-     * tenantId
+     * Tenant id
      */
     @Pattern(regexp = "^((?!\\+).)*$", message = "租户、项目、线程池 ID 包含+号")
     private String tenantId;
 
     /**
-     * itemId
+     * Item id
      */
     @Pattern(regexp = "^((?!\\+).)*$", message = "租户、项目、线程池 ID 包含+号")
     private String itemId;
 
     /**
-     * itemName
+     * Item name
      */
     private String itemName;
 
     /**
-     * itemDesc
+     * Item desc
      */
     private String itemDesc;
 
     /**
-     * owner
+     * Owner
      */
     private String owner;
-
 }

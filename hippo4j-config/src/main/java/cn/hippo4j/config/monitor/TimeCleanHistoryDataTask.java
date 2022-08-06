@@ -38,9 +38,6 @@ import static cn.hippo4j.common.constant.Constants.DEFAULT_GROUP;
 
 /**
  * Regularly clean up the historical running data of thread pool.
- *
- * @author chen.ma
- * @date 2021/12/17 20:13
  */
 @Component
 @RequiredArgsConstructor
@@ -58,10 +55,8 @@ public class TimeCleanHistoryDataTask implements Runnable, InitializingBean {
     public void run() {
         Date currentDate = new Date();
         DateTime offsetMinuteDateTime = DateUtil.offsetMinute(currentDate, -properties.getCleanHistoryDataPeriod());
-
         LambdaQueryWrapper<HisRunDataInfo> queryWrapper = Wrappers.lambdaQuery(HisRunDataInfo.class)
                 .le(HisRunDataInfo::getTimestamp, offsetMinuteDateTime.getTime());
-
         hisRunDataService.remove(queryWrapper);
     }
 
@@ -73,5 +68,4 @@ public class TimeCleanHistoryDataTask implements Runnable, InitializingBean {
             cleanHistoryDataExecutor.scheduleWithFixedDelay(this, 0, 1, TimeUnit.MINUTES);
         }
     }
-
 }

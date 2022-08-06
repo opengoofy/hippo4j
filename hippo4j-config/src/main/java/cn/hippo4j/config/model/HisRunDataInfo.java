@@ -24,9 +24,6 @@ import java.util.Date;
 
 /**
  * His run data info.
- *
- * @author chen.ma
- * @date 2021/12/10 21:30
  */
 @Data
 @TableName("his_run_data")
@@ -119,5 +116,4 @@ public class HisRunDataInfo {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
-
 }

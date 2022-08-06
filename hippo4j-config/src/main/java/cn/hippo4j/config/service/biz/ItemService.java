@@ -27,9 +27,6 @@ import java.util.List;
 
 /**
  * Item service.
- *
- * @author chen.ma
- * @date 2021/6/29 21:57
  */
 public interface ItemService {
 
@@ -79,5 +76,4 @@ public interface ItemService {
      * @param itemId
      */
     void deleteItem(String tenantId, String itemId);
-
 }

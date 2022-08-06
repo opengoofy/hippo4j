@@ -26,9 +26,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * Runtime data resolver.
- *
- * @author chen.ma
- * @date 2021/12/10 20:18
  */
 @Slf4j
 @Component
@@ -46,5 +43,4 @@ public class RuntimeDataResolver extends AbstractMonitorDataExecuteStrategy<Runt
     public void execute(RuntimeMessage message) {
         hisRunDataService.save(message);
     }
-
 }

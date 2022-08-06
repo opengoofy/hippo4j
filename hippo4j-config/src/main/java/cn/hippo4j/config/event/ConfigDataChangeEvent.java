@@ -21,9 +21,6 @@ import org.springframework.util.StringUtils;
 
 /**
  * Config data change event.
- *
- * @author chen.ma
- * @date 2021/6/24 23:35
  */
 public class ConfigDataChangeEvent extends AbstractEvent {
 
@@ -39,11 +36,9 @@ public class ConfigDataChangeEvent extends AbstractEvent {
         if (StringUtils.isEmpty(tenantId) || StringUtils.isEmpty(itemId) || StringUtils.isEmpty(tpId)) {
             throw new IllegalArgumentException("DataId is null or group is null");
         }
-
         this.tenantId = tenantId;
         this.itemId = itemId;
         this.tpId = tpId;
         this.lastModifiedTs = gmtModified;
     }
-
 }

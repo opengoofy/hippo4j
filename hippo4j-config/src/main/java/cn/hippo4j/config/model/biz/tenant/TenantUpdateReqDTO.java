@@ -21,36 +21,33 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import lombok.Data;
 
 /**
- * Tenant save req dto.
- *
- * @author chen.ma
- * @date 2021/6/29 20:40
+ * Tenant save req DTO.
  */
 @Data
 public class TenantUpdateReqDTO {
 
     /**
-     * id
+     * ID
      */
     private Long id;
 
     /**
-     * tenantId
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * tenantName
+     * Tenant name
      */
     private String tenantName;
 
     /**
-     * tenantDesc
+     * Tenant desc
      */
     private String tenantDesc;
 
     /**
-     * owner
+     * Owner
      */
     private String owner;
 
@@ -58,5 +55,4 @@ public class TenantUpdateReqDTO {
     public String toString() {
         return JSONUtil.toJSONString(this);
     }
-
 }

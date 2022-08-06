@@ -44,10 +44,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 通知管理.
- *
- * @author chen.ma
- * @date 2021/11/17 22:02
+ * Notify service impl.
  */
 @Service
 @AllArgsConstructor

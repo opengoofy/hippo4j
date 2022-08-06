@@ -32,9 +32,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * Operation log service impl.
- *
- * @author chen.ma
- * @date 2021/11/17 21:50
  */
 @Service
 @AllArgsConstructor

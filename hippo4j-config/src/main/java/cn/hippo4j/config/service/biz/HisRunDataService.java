@@ -25,15 +25,11 @@ import cn.hippo4j.config.model.biz.monitor.MonitorActiveRespDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorQueryReqDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorRespDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 /**
  * His run data service.
- *
- * @author chen.ma
- * @date 2021/12/10 21:28
  */
 public interface HisRunDataService extends IService<HisRunDataInfo> {
 
@@ -74,5 +70,4 @@ public interface HisRunDataService extends IService<HisRunDataInfo> {
      * @param messageWrapper
      */
     Result<Void> dataCollect(MessageWrapper messageWrapper);
-
 }

@@ -30,9 +30,6 @@ import java.util.Date;
 
 /**
  * Config all info.
- *
- * @author chen.ma
- * @date 2021/6/20 15:14
  */
 @Data
 @TableName("config")
@@ -73,5 +70,4 @@ public class ConfigAllInfo extends ConfigInfo implements ThreadPoolParameter {
     public String toString() {
         return JSONUtil.toJSONString(this);
     }
-
 }

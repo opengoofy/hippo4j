@@ -30,9 +30,6 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * The default event publisher implementation.
- *
- * @author chen.ma
- * @date 2021/6/23 19:06
  */
 @Slf4j
 public class DefaultPublisher extends Thread implements EventPublisher {
@@ -81,7 +78,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     private void openEventHandler() {
         try {
             int waitTimes = 60;
-            for (;;) {
+            for (; ; ) {
                 if (shutdown || hasSubscriber() || waitTimes <= 0) {
                     break;
                 }
@@ -92,8 +89,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
                 }
                 waitTimes--;
             }
-
-            for (;;) {
+            for (; ; ) {
                 if (shutdown) {
                     break;
                 }
@@ -148,5 +144,4 @@ public class DefaultPublisher extends Thread implements EventPublisher {
             notifySubscriber(subscriber, event);
         }
     }
-
 }

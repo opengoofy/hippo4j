@@ -21,9 +21,6 @@ import cn.hippo4j.config.model.ConfigAllInfo;
 
 /**
  * Config service.
- *
- * @author chen.ma
- * @date 2021/6/20 15:18
  */
 public interface ConfigService {
 

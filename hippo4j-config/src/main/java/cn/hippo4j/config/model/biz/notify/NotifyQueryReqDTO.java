@@ -23,32 +23,28 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * Notify query req dto.
- *
- * @author chen.ma
- * @date 2021/11/17 22:52
+ * Notify query req DTO.
  */
 @Data
 public class NotifyQueryReqDTO extends Page {
 
     /**
-     * groupKeys
+     * Group keys
      */
     private List<String> groupKeys;
 
     /**
-     * 租户id
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * 项目id
+     * Item id
      */
     private String itemId;
 
     /**
-     * 线程池id
+     * Thread-pool id
      */
     private String tpId;
-
 }

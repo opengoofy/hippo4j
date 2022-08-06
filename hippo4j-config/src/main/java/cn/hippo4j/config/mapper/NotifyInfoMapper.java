@@ -23,9 +23,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Notify info mapper.
- *
- * @author chen.ma
- * @date 2021/11/17 22:04
  */
 @Mapper
 public interface NotifyInfoMapper extends BaseMapper<NotifyInfo> {

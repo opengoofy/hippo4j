@@ -19,19 +19,16 @@ package cn.hippo4j.config.event;
 
 /**
  * Local data change event.
- *
- * @author chen.ma
- * @date 2021/6/23 19:13
  */
 public class LocalDataChangeEvent extends AbstractEvent {
 
     /**
-     * 租户+项目+线程池
+     * Tenant +  Item + Thread-pool
      */
     public final String groupKey;
 
     /**
-     * 客户端实例唯一标识
+     * Client instance unique identifier
      */
     public final String identify;
 
@@ -39,5 +36,4 @@ public class LocalDataChangeEvent extends AbstractEvent {
         this.identify = identify;
         this.groupKey = groupKey;
     }
-
 }

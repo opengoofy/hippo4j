@@ -27,9 +27,6 @@ import java.util.function.BiFunction;
 
 /**
  * Map util.
- *
- * @author chen.ma
- * @date 2021/6/23 19:09
  */
 public class MapUtil {
 
@@ -39,7 +36,6 @@ public class MapUtil {
         Objects.requireNonNull(mappingFunction, "mappingFunction");
         Objects.requireNonNull(param1, "param1");
         Objects.requireNonNull(param2, "param2");
-
         Object val = target.get(key);
         if (val == null) {
             Object ret = mappingFunction.apply(param1, param2);
@@ -50,7 +46,7 @@ public class MapUtil {
     }
 
     /**
-     * 根据 Key 进行模糊匹配.
+     * Fuzzy matching based on Key.
      *
      * @param sourceMap
      * @param filters
@@ -61,18 +57,16 @@ public class MapUtil {
         if (CollUtil.isEmpty(sourceMap)) {
             return resultList;
         }
-
         sourceMap.forEach((key, val) -> {
             if (checkKey(key, filters)) {
                 resultList.add(key);
             }
         });
-
         return resultList;
     }
 
     /**
-     * 匹配想要查询的字符.
+     * Match the characters you want to query.
      *
      * @param key
      * @param filters
@@ -85,5 +79,4 @@ public class MapUtil {
             return false;
         }
     }
-
 }

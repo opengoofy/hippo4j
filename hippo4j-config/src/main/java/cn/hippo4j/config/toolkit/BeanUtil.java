@@ -23,10 +23,7 @@ import com.github.dozermapper.core.Mapper;
 import java.util.*;
 
 /**
- * Bean util
- *
- * @author chen.ma
- * @date 2021/3/19 15:40
+ * Bean util.
  */
 public class BeanUtil {
 
@@ -67,5 +64,4 @@ public class BeanUtil {
                 })
                 .orElse(null);
     }
-
 }

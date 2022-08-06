@@ -25,9 +25,6 @@ import java.util.List;
 
 /**
  * Monitor active resp dto.
- *
- * @author chen.ma
- * @date 2021/12/12 17:18
  */
 @Data
 @NoArgsConstructor
@@ -35,48 +32,47 @@ import java.util.List;
 public class MonitorActiveRespDTO {
 
     /**
-     * times
+     * Times
      */
     private List<String> times;
 
     /**
-     * poolSizeList
+     * Pool size list
      */
     private List<Long> poolSizeList;
 
     /**
-     * activeSizeList
+     * Active size list
      */
     private List<Long> activeSizeList;
 
     /**
-     * queueSizeList
+     * Queue size list
      */
     private List<Long> queueSizeList;
 
     /**
-     * completedTaskCountList
+     * Completed task count list
      */
     private List<Long> completedTaskCountList;
 
     /**
-     * rejectCountList
+     * Reject count list
      */
     private List<Long> rejectCountList;
 
     /**
-     * queueRemainingCapacityList
+     * Queue remaining capacity list
      */
     private List<Long> queueRemainingCapacityList;
 
     /**
-     * currentLoadList
+     * Current load list
      */
     private List<Long> currentLoadList;
 
     /**
-     * queueCapacityList
+     * Queue capacity list
      */
     private List<Long> queueCapacityList;
-
 }

@@ -26,15 +26,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import java.util.List;
 
 /**
- * 通知管理.
- *
- * @author chen.ma
- * @date 2021/11/17 22:01
+ * Notify service.
  */
 public interface NotifyService {
 
     /**
-     * 查询通知配置集合.
+     * List notify config.
      *
      * @param reqDTO
      * @return
@@ -42,7 +39,7 @@ public interface NotifyService {
     List<NotifyListRespDTO> listNotifyConfig(NotifyQueryReqDTO reqDTO);
 
     /**
-     * 分页查询.
+     * Query page.
      *
      * @param reqDTO
      * @return
@@ -50,32 +47,31 @@ public interface NotifyService {
     IPage<NotifyRespDTO> queryPage(NotifyQueryReqDTO reqDTO);
 
     /**
-     * 新增通知配置.
+     * Save.
      *
      * @param reqDTO
      */
     void save(NotifyReqDTO reqDTO);
 
     /**
-     * 修改通知配置.
+     * Update.
      *
      * @param reqDTO
      */
     void update(NotifyReqDTO reqDTO);
 
     /**
-     * 删除通知配置.
+     * Delete.
      *
      * @param reqDTO
      */
     void delete(NotifyReqDTO reqDTO);
 
     /**
-     * 启用停用通知.
+     * Enable notify.
      *
      * @param id
      * @param status
      */
     void enableNotify(String id, Integer status);
-
 }

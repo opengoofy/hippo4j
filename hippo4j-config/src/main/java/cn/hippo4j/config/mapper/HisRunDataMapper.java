@@ -28,9 +28,6 @@ import java.util.List;
 
 /**
  * His run data mapper.
- *
- * @author chen.ma
- * @date 2021/12/10 21:33
  */
 @Mapper
 public interface HisRunDataMapper extends BaseMapper<HisRunDataInfo> {
@@ -71,34 +68,33 @@ public interface HisRunDataMapper extends BaseMapper<HisRunDataInfo> {
     class ThreadPoolTaskRanking {
 
         /**
-         * 租户id
+         * Tenant id
          */
         private String tenantId;
 
         /**
-         * 项目id
+         * Item id
          */
         private String itemId;
 
         /**
-         * 线程池id
+         * Tp id
          */
         private String tpId;
 
         /**
-         * 执行任务数
+         * Max completed task count
          */
         private Long maxCompletedTaskCount;
 
         /**
-         * 队列元素
+         * Max queue size
          */
         private Long maxQueueSize;
 
         /**
-         * 拒绝次数
+         * Max reject count
          */
         private Long maxRejectCount;
-
     }
 }

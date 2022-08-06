@@ -22,9 +22,6 @@ import lombok.Data;
 
 /**
  * Thread pool query req DTO.
- *
- * @author chen.ma
- * @date 2021/6/30 21:22
  */
 @Data
 public class ThreadPoolQueryReqDTO extends Page {

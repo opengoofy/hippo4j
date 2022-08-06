@@ -25,6 +25,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Netty server config.
+ */
 @Configuration
 @ConditionalOnProperty(name = "hippo4j.core.monitor.report-type", havingValue = "netty")
 public class NettyServerConfig {

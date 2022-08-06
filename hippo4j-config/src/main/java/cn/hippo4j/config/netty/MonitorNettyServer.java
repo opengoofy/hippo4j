@@ -18,14 +18,12 @@
 package cn.hippo4j.config.netty;
 
 import cn.hippo4j.config.config.ServerBootstrapProperties;
-import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
 import cn.hippo4j.config.service.biz.HisRunDataService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
@@ -35,18 +33,12 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Netty MonitorNettyServer
- *
- * @author lk
- * @date 2022/06/18
+ * Netty monitor netty server.
  */
 @Slf4j
 @AllArgsConstructor
@@ -68,8 +60,8 @@ public class MonitorNettyServer {
                 serverBootstrap.group(bossGroup, workGroup)
                         .channel(NioServerSocketChannel.class)
                         .handler(new LoggingHandler(LogLevel.INFO))
-                        // BossGroup the Thread group is responsible for connection events
-                        // WorkGroup the thread group is responsible for read and write events
+                        // BossGroup the Thread group is responsible for connection events.
+                        // WorkGroup the thread group is responsible for read and write events.
                         .childHandler(new ChannelInitializer<SocketChannel>() {
 
                             @Override

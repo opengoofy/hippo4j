@@ -24,9 +24,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * Default monitor data resolver.
- *
- * @author chen.ma
- * @date 2021/12/10 21:47
  */
 @Slf4j
 @Component
@@ -41,5 +38,4 @@ public class DefaultMonitorDataResolver extends AbstractMonitorDataExecuteStrate
     public void execute(Message message) {
         log.warn("There is no suitable monitoring data storage actuator.");
     }
-
 }

@@ -20,77 +20,73 @@ package cn.hippo4j.config.model.biz.monitor;
 import lombok.Data;
 
 /**
- * Monitor resp dto.
- *
- * @author chen.ma
- * @date 2021/12/10 20:23
+ * Monitor resp DTO.
  */
 @Data
 public class MonitorRespDTO {
 
     /**
-     * 租户id
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * 项目id
+     * Item id
      */
     private String itemId;
 
     /**
-     * 实例id
+     * Instance id
      */
     private String instanceId;
 
     /**
-     * 已完成任务计数
+     * Completed task count
      */
     private String completedTaskCount;
 
     /**
-     * 线程池id
+     * Thread-pool id
      */
     private String tpId;
 
     /**
-     * 当前负载
+     * Current load
      */
     private String currentLoad;
 
     /**
-     * 峰值负载
+     * Peak load
      */
     private String peakLoad;
 
     /**
-     * 线程数
+     * Pool size
      */
     private String poolSize;
 
     /**
-     * 活跃线程数
+     * Active size
      */
     private String activeSize;
 
     /**
-     * 队列容量
+     * Queue capacity
      */
     private String queueCapacity;
 
     /**
-     * 队列元素
+     * Queue size
      */
     private String queueSize;
 
     /**
-     * 队列剩余容量
+     * Queue remaining capacity
      */
     private String queueRemainingCapacity;
 
     /**
-     * 拒绝次数
+     * Reject count
      */
     private String rejectCount;
-
 }

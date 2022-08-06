@@ -23,9 +23,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Operation log mapper.
- *
- * @author chen.ma
- * @date 2021/10/24 21:01
  */
 @Mapper
 public interface OperationLogMapper extends BaseMapper<LogRecordInfo> {

@@ -23,9 +23,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Item info mapper.
- *
- * @author chen.ma
- * @date 2021/6/29 21:53
  */
 @Mapper
 public interface ItemInfoMapper extends BaseMapper<ItemInfo> {
