@@ -22,5 +22,23 @@ package com.example.monitor.base;
  */
 public enum MonitorTypeEnum {
 
-    LOG, PROMETHEUS, SERVER, ES
+    /**
+     * LOG
+     */
+    LOG,
+
+    /**
+     * PROMETHEUS
+     */
+    PROMETHEUS,
+
+    /**
+     * SERVER
+     */
+    SERVER,
+
+    /**
+     * ES
+     */
+    ES
 }

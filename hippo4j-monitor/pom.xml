@@ -12,21 +12,12 @@
 
     <modules>
         <module>hippo4j-monitor-base</module>
+        <module>hippo4j-monitor-es</module>
         <module>hippo4j-monitor-log</module>
         <module>hippo4j-monitor-prometheus</module>
-        <module>hippo4j-monitor-es</module>
     </modules>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.txt</include>
-                    <include>**/*.json</include>
-                </includes>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

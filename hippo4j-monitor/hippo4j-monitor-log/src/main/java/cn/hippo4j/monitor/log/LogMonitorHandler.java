@@ -21,10 +21,11 @@ import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import com.example.monitor.base.AbstractDynamicThreadPoolMonitor;
+import com.example.monitor.base.MonitorTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Log monitor handler
+ * Log monitor handler.
  */
 @Slf4j
 public class LogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
@@ -40,6 +41,6 @@ public class LogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     @Override
     public String getType() {
-        return "log";
+        return MonitorTypeEnum.LOG.name().toLowerCase();
     }
 }
