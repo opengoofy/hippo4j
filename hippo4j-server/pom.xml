@@ -18,16 +18,18 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-config</artifactId>
+            <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-console</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-discovery</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <!-- Adapter start -->

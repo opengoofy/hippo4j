@@ -13,6 +13,7 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-spring-cloud-stream-kafka</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

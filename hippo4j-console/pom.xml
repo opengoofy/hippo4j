@@ -7,7 +7,6 @@
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-console</artifactId>
 
     <properties>
@@ -18,16 +17,19 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-config</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-discovery</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-auth</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <dependency>

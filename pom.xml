@@ -109,36 +109,6 @@
 
             <dependency>
                 <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-config</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-console</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-discovery</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>log-record-tool</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-auth</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
                 <artifactId>hippo4j-core</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -146,60 +116,6 @@
             <dependency>
                 <groupId>cn.hippo4j</groupId>
                 <artifactId>hippo4j-adapter-base</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-adapter-spring-cloud-stream-rocketmq</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-adapter-rocketmq</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-adapter-dubbo</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-adapter-kafka</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-adapter-rabbitmq</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-adapter-hystrix</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-adapter-web</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-adapter-spring-cloud-stream-kafka</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-spring-boot-starter-adapter-web</artifactId>
                 <version>${revision}</version>
             </dependency>
 
