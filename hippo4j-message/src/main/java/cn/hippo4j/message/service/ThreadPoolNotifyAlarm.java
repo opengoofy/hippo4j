@@ -33,10 +33,10 @@ import java.util.Map;
 public class ThreadPoolNotifyAlarm {
 
     /**
-     * Is alarm
+     * Whether to enable thread pool running alarm
      */
     @NonNull
-    private Boolean isAlarm;
+    private Boolean alarm;
 
     /**
      * Active alarm

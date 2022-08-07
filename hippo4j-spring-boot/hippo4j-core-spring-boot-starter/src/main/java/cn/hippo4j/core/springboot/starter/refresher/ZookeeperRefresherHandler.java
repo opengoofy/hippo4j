@@ -110,7 +110,7 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
     public void registerNotifyAlarmManage() {
         bootstrapCoreProperties.getExecutors().forEach(executorProperties -> {
             ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
-                    executorProperties.getNotify().getIsAlarm(),
+                    executorProperties.getNotify().getAlarm(),
                     executorProperties.getNotify().getCapacityAlarm(),
                     executorProperties.getNotify().getActiveAlarm());
             threadPoolNotifyAlarm.setInterval(executorProperties.getNotify().getInterval());

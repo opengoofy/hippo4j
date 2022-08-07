@@ -85,7 +85,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         List<String> listThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
         listThreadPoolId.forEach(threadPoolId -> {
             ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
-            if (threadPoolNotifyAlarm != null && threadPoolNotifyAlarm.getIsAlarm()) {
+            if (threadPoolNotifyAlarm != null && threadPoolNotifyAlarm.getAlarm()) {
                 DynamicThreadPoolWrapper wrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
                 ThreadPoolExecutor executor = wrapper.getExecutor();
                 checkPoolCapacityAlarm(threadPoolId, executor);
@@ -109,7 +109,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         int queueSize = blockingQueue.size();
         int capacity = queueSize + blockingQueue.remainingCapacity();
         int divide = CalculateUtil.divide(queueSize, capacity);
-        boolean isSend = threadPoolNotifyAlarm.getIsAlarm()
+        boolean isSend = threadPoolNotifyAlarm.getAlarm()
                 && divide > threadPoolNotifyAlarm.getCapacityAlarm();
         if (isSend) {
             AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
@@ -129,7 +129,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         int maximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
         int divide = CalculateUtil.divide(activeCount, maximumPoolSize);
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
-        boolean isSend = threadPoolNotifyAlarm.getIsAlarm()
+        boolean isSend = threadPoolNotifyAlarm.getAlarm()
                 && divide > threadPoolNotifyAlarm.getActiveAlarm();
         if (isSend) {
             AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
@@ -145,7 +145,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      */
     public void checkPoolRejectedAlarm(String threadPoolId) {
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
-        if (Objects.isNull(threadPoolNotifyAlarm) || !threadPoolNotifyAlarm.getIsAlarm()) {
+        if (Objects.isNull(threadPoolNotifyAlarm) || !threadPoolNotifyAlarm.getAlarm()) {
             return;
         }
         ThreadPoolExecutor threadPoolExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
@@ -176,7 +176,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      */
     public void asyncSendExecuteTimeOutAlarm(String threadPoolId, long executeTime, long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
-        if (Objects.isNull(threadPoolNotifyAlarm) || !threadPoolNotifyAlarm.getIsAlarm()) {
+        if (Objects.isNull(threadPoolNotifyAlarm) || !threadPoolNotifyAlarm.getAlarm()) {
             return;
         }
         if (threadPoolExecutor instanceof DynamicThreadPoolExecutor) {
