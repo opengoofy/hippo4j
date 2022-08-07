@@ -178,7 +178,7 @@ public class ConfigCacheService {
         List<String> identificationList = MapUtil.parseMapForFilter(CLIENT_CONFIG_CACHE, coarse);
         for (String cacheMapKey : identificationList) {
             Map<String, CacheItem> removeCacheItem = CLIENT_CONFIG_CACHE.remove(cacheMapKey);
-            log.info("Remove invalidated config cache. config info : {}", JSONUtil.toJSONString(removeCacheItem));
+            log.info("Remove invalidated config cache. config info: {}", JSONUtil.toJSONString(removeCacheItem));
         }
     }
 
@@ -189,7 +189,7 @@ public class ConfigCacheService {
 
         @Override
         public void accept(ObserverMessage<String> observerMessage) {
-            log.info("Clean up the configuration cache. Key : {}", observerMessage.message());
+            log.info("Clean up the configuration cache. Key: {}", observerMessage.message());
             coarseRemove(observerMessage.message());
         }
     }

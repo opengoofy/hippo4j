@@ -58,7 +58,7 @@ public class NotifyCenter {
                 publisher.init(cls, buffer);
                 return publisher;
             } catch (Throwable ex) {
-                log.error("Service class newInstance has error : {}", ex);
+                log.error("Service class newInstance has error: {}", ex);
                 throw new RuntimeException(ex);
             }
         };
@@ -98,7 +98,7 @@ public class NotifyCenter {
         try {
             return publishEvent(event.getClass(), event);
         } catch (Throwable ex) {
-            log.error("There was an exception to the message publishing : {}", ex);
+            log.error("There was an exception to the message publishing: {}", ex);
             return false;
         }
     }

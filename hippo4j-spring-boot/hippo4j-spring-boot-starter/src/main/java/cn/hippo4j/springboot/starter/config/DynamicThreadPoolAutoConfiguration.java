@@ -20,11 +20,13 @@ package cn.hippo4j.springboot.starter.config;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer;
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.common.api.ThreadDetailState;
+import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.core.executor.support.DynamicThreadPoolService;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
@@ -85,24 +87,28 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    @SuppressWarnings("all")
-    public ConfigService configService(HttpAgent httpAgent, InetUtils hippo4JInetUtils, ServerHealthCheck serverHealthCheck) {
+    public ClientWorker hippo4jClientWorker(HttpAgent httpAgent,
+                                            InetUtils hippo4JInetUtils,
+                                            ServerHealthCheck serverHealthCheck) {
         String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);
-        return new ThreadPoolConfigService(httpAgent, identify, serverHealthCheck);
+        return new ClientWorker(httpAgent, identify, serverHealthCheck);
     }
 
     @Bean
-    public ThreadPoolOperation threadPoolOperation(ConfigService configService) {
-        return new ThreadPoolOperation(properties, configService);
+    @SuppressWarnings("all")
+    public DynamicThreadPoolService dynamicThreadPoolConfigService(HttpAgent httpAgent,
+                                                                   ClientWorker clientWorker,
+                                                                   ServerHealthCheck serverHealthCheck,
+                                                                   DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig) {
+        return new DynamicThreadPoolConfigService(httpAgent, clientWorker, properties, dynamicThreadPoolSubscribeConfig);
     }
 
     @Bean
     @SuppressWarnings("all")
     public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent,
-                                                                      ThreadPoolOperation threadPoolOperation,
                                                                       ApplicationContextHolder hippo4JApplicationContextHolder,
-                                                                      ServerThreadPoolDynamicRefresh threadPoolDynamicRefresh) {
-        return new DynamicThreadPoolPostProcessor(properties, httpAgent, threadPoolOperation, threadPoolDynamicRefresh);
+                                                                      DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig) {
+        return new DynamicThreadPoolPostProcessor(properties, httpAgent, dynamicThreadPoolSubscribeConfig);
     }
 
     @Bean
@@ -125,7 +131,8 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ReportingEventExecutor reportingEventExecutor(BootstrapProperties properties, MessageSender messageSender,
+    public ReportingEventExecutor reportingEventExecutor(BootstrapProperties properties,
+                                                         MessageSender messageSender,
                                                          ServerHealthCheck serverHealthCheck) {
         return new ReportingEventExecutor(properties, messageSender, serverHealthCheck);
     }
@@ -165,7 +172,8 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public ThreadPoolAdapterRegister threadPoolAdapterRegister(HttpAgent httpAgent, InetUtils hippo4JInetUtils) {
+    public ThreadPoolAdapterRegister threadPoolAdapterRegister(HttpAgent httpAgent,
+                                                               InetUtils hippo4JInetUtils) {
         return new ThreadPoolAdapterRegister(httpAgent, properties, environment, hippo4JInetUtils);
     }
 
@@ -177,8 +185,14 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ServerThreadPoolDynamicRefresh threadPoolDynamicRefresh(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
+    public ThreadPoolDynamicRefresh threadPoolDynamicRefresh(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
         return new ServerThreadPoolDynamicRefresh(threadPoolNotifyAlarmHandler);
+    }
+
+    @Bean
+    public DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig(ThreadPoolDynamicRefresh threadPoolDynamicRefresh,
+                                                                             ClientWorker clientWorker) {
+        return new DynamicThreadPoolSubscribeConfig(threadPoolDynamicRefresh, clientWorker, properties);
     }
 
     @Bean

@@ -17,6 +17,7 @@
 
 package cn.hippo4j.config.service.biz;
 
+import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 
 /**
@@ -50,4 +51,11 @@ public interface ConfigService {
      * @param configAllInfo
      */
     void insertOrUpdate(String identify, boolean isChangeNotice, ConfigAllInfo configAllInfo);
+
+    /**
+     * Register.
+     *
+     * @param registerWrapper
+     */
+    void register(DynamicThreadPoolRegisterWrapper registerWrapper);
 }

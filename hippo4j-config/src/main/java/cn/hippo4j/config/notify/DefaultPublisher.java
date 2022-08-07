@@ -111,7 +111,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     public boolean publish(AbstractEvent event) {
         boolean success = this.queue.offer(event);
         if (!success) {
-            log.warn("Unable to plug in due to interruption, synchronize sending time, event : {}", event);
+            log.warn("Unable to plug in due to interruption, synchronize sending time, event: {}", event);
             receiveEvent(event);
             return true;
         }
@@ -130,7 +130,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
             try {
                 job.run();
             } catch (Throwable e) {
-                log.error("Event callback exception : {}", e);
+                log.error("Event callback exception: {}", e);
             }
         }
     }

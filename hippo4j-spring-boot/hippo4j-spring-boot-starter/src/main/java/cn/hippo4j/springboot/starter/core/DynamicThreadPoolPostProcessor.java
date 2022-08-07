@@ -44,7 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -61,9 +60,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
     private final HttpAgent httpAgent;
 
-    private final ThreadPoolOperation threadPoolOperation;
-
-    private final ServerThreadPoolDynamicRefresh serverThreadPoolDynamicRefresh;
+    private final DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) {
@@ -174,25 +171,14 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         return newDynamicThreadPoolExecutor;
     }
 
-    private final ExecutorService configRefreshExecutorService = ThreadPoolBuilder.builder()
-            .corePoolSize(1)
-            .maxPoolNum(2)
-            .keepAliveTime(2000)
-            .timeUnit(TimeUnit.MILLISECONDS)
-            .workQueue(QueueTypeEnum.SYNCHRONOUS_QUEUE)
-            .allowCoreThreadTimeOut(true)
-            .threadFactory("client.dynamic.threadPool.change.config")
-            .rejected(new ThreadPoolExecutor.AbortPolicy())
-            .build();
-
     /**
      * Client dynamic thread pool subscription server configuration.
      *
-     * @param dynamicThreadPoolWrap
+     * @param dynamicThreadPoolWrapper
      */
-    protected void subscribeConfig(DynamicThreadPoolWrapper dynamicThreadPoolWrap) {
-        if (dynamicThreadPoolWrap.isSubscribeFlag()) {
-            threadPoolOperation.subscribeConfig(dynamicThreadPoolWrap.getThreadPoolId(), configRefreshExecutorService, config -> serverThreadPoolDynamicRefresh.dynamicRefresh(config));
+    protected void subscribeConfig(DynamicThreadPoolWrapper dynamicThreadPoolWrapper) {
+        if (dynamicThreadPoolWrapper.isSubscribeFlag()) {
+            dynamicThreadPoolSubscribeConfig.subscribeConfig(dynamicThreadPoolWrapper.getThreadPoolId());
         }
     }
 }
