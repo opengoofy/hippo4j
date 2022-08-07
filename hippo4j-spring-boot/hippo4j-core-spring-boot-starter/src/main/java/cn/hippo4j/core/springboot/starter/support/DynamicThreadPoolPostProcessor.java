@@ -134,7 +134,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             if (dynamicThreadPoolWrapper.getExecutor() instanceof AbstractDynamicExecutorSupport) {
                 ThreadPoolNotifyAlarm notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
                 boolean isAlarm = Optional.ofNullable(notify)
-                        .map(each -> each.getIsAlarm()).orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
+                        .map(each -> each.getAlarm()).orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
                 int activeAlarm = Optional.ofNullable(notify)
                         .map(each -> each.getActiveAlarm()).orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
                 int capacityAlarm = Optional.ofNullable(notify)

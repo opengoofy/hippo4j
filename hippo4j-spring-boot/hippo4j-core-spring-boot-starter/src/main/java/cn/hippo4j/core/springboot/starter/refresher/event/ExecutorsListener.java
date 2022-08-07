@@ -165,14 +165,14 @@ public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamic
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(properties.getThreadPoolId());
         if (threadPoolNotifyAlarm != null && properties.getNotify() != null) {
             ThreadPoolNotifyAlarm notify = properties.getNotify();
-            boolean isAlarm = notify.getIsAlarm();
+            boolean isAlarm = notify.getAlarm();
             Integer activeAlarm = notify.getActiveAlarm();
             Integer capacityAlarm = notify.getCapacityAlarm();
-            if (threadPoolNotifyAlarm.getIsAlarm() != isAlarm
+            if (threadPoolNotifyAlarm.getAlarm() != isAlarm
                     || threadPoolNotifyAlarm.getActiveAlarm() != activeAlarm
                     || threadPoolNotifyAlarm.getCapacityAlarm() != capacityAlarm) {
                 checkNotifyAlarm = true;
-                threadPoolNotifyAlarm.setIsAlarm(isAlarm);
+                threadPoolNotifyAlarm.setAlarm(isAlarm);
                 threadPoolNotifyAlarm.setActiveAlarm(activeAlarm);
                 threadPoolNotifyAlarm.setCapacityAlarm(capacityAlarm);
             }

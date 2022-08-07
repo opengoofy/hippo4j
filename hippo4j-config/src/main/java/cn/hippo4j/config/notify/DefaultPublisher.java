@@ -78,7 +78,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     private void openEventHandler() {
         try {
             int waitTimes = 60;
-            for (; ; ) {
+            for (;;) {
                 if (shutdown || hasSubscriber() || waitTimes <= 0) {
                     break;
                 }
@@ -89,7 +89,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
                 }
                 waitTimes--;
             }
-            for (; ; ) {
+            for (;;) {
                 if (shutdown) {
                     break;
                 }
