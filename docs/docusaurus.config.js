@@ -12,7 +12,7 @@ const config = {
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
-    favicon: 'img/favicon.png',
+    favicon: 'img/hippo4j_favicon.ico',
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'hippo4j', // Usually your GitHub org/user name.
