@@ -7,7 +7,6 @@
         <artifactId>hippo4j-spring-boot</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-spring-boot-starter</artifactId>
     <description>Thread pool dynamic parameter adjustment, alarming, status viewing and monitoring functions</description>
 
@@ -122,7 +121,6 @@
                     </archive>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
