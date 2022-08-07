@@ -17,15 +17,16 @@
 
 package cn.hippo4j.config.controller;
 
+import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
+import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.ConfigInfoBase;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigServletInner;
-import cn.hippo4j.config.toolkit.Md5ConfigUtil;
 import cn.hippo4j.config.service.biz.ConfigService;
-import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.config.toolkit.Md5ConfigUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -89,6 +90,12 @@ public class ConfigController {
         if (StrUtil.isNotBlank(groupKey)) {
             ConfigCacheService.removeConfigCache(groupKey);
         }
+        return Results.success();
+    }
+
+    @PostMapping("/register")
+    public Result register(@RequestBody DynamicThreadPoolRegisterWrapper registerWrapper) {
+        configService.register(registerWrapper);
         return Results.success();
     }
 }

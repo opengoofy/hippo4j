@@ -19,7 +19,10 @@ package cn.hippo4j.core.executor;
 
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.core.executor.support.CommonDynamicThreadPool;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.DisposableBean;
 
 import java.util.concurrent.Callable;
@@ -30,6 +33,9 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Dynamic thread-pool wrapper.
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DynamicThreadPoolWrapper implements DisposableBean {
 
     private String tenantId, itemId, threadPoolId;

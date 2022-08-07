@@ -38,33 +38,33 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
     private static final long serialVersionUID = -7123935122108553864L;
 
     /**
-     * tenantId
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * itemId
+     * Item id
      */
     private String itemId;
 
     /**
-     * tpId
+     * Thread-pool id
      */
     private String tpId;
 
     /**
-     * content
+     * Content
      */
     private String content;
 
     /**
-     * coreSize
+     * Core size
      */
     @Deprecated
     private Integer coreSize;
 
     /**
-     * maxSize
+     * Max size
      */
     @Deprecated
     private Integer maxSize;
@@ -80,42 +80,42 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
     private Integer maximumPoolSize;
 
     /**
-     * queueType
+     * Queue type
      */
     private Integer queueType;
 
     /**
-     * capacity
+     * Capacity
      */
     private Integer capacity;
 
     /**
-     * keepAliveTime
+     * Keep alive time
      */
     private Integer keepAliveTime;
 
     /**
-     * rejectedType
+     * Rejected type
      */
     private Integer rejectedType;
 
     /**
-     * isAlarm
+     * Is alarm
      */
     private Integer isAlarm;
 
     /**
-     * capacityAlarm
+     * Capacity alarm
      */
     private Integer capacityAlarm;
 
     /**
-     * livenessAlarm
+     * Liveness alarm
      */
     private Integer livenessAlarm;
 
     /**
-     * allowCoreThreadTimeOut
+     * Allow core thread timeout
      */
     private Integer allowCoreThreadTimeOut;
 

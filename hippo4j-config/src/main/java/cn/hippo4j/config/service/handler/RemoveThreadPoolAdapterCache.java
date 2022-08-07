@@ -32,7 +32,7 @@ public class RemoveThreadPoolAdapterCache implements ClientCloseHookExecute {
 
     @Override
     public void closeHook(ClientCloseHookReq requestParam) {
-        log.info("Remove thread-pool adapter cache, Execute client hook function. Req : {}", JSONUtil.toJSONString(requestParam));
+        log.info("Remove thread-pool adapter cache, Execute client hook function. Req: {}", JSONUtil.toJSONString(requestParam));
         ThreadPoolAdapterService.remove(requestParam.getInstanceId());
     }
 }

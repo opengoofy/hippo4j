@@ -70,7 +70,7 @@ public class StartingApplicationListener implements Hippo4JApplicationListener {
 
     @Override
     public void failed(ConfigurableApplicationContext context, Throwable exception) {
-        log.error("Startup errors : {}", exception);
+        log.error("Startup errors: {}", exception);
         closeExecutor();
         context.close();
         log.error("Hippo4J failed to start, please see {} for more details.",
