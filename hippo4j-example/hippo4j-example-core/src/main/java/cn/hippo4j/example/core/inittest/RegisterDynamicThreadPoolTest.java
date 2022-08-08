@@ -1,27 +1,28 @@
-package cn.hippo4j.example.server;
+package cn.hippo4j.example.core.inittest;
 
-import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.support.DynamicThreadPoolService;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Register dynamic thread-pool test
  */
+@Slf4j
 @Component
 @AllArgsConstructor
-public class RegisterDynamicThreadPoolTest implements ApplicationRunner {
+public class RegisterDynamicThreadPoolTest {
 
     private final DynamicThreadPoolService dynamicThreadPoolService;
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+    @PostConstruct
+    public void registerDynamicThreadPool() {
         String threadPoolId = "register-dynamic-thread-pool";
         DynamicThreadPoolRegisterParameter parameterInfo = new DynamicThreadPoolRegisterParameter();
         parameterInfo.setThreadPoolId(threadPoolId);
@@ -35,15 +36,10 @@ public class RegisterDynamicThreadPoolTest implements ApplicationRunner {
         parameterInfo.setCapacityAlarm(90);
         parameterInfo.setLivenessAlarm(90);
         parameterInfo.setAllowCoreThreadTimeOut(0);
-        ThreadPoolExecutor threadPoolExecutor = ThreadPoolBuilder.builder()
-                .threadPoolId(threadPoolId)
-                .threadFactory(threadPoolId)
-                .dynamicPool()
-                .build();
         DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()
                 .dynamicThreadPoolRegisterParameter(parameterInfo)
-                .dynamicThreadPoolExecutor(threadPoolExecutor)
                 .build();
-        dynamicThreadPoolService.registerDynamicThreadPool(registerWrapper);
+        ThreadPoolExecutor dynamicThreadPool = dynamicThreadPoolService.registerDynamicThreadPool(registerWrapper);
+        log.info("Dynamic registration thread pool parameter details: {}", JSONUtil.toJSONString(dynamicThreadPool));
     }
 }
