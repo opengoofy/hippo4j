@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
+import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -100,8 +100,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
         // cache check result
         if (Objects.isNull(isIndexExist)) {
             boolean exists = false;
-            GetIndexRequest request = new GetIndexRequest();
-            request.indices(index);
+            GetIndexRequest request = new GetIndexRequest(index);
             try {
                 RestHighLevelClient client = EsClientHolder.getClient();
                 exists = client.indices().exists(request, RequestOptions.DEFAULT);
