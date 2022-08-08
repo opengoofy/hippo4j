@@ -15,22 +15,38 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support;
+package cn.hippo4j.core.executor.support.adpter;
 
-import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.Executor;
 
 /**
- * Dynamic thread-pool service.
+ * Dynamic thread pool adapter.
  */
-public interface DynamicThreadPoolService {
+public interface DynamicThreadPoolAdapter {
 
     /**
-     * Registering dynamic thread pools at runtime.
+     * Match.
      *
-     * @param registerWrapper
+     * @param executor
      * @return
      */
-    ThreadPoolExecutor registerDynamicThreadPool(DynamicThreadPoolRegisterWrapper registerWrapper);
+    boolean match(Object executor);
+
+    /**
+     * Unwrap.
+     *
+     * @param executor
+     * @return
+     */
+    DynamicThreadPoolExecutor unwrap(Object executor);
+
+    /**
+     * Replace.
+     *
+     * @param executor
+     * @param dynamicThreadPoolExecutor
+     */
+    void replace(Object executor, Executor dynamicThreadPoolExecutor);
 }
