@@ -37,6 +37,12 @@
             <version>${tomcat-embed-core.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-spring-boot-starter-monitor-es</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
