@@ -17,6 +17,10 @@
 
 package cn.hippo4j.common.toolkit;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.exceptions.UtilException;
+import cn.hutool.core.util.ClassUtil;
+
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -105,5 +109,34 @@ public class ReflectUtil {
             return null;
         }
         return field.getName();
+    }
+
+    public static void setFieldValue(Object obj, String fieldName, Object value) throws UtilException {
+        cn.hutool.core.lang.Assert.notNull(obj);
+        cn.hutool.core.lang.Assert.notBlank(fieldName);
+        final Field field = getField((obj instanceof Class) ? (Class<?>) obj : obj.getClass(), fieldName);
+        cn.hutool.core.lang.Assert.notNull(field, "Field [{}] is not exist in [{}]", fieldName, obj.getClass().getName());
+        setFieldValue(obj, field, value);
+    }
+
+    public static void setFieldValue(Object obj, Field field, Object value) throws UtilException {
+        cn.hutool.core.lang.Assert.notNull(field, "Field in [{}] not exist !", obj);
+        final Class<?> fieldType = field.getType();
+        if (null != value) {
+            if (false == fieldType.isAssignableFrom(value.getClass())) {
+                final Object targetValue = Convert.convert(fieldType, value);
+                if (null != targetValue) {
+                    value = targetValue;
+                }
+            }
+        } else {
+            value = ClassUtil.getDefaultValue(fieldType);
+        }
+        setAccessible(field);
+        try {
+            field.set(obj instanceof Class ? null : obj, value);
+        } catch (IllegalAccessException e) {
+            throw new UtilException(e, "IllegalAccess for {}.{}", obj, field.getName());
+        }
     }
 }
