@@ -17,8 +17,11 @@
 
 package cn.hippo4j.core.executor.manage;
 
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
+import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.support.DynamicThreadPoolService;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -102,6 +105,16 @@ public class GlobalThreadPoolManage {
      */
     public static void registerPoolParameter(String threadPoolId, ThreadPoolParameter poolParameter) {
         POOL_PARAMETER.put(threadPoolId, poolParameter);
+    }
+
+    /**
+     * Dynamically register thread pool records and notification records.
+     *
+     * @param registerWrapper
+     */
+    public static ThreadPoolExecutor dynamicRegister(DynamicThreadPoolRegisterWrapper registerWrapper) {
+        DynamicThreadPoolService dynamicThreadPoolService = ApplicationContextHolder.getBean(DynamicThreadPoolService.class);
+        return dynamicThreadPoolService.registerDynamicThreadPool(registerWrapper);
     }
 
     /**

@@ -29,5 +29,10 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>transmittable-thread-local</artifactId>
+        </dependency>
     </dependencies>
 </project>
