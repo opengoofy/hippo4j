@@ -18,20 +18,26 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
+import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
-import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.core.executor.support.DynamicThreadPoolService;
+import cn.hippo4j.core.executor.support.QueueTypeEnum;
+import cn.hippo4j.core.executor.support.RejectedTypeEnum;
+import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.Constants.REGISTER_DYNAMIC_THREAD_POOL_PATH;
 
@@ -56,28 +62,44 @@ public class DynamicThreadPoolConfigService implements DynamicThreadPoolService,
     }
 
     @Override
-    public void registerDynamicThreadPool(DynamicThreadPoolRegisterWrapper registerWrapper) {
+    public ThreadPoolExecutor registerDynamicThreadPool(DynamicThreadPoolRegisterWrapper registerWrapper) {
         DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
         checkThreadPoolParameter(registerParameter);
         ThreadPoolParameterInfo parameter = JSONUtil.parseObject(JSONUtil.toJSONString(registerParameter), ThreadPoolParameterInfo.class);
         String threadPoolId = registerParameter.getThreadPoolId();
-        Result registerResult;
         try {
             failDynamicThreadPoolRegisterWrapper(registerWrapper);
-            registerResult = httpAgent.httpPost(REGISTER_DYNAMIC_THREAD_POOL_PATH, registerWrapper);
+            Result registerResult = httpAgent.httpPost(REGISTER_DYNAMIC_THREAD_POOL_PATH, registerWrapper);
+            if (registerResult == null || !registerResult.isSuccess()) {
+                throw new ServiceException("Dynamic thread pool registration returns error.");
+            }
         } catch (Throwable ex) {
-            log.error("Failed to dynamically register thread pool: {}", threadPoolId, ex);
+            log.error("Dynamic thread pool registration execution error: {}", threadPoolId, ex);
             throw ex;
         }
-        if (registerResult.isSuccess()) {
-            DynamicThreadPoolWrapper dynamicThreadPoolWrapper = DynamicThreadPoolWrapper.builder()
-                    .threadPoolId(threadPoolId)
-                    .executor(registerWrapper.getDynamicThreadPoolExecutor())
-                    .build();
-            GlobalThreadPoolManage.register(threadPoolId, parameter, dynamicThreadPoolWrapper);
-            dynamicThreadPoolSubscribeConfig.subscribeConfig(threadPoolId);
-            clientWorker.addCacheDataIfAbsent(properties.getNamespace(), properties.getItemId(), threadPoolId);
-        }
+        ThreadPoolExecutor dynamicThreadPoolExecutor = buildDynamicThreadPoolExecutor(registerParameter);
+        DynamicThreadPoolWrapper dynamicThreadPoolWrapper = DynamicThreadPoolWrapper.builder()
+                .threadPoolId(threadPoolId)
+                .executor(dynamicThreadPoolExecutor)
+                .build();
+        GlobalThreadPoolManage.register(threadPoolId, parameter, dynamicThreadPoolWrapper);
+        dynamicThreadPoolSubscribeConfig.subscribeConfig(threadPoolId);
+        clientWorker.addCacheDataIfAbsent(properties.getNamespace(), properties.getItemId(), threadPoolId);
+        return dynamicThreadPoolExecutor;
+    }
+
+    private ThreadPoolExecutor buildDynamicThreadPoolExecutor(DynamicThreadPoolRegisterParameter registerParameter) {
+        ThreadPoolExecutor dynamicThreadPoolExecutor = ThreadPoolBuilder.builder()
+                .threadPoolId(registerParameter.getThreadPoolId())
+                .corePoolSize(registerParameter.getCorePoolSize())
+                .maxPoolNum(registerParameter.getMaximumPoolSize())
+                .workQueue(QueueTypeEnum.createBlockingQueue(registerParameter.getQueueType(), registerParameter.getCapacity()))
+                .threadFactory(registerParameter.getThreadPoolId())
+                .keepAliveTime(registerParameter.getKeepAliveTime())
+                .rejected(RejectedTypeEnum.createPolicy(registerParameter.getRejectedType()))
+                .dynamicPool()
+                .build();
+        return dynamicThreadPoolExecutor;
     }
 
     private void checkThreadPoolParameter(DynamicThreadPoolRegisterParameter registerParameter) {
