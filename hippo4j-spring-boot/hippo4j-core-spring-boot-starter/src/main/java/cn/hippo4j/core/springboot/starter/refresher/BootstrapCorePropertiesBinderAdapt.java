@@ -81,8 +81,8 @@ public class BootstrapCorePropertiesBinderAdapt {
                 boolean containFlag = key != null
                         && StringUtil.isNotBlank((String) key)
                         && (((String) key).indexOf(PREFIX + ".executors") != -1
-                        || ((String) key).indexOf(PREFIX + ".notify-platforms") != -1
-                        || ((String) key).indexOf(PREFIX + ".notifyPlatforms") != -1);
+                                || ((String) key).indexOf(PREFIX + ".notify-platforms") != -1
+                                || ((String) key).indexOf(PREFIX + ".notifyPlatforms") != -1);
                 if (containFlag) {
                     String targetKey = key.toString().replace(PREFIX + ".", "");
                     targetMap.put(targetKey, val);
