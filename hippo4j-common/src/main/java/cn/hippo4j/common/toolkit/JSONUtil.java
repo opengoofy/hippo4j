@@ -18,6 +18,7 @@
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.api.JsonFacade;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
 
@@ -42,6 +43,14 @@ public class JSONUtil {
         }
 
         return JSON_FACADE.parseObject(text, clazz);
+    }
+
+    public static <T> T parseObject(String text, TypeReference<T> valueTypeRef) {
+        if (StringUtil.isBlank(text)) {
+            return null;
+        }
+
+        return JSON_FACADE.parseObject(text, valueTypeRef);
     }
 
     public static <T> List<T> parseArray(String text, Class<T> clazz) {
