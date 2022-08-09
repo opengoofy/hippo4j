@@ -17,6 +17,8 @@
 
 package cn.hippo4j.common.api;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import java.util.List;
 
 /**
@@ -41,6 +43,16 @@ public interface JsonFacade {
      * @return
      */
     <T> T parseObject(String text, Class<T> clazz);
+
+    /**
+     * Parse object.
+     *
+     * @param text
+     * @param valueTypeRef
+     * @param <T>
+     * @return
+     */
+    <T> T parseObject(String text, TypeReference<T> valueTypeRef);
 
     /**
      * Parse array.
