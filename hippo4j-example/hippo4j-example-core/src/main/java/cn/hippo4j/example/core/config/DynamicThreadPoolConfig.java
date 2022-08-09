@@ -33,49 +33,11 @@ import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_CONSUM
 import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_PRODUCE;
 
 /**
- * Thread pool config.
- *
- * @author chen.ma
- * @date 2021/6/20 17:16
+ * Dynamic thread-pool config.
  */
 @Slf4j
 @Configuration
-public class ThreadPoolConfig {
-
-    @Bean
-    @DynamicThreadPool
-    public ThreadPoolExecutor messageConsumeDynamicThreadPool() {
-        String threadPoolId = MESSAGE_CONSUME;
-        ThreadPoolExecutor customExecutor = ThreadPoolBuilder.builder()
-                .dynamicPool()
-                .threadFactory(threadPoolId)
-                .threadPoolId(threadPoolId)
-                .executeTimeOut(800L)
-                .waitForTasksToCompleteOnShutdown(true)
-                .awaitTerminationMillis(5000L)
-                .taskDecorator(new TaskTraceBuilderHandler())
-                .build();
-        return customExecutor;
-    }
-
-    @Bean
-    @DynamicThreadPool
-    public ThreadPoolExecutor messageProduceDynamicThreadPool() {
-        String threadPoolId = MESSAGE_PRODUCE;
-        ThreadPoolExecutor produceExecutor = ThreadPoolBuilder.builder()
-                .dynamicPool()
-                .threadFactory(threadPoolId)
-                .threadPoolId(threadPoolId)
-                .executeTimeOut(900L)
-                .waitForTasksToCompleteOnShutdown(true)
-                .awaitTerminationMillis(5000L)
-                /**
-                 * 上下文传递，测试用例：{@link TaskDecoratorTest}
-                 */
-                .taskDecorator(new TaskDecoratorTest.ContextCopyingDecorator())
-                .build();
-        return produceExecutor;
-    }
+public class DynamicThreadPoolConfig {
 
     @Bean
     @DynamicThreadPool
@@ -90,24 +52,27 @@ public class ThreadPoolConfig {
                 .awaitTerminationMillis(5000L)
                 .taskDecorator(new TaskTraceBuilderHandler())
                 .build();
+        // Ali ttl adaptation use case.
         Executor ttlExecutor = TtlExecutors.getTtlExecutor(customExecutor);
         return ttlExecutor;
     }
 
     @Bean
     @DynamicThreadPool
-    public Executor messageConsumeTtlServiceDynamicThreadPool() {
-        String threadPoolId = MESSAGE_CONSUME;
-        ThreadPoolExecutor customExecutor = ThreadPoolBuilder.builder()
+    public ThreadPoolExecutor messageProduceDynamicThreadPool() {
+        String threadPoolId = MESSAGE_PRODUCE;
+        ThreadPoolExecutor produceExecutor = ThreadPoolBuilder.builder()
                 .dynamicPool()
                 .threadFactory(threadPoolId)
                 .threadPoolId(threadPoolId)
-                .executeTimeOut(800L)
+                .executeTimeOut(900L)
                 .waitForTasksToCompleteOnShutdown(true)
                 .awaitTerminationMillis(5000L)
-                .taskDecorator(new TaskTraceBuilderHandler())
+                /**
+                 * Context passing, test cases: {@link TaskDecoratorTest}
+                 */
+                .taskDecorator(new TaskDecoratorTest.ContextCopyingDecorator())
                 .build();
-        Executor ttlExecutor = TtlExecutors.getTtlExecutorService(customExecutor);
-        return ttlExecutor;
+        return produceExecutor;
     }
 }
