@@ -31,17 +31,14 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Test alarm send message.
- *
- * @author chen.ma
- * @date 2021/8/15 21:03
  */
 @Slf4j
 @Component
 public class AlarmSendMessageTest {
 
     /**
-     * 测试报警通知.
-     * 如果需要运行此单测, 方法上添加 @PostConstruct
+     * Test alarm notification.
+     * If you need to run this single test, add @PostConstruct to the method.
      */
     @SuppressWarnings("all")
     public void alarmSendMessageTest() {

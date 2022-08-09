@@ -28,5 +28,4 @@ public class Hippo4jCoreApolloExampleApplication {
     public static void main(String[] args) {
         SpringApplication.run(Hippo4jCoreApolloExampleApplication.class, args);
     }
-
 }

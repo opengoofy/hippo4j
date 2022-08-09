@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support;
+package cn.hippo4j.core.executor.support.service;
 
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 

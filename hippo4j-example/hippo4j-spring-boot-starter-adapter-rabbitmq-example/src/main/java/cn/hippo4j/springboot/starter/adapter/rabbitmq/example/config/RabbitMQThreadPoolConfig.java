@@ -26,9 +26,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
- * @author : wh
- * @date : 2022/5/24 10:02
- * @description:
+ * RabbitMQ thread-pool config.
  */
 @Configuration
 public class RabbitMQThreadPoolConfig {
@@ -36,11 +34,11 @@ public class RabbitMQThreadPoolConfig {
     @Bean
     public ThreadPoolTaskExecutor rabbitListenerTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        // 指定线程的最大数量
+        // Specify the maximum number of threads.
         executor.setMaxPoolSize(5);
-        // 指定线程池维护线程的最少数量
+        // Specifies the minimum number of thread pool maintenance threads.
         executor.setCorePoolSize(5);
-        // 指定等待处理的任务数
+        // Specifies the number of tasks waiting to be processed.
         executor.setQueueCapacity(1000);
         executor.setThreadNamePrefix("RabbitListenerTaskExecutor-");
         return executor;

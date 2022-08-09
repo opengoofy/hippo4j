@@ -121,20 +121,12 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
     private String buildReceive(ExecutorProperties executor, NotifyPlatformProperties platformProperties) {
         String receive;
         if (executor.getNotify() != null) {
-            receive = executor.getNotify().getReceive();
+            receive = executor.getNotify().getReceives();
             if (StrUtil.isBlank(receive)) {
-                receive = bootstrapCoreProperties.getReceive();
-                if (StrUtil.isBlank(receive)) {
-                    Map<String, String> receives = executor.receives();
-                    receive = receives.get(platformProperties.getPlatform());
-                }
+                receive = bootstrapCoreProperties.getReceives();
             }
         } else {
-            receive = bootstrapCoreProperties.getReceive();
-            if (StrUtil.isBlank(receive)) {
-                Map<String, String> receives = executor.receives();
-                receive = receives.get(platformProperties.getPlatform());
-            }
+            receive = bootstrapCoreProperties.getReceives();
         }
         return receive;
     }

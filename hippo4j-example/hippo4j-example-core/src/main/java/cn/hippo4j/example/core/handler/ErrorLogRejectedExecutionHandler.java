@@ -25,10 +25,7 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * 自定义拒绝策略.
- *
- * @author chen.ma
- * @date 2022/1/4 22:19
+ * Custom Deny Policy.
  */
 public class ErrorLogRejectedExecutionHandler implements CustomRejectedExecutionHandler {
 

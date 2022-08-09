@@ -147,10 +147,10 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 int interval = Optional.ofNullable(notify)
                         .map(each -> each.getInterval()).orElseGet(() -> bootstrapCoreProperties.getAlarmInterval() != null ? bootstrapCoreProperties.getAlarmInterval() : 5);
                 String receive = Optional.ofNullable(notify)
-                        .map(each -> each.getReceive()).orElseGet(() -> bootstrapCoreProperties.getReceive() != null ? bootstrapCoreProperties.getReceive() : null);
+                        .map(each -> each.getReceives()).orElseGet(() -> bootstrapCoreProperties.getReceives() != null ? bootstrapCoreProperties.getReceives() : null);
                 ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(isAlarm, activeAlarm, capacityAlarm);
                 threadPoolNotifyAlarm.setInterval(interval);
-                threadPoolNotifyAlarm.setReceive(receive);
+                threadPoolNotifyAlarm.setReceives(receive);
                 GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
                 TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) dynamicThreadPoolWrapper.getExecutor()).getTaskDecorator();
                 ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setTaskDecorator(taskDecorator);

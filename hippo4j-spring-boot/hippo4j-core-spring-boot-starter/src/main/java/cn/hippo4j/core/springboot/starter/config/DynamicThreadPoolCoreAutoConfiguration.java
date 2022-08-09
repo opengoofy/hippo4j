@@ -28,8 +28,9 @@ import cn.hippo4j.core.springboot.starter.refresher.event.AdapterExecutorsListen
 import cn.hippo4j.core.springboot.starter.refresher.event.ExecutorsListener;
 import cn.hippo4j.core.springboot.starter.refresher.event.PlatformsListener;
 import cn.hippo4j.core.springboot.starter.refresher.event.WebExecutorListener;
+import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolAdapterRegister;
+import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolPostProcessor;
-import cn.hippo4j.core.springboot.starter.support.ThreadPoolAdapterRegister;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;
@@ -115,12 +116,17 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     }
 
     @Bean
-    public ThreadPoolAdapterRegister threadPoolAdapterRegister() {
-        return new ThreadPoolAdapterRegister(bootstrapCoreProperties);
+    public DynamicThreadPoolAdapterRegister threadPoolAdapterRegister() {
+        return new DynamicThreadPoolAdapterRegister(bootstrapCoreProperties);
     }
 
     @Bean
     public DynamicThreadPoolBannerHandler threadPoolBannerHandler() {
         return new DynamicThreadPoolBannerHandler(bootstrapCoreProperties);
+    }
+    
+    @Bean
+    public DynamicThreadPoolConfigService dynamicThreadPoolConfigService() {
+        return new DynamicThreadPoolConfigService();
     }
 }

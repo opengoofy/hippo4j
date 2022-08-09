@@ -17,6 +17,7 @@
 
 package cn.hippo4j.common.model.register;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -65,7 +66,7 @@ public class DynamicThreadPoolRegisterParameter {
     /**
      * Keep alive time
      */
-    private Integer keepAliveTime;
+    private Long keepAliveTime;
 
     /**
      * Rejected type
@@ -83,12 +84,27 @@ public class DynamicThreadPoolRegisterParameter {
     private Integer capacityAlarm;
 
     /**
-     * Liveness alarm
+     * Active alarm
      */
-    private Integer livenessAlarm;
+    @JsonAlias("livenessAlarm")
+    private Integer activeAlarm;
 
     /**
      * Allow core thread timeout
      */
-    private Integer allowCoreThreadTimeOut;
+    private Boolean allowCoreThreadTimeOut;
+
+    /**
+     * Thread name prefix
+     */
+    private String threadNamePrefix;
+
+    /**
+     * Execute timeout
+     */
+    private Long executeTimeOut;
+
+    public Integer getAllowCoreThreadTimeOut() {
+        return this.allowCoreThreadTimeOut ? 1 : 0;
+    }
 }
