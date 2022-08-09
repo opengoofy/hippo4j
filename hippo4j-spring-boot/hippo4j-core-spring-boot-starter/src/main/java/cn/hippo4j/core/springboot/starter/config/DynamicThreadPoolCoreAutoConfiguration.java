@@ -124,7 +124,7 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     public DynamicThreadPoolBannerHandler threadPoolBannerHandler() {
         return new DynamicThreadPoolBannerHandler(bootstrapCoreProperties);
     }
-    
+
     @Bean
     public DynamicThreadPoolConfigService dynamicThreadPoolConfigService() {
         return new DynamicThreadPoolConfigService();
