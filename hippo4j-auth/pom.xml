@@ -68,4 +68,5 @@
             <version>${revision}</version>
         </dependency>
     </dependencies>
+
 </project>
