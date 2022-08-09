@@ -103,4 +103,8 @@ public class DynamicThreadPoolRegisterParameter {
      * Execute timeout
      */
     private Long executeTimeOut;
+
+    public Integer getAllowCoreThreadTimeOut() {
+        return this.allowCoreThreadTimeOut ? 1 : 0;
+    }
 }
