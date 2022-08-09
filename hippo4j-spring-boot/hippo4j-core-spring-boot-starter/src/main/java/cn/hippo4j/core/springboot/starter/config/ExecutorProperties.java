@@ -18,18 +18,20 @@
 package cn.hippo4j.core.springboot.starter.config;
 
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-import com.google.common.collect.Maps;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Executor properties.
  */
 @Data
+@Builder
 @Accessors(chain = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class ExecutorProperties {
 
     /**
@@ -86,8 +88,4 @@ public class ExecutorProperties {
      * Notify
      */
     private ThreadPoolNotifyAlarm notify;
-
-    public Map<String, String> receives() {
-        return Objects.isNull(this.notify) || this.notify.getReceives() == null ? Maps.newHashMap() : this.notify.getReceives();
-    }
 }

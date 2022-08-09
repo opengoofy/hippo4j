@@ -139,11 +139,7 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public void register(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
-        ConfigAllInfo configAllInfo = JSONUtil.parseObject(JSONUtil.toJSONString(registerParameter), ConfigAllInfo.class);
-        configAllInfo.setTenantId(registerWrapper.getTenantId());
-        configAllInfo.setItemId(registerWrapper.getItemId());
-        configAllInfo.setTpId(registerParameter.getThreadPoolId());
+        ConfigAllInfo configAllInfo = parseConfigAllInfo(registerWrapper);
         TenantService tenantService = ApplicationContextHolder.getBean(TenantService.class);
         ItemService itemService = ApplicationContextHolder.getBean(ItemService.class);
         Assert.isTrue(tenantService.getTenantByTenantId(registerWrapper.getTenantId()) != null, "Tenant does not exist");
@@ -155,6 +151,16 @@ public class ConfigServiceImpl implements ConfigService {
             ConfigServiceImpl configService = ApplicationContextHolder.getBean(this.getClass());
             configService.updateConfigInfo(null, false, configAllInfo);
         }
+    }
+
+    private ConfigAllInfo parseConfigAllInfo(DynamicThreadPoolRegisterWrapper registerWrapper) {
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        ConfigAllInfo configAllInfo = JSONUtil.parseObject(JSONUtil.toJSONString(registerParameter), ConfigAllInfo.class);
+        configAllInfo.setTenantId(registerWrapper.getTenantId());
+        configAllInfo.setItemId(registerWrapper.getItemId());
+        configAllInfo.setTpId(registerParameter.getThreadPoolId());
+        configAllInfo.setAllowCoreThreadTimeOut(registerParameter.getAllowCoreThreadTimeOut() ? 1 : 0);
+        return configAllInfo;
     }
 
     private void verification(String identify) {

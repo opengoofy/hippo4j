@@ -17,6 +17,8 @@
 
 package cn.hippo4j.common.model.register;
 
+import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterCoreNotifyParameter;
+import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterServerNotifyParameter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,4 +52,14 @@ public class DynamicThreadPoolRegisterWrapper {
      * Dynamic thread-pool register parameter
      */
     private DynamicThreadPoolRegisterParameter dynamicThreadPoolRegisterParameter;
+
+    /**
+     * Dynamic thread-pool core notify parameter
+     */
+    private DynamicThreadPoolRegisterCoreNotifyParameter dynamicThreadPoolRegisterCoreNotifyParameter;
+
+    /**
+     * Dynamic thread-pool server notify parameter
+     */
+    private DynamicThreadPoolRegisterServerNotifyParameter dynamicThreadPoolRegisterServerNotifyParameter;
 }

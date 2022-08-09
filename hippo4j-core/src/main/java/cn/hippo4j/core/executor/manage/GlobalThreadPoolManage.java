@@ -21,7 +21,7 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.support.DynamicThreadPoolService;
+import cn.hippo4j.core.executor.support.service.DynamicThreadPoolService;
 import com.google.common.collect.Lists;
 
 import java.util.List;

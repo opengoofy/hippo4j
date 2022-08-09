@@ -133,9 +133,9 @@ public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
     private Integer alarmInterval;
 
     /**
-     * Receive.
+     * Receives.
      */
-    private String receive;
+    private String receives;
 
     /**
      * Executors.

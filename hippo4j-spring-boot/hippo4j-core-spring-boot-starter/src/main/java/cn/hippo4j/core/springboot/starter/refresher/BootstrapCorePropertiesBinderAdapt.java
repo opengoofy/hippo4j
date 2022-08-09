@@ -22,7 +22,6 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.springboot.starter.config.NotifyPlatformProperties;
-import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -82,8 +81,8 @@ public class BootstrapCorePropertiesBinderAdapt {
                 boolean containFlag = key != null
                         && StringUtil.isNotBlank((String) key)
                         && (((String) key).indexOf(PREFIX + ".executors") != -1
-                                || ((String) key).indexOf(PREFIX + ".notify-platforms") != -1
-                                || ((String) key).indexOf(PREFIX + ".notifyPlatforms") != -1);
+                        || ((String) key).indexOf(PREFIX + ".notify-platforms") != -1
+                        || ((String) key).indexOf(PREFIX + ".notifyPlatforms") != -1);
                 if (containFlag) {
                     String targetKey = key.toString().replace(PREFIX + ".", "");
                     targetMap.put(targetKey, val);
@@ -138,14 +137,7 @@ public class BootstrapCorePropertiesBinderAdapt {
                     if (executorProperties != null) {
                         if (CollectionUtil.isNotEmpty(notifySingleMap)) {
                             ThreadPoolNotifyAlarm alarm = BeanUtil.mapToBean(notifySingleMap, ThreadPoolNotifyAlarm.class, true, CopyOptions.create());
-                            Map<String, String> notifyReceivesMap = Maps.newHashMap();
-                            for (NotifyPlatformEnum value : NotifyPlatformEnum.values()) {
-                                Object receives = targetMap.get("executors[" + i + "].notify.receives." + value.name());
-                                if (receives != null && StringUtil.isNotBlank((String) receives)) {
-                                    notifyReceivesMap.put(value.name(), (String) receives);
-                                }
-                            }
-                            alarm.setReceives(notifyReceivesMap);
+                            alarm.setReceives(alarm.getReceives());
                             executorProperties.setNotify(alarm);
                         }
                         executorPropertiesList.add(executorProperties);

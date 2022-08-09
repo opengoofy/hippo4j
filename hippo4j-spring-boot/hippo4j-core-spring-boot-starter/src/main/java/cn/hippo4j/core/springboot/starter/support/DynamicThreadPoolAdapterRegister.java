@@ -32,11 +32,11 @@ import java.util.Map;
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 
 /**
- * Thread-pool adapter register.
+ * Dynamic thread-pool adapter register.
  */
 @Slf4j
 @AllArgsConstructor
-public class ThreadPoolAdapterRegister implements ApplicationRunner {
+public class DynamicThreadPoolAdapterRegister implements ApplicationRunner {
 
     private final BootstrapCoreProperties bootstrapCoreProperties;
 

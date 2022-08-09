@@ -26,10 +26,7 @@ import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.DynamicThreadPoolService;
-import cn.hippo4j.core.executor.support.QueueTypeEnum;
-import cn.hippo4j.core.executor.support.RejectedTypeEnum;
-import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
+import cn.hippo4j.core.executor.support.service.AbstractDynamicThreadPoolService;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
@@ -46,7 +43,7 @@ import static cn.hippo4j.common.constant.Constants.REGISTER_DYNAMIC_THREAD_POOL_
  */
 @Slf4j
 @RequiredArgsConstructor
-public class DynamicThreadPoolConfigService implements DynamicThreadPoolService, ApplicationListener<ApplicationCompleteEvent> {
+public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolService implements ApplicationListener<ApplicationCompleteEvent> {
 
     private final HttpAgent httpAgent;
 
@@ -55,11 +52,6 @@ public class DynamicThreadPoolConfigService implements DynamicThreadPoolService,
     private final BootstrapProperties properties;
 
     private final DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig;
-
-    @Override
-    public void onApplicationEvent(ApplicationCompleteEvent event) {
-        clientWorker.notifyApplicationComplete();
-    }
 
     @Override
     public ThreadPoolExecutor registerDynamicThreadPool(DynamicThreadPoolRegisterWrapper registerWrapper) {
@@ -88,18 +80,9 @@ public class DynamicThreadPoolConfigService implements DynamicThreadPoolService,
         return dynamicThreadPoolExecutor;
     }
 
-    private ThreadPoolExecutor buildDynamicThreadPoolExecutor(DynamicThreadPoolRegisterParameter registerParameter) {
-        ThreadPoolExecutor dynamicThreadPoolExecutor = ThreadPoolBuilder.builder()
-                .threadPoolId(registerParameter.getThreadPoolId())
-                .corePoolSize(registerParameter.getCorePoolSize())
-                .maxPoolNum(registerParameter.getMaximumPoolSize())
-                .workQueue(QueueTypeEnum.createBlockingQueue(registerParameter.getQueueType(), registerParameter.getCapacity()))
-                .threadFactory(registerParameter.getThreadPoolId())
-                .keepAliveTime(registerParameter.getKeepAliveTime())
-                .rejected(RejectedTypeEnum.createPolicy(registerParameter.getRejectedType()))
-                .dynamicPool()
-                .build();
-        return dynamicThreadPoolExecutor;
+    @Override
+    public void onApplicationEvent(ApplicationCompleteEvent event) {
+        clientWorker.notifyApplicationComplete();
     }
 
     private void checkThreadPoolParameter(DynamicThreadPoolRegisterParameter registerParameter) {
