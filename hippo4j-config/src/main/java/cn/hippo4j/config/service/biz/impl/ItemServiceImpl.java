@@ -1,7 +1,24 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.config.enums.DelEnum;
+import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.config.mapper.ItemInfoMapper;
 import cn.hippo4j.config.model.ItemInfo;
 import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
@@ -26,9 +43,6 @@ import java.util.List;
 
 /**
  * Item service impl.
- *
- * @author chen.ma
- * @date 2021/6/29 21:58
  */
 @Service
 @AllArgsConstructor
@@ -44,8 +58,8 @@ public class ItemServiceImpl implements ItemService {
                 .eq(!StringUtils.isEmpty(reqDTO.getItemId()), ItemInfo::getItemId, reqDTO.getItemId())
                 .eq(!StringUtils.isEmpty(reqDTO.getItemName()), ItemInfo::getItemName, reqDTO.getItemName())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId())
-                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), ItemInfo::getOwner, reqDTO.getOwner());
-
+                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), ItemInfo::getOwner, reqDTO.getOwner())
+                .orderByDesc(reqDTO.getDesc() != null, ItemInfo::getGmtCreate);
         Page<ItemInfo> resultPage = itemInfoMapper.selectPage(reqDTO, wrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, ItemRespDTO.class));
     }
@@ -56,7 +70,6 @@ public class ItemServiceImpl implements ItemService {
                 .lambdaQuery(ItemInfo.class)
                 .eq(ItemInfo::getTenantId, tenantId)
                 .eq(ItemInfo::getItemId, itemId);
-
         ItemInfo itemInfo = itemInfoMapper.selectOne(queryWrapper);
         ItemRespDTO result = BeanUtil.convert(itemInfo, ItemRespDTO.class);
         return result;
@@ -67,7 +80,6 @@ public class ItemServiceImpl implements ItemService {
         LambdaQueryWrapper<ItemInfo> wrapper = Wrappers.lambdaQuery(ItemInfo.class)
                 .eq(!StringUtils.isEmpty(reqDTO.getItemId()), ItemInfo::getItemId, reqDTO.getItemId())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId());
-
         List<ItemInfo> itemInfos = itemInfoMapper.selectList(wrapper);
         return BeanUtil.convert(itemInfos, ItemRespDTO.class);
     }
@@ -76,16 +88,16 @@ public class ItemServiceImpl implements ItemService {
     public void saveItem(ItemSaveReqDTO reqDTO) {
         LambdaQueryWrapper<ItemInfo> queryWrapper = Wrappers.lambdaQuery(ItemInfo.class)
                 .eq(ItemInfo::getItemId, reqDTO.getItemId());
-
-        ItemInfo existItemInfo = itemInfoMapper.selectOne(queryWrapper);
-        Assert.isNull(existItemInfo, "项目 ID 不允许重复.");
-
-        ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
-        int insertResult = itemInfoMapper.insert(itemInfo);
-
-        boolean retBool = SqlHelper.retBool(insertResult);
-        if (!retBool) {
-            throw new RuntimeException("Save error");
+        // It is currently a single application, and it will support switching distributed locks during cluster deployment in the future.
+        synchronized (ItemService.class) {
+            ItemInfo existItemInfo = itemInfoMapper.selectOne(queryWrapper);
+            Assert.isNull(existItemInfo, "项目配置已存在.");
+            ItemInfo itemInfo = BeanUtil.convert(reqDTO, ItemInfo.class);
+            int insertResult = itemInfoMapper.insert(itemInfo);
+            boolean retBool = SqlHelper.retBool(insertResult);
+            if (!retBool) {
+                throw new RuntimeException("Save error");
+            }
         }
     }
 
@@ -96,7 +108,6 @@ public class ItemServiceImpl implements ItemService {
                 Wrappers.lambdaUpdate(ItemInfo.class)
                         .eq(ItemInfo::getTenantId, reqDTO.getTenantId())
                         .eq(ItemInfo::getItemId, reqDTO.getItemId()));
-
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("Update error.");
@@ -107,19 +118,16 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(String namespace, String itemId) {
         List<ThreadPoolRespDTO> itemList = threadPoolService.getThreadPoolByItemId(itemId);
         if (CollectionUtils.isNotEmpty(itemList)) {
-            throw new RuntimeException("The project contains a thread pool reference, and the deletion failed.");
+            throw new RuntimeException("项目包含线程池引用, 删除失败.");
         }
-
         int updateResult = itemInfoMapper.update(new ItemInfo(),
                 Wrappers.lambdaUpdate(ItemInfo.class)
                         .eq(ItemInfo::getTenantId, namespace)
                         .eq(ItemInfo::getItemId, itemId)
                         .set(ItemInfo::getDelFlag, DelEnum.DELETE.getIntCode()));
-
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("Delete error.");
         }
     }
-
 }

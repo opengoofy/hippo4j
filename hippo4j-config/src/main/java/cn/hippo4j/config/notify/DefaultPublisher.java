@@ -1,8 +1,25 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.notify;
 
+import cn.hippo4j.config.event.AbstractEvent;
 import cn.hutool.core.collection.ConcurrentHashSet;
-import cn.hippo4j.config.notify.listener.Subscriber;
-import cn.hippo4j.config.event.Event;
+import cn.hippo4j.config.notify.listener.AbstractSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
@@ -13,16 +30,13 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * The default event publisher implementation.
- *
- * @author chen.ma
- * @date 2021/6/23 19:06
  */
 @Slf4j
 public class DefaultPublisher extends Thread implements EventPublisher {
 
-    protected final ConcurrentHashSet<Subscriber> subscribers = new ConcurrentHashSet();
+    protected final ConcurrentHashSet<AbstractSubscriber> subscribers = new ConcurrentHashSet();
 
-    private BlockingQueue<Event> queue;
+    private BlockingQueue<AbstractEvent> queue;
 
     private volatile boolean initialized = false;
 
@@ -36,7 +50,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
             .newUpdater(DefaultPublisher.class, Long.class, "lastEventSequence");
 
     @Override
-    public void init(Class<? extends Event> type, int bufferSize) {
+    public void init(Class<? extends AbstractEvent> type, int bufferSize) {
         setDaemon(true);
         setName("dynamic.thread-pool.publisher-" + type.getName());
         this.queueMaxSize = bufferSize;
@@ -64,7 +78,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     private void openEventHandler() {
         try {
             int waitTimes = 60;
-            for (; ; ) {
+            for (;;) {
                 if (shutdown || hasSubscriber() || waitTimes <= 0) {
                     break;
                 }
@@ -75,30 +89,29 @@ public class DefaultPublisher extends Thread implements EventPublisher {
                 }
                 waitTimes--;
             }
-
-            for (; ; ) {
+            for (;;) {
                 if (shutdown) {
                     break;
                 }
-                final Event event = queue.take();
+                final AbstractEvent event = queue.take();
                 receiveEvent(event);
                 UPDATER.compareAndSet(this, lastEventSequence, Math.max(lastEventSequence, event.sequence()));
             }
         } catch (Throwable ex) {
-            log.error("Event listener exception :: {}", ex);
+            log.error("Event listener exception: {}", ex);
         }
     }
 
     @Override
-    public void addSubscriber(Subscriber subscriber) {
+    public void addSubscriber(AbstractSubscriber subscriber) {
         subscribers.add(subscriber);
     }
 
     @Override
-    public boolean publish(Event event) {
+    public boolean publish(AbstractEvent event) {
         boolean success = this.queue.offer(event);
         if (!success) {
-            log.warn("Unable to plug in due to interruption, synchronize sending time, event :: {}", event);
+            log.warn("Unable to plug in due to interruption, synchronize sending time, event: {}", event);
             receiveEvent(event);
             return true;
         }
@@ -106,7 +119,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     }
 
     @Override
-    public void notifySubscriber(Subscriber subscriber, Event event) {
+    public void notifySubscriber(AbstractSubscriber subscriber, AbstractEvent event) {
         final Runnable job = () -> subscriber.onEvent(event);
 
         final Executor executor = subscriber.executor();
@@ -117,7 +130,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
             try {
                 job.run();
             } catch (Throwable e) {
-                log.error("Event callback exception :: {}", e);
+                log.error("Event callback exception: {}", e);
             }
         }
     }
@@ -126,10 +139,9 @@ public class DefaultPublisher extends Thread implements EventPublisher {
         return !CollectionUtils.isEmpty(subscribers);
     }
 
-    void receiveEvent(Event event) {
-        for (Subscriber subscriber : subscribers) {
+    void receiveEvent(AbstractEvent event) {
+        for (AbstractSubscriber subscriber : subscribers) {
             notifySubscriber(subscriber, event);
         }
     }
-
 }

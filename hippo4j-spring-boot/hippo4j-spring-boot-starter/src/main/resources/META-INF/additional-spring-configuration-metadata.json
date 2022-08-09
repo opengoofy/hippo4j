@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "spring.dynamic.thread-pool.server-addr",
+      "type": "java.lang.String",
+      "defaultValue": "localhost:6691",
+      "description": "dynamic thread-pool server address."
+    },
+    {
+      "name": "spring.dynamic.thread-pool.netty-server-port",
+      "type": "java.lang.String",
+      "defaultValue": "8899",
+      "description": "dynamic thread-pool server netty port."
+    },
+    {
+      "name": "spring.dynamic.thread-pool.report-type",
+      "type": "java.lang.String",
+      "defaultValue": "http",
+      "description": "dynamic thread-pool report-type."
+    },
+    {
+      "name": "spring.dynamic.thread-pool.namespace",
+      "type": "java.lang.String",
+      "defaultValue": "public",
+      "description": "dynamic thread-pool namespace."
+    },
+    {
+      "name": "spring.dynamic.thread-pool.item-id",
+      "type": "java.lang.String",
+      "description": "dynamic thread-pool item-id."
+    },
+    {
+      "name": "spring.dynamic.thread-pool.banner",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "dynamic thread-pool banner."
+    }
+  ]
+}

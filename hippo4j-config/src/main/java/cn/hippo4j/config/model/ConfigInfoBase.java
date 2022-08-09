@@ -1,17 +1,32 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
  * Config info base.
- *
- * @author chen.ma
- * @date 2021/6/20 14:05
  */
 @Data
 public class ConfigInfoBase implements Serializable {
@@ -42,11 +57,13 @@ public class ConfigInfoBase implements Serializable {
     /**
      * coreSize
      */
+    @JsonAlias("corePoolSize")
     private Integer coreSize;
 
     /**
      * maxSize
      */
+    @JsonAlias("maximumPoolSize")
     private Integer maxSize;
 
     /**
@@ -85,15 +102,19 @@ public class ConfigInfoBase implements Serializable {
     private Integer livenessAlarm;
 
     /**
+     * allowCoreThreadTimeOut
+     */
+    private Integer allowCoreThreadTimeOut;
+
+    /**
      * MD5
      */
-    @JSONField(serialize = false)
+    @JsonIgnore
     private String md5;
 
     /**
      * content
      */
-    @JSONField(serialize = false)
+    @JsonIgnore
     private String content;
-
 }

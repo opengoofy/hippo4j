@@ -1,0 +1,1 @@
+org.springframework.boot.SpringApplicationRunListener=cn.hippo4j.server.listener.BaseSpringApplicationRunListener

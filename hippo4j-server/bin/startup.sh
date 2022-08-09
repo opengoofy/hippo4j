@@ -16,6 +16,7 @@ else
 fi
 
 JAVA_OPT="${JAVA_OPT} -Xms1024m -Xmx1024m -Xmn512m"
+JAVA_OPT="${JAVA_OPT} -Dhippo4j.standalone=true"
 JAVA_OPT="${JAVA_OPT} -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${BASE_DIR}/logs/java_heapdump.hprof"
 JAVA_OPT="${JAVA_OPT} -Dhippo4j.home=${BASE_DIR}"
 JAVA_OPT="${JAVA_OPT} -jar ${BASE_DIR}/target/${SERVER}.jar"

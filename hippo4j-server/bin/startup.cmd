@@ -15,15 +15,15 @@ set CUSTOM_SEARCH_LOCATIONS=%BASE_DIR%/conf/application.properties
 set SERVER=hippo4j-server
 
 echo "hippo4j is starting with standalone"
-set "HIPPO4J_JVM_OPTS=-Xms1024m -Xmx1024m -Xmn512m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=%BASE_DIR%\logs\java_heapdump.hprof -XX:-UseLargePages"
+set "HIPPO4J_JVM_OPTS=-Xms1024m -Xmx1024m -Xmn512m -Dhippo4j.standalone=true -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=%BASE_DIR%\logs\java_heapdump.hprof -XX:-UseLargePages"
 
 set "HIPPO4J_OPTS=%HIPPO4J_OPTS% -Dhippo4j.home=%BASE_DIR%"
 set "HIPPO4J_OPTS=%HIPPO4J_OPTS% -jar %BASE_DIR%\target\%SERVER%.jar"
 
 
 rem set hippo4j spring config location
-set "HIPPO4J_CONFIG_OPTS=--spring.config.location=%CUSTOM_SEARCH_LOCATIONS%"
-set "HIPPO4J_CONFIG_OPTS=%HIPPO4J_OPTS% --server.tomcat.basedir=%BASE_DIR%/bin"
+set "HIPPO4J_CONFIG_OPTS=%HIPPO4J_CONFIG_OPTS% --spring.config.location=%CUSTOM_SEARCH_LOCATIONS%"
+set "HIPPO4J_CONFIG_OPTS=%HIPPO4J_CONFIG_OPTS% --server.tomcat.basedir=%BASE_DIR%/bin"
 
 
 rem set hippo4j logback file location

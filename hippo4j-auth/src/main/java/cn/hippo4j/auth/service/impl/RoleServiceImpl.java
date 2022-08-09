@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.auth.service.impl;
 
 import cn.hippo4j.auth.mapper.RoleMapper;
@@ -21,9 +38,6 @@ import java.util.stream.Collectors;
 
 /**
  * Role service impl.
- *
- * @author chen.ma
- * @date 2021/10/30 22:53
  */
 @Service
 @AllArgsConstructor
@@ -37,7 +51,6 @@ public class RoleServiceImpl implements RoleService {
     public IPage<RoleRespDTO> listRole(int pageNo, int pageSize) {
         RoleQueryPageReqDTO queryPage = new RoleQueryPageReqDTO(pageNo, pageSize);
         IPage<RoleInfo> selectPage = roleMapper.selectPage(queryPage, null);
-
         return selectPage.convert(each -> BeanUtil.toBean(each, RoleRespDTO.class));
     }
 
@@ -49,7 +62,6 @@ public class RoleServiceImpl implements RoleService {
         if (roleInfo != null) {
             throw new RuntimeException("角色名重复");
         }
-
         RoleInfo insertRole = new RoleInfo();
         insertRole.setRole(role);
         insertRole.setUserName(userName);
@@ -63,12 +75,10 @@ public class RoleServiceImpl implements RoleService {
             LambdaQueryWrapper<RoleInfo> queryWrapper = Wrappers.lambdaQuery(RoleInfo.class).eq(RoleInfo::getUserName, userName);
             roleStrList = roleMapper.selectList(queryWrapper).stream().map(RoleInfo::getRole).collect(Collectors.toList());
         }
-
         LambdaUpdateWrapper<RoleInfo> updateWrapper = Wrappers.lambdaUpdate(RoleInfo.class)
                 .eq(StrUtil.isNotBlank(role), RoleInfo::getRole, role)
                 .eq(StrUtil.isNotBlank(userName), RoleInfo::getUserName, userName);
         roleMapper.delete(updateWrapper);
-
         roleStrList.forEach(each -> permissionService.deletePermission(each, "", ""));
     }
 
@@ -77,11 +87,8 @@ public class RoleServiceImpl implements RoleService {
         LambdaQueryWrapper<RoleInfo> queryWrapper = Wrappers.lambdaQuery(RoleInfo.class)
                 .like(RoleInfo::getRole, role)
                 .select(RoleInfo::getRole);
-
         List<RoleInfo> roleInfos = roleMapper.selectList(queryWrapper);
         List<String> roleNames = roleInfos.stream().map(RoleInfo::getRole).collect(Collectors.toList());
-
         return roleNames;
     }
-
 }

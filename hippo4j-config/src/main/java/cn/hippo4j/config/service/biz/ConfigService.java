@@ -1,12 +1,27 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.service.biz;
 
+import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 
 /**
  * Config service.
- *
- * @author chen.ma
- * @date 2021/6/20 15:18
  */
 public interface ConfigService {
 
@@ -21,11 +36,26 @@ public interface ConfigService {
     ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenantId);
 
     /**
+     * Find config recent info.
+     *
+     * @param params
+     * @return
+     */
+    ConfigAllInfo findConfigRecentInfo(String... params);
+
+    /**
      * Insert or update.
      *
      * @param identify
+     * @param isChangeNotice
      * @param configAllInfo
      */
-    void insertOrUpdate(String identify, ConfigAllInfo configAllInfo);
+    void insertOrUpdate(String identify, boolean isChangeNotice, ConfigAllInfo configAllInfo);
 
+    /**
+     * Register.
+     *
+     * @param registerWrapper
+     */
+    void register(DynamicThreadPoolRegisterWrapper registerWrapper);
 }

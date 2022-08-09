@@ -1,0 +1,8 @@
+{
+  "label": "用户手册",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "帮助想要了解 Hippo4J 的用户快速掌握核心开发理念。"
+  }
+}

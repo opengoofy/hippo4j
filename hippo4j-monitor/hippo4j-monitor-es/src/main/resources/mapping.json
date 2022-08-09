@@ -1,0 +1,78 @@
+ {
+      "_doc": {
+        "properties": {
+          "activeSize": {
+            "type": "long"
+          },
+          "applicationName": {
+            "type": "keyword"
+          },
+          "clientLastRefreshTime": {
+            "type": "text"
+          },
+          "completedTaskCount": {
+            "type": "long"
+          },
+          "coreSize": {
+            "type": "long"
+          },
+          "currentLoad": {
+            "type": "text"
+          },
+          "freeMemory": {
+            "type": "text"
+          },
+          "host": {
+            "type": "keyword"
+          },
+          "id": {
+            "type": "text"
+          },
+          "largestPoolSize": {
+            "type": "long"
+          },
+          "maximumSize": {
+            "type": "long"
+          },
+          "memoryProportion": {
+            "type": "text"
+          },
+          "peakLoad": {
+            "type": "text"
+          },
+          "poolSize": {
+            "type": "long"
+          },
+          "queueCapacity": {
+            "type": "long"
+          },
+          "queueRemainingCapacity": {
+            "type": "long"
+          },
+          "queueSize": {
+            "type": "long"
+          },
+          "queueType": {
+            "type": "text"
+          },
+          "rejectCount": {
+            "type": "long"
+          },
+          "rejectedName": {
+            "type": "text"
+          },
+          "simpleCurrentLoad": {
+            "type": "long"
+          },
+          "simplePeakLoad": {
+            "type": "long"
+          },
+          "timestamp": {
+            "type": "date"
+          },
+          "tpId": {
+            "type": "keyword"
+          }
+        }
+      }
+    }

@@ -1,21 +1,32 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.toolkit;
 
 import cn.hutool.core.collection.CollUtil;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 /**
  * Map util.
- *
- * @author chen.ma
- * @date 2021/6/23 19:09
  */
 public class MapUtil {
 
@@ -25,7 +36,6 @@ public class MapUtil {
         Objects.requireNonNull(mappingFunction, "mappingFunction");
         Objects.requireNonNull(param1, "param1");
         Objects.requireNonNull(param2, "param2");
-
         Object val = target.get(key);
         if (val == null) {
             Object ret = mappingFunction.apply(param1, param2);
@@ -35,9 +45,8 @@ public class MapUtil {
         return val;
     }
 
-
     /**
-     * 根据 Key 进行模糊匹配.
+     * Fuzzy matching based on Key.
      *
      * @param sourceMap
      * @param filters
@@ -48,18 +57,16 @@ public class MapUtil {
         if (CollUtil.isEmpty(sourceMap)) {
             return resultList;
         }
-
         sourceMap.forEach((key, val) -> {
             if (checkKey(key, filters)) {
                 resultList.add(key);
             }
         });
-
         return resultList;
     }
 
     /**
-     * 匹配想要查询的字符.
+     * Match the characters you want to query.
      *
      * @param key
      * @param filters
@@ -72,5 +79,4 @@ public class MapUtil {
             return false;
         }
     }
-
 }
