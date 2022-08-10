@@ -61,6 +61,13 @@ public interface NotifyService {
     void update(NotifyReqDTO reqDTO);
 
     /**
+     * Save or update.
+     *
+     * @param reqDTO
+     */
+    void saveOrUpdate(NotifyReqDTO reqDTO);
+
+    /**
      * Delete.
      *
      * @param reqDTO
