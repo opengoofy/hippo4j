@@ -21,12 +21,15 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.toolkit.Assert;
+import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.service.AbstractDynamicThreadPoolService;
+import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
@@ -55,9 +58,20 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
 
     @Override
     public ThreadPoolExecutor registerDynamicThreadPool(DynamicThreadPoolRegisterWrapper registerWrapper) {
+        ThreadPoolExecutor dynamicThreadPoolExecutor = registerExecutor(registerWrapper);
+        subscribeConfig(registerWrapper);
+        putNotifyAlarmConfig(registerWrapper);
+        return dynamicThreadPoolExecutor;
+    }
+
+    @Override
+    public void onApplicationEvent(ApplicationCompleteEvent event) {
+        clientWorker.notifyApplicationComplete();
+    }
+
+    private ThreadPoolExecutor registerExecutor(DynamicThreadPoolRegisterWrapper registerWrapper) {
         DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
         checkThreadPoolParameter(registerParameter);
-        ThreadPoolParameterInfo parameter = JSONUtil.parseObject(JSONUtil.toJSONString(registerParameter), ThreadPoolParameterInfo.class);
         String threadPoolId = registerParameter.getThreadPoolId();
         try {
             failDynamicThreadPoolRegisterWrapper(registerWrapper);
@@ -69,20 +83,27 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
             log.error("Dynamic thread pool registration execution error: {}", threadPoolId, ex);
             throw ex;
         }
+        ThreadPoolParameterInfo parameter = JSONUtil.parseObject(JSONUtil.toJSONString(registerParameter), ThreadPoolParameterInfo.class);
         ThreadPoolExecutor dynamicThreadPoolExecutor = buildDynamicThreadPoolExecutor(registerParameter);
         DynamicThreadPoolWrapper dynamicThreadPoolWrapper = DynamicThreadPoolWrapper.builder()
                 .threadPoolId(threadPoolId)
                 .executor(dynamicThreadPoolExecutor)
                 .build();
         GlobalThreadPoolManage.register(threadPoolId, parameter, dynamicThreadPoolWrapper);
-        dynamicThreadPoolSubscribeConfig.subscribeConfig(threadPoolId);
-        clientWorker.addCacheDataIfAbsent(properties.getNamespace(), properties.getItemId(), threadPoolId);
         return dynamicThreadPoolExecutor;
     }
 
-    @Override
-    public void onApplicationEvent(ApplicationCompleteEvent event) {
-        clientWorker.notifyApplicationComplete();
+    private void subscribeConfig(DynamicThreadPoolRegisterWrapper registerWrapper) {
+        dynamicThreadPoolSubscribeConfig.subscribeConfig(registerWrapper.getDynamicThreadPoolRegisterParameter().getThreadPoolId());
+    }
+
+    private void putNotifyAlarmConfig(DynamicThreadPoolRegisterWrapper registerWrapper) {
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
+                BooleanUtil.toBoolean(String.valueOf(registerParameter.getIsAlarm())),
+                registerParameter.getActiveAlarm(),
+                registerParameter.getCapacityAlarm());
+        GlobalNotifyAlarmManage.put(registerParameter.getThreadPoolId(), threadPoolNotifyAlarm);
     }
 
     private void checkThreadPoolParameter(DynamicThreadPoolRegisterParameter registerParameter) {

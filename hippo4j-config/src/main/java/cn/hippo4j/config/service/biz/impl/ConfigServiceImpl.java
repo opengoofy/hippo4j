@@ -165,7 +165,7 @@ public class ConfigServiceImpl implements ConfigService {
                         .setTpId(configAllInfo.getTpId())
                         .setPlatform(serverNotifyParameter.getPlatform())
                         .setReceives(serverNotifyParameter.getReceives())
-                        .setSecretKey(serverNotifyParameter.getSecretKey());
+                        .setSecretKey(serverNotifyParameter.getAccessToken());
                 if (Objects.equals(each, "ALARM")) {
                     notifyReqDTO.setInterval(serverNotifyParameter.getInterval());
                     notifyReqDTO.setAlarmType(true);

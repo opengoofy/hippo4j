@@ -63,7 +63,7 @@ public class RegisterDynamicThreadPoolTest {
                 .build();
         DynamicThreadPoolRegisterServerNotifyParameter serverNotifyParameter = DynamicThreadPoolRegisterServerNotifyParameter.builder()
                 .platform(NotifyPlatformEnum.WECHAT.name())
-                .secretKey("xxx")
+                .accessToken("7487d0a0-20ec-40ab-b67b-ce68db406b37")
                 .interval(5)
                 .receives("chen.ma")
                 .build();

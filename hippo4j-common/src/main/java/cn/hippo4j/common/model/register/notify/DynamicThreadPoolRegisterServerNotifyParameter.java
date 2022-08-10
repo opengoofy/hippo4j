@@ -37,9 +37,9 @@ public class DynamicThreadPoolRegisterServerNotifyParameter {
     private String platform;
 
     /**
-     * Secret key
+     * Access token
      */
-    private String secretKey;
+    private String accessToken;
 
     /**
      * Interval
