@@ -53,8 +53,7 @@ public class RegisterDynamicThreadPoolTest {
         parameterInfo.setCapacityAlarm(90);
         parameterInfo.setActiveAlarm(90);
         parameterInfo.setAllowCoreThreadTimeOut(Boolean.TRUE);
-
-        // core 模式和 server 模式，各选其一即可
+        // Core mode and server mode, you can choose one of them.
         DynamicThreadPoolRegisterCoreNotifyParameter coreNotifyParameter = DynamicThreadPoolRegisterCoreNotifyParameter.builder()
                 .activeAlarm(80)
                 .capacityAlarm(80)
@@ -65,7 +64,6 @@ public class RegisterDynamicThreadPoolTest {
         DynamicThreadPoolRegisterServerNotifyParameter serverNotifyParameter = DynamicThreadPoolRegisterServerNotifyParameter.builder()
                 .platform(NotifyPlatformEnum.WECHAT.name())
                 .secretKey("xxx")
-                .threadPoolId(threadPoolId)
                 .interval(5)
                 .receives("chen.ma")
                 .build();

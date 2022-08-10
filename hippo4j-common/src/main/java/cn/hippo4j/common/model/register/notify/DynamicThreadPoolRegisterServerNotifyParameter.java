@@ -32,19 +32,9 @@ import lombok.NoArgsConstructor;
 public class DynamicThreadPoolRegisterServerNotifyParameter {
 
     /**
-     * Thread-pool id
-     */
-    private String threadPoolId;
-
-    /**
      * Platform
      */
     private String platform;
-
-    /**
-     * Config type
-     */
-    private String type;
 
     /**
      * Secret key

@@ -33,6 +33,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DynamicThreadPoolRegisterWrapper {
 
+    // Hippo4j common ----------------------------------------------------------------------
+
+    /**
+     * Dynamic thread-pool register parameter
+     */
+    private DynamicThreadPoolRegisterParameter dynamicThreadPoolRegisterParameter;
+
+    // Hippo4j server ----------------------------------------------------------------------
+
     /**
      * Tenant id
      */
@@ -49,17 +58,14 @@ public class DynamicThreadPoolRegisterWrapper {
     private Boolean updateIfExists = Boolean.TRUE;
 
     /**
-     * Dynamic thread-pool register parameter
+     * Dynamic thread-pool server notify parameter
      */
-    private DynamicThreadPoolRegisterParameter dynamicThreadPoolRegisterParameter;
+    private DynamicThreadPoolRegisterServerNotifyParameter dynamicThreadPoolRegisterServerNotifyParameter;
+
+    // Hippo4j core ----------------------------------------------------------------------
 
     /**
      * Dynamic thread-pool core notify parameter
      */
     private DynamicThreadPoolRegisterCoreNotifyParameter dynamicThreadPoolRegisterCoreNotifyParameter;
-
-    /**
-     * Dynamic thread-pool server notify parameter
-     */
-    private DynamicThreadPoolRegisterServerNotifyParameter dynamicThreadPoolRegisterServerNotifyParameter;
 }
