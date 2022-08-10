@@ -36,11 +36,11 @@ import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDyna
 import static cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolAdapterRegister.ADAPTER_EXECUTORS_MAP;
 
 /**
- * Adapter executors listener.
+ * Adapter executors refresh listener.
  */
 @Slf4j
 @Order(ADAPTER_EXECUTORS_LISTENER)
-public class AdapterExecutorsListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
+public class AdapterExecutorsRefreshListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
 
     @Override
     public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent event) {

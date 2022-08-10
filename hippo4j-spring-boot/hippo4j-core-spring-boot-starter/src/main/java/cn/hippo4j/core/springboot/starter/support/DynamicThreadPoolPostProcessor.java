@@ -27,6 +27,7 @@ import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.*;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import cn.hippo4j.core.springboot.starter.config.DynamicThreadPoolNotifyProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.toolkit.inet.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
@@ -137,13 +138,13 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 }
             }
             if (dynamicThreadPoolWrapper.getExecutor() instanceof AbstractDynamicExecutorSupport) {
-                ThreadPoolNotifyAlarm notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
-                boolean isAlarm = Optional.ofNullable(notify)
-                        .map(each -> each.getAlarm()).orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
-                int activeAlarm = Optional.ofNullable(notify)
-                        .map(each -> each.getActiveAlarm()).orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
-                int capacityAlarm = Optional.ofNullable(notify)
-                        .map(each -> each.getActiveAlarm()).orElseGet(() -> bootstrapCoreProperties.getCapacityAlarm() != null ? bootstrapCoreProperties.getCapacityAlarm() : 80);
+
+                DynamicThreadPoolNotifyProperties notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
+                boolean isAlarm = Optional.ofNullable(bootstrapCoreProperties.getAlarm()).orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
+                int activeAlarm =
+                        Optional.ofNullable(bootstrapCoreProperties.getActiveAlarm()).orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
+                int capacityAlarm = Optional.ofNullable(bootstrapCoreProperties.getCapacityAlarm())
+                        .orElseGet(() -> bootstrapCoreProperties.getCapacityAlarm() != null ? bootstrapCoreProperties.getCapacityAlarm() : 80);
                 int interval = Optional.ofNullable(notify)
                         .map(each -> each.getInterval()).orElseGet(() -> bootstrapCoreProperties.getAlarmInterval() != null ? bootstrapCoreProperties.getAlarmInterval() : 5);
                 String receive = Optional.ofNullable(notify)

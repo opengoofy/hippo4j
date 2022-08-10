@@ -34,10 +34,10 @@ import java.util.Map;
 import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEventOrder.PLATFORMS_LISTENER;
 
 /**
- * Platforms listener.
+ * Platforms refresh listener.
  */
 @Order(PLATFORMS_LISTENER)
-public class PlatformsListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
+public class PlatformsRefreshListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
 
     @Override
     public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent threadPoolDynamicRefreshEvent) {

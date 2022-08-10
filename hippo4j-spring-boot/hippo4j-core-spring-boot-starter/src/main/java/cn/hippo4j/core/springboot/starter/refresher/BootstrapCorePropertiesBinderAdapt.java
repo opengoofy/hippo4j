@@ -20,9 +20,9 @@ package cn.hippo4j.core.springboot.starter.refresher;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import cn.hippo4j.core.springboot.starter.config.DynamicThreadPoolNotifyProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.springboot.starter.config.NotifyPlatformProperties;
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.google.common.collect.Lists;
@@ -136,7 +136,7 @@ public class BootstrapCorePropertiesBinderAdapt {
                     ExecutorProperties executorProperties = BeanUtil.mapToBean(executorSingleMap, ExecutorProperties.class, true, CopyOptions.create());
                     if (executorProperties != null) {
                         if (CollectionUtil.isNotEmpty(notifySingleMap)) {
-                            ThreadPoolNotifyAlarm alarm = BeanUtil.mapToBean(notifySingleMap, ThreadPoolNotifyAlarm.class, true, CopyOptions.create());
+                            DynamicThreadPoolNotifyProperties alarm = BeanUtil.mapToBean(notifySingleMap, DynamicThreadPoolNotifyProperties.class, true, CopyOptions.create());
                             alarm.setReceives(alarm.getReceives());
                             executorProperties.setNotify(alarm);
                         }

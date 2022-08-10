@@ -17,7 +17,6 @@
 
 package cn.hippo4j.core.springboot.starter.config;
 
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,9 +28,9 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Builder
-@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class ExecutorProperties {
 
     /**
@@ -85,7 +84,22 @@ public class ExecutorProperties {
     private String threadNamePrefix;
 
     /**
+     * Whether to enable thread pool running alarm
+     */
+    private Boolean alarm;
+
+    /**
+     * Active alarm
+     */
+    private Integer activeAlarm;
+
+    /**
+     * Capacity alarm
+     */
+    private Integer capacityAlarm;
+
+    /**
      * Notify
      */
-    private ThreadPoolNotifyAlarm notify;
+    private DynamicThreadPoolNotifyProperties notify;
 }
