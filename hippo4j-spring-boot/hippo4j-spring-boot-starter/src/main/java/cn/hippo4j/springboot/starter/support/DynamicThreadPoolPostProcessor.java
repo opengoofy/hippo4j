@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.core;
+package cn.hippo4j.springboot.starter.support;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
@@ -34,6 +34,7 @@ import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import cn.hippo4j.core.toolkit.inet.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
+import cn.hippo4j.springboot.starter.core.DynamicThreadPoolSubscribeConfig;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
