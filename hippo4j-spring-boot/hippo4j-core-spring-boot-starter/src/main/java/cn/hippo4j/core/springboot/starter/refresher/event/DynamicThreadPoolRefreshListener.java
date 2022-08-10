@@ -54,12 +54,12 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD
 import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEventOrder.EXECUTORS_LISTENER;
 
 /**
- * Executors listener.
+ * Dynamic thread-pool refresh listener.
  */
 @Slf4j
 @RequiredArgsConstructor
 @Order(EXECUTORS_LISTENER)
-public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
+public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
@@ -162,11 +162,10 @@ public class ExecutorsListener implements ApplicationListener<Hippo4jCoreDynamic
             hippo4jBaseSendMessageService.putPlatform(newDynamicThreadPoolNotifyMap);
         }
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(properties.getThreadPoolId());
-        if (threadPoolNotifyAlarm != null && properties.getNotify() != null) {
-            ThreadPoolNotifyAlarm notify = properties.getNotify();
-            boolean isAlarm = notify.getAlarm();
-            Integer activeAlarm = notify.getActiveAlarm();
-            Integer capacityAlarm = notify.getCapacityAlarm();
+        if (threadPoolNotifyAlarm != null) {
+            boolean isAlarm = properties.getAlarm();
+            Integer activeAlarm = properties.getActiveAlarm();
+            Integer capacityAlarm = properties.getCapacityAlarm();
             if (threadPoolNotifyAlarm.getAlarm() != isAlarm
                     || threadPoolNotifyAlarm.getActiveAlarm() != activeAlarm
                     || threadPoolNotifyAlarm.getCapacityAlarm() != capacityAlarm) {

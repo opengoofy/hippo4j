@@ -24,10 +24,10 @@ import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.springboot.starter.monitor.DynamicThreadPoolMonitorExecutor;
 import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
-import cn.hippo4j.core.springboot.starter.refresher.event.AdapterExecutorsListener;
-import cn.hippo4j.core.springboot.starter.refresher.event.ExecutorsListener;
-import cn.hippo4j.core.springboot.starter.refresher.event.PlatformsListener;
-import cn.hippo4j.core.springboot.starter.refresher.event.WebExecutorListener;
+import cn.hippo4j.core.springboot.starter.refresher.event.AdapterExecutorsRefreshListener;
+import cn.hippo4j.core.springboot.starter.refresher.event.DynamicThreadPoolRefreshListener;
+import cn.hippo4j.core.springboot.starter.refresher.event.PlatformsRefreshListener;
+import cn.hippo4j.core.springboot.starter.refresher.event.WebExecutorRefreshListener;
 import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolAdapterRegister;
 import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolPostProcessor;
@@ -94,25 +94,25 @@ public class DynamicThreadPoolCoreAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public ExecutorsListener hippo4jExecutorsListener(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
-                                                      CoreNotifyConfigBuilder coreNotifyConfigBuilder,
-                                                      Hippo4jBaseSendMessageService hippoBaseSendMessageService) {
-        return new ExecutorsListener(threadPoolNotifyAlarmHandler, coreNotifyConfigBuilder, hippoBaseSendMessageService);
+    public DynamicThreadPoolRefreshListener hippo4jExecutorsListener(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler,
+                                                                     CoreNotifyConfigBuilder coreNotifyConfigBuilder,
+                                                                     Hippo4jBaseSendMessageService hippoBaseSendMessageService) {
+        return new DynamicThreadPoolRefreshListener(threadPoolNotifyAlarmHandler, coreNotifyConfigBuilder, hippoBaseSendMessageService);
     }
 
     @Bean
-    public AdapterExecutorsListener hippo4jAdapterExecutorsListener() {
-        return new AdapterExecutorsListener();
+    public AdapterExecutorsRefreshListener hippo4jAdapterExecutorsListener() {
+        return new AdapterExecutorsRefreshListener();
     }
 
     @Bean
-    public PlatformsListener hippo4jPlatformsListener() {
-        return new PlatformsListener();
+    public PlatformsRefreshListener hippo4jPlatformsListener() {
+        return new PlatformsRefreshListener();
     }
 
     @Bean
-    public WebExecutorListener hippo4jWebExecutorListener() {
-        return new WebExecutorListener();
+    public WebExecutorRefreshListener hippo4jWebExecutorListener() {
+        return new WebExecutorRefreshListener();
     }
 
     @Bean

@@ -33,11 +33,11 @@ import java.util.Objects;
 import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEventOrder.WEB_EXECUTOR_LISTENER;
 
 /**
- * Web executor listener.
+ * Web executor refresh listener.
  */
 @Slf4j
 @Order(WEB_EXECUTOR_LISTENER)
-public class WebExecutorListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
+public class WebExecutorRefreshListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
 
     @Override
     public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent threadPoolDynamicRefreshEvent) {

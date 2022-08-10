@@ -106,7 +106,8 @@ public class ThreadPoolAdapterService {
             try {
                 String resultStr = HttpUtil.get(urlString, param, HTTP_EXECUTE_TIMEOUT);
                 if (StringUtil.isNotBlank(resultStr)) {
-                    Result<ThreadPoolAdapterRespDTO> restResult = JSONUtil.parseObject(resultStr, new TypeReference<Result<ThreadPoolAdapterRespDTO>>(){});
+                    Result<ThreadPoolAdapterRespDTO> restResult = JSONUtil.parseObject(resultStr, new TypeReference<Result<ThreadPoolAdapterRespDTO>>() {
+                    });
                     result.add(restResult.getData());
                 }
             } catch (Throwable ex) {

@@ -15,33 +15,19 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.model.register.notify;
+package cn.hippo4j.core.springboot.starter.config;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * Dynamic thread-pool register core notify parameter.
+ * Dynamic thread-pool notify properties.
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DynamicThreadPoolRegisterCoreNotifyParameter {
-
-    /**
-     * Whether to enable thread pool running alarm
-     */
-    private Boolean alarm = Boolean.TRUE;
-
-    /**
-     * Active alarm
-     */
-    private Integer activeAlarm;
-
-    /**
-     * Capacity alarm
-     */
-    private Integer capacityAlarm;
+public class DynamicThreadPoolNotifyProperties {
 
     /**
      * Interval
@@ -49,7 +35,7 @@ public class DynamicThreadPoolRegisterCoreNotifyParameter {
     private Integer interval;
 
     /**
-     * Receive
+     * Receives
      */
     private String receives;
 }
