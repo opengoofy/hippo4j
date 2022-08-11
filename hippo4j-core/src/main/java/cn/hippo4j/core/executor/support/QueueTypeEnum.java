@@ -105,7 +105,6 @@ public enum QueueTypeEnum {
                                     if (capacity == null || capacity <= 0) {
                                         temCapacity = 1024;
                                     }
-
                                     return new LinkedBlockingQueue(temCapacity);
                                 }));
         return blockingQueue;

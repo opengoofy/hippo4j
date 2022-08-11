@@ -40,9 +40,9 @@ public enum RejectedTypeEnum {
 
     DISCARD_OLDEST_POLICY(4, "DiscardOldestPolicy", new ThreadPoolExecutor.DiscardOldestPolicy()),
 
-    RUNS_OLDEST_TASK_POLICY(5, "RunsOldestTaskPolicy", new RejectedPolicies.RunsOldestTaskPolicy()),
+    RUNS_OLDEST_TASK_POLICY(5, "RunsOldestTaskPolicy", new RunsOldestTaskPolicy()),
 
-    SYNC_PUT_QUEUE_POLICY(6, "SyncPutQueuePolicy", new RejectedPolicies.SyncPutQueuePolicy());
+    SYNC_PUT_QUEUE_POLICY(6, "SyncPutQueuePolicy", new SyncPutQueuePolicy());
 
     public Integer type;
 
