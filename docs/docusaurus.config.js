@@ -73,18 +73,18 @@ const config = {
                     {
                         type: 'docSidebar',
                         docId: 'intro',
-                        position: 'left',
+                        position: 'right',
                         sidebarId: 'user_docs',
                         label: '文档',
                     },
                     {
                         type: 'docSidebar',
                         docId: 'contributor',
-                        position: 'left',
+                        position: 'right',
                         sidebarId: 'community',
                         label: '社区',
                     },
-                    {to: '/blog', label: '博客', position: 'left'},
+                    {to: '/blog', label: '博客', position: 'right'},
                     /*{
                         type: 'docSidebar',
                         docId: 'intro',
