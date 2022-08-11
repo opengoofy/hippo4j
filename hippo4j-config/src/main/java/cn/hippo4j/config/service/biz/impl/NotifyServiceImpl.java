@@ -120,11 +120,14 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    public void saveOrUpdate(NotifyReqDTO reqDTO) {
+    public void saveOrUpdate(boolean notifyUpdateIfExists, NotifyReqDTO reqDTO) {
         try {
             existNotify(reqDTO.getType(), reqDTO);
             save(reqDTO);
         } catch (Exception ignored) {
+            if (!notifyUpdateIfExists) {
+                return;
+            }
             LambdaQueryWrapper<NotifyInfo> queryWrapper = Wrappers.lambdaQuery(NotifyInfo.class)
                     .eq(NotifyInfo::getTenantId, reqDTO.getTenantId())
                     .eq(NotifyInfo::getItemId, reqDTO.getItemId())

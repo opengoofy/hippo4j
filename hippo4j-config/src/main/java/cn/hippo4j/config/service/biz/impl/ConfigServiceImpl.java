@@ -27,10 +27,7 @@ import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.ConfigInstanceMapper;
-import cn.hippo4j.config.model.ConfigAllInfo;
-import cn.hippo4j.config.model.ConfigInfoBase;
-import cn.hippo4j.config.model.ConfigInstanceInfo;
-import cn.hippo4j.config.model.LogRecordInfo;
+import cn.hippo4j.config.model.*;
 import cn.hippo4j.config.model.biz.notify.NotifyReqDTO;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigChangePublisher;
@@ -172,7 +169,7 @@ public class ConfigServiceImpl implements ConfigService {
                 } else {
                     notifyReqDTO.setConfigType(true);
                 }
-                notifyService.saveOrUpdate(notifyReqDTO);
+                notifyService.saveOrUpdate(registerWrapper.getNotifyUpdateIfExists(), notifyReqDTO);
             });
         }
     }

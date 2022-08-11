@@ -55,7 +55,12 @@ public class DynamicThreadPoolRegisterWrapper {
     /**
      * Update if exists
      */
-    private Boolean updateIfExists = Boolean.TRUE;
+    private Boolean updateIfExists = Boolean.FALSE;
+
+    /**
+     * Notify update if exists
+     */
+    private Boolean notifyUpdateIfExists = Boolean.FALSE;
 
     /**
      * Dynamic thread-pool server notify parameter
