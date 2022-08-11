@@ -252,7 +252,7 @@ public class ClientWorker {
         this.serverHealthCheck.setHealthStatus(isHealthServer);
     }
 
-    protected void notifyApplicationComplete() {
+    public void notifyApplicationComplete() {
         awaitApplicationComplete.countDown();
     }
 }
