@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-auth</artifactId>
+    <name>Hippo4j Auth</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>

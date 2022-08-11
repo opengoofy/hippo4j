@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-adapter-kafka</artifactId>
+    <name>Hippo4j Adapter Kafka</name>
 
     <dependencies>
         <dependency>

@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-spring-boot-starter-adapter-rabbitmq-example</artifactId>
+    <name>Hippo4j Spring Boot Starter Adapter Rabbitmq Example</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>

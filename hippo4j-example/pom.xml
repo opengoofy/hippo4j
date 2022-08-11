@@ -9,6 +9,7 @@
     </parent>
     <artifactId>hippo4j-example</artifactId>
     <packaging>pom</packaging>
+    <name>Hippo4j Example</name>
 
     <modules>
         <module>hippo4j-example-core</module>

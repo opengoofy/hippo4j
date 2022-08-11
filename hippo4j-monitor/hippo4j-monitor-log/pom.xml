@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-monitor-log</artifactId>
+    <name>Hippo4j Monitor Log</name>
 
     <dependencies>
         <dependency>

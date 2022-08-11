@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-spring-boot-starter</artifactId>
+    <name>Hippo4j Spring Boot Starter</name>
     <description>Thread pool dynamic parameter adjustment, alarming, status viewing and monitoring functions</description>
 
     <dependencies>

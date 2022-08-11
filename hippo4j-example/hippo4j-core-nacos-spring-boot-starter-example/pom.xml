@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>hippo4j-core-nacos-spring-boot-starter-example</artifactId>
-    <name>${project.artifactId}</name>
+    <name>Hippo4j Core Nacos Spring Boot Starter Example</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>

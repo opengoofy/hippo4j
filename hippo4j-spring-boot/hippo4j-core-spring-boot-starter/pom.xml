@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-core-spring-boot-starter</artifactId>
+    <name>Hippo4j Core Spring Boot Starter</name>
 
     <dependencies>
         <dependency>

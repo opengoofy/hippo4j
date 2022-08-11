@@ -9,6 +9,7 @@
     </parent>
     <artifactId>hippo4j-adapter</artifactId>
     <packaging>pom</packaging>
+    <name>Hippo4j Adapter</name>
 
     <modules>
         <module>hippo4j-adapter-base</module>

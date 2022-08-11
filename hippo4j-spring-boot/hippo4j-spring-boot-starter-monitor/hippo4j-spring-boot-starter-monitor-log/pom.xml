@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-spring-boot-starter-monitor-log</artifactId>
+    <name>Hippo4j Spring Boot Starter Monitor Log</name>
 
     <dependencies>
         <dependency>

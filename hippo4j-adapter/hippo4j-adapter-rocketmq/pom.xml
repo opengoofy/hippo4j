@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-adapter-rocketmq</artifactId>
+    <name>Hippo4j Adapter Rocketmq</name>
 
     <dependencies>
         <dependency>

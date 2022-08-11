@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-core-zookeeper-spring-boot-starter-example</artifactId>
+    <name>Hippo4j Core Zookeeper Spring Boot Starter Example</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>

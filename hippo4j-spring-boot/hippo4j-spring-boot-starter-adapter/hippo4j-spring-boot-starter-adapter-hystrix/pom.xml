@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-spring-boot-starter-adapter-hystrix</artifactId>
+    <name>Hippo4j Spring Boot Starter Adapter Hystrix</name>
 
     <dependencies>
         <dependency>

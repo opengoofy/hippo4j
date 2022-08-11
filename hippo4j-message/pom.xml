@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-message</artifactId>
+    <name>Hippo4j Message</name>
 
     <dependencies>
         <dependency>

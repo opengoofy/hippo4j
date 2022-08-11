@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-core-apollo-spring-boot-starter-example</artifactId>
+    <name>Hippo4J Core Apollo Spring Boot Starter Example</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>

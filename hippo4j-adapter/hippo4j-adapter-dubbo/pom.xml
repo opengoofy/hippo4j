@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-adapter-dubbo</artifactId>
+    <name>Hippo4j Adapter Dubbo</name>
 
     <properties>
         <dubbo.version>3.0.5</dubbo.version>

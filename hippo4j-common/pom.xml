@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-common</artifactId>
+    <name>Hippo4j Common</name>
 
     <properties>
         <spring-context.version>5.2.21.RELEASE</spring-context.version>

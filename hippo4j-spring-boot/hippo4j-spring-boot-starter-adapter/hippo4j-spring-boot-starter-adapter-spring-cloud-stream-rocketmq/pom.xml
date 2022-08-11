@@ -8,7 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</artifactId>
-    <name>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</name>
+    <name>Hippo4j Spring Boot Starter Adapter Spring Cloud Stream RocketMQ</name>
 
     <dependencies>
         <dependency>

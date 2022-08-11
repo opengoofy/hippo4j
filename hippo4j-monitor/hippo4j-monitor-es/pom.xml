@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-monitor-es</artifactId>
+    <name>Hippo4j Monitor ES</name>
 
     <properties>
         <elasticsearch.version>6.8.17</elasticsearch.version>

@@ -9,7 +9,7 @@
     </parent>
     <artifactId>hippo4j-spring-boot-starter-adapter</artifactId>
     <packaging>pom</packaging>
-    <name>hippo4j-spring-boot-starter-adapter</name>
+    <name>Hippo4j Spring Boot Starter Adapter</name>
     <description>Define the adapter management of thread pool of tripartite framework</description>
 
     <modules>

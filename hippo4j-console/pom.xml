@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-console</artifactId>
+    <name>Hippo4j Console</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>

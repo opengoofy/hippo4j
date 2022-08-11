@@ -8,7 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-adapter-base</artifactId>
-    <name>hippo4j-adapter-base</name>
+    <name>Hippo4j Adapter Base</name>
 
     <dependencies>
         <dependency>

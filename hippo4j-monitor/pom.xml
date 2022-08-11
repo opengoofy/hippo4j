@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-monitor</artifactId>
+    <name>Hippo4j Monitor</name>
     <packaging>pom</packaging>
 
     <modules>

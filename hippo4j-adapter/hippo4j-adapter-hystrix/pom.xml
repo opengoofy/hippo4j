@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-adapter-hystrix</artifactId>
+    <name>Hippo4j Adapter Hystrix</name>
 
     <dependencies>
         <dependency>

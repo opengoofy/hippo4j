@@ -8,6 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-adapter-spring-cloud-stream-rocketmq</artifactId>
+    <name>Hippo4j Adapter Spring Cloud Stream Rocketmq</name>
 
     <dependencies>
         <dependency>
