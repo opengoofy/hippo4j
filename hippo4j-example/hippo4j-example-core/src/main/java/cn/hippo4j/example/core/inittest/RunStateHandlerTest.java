@@ -43,8 +43,8 @@ public class RunStateHandlerTest {
     private ThreadPoolExecutor messageProduceDynamicThreadPool;
 
     private final ThreadPoolExecutor runStateHandlerTestExecutor = new ThreadPoolExecutor(
-            2,
-            2,
+            3,
+            3,
             0L,
             TimeUnit.MILLISECONDS,
             new SynchronousQueue<>(),
@@ -63,6 +63,9 @@ public class RunStateHandlerTest {
         // Start the dynamic thread pool to simulate running tasks
         runTask(messageConsumeTtlDynamicThreadPool);
         runTask(messageProduceDynamicThreadPool);
+        // Dynamically register thread pool
+        ThreadPoolExecutor registerDynamicThreadPool = RegisterDynamicThreadPoolTest.registerDynamicThreadPool("register-dynamic-thread-pool");
+        runTask(registerDynamicThreadPool);
     }
 
     private void runTask(Executor executor) {

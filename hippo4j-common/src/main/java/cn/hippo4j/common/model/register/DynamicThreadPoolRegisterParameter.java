@@ -76,7 +76,7 @@ public class DynamicThreadPoolRegisterParameter {
     /**
      * Is alarm
      */
-    private Integer isAlarm;
+    private Boolean isAlarm;
 
     /**
      * Capacity alarm
@@ -103,6 +103,10 @@ public class DynamicThreadPoolRegisterParameter {
      * Execute timeout
      */
     private Long executeTimeOut;
+
+    public Integer getIsAlarm() {
+        return this.isAlarm ? 1 : 0;
+    }
 
     public Integer getAllowCoreThreadTimeOut() {
         return this.allowCoreThreadTimeOut ? 1 : 0;

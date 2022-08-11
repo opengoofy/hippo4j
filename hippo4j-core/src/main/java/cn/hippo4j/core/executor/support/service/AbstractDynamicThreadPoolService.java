@@ -23,6 +23,7 @@ import cn.hippo4j.core.executor.support.RejectedTypeEnum;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Abstract dynamic thread-pool service.
@@ -42,7 +43,8 @@ public abstract class AbstractDynamicThreadPoolService implements DynamicThreadP
                 .maxPoolNum(registerParameter.getMaximumPoolSize())
                 .workQueue(QueueTypeEnum.createBlockingQueue(registerParameter.getQueueType(), registerParameter.getCapacity()))
                 .threadFactory(registerParameter.getThreadNamePrefix())
-                .keepAliveTime(registerParameter.getKeepAliveTime())
+                .keepAliveTime(registerParameter.getKeepAliveTime(), TimeUnit.SECONDS)
+                .executeTimeOut(registerParameter.getExecuteTimeOut())
                 .rejected(RejectedTypeEnum.createPolicy(registerParameter.getRejectedType()))
                 .dynamicPool()
                 .build();
