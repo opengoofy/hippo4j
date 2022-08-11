@@ -45,13 +45,11 @@ public class TaskQueue<R extends Runnable> extends LinkedBlockingQueue<Runnable>
         if (executor.getSubmittedTaskCount() < currentPoolThreadSize) {
             return super.offer(runnable);
         }
-
         // The current number of threads in the thread pool is less than the maximum number of threads, and returns false.
         // According to the thread pool source code, non-core threads will be created.
         if (currentPoolThreadSize < executor.getMaximumPoolSize()) {
             return false;
         }
-
         // If the current thread pool number is greater than the maximum number of threads, the task is added to the blocking queue.
         return super.offer(runnable);
     }
