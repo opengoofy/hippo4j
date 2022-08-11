@@ -33,6 +33,7 @@ import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import cn.hippo4j.springboot.starter.controller.ThreadPoolAdapterController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
@@ -101,8 +102,10 @@ public class DynamicThreadPoolAutoConfiguration {
     public DynamicThreadPoolService dynamicThreadPoolConfigService(HttpAgent httpAgent,
                                                                    ClientWorker clientWorker,
                                                                    ServerHealthCheck serverHealthCheck,
+                                                                   ServerNotifyConfigBuilder notifyConfigBuilder,
+                                                                   Hippo4jBaseSendMessageService hippo4jBaseSendMessageService,
                                                                    DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig) {
-        return new DynamicThreadPoolConfigService(httpAgent, clientWorker, properties, dynamicThreadPoolSubscribeConfig);
+        return new DynamicThreadPoolConfigService(httpAgent, clientWorker, properties, notifyConfigBuilder, hippo4jBaseSendMessageService, dynamicThreadPoolSubscribeConfig);
     }
 
     @Bean

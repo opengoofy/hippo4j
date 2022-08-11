@@ -55,12 +55,16 @@ public class ServerNotifyConfigBuilder implements NotifyConfigBuilder {
 
     @Override
     public Map<String, List<NotifyConfigDTO>> buildNotify() {
-        Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
         List<String> threadPoolIds = GlobalThreadPoolManage.listThreadPoolId();
         if (CollUtil.isEmpty(threadPoolIds)) {
             log.warn("The client does not have a dynamic thread pool instance configured.");
-            return resultMap;
+            return Maps.newHashMap();
         }
+        return getAndInitNotify(threadPoolIds);
+    }
+
+    public Map<String, List<NotifyConfigDTO>> getAndInitNotify(List<String> threadPoolIds) {
+        Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
         List<String> groupKeys = Lists.newArrayList();
         threadPoolIds.forEach(each -> {
             String groupKey = GroupKey.getKeyTenant(each, properties.getItemId(), properties.getNamespace());

@@ -29,16 +29,22 @@ import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.service.AbstractDynamicThreadPoolService;
+import cn.hippo4j.message.dto.NotifyConfigDTO;
+import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.core.ClientWorker;
 import cn.hippo4j.springboot.starter.core.DynamicThreadPoolSubscribeConfig;
 import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
+import cn.hippo4j.springboot.starter.notify.ServerNotifyConfigBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.Constants.REGISTER_DYNAMIC_THREAD_POOL_PATH;
@@ -55,6 +61,10 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
     private final ClientWorker clientWorker;
 
     private final BootstrapProperties properties;
+
+    private final ServerNotifyConfigBuilder notifyConfigBuilder;
+
+    private final Hippo4jBaseSendMessageService hippo4jBaseSendMessageService;
 
     private final DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig;
 
@@ -106,6 +116,8 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
                 registerParameter.getActiveAlarm(),
                 registerParameter.getCapacityAlarm());
         GlobalNotifyAlarmManage.put(registerParameter.getThreadPoolId(), threadPoolNotifyAlarm);
+        Map<String, List<NotifyConfigDTO>> builderNotify = notifyConfigBuilder.getAndInitNotify(Lists.newArrayList(registerParameter.getThreadPoolId()));
+        hippo4jBaseSendMessageService.putPlatform(builderNotify);
     }
 
     private void checkThreadPoolParameter(DynamicThreadPoolRegisterParameter registerParameter) {
