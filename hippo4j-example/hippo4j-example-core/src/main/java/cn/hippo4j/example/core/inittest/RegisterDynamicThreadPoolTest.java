@@ -42,7 +42,7 @@ public class RegisterDynamicThreadPoolTest {
                 .maximumPoolSize(10)
                 .queueType(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.type)
                 .capacity(110)
-                // TimeUnit.SECONDS 
+                // TimeUnit.SECONDS
                 .keepAliveTime(100L)
                 // TimeUnit.MILLISECONDS
                 .executeTimeOut(800L)
