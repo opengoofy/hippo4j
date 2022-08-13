@@ -102,7 +102,7 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        String[] ignores = Stream.of("/hippo4j/v1/cs/auth/users/apply/token/**", "/hippo4j/v1/cs/configs/**").toArray(String[]::new);
+        String[] ignores = Stream.of("/hippo4j/v1/cs/auth/users/apply/token/**").toArray(String[]::new);
         web.ignoring().antMatchers(ignores);
     }
 }
