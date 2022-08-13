@@ -52,7 +52,7 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
         // Register properties.
         GlobalCoreThreadPoolManage.register(threadPoolId, executorProperties);
         DynamicThreadPoolRegisterCoreNotifyParameter notifyParameter = registerWrapper.getDynamicThreadPoolRegisterCoreNotifyParameter();
-        ThreadPoolNotifyAlarm notifyAlarm = new ThreadPoolNotifyAlarm(true, notifyParameter.getActiveAlarm(), notifyParameter.getCapacityAlarm());
+        ThreadPoolNotifyAlarm notifyAlarm = new ThreadPoolNotifyAlarm(true, registerParameter.getActiveAlarm(), registerParameter.getCapacityAlarm());
         notifyAlarm.setReceives(notifyParameter.getReceives());
         notifyAlarm.setInterval(notifyParameter.getInterval());
         // Register notify.
