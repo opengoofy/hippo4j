@@ -15,11 +15,30 @@
  * limitations under the License.
  */
 
-package com.example.monitor.base;
+package cn.hippo4j.monitor.base;
 
 /**
- * Dynamic thread-pool monitor.
+ * Monitor type enum.
  */
-public interface DynamicThreadPoolMonitor extends ThreadPoolMonitor {
+public enum MonitorTypeEnum {
 
+    /**
+     * LOG
+     */
+    LOG,
+
+    /**
+     * PROMETHEUS
+     */
+    PROMETHEUS,
+
+    /**
+     * SERVER
+     */
+    SERVER,
+
+    /**
+     * ES
+     */
+    ES
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.example.monitor.base;
+package cn.hippo4j.monitor.base;
 
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;

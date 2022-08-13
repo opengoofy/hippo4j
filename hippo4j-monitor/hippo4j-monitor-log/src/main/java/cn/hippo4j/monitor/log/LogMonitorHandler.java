@@ -20,8 +20,8 @@ package cn.hippo4j.monitor.log;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import com.example.monitor.base.AbstractDynamicThreadPoolMonitor;
-import com.example.monitor.base.MonitorTypeEnum;
+import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
+import cn.hippo4j.monitor.base.MonitorTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 
 /**

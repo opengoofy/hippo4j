@@ -15,22 +15,11 @@
  * limitations under the License.
  */
 
-package com.example.monitor.base;
+package cn.hippo4j.monitor.base;
 
 /**
- * Thread-pool monitor.
+ * Dynamic thread-pool monitor.
  */
-public interface ThreadPoolMonitor {
+public interface DynamicThreadPoolMonitor extends ThreadPoolMonitor {
 
-    /**
-     * Get type.
-     *
-     * @return
-     */
-    String getType();
-
-    /**
-     * Collect data.
-     */
-    void collect();
 }

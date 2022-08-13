@@ -15,30 +15,22 @@
  * limitations under the License.
  */
 
-package com.example.monitor.base;
+package cn.hippo4j.monitor.base;
 
 /**
- * Monitor type enum.
+ * Thread-pool monitor.
  */
-public enum MonitorTypeEnum {
+public interface ThreadPoolMonitor {
 
     /**
-     * LOG
+     * Get type.
+     *
+     * @return
      */
-    LOG,
+    String getType();
 
     /**
-     * PROMETHEUS
+     * Collect data.
      */
-    PROMETHEUS,
-
-    /**
-     * SERVER
-     */
-    SERVER,
-
-    /**
-     * ES
-     */
-    ES
+    void collect();
 }
