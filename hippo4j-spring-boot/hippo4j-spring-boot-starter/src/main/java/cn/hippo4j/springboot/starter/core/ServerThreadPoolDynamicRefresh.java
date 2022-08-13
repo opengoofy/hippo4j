@@ -35,6 +35,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +45,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
 
 /**
- * Thread pool dynamic refresh.
+ * Server thread-pool dynamic refresh.
  */
 @Slf4j
 @AllArgsConstructor
@@ -94,6 +95,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         request.setBeforeExecuteTimeOut(originalExecuteTimeOut);
         request.setThreadPoolId(threadPoolId);
         changePoolInfo(executor, parameter);
+        Long executeTimeOut = Optional.ofNullable(parameter.getExecuteTimeOut()).orElse(0L);
         ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
         request.setNowCorePoolSize(afterExecutor.getCorePoolSize());
         request.setNowMaximumPoolSize(afterExecutor.getMaximumPoolSize());
@@ -101,7 +103,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         request.setNowKeepAliveTime(afterExecutor.getKeepAliveTime(TimeUnit.SECONDS));
         request.setNowQueueCapacity((afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size()));
         request.setNowRejectedName(RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType()));
-        request.setNowExecuteTimeOut(originalExecuteTimeOut);
+        request.setNowExecuteTimeOut(executeTimeOut);
         threadPoolNotifyAlarmHandler.sendPoolConfigChange(request);
         log.info(CHANGE_THREAD_POOL_TEXT,
                 threadPoolId,
@@ -109,7 +111,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 String.format(CHANGE_DELIMITER, originalMaximumPoolSize, afterExecutor.getMaximumPoolSize()),
                 String.format(CHANGE_DELIMITER, originalCapacity, (afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size())),
                 String.format(CHANGE_DELIMITER, originalKeepAliveTime, afterExecutor.getKeepAliveTime(TimeUnit.SECONDS)),
-                String.format(CHANGE_DELIMITER, originalExecuteTimeOut, originalExecuteTimeOut),
+                String.format(CHANGE_DELIMITER, originalExecuteTimeOut, executeTimeOut),
                 String.format(CHANGE_DELIMITER, originalRejected, RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType())),
                 String.format(CHANGE_DELIMITER, originalAllowCoreThreadTimeOut, EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut())));
     }
@@ -148,6 +150,10 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         }
         if (parameter.getKeepAliveTime() != null) {
             executor.setKeepAliveTime(parameter.getKeepAliveTime(), TimeUnit.SECONDS);
+        }
+        Long executeTimeOut = Optional.ofNullable(parameter.getExecuteTimeOut()).orElse(0L);
+        if (executeTimeOut != null && executor instanceof AbstractDynamicExecutorSupport) {
+            ((DynamicThreadPoolExecutor) executor).setExecuteTimeOut(executeTimeOut);
         }
         if (parameter.getRejectedType() != null) {
             RejectedExecutionHandler rejectedExecutionHandler = RejectedTypeEnum.createPolicy(parameter.getRejectedType());

@@ -82,7 +82,10 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     @Override
     public void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO) {
-        configService.insertOrUpdate(identify, false, BeanUtil.convert(reqDTO, ConfigAllInfo.class));
+        ConfigAllInfo configAllInfo = BeanUtil.convert(reqDTO, ConfigAllInfo.class);
+        Long executeTimeOut = configAllInfo.getExecuteTimeOut() == 0 ? null : configAllInfo.getExecuteTimeOut();
+        configAllInfo.setExecuteTimeOut(executeTimeOut);
+        configService.insertOrUpdate(identify, false, configAllInfo);
     }
 
     @Override

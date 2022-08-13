@@ -14,7 +14,6 @@
         <spring-web.version>5.2.15.RELEASE</spring-web.version>
         <spring-beans.version>5.2.21.RELEASE</spring-beans.version>
         <spring-core.version>5.2.22.RELEASE</spring-core.version>
-        <jackson-databind.version>2.12.6.1</jackson-databind.version>
     </properties>
 
     <dependencies>
@@ -45,7 +44,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
         </dependency>
 
         <dependency>
