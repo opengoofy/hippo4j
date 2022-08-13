@@ -21,7 +21,7 @@ Clone Hippo4J [源代码](https://github.com/longtai-cn/hippo4j)，导入初始�
 
 默认用户名密码：admin / 123456
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220813154344045.png)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220813173811668.png)
 
 修改相关参数， 观察 Hippo4j-Example 控制台日志输出，日志输出包括不限于此信息即为成功。
 

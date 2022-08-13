@@ -44,7 +44,7 @@ cn.hippo4j.example.core.handler.ErrorLogRejectedExecutionHandler
 
 创建、修改线程池页面选择 `CustomRejectedPolicy（自定义 SPI 策略）`。
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220813155636945.png)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220813173907814.png)
 
 拒绝策略触发时，完成上述代码效果，仅打印异常日志提示。
 
