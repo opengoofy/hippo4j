@@ -61,13 +61,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         refreshDynamicPool(parameter, executor);
     }
 
-    /**
-     * Refresh dynamic pool.
-     *
-     * @param parameter
-     * @param executor
-     */
-    public void refreshDynamicPool(ThreadPoolParameter parameter, ThreadPoolExecutor executor) {
+    private void refreshDynamicPool(ThreadPoolParameter parameter, ThreadPoolExecutor executor) {
         String threadPoolId = parameter.getTpId();
         int originalCoreSize = executor.getCorePoolSize();
         int originalMaximumPoolSize = executor.getMaximumPoolSize();
@@ -82,29 +76,29 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
             rejectedExecutionHandler = dynamicExecutor.getRedundancyHandler();
             originalExecuteTimeOut = dynamicExecutor.getExecuteTimeOut();
         }
-        String originalRejected = rejectedExecutionHandler.getClass().getSimpleName();
-        // Send change message.
-        ChangeParameterNotifyRequest request = new ChangeParameterNotifyRequest();
-        request.setBeforeCorePoolSize(originalCoreSize);
-        request.setBeforeMaximumPoolSize(originalMaximumPoolSize);
-        request.setBeforeAllowsCoreThreadTimeOut(originalAllowCoreThreadTimeOut);
-        request.setBeforeKeepAliveTime(originalKeepAliveTime);
-        request.setBlockingQueueName(originalQuery);
-        request.setBeforeQueueCapacity(originalCapacity);
-        request.setBeforeRejectedName(originalRejected);
-        request.setBeforeExecuteTimeOut(originalExecuteTimeOut);
-        request.setThreadPoolId(threadPoolId);
         changePoolInfo(executor, parameter);
-        Long executeTimeOut = Optional.ofNullable(parameter.getExecuteTimeOut()).orElse(0L);
         ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
-        request.setNowCorePoolSize(afterExecutor.getCorePoolSize());
-        request.setNowMaximumPoolSize(afterExecutor.getMaximumPoolSize());
-        request.setNowAllowsCoreThreadTimeOut(EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()));
-        request.setNowKeepAliveTime(afterExecutor.getKeepAliveTime(TimeUnit.SECONDS));
-        request.setNowQueueCapacity((afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size()));
-        request.setNowRejectedName(RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType()));
-        request.setNowExecuteTimeOut(executeTimeOut);
-        threadPoolNotifyAlarmHandler.sendPoolConfigChange(request);
+        String originalRejected = rejectedExecutionHandler.getClass().getSimpleName();
+        Long executeTimeOut = Optional.ofNullable(parameter.getExecuteTimeOut()).orElse(0L);
+        ChangeParameterNotifyRequest changeNotifyRequest = ChangeParameterNotifyRequest.builder()
+                .beforeCorePoolSize(originalCoreSize)
+                .beforeMaximumPoolSize(originalMaximumPoolSize)
+                .beforeAllowsCoreThreadTimeOut(originalAllowCoreThreadTimeOut)
+                .beforeKeepAliveTime(originalKeepAliveTime)
+                .blockingQueueName(originalQuery)
+                .beforeQueueCapacity(originalCapacity)
+                .beforeRejectedName(originalRejected)
+                .beforeExecuteTimeOut(originalExecuteTimeOut)
+                .nowCorePoolSize(afterExecutor.getCorePoolSize())
+                .nowMaximumPoolSize(afterExecutor.getMaximumPoolSize())
+                .nowAllowsCoreThreadTimeOut(EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()))
+                .nowKeepAliveTime(afterExecutor.getKeepAliveTime(TimeUnit.SECONDS))
+                .nowQueueCapacity((afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size()))
+                .nowRejectedName(RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType()))
+                .nowExecuteTimeOut(executeTimeOut)
+                .build();
+        changeNotifyRequest.setThreadPoolId(threadPoolId);
+        threadPoolNotifyAlarmHandler.sendPoolConfigChange(changeNotifyRequest);
         log.info(CHANGE_THREAD_POOL_TEXT,
                 threadPoolId,
                 String.format(CHANGE_DELIMITER, originalCoreSize, afterExecutor.getCorePoolSize()),
@@ -116,13 +110,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 String.format(CHANGE_DELIMITER, originalAllowCoreThreadTimeOut, EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut())));
     }
 
-    /**
-     * Change pool info.
-     *
-     * @param executor
-     * @param parameter
-     */
-    public void changePoolInfo(ThreadPoolExecutor executor, ThreadPoolParameter parameter) {
+    private void changePoolInfo(ThreadPoolExecutor executor, ThreadPoolParameter parameter) {
         if (parameter.getCoreSize() != null && parameter.getMaxSize() != null) {
             if (parameter.getMaxSize() < executor.getMaximumPoolSize()) {
                 executor.setCorePoolSize(parameter.getCoreSize());
