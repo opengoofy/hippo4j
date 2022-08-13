@@ -42,7 +42,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 感谢所有为 Hippo-4J 做出贡献的开发者！
 
-<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://contrib.rocks/image?repo=opengoofy/hippo4j"/></a>
+<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false"/></a>
 
 ## 我们的荣誉
 
