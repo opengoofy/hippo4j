@@ -180,6 +180,7 @@ public class ConfigServiceImpl implements ConfigService {
         configAllInfo.setTenantId(registerWrapper.getTenantId());
         configAllInfo.setItemId(registerWrapper.getItemId());
         configAllInfo.setTpId(registerParameter.getThreadPoolId());
+        configAllInfo.setLivenessAlarm(registerParameter.getActiveAlarm());
         configAllInfo.setAllowCoreThreadTimeOut(registerParameter.getAllowCoreThreadTimeOut());
         return configAllInfo;
     }

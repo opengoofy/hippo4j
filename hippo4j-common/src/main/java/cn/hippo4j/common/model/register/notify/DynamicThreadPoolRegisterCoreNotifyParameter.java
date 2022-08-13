@@ -29,21 +29,6 @@ import lombok.*;
 public class DynamicThreadPoolRegisterCoreNotifyParameter {
 
     /**
-     * Whether to enable thread pool running alarm
-     */
-    private Boolean alarm = Boolean.TRUE;
-
-    /**
-     * Active alarm
-     */
-    private Integer activeAlarm;
-
-    /**
-     * Capacity alarm
-     */
-    private Integer capacityAlarm;
-
-    /**
      * Interval
      */
     private Integer interval;

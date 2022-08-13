@@ -64,7 +64,7 @@ public class RunStateHandlerTest {
         runTask(messageConsumeTtlDynamicThreadPool);
         runTask(messageProduceDynamicThreadPool);
         // Dynamically register thread pool
-        ThreadPoolExecutor registerDynamicThreadPool = RegisterDynamicThreadPoolTest.registerDynamicThreadPool("register-dynamic-thread-pool");
+        ThreadPoolExecutor registerDynamicThreadPool = RegisterDynamicThreadPoolTest.registerDynamicThreadPool("auto-register-dynamic-thread-pool");
         runTask(registerDynamicThreadPool);
     }
 
