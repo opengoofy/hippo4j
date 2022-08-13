@@ -14,7 +14,7 @@ sidebar_position: 0
 
 > 监控功能配置详见：[线程池监控](/docs/user_docs/getting-started/hippo4j-core-monitor)
 
-![](./img/grafana-monitor.jpg)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/20220814_hippo4j_monitor.jpg)
 
 ### hippo4j-server
 

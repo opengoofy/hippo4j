@@ -85,4 +85,4 @@ Grafana DashBoard 配置。
 
 即可使用 Hippo4j 线程池监控大屏。
 
-![](./img/grafana-monitor.jpg)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/20220814_hippo4j_monitor.jpg)
