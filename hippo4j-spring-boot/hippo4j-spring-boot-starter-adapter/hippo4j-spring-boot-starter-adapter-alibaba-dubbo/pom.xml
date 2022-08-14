@@ -10,7 +10,6 @@
     <artifactId>hippo4j-spring-boot-starter-adapter-alibaba-dubbo</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-alibaba-dubbo</artifactId>

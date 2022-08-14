@@ -32,14 +32,14 @@ public class AlibabaDubboAdapterAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ApplicationContextHolder simpleApplicationContextHolder () {
+    public ApplicationContextHolder simpleApplicationContextHolder() {
         return new ApplicationContextHolder();
     }
 
     @Bean
     @SuppressWarnings("all")
     @ConditionalOnProperty(name = "dubbo.application.name")
-    public AlibabaDubboThreadPoolAdapter dubboThreadPoolAdapter (ApplicationContextHolder applicationContextHolder) {
+    public AlibabaDubboThreadPoolAdapter dubboThreadPoolAdapter(ApplicationContextHolder applicationContextHolder) {
         return new AlibabaDubboThreadPoolAdapter();
     }
 }

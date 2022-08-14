@@ -45,7 +45,7 @@ public class AlibabaDubboThreadPoolAdapter implements ThreadPoolAdapter, Applica
 
     @Override
     public String mark() {
-        return "Dubbo";
+        return "AlibabaDubbo";
     }
 
     @Override
