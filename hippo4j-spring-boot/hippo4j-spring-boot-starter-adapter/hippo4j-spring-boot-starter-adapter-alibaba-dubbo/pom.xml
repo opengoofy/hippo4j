@@ -13,7 +13,7 @@
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-adapter-dubbo-alibaba</artifactId>
+            <artifactId>hippo4j-adapter-alibaba-dubbo</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

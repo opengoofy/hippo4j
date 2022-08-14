@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.adapter.dubbo;
+package cn.hippo4j.adapter.alibaba.dubbo;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;

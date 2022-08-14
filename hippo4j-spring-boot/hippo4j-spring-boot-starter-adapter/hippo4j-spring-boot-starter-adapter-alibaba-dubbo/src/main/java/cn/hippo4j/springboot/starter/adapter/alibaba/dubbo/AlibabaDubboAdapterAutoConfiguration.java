@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.dubbo;
+package cn.hippo4j.springboot.starter.adapter.alibaba.dubbo;
 
-import cn.hippo4j.adapter.dubbo.AlibabaDubboThreadPoolAdapter;
+import cn.hippo4j.adapter.alibaba.dubbo.AlibabaDubboThreadPoolAdapter;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,14 +32,14 @@ public class AlibabaDubboAdapterAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ApplicationContextHolder simpleApplicationContextHolder() {
+    public ApplicationContextHolder simpleApplicationContextHolder () {
         return new ApplicationContextHolder();
     }
 
     @Bean
     @SuppressWarnings("all")
     @ConditionalOnProperty(name = "dubbo.application.name")
-    public AlibabaDubboThreadPoolAdapter dubboThreadPoolAdapter(ApplicationContextHolder applicationContextHolder) {
+    public AlibabaDubboThreadPoolAdapter dubboThreadPoolAdapter (ApplicationContextHolder applicationContextHolder) {
         return new AlibabaDubboThreadPoolAdapter();
     }
 }
