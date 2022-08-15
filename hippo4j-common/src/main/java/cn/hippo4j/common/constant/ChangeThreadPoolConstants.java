@@ -22,7 +22,10 @@ package cn.hippo4j.common.constant;
  */
 public class ChangeThreadPoolConstants {
 
-    public static final String CHANGE_THREAD_POOL_TEXT = "Dynamic thread pool change parameter: [{}]" +
+    /**
+     * Dynamic thread pool parameter change text
+     */
+    public static final String CHANGE_THREAD_POOL_TEXT = " [{}] Dynamic thread pool change parameter." +
             "\n    corePoolSize: [{}]" +
             "\n    maximumPoolSize: [{}]" +
             "\n    capacity: [{}]" +
@@ -31,5 +34,8 @@ public class ChangeThreadPoolConstants {
             "\n    rejectedType: [{}]" +
             "\n    allowCoreThreadTimeOut: [{}]";
 
+    /**
+     * Dynamic thread pool parameter change separator
+     */
     public static final String CHANGE_DELIMITER = "%s => %s";
 }
