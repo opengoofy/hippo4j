@@ -138,17 +138,17 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 }
             }
             if (dynamicThreadPoolWrapper.getExecutor() instanceof AbstractDynamicExecutorSupport) {
-
                 DynamicThreadPoolNotifyProperties notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
-                boolean isAlarm = Optional.ofNullable(bootstrapCoreProperties.getAlarm()).orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
-                int activeAlarm =
-                        Optional.ofNullable(bootstrapCoreProperties.getActiveAlarm()).orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
-                int capacityAlarm = Optional.ofNullable(bootstrapCoreProperties.getCapacityAlarm())
+                boolean isAlarm = Optional.ofNullable(executorProperties.getAlarm())
+                        .orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
+                int activeAlarm = Optional.ofNullable(executorProperties.getActiveAlarm())
+                        .orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
+                int capacityAlarm = Optional.ofNullable(executorProperties.getCapacityAlarm())
                         .orElseGet(() -> bootstrapCoreProperties.getCapacityAlarm() != null ? bootstrapCoreProperties.getCapacityAlarm() : 80);
                 int interval = Optional.ofNullable(notify)
                         .map(each -> each.getInterval()).orElseGet(() -> bootstrapCoreProperties.getAlarmInterval() != null ? bootstrapCoreProperties.getAlarmInterval() : 5);
                 String receive = Optional.ofNullable(notify)
-                        .map(each -> each.getReceives()).orElseGet(() -> bootstrapCoreProperties.getReceives() != null ? bootstrapCoreProperties.getReceives() : null);
+                        .map(each -> each.getReceives()).orElseGet(() -> StringUtil.isNotEmpty(bootstrapCoreProperties.getReceives()) ? bootstrapCoreProperties.getReceives() : "");
                 ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(isAlarm, activeAlarm, capacityAlarm);
                 threadPoolNotifyAlarm.setInterval(interval);
                 threadPoolNotifyAlarm.setReceives(receive);
