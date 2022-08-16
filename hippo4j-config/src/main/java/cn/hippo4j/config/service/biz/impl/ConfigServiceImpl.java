@@ -181,8 +181,8 @@ public class ConfigServiceImpl implements ConfigService {
         configAllInfo.setItemId(registerWrapper.getItemId());
         configAllInfo.setTpId(registerParameter.getThreadPoolId());
         configAllInfo.setLivenessAlarm(registerParameter.getActiveAlarm());
-        configAllInfo.setQueueType(registerParameter.getQueueType().type);
-        configAllInfo.setRejectedType(registerParameter.getRejectedType().type);
+        configAllInfo.setQueueType(registerParameter.getBlockingQueueType().getType());
+        configAllInfo.setRejectedType(registerParameter.getRejectedPolicyType().getType());
         configAllInfo.setAllowCoreThreadTimeOut(registerParameter.getAllowCoreThreadTimeOut());
         return configAllInfo;
     }

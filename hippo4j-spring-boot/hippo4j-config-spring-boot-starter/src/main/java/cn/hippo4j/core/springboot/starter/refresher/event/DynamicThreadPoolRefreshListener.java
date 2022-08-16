@@ -23,8 +23,8 @@ import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
-import cn.hippo4j.common.executor.support.QueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedTypeEnum;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
@@ -200,7 +200,7 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
                 || !Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())
                 ||
                 (!Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
-                        && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.name, executor.getQueue().getClass().getSimpleName()));
+                        && Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getName(), executor.getQueue().getClass().getSimpleName()));
         return result;
     }
 
@@ -238,7 +238,7 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
             }
         }
         if (!Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())) {
-            RejectedExecutionHandler rejectedExecutionHandler = RejectedTypeEnum.createPolicy(properties.getRejectedHandler());
+            RejectedExecutionHandler rejectedExecutionHandler = RejectedPolicyTypeEnum.createPolicy(properties.getRejectedHandler());
             if (executor instanceof AbstractDynamicExecutorSupport) {
                 DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) executor;
                 dynamicExecutor.setRedundancyHandler(rejectedExecutionHandler);
@@ -251,7 +251,7 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
             executor.setKeepAliveTime(properties.getKeepAliveTime(), TimeUnit.SECONDS);
         }
         if (!Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
-                && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.name, executor.getQueue().getClass().getSimpleName())) {
+                && Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getName(), executor.getQueue().getClass().getSimpleName())) {
             if (executor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
                 ResizableCapacityLinkedBlockingQueue<?> queue = (ResizableCapacityLinkedBlockingQueue<?>) executor.getQueue();
                 queue.setCapacity(properties.getQueueCapacity());

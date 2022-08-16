@@ -18,6 +18,7 @@
 package cn.hippo4j.common.executor.support;
 
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,9 +28,9 @@ import java.util.concurrent.*;
 import java.util.stream.Stream;
 
 /**
- * Queue type enum.
+ * Blocking queue type enum.
  */
-public enum QueueTypeEnum {
+public enum BlockingQueueTypeEnum {
 
     /**
      * {@link java.util.concurrent.ArrayBlockingQueue}
@@ -66,11 +67,13 @@ public enum QueueTypeEnum {
      */
     RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockingQueue");
 
-    public Integer type;
+    @Getter
+    private Integer type;
 
-    public String name;
+    @Getter
+    private String name;
 
-    QueueTypeEnum(int type, String name) {
+    BlockingQueueTypeEnum(int type, String name) {
         this.type = type;
         this.name = name;
     }
@@ -81,7 +84,7 @@ public enum QueueTypeEnum {
 
     public static BlockingQueue createBlockingQueue(String blockingQueueName, Integer capacity) {
         BlockingQueue blockingQueue = null;
-        QueueTypeEnum queueTypeEnum = Stream.of(QueueTypeEnum.values())
+        BlockingQueueTypeEnum queueTypeEnum = Stream.of(BlockingQueueTypeEnum.values())
                 .filter(each -> Objects.equals(each.name, blockingQueueName))
                 .findFirst()
                 .orElse(null);
@@ -137,7 +140,7 @@ public enum QueueTypeEnum {
     }
 
     public static String getBlockingQueueNameByType(int type) {
-        Optional<QueueTypeEnum> queueTypeEnum = Arrays.stream(QueueTypeEnum.values())
+        Optional<BlockingQueueTypeEnum> queueTypeEnum = Arrays.stream(BlockingQueueTypeEnum.values())
                 .filter(each -> each.type == type)
                 .findFirst();
         return queueTypeEnum.map(each -> each.name).orElse("");

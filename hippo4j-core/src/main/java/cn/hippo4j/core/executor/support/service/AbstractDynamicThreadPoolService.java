@@ -18,8 +18,8 @@
 package cn.hippo4j.core.executor.support.service;
 
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
-import cn.hippo4j.common.executor.support.QueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedTypeEnum;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -41,11 +41,11 @@ public abstract class AbstractDynamicThreadPoolService implements DynamicThreadP
                 .threadPoolId(registerParameter.getThreadPoolId())
                 .corePoolSize(registerParameter.getCorePoolSize())
                 .maxPoolNum(registerParameter.getMaximumPoolSize())
-                .workQueue(QueueTypeEnum.createBlockingQueue(registerParameter.getQueueType().type, registerParameter.getCapacity()))
+                .workQueue(BlockingQueueTypeEnum.createBlockingQueue(registerParameter.getBlockingQueueType().getType(), registerParameter.getCapacity()))
                 .threadFactory(registerParameter.getThreadNamePrefix())
                 .keepAliveTime(registerParameter.getKeepAliveTime(), TimeUnit.SECONDS)
                 .executeTimeOut(registerParameter.getExecuteTimeOut())
-                .rejected(RejectedTypeEnum.createPolicy(registerParameter.getRejectedType().type))
+                .rejected(RejectedPolicyTypeEnum.createPolicy(registerParameter.getRejectedPolicyType().getType()))
                 .dynamicPool()
                 .build();
         return dynamicThreadPoolExecutor;

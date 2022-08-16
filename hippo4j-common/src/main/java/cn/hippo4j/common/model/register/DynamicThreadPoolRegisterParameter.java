@@ -17,8 +17,8 @@
 
 package cn.hippo4j.common.model.register;
 
-import cn.hippo4j.common.executor.support.QueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedTypeEnum;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,9 +56,9 @@ public class DynamicThreadPoolRegisterParameter {
     private Integer maximumPoolSize;
 
     /**
-     * Queue type
+     * Blocking queue type
      */
-    private QueueTypeEnum queueType;
+    private BlockingQueueTypeEnum blockingQueueType;
 
     /**
      * Capacity
@@ -71,9 +71,9 @@ public class DynamicThreadPoolRegisterParameter {
     private Long keepAliveTime;
 
     /**
-     * Rejected type
+     * Rejected policy type
      */
-    private RejectedTypeEnum rejectedType;
+    private RejectedPolicyTypeEnum rejectedPolicyType;
 
     /**
      * Is alarm

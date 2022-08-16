@@ -26,8 +26,8 @@ import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
-import cn.hippo4j.common.executor.support.QueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedTypeEnum;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
@@ -94,7 +94,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 .nowAllowsCoreThreadTimeOut(EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()))
                 .nowKeepAliveTime(afterExecutor.getKeepAliveTime(TimeUnit.SECONDS))
                 .nowQueueCapacity((afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size()))
-                .nowRejectedName(RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType()))
+                .nowRejectedName(RejectedPolicyTypeEnum.getRejectedNameByType(parameter.getRejectedType()))
                 .nowExecuteTimeOut(executeTimeOut)
                 .build();
         changeNotifyRequest.setThreadPoolId(threadPoolId);
@@ -106,7 +106,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 String.format(CHANGE_DELIMITER, originalCapacity, (afterExecutor.getQueue().remainingCapacity() + afterExecutor.getQueue().size())),
                 String.format(CHANGE_DELIMITER, originalKeepAliveTime, afterExecutor.getKeepAliveTime(TimeUnit.SECONDS)),
                 String.format(CHANGE_DELIMITER, originalExecuteTimeOut, executeTimeOut),
-                String.format(CHANGE_DELIMITER, originalRejected, RejectedTypeEnum.getRejectedNameByType(parameter.getRejectedType())),
+                String.format(CHANGE_DELIMITER, originalRejected, RejectedPolicyTypeEnum.getRejectedNameByType(parameter.getRejectedType())),
                 String.format(CHANGE_DELIMITER, originalAllowCoreThreadTimeOut, EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut())));
     }
 
@@ -128,7 +128,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
             }
         }
         if (parameter.getCapacity() != null
-                && Objects.equals(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.type, parameter.getQueueType())) {
+                && Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getType(), parameter.getQueueType())) {
             if (executor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
                 ResizableCapacityLinkedBlockingQueue queue = (ResizableCapacityLinkedBlockingQueue) executor.getQueue();
                 queue.setCapacity(parameter.getCapacity());
@@ -144,7 +144,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
             ((DynamicThreadPoolExecutor) executor).setExecuteTimeOut(executeTimeOut);
         }
         if (parameter.getRejectedType() != null) {
-            RejectedExecutionHandler rejectedExecutionHandler = RejectedTypeEnum.createPolicy(parameter.getRejectedType());
+            RejectedExecutionHandler rejectedExecutionHandler = RejectedPolicyTypeEnum.createPolicy(parameter.getRejectedType());
             if (executor instanceof AbstractDynamicExecutorSupport) {
                 DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) executor;
                 dynamicExecutor.setRedundancyHandler(rejectedExecutionHandler);

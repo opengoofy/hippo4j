@@ -18,7 +18,7 @@
 package cn.hippo4j.core.executor.support;
 
 import cn.hippo4j.common.design.builder.Builder;
-import cn.hippo4j.common.executor.support.QueueTypeEnum;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.toolkit.Assert;
 import org.springframework.core.task.TaskDecorator;
 
@@ -47,7 +47,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     private int capacity = 512;
 
-    private QueueTypeEnum queueType;
+    private BlockingQueueTypeEnum blockingQueueType;
 
     private BlockingQueue workQueue = new LinkedBlockingQueue(capacity);
 
@@ -150,8 +150,8 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
-    public ThreadPoolBuilder workQueue(QueueTypeEnum queueType, int capacity) {
-        this.queueType = queueType;
+    public ThreadPoolBuilder workQueue(BlockingQueueTypeEnum queueType, int capacity) {
+        this.blockingQueueType = queueType;
         this.capacity = capacity;
         return this;
     }
@@ -161,8 +161,8 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
-    public ThreadPoolBuilder workQueue(QueueTypeEnum queueType) {
-        this.queueType = queueType;
+    public ThreadPoolBuilder workQueue(BlockingQueueTypeEnum blockingQueueType) {
+        this.blockingQueueType = blockingQueueType;
         return this;
     }
 
@@ -246,8 +246,8 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
             initParam.setAwaitTerminationMillis(builder.awaitTerminationMillis);
         }
         if (!builder.isFastPool) {
-            if (builder.queueType != null) {
-                builder.workQueue = QueueTypeEnum.createBlockingQueue(builder.queueType.type, builder.capacity);
+            if (builder.blockingQueueType != null) {
+                builder.workQueue = BlockingQueueTypeEnum.createBlockingQueue(builder.blockingQueueType.getType(), builder.capacity);
             }
             initParam.setWorkQueue(builder.workQueue);
         }

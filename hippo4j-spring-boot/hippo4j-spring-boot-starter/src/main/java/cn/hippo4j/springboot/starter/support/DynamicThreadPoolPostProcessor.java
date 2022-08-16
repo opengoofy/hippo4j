@@ -20,8 +20,8 @@ package cn.hippo4j.springboot.starter.support;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.enums.EnableEnum;
-import cn.hippo4j.common.executor.support.QueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedTypeEnum;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
@@ -135,14 +135,14 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 String resultJsonStr = JSONUtil.toJSONString(result.getData());
                 if ((threadPoolParameterInfo = JSONUtil.parseObject(resultJsonStr, ThreadPoolParameterInfo.class)) != null) {
                     // Create a thread pool with relevant parameters.
-                    BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(threadPoolParameterInfo.getQueueType(), threadPoolParameterInfo.getCapacity());
+                    BlockingQueue workQueue = BlockingQueueTypeEnum.createBlockingQueue(threadPoolParameterInfo.getQueueType(), threadPoolParameterInfo.getCapacity());
                     newDynamicThreadPoolExecutor = ThreadPoolBuilder.builder()
                             .dynamicPool()
                             .workQueue(workQueue)
                             .threadFactory(threadPoolId)
                             .poolThreadSize(threadPoolParameterInfo.corePoolSizeAdapt(), threadPoolParameterInfo.maximumPoolSizeAdapt())
                             .keepAliveTime(threadPoolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS)
-                            .rejected(RejectedTypeEnum.createPolicy(threadPoolParameterInfo.getRejectedType()))
+                            .rejected(RejectedPolicyTypeEnum.createPolicy(threadPoolParameterInfo.getRejectedType()))
                             .allowCoreThreadTimeOut(EnableEnum.getBool(threadPoolParameterInfo.getAllowCoreThreadTimeOut()))
                             .build();
                     // Set dynamic thread pool enhancement parameters.

@@ -18,6 +18,7 @@
 package cn.hippo4j.common.executor.support;
 
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import lombok.Getter;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -27,9 +28,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Stream;
 
 /**
- * Reject policy type Enum.
+ * Rejected policy type Enum.
  */
-public enum RejectedTypeEnum {
+public enum RejectedPolicyTypeEnum {
 
     CALLER_RUNS_POLICY(1, "CallerRunsPolicy", new ThreadPoolExecutor.CallerRunsPolicy()),
 
@@ -43,13 +44,15 @@ public enum RejectedTypeEnum {
 
     SYNC_PUT_QUEUE_POLICY(6, "SyncPutQueuePolicy", new SyncPutQueuePolicy());
 
-    public Integer type;
+    @Getter
+    private Integer type;
 
-    public String name;
+    @Getter
+    private String name;
 
     public RejectedExecutionHandler rejectedHandler;
 
-    RejectedTypeEnum(Integer type, String name, RejectedExecutionHandler rejectedHandler) {
+    RejectedPolicyTypeEnum(Integer type, String name, RejectedExecutionHandler rejectedHandler) {
         this.type = type;
         this.name = name;
         this.rejectedHandler = rejectedHandler;
@@ -60,7 +63,7 @@ public enum RejectedTypeEnum {
     }
 
     public static RejectedExecutionHandler createPolicy(String name) {
-        RejectedTypeEnum rejectedTypeEnum = Stream.of(RejectedTypeEnum.values())
+        RejectedPolicyTypeEnum rejectedTypeEnum = Stream.of(RejectedPolicyTypeEnum.values())
                 .filter(each -> Objects.equals(each.name, name))
                 .findFirst()
                 .orElse(null);
@@ -77,7 +80,7 @@ public enum RejectedTypeEnum {
     }
 
     public static RejectedExecutionHandler createPolicy(int type) {
-        Optional<RejectedExecutionHandler> rejectedTypeEnum = Stream.of(RejectedTypeEnum.values())
+        Optional<RejectedExecutionHandler> rejectedTypeEnum = Stream.of(RejectedPolicyTypeEnum.values())
                 .filter(each -> Objects.equals(type, each.type))
                 .map(each -> each.rejectedHandler)
                 .findFirst();

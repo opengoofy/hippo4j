@@ -18,8 +18,8 @@
 package cn.hippo4j.core.springboot.starter.support;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.executor.support.QueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedTypeEnum;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
@@ -118,7 +118,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                     .orElse(null);
             if (executorProperties != null) {
                 try {
-                    BlockingQueue workQueue = QueueTypeEnum.createBlockingQueue(executorProperties.getBlockingQueue(), executorProperties.getQueueCapacity());
+                    BlockingQueue workQueue = BlockingQueueTypeEnum.createBlockingQueue(executorProperties.getBlockingQueue(), executorProperties.getQueueCapacity());
                     String threadNamePrefix = executorProperties.getThreadNamePrefix();
                     newDynamicPoolExecutor = ThreadPoolBuilder.builder()
                             .dynamicPool()
@@ -127,7 +127,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                             .executeTimeOut(Optional.ofNullable(executorProperties.getExecuteTimeOut()).orElse(0L))
                             .poolThreadSize(executorProperties.getCorePoolSize(), executorProperties.getMaximumPoolSize())
                             .keepAliveTime(executorProperties.getKeepAliveTime(), TimeUnit.SECONDS)
-                            .rejected(RejectedTypeEnum.createPolicy(executorProperties.getRejectedHandler()))
+                            .rejected(RejectedPolicyTypeEnum.createPolicy(executorProperties.getRejectedHandler()))
                             .allowCoreThreadTimeOut(executorProperties.getAllowCoreThreadTimeOut())
                             .build();
                 } catch (Exception ex) {
