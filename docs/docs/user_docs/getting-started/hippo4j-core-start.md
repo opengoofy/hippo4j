@@ -11,7 +11,7 @@ Nacos、Apollo、Zookeeper 配置中心任选其一。
 ```xml
 <dependency>
     <groupId>cn.hippo4j</groupId>
-    <artifactId>hippo4j-core-spring-boot-starter</artifactId>
+    <artifactId>hippo4j-config-spring-boot-starter</artifactId>
     <version>1.3.1</version>
 </dependency>
 ```

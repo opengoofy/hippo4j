@@ -59,7 +59,7 @@
 
         <!-- Maven & Build -->
         <java.version>1.8</java.version>
-        <skip.gpg>false</skip.gpg>
+        <skip.maven.gpg.plugin>true</skip.maven.gpg.plugin>
         <skip.spotless.apply>false</skip.spotless.apply>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -249,7 +249,7 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
                 <configuration>
-                    <skip>${skip.gpg}</skip>
+                    <skip>${skip.maven.gpg.plugin}</skip>
                 </configuration>
                 <executions>
                     <execution>

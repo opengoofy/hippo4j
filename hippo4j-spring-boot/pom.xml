@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>hippo4j-core-spring-boot-starter</module>
+        <module>hippo4j-config-spring-boot-starter</module>
         <module>hippo4j-spring-boot-starter</module>
         <module>hippo4j-spring-boot-starter-adapter</module>
         <module>hippo4j-spring-boot-starter-monitor</module>
