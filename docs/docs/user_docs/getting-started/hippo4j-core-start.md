@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# hippo4j core 接入
+# hippo4j config 接入
 
 Nacos、Apollo、Zookeeper 配置中心任选其一。
 
@@ -12,7 +12,7 @@ Nacos、Apollo、Zookeeper 配置中心任选其一。
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-config-spring-boot-starter</artifactId>
-    <version>1.3.1</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
@@ -42,54 +42,79 @@ spring:
 
   dynamic:
     thread-pool:
-      enable: true  # 是否开启动态线程池
-      banner: true  # 是否打印 banner
-      collect: true  # 是否开启线程池数据采集，对接 Prometheus
-      notify-platforms:  # 通知报警平台，⚠️ 请替换为自己创建的群机器人
-        - platform: 'WECHAT'  # 企业微信
-          token: 1d307bfa-815f-4662-a2e5-99415e947bb8
-        - platform: 'DING'  # 钉钉
-          token: 56417ebba6a27ca352f0de77a2ae9da66d01f39610b5ee8a6033c60ef9071c55
-          secret: SEC40943de20b51e993b47e9a55490a168f1c9e00bdb4f0fb15b1d9e4b58f8b05f3  # 加签
-        - platform: 'LARK'  # 飞书
-          token: 2cbf2808-3839-4c26-a04d-fd201dd51f9e
-      nacos:  # nacos apollo 任选其一
+      # 是否开启动态线程池
+      enable: true
+      # 是否打印 banner
+      banner: true
+      # 是否开启线程池数据采集，对接 Prometheus、ES、Log 等
+      collect: true
+      # 检查线程池状态，是否达到报警条件，单位毫秒
+      check-state-interval: 3000
+      # 通知报警平台，请替换为自己创建的群机器人
+      notify-platforms:
+        - platform: 'WECHAT'
+          token: xxx
+        - platform: 'DING'
+          token: xxx
+          secret: xxx  # 加签专属
+        - platform: 'LARK'
+          token: xxx
+      # nacos apollo、zookeeper 任选其一
+      nacos:
         data-id: xxx
         group: xxx
       apollo:
         namespace: xxxx
-      config-file-type: yml  # 配置中心文件格式
-      # tomcat:
-      # jetty:
-      undertow: # 三种容器线程池，任选其一
+      # 配置中心文件格式
+      config-file-type: yml
+      # tomcat、undertow、jetty 三种容器线程池，任选其一
+      undertow:
         core-pool-size: 100
         maximum-pool-size: 200
         keep-alive-time: 1000
-      # 全局通知配置
-      alarm: true  # 是否报警
-      check-state-interval: 3000  # 检查线程池状态，是否达到报警条件，单位毫秒
-      active-alarm: 80  # 活跃度报警阈值；假设线程池最大线程数 10，当线程数达到 8 发起报警
-      capacity-alarm: 80  # 容量报警阈值；假设阻塞队列容量 100，当容量达到 80 发起报警
-      alarm-interval: 8  # 报警间隔，同一线程池下同一报警纬度，在 interval 时间内只会报警一次，单位秒
-      receive: xxx # 企业微信填写用户 ID（填写其它将无法达到 @ 效果）、钉钉填手机号、飞书填 ou_ 开头唯一 ID
-      # 线程池配置
+      # 全局通知配置-是否报警
+      alarm: true
+      # 活跃度报警阈值；假设线程池最大线程数 10，当线程数达到 8 发起报警
+      active-alarm: 80
+      # 容量报警阈值；假设阻塞队列容量 100，当容量达到 80 发起报警
+      capacity-alarm: 80
+      # 报警间隔，同一线程池下同一报警纬度，在 interval 时间内只会报警一次，单位秒
+      alarm-interval: 8
+      # 企业微信填写用户 ID（填写其它将无法达到 @ 效果）、钉钉填手机号、飞书填 ou_ 开头唯一 ID
+      receive: xxx
+      # 动态线程池列表
       executors:
-        - thread-pool-id: 'message-consume'  # 线程池标识
-          core-pool-size: 1  # 核心线程数
-          maximum-pool-size: 1  # 最大线程数
-          queue-capacity: 1  # 阻塞队列大小
-          execute-time-out: 1000  # 执行超时时间，超过此时间发起报警
-          blocking-queue: 'LinkedBlockingQueue'  # 阻塞队列名称，参考 QueueTypeEnum，支持 SPI
-          rejected-handler: 'AbortPolicy'  # 拒绝策略名称，参考 RejectedPolicies，支持 SPI
-          keep-alive-time: 1024  # 线程存活时间，单位秒  
-          allow-core-thread-time-out: true  # 是否允许核心线程超时
-          thread-name-prefix: 'message-consume'  # 线程名称前缀
-          notify:  # 通知配置，线程池中通知配置如果存在，则会覆盖全局通知配置
-            is-alarm: true  # 是否报警
-            active-alarm: 80  # 活跃度报警阈值；假设线程池最大线程数 10，当线程数达到 8 发起报警
-            capacity-alarm: 80  # 容量报警阈值；假设阻塞队列容量 100，当容量达到 80 发起报警
-            interval: 8  # 报警间隔，同一线程池下同一报警纬度，在 interval 时间内只会报警一次，单位分钟
-            receive: xxx # 企业微信填写用户 ID（填写其它将无法达到 @ 效果）、钉钉填手机号、飞书填 ou_ 开头唯一 ID
+        - thread-pool-id: 'message-consume'
+          # 核心线程数
+          core-pool-size: 1
+          # 最大线程数
+          maximum-pool-size: 1
+          # 阻塞队列名称，参考 BlockingQueueTypeEnum，支持 SPI
+          blocking-queue: 'LinkedBlockingQueue'
+          # 阻塞队列大小
+          queue-capacity: 1
+          # 执行超时时间，超过此时间发起报警，单位毫秒
+          execute-time-out: 1000
+          # 拒绝策略名称，参考 RejectedPolicyTypeEnum，支持 SPI
+          rejected-handler: 'AbortPolicy'
+          # 线程存活时间，单位秒
+          keep-alive-time: 1024
+          # 是否允许核心线程超时
+          allow-core-thread-time-out: true
+          # 线程工厂名称前缀
+          thread-name-prefix: 'message-consume'
+          # 是否报警
+          alarm: true
+          # 活跃度报警阈值；假设线程池最大线程数 10，当线程数达到 8 发起报警
+          active-alarm: 80
+          # 容量报警阈值；假设阻塞队列容量 100，当容量达到 80 发起报警
+          capacity-alarm: 80
+          # 通知配置，线程池中通知配置如果存在，则会覆盖全局通知配置
+          notify:
+            # 报警间隔，同一线程池下同一报警纬度，在 interval 时间内只会报警一次，单位分钟
+            interval: 8
+            # 企业微信填写用户 ID（填写其它将无法达到 @ 效果）、钉钉填手机号、飞书填 ou_ 开头唯一 ID
+            receive: xxx
         - thread-pool-id: 'message-produce'
           core-pool-size: 1
           maximum-pool-size: 1
@@ -100,10 +125,10 @@ spring:
           keep-alive-time: 1024
           allow-core-thread-time-out: true
           thread-name-prefix: 'message-consume'
+          alarm: true
+          active-alarm: 80
+          capacity-alarm: 80
           notify:
-            is-alarm: true
-            active-alarm: 80
-            capacity-alarm: 80
             interval: 8
             receive: xxx
 ```

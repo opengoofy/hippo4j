@@ -4,10 +4,9 @@ sidebar_position: 4
 
 # 支持开源
 
-如果您正在使用这个项目并感觉良好，或者是想支持我继续开发，您可以通过如下 `任意` 方式支持我：
+如果您正在使用这个项目并感觉良好，或者是想支持我继续开发。通过以下二维码 一次性捐款，我多半会买一杯咖啡或茶～
 
-- GitHub Star 并分享动态线程池框架 [Hippo4J](https://github.com/opengoofy/hippo4j)
-- 通过以下二维码 一次性捐款。我多半会买一杯咖啡或茶～
+> [GitHub](https://github.com/opengoofy/hippo4j) 或 [Gitee](https://gitee.com/agentart/hippo4j) Star 才是最大动力~
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/IMG_6719_2.jpg?x-oss-process=image/resize,h_180,w_180)
 

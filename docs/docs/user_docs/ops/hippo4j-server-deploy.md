@@ -4,8 +4,7 @@ sidebar_position: 1
 
 # hippo4j server 部署
 
-
-[RELEASE](https://github.com/longtai-cn/hippo4j/releases) 页面下载对应版本并进行解压。
+[RELEASE](https://github.com/opengoofy/hippo4j/releases) 页面下载对应版本并进行解压。
 
 ## 初始化
 
@@ -15,11 +14,13 @@ sidebar_position: 1
 /conf/application.properties
 ```
 
-数据库执行 SQL 脚本。
+如果是新运行 Hippo-4J，数据库执行下述 SQL 脚本即可。
 
 ```txt
 /conf/hippo4j_manager.sql
 ```
+
+如果是对已运行 Hippo-4J 升级，请查看 `/conf/sql-upgrade` 目录下，是否有目标版本对应的升级脚本。
 
 ## 直接运行
 

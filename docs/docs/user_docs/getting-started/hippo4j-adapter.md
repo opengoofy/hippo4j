@@ -10,6 +10,7 @@ Hippo4J 目前已支持的三方框架线程池列表：
 - Hystrix
 - RabbitMQ
 - RocketMQ
+- AlibabaDubbo
 - RocketMQSpringCloudStream
 
 引入 Hippo4J Server 或 Core 的 Maven Jar 坐标后，还需要引入对应的框架适配 Jar：
@@ -19,6 +20,8 @@ Hippo4J 目前已支持的三方框架线程池列表：
     <groupId>cn.hippo4j</groupId>
     <!-- Dubbo -->
     <artifactId>hippo4j-spring-boot-starter-adapter-dubbo</artifactId>
+    <!-- Alibaba Dubbo -->
+    <artifactId>hippo4j-spring-boot-starter-adapter-alibaba-dubbo</artifactId>
     <!-- Hystrix -->
     <artifactId>hippo4j-spring-boot-starter-adapter-hystrix</artifactId>
     <!-- RabbitMQ -->
@@ -27,7 +30,7 @@ Hippo4J 目前已支持的三方框架线程池列表：
     <artifactId>hippo4j-spring-boot-starter-adapter-rocketmq</artifactId>
     <!-- SpringCloud Stream RocketMQ -->
     <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</artifactId>
-    <version>1.3.1</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
@@ -37,7 +40,7 @@ Hippo4J 目前已支持的三方框架线程池列表：
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-spring-boot-starter-adapter-all</artifactId>
-    <version>1.3.1</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
