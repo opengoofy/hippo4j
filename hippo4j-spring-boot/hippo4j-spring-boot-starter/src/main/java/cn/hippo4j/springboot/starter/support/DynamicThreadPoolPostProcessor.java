@@ -20,6 +20,8 @@ package cn.hippo4j.springboot.starter.support;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.enums.EnableEnum;
+import cn.hippo4j.common.executor.support.QueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedTypeEnum;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;

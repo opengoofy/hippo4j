@@ -34,9 +34,9 @@ public class ErrorLogRejectedExecutionHandler implements CustomRejectedExecution
 }
 ```
 
-创建 `src/main/resources/META-INF/services` 目录，创建 SPI 自定义拒绝策略文件 `cn.hippo4j.core.spi.CustomRejectedExecutionHandler`。
+创建 `src/main/resources/META-INF/services` 目录，创建 SPI 自定义拒绝策略文件 `cn.hippo4j.common.executor.support.CustomRejectedExecutionHandler`。
 
-`cn.hippo4j.core.spi.CustomRejectedExecutionHandler` 文件内仅放一行自定义拒绝策略全限定名即可，示例：
+`cn.hippo4j.common.executor.support.CustomRejectedExecutionHandler` 文件内仅放一行自定义拒绝策略全限定名即可，示例：
 
 ```text
 cn.hippo4j.example.core.handler.ErrorLogRejectedExecutionHandler

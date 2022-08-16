@@ -15,10 +15,9 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support;
+package cn.hippo4j.common.executor.support;
 
-import cn.hippo4j.core.spi.CustomBlockingQueue;
-import cn.hippo4j.core.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 
 import java.util.Arrays;
 import java.util.Collection;

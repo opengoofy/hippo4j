@@ -24,8 +24,8 @@ import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.QueueTypeEnum;
-import cn.hippo4j.core.executor.support.RejectedTypeEnum;
+import cn.hippo4j.common.executor.support.QueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedTypeEnum;
 import cn.hippo4j.core.executor.support.service.AbstractDynamicThreadPoolService;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
@@ -67,9 +67,10 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
                 .maximumPoolSize(registerParameter.getMaximumPoolSize())
                 .allowCoreThreadTimeOut(BooleanUtil.toBoolean(String.valueOf(registerParameter.getAllowCoreThreadTimeOut())))
                 .keepAliveTime(registerParameter.getKeepAliveTime())
-                .blockingQueue(QueueTypeEnum.getBlockingQueueNameByType(registerParameter.getQueueType()))
+                .blockingQueue(QueueTypeEnum.getBlockingQueueNameByType(registerParameter.getQueueType().type))
+                .capacityAlarm(registerParameter.getCapacity())
                 .threadNamePrefix(registerParameter.getThreadNamePrefix())
-                .rejectedHandler(RejectedTypeEnum.getRejectedNameByType(registerParameter.getRejectedType()))
+                .rejectedHandler(RejectedTypeEnum.getRejectedNameByType(registerParameter.getRejectedType().type))
                 .executeTimeOut(registerParameter.getExecuteTimeOut())
                 .threadPoolId(registerParameter.getThreadPoolId())
                 .build();

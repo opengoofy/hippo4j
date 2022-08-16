@@ -15,24 +15,24 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.spi;
+package cn.hippo4j.common.executor.support;
 
-import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.BlockingQueue;
 
 /**
- * Custom rejected execution handler.
+ * Custom blocking-queue.
  */
-public interface CustomRejectedExecutionHandler {
+public interface CustomBlockingQueue {
 
     /**
-     * Get custom reject policy type.
+     * Gets the custom blocking queue type.
      *
      * @return
      */
     Integer getType();
 
     /**
-     * Adapt hippo-4j core rejected execution handler.
+     * Adapt hippo4j core blocking queue.
      *
      * @return
      */
@@ -41,9 +41,9 @@ public interface CustomRejectedExecutionHandler {
     }
 
     /**
-     * Get custom reject policy.
+     * Get custom blocking queue.
      *
      * @return
      */
-    RejectedExecutionHandler generateRejected();
+    BlockingQueue generateBlockingQueue();
 }

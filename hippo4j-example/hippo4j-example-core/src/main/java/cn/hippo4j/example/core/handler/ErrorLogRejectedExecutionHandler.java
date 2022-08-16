@@ -17,7 +17,7 @@
 
 package cn.hippo4j.example.core.handler;
 
-import cn.hippo4j.core.spi.CustomRejectedExecutionHandler;
+import cn.hippo4j.common.executor.support.CustomRejectedExecutionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

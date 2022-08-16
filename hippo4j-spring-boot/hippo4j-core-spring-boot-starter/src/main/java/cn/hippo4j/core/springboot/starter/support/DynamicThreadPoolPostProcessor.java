@@ -18,6 +18,8 @@
 package cn.hippo4j.core.springboot.starter.support;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.executor.support.QueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedTypeEnum;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;

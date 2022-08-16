@@ -23,8 +23,8 @@ import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterCoreNoti
 import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterServerNotifyParameter;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.QueueTypeEnum;
-import cn.hippo4j.core.executor.support.RejectedTypeEnum;
+import cn.hippo4j.common.executor.support.QueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedTypeEnum;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,13 +40,13 @@ public class RegisterDynamicThreadPoolTest {
         DynamicThreadPoolRegisterParameter parameterInfo = DynamicThreadPoolRegisterParameter.builder()
                 .corePoolSize(1)
                 .maximumPoolSize(2)
-                .queueType(QueueTypeEnum.LINKED_BLOCKING_QUEUE.type)
+                .queueType(QueueTypeEnum.LINKED_BLOCKING_QUEUE)
                 .capacity(1024)
                 // TimeUnit.SECONDS
                 .keepAliveTime(1024L)
                 // TimeUnit.MILLISECONDS
                 .executeTimeOut(1024L)
-                .rejectedType(RejectedTypeEnum.DISCARD_POLICY.type)
+                .rejectedType(RejectedTypeEnum.DISCARD_POLICY)
                 .isAlarm(true)
                 .allowCoreThreadTimeOut(false)
                 .capacityAlarm(90)

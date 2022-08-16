@@ -15,35 +15,14 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.spi;
-
-import java.util.concurrent.BlockingQueue;
+package cn.hippo4j.common.spi;
 
 /**
- * Custom blocking-queue.
+ * Service loader instantiation exception.
  */
-public interface CustomBlockingQueue {
+public class ServiceLoaderInstantiationException extends RuntimeException {
 
-    /**
-     * Gets the custom blocking queue type.
-     *
-     * @return
-     */
-    Integer getType();
-
-    /**
-     * Adapt hippo4j core blocking queue.
-     *
-     * @return
-     */
-    default String getName() {
-        return "";
+    public ServiceLoaderInstantiationException(final Class<?> clazz, final Exception cause) {
+        super(String.format("Can not find public default constructor for SPI class `%s`", clazz.getName()), cause);
     }
-
-    /**
-     * Get custom blocking queue.
-     *
-     * @return
-     */
-    BlockingQueue generateBlockingQueue();
 }

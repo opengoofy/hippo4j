@@ -17,6 +17,7 @@
 
 package cn.hippo4j.core.executor.support;
 
+import cn.hippo4j.common.executor.support.QueueTypeEnum;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 
 import java.util.concurrent.TimeUnit;

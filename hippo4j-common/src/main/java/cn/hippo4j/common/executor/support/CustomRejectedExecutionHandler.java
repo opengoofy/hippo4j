@@ -15,28 +15,35 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support;
-
-import lombok.extern.slf4j.Slf4j;
+package cn.hippo4j.common.executor.support;
 
 import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Synchronous put queue policy.
+ * Custom rejected execution handler.
  */
-@Slf4j
-public class SyncPutQueuePolicy implements RejectedExecutionHandler {
+public interface CustomRejectedExecutionHandler {
 
-    @Override
-    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-        if (executor.isShutdown()) {
-            return;
-        }
-        try {
-            executor.getQueue().put(r);
-        } catch (InterruptedException e) {
-            log.error("Adding Queue task to thread pool failed.", e);
-        }
+    /**
+     * Get custom reject policy type.
+     *
+     * @return
+     */
+    Integer getType();
+
+    /**
+     * Adapt hippo-4j core rejected execution handler.
+     *
+     * @return
+     */
+    default String getName() {
+        return "";
     }
+
+    /**
+     * Get custom reject policy.
+     *
+     * @return
+     */
+    RejectedExecutionHandler generateRejected();
 }

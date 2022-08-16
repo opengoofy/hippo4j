@@ -20,7 +20,7 @@ package cn.hippo4j.core.springboot.starter.monitor;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
-import cn.hippo4j.core.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
 import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.ThreadPoolMonitor;

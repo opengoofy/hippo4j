@@ -23,7 +23,7 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
-import cn.hippo4j.core.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.monitor.collect.Collector;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;

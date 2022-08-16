@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.spi;
+package cn.hippo4j.common.spi;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

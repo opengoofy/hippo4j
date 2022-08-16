@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
-import cn.hippo4j.core.executor.support.QueueTypeEnum;
+import cn.hippo4j.common.executor.support.QueueTypeEnum;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import lombok.RequiredArgsConstructor;

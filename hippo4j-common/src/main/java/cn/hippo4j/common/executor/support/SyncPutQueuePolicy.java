@@ -15,14 +15,28 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.spi;
+package cn.hippo4j.common.executor.support;
+
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Service loader instantiation exception.
+ * Synchronous put queue policy.
  */
-public class ServiceLoaderInstantiationException extends RuntimeException {
+@Slf4j
+public class SyncPutQueuePolicy implements RejectedExecutionHandler {
 
-    public ServiceLoaderInstantiationException(final Class<?> clazz, final Exception cause) {
-        super(String.format("Can not find public default constructor for SPI class `%s`", clazz.getName()), cause);
+    @Override
+    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+        if (executor.isShutdown()) {
+            return;
+        }
+        try {
+            executor.getQueue().put(r);
+        } catch (InterruptedException e) {
+            log.error("Adding Queue task to thread pool failed.", e);
+        }
     }
 }
