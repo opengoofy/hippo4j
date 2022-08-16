@@ -26,7 +26,7 @@
     </modules>
 
     <properties>
-        <revision>1.4.0-SNAPSHOT</revision>
+        <revision>1.4.0</revision>
 
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
