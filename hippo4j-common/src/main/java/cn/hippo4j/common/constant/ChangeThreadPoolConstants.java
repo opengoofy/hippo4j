@@ -25,7 +25,7 @@ public class ChangeThreadPoolConstants {
     /**
      * Dynamic thread pool parameter change text
      */
-    public static final String CHANGE_THREAD_POOL_TEXT = " [{}] Dynamic thread pool change parameter." +
+    public static final String CHANGE_THREAD_POOL_TEXT = "[{}] Dynamic thread pool change parameter." +
             "\n    corePoolSize: [{}]" +
             "\n    maximumPoolSize: [{}]" +
             "\n    capacity: [{}]" +
