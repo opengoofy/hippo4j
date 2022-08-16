@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.example.es.monitor;
+package cn.hippo4j.springboot.starter.adapter.kafka.example;
 
 import cn.hippo4j.core.enable.EnableDynamicThreadPool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 @EnableDynamicThreadPool
-@SpringBootApplication(scanBasePackages = {"cn.hippo4j.example.core", "cn.hippo4j.monitor"})
-public class Hippo4JExampleEsMonitorApplication {
+public class ServerAdapterKafkaExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Hippo4JExampleEsMonitorApplication.class, args);
+        SpringApplication.run(ServerAdapterKafkaExampleApplication.class, args);
     }
 }

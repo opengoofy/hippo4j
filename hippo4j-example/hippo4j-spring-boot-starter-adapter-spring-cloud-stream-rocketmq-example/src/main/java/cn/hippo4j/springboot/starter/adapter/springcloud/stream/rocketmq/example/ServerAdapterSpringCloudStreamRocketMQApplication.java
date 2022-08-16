@@ -15,17 +15,22 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.example.server;
+package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq.example;
 
 import cn.hippo4j.core.enable.EnableDynamicThreadPool;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Source;
 
+@Slf4j
 @EnableDynamicThreadPool
-@SpringBootApplication(scanBasePackages = {"cn.hippo4j.example.core", "cn.hippo4j.example.server"})
-public class Hippo4JServerExampleApplication {
+@EnableBinding({Source.class, MySink.class})
+@SpringBootApplication
+public class ServerAdapterSpringCloudStreamRocketMQApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Hippo4JServerExampleApplication.class, args);
+        SpringApplication.run(ServerAdapterSpringCloudStreamRocketMQApplication.class, args);
     }
 }

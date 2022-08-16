@@ -23,9 +23,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @EnableDynamicThreadPool
 @SpringBootApplication(scanBasePackages = {"cn.hippo4j.example.core", "cn.hippo4j.springboot.starter.adapter.rabbitmq.example"})
-public class Hippo4jAdapterRabbitMQExampleApplication {
+public class ServerAdapterRabbitMQExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Hippo4jAdapterRabbitMQExampleApplication.class, args);
+        SpringApplication.run(ServerAdapterRabbitMQExampleApplication.class, args);
     }
 }

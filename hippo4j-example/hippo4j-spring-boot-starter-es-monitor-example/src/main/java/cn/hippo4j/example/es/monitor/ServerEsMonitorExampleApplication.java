@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.adapter.rocketmq.example;
+package cn.hippo4j.example.es.monitor;
 
 import cn.hippo4j.core.enable.EnableDynamicThreadPool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @EnableDynamicThreadPool
-@SpringBootApplication(scanBasePackages = {"cn.hippo4j.example.core", "cn.hippo4j.springboot.starter.adapter.rocketmq.example"})
-public class Hippo4jAdapterRocketMQExampleApplication {
+@SpringBootApplication(scanBasePackages = {"cn.hippo4j.example.core", "cn.hippo4j.monitor"})
+public class ServerEsMonitorExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Hippo4jAdapterRocketMQExampleApplication.class, args);
+        SpringApplication.run(ServerEsMonitorExampleApplication.class, args);
     }
 }
