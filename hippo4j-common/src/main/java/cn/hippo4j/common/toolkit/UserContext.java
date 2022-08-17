@@ -28,7 +28,7 @@ import java.util.Optional;
  */
 public class UserContext {
 
-    private static final ThreadLocal<User> USER_THREAD_LOCAL = new ThreadLocal();
+    private static final ThreadLocal<User> USER_THREAD_LOCAL = new ThreadLocal<>();
 
     public static void setUserInfo(String username, String userRole) {
         USER_THREAD_LOCAL.set(new User(username, userRole));
