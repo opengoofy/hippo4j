@@ -30,7 +30,7 @@ Hippo4J 目前已支持的三方框架线程池列表：
     <artifactId>hippo4j-spring-boot-starter-adapter-rocketmq</artifactId>
     <!-- SpringCloud Stream RocketMQ -->
     <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.0-RC</version>
 </dependency>
 ```
 
@@ -40,7 +40,7 @@ Hippo4J 目前已支持的三方框架线程池列表：
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-spring-boot-starter-adapter-all</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.0-RC</version>
 </dependency>
 ```
 
