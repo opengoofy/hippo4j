@@ -83,8 +83,9 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
     @Override
     public void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO) {
         ConfigAllInfo configAllInfo = BeanUtil.convert(reqDTO, ConfigAllInfo.class);
-        Long executeTimeOut = configAllInfo.getExecuteTimeOut() == 0 ? null : configAllInfo.getExecuteTimeOut();
-        configAllInfo.setExecuteTimeOut(executeTimeOut);
+        Optional.ofNullable(configAllInfo.getExecuteTimeOut())
+                .filter(executeTimeOut -> !Objects.equals(executeTimeOut, 0L))
+                .ifPresent(configAllInfo::setExecuteTimeOut);
         configService.insertOrUpdate(identify, false, configAllInfo);
     }
 
@@ -102,7 +103,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
         LogRecordInfo logRecordInfo = LogRecordInfo.builder()
                 .bizKey(requestParam.getItemId() + "_" + requestParam.getTpId())
                 .bizNo(requestParam.getItemId() + "_" + requestParam.getTpId())
-                .operator(Optional.ofNullable(UserContext.getUserName()).orElse("-"))
+                .operator(UserContext.getUserName())
                 .action("删除线程池: " + requestParam.getTpId())
                 .category("THREAD_POOL_DELETE")
                 .detail(JSONUtil.toJSONString(requestParam))
