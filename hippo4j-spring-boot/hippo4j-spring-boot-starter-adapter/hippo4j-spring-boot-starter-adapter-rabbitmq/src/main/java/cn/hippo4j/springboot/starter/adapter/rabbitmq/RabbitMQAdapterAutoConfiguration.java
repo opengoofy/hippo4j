@@ -17,9 +17,12 @@
 
 package cn.hippo4j.springboot.starter.adapter.rabbitmq;
 
+import java.util.Map;
+
 import cn.hippo4j.adapter.rabbitmq.RabbitMQThreadPoolAdapter;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -33,7 +36,7 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class RabbitMQAdapterAutoConfiguration {
 
-    private final AbstractConnectionFactory abstractConnectionFactories;
+    private final Map<String, AbstractConnectionFactory> stringAbstractConnectionFactoryMap;
 
     @Bean
     @ConditionalOnMissingBean
@@ -45,6 +48,6 @@ public class RabbitMQAdapterAutoConfiguration {
     @SuppressWarnings("all")
     @ConditionalOnProperty(name = "spring.rabbitmq.host")
     public RabbitMQThreadPoolAdapter rabbitMQThreadPoolAdapter(ApplicationContextHolder applicationContextHolder) {
-        return new RabbitMQThreadPoolAdapter(abstractConnectionFactories);
+        return new RabbitMQThreadPoolAdapter(stringAbstractConnectionFactoryMap);
     }
 }

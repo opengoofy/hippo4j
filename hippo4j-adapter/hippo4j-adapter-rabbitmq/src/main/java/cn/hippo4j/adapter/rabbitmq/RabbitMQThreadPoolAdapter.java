@@ -17,6 +17,12 @@
 
 package cn.hippo4j.adapter.rabbitmq;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
@@ -25,15 +31,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 
@@ -44,74 +45,73 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
 @RequiredArgsConstructor
 public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
-    private static final String RABBITMQ = "RabbitMQ";
+	private static final String RABBITMQ = "RabbitMQ";
 
-    private static final String FiledName = "executorService";
+	private static final String FiledName = "executorService";
 
-    /**
-     * TODO Configurable name
-     */
-    private static final String RABBITMQ_EXECUTOR_SERVICE = "Rabbitmq_Executor_Service";
+	private final Map<String, AbstractConnectionFactory> abstractConnectionFactoryMap;
 
-    private final AbstractConnectionFactory abstractConnectionFactory;
+	private final Map<String, ThreadPoolExecutor> RABBITMQ_THREAD_POOL_TASK_EXECUTOR = Maps.newHashMap();
 
-    private final Map<String, ThreadPoolExecutor> RABBITMQ_THREAD_POOL_TASK_EXECUTOR = Maps.newHashMap();
+	@Override
+	public String mark() {
+		return RABBITMQ;
+	}
 
-    @Override
-    public String mark() {
-        return RABBITMQ;
-    }
+	@Override
+	public ThreadPoolAdapterState getThreadPoolState(String identify) {
+		ThreadPoolAdapterState threadPoolAdapterState = new ThreadPoolAdapterState();
+		ThreadPoolExecutor threadPoolTaskExecutor = RABBITMQ_THREAD_POOL_TASK_EXECUTOR.get(identify);
+		threadPoolAdapterState.setThreadPoolKey(identify);
+		if (Objects.nonNull(threadPoolTaskExecutor)) {
+			threadPoolAdapterState.setCoreSize(threadPoolTaskExecutor.getCorePoolSize());
+			threadPoolAdapterState.setMaximumSize(threadPoolTaskExecutor.getMaximumPoolSize());
+		}
+		return threadPoolAdapterState;
+	}
 
-    @Override
-    public ThreadPoolAdapterState getThreadPoolState(String identify) {
-        ThreadPoolAdapterState threadPoolAdapterState = new ThreadPoolAdapterState();
-        ThreadPoolExecutor threadPoolTaskExecutor = RABBITMQ_THREAD_POOL_TASK_EXECUTOR.get(identify);
-        threadPoolAdapterState.setThreadPoolKey(identify);
-        if (Objects.nonNull(threadPoolTaskExecutor)) {
-            threadPoolAdapterState.setCoreSize(threadPoolTaskExecutor.getCorePoolSize());
-            threadPoolAdapterState.setMaximumSize(threadPoolTaskExecutor.getMaximumPoolSize());
-        }
-        return threadPoolAdapterState;
-    }
+	@Override
+	public List<ThreadPoolAdapterState> getThreadPoolStates() {
+		List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
+		RABBITMQ_THREAD_POOL_TASK_EXECUTOR.forEach(
+				(key, val) -> adapterStateList.add(getThreadPoolState(key)));
+		return adapterStateList;
+	}
 
-    @Override
-    public List<ThreadPoolAdapterState> getThreadPoolStates() {
-        List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
-        RABBITMQ_THREAD_POOL_TASK_EXECUTOR.forEach(
-                (key, val) -> adapterStateList.add(getThreadPoolState(key)));
-        return adapterStateList;
-    }
+	@Override
+	public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
+		String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
+		ThreadPoolExecutor threadPoolTaskExecutor = RABBITMQ_THREAD_POOL_TASK_EXECUTOR.get(threadPoolKey);
+		if (Objects.nonNull(threadPoolTaskExecutor)) {
+			int originalCoreSize = threadPoolTaskExecutor.getCorePoolSize();
+			int originalMaximumPoolSize = threadPoolTaskExecutor.getMaximumPoolSize();
+			threadPoolTaskExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
+			threadPoolTaskExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
+			log.info("[{}] Rabbitmq consumption thread pool parameter change. coreSize: {}, maximumSize: {}",
+					threadPoolKey,
+					String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolAdapterParameter.getCorePoolSize()),
+					String.format(CHANGE_DELIMITER, originalMaximumPoolSize, threadPoolAdapterParameter.getMaximumPoolSize()));
+			return true;
+		}
+		log.warn("[{}] Rabbitmq consuming thread pool not found.", threadPoolKey);
+		return false;
+	}
 
-    @Override
-    public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
-        String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
-        ThreadPoolExecutor threadPoolTaskExecutor = RABBITMQ_THREAD_POOL_TASK_EXECUTOR.get(threadPoolKey);
-        if (Objects.nonNull(threadPoolTaskExecutor)) {
-            int originalCoreSize = threadPoolTaskExecutor.getCorePoolSize();
-            int originalMaximumPoolSize = threadPoolTaskExecutor.getMaximumPoolSize();
-            threadPoolTaskExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
-            threadPoolTaskExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
-            log.info("[{}] Rabbitmq consumption thread pool parameter change. coreSize: {}, maximumSize: {}",
-                    threadPoolKey,
-                    String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolAdapterParameter.getCorePoolSize()),
-                    String.format(CHANGE_DELIMITER, originalMaximumPoolSize, threadPoolAdapterParameter.getMaximumPoolSize()));
-            return true;
-        }
-        log.warn("[{}] Rabbitmq consuming thread pool not found.", threadPoolKey);
-        return false;
-    }
+	@Override
+	public void onApplicationEvent(ApplicationStartedEvent event) {
+		abstractConnectionFactoryMap.forEach((beanName, abstractConnectionFactor) -> {
+			ExecutorService executor = (ExecutorService) ReflectUtil.getFieldValue(abstractConnectionFactor, FiledName);
+			if (Objects.nonNull(executor)) {
+				if (executor instanceof ThreadPoolExecutor) {
+					ThreadPoolExecutor threadPoolTaskExecutor = (ThreadPoolExecutor) executor;
+					RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(beanName, threadPoolTaskExecutor);
+					log.info("Rabbitmq executor name {}", beanName);
+				}
+				else {
+					log.warn("Custom thread pools only support ThreadPoolExecutor");
+				}
+			}
 
-    @Override
-    public void onApplicationEvent(ApplicationStartedEvent event) {
-        ExecutorService executor = (ExecutorService) ReflectUtil.getFieldValue(abstractConnectionFactory, FiledName);
-        if (Objects.nonNull(executor)) {
-            if (executor instanceof ThreadPoolExecutor) {
-                ThreadPoolExecutor threadPoolTaskExecutor = (ThreadPoolExecutor) executor;
-                RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(RABBITMQ_EXECUTOR_SERVICE, threadPoolTaskExecutor);
-                log.info("Rabbitmq executor name {}", RABBITMQ_EXECUTOR_SERVICE);
-            } else {
-                log.warn("Custom thread pools only support ThreadPoolExecutor");
-            }
-        }
-    }
+		});
+	}
 }
