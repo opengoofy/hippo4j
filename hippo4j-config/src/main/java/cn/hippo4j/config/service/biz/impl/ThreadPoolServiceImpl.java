@@ -40,7 +40,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * Thread pool service impl.
@@ -83,7 +83,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
     @Override
     public void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO) {
         ConfigAllInfo configAllInfo = BeanUtil.convert(reqDTO, ConfigAllInfo.class);
-        Long executeTimeOut = configAllInfo.getExecuteTimeOut() == 0 ? null : configAllInfo.getExecuteTimeOut();
+        Long executeTimeOut = Objects.equals(configAllInfo.getExecuteTimeOut(), 0L) ? null : configAllInfo.getExecuteTimeOut();
         configAllInfo.setExecuteTimeOut(executeTimeOut);
         configService.insertOrUpdate(identify, false, configAllInfo);
     }
@@ -102,7 +102,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
         LogRecordInfo logRecordInfo = LogRecordInfo.builder()
                 .bizKey(requestParam.getItemId() + "_" + requestParam.getTpId())
                 .bizNo(requestParam.getItemId() + "_" + requestParam.getTpId())
-                .operator(Optional.ofNullable(UserContext.getUserName()).orElse("-"))
+                .operator(UserContext.getUserName())
                 .action("删除线程池: " + requestParam.getTpId())
                 .category("THREAD_POOL_DELETE")
                 .detail(JSONUtil.toJSONString(requestParam))
