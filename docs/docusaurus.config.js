@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'HIPPO-4J 文档',
+    title: 'HIPPO-4J',
     tagline: '动态可观测线程池框架，为业务系统提高线上运行保障能力',
     url: 'https://hippo4j.cn',
     baseUrl: '/',
@@ -64,7 +64,7 @@ const config = {
                 // content: `<a target="_blank" rel="noopener noreferrer" href="https://xiaomage.info/knowledge-planet/">👉 《小马哥的代码实战课》官方知识星球来啦！！！</a>`,
             },
             navbar: {
-                title: '4J',
+                title: 'Hippo-4J 文档',
                 logo: {
                     alt: 'HIPPO-4J 动态可观测线程池框架',
                     src: 'img/web.png',
