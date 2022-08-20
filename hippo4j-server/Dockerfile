@@ -17,7 +17,9 @@
 FROM openjdk:8-jre-slim
 MAINTAINER lijianxin
 
-ENV MYSQL_DATASOURCE_URL="127.0.0.1:3306/hippo4j_manager" \
+ENV MYSQL_HOST="127.0.0.1" \
+    MYSQL_PORT="3306" \
+    MYSQL_DB="hippo4j_manager" \
     MYSQL_USERNAME="root" \
     MYSQL_PASSWORD="root" \
     BASE_DIR="/opt/hippo4j"
@@ -40,6 +42,6 @@ ENTRYPOINT ["sh","-c","java -jar \
  hippo4j-server.jar \
  --server.max-http-header-size=524288 --server.tomcat.basedir=${BASE_DIR}/tomcat/ \
      --logging.config=${BASE_DIR}/logback.xml \
-     --spring.datasource.url=\"jdbc:mysql://$MYSQL_DATASOURCE_URL?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8\" \
+     --spring.datasource.url=\"jdbc:mysql://$MYSQL_HOST:$MYSQL_PORT/$MYSQL_DB?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8\" \
      --spring.datasource.username=$MYSQL_USERNAME --spring.datasource.password=$MYSQL_PASSWORD \
  "]
