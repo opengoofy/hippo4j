@@ -17,7 +17,7 @@
 FROM openjdk:8-jre-slim
 MAINTAINER lijianxin
 
-ENV MYSQL_HOST="" \
+ENV MYSQL_HOST="127.0.0.1:3306" \
     MYSQL_PORT="3306" \
     MYSQL_DB="hippo4j_manager" \
     MYSQL_USERNAME="root" \
