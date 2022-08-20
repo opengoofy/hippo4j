@@ -38,9 +38,12 @@ docker pull hippo4j-server
 docker run -p 6691:6691 --name hippo4j-server -d hippo4j-server:{指定版本}
 
 /**
-* 如需自定义 mysql 等配置，可通过 "-e PARAMS" 指定，参数格式 PARAMS="--key=value --key2=value2"
-* 配置项参考文件：/hippo4j-server/src/main/resources/application.properties
-* 如需自定义 JVM内存参数 等配置，可通过 "-e JAVA_OPTS" 指定，参数格式 JAVA_OPTS="-Xmx512m"
+* 暂时只暴露以下参数
+* MYSQL_DATASOURCE_URL、MYSQL_USERNAME、MYSQL_PASSWORD
 */
-docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://localhost:3306/hippo4j_manager?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8" -p 6691:6691  --name hippo4j-server  -d hippo4j-server:{指定版本}
+docker run -p 6691:6691 --name hippo4j-server \
+-e MYSQL_DATASOURCE_URL=127.0.0.1:3306/hippo4j_manager \
+-e MYSQL_USERNAME=root \
+-e MYSQL_PASSWORD=mysql \
+-d hippo4j-server 
 ```
