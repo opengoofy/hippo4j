@@ -44,7 +44,7 @@ docker run -p 6691:6691 --name hippo4j-server -d hippo4j-server:{指定版本}
 docker run -p 6691:6691 --name hippo4j-server \
 -e MYSQL_HOST=127.0.0.1 \
 -e MYSQL_PORT=3306 \
--e MYSQL_DB= hippo4j_manager \
+-e MYSQL_DB=hippo4j_manager \
 -e MYSQL_USERNAME=root \
 -e MYSQL_PASSWORD=mysql \
 -d hippo4j-server 
