@@ -17,14 +17,29 @@
 FROM openjdk:8-jre-slim
 MAINTAINER lijianxin
 
-ENV PARAMS=""
+ENV MYSQL_DATASOURCE_URL="127.0.0.1:3306/hippo4j_manager" \
+    MYSQL_USERNAME="root" \
+    MYSQL_PASSWORD="root" \
+    BASE_DIR="/opt/hippo4j"
 
 ENV TZ=PRC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-ADD conf/hippo4j-logback.xml /opt/hippo4j/logback.xml
-ADD target/hippo4j-server.jar /opt/hippo4j/hippo4j-server.jar
+ADD conf/hippo4j-logback.xml ${BASE_DIR}/logback.xml
+ADD target/hippo4j-server.jar ${BASE_DIR}/hippo4j-server.jar
 
-WORKDIR /opt/hippo4j
+WORKDIR ${BASE_DIR}
 
-ENTRYPOINT ["sh","-c","java -jar -Dhippo4j.home=/opt/hippo4j $JAVA_OPTS /opt/hippo4j/hippo4j-server.jar --server.tomcat.basedir=/opt/tomcat --logging.config=/opt/hippo4j/logback.xml $PARAMS"]
+ENTRYPOINT ["sh","-c","java -jar \
+ -Xloggc:${BASE_DIR}/hippo4j_gc.log -verbose:gc -XX:+PrintGCDetails \
+      -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation \
+      -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M \
+      -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${BASE_DIR}/java_heapdump.hprof \
+      -Xms1024m -Xmx1024m -Xmn512m \
+      -Dhippo4j.standalone=true -Dhippo4j.home=${BASE_DIR} \
+ hippo4j-server.jar \
+ --server.max-http-header-size=524288 --server.tomcat.basedir=${BASE_DIR}/tomcat/ \
+     --logging.config=${BASE_DIR}/logback.xml \
+     --spring.datasource.url=\"jdbc:mysql://$MYSQL_DATASOURCE_URL?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8\" \
+     --spring.datasource.username=$MYSQL_USERNAME --spring.datasource.password=$MYSQL_PASSWORD \
+ "]
