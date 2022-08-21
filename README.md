@@ -36,32 +36,32 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - http://console.hippo4j.cn/index.html
 - 用户名/密码：hippo4j/hippo4j
 
-## 安全检测
+## 荣誉墙
 
-[![OSCS Status](https://www.oscs1024.com/platform/badge/opengoofy/hippo4j.svg?size=large)](https://www.murphysec.com/dr/s285JA1FVHD7tayWLt)
+Hippo-4J 获得了一些宝贵的荣誉，肯定了 Hippo-4J 作为一款开源框架所带来的价值。
 
-## 联系我
-
-图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)
-
-![image](https://user-images.githubusercontent.com/77398366/180110548-7a05b74d-0316-4066-96f4-1c9331638633.png)
+<img align="center" width="680" alt="image" src="https://user-images.githubusercontent.com/77398366/170607238-7308c9be-1d63-46a6-852c-eef2e4cf7405.JPG">
 
 ## 开发者
 
-感谢所有为 Hippo-4J 做出贡献的开发者！
+Hippo-4J 获得的成就属于每一位对 Hippo-4J 做出过贡献的成员，感谢各位的贡献。
 
-<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false"/></a>
+如果屏幕前的同学有意提交 Hippo-4J，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 任务列表。
 
-## 我们的荣誉
+<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false" /></a>
 
-Hippo-4J 获得了一些宝贵的荣誉，这属于每一位对 Hippo-4J 做出过贡献的成员，谢谢各位的付出。
-
-<img align="center" width="880" alt="image" src="https://user-images.githubusercontent.com/77398366/170607238-7308c9be-1d63-46a6-852c-eef2e4cf7405.JPG">
 
 ## 友情链接
 
-- [HertzBeat](https://github.com/dromara/hertzbeat)：易用友好的云监控系统, 无需Agent, 强大自定义监控能力。   
-- [JavaGuide](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
-- [toBeBetterJavaer](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
-- [Guide-Rpc-Framework](https://github.com/Snailclimb/guide-rpc-framework)：一款基于 Netty+Kyro+Zookeeper 实现的自定义 RPC 框架。
-- [Austin](https://github.com/ZhongFuCheng3y/austin)：消息推送平台，支持短信、邮件、微信公众号、企业微信、钉钉等多种消息类型。
+- [[ HertzBeat ]](https://github.com/dromara/hertzbeat)：易用友好的云监控系统, 无需Agent, 强大自定义监控能力。   
+
+- [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
+
+- [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
+
+
+## 联系我
+
+![image](https://user-images.githubusercontent.com/77398366/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)
+
+扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)
