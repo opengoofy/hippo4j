@@ -5,8 +5,8 @@ sidebar_position: 3
 # 快速开始
 
 :::tip
-Hippo4J 支持两种运行模式，依赖配置中心（Hippo4J-Core）或 Hippo4J Server，下文描述接入 Hippo4J
-Server，[Hippo4J-Core 接入参考此处](/docs/user_docs/getting-started/hippo4j-core-start.md) 。
+Hippo4J 支持两种运行模式，依赖配置中心（Hippo4J-Config）或 Hippo4J Server，下文描述接入 Hippo4J
+Server，[Hippo4J-Config 接入参考此处](/docs/user_docs/getting-started/hippo4j-core-start.md) 。
 :::
 
 ## 如何运行 Demo
