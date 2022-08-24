@@ -18,6 +18,7 @@
 package cn.hippo4j.example.core.handler;
 
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.core.executor.support.ExecutorContext;
 import org.slf4j.MDC;
 import org.springframework.core.task.TaskDecorator;
 
@@ -33,7 +34,7 @@ public final class TaskTraceBuilderHandler implements TaskDecorator {
         String executeTimeoutTrace = MDC.get(EXECUTE_TIMEOUT_TRACE);
         Runnable taskRun = () -> {
             if (StringUtil.isNotBlank(executeTimeoutTrace)) {
-                MDC.put(EXECUTE_TIMEOUT_TRACE, executeTimeoutTrace);
+                ExecutorContext.putExecuteTimeoutTrace(executeTimeoutTrace);
             }
             runnable.run();
             // There is no need to clean up here, and it will be cleaned up after the thread task is executed.
