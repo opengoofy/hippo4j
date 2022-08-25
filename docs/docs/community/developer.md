@@ -45,5 +45,12 @@ sidebar_position: 2
     <td align="center" >核心开发者</td>
     <td align="center" >weihubeats@163.com</td>
   </tr>
-
+  <tr>
+    <td align="center"><a href="https://github.com/BigXin0109"><img src="https://avatars.githubusercontent.com/u/24769514?v=4?s=80" width="80px;"/></a></td>
+    <td align="center">李剑鑫</td>
+    <td align="center" ><a href="https://github.com/BigXin0109">BigXin0109</a></td>
+    <td align="center" ><a href="https://blog.csdn.net/qq_34741165">Only丶Big</a></td>
+    <td align="center" >核心开发者</td>
+    <td align="center" >1064730540@qq.com</td>
+  </tr>
 </table>
