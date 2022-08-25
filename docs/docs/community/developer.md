@@ -29,4 +29,12 @@ sidebar_position: 2
     <td align="center" >核心开发者</td>
     <td align="center" >1031900093@qq.com</td>
   </tr>
+   <tr>
+    <td align="center"><a href="https://github.com/iwangjie"><img src="https://avatars.githubusercontent.com/u/23075587?v=4?s=80" width="80px;"/></a></td>
+    <td align="center">王杰</td>
+    <td align="center" ><a href="https://github.com/iwangjie">iwangjie</a></td>
+    <td align="center" >-</td>
+    <td align="center" >核心开发者</td>
+    <td align="center" >wangchenmo1025@gmail.com</td>
+  </tr>
 </table>
