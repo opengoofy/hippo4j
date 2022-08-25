@@ -6,7 +6,27 @@ sidebar_position: 2
 
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/agentart"><img src="https://avatars.githubusercontent.com/u/77398366?v=4?s=100" width="100px;" alt=""/><br /><sub><b>马称</b></sub></a></td>
-    <td align="center"><a href="https://github.com/shining-stars-lk"><img src="https://avatars.githubusercontent.com/u/40255310?v=4?s=100" width="100px;" alt=""/><br /><sub><b>陆宽</b></sub></a></td>
+    <td align="center"></td>
+    <td align="center" width="140">姓名</td>
+    <td align="center" width="200">GitHub ID</td>
+    <td align="center" width="200">博客地址</td>
+    <td align="center" width="140">角色</td>
+    <td align="center" width="200">联系方式</td>
+  </tr>
+  <tr>
+    <td align="center" ><a href="https://github.com/agentart"><img src="https://avatars.githubusercontent.com/u/77398366?v=4?s=80" width="80px;"/></a></td>
+    <td align="center" >马称</td>
+    <td align="center" ><a href="https://github.com/agentart">agentart</a></td>
+    <td align="center" ><a href="http://www.xiaomage.info/">小马哥的技术专栏</a></td>
+    <td align="center" >项目发起人</td>
+    <td align="center" >machen@apache.org</td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/shining-stars-lk"><img src="https://avatars.githubusercontent.com/u/40255310?v=4?s=80" width="80px;"/></a></td>
+    <td align="center">陆宽</td>
+    <td align="center" ><a href="https://github.com/shining-stars-lk">shining-stars-lk</a></td>
+    <td align="center" >-</td>
+    <td align="center" >核心开发者</td>
+    <td align="center" >-</td>
   </tr>
 </table>
