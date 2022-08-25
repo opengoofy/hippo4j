@@ -28,8 +28,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Spring cloud stream rabbitmq adapter auto configuration.
- *
- * @author lijianxin
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(RabbitMessageChannelBinderConfiguration.class)
