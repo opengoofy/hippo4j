@@ -25,8 +25,8 @@ sidebar_position: 2
     <td align="center"><a href="https://github.com/shining-stars-lk"><img src="https://avatars.githubusercontent.com/u/40255310?v=4?s=80" width="80px;"/></a></td>
     <td align="center">陆宽</td>
     <td align="center" ><a href="https://github.com/shining-stars-lk">shining-stars-lk</a></td>
-    <td align="center" >-</td>
+    <td align="center" ><a href="http://www.xiaomage.info/">宽仔的代码之路</a></td>
     <td align="center" >核心开发者</td>
-    <td align="center" >-</td>
+    <td align="center" >1031900093@qq.com</td>
   </tr>
 </table>
