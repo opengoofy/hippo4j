@@ -74,7 +74,7 @@ public class RunStateHandlerTest {
             /**
              * When the execution of the thread pool task times out, the Trace flag is put into the MDC, and it is printed out when an alarm occurs.
              */
-            MDC.put(EXECUTE_TIMEOUT_TRACE, "https://github.com/opengoofy/hippo4j 感觉不错来个 Star.");
+            MDC.put(EXECUTE_TIMEOUT_TRACE, "39948722194639841.251.16612352194691531");
             ThreadUtil.sleep(5000);
             for (int i = 0; i < Integer.MAX_VALUE; i++) {
                 try {
