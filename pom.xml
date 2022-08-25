@@ -54,6 +54,7 @@
         <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
         <curator-framework.version>5.1.0</curator-framework.version>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
+        <spring-cloud-starter-stream-rabbitmq.version>3.1.0</spring-cloud-starter-stream-rabbitmq.version>
         <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
         <spring-cloud-starter-alibaba-nacos-config.version>2.2.5.RELEASE</spring-cloud-starter-alibaba-nacos-config.version>
 
