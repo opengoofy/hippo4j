@@ -29,4 +29,13 @@ sidebar_position: 2
     <td align="center" >核心开发者</td>
     <td align="center" >-</td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/weihubeats"><img src="https://avatars.githubusercontent.com/u/42484192?v=4?s=80" width="80px;"/></a></td>
+    <td align="center">魏虎</td>
+    <td align="center" ><a href="https://github.com/weihubeats">weihubeats</a></td>
+    <td align="center" ><a href="https://weihubeats.blog.csdn.net/">weihubeats</a></td>
+    <td align="center" >核心开发者</td>
+    <td align="center" >weihubeats@163.com</td>
+  </tr>
+
 </table>
