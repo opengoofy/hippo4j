@@ -81,7 +81,7 @@ spring:
       # 报警间隔，同一线程池下同一报警纬度，在 interval 时间内只会报警一次，单位秒
       alarm-interval: 8
       # 企业微信填写用户 ID（填写其它将无法达到 @ 效果）、钉钉填手机号、飞书填 ou_ 开头唯一 ID
-      receive: xxx
+      receives: xxx
       # 动态线程池列表
       executors:
         - thread-pool-id: 'message-consume'
@@ -114,7 +114,7 @@ spring:
             # 报警间隔，同一线程池下同一报警纬度，在 interval 时间内只会报警一次，单位分钟
             interval: 8
             # 企业微信填写用户 ID（填写其它将无法达到 @ 效果）、钉钉填手机号、飞书填 ou_ 开头唯一 ID
-            receive: xxx
+            receives: xxx
         - thread-pool-id: 'message-produce'
           core-pool-size: 1
           maximum-pool-size: 1
@@ -130,7 +130,7 @@ spring:
           capacity-alarm: 80
           notify:
             interval: 8
-            receive: xxx
+            receives: xxx
 ```
 
 ## ThreadPoolExecutor 适配
