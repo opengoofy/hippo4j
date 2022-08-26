@@ -23,11 +23,13 @@ public class BooleanUtilTest {
 
     @Test
     public void assertToBoolean() {
-
+        Assert.isTrue(BooleanUtil.toBoolean("true"));
+        Assert.isTrue(BooleanUtil.toBoolean("yes"));
+        Assert.isTrue(BooleanUtil.toBoolean("1"));
     }
 
     @Test
     public void assertIsTrue() {
-
+        Assert.isTrue(BooleanUtil.isTrue(true));
     }
 }
