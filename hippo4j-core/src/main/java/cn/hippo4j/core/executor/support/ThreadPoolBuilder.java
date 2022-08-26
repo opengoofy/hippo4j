@@ -47,9 +47,9 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     private int capacity = 512;
 
-    private BlockingQueueTypeEnum blockingQueueType;
+    private BlockingQueueTypeEnum blockingQueueType = BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE;
 
-    private BlockingQueue workQueue = new LinkedBlockingQueue(capacity);
+    private BlockingQueue workQueue;
 
     private RejectedExecutionHandler rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
 
@@ -246,7 +246,10 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
             initParam.setAwaitTerminationMillis(builder.awaitTerminationMillis);
         }
         if (!builder.isFastPool) {
-            if (builder.blockingQueueType != null) {
+            if (builder.workQueue == null) {
+                if (builder.blockingQueueType == null) {
+                    builder.blockingQueueType = BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE;
+                }
                 builder.workQueue = BlockingQueueTypeEnum.createBlockingQueue(builder.blockingQueueType.getType(), builder.capacity);
             }
             initParam.setWorkQueue(builder.workQueue);
