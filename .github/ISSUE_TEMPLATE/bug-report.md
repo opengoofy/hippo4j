@@ -8,11 +8,11 @@ about: 提交问题缺陷帮助我们更好的改进
 在开始报告错误之前，请确保认真查看了以下步骤：
 
 - 搜索打开和关闭的 [GitHub 问题](https://github.com/opengoofy/hippo4j/issues)
-- 阅读 [常见问题文档](https://hippo4j.cn/pages/9cc27d/)
+- 阅读 [常见问题文档](https://hippo4j.cn/docs/user_docs/other/issue)
 
 请在提交问题之前回答这些问题，谢谢。
 
-### 你使用了哪个项目？Hippo-4J Server 还是 Hippo-4J Config?
+### 你使用了哪个项目？hippo4j config 还是 hippo4j server?
 
 ### 你使用了哪个版本？
 
