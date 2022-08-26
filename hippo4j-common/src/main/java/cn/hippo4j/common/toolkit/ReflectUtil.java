@@ -94,9 +94,7 @@ public class ReflectUtil {
             } else {
                 int length = allFields.length;
                 allFields = Arrays.copyOf(allFields, length + declaredFields.length);
-                for (int i = 1; i < declaredFields.length; i++) {
-                    allFields[length + i] = declaredFields[i - 1];
-                }
+                System.arraycopy(declaredFields, 0, allFields, length, declaredFields.length);
             }
             searchType = withSuperClassFields ? searchType.getSuperclass() : null;
         }
