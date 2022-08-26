@@ -66,7 +66,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
             1,
             r -> new Thread(r, "client.alarm.notify"));
 
-    private final ExecutorService EXECUTE_TIMEOUT_EXECUTOR = ThreadPoolBuilder.builder()
+    private final ExecutorService ASYNC_ALARM_NOTIFY_EXECUTOR = ThreadPoolBuilder.builder()
             .poolThreadSize(2, 4)
             .threadFactory("client.execute.timeout.alarm")
             .allowCoreThreadTimeOut(true)
@@ -139,31 +139,24 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
     }
 
     /**
-     * Check pool rejected alarm.
+     * Async send rejected alarm.
      *
      * @param threadPoolId
      */
-    public void checkPoolRejectedAlarm(String threadPoolId) {
-        ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
-        if (Objects.isNull(threadPoolNotifyAlarm) || !threadPoolNotifyAlarm.getAlarm()) {
-            return;
-        }
-        ThreadPoolExecutor threadPoolExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
-        checkPoolRejectedAlarm(threadPoolId, threadPoolExecutor);
-    }
-
-    /**
-     * Check pool rejected alarm.
-     *
-     * @param threadPoolId
-     * @param threadPoolExecutor
-     */
-    public void checkPoolRejectedAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
-        if (threadPoolExecutor instanceof DynamicThreadPoolExecutor) {
-            AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
-            alarmNotifyRequest.setThreadPoolId(threadPoolId);
-            hippoSendMessageService.sendAlarmMessage(NotifyTypeEnum.REJECT, alarmNotifyRequest);
-        }
+    public void asyncSendRejectedAlarm(String threadPoolId) {
+        Runnable checkPoolRejectedAlarmTask = () -> {
+            ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
+            if (Objects.isNull(threadPoolNotifyAlarm) || !threadPoolNotifyAlarm.getAlarm()) {
+                return;
+            }
+            ThreadPoolExecutor threadPoolExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
+            if (threadPoolExecutor instanceof DynamicThreadPoolExecutor) {
+                AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
+                alarmNotifyRequest.setThreadPoolId(threadPoolId);
+                hippoSendMessageService.sendAlarmMessage(NotifyTypeEnum.REJECT, alarmNotifyRequest);
+            }
+        };
+        ASYNC_ALARM_NOTIFY_EXECUTOR.execute(checkPoolRejectedAlarmTask);
     }
 
     /**
@@ -190,7 +183,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
                     alarmNotifyRequest.setExecuteTimeoutTrace(executeTimeoutTrace);
                 }
                 Runnable task = () -> hippoSendMessageService.sendAlarmMessage(NotifyTypeEnum.TIMEOUT, alarmNotifyRequest);
-                EXECUTE_TIMEOUT_EXECUTOR.execute(task);
+                ASYNC_ALARM_NOTIFY_EXECUTOR.execute(task);
             } catch (Throwable ex) {
                 log.error("Send thread pool execution timeout alarm error.", ex);
             }
