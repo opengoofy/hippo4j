@@ -12,7 +12,7 @@ about: 提交问题缺陷帮助我们更好的改进
 
 请在提交问题之前回答这些问题，谢谢。
 
-### 你使用了哪个项目？Hippo-4J Server 还是 Hippo-4J Core?
+### 你使用了哪个项目？Hippo-4J Server 还是 Hippo-4J Config?
 
 ### 你使用了哪个版本？
 
