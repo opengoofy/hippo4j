@@ -41,7 +41,7 @@ import java.util.Objects;
 import java.util.concurrent.*;
 
 /**
- * Thread-pool alarm notify.
+ * Thread-pool notify alarm handler.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -109,8 +109,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         int queueSize = blockingQueue.size();
         int capacity = queueSize + blockingQueue.remainingCapacity();
         int divide = CalculateUtil.divide(queueSize, capacity);
-        boolean isSend = threadPoolNotifyAlarm.getAlarm()
-                && divide > threadPoolNotifyAlarm.getCapacityAlarm();
+        boolean isSend = threadPoolNotifyAlarm.getAlarm() && divide > threadPoolNotifyAlarm.getCapacityAlarm();
         if (isSend) {
             AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
             alarmNotifyRequest.setThreadPoolId(threadPoolId);
@@ -129,8 +128,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         int maximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
         int divide = CalculateUtil.divide(activeCount, maximumPoolSize);
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(threadPoolId);
-        boolean isSend = threadPoolNotifyAlarm.getAlarm()
-                && divide > threadPoolNotifyAlarm.getActiveAlarm();
+        boolean isSend = threadPoolNotifyAlarm.getAlarm() && divide > threadPoolNotifyAlarm.getActiveAlarm();
         if (isSend) {
             AlarmNotifyRequest alarmNotifyRequest = buildAlarmNotifyReq(threadPoolExecutor);
             alarmNotifyRequest.setThreadPoolId(threadPoolId);
