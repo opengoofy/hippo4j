@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.log;
+package cn.hippo4j.monitor.local.log;
 
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;

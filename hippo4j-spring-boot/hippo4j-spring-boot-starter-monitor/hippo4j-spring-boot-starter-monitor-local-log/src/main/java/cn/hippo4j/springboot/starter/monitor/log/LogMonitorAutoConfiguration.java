@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.monitor.log;
 
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.monitor.log.LocalLogMonitorHandler;
+import cn.hippo4j.monitor.local.log.LocalLogMonitorHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
