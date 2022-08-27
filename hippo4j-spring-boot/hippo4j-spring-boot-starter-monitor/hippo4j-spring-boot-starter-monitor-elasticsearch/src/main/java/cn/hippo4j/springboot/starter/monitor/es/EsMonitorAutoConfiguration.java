@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Es monitor auto configuration.
+ * Elastic-search monitor auto configuration.
  */
 @Configuration
 public class EsMonitorAutoConfiguration {

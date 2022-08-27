@@ -22,8 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Create by yuyang
- * 2022/8/4 17:17
+ * Elastic-search thread-pool run state info.
  */
 @Getter
 @Setter

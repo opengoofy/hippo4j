@@ -4,16 +4,44 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-spring-boot-starter-monitor</artifactId>
+        <artifactId>hippo4j-monitor</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>hippo4j-spring-boot-starter-monitor-es</artifactId>
+    <artifactId>hippo4j-monitor-elasticsearch</artifactId>
+
+    <properties>
+        <elasticsearch.version>6.8.17</elasticsearch.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-monitor-es</artifactId>
+            <artifactId>hippo4j-monitor-base</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>${micrometer-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>${elasticsearch.version}</version>
         </dependency>
     </dependencies>
 

@@ -46,6 +46,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+/**
+ * Elastic-search monitor handler.
+ */
 @Slf4j
 public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 

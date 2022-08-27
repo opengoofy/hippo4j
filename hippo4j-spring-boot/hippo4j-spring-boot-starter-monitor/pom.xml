@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>hippo4j-spring-boot-starter-monitor-es</module>
+        <module>hippo4j-spring-boot-starter-monitor-elasticsearch</module>
         <module>hippo4j-spring-boot-starter-monitor-log</module>
         <module>hippo4j-spring-boot-starter-monitor-prometheus</module>
     </modules>

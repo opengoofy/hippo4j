@@ -33,8 +33,7 @@ import org.springframework.core.env.Environment;
 import java.util.List;
 
 /**
- * Create by yuyang
- * 2022/8/4 16:26
+ * Elastic-search client holder.
  */
 @Slf4j
 public class EsClientHolder {
