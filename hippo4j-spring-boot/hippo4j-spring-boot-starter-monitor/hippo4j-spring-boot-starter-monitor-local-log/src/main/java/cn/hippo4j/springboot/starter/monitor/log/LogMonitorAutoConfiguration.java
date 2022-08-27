@@ -15,32 +15,21 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.log;
+package cn.hippo4j.springboot.starter.monitor.log;
 
-import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
-import cn.hippo4j.monitor.base.MonitorTypeEnum;
-import lombok.extern.slf4j.Slf4j;
+import cn.hippo4j.monitor.log.LocalLogMonitorHandler;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * Log monitor handler.
+ * Log monitor auto configuration.
  */
-@Slf4j
-public class LogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
+@Configuration
+public class LogMonitorAutoConfiguration {
 
-    public LogMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        super(threadPoolRunStateHandler);
-    }
-
-    @Override
-    protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
-        log.info("{}", JSONUtil.toJSONString(poolRunStateInfo));
-    }
-
-    @Override
-    public String getType() {
-        return MonitorTypeEnum.LOG.name().toLowerCase();
+    @Bean
+    public LocalLogMonitorHandler logMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+        return new LocalLogMonitorHandler(threadPoolRunStateHandler);
     }
 }

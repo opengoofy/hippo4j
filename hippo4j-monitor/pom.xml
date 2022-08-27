@@ -13,7 +13,7 @@
     <modules>
         <module>hippo4j-monitor-base</module>
         <module>hippo4j-monitor-elasticsearch</module>
-        <module>hippo4j-monitor-log</module>
+        <module>hippo4j-monitor-local-log</module>
         <module>hippo4j-monitor-prometheus</module>
     </modules>
 
