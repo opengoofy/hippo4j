@@ -26,19 +26,15 @@ public class ConditionUtilTest {
 
     @Test
     public void assertCondition() {
-
         // init consumer
         AtomicBoolean checkValue = new AtomicBoolean(false);
         NoArgsConsumer trueConsumer = () ->  checkValue.set(true);
         NoArgsConsumer falseConsumer =  () ->  checkValue.set(false);
-
         // test trueConsumer run
         ConditionUtil.condition(true, trueConsumer, falseConsumer);
         Assert.isTrue(checkValue.get());
-
         // test falseConsumer run
         ConditionUtil.condition(false, trueConsumer, falseConsumer);
         Assert.isTrue(!checkValue.get());
-
     }
 }

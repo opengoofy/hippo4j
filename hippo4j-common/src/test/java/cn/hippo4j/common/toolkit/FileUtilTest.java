@@ -23,14 +23,11 @@ public class FileUtilTest {
 
     @Test
     public void assertReadUtf8String() {
-
         String testText = "abcd简体繁体\uD83D\uDE04\uD83D\uDD25& *\n" +
                 "second line\n" +
                 "empty line next\n";
-
         String testFilePath = "classpath:/test/test_utf8.txt";
         String contentByFileUtil = FileUtil.readUtf8String(testFilePath);
         Assert.isTrue(testText.equals(contentByFileUtil));
-
     }
 }
