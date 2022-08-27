@@ -17,15 +17,15 @@
 
 package cn.hippo4j.core.springboot.starter.refresher.event;
 
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
+import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
-import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
-import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
@@ -44,6 +44,7 @@ import org.springframework.core.annotation.Order;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -68,38 +69,50 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
     private final Hippo4jBaseSendMessageService hippo4jBaseSendMessageService;
 
     @Override
-    public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
-        BootstrapConfigProperties bindableConfigProperties = threadPoolDynamicRefreshEvent.getBootstrapConfigProperties();
+    public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent event) {
+        BootstrapConfigProperties bindableConfigProperties = event.getBootstrapConfigProperties();
         List<ExecutorProperties> executors = bindableConfigProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
-            // Check whether the notification configuration is consistent.
-            // this operation will not trigger the notification.
+            /**
+             * Check whether the notification configuration is consistent, this operation will not trigger the notification.
+             */
             checkNotifyConsistencyAndReplace(properties);
             if (!checkConsistency(threadPoolId, properties)) {
                 continue;
             }
-            // refresh executor pool.
             dynamicRefreshPool(threadPoolId, properties);
-            // old properties.
             ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
-            // refresh executor properties.
-            GlobalCoreThreadPoolManage.refresh(threadPoolId, properties);
+            GlobalCoreThreadPoolManage.refresh(threadPoolId, failDefaultExecutorProperties(beforeProperties, properties));
+            ChangeParameterNotifyRequest changeRequest = buildChangeRequest(beforeProperties, properties);
             log.info(CHANGE_THREAD_POOL_TEXT,
                     threadPoolId,
-                    String.format(CHANGE_DELIMITER, beforeProperties.getCorePoolSize(), properties.getCorePoolSize()),
-                    String.format(CHANGE_DELIMITER, beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize()),
-                    String.format(CHANGE_DELIMITER, beforeProperties.getQueueCapacity(), properties.getQueueCapacity()),
-                    String.format(CHANGE_DELIMITER, beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime()),
-                    String.format(CHANGE_DELIMITER, beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut()),
-                    String.format(CHANGE_DELIMITER, beforeProperties.getRejectedHandler(), properties.getRejectedHandler()),
-                    String.format(CHANGE_DELIMITER, beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut()));
+                    String.format(CHANGE_DELIMITER, beforeProperties.getCorePoolSize(), changeRequest.getNowCorePoolSize()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getMaximumPoolSize(), changeRequest.getNowMaximumPoolSize()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getQueueCapacity(), changeRequest.getNowQueueCapacity()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getKeepAliveTime(), changeRequest.getNowKeepAliveTime()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getExecuteTimeOut(), changeRequest.getNowExecuteTimeOut()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getRejectedHandler(), changeRequest.getNowRejectedName()),
+                    String.format(CHANGE_DELIMITER, beforeProperties.getAllowCoreThreadTimeOut(), changeRequest.getNowAllowsCoreThreadTimeOut()));
             try {
-                threadPoolNotifyAlarmHandler.sendPoolConfigChange(newChangeRequest(beforeProperties, properties));
+                threadPoolNotifyAlarmHandler.sendPoolConfigChange(changeRequest);
             } catch (Throwable ex) {
                 log.error("Failed to send Chang smart application listener notice. Message: {}", ex.getMessage());
             }
         }
+    }
+
+    private ExecutorProperties failDefaultExecutorProperties(ExecutorProperties beforeProperties, ExecutorProperties properties) {
+        return ExecutorProperties.builder()
+                .corePoolSize(Optional.ofNullable(properties.getCorePoolSize()).orElse(beforeProperties.getCorePoolSize()))
+                .maximumPoolSize(Optional.ofNullable(properties.getMaximumPoolSize()).orElse(beforeProperties.getMaximumPoolSize()))
+                .queueCapacity(Optional.ofNullable(properties.getQueueCapacity()).orElse(beforeProperties.getQueueCapacity()))
+                .keepAliveTime(Optional.ofNullable(properties.getKeepAliveTime()).orElse(beforeProperties.getKeepAliveTime()))
+                .executeTimeOut(Optional.ofNullable(properties.getExecuteTimeOut()).orElse(beforeProperties.getExecuteTimeOut()))
+                .rejectedHandler(Optional.ofNullable(properties.getRejectedHandler()).orElse(beforeProperties.getRejectedHandler()))
+                .allowCoreThreadTimeOut(Optional.ofNullable(properties.getAllowCoreThreadTimeOut()).orElse(beforeProperties.getAllowCoreThreadTimeOut()))
+                .threadPoolId(beforeProperties.getThreadPoolId())
+                .build();
     }
 
     /**
@@ -109,23 +122,23 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
      * @param properties       new properties
      * @return instance
      */
-    private ChangeParameterNotifyRequest newChangeRequest(ExecutorProperties beforeProperties, ExecutorProperties properties) {
+    private ChangeParameterNotifyRequest buildChangeRequest(ExecutorProperties beforeProperties, ExecutorProperties properties) {
         ChangeParameterNotifyRequest changeParameterNotifyRequest = ChangeParameterNotifyRequest.builder()
+                .blockingQueueName(beforeProperties.getBlockingQueue())
                 .beforeCorePoolSize(beforeProperties.getCorePoolSize())
                 .beforeMaximumPoolSize(beforeProperties.getMaximumPoolSize())
                 .beforeAllowsCoreThreadTimeOut(beforeProperties.getAllowCoreThreadTimeOut())
                 .beforeKeepAliveTime(beforeProperties.getKeepAliveTime())
-                .blockingQueueName(beforeProperties.getBlockingQueue())
                 .beforeQueueCapacity(beforeProperties.getQueueCapacity())
                 .beforeRejectedName(beforeProperties.getRejectedHandler())
                 .beforeExecuteTimeOut(beforeProperties.getExecuteTimeOut())
-                .nowCorePoolSize(properties.getCorePoolSize())
-                .nowMaximumPoolSize(properties.getMaximumPoolSize())
-                .nowAllowsCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut())
-                .nowKeepAliveTime(properties.getKeepAliveTime())
-                .nowQueueCapacity(properties.getQueueCapacity())
-                .nowRejectedName(properties.getRejectedHandler())
-                .nowExecuteTimeOut(properties.getExecuteTimeOut())
+                .nowCorePoolSize(Optional.ofNullable(properties.getCorePoolSize()).orElse(beforeProperties.getCorePoolSize()))
+                .nowMaximumPoolSize(Optional.ofNullable(properties.getMaximumPoolSize()).orElse(beforeProperties.getMaximumPoolSize()))
+                .nowAllowsCoreThreadTimeOut(Optional.ofNullable(properties.getAllowCoreThreadTimeOut()).orElse(beforeProperties.getAllowCoreThreadTimeOut()))
+                .nowKeepAliveTime(Optional.ofNullable(properties.getKeepAliveTime()).orElse(beforeProperties.getKeepAliveTime()))
+                .nowQueueCapacity(Optional.ofNullable(properties.getQueueCapacity()).orElse(beforeProperties.getQueueCapacity()))
+                .nowRejectedName(Optional.ofNullable(properties.getRejectedHandler()).orElse(beforeProperties.getRejectedHandler()))
+                .nowExecuteTimeOut(Optional.ofNullable(properties.getExecuteTimeOut()).orElse(beforeProperties.getExecuteTimeOut()))
                 .build();
         changeParameterNotifyRequest.setThreadPoolId(beforeProperties.getThreadPoolId());
         return changeParameterNotifyRequest;
@@ -134,13 +147,13 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
     /**
      * Check notify consistency and replace.
      *
-     * @param properties
+     * @param executorProperties
      */
-    private void checkNotifyConsistencyAndReplace(ExecutorProperties properties) {
+    private void checkNotifyConsistencyAndReplace(ExecutorProperties executorProperties) {
         boolean checkNotifyConfig = false;
         boolean checkNotifyAlarm = false;
         List<String> changeKeys = Lists.newArrayList();
-        Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap = coreNotifyConfigBuilder.buildSingleNotifyConfig(properties);
+        Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap = coreNotifyConfigBuilder.buildSingleNotifyConfig(executorProperties);
         Map<String, List<NotifyConfigDTO>> notifyConfigs = hippo4jBaseSendMessageService.getNotifyConfigs();
         if (CollectionUtil.isNotEmpty(notifyConfigs)) {
             for (Map.Entry<String, List<NotifyConfigDTO>> each : newDynamicThreadPoolNotifyMap.entrySet()) {
@@ -161,22 +174,22 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
             coreNotifyConfigBuilder.initCacheAndLock(newDynamicThreadPoolNotifyMap);
             hippo4jBaseSendMessageService.putPlatform(newDynamicThreadPoolNotifyMap);
         }
-        ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(properties.getThreadPoolId());
+        ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(executorProperties.getThreadPoolId());
         if (threadPoolNotifyAlarm != null) {
-            boolean isAlarm = properties.getAlarm();
-            Integer activeAlarm = properties.getActiveAlarm();
-            Integer capacityAlarm = properties.getCapacityAlarm();
-            if (threadPoolNotifyAlarm.getAlarm() != isAlarm
-                    || threadPoolNotifyAlarm.getActiveAlarm() != activeAlarm
-                    || threadPoolNotifyAlarm.getCapacityAlarm() != capacityAlarm) {
+            Boolean isAlarm = executorProperties.getAlarm();
+            Integer activeAlarm = executorProperties.getActiveAlarm();
+            Integer capacityAlarm = executorProperties.getCapacityAlarm();
+            if ((isAlarm != null && isAlarm != threadPoolNotifyAlarm.getAlarm())
+                    || (activeAlarm != null && activeAlarm != threadPoolNotifyAlarm.getActiveAlarm())
+                    || (capacityAlarm != null && capacityAlarm != threadPoolNotifyAlarm.getCapacityAlarm())) {
                 checkNotifyAlarm = true;
-                threadPoolNotifyAlarm.setAlarm(isAlarm);
-                threadPoolNotifyAlarm.setActiveAlarm(activeAlarm);
-                threadPoolNotifyAlarm.setCapacityAlarm(capacityAlarm);
+                threadPoolNotifyAlarm.setAlarm(Optional.ofNullable(isAlarm).orElse(threadPoolNotifyAlarm.getAlarm()));
+                threadPoolNotifyAlarm.setActiveAlarm(Optional.ofNullable(activeAlarm).orElse(threadPoolNotifyAlarm.getActiveAlarm()));
+                threadPoolNotifyAlarm.setCapacityAlarm(Optional.ofNullable(capacityAlarm).orElse(threadPoolNotifyAlarm.getCapacityAlarm()));
             }
         }
         if (checkNotifyConfig || checkNotifyAlarm) {
-            log.info("[{}] Dynamic thread pool notification property changes.", properties.getThreadPoolId());
+            log.info("[{}] Dynamic thread pool notification property changes.", executorProperties.getThreadPoolId());
         }
     }
 
@@ -192,15 +205,15 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
         if (executor == null) {
             return false;
         }
-        boolean result = !Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize())
-                || !Objects.equals(beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize())
-                || !Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())
-                || !Objects.equals(beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut())
-                || !Objects.equals(beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime())
-                || !Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())
+        boolean result = (properties.getCorePoolSize() != null && !Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize()))
+                || (properties.getMaximumPoolSize() != null && !Objects.equals(beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize()))
+                || (properties.getAllowCoreThreadTimeOut() != null && !Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut()))
+                || (properties.getExecuteTimeOut() != null && !Objects.equals(beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut()))
+                || (properties.getKeepAliveTime() != null && !Objects.equals(beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime()))
+                || (properties.getRejectedHandler() != null && !Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler()))
                 ||
-                (!Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
-                        && Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getName(), executor.getQueue().getClass().getSimpleName()));
+                ((properties.getQueueCapacity() != null && !Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
+                        && Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getName(), executor.getQueue().getClass().getSimpleName())));
         return result;
     }
 
@@ -229,15 +242,15 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
                 executor.setCorePoolSize(properties.getCorePoolSize());
             }
         }
-        if (!Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())) {
+        if (properties.getAllowCoreThreadTimeOut() != null && !Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut())) {
             executor.allowCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut());
         }
-        if (!Objects.equals(beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut())) {
+        if (properties.getExecuteTimeOut() != null && !Objects.equals(beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut())) {
             if (executor instanceof AbstractDynamicExecutorSupport) {
                 ((DynamicThreadPoolExecutor) executor).setExecuteTimeOut(properties.getExecuteTimeOut());
             }
         }
-        if (!Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())) {
+        if (properties.getRejectedHandler() != null && !Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())) {
             RejectedExecutionHandler rejectedExecutionHandler = RejectedPolicyTypeEnum.createPolicy(properties.getRejectedHandler());
             if (executor instanceof AbstractDynamicExecutorSupport) {
                 DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) executor;
@@ -247,10 +260,10 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
             }
             executor.setRejectedExecutionHandler(rejectedExecutionHandler);
         }
-        if (!Objects.equals(beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime())) {
+        if (properties.getKeepAliveTime() != null && !Objects.equals(beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime())) {
             executor.setKeepAliveTime(properties.getKeepAliveTime(), TimeUnit.SECONDS);
         }
-        if (!Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
+        if (properties.getQueueCapacity() != null && !Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
                 && Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getName(), executor.getQueue().getClass().getSimpleName())) {
             if (executor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
                 ResizableCapacityLinkedBlockingQueue<?> queue = (ResizableCapacityLinkedBlockingQueue<?>) executor.getQueue();

@@ -45,13 +45,13 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
 
     private final AlarmControlHandler alarmControlHandler;
 
-    private final BootstrapConfigProperties bootstrapConfigProperties;
+    private final BootstrapConfigProperties configProperties;
 
     @Override
     public Map<String, List<NotifyConfigDTO>> buildNotify() {
         Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
-        boolean globalAlarm = bootstrapConfigProperties.getAlarm();
-        List<ExecutorProperties> executors = bootstrapConfigProperties.getExecutors();
+        boolean globalAlarm = Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getAlarm()).orElse(true);
+        List<ExecutorProperties> executors = configProperties.getExecutors();
         if (CollectionUtil.isEmpty(executors)) {
             log.warn("Failed to build notify, executors configuration is empty.");
             return resultMap;
@@ -60,8 +60,8 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         if (!globalAlarm && CollectionUtil.isEmpty(actual)) {
             return resultMap;
         }
-        for (ExecutorProperties executor : executors) {
-            Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig = buildSingleNotifyConfig(executor);
+        for (ExecutorProperties executorProperties : executors) {
+            Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig = buildSingleNotifyConfig(executorProperties);
             initCacheAndLock(buildSingleNotifyConfig);
             resultMap.putAll(buildSingleNotifyConfig);
         }
@@ -71,15 +71,15 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
     /**
      * Build single notify config.
      *
-     * @param executor
+     * @param executorProperties
      * @return
      */
-    public Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig(ExecutorProperties executor) {
+    public Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig(ExecutorProperties executorProperties) {
         Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
-        String threadPoolId = executor.getThreadPoolId();
+        String threadPoolId = executorProperties.getThreadPoolId();
         String alarmBuildKey = threadPoolId + "+ALARM";
         List<NotifyConfigDTO> alarmNotifyConfigs = Lists.newArrayList();
-        List<NotifyPlatformProperties> notifyPlatforms = bootstrapConfigProperties.getNotifyPlatforms();
+        List<NotifyPlatformProperties> notifyPlatforms = configProperties.getNotifyPlatforms();
         for (NotifyPlatformProperties platformProperties : notifyPlatforms) {
             NotifyConfigDTO notifyConfig = new NotifyConfigDTO();
             notifyConfig.setPlatform(platformProperties.getPlatform());
@@ -87,11 +87,11 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setType("ALARM");
             notifyConfig.setSecret(platformProperties.getSecret());
             notifyConfig.setSecretKey(getToken(platformProperties));
-            int interval = Optional.ofNullable(executor.getNotify())
+            int interval = Optional.ofNullable(executorProperties.getNotify())
                     .map(each -> each.getInterval())
-                    .orElseGet(() -> bootstrapConfigProperties.getAlarmInterval() != null ? bootstrapConfigProperties.getAlarmInterval() : 5);
+                    .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getNotify()).map(each -> each.getInterval()).orElse(5));
             notifyConfig.setInterval(interval);
-            notifyConfig.setReceives(buildReceive(executor, platformProperties));
+            notifyConfig.setReceives(buildReceive(executorProperties));
             alarmNotifyConfigs.add(notifyConfig);
         }
         resultMap.put(alarmBuildKey, alarmNotifyConfigs);
@@ -104,7 +104,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setType("CONFIG");
             notifyConfig.setSecretKey(getToken(platformProperties));
             notifyConfig.setSecret(platformProperties.getSecret());
-            notifyConfig.setReceives(buildReceive(executor, platformProperties));
+            notifyConfig.setReceives(buildReceive(executorProperties));
             changeNotifyConfigs.add(notifyConfig);
         }
         resultMap.put(changeBuildKey, changeNotifyConfigs);
@@ -118,17 +118,12 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
                         .forEach(each -> alarmControlHandler.initCacheAndLock(each.getTpId(), each.getPlatform(), each.getInterval())));
     }
 
-    private String buildReceive(ExecutorProperties executor, NotifyPlatformProperties platformProperties) {
-        String receive;
-        if (executor.getNotify() != null) {
-            receive = executor.getNotify().getReceives();
-            if (StrUtil.isBlank(receive)) {
-                receive = bootstrapConfigProperties.getReceives();
-            }
-        } else {
-            receive = bootstrapConfigProperties.getReceives();
+    private String buildReceive(ExecutorProperties executorProperties) {
+        String receives = Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getNotify()).map(each -> each.getReceives()).orElse("");
+        if (executorProperties.getNotify() != null && StringUtil.isNotEmpty(executorProperties.getNotify().getReceives())) {
+            receives = executorProperties.getNotify().getReceives();
         }
-        return receive;
+        return receives;
     }
 
     private String getToken(NotifyPlatformProperties platformProperties) {

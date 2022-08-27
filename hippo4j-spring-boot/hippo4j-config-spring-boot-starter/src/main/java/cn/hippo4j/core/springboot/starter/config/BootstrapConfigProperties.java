@@ -108,42 +108,22 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
     private List<NotifyPlatformProperties> notifyPlatforms;
 
     /**
-     * Whether to enable thread pool running alarm.
-     */
-    private Boolean alarm = Boolean.TRUE;
-
-    /**
      * Check thread pool running status interval.
      */
     private Integer checkStateInterval;
 
     /**
-     * Active alarm.
+     * Default dynamic thread pool configuration.
      */
-    private Integer activeAlarm;
+    private ExecutorProperties defaultExecutor;
 
     /**
-     * Capacity alarm.
-     */
-    private Integer capacityAlarm;
-
-    /**
-     * Thread pool run alarm interval. unit: s
-     */
-    private Integer alarmInterval;
-
-    /**
-     * Receives.
-     */
-    private String receives;
-
-    /**
-     * Executors.
+     * Dynamic thread pool configuration collection.
      */
     private List<ExecutorProperties> executors;
 
     /**
-     * Adapter executors
+     * Tripartite framework thread pool adaptation set.
      */
     private List<AdapterExecutorProperties> adapterExecutors;
 }

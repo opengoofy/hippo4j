@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class DynamicThreadPoolNotifyProperties {
 
     /**
-     * Interval
+     * Thread pool run alarm interval. unit: s
      */
     private Integer interval;
 
