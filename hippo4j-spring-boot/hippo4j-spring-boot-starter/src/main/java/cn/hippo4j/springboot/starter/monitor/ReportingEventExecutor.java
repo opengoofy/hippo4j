@@ -119,7 +119,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
                 DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
         boolean customerDynamicThreadPoolMonitorFlag = CollectionUtil.isNotEmpty(dynamicThreadPoolMonitors) || (collectType.contains(MonitorTypeEnum.PROMETHEUS.name().toLowerCase())
                 || collectType.contains(MonitorTypeEnum.LOG.name().toLowerCase())
-                || collectType.contains(MonitorTypeEnum.ES.name().toLowerCase()));
+                || collectType.contains(MonitorTypeEnum.ELASTICSEARCH.name().toLowerCase()));
         if (customerDynamicThreadPoolMonitorFlag) {
             // Get all dynamic thread pool monitoring components.
             Map<String, ThreadPoolMonitor> threadPoolMonitorMap = ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class);

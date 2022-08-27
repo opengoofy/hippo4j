@@ -143,6 +143,6 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     @Override
     public String getType() {
-        return MonitorTypeEnum.ES.name().toLowerCase();
+        return MonitorTypeEnum.ELASTICSEARCH.name().toLowerCase();
     }
 }

@@ -38,7 +38,7 @@ public enum MonitorTypeEnum {
     SERVER,
 
     /**
-     * ES
+     * ELASTICSEARCH
      */
-    ES
+    ELASTICSEARCH
 }
