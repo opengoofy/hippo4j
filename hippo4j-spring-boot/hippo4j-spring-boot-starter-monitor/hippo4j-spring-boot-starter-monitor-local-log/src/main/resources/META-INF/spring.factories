@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.springboot.starter.monitor.log.LogMonitorAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.springboot.starter.monitor.local.log.LocalLogMonitorAutoConfiguration

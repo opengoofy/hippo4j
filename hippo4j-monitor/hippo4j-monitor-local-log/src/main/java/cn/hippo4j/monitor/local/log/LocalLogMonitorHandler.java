@@ -25,7 +25,7 @@ import cn.hippo4j.monitor.base.MonitorTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Log monitor handler.
+ * Local log monitor handler.
  */
 @Slf4j
 public class LocalLogMonitorHandler extends AbstractDynamicThreadPoolMonitor {

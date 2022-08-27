@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.monitor.log;
+package cn.hippo4j.springboot.starter.monitor.local.log;
 
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.monitor.local.log.LocalLogMonitorHandler;
@@ -23,13 +23,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Log monitor auto configuration.
+ * Local log monitor auto configuration.
  */
 @Configuration
-public class LogMonitorAutoConfiguration {
+public class LocalLogMonitorAutoConfiguration {
 
     @Bean
-    public LocalLogMonitorHandler logMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+    public LocalLogMonitorHandler localLogMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
         return new LocalLogMonitorHandler(threadPoolRunStateHandler);
     }
 }
