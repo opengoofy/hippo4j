@@ -28,7 +28,7 @@ import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.*;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.springboot.starter.config.DynamicThreadPoolNotifyProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.toolkit.inet.DynamicThreadPoolAnnotationUtil;
@@ -52,7 +52,7 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
-    private final BootstrapCoreProperties bootstrapCoreProperties;
+    private final BootstrapConfigProperties bootstrapConfigProperties;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) {
@@ -110,8 +110,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         String threadPoolId = dynamicThreadPoolWrapper.getThreadPoolId();
         ThreadPoolExecutor newDynamicPoolExecutor = dynamicThreadPoolWrapper.getExecutor();
         ExecutorProperties executorProperties = null;
-        if (null != bootstrapCoreProperties.getExecutors()) {
-            executorProperties = bootstrapCoreProperties.getExecutors()
+        if (null != bootstrapConfigProperties.getExecutors()) {
+            executorProperties = bootstrapConfigProperties.getExecutors()
                     .stream()
                     .filter(each -> Objects.equals(threadPoolId, each.getThreadPoolId()))
                     .findFirst()
@@ -142,15 +142,15 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             if (dynamicThreadPoolWrapper.getExecutor() instanceof AbstractDynamicExecutorSupport) {
                 DynamicThreadPoolNotifyProperties notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
                 boolean isAlarm = Optional.ofNullable(executorProperties.getAlarm())
-                        .orElseGet(() -> bootstrapCoreProperties.getAlarm() != null ? bootstrapCoreProperties.getAlarm() : true);
+                        .orElseGet(() -> bootstrapConfigProperties.getAlarm() != null ? bootstrapConfigProperties.getAlarm() : true);
                 int activeAlarm = Optional.ofNullable(executorProperties.getActiveAlarm())
-                        .orElseGet(() -> bootstrapCoreProperties.getActiveAlarm() != null ? bootstrapCoreProperties.getActiveAlarm() : 80);
+                        .orElseGet(() -> bootstrapConfigProperties.getActiveAlarm() != null ? bootstrapConfigProperties.getActiveAlarm() : 80);
                 int capacityAlarm = Optional.ofNullable(executorProperties.getCapacityAlarm())
-                        .orElseGet(() -> bootstrapCoreProperties.getCapacityAlarm() != null ? bootstrapCoreProperties.getCapacityAlarm() : 80);
+                        .orElseGet(() -> bootstrapConfigProperties.getCapacityAlarm() != null ? bootstrapConfigProperties.getCapacityAlarm() : 80);
                 int interval = Optional.ofNullable(notify)
-                        .map(each -> each.getInterval()).orElseGet(() -> bootstrapCoreProperties.getAlarmInterval() != null ? bootstrapCoreProperties.getAlarmInterval() : 5);
+                        .map(each -> each.getInterval()).orElseGet(() -> bootstrapConfigProperties.getAlarmInterval() != null ? bootstrapConfigProperties.getAlarmInterval() : 5);
                 String receive = Optional.ofNullable(notify)
-                        .map(each -> each.getReceives()).orElseGet(() -> StringUtil.isNotEmpty(bootstrapCoreProperties.getReceives()) ? bootstrapCoreProperties.getReceives() : "");
+                        .map(each -> each.getReceives()).orElseGet(() -> StringUtil.isNotEmpty(bootstrapConfigProperties.getReceives()) ? bootstrapConfigProperties.getReceives() : "");
                 ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(isAlarm, activeAlarm, capacityAlarm);
                 threadPoolNotifyAlarm.setInterval(interval);
                 threadPoolNotifyAlarm.setReceives(receive);

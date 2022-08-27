@@ -45,7 +45,7 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
 
     @Override
     public void afterPropertiesSet() {
-        Map<String, String> zkConfigs = bootstrapCoreProperties.getZookeeper();
+        Map<String, String> zkConfigs = bootstrapConfigProperties.getZookeeper();
         curatorFramework = CuratorFrameworkFactory.newClient(zkConfigs.get("zk-connect-str"),
                 new ExponentialBackoffRetry(1000, 3));
         String nodePath = ZKPaths.makePath(ZKPaths.makePath(zkConfigs.get("root-node"),
@@ -108,7 +108,7 @@ public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefr
      * Register notify alarm manage.
      */
     public void registerNotifyAlarmManage() {
-        bootstrapCoreProperties.getExecutors().forEach(executorProperties -> {
+        bootstrapConfigProperties.getExecutors().forEach(executorProperties -> {
             ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
                     executorProperties.getAlarm(),
                     executorProperties.getCapacityAlarm(),

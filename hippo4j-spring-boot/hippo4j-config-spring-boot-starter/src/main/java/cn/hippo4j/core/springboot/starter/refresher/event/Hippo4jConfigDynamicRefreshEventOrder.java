@@ -18,9 +18,9 @@
 package cn.hippo4j.core.springboot.starter.refresher.event;
 
 /**
- * Hippo-4j core dynamic refresh event order.
+ * Hippo-4j config dynamic refresh event order.
  */
-public interface Hippo4jCoreDynamicRefreshEventOrder {
+public interface Hippo4jConfigDynamicRefreshEventOrder {
 
     int WEB_EXECUTOR_LISTENER = 0;
 

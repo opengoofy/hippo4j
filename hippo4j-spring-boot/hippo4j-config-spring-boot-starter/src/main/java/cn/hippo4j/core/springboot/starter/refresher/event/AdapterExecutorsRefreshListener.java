@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
-import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEventOrder.ADAPTER_EXECUTORS_LISTENER;
+import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEventOrder.ADAPTER_EXECUTORS_LISTENER;
 import static cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolAdapterRegister.ADAPTER_EXECUTORS_MAP;
 
 /**
@@ -40,13 +40,13 @@ import static cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolAdapte
  */
 @Slf4j
 @Order(ADAPTER_EXECUTORS_LISTENER)
-public class AdapterExecutorsRefreshListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
+public class AdapterExecutorsRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
 
     @Override
-    public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent event) {
+    public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent event) {
         List<AdapterExecutorProperties> adapterExecutors;
         Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
-        if (CollectionUtil.isEmpty(adapterExecutors = event.getBootstrapCoreProperties().getAdapterExecutors()) || CollectionUtil.isEmpty(threadPoolAdapterMap)) {
+        if (CollectionUtil.isEmpty(adapterExecutors = event.getBootstrapConfigProperties().getAdapterExecutors()) || CollectionUtil.isEmpty(threadPoolAdapterMap)) {
             return;
         }
         for (AdapterExecutorProperties each : adapterExecutors) {

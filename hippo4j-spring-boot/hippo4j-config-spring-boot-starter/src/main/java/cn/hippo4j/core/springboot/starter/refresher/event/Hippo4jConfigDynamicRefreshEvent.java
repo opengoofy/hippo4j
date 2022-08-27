@@ -17,22 +17,22 @@
 
 package cn.hippo4j.core.springboot.starter.refresher.event;
 
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
 
 /**
- * Hippo-4j core dynamic refresh event.
+ * Hippo-4j config dynamic refresh event.
  */
-public class Hippo4jCoreDynamicRefreshEvent extends ApplicationEvent {
+public class Hippo4jConfigDynamicRefreshEvent extends ApplicationEvent {
 
     @Getter
     @Setter
-    private BootstrapCoreProperties bootstrapCoreProperties;
+    private BootstrapConfigProperties bootstrapConfigProperties;
 
-    public Hippo4jCoreDynamicRefreshEvent(Object source, BootstrapCoreProperties bootstrapCoreProperties) {
+    public Hippo4jConfigDynamicRefreshEvent(Object source, BootstrapConfigProperties bootstrapConfigProperties) {
         super(source);
-        this.bootstrapCoreProperties = bootstrapCoreProperties;
+        this.bootstrapConfigProperties = bootstrapConfigProperties;
     }
 }

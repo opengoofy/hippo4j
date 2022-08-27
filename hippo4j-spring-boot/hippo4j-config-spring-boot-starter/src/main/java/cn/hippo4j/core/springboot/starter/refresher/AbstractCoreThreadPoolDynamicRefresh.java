@@ -21,9 +21,9 @@ import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.springboot.starter.parser.ConfigParserHandler;
-import cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEvent;
+import cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -39,12 +39,12 @@ import java.util.concurrent.ExecutorService;
 @RequiredArgsConstructor
 public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean {
 
-    protected final BootstrapCoreProperties bootstrapCoreProperties;
+    protected final BootstrapConfigProperties bootstrapConfigProperties;
 
     protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder().singlePool("client.dynamic.refresh").build();
 
     public AbstractCoreThreadPoolDynamicRefresh() {
-        bootstrapCoreProperties = ApplicationContextHolder.getBean(BootstrapCoreProperties.class);
+        bootstrapConfigProperties = ApplicationContextHolder.getBean(BootstrapConfigProperties.class);
     }
 
     @Override
@@ -55,12 +55,12 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
     @Override
     public void dynamicRefresh(String configContent, Map<String, Object> newValueChangeMap) {
         try {
-            Map<Object, Object> configInfo = ConfigParserHandler.getInstance().parseConfig(configContent, bootstrapCoreProperties.getConfigFileType());
+            Map<Object, Object> configInfo = ConfigParserHandler.getInstance().parseConfig(configContent, bootstrapConfigProperties.getConfigFileType());
             if (CollectionUtil.isNotEmpty(newValueChangeMap)) {
                 Optional.ofNullable(configInfo).ifPresent(each -> each.putAll(newValueChangeMap));
             }
-            BootstrapCoreProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapCoreProperties);
-            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jCoreDynamicRefreshEvent(this, bindableCoreProperties));
+            BootstrapConfigProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
+            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, bindableCoreProperties));
         } catch (Exception ex) {
             log.error("Hippo-4J core dynamic refresh failed.", ex);
         }

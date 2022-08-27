@@ -20,7 +20,7 @@ package cn.hippo4j.core.springboot.starter.refresher.event;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
@@ -31,18 +31,18 @@ import org.springframework.core.annotation.Order;
 import java.util.List;
 import java.util.Map;
 
-import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEventOrder.PLATFORMS_LISTENER;
+import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEventOrder.PLATFORMS_LISTENER;
 
 /**
  * Platforms refresh listener.
  */
 @Order(PLATFORMS_LISTENER)
-public class PlatformsRefreshListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
+public class PlatformsRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
 
     @Override
-    public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
-        BootstrapCoreProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapCoreProperties();
-        List<ExecutorProperties> executors = bindableCoreProperties.getExecutors();
+    public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
+        BootstrapConfigProperties bindableConfigProperties = threadPoolDynamicRefreshEvent.getBootstrapConfigProperties();
+        List<ExecutorProperties> executors = bindableConfigProperties.getExecutors();
         for (ExecutorProperties executorProperties : executors) {
             String threadPoolId = executorProperties.getThreadPoolId();
             DynamicThreadPoolWrapper wrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);

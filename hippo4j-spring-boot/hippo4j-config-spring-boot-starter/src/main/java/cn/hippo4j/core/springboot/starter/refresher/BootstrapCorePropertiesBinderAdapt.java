@@ -19,7 +19,7 @@ package cn.hippo4j.core.springboot.starter.refresher;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.springboot.starter.config.DynamicThreadPoolNotifyProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.springboot.starter.config.NotifyPlatformProperties;
@@ -35,7 +35,7 @@ import org.springframework.boot.context.properties.source.MapConfigurationProper
 import java.util.List;
 import java.util.Map;
 
-import static cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties.PREFIX;
+import static cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties.PREFIX;
 
 /**
  * Bootstrap core properties binder adapt.
@@ -46,15 +46,15 @@ public class BootstrapCorePropertiesBinderAdapt {
      * Bootstrap core properties binder.
      *
      * @param configInfo
-     * @param bootstrapCoreProperties
+     * @param bootstrapConfigProperties
      * @return
      */
-    public static BootstrapCoreProperties bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapCoreProperties bootstrapCoreProperties) {
-        BootstrapCoreProperties bindableCoreProperties = null;
+    public static BootstrapConfigProperties bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapConfigProperties bootstrapConfigProperties) {
+        BootstrapConfigProperties bindableCoreProperties = null;
         try {
             ConfigurationPropertySource sources = new MapConfigurationPropertySource(configInfo);
             Binder binder = new Binder(sources);
-            bindableCoreProperties = binder.bind(PREFIX, Bindable.ofInstance(bootstrapCoreProperties)).get();
+            bindableCoreProperties = binder.bind(PREFIX, Bindable.ofInstance(bootstrapConfigProperties)).get();
         } catch (Exception ex) {
             try {
                 Class.forName("org.springframework.boot.context.properties.bind.Binder");
@@ -72,8 +72,8 @@ public class BootstrapCorePropertiesBinderAdapt {
      * @return
      */
     @Deprecated
-    private static BootstrapCoreProperties adapt(Map<Object, Object> configInfo) {
-        BootstrapCoreProperties bindableCoreProperties;
+    private static BootstrapConfigProperties adapt(Map<Object, Object> configInfo) {
+        BootstrapConfigProperties bindableConfigProperties;
         try {
             // filter
             Map<Object, Object> targetMap = Maps.newHashMap();
@@ -150,12 +150,12 @@ public class BootstrapCorePropertiesBinderAdapt {
                     }
                 }
             }
-            bindableCoreProperties = new BootstrapCoreProperties();
-            bindableCoreProperties.setExecutors(executorPropertiesList);
-            bindableCoreProperties.setNotifyPlatforms(notifyPropertiesList);
+            bindableConfigProperties = new BootstrapConfigProperties();
+            bindableConfigProperties.setExecutors(executorPropertiesList);
+            bindableConfigProperties.setNotifyPlatforms(notifyPropertiesList);
         } catch (Exception ex) {
             throw ex;
         }
-        return bindableCoreProperties;
+        return bindableConfigProperties;
     }
 }

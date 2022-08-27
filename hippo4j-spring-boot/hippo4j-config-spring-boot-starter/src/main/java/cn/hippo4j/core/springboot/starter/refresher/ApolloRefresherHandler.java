@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Map;
 
-import static cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties.PREFIX;
+import static cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties.PREFIX;
 
 /**
  * Apollo refresher handler.
@@ -46,10 +46,10 @@ public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh
     public void afterPropertiesSet() {
         String[] apolloNamespaces = this.namespace.split(",");
         this.namespace = apolloNamespaces[0];
-        Config config = ConfigService.getConfig(String.format("%s.%s", namespace, bootstrapCoreProperties.getConfigFileType().getValue()));
+        Config config = ConfigService.getConfig(String.format("%s.%s", namespace, bootstrapConfigProperties.getConfigFileType().getValue()));
         ConfigChangeListener configChangeListener = configChangeEvent -> {
-            String namespace = this.namespace.replaceAll("." + bootstrapCoreProperties.getConfigFileType().getValue(), "");
-            ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(bootstrapCoreProperties.getConfigFileType().getValue());
+            String namespace = this.namespace.replaceAll("." + bootstrapConfigProperties.getConfigFileType().getValue(), "");
+            ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(bootstrapConfigProperties.getConfigFileType().getValue());
             ConfigFile configFile = ConfigService.getConfigFile(namespace, configFileFormat);
             Map<String, Object> newChangeValueMap = Maps.newHashMap();
             configChangeEvent.changedKeys().stream().filter(each -> each.contains(PREFIX)).forEach(each -> {

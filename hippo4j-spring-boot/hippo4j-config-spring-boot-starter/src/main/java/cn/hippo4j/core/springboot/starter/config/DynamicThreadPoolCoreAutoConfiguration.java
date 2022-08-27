@@ -54,16 +54,16 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
-@EnableConfigurationProperties(BootstrapCoreProperties.class)
+@EnableConfigurationProperties(BootstrapConfigProperties.class)
 @ImportAutoConfiguration({UtilAutoConfiguration.class, MessageConfiguration.class})
-@ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
+@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 @Import({
         ConfigHandlerConfiguration.EmbeddedNacos.class, ConfigHandlerConfiguration.EmbeddedNacosCloud.class,
         ConfigHandlerConfiguration.EmbeddedApollo.class, ConfigHandlerConfiguration.EmbeddedZookeeper.class
 })
 public class DynamicThreadPoolCoreAutoConfiguration {
 
-    private final BootstrapCoreProperties bootstrapCoreProperties;
+    private final BootstrapConfigProperties bootstrapConfigProperties;
 
     @Bean
     @ConditionalOnMissingBean
@@ -74,7 +74,7 @@ public class DynamicThreadPoolCoreAutoConfiguration {
 
     @Bean
     public NotifyConfigBuilder notifyConfigBuilder(AlarmControlHandler alarmControlHandler) {
-        return new CoreNotifyConfigBuilder(alarmControlHandler, bootstrapCoreProperties);
+        return new CoreNotifyConfigBuilder(alarmControlHandler, bootstrapConfigProperties);
     }
 
     @Bean
@@ -84,12 +84,12 @@ public class DynamicThreadPoolCoreAutoConfiguration {
 
     @Bean
     public DynamicThreadPoolPostProcessor dynamicThreadPoolPostProcessor(ApplicationContextHolder hippo4JApplicationContextHolder) {
-        return new DynamicThreadPoolPostProcessor(bootstrapCoreProperties);
+        return new DynamicThreadPoolPostProcessor(bootstrapConfigProperties);
     }
 
     @Bean
     public DynamicThreadPoolMonitorExecutor hippo4jDynamicThreadPoolMonitorExecutor() {
-        return new DynamicThreadPoolMonitorExecutor(bootstrapCoreProperties);
+        return new DynamicThreadPoolMonitorExecutor(bootstrapConfigProperties);
     }
 
     @Bean
@@ -117,12 +117,12 @@ public class DynamicThreadPoolCoreAutoConfiguration {
 
     @Bean
     public DynamicThreadPoolAdapterRegister threadPoolAdapterRegister() {
-        return new DynamicThreadPoolAdapterRegister(bootstrapCoreProperties);
+        return new DynamicThreadPoolAdapterRegister(bootstrapConfigProperties);
     }
 
     @Bean
     public DynamicThreadPoolBannerHandler threadPoolBannerHandler() {
-        return new DynamicThreadPoolBannerHandler(bootstrapCoreProperties);
+        return new DynamicThreadPoolBannerHandler(bootstrapConfigProperties);
     }
 
     @Bean

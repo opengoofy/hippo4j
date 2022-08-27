@@ -21,7 +21,7 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.ThreadPoolMonitor;
 import com.google.common.collect.Lists;
@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class DynamicThreadPoolMonitorExecutor implements ApplicationRunner {
 
-    private final BootstrapCoreProperties properties;
+    private final BootstrapConfigProperties properties;
 
     private ScheduledThreadPoolExecutor collectExecutor;
 

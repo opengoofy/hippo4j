@@ -39,7 +39,7 @@ public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRef
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Map<String, String> nacosConfig = bootstrapCoreProperties.getNacos();
+        Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
         nacosConfigManager.getConfigService().addListener(nacosConfig.get("data-id"),
                 nacosConfig.get("group"), new Listener() {
 

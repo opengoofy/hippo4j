@@ -22,7 +22,7 @@ import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.core.springboot.starter.config.BootstrapCoreProperties;
+import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.springboot.starter.config.WebThreadPoolProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -30,18 +30,18 @@ import org.springframework.core.annotation.Order;
 
 import java.util.Objects;
 
-import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jCoreDynamicRefreshEventOrder.WEB_EXECUTOR_LISTENER;
+import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEventOrder.WEB_EXECUTOR_LISTENER;
 
 /**
  * Web executor refresh listener.
  */
 @Slf4j
 @Order(WEB_EXECUTOR_LISTENER)
-public class WebExecutorRefreshListener implements ApplicationListener<Hippo4jCoreDynamicRefreshEvent> {
+public class WebExecutorRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
 
     @Override
-    public void onApplicationEvent(Hippo4jCoreDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
-        BootstrapCoreProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapCoreProperties();
+    public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
+        BootstrapConfigProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapConfigProperties();
         boolean isNullFlag = bindableCoreProperties.getJetty() == null
                 && bindableCoreProperties.getUndertow() == null
                 && bindableCoreProperties.getTomcat() == null;
@@ -65,7 +65,7 @@ public class WebExecutorRefreshListener implements ApplicationListener<Hippo4jCo
         }
     }
 
-    private ThreadPoolParameterInfo buildWebPoolParameter(BootstrapCoreProperties bindableCoreProperties) {
+    private ThreadPoolParameterInfo buildWebPoolParameter(BootstrapConfigProperties bindableCoreProperties) {
         ThreadPoolParameterInfo threadPoolParameterInfo = null;
         WebThreadPoolProperties webThreadPoolProperties = null;
         if (bindableCoreProperties.getTomcat() != null) {

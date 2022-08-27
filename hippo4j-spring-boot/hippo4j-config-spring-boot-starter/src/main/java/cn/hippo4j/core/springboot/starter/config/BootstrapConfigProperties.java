@@ -31,8 +31,8 @@ import java.util.Map;
  */
 @Getter
 @Setter
-@ConfigurationProperties(prefix = BootstrapCoreProperties.PREFIX)
-public class BootstrapCoreProperties implements BootstrapPropertiesInterface {
+@ConfigurationProperties(prefix = BootstrapConfigProperties.PREFIX)
+public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
 
     public static final String PREFIX = "spring.dynamic.thread-pool";
 

@@ -48,19 +48,19 @@ public class ConfigHandlerConfiguration {
     @RequiredArgsConstructor
     @ConditionalOnClass(ConfigService.class)
     @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
-    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = NACOS_DATA_ID_KEY)
+    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
     static class EmbeddedNacos {
 
-        public final BootstrapCoreProperties bootstrapCoreProperties;
+        public final BootstrapConfigProperties bootstrapConfigProperties;
 
         @Bean
         public NacosRefresherHandler nacosRefresherHandler() {
-            return new NacosRefresherHandler(bootstrapCoreProperties);
+            return new NacosRefresherHandler(bootstrapConfigProperties);
         }
     }
 
     @ConditionalOnClass(NacosConfigManager.class)
-    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = NACOS_DATA_ID_KEY)
+    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
     static class EmbeddedNacosCloud {
 
         @Bean
@@ -70,7 +70,7 @@ public class ConfigHandlerConfiguration {
     }
 
     @ConditionalOnClass(com.ctrip.framework.apollo.ConfigService.class)
-    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = APOLLO_NAMESPACE_KEY)
+    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = APOLLO_NAMESPACE_KEY)
     static class EmbeddedApollo {
 
         @Bean
@@ -80,7 +80,7 @@ public class ConfigHandlerConfiguration {
     }
 
     @ConditionalOnClass(CuratorFramework.class)
-    @ConditionalOnProperty(prefix = BootstrapCoreProperties.PREFIX, name = ZOOKEEPER_CONNECT_STR_KEY)
+    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ZOOKEEPER_CONNECT_STR_KEY)
     static class EmbeddedZookeeper {
 
         @Bean
