@@ -27,6 +27,26 @@ public class StringUtil {
     public static final char UNDERLINE = '_';
 
     /**
+     * Returns the given string if it is nonempty; {@code null} otherwise.
+     *
+     * @param str
+     * @return
+     */
+    public static String emptyToNull(String str) {
+        return (str == null || str.isEmpty()) ? null : str;
+    }
+
+    /**
+     * Returns the given string if it is non-null; the empty string otherwise.
+     *
+     * @param str
+     * @return
+     */
+    public static String nullToEmpty(String str) {
+        return str == null ? "" : str;
+    }
+
+    /**
      * Is blank.
      *
      * @param str
