@@ -39,7 +39,7 @@
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-spring-boot-starter-monitor-es</artifactId>
+            <artifactId>hippo4j-spring-boot-starter-monitor-elasticsearch</artifactId>
             <version>${revision}</version>
         </dependency>
 
