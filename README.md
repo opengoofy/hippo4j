@@ -50,7 +50,8 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 Hippo-4J 获得了一些宝贵的荣誉，肯定了 Hippo-4J 作为一款开源框架所带来的价值。
 
-<img align="center" width="680" alt="image" src="https://user-images.githubusercontent.com/77398366/170607238-7308c9be-1d63-46a6-852c-eef2e4cf7405.JPG">
+<img align="center" width="680" alt="image" src="https://user-images.githubusercontent.com/77398366/187014905-b50bdc8b-ca0e-4137-9a02-1e6b06106191.jpg">
+
 
 ## 开发者
 
