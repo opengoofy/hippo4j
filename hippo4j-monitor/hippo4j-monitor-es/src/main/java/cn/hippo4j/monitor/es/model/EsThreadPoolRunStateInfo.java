@@ -32,5 +32,4 @@ public class EsThreadPoolRunStateInfo extends ThreadPoolRunStateInfo {
     private String Id;
 
     private String applicationName;
-
 }

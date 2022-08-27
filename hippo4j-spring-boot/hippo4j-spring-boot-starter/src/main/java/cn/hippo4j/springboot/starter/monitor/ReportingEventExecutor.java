@@ -19,20 +19,20 @@ package cn.hippo4j.springboot.starter.monitor;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.monitor.Message;
+import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
+import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import cn.hippo4j.monitor.base.ThreadPoolMonitor;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.monitor.collect.Collector;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import cn.hutool.core.collection.CollUtil;
-import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
-import cn.hippo4j.monitor.base.MonitorTypeEnum;
-import cn.hippo4j.monitor.base.ThreadPoolMonitor;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.CommandLineRunner;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -108,7 +111,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
             return;
         }
         threadPoolMonitors = Lists.newArrayList();
-        String collectType = Optional.ofNullable(Strings.emptyToNull(properties.getCollectType())).orElse(MonitorTypeEnum.SERVER.name().toLowerCase());
+        String collectType = Optional.ofNullable(StringUtil.emptyToNull(properties.getCollectType())).orElse(MonitorTypeEnum.SERVER.name().toLowerCase());
         collectVesselExecutor = new ScheduledThreadPoolExecutor(
                 new Integer(collectType.split(",").length),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());

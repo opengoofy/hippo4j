@@ -18,6 +18,7 @@
 package cn.hippo4j.monitor.es;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.StringUtil;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,6 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.Strings;
 import org.springframework.core.env.Environment;
 
 import java.util.List;
@@ -40,8 +40,11 @@ import java.util.List;
 public class EsClientHolder {
 
     private static String host;
+
     private static String scheme;
+
     private static String userName;
+
     private static String password;
 
     private static RestHighLevelClient client;
@@ -53,16 +56,13 @@ public class EsClientHolder {
             scheme = environment.getProperty("es.thread-pool-state.schema");
             userName = environment.getProperty("es.thread-pool-state.userName");
             password = environment.getProperty("es.thread-pool-state.password");
-
             List<HttpHost> hosts = parseHosts();
-
-            if (Strings.isNullOrEmpty(userName) || Strings.isNullOrEmpty(password)) {
+            if (StringUtil.isNullOrEmpty(userName) || StringUtil.isNullOrEmpty(password)) {
                 client = new RestHighLevelClient(RestClient.builder(hosts.toArray(new HttpHost[]{})));
             } else {
                 client = new RestHighLevelClient(RestClient.builder(hosts.toArray(new HttpHost[]{}))
                         .setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultCredentialsProvider(getCredentialsProvider())));
             }
-
             log.info("[ES RestHighLevelClient] success to connect es！host:{},scheme:{}", host, scheme);
             return client;
         } catch (Exception ex) {
@@ -72,7 +72,7 @@ public class EsClientHolder {
     }
 
     private static BasicCredentialsProvider getCredentialsProvider() {
-        if (!Strings.isNullOrEmpty(userName) && !Strings.isNullOrEmpty(password)) {
+        if (!StringUtil.isNullOrEmpty(userName) && !StringUtil.isNullOrEmpty(password)) {
             final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(userName, password));
@@ -94,5 +94,4 @@ public class EsClientHolder {
         }
         return hosts;
     }
-
 }

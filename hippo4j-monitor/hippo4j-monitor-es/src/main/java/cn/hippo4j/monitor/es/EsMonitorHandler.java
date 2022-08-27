@@ -59,18 +59,15 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
         EsThreadPoolRunStateInfo esThreadPoolRunStateInfo = new EsThreadPoolRunStateInfo();
         BeanUtil.copyProperties(poolRunStateInfo, esThreadPoolRunStateInfo);
-
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String indexName = environment.getProperty("es.thread-pool-state.index.name", "thread-pool-state");
         String applicationName = environment.getProperty("spring.application.name", "application");
-
         if (!this.isExists(indexName)) {
             List<String> rawMapping = FileUtil.readLines(new File(Thread.currentThread().getContextClassLoader().getResource("mapping.json").getPath()), StandardCharsets.UTF_8);
             String mapping = String.join(" ", rawMapping);
             // if index doesn't exsit, this function may try to create one, but recommend to create index manually.
             this.createIndex(indexName, "_doc", mapping, null, null, null);
         }
-
         esThreadPoolRunStateInfo.setApplicationName(applicationName);
         esThreadPoolRunStateInfo.setId(indexName + "-" + System.currentTimeMillis());
         this.log2Es(esThreadPoolRunStateInfo, indexName);
@@ -78,13 +75,11 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     public void log2Es(EsThreadPoolRunStateInfo esThreadPoolRunStateInfo, String indexName) {
         RestHighLevelClient client = EsClientHolder.getClient();
-
         try {
             IndexRequest request = new IndexRequest(indexName, "_doc");
             request.id(esThreadPoolRunStateInfo.getId());
             String stateJson = JSONUtil.toJSONString(esThreadPoolRunStateInfo);
             request.source(stateJson, XContentType.JSON);
-
             IndexResponse response = client.index(request, RequestOptions.DEFAULT);
             log.info("write thread-pool state to es, id is :{}", response.getId());
         } catch (Exception ex) {
