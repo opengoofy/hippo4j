@@ -28,8 +28,8 @@ public class ConditionUtilTest {
     public void assertCondition() {
         // init consumer
         AtomicBoolean checkValue = new AtomicBoolean(false);
-        NoArgsConsumer trueConsumer = () ->  checkValue.set(true);
-        NoArgsConsumer falseConsumer =  () ->  checkValue.set(false);
+        NoArgsConsumer trueConsumer = () -> checkValue.set(true);
+        NoArgsConsumer falseConsumer = () -> checkValue.set(false);
         // test trueConsumer run
         ConditionUtil.condition(true, trueConsumer, falseConsumer);
         Assert.isTrue(checkValue.get());
