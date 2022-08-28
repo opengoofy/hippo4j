@@ -19,10 +19,15 @@ package cn.hippo4j.common.toolkit;
 
 import org.junit.Test;
 
+import java.util.Objects;
+
 public class ByteConvertUtilTest {
 
     @Test
     public void assertGetPrintSize() {
-
+        Assert.isTrue(Objects.equals(ByteConvertUtil.getPrintSize(220), "220B"));
+        Assert.isTrue(Objects.equals(ByteConvertUtil.getPrintSize(2200), "2.15KB"));
+        Assert.isTrue(Objects.equals(ByteConvertUtil.getPrintSize(2200000), "2.10MB"));
+        Assert.isTrue(Objects.equals(ByteConvertUtil.getPrintSize(2200000000L), "2.05GB"));
     }
 }
