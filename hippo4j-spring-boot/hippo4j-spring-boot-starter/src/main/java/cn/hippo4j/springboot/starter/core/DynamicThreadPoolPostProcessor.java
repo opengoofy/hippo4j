@@ -127,6 +127,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         ThreadPoolExecutor newDynamicThreadPoolExecutor = null;
         ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
         try {
+            //通过http访问server端
             Result result = httpAgent.httpGetByConfig(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 5000L);
             if (result.isSuccess() && result.getData() != null) {
                 String resultJsonStr = JSONUtil.toJSONString(result.getData());
