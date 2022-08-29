@@ -164,14 +164,15 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         String threadNamePrefix = executorProperties.getThreadNamePrefix();
         ExecutorProperties newExecutorProperties = buildExecutorProperties(executorProperties);
         ThreadPoolExecutor newDynamicPoolExecutor = ThreadPoolBuilder.builder()
-                .dynamicPool()
+                .threadPoolId(executorProperties.getThreadPoolId())
+                .threadFactory(StringUtil.isNotBlank(threadNamePrefix) ? threadNamePrefix : executorProperties.getThreadPoolId())
                 .poolThreadSize(newExecutorProperties.getCorePoolSize(), newExecutorProperties.getMaximumPoolSize())
                 .workQueue(BlockingQueueTypeEnum.createBlockingQueue(newExecutorProperties.getBlockingQueue(), newExecutorProperties.getQueueCapacity()))
-                .threadFactory(StringUtil.isNotBlank(threadNamePrefix) ? threadNamePrefix : executorProperties.getThreadPoolId())
                 .executeTimeOut(newExecutorProperties.getExecuteTimeOut())
                 .keepAliveTime(newExecutorProperties.getKeepAliveTime(), TimeUnit.SECONDS)
                 .rejected(RejectedPolicyTypeEnum.createPolicy(newExecutorProperties.getRejectedHandler()))
                 .allowCoreThreadTimeOut(newExecutorProperties.getAllowCoreThreadTimeOut())
+                .dynamicPool()
                 .build();
         return newDynamicPoolExecutor;
     }

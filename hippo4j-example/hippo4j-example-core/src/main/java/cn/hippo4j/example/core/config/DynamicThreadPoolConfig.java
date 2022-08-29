@@ -78,7 +78,12 @@ public class DynamicThreadPoolConfig {
         return produceExecutor;
     }
 
-    @Bean
+    /**
+     * Test spring {@link ThreadPoolTaskExecutor}, Thread-pool id: testSpringThreadPoolTaskExecutor
+     *
+     * @return
+     */
+    // @Bean
     @DynamicThreadPool
     public ThreadPoolTaskExecutor testSpringThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
