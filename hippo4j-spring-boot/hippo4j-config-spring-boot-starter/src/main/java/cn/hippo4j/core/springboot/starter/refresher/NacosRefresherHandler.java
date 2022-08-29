@@ -57,6 +57,5 @@ public class NacosRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh 
                     }
                 });
         log.info("Dynamic thread pool refresher, add nacos listener success. data-id: {}, group: {}", nacosConfig.get("data-id"), nacosConfig.get("group"));
-
     }
 }
