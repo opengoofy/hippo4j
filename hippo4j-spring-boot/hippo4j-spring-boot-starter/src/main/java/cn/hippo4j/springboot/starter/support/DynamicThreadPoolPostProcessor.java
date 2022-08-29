@@ -97,7 +97,11 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(dynamicThreadPoolWrapper);
             DynamicThreadPoolAdapterChoose.replace(bean, remoteThreadPoolExecutor);
             subscribeConfig(dynamicThreadPoolWrapper);
-            return remoteThreadPoolExecutor;
+            if (DynamicThreadPoolAdapterChoose.match(bean)) {
+                return bean;
+            } else {
+                return remoteThreadPoolExecutor;
+            }
         }
         if (bean instanceof DynamicThreadPoolWrapper) {
             DynamicThreadPoolWrapper dynamicThreadPoolWrapper = (DynamicThreadPoolWrapper) bean;
@@ -123,6 +127,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      */
     protected ThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrapper) {
         String threadPoolId = dynamicThreadPoolWrapper.getThreadPoolId();
+        ThreadPoolExecutor executor = dynamicThreadPoolWrapper.getExecutor();
         Map<String, String> queryStrMap = new HashMap(3);
         queryStrMap.put(TP_ID, threadPoolId);
         queryStrMap.put(ITEM_ID, properties.getItemId());
@@ -140,7 +145,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                     newDynamicThreadPoolExecutor = ThreadPoolBuilder.builder()
                             .dynamicPool()
                             .workQueue(workQueue)
-                            .threadFactory(threadPoolId)
+                            .threadFactory(executor.getThreadFactory())
                             .poolThreadSize(threadPoolParameterInfo.corePoolSizeAdapt(), threadPoolParameterInfo.maximumPoolSizeAdapt())
                             .keepAliveTime(threadPoolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS)
                             .rejected(RejectedPolicyTypeEnum.createPolicy(threadPoolParameterInfo.getRejectedType()))
@@ -148,7 +153,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                             .build();
                     // Set dynamic thread pool enhancement parameters.
                     ThreadPoolExecutor customDynamicThreadPool;
-                    if ((customDynamicThreadPool = dynamicThreadPoolWrapper.getExecutor()) instanceof AbstractDynamicExecutorSupport) {
+                    if ((customDynamicThreadPool = executor) instanceof AbstractDynamicExecutorSupport) {
                         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
                                 BooleanUtil.toBoolean(threadPoolParameterInfo.getIsAlarm().toString()),
                                 threadPoolParameterInfo.getCapacityAlarm(),
@@ -168,11 +173,11 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 }
             }
         } catch (Exception ex) {
-            newDynamicThreadPoolExecutor = dynamicThreadPoolWrapper.getExecutor() != null ? dynamicThreadPoolWrapper.getExecutor() : CommonDynamicThreadPool.getInstance(threadPoolId);
+            newDynamicThreadPoolExecutor = executor != null ? executor : CommonDynamicThreadPool.getInstance(threadPoolId);
             dynamicThreadPoolWrapper.setExecutor(newDynamicThreadPoolExecutor);
             log.error("Failed to initialize thread pool configuration. error message: {}", ex.getMessage());
         } finally {
-            if (Objects.isNull(dynamicThreadPoolWrapper.getExecutor())) {
+            if (Objects.isNull(executor)) {
                 dynamicThreadPoolWrapper.setExecutor(CommonDynamicThreadPool.getInstance(threadPoolId));
             }
             // Set whether to subscribe to the remote thread pool configuration.

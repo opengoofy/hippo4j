@@ -57,6 +57,8 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     private String threadNamePrefix;
 
+    private ThreadFactory threadFactory;
+
     private String threadPoolId;
 
     private TaskDecorator taskDecorator;
@@ -84,6 +86,11 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     public ThreadPoolBuilder threadFactory(String threadNamePrefix) {
         this.threadNamePrefix = threadNamePrefix;
+        return this;
+    }
+
+    public ThreadPoolBuilder threadFactory(ThreadFactory threadFactory) {
+        this.threadFactory = threadFactory;
         return this;
     }
 
@@ -227,9 +234,13 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     private static AbstractBuildThreadPoolTemplate.ThreadPoolInitParam buildInitParam(ThreadPoolBuilder builder) {
-        Assert.notEmpty(builder.threadNamePrefix, "The thread name prefix cannot be empty or an empty string.");
-        AbstractBuildThreadPoolTemplate.ThreadPoolInitParam initParam =
-                new AbstractBuildThreadPoolTemplate.ThreadPoolInitParam(builder.threadNamePrefix, builder.isDaemon);
+        AbstractBuildThreadPoolTemplate.ThreadPoolInitParam initParam;
+        if (builder.threadFactory == null) {
+            Assert.notEmpty(builder.threadNamePrefix, "The thread name prefix cannot be empty or an empty string.");
+            initParam = new AbstractBuildThreadPoolTemplate.ThreadPoolInitParam(builder.threadNamePrefix, builder.isDaemon);
+        } else {
+            initParam = new AbstractBuildThreadPoolTemplate.ThreadPoolInitParam(builder.threadFactory);
+        }
         initParam.setCorePoolNum(builder.corePoolSize)
                 .setMaxPoolNum(builder.maxPoolSize)
                 .setKeepAliveTime(builder.keepAliveTime)
