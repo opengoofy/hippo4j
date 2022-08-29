@@ -62,10 +62,10 @@ public class ThreadPoolTaskExecutorAdapter implements DynamicThreadPoolAdapter {
         if (unwrap instanceof DynamicThreadPoolExecutor) {
             return (DynamicThreadPoolExecutor) unwrap;
         }
-        boolean waitForTasksToCompleteOnShutdown = (boolean)ReflectUtil.getFieldValue(executor, WAIT_FOR_TASKS_TO_COMPLETE_ON_SHUTDOWN);
-        long awaitTerminationMillis = (long)ReflectUtil.getFieldValue(executor, AWAIT_TERMINATION_MILLIS);
-        String beanName = (String)ReflectUtil.getFieldValue(executor, BEAN_NAME);
-        int queueCapacity = (int)ReflectUtil.getFieldValue(executor, QUEUE_CAPACITY);
+        boolean waitForTasksToCompleteOnShutdown = (boolean) ReflectUtil.getFieldValue(executor, WAIT_FOR_TASKS_TO_COMPLETE_ON_SHUTDOWN);
+        long awaitTerminationMillis = (long) ReflectUtil.getFieldValue(executor, AWAIT_TERMINATION_MILLIS);
+        String beanName = (String) ReflectUtil.getFieldValue(executor, BEAN_NAME);
+        int queueCapacity = (int) ReflectUtil.getFieldValue(executor, QUEUE_CAPACITY);
 
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) unwrap;
         ThreadPoolTaskExecutor threadPoolTaskExecutor = (ThreadPoolTaskExecutor) executor;
@@ -81,11 +81,10 @@ public class ThreadPoolTaskExecutorAdapter implements DynamicThreadPoolAdapter {
                 .waitForTasksToCompleteOnShutdown(waitForTasksToCompleteOnShutdown)
                 .awaitTerminationMillis(awaitTerminationMillis)
                 .threadFactory(threadPoolExecutor.getThreadFactory())
-                //threadPoolId default beanName
+                // threadPoolId default beanName
                 .threadPoolId(beanName)
-                .rejected(threadPoolExecutor.getRejectedExecutionHandler())
-                ;
-        //use new Queue
+                .rejected(threadPoolExecutor.getRejectedExecutionHandler());
+        // use new Queue
         threadPoolBuilder.capacity(queueCapacity);
         // .workQueue(threadPoolExecutor.getQueue())
 
