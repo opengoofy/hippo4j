@@ -97,7 +97,11 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(dynamicThreadPoolWrapper);
             DynamicThreadPoolAdapterChoose.replace(bean, remoteThreadPoolExecutor);
             subscribeConfig(dynamicThreadPoolWrapper);
-            return remoteThreadPoolExecutor;
+            if (DynamicThreadPoolAdapterChoose.match(bean)) {
+                return bean;
+            } else {
+                return remoteThreadPoolExecutor;
+            }
         }
         if (bean instanceof DynamicThreadPoolWrapper) {
             DynamicThreadPoolWrapper dynamicThreadPoolWrapper = (DynamicThreadPoolWrapper) bean;
