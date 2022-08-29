@@ -80,17 +80,15 @@ public class DynamicThreadPoolConfig {
 
     @Bean
     @DynamicThreadPool
-    public ThreadPoolTaskExecutor testThreadPoolTaskExecutor() {
+    public ThreadPoolTaskExecutor testSpringThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.setThreadNamePrefix("66666-");
-        final int maxQueueCapacity = 200;
+        threadPoolTaskExecutor.setThreadNamePrefix("test-spring-task-executor_");
+        int maxQueueCapacity = 200;
         threadPoolTaskExecutor.setCorePoolSize(AVAILABLE_PROCESSORS * 2);
         threadPoolTaskExecutor.setMaxPoolSize(AVAILABLE_PROCESSORS * 4);
         threadPoolTaskExecutor.setQueueCapacity(maxQueueCapacity);
         threadPoolTaskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        //
         threadPoolTaskExecutor.setTaskDecorator(new TaskDecoratorTest.ContextCopyingDecorator());
-
         return threadPoolTaskExecutor;
     }
 }

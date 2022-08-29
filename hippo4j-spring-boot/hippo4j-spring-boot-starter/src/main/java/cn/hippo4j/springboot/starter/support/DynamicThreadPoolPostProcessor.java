@@ -97,11 +97,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(dynamicThreadPoolWrapper);
             DynamicThreadPoolAdapterChoose.replace(bean, remoteThreadPoolExecutor);
             subscribeConfig(dynamicThreadPoolWrapper);
-            if (DynamicThreadPoolAdapterChoose.match(bean)) {
-                return bean;
-            } else {
-                return remoteThreadPoolExecutor;
-            }
+            return DynamicThreadPoolAdapterChoose.match(bean) ? bean : remoteThreadPoolExecutor;
         }
         if (bean instanceof DynamicThreadPoolWrapper) {
             DynamicThreadPoolWrapper dynamicThreadPoolWrapper = (DynamicThreadPoolWrapper) bean;
@@ -144,6 +140,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                     BlockingQueue workQueue = BlockingQueueTypeEnum.createBlockingQueue(threadPoolParameterInfo.getQueueType(), threadPoolParameterInfo.getCapacity());
                     newDynamicThreadPoolExecutor = ThreadPoolBuilder.builder()
                             .dynamicPool()
+                            .threadPoolId(threadPoolId)
                             .workQueue(workQueue)
                             .threadFactory(executor.getThreadFactory())
                             .poolThreadSize(threadPoolParameterInfo.corePoolSizeAdapt(), threadPoolParameterInfo.maximumPoolSizeAdapt())

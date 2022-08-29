@@ -23,6 +23,7 @@ import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -45,9 +46,12 @@ public class ThreadPoolTaskExecutorAdapter implements DynamicThreadPoolAdapter {
 
     private static final String QUEUE_CAPACITY = "queueCapacity";
 
+    private static String MATCH_CLASS_NAME = "ThreadPoolTaskExecutor";
+
     @Override
     public boolean match(Object executor) {
-        return executor instanceof ThreadPoolTaskExecutor;
+        // Adapt to lower versions of spring.
+        return Objects.equals(MATCH_CLASS_NAME, executor.getClass().getSimpleName());
     }
 
     @Override
@@ -66,11 +70,12 @@ public class ThreadPoolTaskExecutorAdapter implements DynamicThreadPoolAdapter {
         long awaitTerminationMillis = (long) ReflectUtil.getFieldValue(executor, AWAIT_TERMINATION_MILLIS);
         String beanName = (String) ReflectUtil.getFieldValue(executor, BEAN_NAME);
         int queueCapacity = (int) ReflectUtil.getFieldValue(executor, QUEUE_CAPACITY);
-
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) unwrap;
         ThreadPoolTaskExecutor threadPoolTaskExecutor = (ThreadPoolTaskExecutor) executor;
-        // Spring ThreadPoolTaskExecutor to DynamicThreadPoolExecutor
-        // ThreadPoolTaskExecutor not support executeTimeOut
+        /**
+         * Spring {@link ThreadPoolTaskExecutor} to {@link DynamicThreadPoolExecutor}, 
+         * {@link ThreadPoolTaskExecutor} not support {@link DynamicThreadPoolExecutor#executeTimeOut}.
+         */
         ThreadPoolBuilder threadPoolBuilder = ThreadPoolBuilder.builder()
                 .dynamicPool()
                 .corePoolSize(threadPoolTaskExecutor.getCorePoolSize())
@@ -81,16 +86,13 @@ public class ThreadPoolTaskExecutorAdapter implements DynamicThreadPoolAdapter {
                 .waitForTasksToCompleteOnShutdown(waitForTasksToCompleteOnShutdown)
                 .awaitTerminationMillis(awaitTerminationMillis)
                 .threadFactory(threadPoolExecutor.getThreadFactory())
-                // threadPoolId default beanName
+                // Thread-pool id default bean name.
                 .threadPoolId(beanName)
                 .rejected(threadPoolExecutor.getRejectedExecutionHandler());
-        // use new Queue
+        // Use new blocking queue.
         threadPoolBuilder.capacity(queueCapacity);
-        // .workQueue(threadPoolExecutor.getQueue())
-
         Optional.ofNullable(ReflectUtil.getFieldValue(executor, TASK_DECORATOR))
                 .ifPresent((taskDecorator) -> threadPoolBuilder.taskDecorator((TaskDecorator) taskDecorator));
-
         return (DynamicThreadPoolExecutor) threadPoolBuilder.build();
     }
 
