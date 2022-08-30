@@ -95,7 +95,7 @@ const config = {
                     },*/
                     {
                         href: 'https://xiaomage.info/knowledge-planet',
-                        label: '🥇知识星球',
+                        label: '🥇代码实战课',
                         position: 'right',
                     },
                     /* 国际化 */
