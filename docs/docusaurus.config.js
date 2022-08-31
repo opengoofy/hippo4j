@@ -64,7 +64,7 @@ const config = {
                 // content: `<a target="_blank" rel="noopener noreferrer" href="https://xiaomage.info/knowledge-planet/">👉 《小马哥的代码实战课》官方知识星球来啦！！！</a>`,
             },
             navbar: {
-                title: 'hippoforjava',
+                title: 'HIPPO-4J',
                 logo: {
                     alt: 'HIPPO-4J 动态可观测线程池框架',
                     src: 'img/web.png',
