@@ -17,14 +17,15 @@
 
 package cn.hippo4j.core.springboot.starter.config;
 
+import java.util.List;
+import java.util.Map;
+
 import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import cn.hippo4j.core.springboot.starter.parser.ConfigFileTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.List;
-import java.util.Map;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Bootstrap core properties.
@@ -85,6 +86,11 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
      * Zookeeper config.
      */
     private Map<String, String> zookeeper;
+
+    /**
+     * etcd config
+     */
+    private Map<String, String> etcd;
 
     /**
      * Tomcat thread pool config.
