@@ -27,7 +27,7 @@ import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hutool.core.date.DateUtil;
 import io.undertow.Undertow;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.embedded.undertow.UndertowWebServer;
+import org.springframework.boot.web.embedded.undertow.UndertowServletWebServer;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.util.ReflectionUtils;
 import org.xnio.Options;
@@ -50,11 +50,11 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     @Override
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
         // There is no need to consider reflection performance because the fetch is a singleton.
-        UndertowWebServer undertowWebServer = (UndertowWebServer) webServer;
-        Field undertowField = ReflectionUtils.findField(UndertowWebServer.class, UNDERTOW_NAME);
+        UndertowServletWebServer undertowServletWebServer = (UndertowServletWebServer) webServer;
+        Field undertowField = ReflectionUtils.findField(UndertowServletWebServer.class, UNDERTOW_NAME);
         ReflectionUtils.makeAccessible(undertowField);
 
-        Undertow undertow = (Undertow) ReflectionUtils.getField(undertowField, undertowWebServer);
+        Undertow undertow = (Undertow) ReflectionUtils.getField(undertowField, undertowServletWebServer);
         return Objects.isNull(undertow) ? null : undertow.getWorker();
     }
 
