@@ -21,8 +21,10 @@ import cn.hippo4j.core.springboot.starter.refresher.ApolloRefresherHandler;
 import cn.hippo4j.core.springboot.starter.refresher.NacosCloudRefresherHandler;
 import cn.hippo4j.core.springboot.starter.refresher.NacosRefresherHandler;
 import cn.hippo4j.core.springboot.starter.refresher.ZookeeperRefresherHandler;
+import cn.hippo4j.core.springboot.starter.refresher.EtcdRefresherHandler;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.config.ConfigService;
+import io.etcd.jetcd.Client;
 import lombok.RequiredArgsConstructor;
 import org.apache.curator.framework.CuratorFramework;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -44,6 +46,8 @@ public class ConfigHandlerConfiguration {
     private static final String APOLLO_NAMESPACE_KEY = "apollo.namespace";
 
     private static final String ZOOKEEPER_CONNECT_STR_KEY = "zookeeper.zk-connect-str";
+
+    private static final String ETCD = "endpoints";
 
     @RequiredArgsConstructor
     @ConditionalOnClass(ConfigService.class)
@@ -88,4 +92,16 @@ public class ConfigHandlerConfiguration {
             return new ZookeeperRefresherHandler();
         }
     }
+
+    @ConditionalOnClass(Client.class)
+    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ETCD)
+    static class EmbeddedEtcd {
+
+        @Bean
+        public EtcdRefresherHandler etcdRefresher() {
+            return new EtcdRefresherHandler();
+        }
+    }
+    
+    
 }
