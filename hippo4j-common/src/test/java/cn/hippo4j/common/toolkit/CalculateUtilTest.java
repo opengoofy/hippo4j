@@ -23,6 +23,8 @@ public class CalculateUtilTest {
 
     @Test
     public void assertDivide() {
-
+        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
+        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
+        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
     }
 }
