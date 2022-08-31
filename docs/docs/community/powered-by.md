@@ -30,3 +30,4 @@ sidebar_position: 3
 - [众合云科（51社保）](https://home.101hr.com/)
 - [好货云店](https://pc.haohuoyundian.com/)
 - [斗象科技](https://www.tophant.com/)
+- [深圳航天信息有限公司](http://sz.aisino.com/)
