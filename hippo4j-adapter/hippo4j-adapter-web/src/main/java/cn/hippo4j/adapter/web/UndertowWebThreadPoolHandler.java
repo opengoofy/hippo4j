@@ -50,6 +50,7 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
     @Override
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
         // There is no need to consider reflection performance because the fetch is a singleton.
+        // Springboot 2-3 version, can directly through reflection to obtain the undertow property
         UndertowServletWebServer undertowServletWebServer = (UndertowServletWebServer) webServer;
         Field undertowField = ReflectionUtils.findField(UndertowServletWebServer.class, UNDERTOW_NAME);
         ReflectionUtils.makeAccessible(undertowField);
