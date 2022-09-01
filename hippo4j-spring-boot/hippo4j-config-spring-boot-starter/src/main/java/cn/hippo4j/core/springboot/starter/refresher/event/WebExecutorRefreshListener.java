@@ -22,10 +22,10 @@ import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.springboot.starter.config.WebThreadPoolProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 
 import java.util.Objects;
@@ -37,14 +37,20 @@ import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jConfigDy
  */
 @Slf4j
 @Order(WEB_EXECUTOR_LISTENER)
-public class WebExecutorRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
+public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThreadPoolProperties> {
+
+    @Override
+    public boolean match(WebThreadPoolProperties properties) {
+        String nodes = properties.getNodes();
+        return checkArray(nodes);
+    }
 
     @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
         BootstrapConfigProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapConfigProperties();
         boolean isNullFlag = bindableCoreProperties.getJetty() == null
-                && bindableCoreProperties.getUndertow() == null
-                && bindableCoreProperties.getTomcat() == null;
+            && bindableCoreProperties.getUndertow() == null
+            && bindableCoreProperties.getTomcat() == null;
         if (isNullFlag) {
             return;
         }
@@ -75,12 +81,12 @@ public class WebExecutorRefreshListener implements ApplicationListener<Hippo4jCo
         } else if (bindableCoreProperties.getJetty() != null) {
             webThreadPoolProperties = bindableCoreProperties.getJetty();
         }
-        if (webThreadPoolProperties != null) {
+        if (webThreadPoolProperties != null && match(webThreadPoolProperties)) {
             threadPoolParameterInfo = ThreadPoolParameterInfo.builder()
-                    .coreSize(webThreadPoolProperties.getCorePoolSize())
-                    .maximumPoolSize(webThreadPoolProperties.getMaximumPoolSize())
-                    .keepAliveTime(webThreadPoolProperties.getKeepAliveTime())
-                    .build();
+                .coreSize(webThreadPoolProperties.getCorePoolSize())
+                .maximumPoolSize(webThreadPoolProperties.getMaximumPoolSize())
+                .keepAliveTime(webThreadPoolProperties.getKeepAliveTime())
+                .build();
         }
         return threadPoolParameterInfo;
     }

@@ -22,6 +22,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.springboot.starter.config.AdapterExecutorProperties;
+import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
 import cn.hutool.core.bean.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -40,7 +41,13 @@ import static cn.hippo4j.core.springboot.starter.support.DynamicThreadPoolAdapte
  */
 @Slf4j
 @Order(ADAPTER_EXECUTORS_LISTENER)
-public class AdapterExecutorsRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
+public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<AdapterExecutorProperties> {
+
+    @Override
+    public boolean match(AdapterExecutorProperties properties) {
+        String nodes = properties.getNodes();
+        return checkArray(nodes);
+    }
 
     @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent event) {
@@ -52,11 +59,11 @@ public class AdapterExecutorsRefreshListener implements ApplicationListener<Hipp
         for (AdapterExecutorProperties each : adapterExecutors) {
             String buildKey = each.getMark() + IDENTIFY_SLICER_SYMBOL + each.getThreadPoolKey();
             AdapterExecutorProperties adapterExecutorProperties = ADAPTER_EXECUTORS_MAP.get(buildKey);
-            if (adapterExecutorProperties == null) {
+            if (adapterExecutorProperties == null || match(adapterExecutorProperties)) {
                 continue;
             }
             if (!Objects.equals(adapterExecutorProperties.getCorePoolSize(), each.getCorePoolSize())
-                    || !Objects.equals(adapterExecutorProperties.getMaximumPoolSize(), each.getMaximumPoolSize())) {
+                || !Objects.equals(adapterExecutorProperties.getMaximumPoolSize(), each.getMaximumPoolSize())) {
                 threadPoolAdapterMap.forEach((key, val) -> {
                     if (Objects.equals(val.mark(), each.getMark())) {
                         val.updateThreadPool(BeanUtil.toBean(each, ThreadPoolAdapterParameter.class));

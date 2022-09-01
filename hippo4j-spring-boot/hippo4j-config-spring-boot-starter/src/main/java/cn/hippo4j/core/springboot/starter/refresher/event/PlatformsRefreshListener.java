@@ -37,7 +37,7 @@ import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jConfigDy
  * Platforms refresh listener.
  */
 @Order(PLATFORMS_LISTENER)
-public class PlatformsRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
+public class PlatformsRefreshListener extends AbstractRefreshListener<ExecutorProperties> {
 
     @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {

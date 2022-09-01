@@ -21,6 +21,7 @@ import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
@@ -29,6 +30,7 @@ import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.core.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.springboot.starter.config.ExecutorProperties;
+import cn.hippo4j.core.springboot.starter.config.WebThreadPoolProperties;
 import cn.hippo4j.core.springboot.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.core.springboot.starter.support.GlobalCoreThreadPoolManage;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
@@ -60,7 +62,7 @@ import static cn.hippo4j.core.springboot.starter.refresher.event.Hippo4jConfigDy
 @Slf4j
 @RequiredArgsConstructor
 @Order(EXECUTORS_LISTENER)
-public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
+public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<ExecutorProperties> {
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
@@ -69,18 +71,24 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
     private final Hippo4jBaseSendMessageService hippo4jBaseSendMessageService;
 
     @Override
+    public boolean match(ExecutorProperties properties) {
+        String nodes = properties.getNodes();
+        return checkArray(nodes);
+    }
+
+    @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent event) {
         BootstrapConfigProperties bindableConfigProperties = event.getBootstrapConfigProperties();
         List<ExecutorProperties> executors = bindableConfigProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
-            /**
+            if (!match(properties) && !checkConsistency(threadPoolId, properties)) {
+                continue;
+            }
+            /*
              * Check whether the notification configuration is consistent, this operation will not trigger the notification.
              */
             checkNotifyConsistencyAndReplace(properties);
-            if (!checkConsistency(threadPoolId, properties)) {
-                continue;
-            }
             dynamicRefreshPool(threadPoolId, properties);
             ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
             GlobalCoreThreadPoolManage.refresh(threadPoolId, failDefaultExecutorProperties(beforeProperties, properties));

@@ -102,4 +102,9 @@ public class ExecutorProperties {
      * Notify
      */
     private DynamicThreadPoolNotifyProperties notify;
+
+    /**
+     * nodes
+     */
+    private String nodes;
 }
