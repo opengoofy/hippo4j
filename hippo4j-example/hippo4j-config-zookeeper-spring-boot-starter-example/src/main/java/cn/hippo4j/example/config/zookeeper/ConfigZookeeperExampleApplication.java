@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.example.core.apollo;
+package cn.hippo4j.example.config.zookeeper;
 
 import cn.hippo4j.core.enable.EnableDynamicThreadPool;
 import org.springframework.boot.SpringApplication;
@@ -23,9 +23,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @EnableDynamicThreadPool
 @SpringBootApplication(scanBasePackages = "cn.hippo4j.example.core")
-public class ConfigApolloExampleApplication {
+public class ConfigZookeeperExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConfigApolloExampleApplication.class, args);
+        SpringApplication.run(ConfigZookeeperExampleApplication.class, args);
     }
 }

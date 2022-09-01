@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.example.core.nacos;
+package cn.hippo4j.example.config.nacos;
 
 import cn.hippo4j.core.enable.EnableDynamicThreadPool;
 import org.springframework.boot.SpringApplication;
