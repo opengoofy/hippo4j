@@ -22,8 +22,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
-
 /**
  * Thread pool notify alarm.
  */
@@ -56,15 +54,7 @@ public class ThreadPoolNotifyAlarm {
     private Integer interval;
 
     /**
-     * Receive
-     */
-    private String receive;
-
-    /**
      * Receives
-     *
-     * <p> Do not enable this configuration for the time being, it may be useful if you develop mailboxes in the future.
      */
-    @Deprecated
-    private Map<String, String> receives;
+    private String receives;
 }

@@ -17,6 +17,8 @@
 
 package cn.hippo4j.common.model.register;
 
+import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterCoreNotifyParameter;
+import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterServerNotifyParameter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +33,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DynamicThreadPoolRegisterWrapper {
 
+    // Hippo4j common ----------------------------------------------------------------------
+
+    /**
+     * Dynamic thread-pool register parameter
+     */
+    private DynamicThreadPoolRegisterParameter dynamicThreadPoolRegisterParameter;
+
+    // Hippo4j server ----------------------------------------------------------------------
+
     /**
      * Tenant id
      */
@@ -44,10 +55,22 @@ public class DynamicThreadPoolRegisterWrapper {
     /**
      * Update if exists
      */
-    private Boolean updateIfExists = Boolean.TRUE;
+    private Boolean updateIfExists = Boolean.FALSE;
 
     /**
-     * Dynamic thread-pool register parameter
+     * Notify update if exists
      */
-    private DynamicThreadPoolRegisterParameter dynamicThreadPoolRegisterParameter;
+    private Boolean notifyUpdateIfExists = Boolean.FALSE;
+
+    /**
+     * Dynamic thread-pool server notify parameter
+     */
+    private DynamicThreadPoolRegisterServerNotifyParameter dynamicThreadPoolRegisterServerNotifyParameter;
+
+    // Hippo4j core ----------------------------------------------------------------------
+
+    /**
+     * Dynamic thread-pool core notify parameter
+     */
+    private DynamicThreadPoolRegisterCoreNotifyParameter dynamicThreadPoolRegisterCoreNotifyParameter;
 }

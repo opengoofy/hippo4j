@@ -17,29 +17,27 @@
 
 package cn.hippo4j.common.toolkit;
 
+import java.text.DecimalFormat;
+
 /**
  * Byte conversion tool class
  */
 public class ByteConvertUtil {
 
+    public static final Integer KB_SIZE = 2 << 9;
+    public static final Integer MB_SIZE = 2 << 19;
+    public static final Integer GB_SIZE = 2 << 29;
+
     public static String getPrintSize(long size) {
-        long covertNum = 1024;
-        if (size < covertNum) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        if (size < KB_SIZE) {
             return size + "B";
+        } else if (size < MB_SIZE) {
+            return df.format((double) size / KB_SIZE) + "KB";
+        } else if (size < GB_SIZE) {
+            return df.format((double) size / MB_SIZE) + "MB";
         } else {
-            size = size / covertNum;
-        }
-        if (size < covertNum) {
-            return size + "KB";
-        } else {
-            size = size / covertNum;
-        }
-        if (size < covertNum) {
-            size = size * 100;
-            return (size / 100) + "." + (size % 100) + "MB";
-        } else {
-            size = size * 100 / covertNum;
-            return (size / 100) + "." + (size % 100) + "GB";
+            return df.format((double) size / GB_SIZE) + "GB";
         }
     }
 }

@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'HIPPO-4J 文档',
+    title: 'HIPPO-4J',
     tagline: '动态可观测线程池框架，为业务系统提高线上运行保障能力',
     url: 'https://hippo4j.cn',
     baseUrl: '/',
@@ -64,7 +64,7 @@ const config = {
                 // content: `<a target="_blank" rel="noopener noreferrer" href="https://xiaomage.info/knowledge-planet/">👉 《小马哥的代码实战课》官方知识星球来啦！！！</a>`,
             },
             navbar: {
-                title: '4J',
+                title: 'HIPPO-4J',
                 logo: {
                     alt: 'HIPPO-4J 动态可观测线程池框架',
                     src: 'img/web.png',
@@ -84,27 +84,19 @@ const config = {
                         sidebarId: 'community',
                         label: '社区',
                     },
-                    {to: '/blog', label: '博客', position: 'left'},
-                    /*{
-                        type: 'docSidebar',
-                        docId: 'intro',
-                        position: 'left',
-                        sidebarId: 'sponsor',
-                        hideable: true,
-                        label: '支持开源',
-                    },*/
-                    {
-                        href: 'https://xiaomage.info/knowledge-planet',
-                        label: '🥇知识星球',
-                        position: 'right',
-                    },
-                    /* 国际化 */
-                    /*{type: 'localeDropdown', position: 'right'},*/
+                    /*{to: '/blog', label: '博客', position: 'left'},*/
                     {
                         href: 'http://console.hippo4j.cn/index.html',
                         label: '控制台样例',
-                        position: 'right',
+                        position: 'left',
                     },
+                    {
+                        href: 'https://xiaomage.info/knowledge-planet',
+                        label: '🥇代码实战课',
+                        position: 'left',
+                    },
+                    {type: 'localeDropdown', position: 'right'},
+
                     /*{
                         href: 'https://gitee.com/mabaiwancn/hippo4j',
                         label: 'Gitee',

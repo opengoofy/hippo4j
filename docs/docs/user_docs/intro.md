@@ -42,7 +42,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 感谢所有为 Hippo-4J 做出贡献的开发者！
 
-<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://contrib.rocks/image?repo=opengoofy/hippo4j"/></a>
+<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false"/></a>
 
 ## 我们的荣誉
 
@@ -56,8 +56,13 @@ Hippo-4J 获得了一些宝贵的荣誉，这属于每一位对 Hippo-4J 做出�
 
 ## 友情链接
 
-- [HertzBeat](https://github.com/dromara/hertzbeat)：易用友好的云监控系统, 无需Agent, 强大自定义监控能力。     
-- [toBeBetterJavaer](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的Java学习指南，内容涵盖Java基础、Java并发编程等核心知识点。
+- [[ Sa-Token ]](https://github.com/dromara/sa-token)：一个轻量级 java 权限认证框架，让鉴权变得简单、优雅！
+
+- [[ HertzBeat ]](https://github.com/dromara/hertzbeat)：易用友好的云监控系统, 无需 Agent, 强大自定义监控能力。 
+
+- [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
+
+- [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的Java学习指南，内容涵盖Java基础、Java并发编程等核心知识点。
 
 ## 鸣谢
 

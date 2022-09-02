@@ -120,6 +120,26 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
+    public void saveOrUpdate(boolean notifyUpdateIfExists, NotifyReqDTO reqDTO) {
+        try {
+            existNotify(reqDTO.getType(), reqDTO);
+            save(reqDTO);
+        } catch (Exception ignored) {
+            if (!notifyUpdateIfExists) {
+                return;
+            }
+            LambdaQueryWrapper<NotifyInfo> queryWrapper = Wrappers.lambdaQuery(NotifyInfo.class)
+                    .eq(NotifyInfo::getTenantId, reqDTO.getTenantId())
+                    .eq(NotifyInfo::getItemId, reqDTO.getItemId())
+                    .eq(NotifyInfo::getTpId, reqDTO.getTpId())
+                    .eq(NotifyInfo::getPlatform, reqDTO.getPlatform())
+                    .eq(NotifyInfo::getType, reqDTO.getType());
+            List<NotifyInfo> notifyInfos = notifyInfoMapper.selectList(queryWrapper);
+            notifyInfos.forEach(each -> update(reqDTO.setId(String.valueOf(each.getId()))));
+        }
+    }
+
+    @Override
     public void delete(NotifyReqDTO reqDTO) {
         LambdaUpdateWrapper<NotifyInfo> updateWrapper = Wrappers.lambdaUpdate(NotifyInfo.class)
                 .eq(NotifyInfo::getId, reqDTO.getId());

@@ -17,7 +17,9 @@
 
 package cn.hippo4j.config.model;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -80,6 +82,12 @@ public class ConfigInfoBase implements Serializable {
      * keepAliveTime
      */
     private Integer keepAliveTime;
+
+    /**
+     * executeTimeOut
+     */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
+    private Long executeTimeOut;
 
     /**
      * rejectedType

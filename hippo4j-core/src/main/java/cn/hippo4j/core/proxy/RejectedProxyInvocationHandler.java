@@ -20,6 +20,7 @@ package cn.hippo4j.core.proxy;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -29,6 +30,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Rejected proxy invocation handler.
  */
+@Slf4j
 @AllArgsConstructor
 public class RejectedProxyInvocationHandler implements InvocationHandler {
 
@@ -42,8 +44,12 @@ public class RejectedProxyInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         rejectCount.incrementAndGet();
         if (ApplicationContextHolder.getInstance() != null) {
-            ThreadPoolNotifyAlarmHandler alarmHandler = ApplicationContextHolder.getBean(ThreadPoolNotifyAlarmHandler.class);
-            alarmHandler.checkPoolRejectedAlarm(threadPoolId);
+            try {
+                ThreadPoolNotifyAlarmHandler alarmHandler = ApplicationContextHolder.getBean(ThreadPoolNotifyAlarmHandler.class);
+                alarmHandler.asyncSendRejectedAlarm(threadPoolId);
+            } catch (Throwable ex) {
+                log.error("Failed to send rejection policy alert.", ex);
+            }
         }
         try {
             return method.invoke(target, args);

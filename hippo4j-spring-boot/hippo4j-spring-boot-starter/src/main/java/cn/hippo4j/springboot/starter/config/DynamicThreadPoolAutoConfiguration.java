@@ -26,13 +26,14 @@ import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.core.executor.support.DynamicThreadPoolService;
+import cn.hippo4j.core.executor.support.service.DynamicThreadPoolService;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import cn.hippo4j.springboot.starter.controller.ThreadPoolAdapterController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
@@ -47,6 +48,8 @@ import cn.hippo4j.springboot.starter.notify.ServerNotifyConfigBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
+import cn.hippo4j.springboot.starter.support.DynamicThreadPoolConfigService;
+import cn.hippo4j.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -99,8 +102,10 @@ public class DynamicThreadPoolAutoConfiguration {
     public DynamicThreadPoolService dynamicThreadPoolConfigService(HttpAgent httpAgent,
                                                                    ClientWorker clientWorker,
                                                                    ServerHealthCheck serverHealthCheck,
+                                                                   ServerNotifyConfigBuilder notifyConfigBuilder,
+                                                                   Hippo4jBaseSendMessageService hippo4jBaseSendMessageService,
                                                                    DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig) {
-        return new DynamicThreadPoolConfigService(httpAgent, clientWorker, properties, dynamicThreadPoolSubscribeConfig);
+        return new DynamicThreadPoolConfigService(httpAgent, clientWorker, properties, notifyConfigBuilder, hippo4jBaseSendMessageService, dynamicThreadPoolSubscribeConfig);
     }
 
     @Bean

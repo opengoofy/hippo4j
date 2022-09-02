@@ -2,9 +2,9 @@
 sidebar_position: 2
 ---
 
-# hippo4j core 线程池监控
+# hippo4j config 线程池监控
 
-已完成 hippo4j-core 的 [接入工作](/docs/user_docs/getting-started/hippo4j-core-start) 。
+已完成 hippo4j-config 的 [接入工作](/docs/user_docs/getting-started/hippo4j-core-start) 。
 
 ## 安装 Grafana + Prometheus
 
@@ -85,4 +85,4 @@ Grafana DashBoard 配置。
 
 即可使用 Hippo4j 线程池监控大屏。
 
-![](./img/grafana-monitor.jpg)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/20220814_hippo4j_monitor.jpg)

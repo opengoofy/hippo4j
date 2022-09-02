@@ -20,6 +20,7 @@ package cn.hippo4j.common.toolkit;
 import cn.hippo4j.common.api.JsonFacade;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,6 +60,12 @@ public class JacksonHandler implements JsonFacade {
     public <T> T parseObject(String text, Class<T> clazz) {
         JavaType javaType = MAPPER.getTypeFactory().constructType(clazz);
         return MAPPER.readValue(text, javaType);
+    }
+
+    @Override
+    @SneakyThrows
+    public <T> T parseObject(String text, TypeReference<T> valueTypeRef) {
+        return MAPPER.readValue(text, valueTypeRef);
     }
 
     @Override

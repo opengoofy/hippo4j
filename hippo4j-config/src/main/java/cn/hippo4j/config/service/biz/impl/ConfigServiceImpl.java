@@ -21,27 +21,24 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
+import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterServerNotifyParameter;
 import cn.hippo4j.common.toolkit.*;
 import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.ConfigInstanceMapper;
-import cn.hippo4j.config.model.ConfigAllInfo;
-import cn.hippo4j.config.model.ConfigInfoBase;
-import cn.hippo4j.config.model.ConfigInstanceInfo;
-import cn.hippo4j.config.model.LogRecordInfo;
+import cn.hippo4j.config.model.*;
+import cn.hippo4j.config.model.biz.notify.NotifyReqDTO;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigChangePublisher;
-import cn.hippo4j.config.service.biz.ConfigService;
-import cn.hippo4j.config.service.biz.ItemService;
-import cn.hippo4j.config.service.biz.OperationLogService;
-import cn.hippo4j.config.service.biz.TenantService;
+import cn.hippo4j.config.service.biz.*;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -67,6 +64,8 @@ public class ConfigServiceImpl implements ConfigService {
     private final ConfigInstanceMapper configInstanceMapper;
 
     private final OperationLogService operationLogService;
+
+    private final NotifyService notifyService;
 
     @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenantId) {
@@ -139,11 +138,7 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public void register(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
-        ConfigAllInfo configAllInfo = JSONUtil.parseObject(JSONUtil.toJSONString(registerParameter), ConfigAllInfo.class);
-        configAllInfo.setTenantId(registerWrapper.getTenantId());
-        configAllInfo.setItemId(registerWrapper.getItemId());
-        configAllInfo.setTpId(registerParameter.getThreadPoolId());
+        ConfigAllInfo configAllInfo = parseConfigAllInfo(registerWrapper);
         TenantService tenantService = ApplicationContextHolder.getBean(TenantService.class);
         ItemService itemService = ApplicationContextHolder.getBean(ItemService.class);
         Assert.isTrue(tenantService.getTenantByTenantId(registerWrapper.getTenantId()) != null, "Tenant does not exist");
@@ -155,6 +150,41 @@ public class ConfigServiceImpl implements ConfigService {
             ConfigServiceImpl configService = ApplicationContextHolder.getBean(this.getClass());
             configService.updateConfigInfo(null, false, configAllInfo);
         }
+        DynamicThreadPoolRegisterServerNotifyParameter serverNotifyParameter = registerWrapper.getDynamicThreadPoolRegisterServerNotifyParameter();
+        if (serverNotifyParameter != null) {
+            ArrayList<String> notifyTypes = Lists.newArrayList("CONFIG", "ALARM");
+            notifyTypes.forEach(each -> {
+                NotifyReqDTO notifyReqDTO = new NotifyReqDTO();
+                notifyReqDTO.setType(each)
+                        .setEnable(1)
+                        .setTenantId(registerWrapper.getTenantId())
+                        .setItemId(registerWrapper.getItemId())
+                        .setTpId(configAllInfo.getTpId())
+                        .setPlatform(serverNotifyParameter.getPlatform())
+                        .setReceives(serverNotifyParameter.getReceives())
+                        .setSecretKey(serverNotifyParameter.getAccessToken());
+                if (Objects.equals(each, "ALARM")) {
+                    notifyReqDTO.setInterval(serverNotifyParameter.getInterval());
+                    notifyReqDTO.setAlarmType(true);
+                } else {
+                    notifyReqDTO.setConfigType(true);
+                }
+                notifyService.saveOrUpdate(registerWrapper.getNotifyUpdateIfExists(), notifyReqDTO);
+            });
+        }
+    }
+
+    private ConfigAllInfo parseConfigAllInfo(DynamicThreadPoolRegisterWrapper registerWrapper) {
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        ConfigAllInfo configAllInfo = JSONUtil.parseObject(JSONUtil.toJSONString(registerParameter), ConfigAllInfo.class);
+        configAllInfo.setTenantId(registerWrapper.getTenantId());
+        configAllInfo.setItemId(registerWrapper.getItemId());
+        configAllInfo.setTpId(registerParameter.getThreadPoolId());
+        configAllInfo.setLivenessAlarm(registerParameter.getActiveAlarm());
+        configAllInfo.setQueueType(registerParameter.getBlockingQueueType().getType());
+        configAllInfo.setRejectedType(registerParameter.getRejectedPolicyType().getType());
+        configAllInfo.setAllowCoreThreadTimeOut(registerParameter.getAllowCoreThreadTimeOut());
+        return configAllInfo;
     }
 
     private void verification(String identify) {

@@ -79,6 +79,11 @@ public class ThreadPoolRespDTO {
     private Integer keepAliveTime;
 
     /**
+     * Execute time out
+     */
+    private Long executeTimeOut;
+
+    /**
      * Is alarm
      */
     private Integer isAlarm;

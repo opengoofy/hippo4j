@@ -91,7 +91,7 @@ public class ThreadFactoryBuilder implements Builder<ThreadFactory> {
         return r -> {
             final Thread thread = backingThreadFactory.newThread(r);
             if (null != namePrefix) {
-                thread.setName(namePrefix + "-" + count.getAndIncrement());
+                thread.setName(namePrefix + "_" + count.getAndIncrement());
             }
             if (null != daemon) {
                 thread.setDaemon(daemon);

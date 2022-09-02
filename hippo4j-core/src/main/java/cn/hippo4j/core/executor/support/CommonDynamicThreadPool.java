@@ -17,6 +17,7 @@
 
 package cn.hippo4j.core.executor.support;
 
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 
 import java.util.concurrent.TimeUnit;
@@ -32,7 +33,7 @@ public class CommonDynamicThreadPool {
                 .threadFactory(threadPoolId)
                 .poolThreadSize(2, 4)
                 .keepAliveTime(60L, TimeUnit.SECONDS)
-                .workQueue(QueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, 1024)
+                .workQueue(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, 1024)
                 .build();
         return dynamicThreadPoolExecutor;
     }

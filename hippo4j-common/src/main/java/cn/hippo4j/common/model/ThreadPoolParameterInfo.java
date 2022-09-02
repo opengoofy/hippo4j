@@ -17,6 +17,7 @@
 
 package cn.hippo4j.common.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,6 +51,7 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
     /**
      * Thread-pool id
      */
+    @JsonAlias("threadPoolId")
     private String tpId;
 
     /**
@@ -95,6 +97,11 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
     private Integer keepAliveTime;
 
     /**
+     * Execute time out
+     */
+    private Long executeTimeOut;
+
+    /**
      * Rejected type
      */
     private Integer rejectedType;
@@ -112,6 +119,7 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
     /**
      * Liveness alarm
      */
+    @JsonAlias("activeAlarm")
     private Integer livenessAlarm;
 
     /**

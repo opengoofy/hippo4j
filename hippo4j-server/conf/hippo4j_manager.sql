@@ -232,3 +232,8 @@ ALTER TABLE `config` DROP INDEX `uk_configinfo_datagrouptenant`;
 ALTER TABLE `item` DROP INDEX `uk_iteminfo_tenantitem`;
 ALTER TABLE `tenant` DROP INDEX `uk_tenantinfo_tenantid`;
 /* 1.1.0 Upgrade End */
+
+/* 1.4.0 Upgrade Start */
+ALTER TABLE config Modify COLUMN keep_alive_time int(11) COMMENT '线程存活时间（秒）';
+ALTER TABLE config Add execute_time_out int(11) COMMENT '执行超时时间（毫秒）' AFTER keep_alive_time;
+/* 1.4.0 Upgrade Start */

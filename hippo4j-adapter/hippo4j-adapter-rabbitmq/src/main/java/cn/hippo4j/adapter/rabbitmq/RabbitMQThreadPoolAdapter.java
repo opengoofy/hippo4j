@@ -48,12 +48,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
 
     private static final String FiledName = "executorService";
 
-    /**
-     * TODO Configurable name
-     */
-    private static final String RABBITMQ_EXECUTOR_SERVICE = "Rabbitmq_Executor_Service";
-
-    private final AbstractConnectionFactory abstractConnectionFactory;
+    private final Map<String, AbstractConnectionFactory> abstractConnectionFactoryMap;
 
     private final Map<String, ThreadPoolExecutor> RABBITMQ_THREAD_POOL_TASK_EXECUTOR = Maps.newHashMap();
 
@@ -103,15 +98,18 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        ExecutorService executor = (ExecutorService) ReflectUtil.getFieldValue(abstractConnectionFactory, FiledName);
-        if (Objects.nonNull(executor)) {
-            if (executor instanceof ThreadPoolExecutor) {
-                ThreadPoolExecutor threadPoolTaskExecutor = (ThreadPoolExecutor) executor;
-                RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(RABBITMQ_EXECUTOR_SERVICE, threadPoolTaskExecutor);
-                log.info("Rabbitmq executor name {}", RABBITMQ_EXECUTOR_SERVICE);
-            } else {
-                log.warn("Custom thread pools only support ThreadPoolExecutor");
+        abstractConnectionFactoryMap.forEach((beanName, abstractConnectionFactor) -> {
+            ExecutorService executor = (ExecutorService) ReflectUtil.getFieldValue(abstractConnectionFactor, FiledName);
+            if (Objects.nonNull(executor)) {
+                if (executor instanceof ThreadPoolExecutor) {
+                    ThreadPoolExecutor threadPoolTaskExecutor = (ThreadPoolExecutor) executor;
+                    RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(beanName, threadPoolTaskExecutor);
+                    log.info("Rabbitmq executor name {}", beanName);
+                } else {
+                    log.warn("Custom thread pools only support ThreadPoolExecutor");
+                }
             }
-        }
+
+        });
     }
 }

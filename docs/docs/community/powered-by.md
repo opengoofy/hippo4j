@@ -12,7 +12,7 @@ sidebar_position: 3
 
 ## 谁在使用 Hippo4J
 
-共计 14+ 家公司生产接入 Hippo4J。按照公司登记时间排序。
+共计 18+ 家公司生产接入 Hippo4J。按照公司登记时间排序。
 
 - [身边云](https://serviceshare.com)
 - [Medbanks](https://www.medbanks.cn)
@@ -28,3 +28,7 @@ sidebar_position: 3
 - [百强国际物流](https://github.com/opengoofy/hippo4j/issues/13)
 - [海南某深圳分公司](https://github.com/opengoofy/hippo4j/issues/13)
 - [众合云科（51社保）](https://home.101hr.com/)
+- [好货云店](https://pc.haohuoyundian.com/)
+- [斗象科技](https://www.tophant.com/)
+- [深圳航天信息有限公司](http://sz.aisino.com/)
+- [新东方教育科技集团](https://www.xdf.cn/)

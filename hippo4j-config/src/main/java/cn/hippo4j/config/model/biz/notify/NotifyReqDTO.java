@@ -18,6 +18,7 @@
 package cn.hippo4j.config.model.biz.notify;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * Notify req DTO.
@@ -26,6 +27,7 @@ import lombok.Data;
  * @date 2021/11/18 20:15
  */
 @Data
+@Accessors(chain = true)
 public class NotifyReqDTO {
 
     /**
@@ -57,6 +59,11 @@ public class NotifyReqDTO {
      * Platform
      */
     private String platform;
+
+    /**
+     * Type
+     */
+    private String type;
 
     /**
      * Config type

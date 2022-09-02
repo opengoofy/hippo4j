@@ -145,11 +145,14 @@ public class AbstractBuildThreadPoolTemplate {
         private Boolean allowCoreThreadTimeOut = false;
 
         public ThreadPoolInitParam(String threadNamePrefix, boolean isDaemon) {
-            this.threadPoolId = threadNamePrefix;
             this.threadFactory = ThreadFactoryBuilder.builder()
                     .prefix(threadNamePrefix)
                     .daemon(isDaemon)
                     .build();
+        }
+
+        public ThreadPoolInitParam(ThreadFactory threadFactory) {
+            this.threadFactory = threadFactory;
         }
     }
 }

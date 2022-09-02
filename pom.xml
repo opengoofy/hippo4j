@@ -7,6 +7,7 @@
     <artifactId>hippo4j-all</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
     <description>Dynamic observable thread pool framework</description>
 
     <modules>
@@ -25,7 +26,7 @@
     </modules>
 
     <properties>
-        <revision>1.4.0-SNAPSHOT</revision>
+        <revision>1.4.1-SNAPSHOT</revision>
 
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
@@ -48,17 +49,19 @@
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
+        <jetcd.version>0.7.3</jetcd.version>
         <rocketmq.version>2.2.2</rocketmq.version>
         <netty.version>4.1.56.Final</netty.version>
         <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
         <curator-framework.version>5.1.0</curator-framework.version>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
+        <spring-cloud-starter-stream-rabbitmq.version>3.1.0</spring-cloud-starter-stream-rabbitmq.version>
         <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
         <spring-cloud-starter-alibaba-nacos-config.version>2.2.5.RELEASE</spring-cloud-starter-alibaba-nacos-config.version>
 
         <!-- Maven & Build -->
         <java.version>1.8</java.version>
-        <skip.gpg>true</skip.gpg>
+        <skip.maven.gpg.plugin>true</skip.maven.gpg.plugin>
         <skip.spotless.apply>false</skip.spotless.apply>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -248,7 +251,7 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
                 <configuration>
-                    <skip>${skip.gpg}</skip>
+                    <skip>${skip.maven.gpg.plugin}</skip>
                 </configuration>
                 <executions>
                     <execution>

@@ -36,6 +36,7 @@ public class ContentUtil {
                 .setQueueType(parameter.getQueueType())
                 .setCapacity(parameter.getCapacity())
                 .setKeepAliveTime(parameter.getKeepAliveTime())
+                .setExecuteTimeOut(parameter.getExecuteTimeOut())
                 .setIsAlarm(parameter.getIsAlarm())
                 .setCapacityAlarm(parameter.getCapacityAlarm())
                 .setLivenessAlarm(parameter.getLivenessAlarm())

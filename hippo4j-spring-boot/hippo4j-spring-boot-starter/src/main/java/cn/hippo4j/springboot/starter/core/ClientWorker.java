@@ -209,7 +209,7 @@ public class ClientWorker {
                 if (keyArr.length == 3) {
                     String tenant = keyArr[2];
                     updateList.add(GroupKey.getKeyTenant(dataId, group, tenant));
-                    log.info("Refresh thread pool changed. [{}]", dataId);
+                    log.info("[{}] Refresh thread pool changed.", dataId);
                 } else {
                     log.error("[{}] Polling resp invalid dataIdAndGroup error.", dataIdAndGroup);
                 }
@@ -252,7 +252,7 @@ public class ClientWorker {
         this.serverHealthCheck.setHealthStatus(isHealthServer);
     }
 
-    protected void notifyApplicationComplete() {
+    public void notifyApplicationComplete() {
         awaitApplicationComplete.countDown();
     }
 }

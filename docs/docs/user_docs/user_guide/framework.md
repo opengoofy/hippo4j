@@ -38,15 +38,6 @@ Client 端指的是我们 SpringBoot 应用，通过引入 Hippo4J Starter Jar �
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211107122504126.png)
 
-
-### 抽象工具（Tools）
-
-顾名思义就是将某些工具单独抽象出来，并以 Module 的形式进行展现，这样的拆分方式有两点好处：**一是更符合职责分离特性，二是需要用到某块功能**，做到拿来即用。
-
-
-log-record-tool：基于 [mzt-biz-log](https://github.com/mouzt/mzt-biz-log "mzt-biz-log") 的操作日志变更记录组件。
-
-
 ## 消息通知（Notify）
 
 Hippo4J 内置了很多需要通知的事件，比如：线程池参数变更通知、线程池活跃度报警、拒绝策略执行报警以及阻塞队列容量报警等。

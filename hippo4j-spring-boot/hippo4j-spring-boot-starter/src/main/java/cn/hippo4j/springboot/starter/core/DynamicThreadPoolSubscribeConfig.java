@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
-import cn.hippo4j.core.executor.support.QueueTypeEnum;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class DynamicThreadPoolSubscribeConfig {
             .maxPoolNum(2)
             .keepAliveTime(2000)
             .timeUnit(TimeUnit.MILLISECONDS)
-            .workQueue(QueueTypeEnum.SYNCHRONOUS_QUEUE)
+            .workQueue(BlockingQueueTypeEnum.SYNCHRONOUS_QUEUE)
             .allowCoreThreadTimeOut(true)
             .threadFactory("client.dynamic.threadPool.change.config")
             .rejected(new ThreadPoolExecutor.AbortPolicy())

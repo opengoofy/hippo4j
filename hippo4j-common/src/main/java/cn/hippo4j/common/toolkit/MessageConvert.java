@@ -17,14 +17,14 @@
 
 package cn.hippo4j.common.toolkit;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import cn.hippo4j.common.monitor.AbstractMessage;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
 import lombok.SneakyThrows;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Message convert.
@@ -60,7 +60,7 @@ public class MessageConvert {
      */
     @SneakyThrows
     public static Message convert(MessageWrapper messageWrapper) {
-        AbstractMessage message = (AbstractMessage) messageWrapper.getResponseClass().newInstance();
+        AbstractMessage message = (AbstractMessage) messageWrapper.getResponseClass().getDeclaredConstructor().newInstance();
         List<Map<String, Object>> contentParams = messageWrapper.getContentParams();
         List<Message> messages = new ArrayList();
         contentParams.forEach(each -> {

@@ -19,40 +19,61 @@ package cn.hippo4j.example.core.inittest;
 
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
+import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterCoreNotifyParameter;
+import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterServerNotifyParameter;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
+import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Register dynamic thread-pool test.
  */
 @Slf4j
-@Component
 public class RegisterDynamicThreadPoolTest {
 
-    @PostConstruct
-    public void registerDynamicThreadPool() {
-        String threadPoolId = "register-dynamic-thread-pool";
-        DynamicThreadPoolRegisterParameter parameterInfo = new DynamicThreadPoolRegisterParameter();
-        parameterInfo.setThreadPoolId(threadPoolId);
-        parameterInfo.setCorePoolSize(3);
-        parameterInfo.setMaximumPoolSize(14);
-        parameterInfo.setQueueType(9);
-        parameterInfo.setCapacity(110);
-        parameterInfo.setKeepAliveTime(110);
-        parameterInfo.setRejectedType(2);
-        parameterInfo.setIsAlarm(0);
-        parameterInfo.setCapacityAlarm(90);
-        parameterInfo.setLivenessAlarm(90);
-        parameterInfo.setAllowCoreThreadTimeOut(0);
+    public static ThreadPoolExecutor registerDynamicThreadPool(String threadPoolId) {
+        DynamicThreadPoolRegisterParameter parameterInfo = DynamicThreadPoolRegisterParameter.builder()
+                .corePoolSize(1)
+                .maximumPoolSize(2)
+                .blockingQueueType(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE)
+                .capacity(1024)
+                // TimeUnit.SECONDS
+                .keepAliveTime(1024L)
+                // TimeUnit.MILLISECONDS
+                .executeTimeOut(1024L)
+                .rejectedPolicyType(RejectedPolicyTypeEnum.DISCARD_POLICY)
+                .isAlarm(true)
+                .allowCoreThreadTimeOut(false)
+                .capacityAlarm(90)
+                .activeAlarm(90)
+                .threadPoolId(threadPoolId)
+                .threadNamePrefix(threadPoolId)
+                .build();
+        // Core mode and server mode, you can choose one of them.
+        DynamicThreadPoolRegisterCoreNotifyParameter coreNotifyParameter = DynamicThreadPoolRegisterCoreNotifyParameter.builder()
+                .receives("chen.ma")
+                .interval(5)
+                .build();
+        DynamicThreadPoolRegisterServerNotifyParameter serverNotifyParameter = DynamicThreadPoolRegisterServerNotifyParameter.builder()
+                .platform(NotifyPlatformEnum.WECHAT.name())
+                .accessToken("7487d0a0-20ec-40ab-b67b-ce68db406b37")
+                .interval(10)
+                .receives("chen.ma")
+                .build();
         DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()
+                .updateIfExists(true)
+                .notifyUpdateIfExists(true)
                 .dynamicThreadPoolRegisterParameter(parameterInfo)
+                .dynamicThreadPoolRegisterCoreNotifyParameter(coreNotifyParameter)
+                .dynamicThreadPoolRegisterServerNotifyParameter(serverNotifyParameter)
                 .build();
         ThreadPoolExecutor dynamicThreadPool = GlobalThreadPoolManage.dynamicRegister(registerWrapper);
         log.info("Dynamic registration thread pool parameter details: {}", JSONUtil.toJSONString(dynamicThreadPool));
+        return dynamicThreadPool;
     }
 }

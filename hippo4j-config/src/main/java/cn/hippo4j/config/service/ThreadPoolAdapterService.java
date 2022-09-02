@@ -30,6 +30,7 @@ import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.http.HttpUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -105,7 +106,8 @@ public class ThreadPoolAdapterService {
             try {
                 String resultStr = HttpUtil.get(urlString, param, HTTP_EXECUTE_TIMEOUT);
                 if (StringUtil.isNotBlank(resultStr)) {
-                    Result<ThreadPoolAdapterRespDTO> restResult = JSONUtil.parseObject(resultStr, Result.class);
+                    Result<ThreadPoolAdapterRespDTO> restResult = JSONUtil.parseObject(resultStr, new TypeReference<Result<ThreadPoolAdapterRespDTO>>() {
+                    });
                     result.add(restResult.getData());
                 }
             } catch (Throwable ex) {

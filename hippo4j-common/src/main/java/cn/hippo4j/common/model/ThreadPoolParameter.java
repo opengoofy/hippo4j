@@ -23,91 +23,98 @@ package cn.hippo4j.common.model;
 public interface ThreadPoolParameter {
 
     /**
-     * tenantId
+     * Get tenant id
      *
      * @return
      */
     String getTenantId();
 
     /**
-     * itemId
+     * Get item id
      *
      * @return
      */
     String getItemId();
 
     /**
-     * tpId
+     * Get thread-pool id
      *
      * @return
      */
     String getTpId();
 
     /**
-     * coreSize
+     * Get core size
      *
      * @return
      */
     Integer getCoreSize();
 
     /**
-     * maxSize
+     * Get max size
      *
      * @return
      */
     Integer getMaxSize();
 
     /**
-     * queueType
+     * Get queue type
      *
      * @return
      */
     Integer getQueueType();
 
     /**
-     * capacity
+     * Get capacity
      *
      * @return
      */
     Integer getCapacity();
 
     /**
-     * keepAliveTime
+     * Get keep alive time
      *
      * @return
      */
     Integer getKeepAliveTime();
 
     /**
-     * rejectedType
+     * Get execute time out
+     *
+     * @return
+     */
+    Long getExecuteTimeOut();
+
+    /**
+     * Get rejected type
      *
      * @return
      */
     Integer getRejectedType();
 
     /**
-     * isAlarm
+     * Get is alarm
      *
      * @return
      */
     Integer getIsAlarm();
 
     /**
-     * capacityAlarm
+     * Get capacity alarm
      *
      * @return
      */
     Integer getCapacityAlarm();
 
     /**
-     * livenessAlarm
+     * Get liveness alarm
      *
      * @return
      */
     Integer getLivenessAlarm();
 
     /**
-     * allowCoreThreadTimeOut
+     * Get allow core thread timeOut
      *
      * @return
      */
