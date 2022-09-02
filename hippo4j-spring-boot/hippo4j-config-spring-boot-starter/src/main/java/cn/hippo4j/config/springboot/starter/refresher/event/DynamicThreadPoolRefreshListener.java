@@ -79,7 +79,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
         List<ExecutorProperties> executors = bindableConfigProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
-            if (!match(properties) && !checkConsistency(threadPoolId, properties)) {
+            if (!match(properties) || !checkConsistency(threadPoolId, properties)) {
                 continue;
             }
             /*

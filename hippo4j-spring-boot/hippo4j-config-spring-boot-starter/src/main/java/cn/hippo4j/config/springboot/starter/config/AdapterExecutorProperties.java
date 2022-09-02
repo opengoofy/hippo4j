@@ -46,7 +46,7 @@ public class AdapterExecutorProperties {
     private Integer maximumPoolSize;
 
     /**
-     * nodes
+     * nodes,application startup is not affect,change properties is effect
      */
     private String nodes;
 }

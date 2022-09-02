@@ -23,7 +23,8 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.core.env.Environment;
+import org.springframework.boot.web.context.WebServerInitializedEvent;
+import org.springframework.context.event.EventListener;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -34,39 +35,40 @@ import java.util.Objects;
 @Log4j2
 public abstract class AbstractRefreshListener<M> implements RefreshListener<Hippo4jConfigDynamicRefreshEvent, M> {
 
-    protected static final String PORT_PROPERTY = "local.server.port";
-
     protected static final String ALL = "*";
 
-    /**
-     * separator
-     */
+    protected static final String SPOT = "\\.";
+
     protected static final String SEPARATOR = ",";
+
+    protected static final String COLON = ":";
 
     /**
      * application ip
      */
-    protected final String ipAddress;
+    protected final String[] ipSegment;
 
     /**
      * application post
      */
-    protected final String port;
+    protected String port;
 
     AbstractRefreshListener() {
         InetUtils inetUtils = ApplicationContextHolder.getBean(InetUtils.class);
         InetUtils.HostInfo loopbackHostInfo = inetUtils.findFirstNonLoopbackHostInfo();
-        Assert.isNull(loopbackHostInfo, "Unable to get the application IP address");
-        ipAddress = loopbackHostInfo.getIpAddress();
-        Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
-        Assert.isTrue(environment.containsProperty(PORT_PROPERTY), "Unable to get the application port");
-        port = environment.getProperty(PORT_PROPERTY);
+        Assert.notNull(loopbackHostInfo, "Unable to get the application IP address");
+        ipSegment = loopbackHostInfo.getIpAddress().split(SPOT);
+    }
+
+    @EventListener(WebServerInitializedEvent.class)
+    public void webServerInitializedListener(WebServerInitializedEvent event) {
+        port = String.valueOf(event.getWebServer().getPort());
     }
 
     /**
      * Matching nodes<br>
      * nodes is ip + port.Get 'nodes' in the new Properties,Compare this with the ip + port of Application.<br>
-     * Support prefix pattern matching.e.g: <br>
+     * support prefix pattern matching. e.g: <br>
      * <ul>
      *     <li>192.168.1.5:* -- Matches all ports of 192.168.1.5</li>
      *     <li>192.168.1.*:2009 -- Matches 2009 port of 192.168.1.*</li>
@@ -94,9 +96,9 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
         String[] splitNodes = nodes.split(SEPARATOR);
         return Arrays.stream(splitNodes)
             .distinct()
-            .map(IpAndPort::new)
-            .map(i -> i.check(ipAddress, port))
-            .anyMatch(Boolean.FALSE::equals);
+            .map(IpAndPort::build)
+            .filter(Objects::nonNull)
+            .anyMatch(i -> i.check(ipSegment, port));
     }
 
     /**
@@ -105,27 +107,73 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
     @Data
     protected static class IpAndPort {
 
-        protected static final String COLON = ";";
         private String ip;
         private String port;
+        private String[] propIpSegment;
 
-        public IpAndPort(String node) {
+        private IpAndPort(String ip, String port) {
+            this.ip = ip;
+            this.port = port;
+            this.propIpSegment = ip.split(SPOT);
+        }
+
+        public static IpAndPort build(String node) {
+            if (ALL.equals(node)) {
+                return new IpAndPort(ALL, ALL);
+            }
             String[] ipPort = node.split(COLON);
-            Assert.isTrue(ipPort.length != 2, "The IP address format is error:" + node);
-            ip = ipPort[0];
-            port = ipPort[1];
+            if (ipPort.length != 2) {
+                log.error("The IP address format is error:{}", node);
+                return null;
+            }
+            return new IpAndPort(ipPort[0], ipPort[1]);
         }
 
         /**
          * check
          *
-         * @param ip   application ip
-         * @param port application port
+         * @param appIpSegment application ip segment
+         * @param port         application port
          */
-        public boolean check(String ip, String port) {
-            return Objects.equals(ip, this.ip) && Objects.equals(port, this.port);
+        public boolean check(String[] appIpSegment, String port) {
+            return checkPort(port) && checkIp(appIpSegment);
         }
 
-    }
+        /**
+         * check ip
+         *
+         * @param appIpSegment application ip segment
+         */
+        protected boolean checkIp(String[] appIpSegment) {
+            if (ALL.equals(this.ip)) {
+                return true;
+            }
+            boolean flag = true;
+            for (int i = 0; i < propIpSegment.length && flag; i++) {
+                String propIp = propIpSegment[i];
+                String appIp = appIpSegment[i];
+                flag = contrastSegment(appIp, propIp);
+            }
+            return flag;
+        }
 
+        /**
+         * check port
+         *
+         * @param port application port
+         */
+        protected boolean checkPort(String port) {
+            return contrastSegment(port, this.port);
+        }
+
+        /**
+         * Check whether the strings are the same
+         *
+         * @param appIp  appIp
+         * @param propIp propIp
+         */
+        protected boolean contrastSegment(String appIp, String propIp) {
+            return ALL.equals(propIp) || appIp.equals(propIp);
+        }
+    }
 }
