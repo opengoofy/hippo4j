@@ -29,13 +29,12 @@ import io.etcd.jetcd.Client;
 import io.etcd.jetcd.ClientBuilder;
 import io.etcd.jetcd.KeyValue;
 import io.etcd.jetcd.Watch;
+import io.etcd.jetcd.kv.GetResponse;
 import io.etcd.jetcd.watch.WatchEvent;
 import io.etcd.jetcd.watch.WatchResponse;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  *@author : wh
@@ -43,7 +42,7 @@ import org.springframework.context.ApplicationContextAware;
  *@description:
  */
 @Slf4j
-public class EtcdRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh implements ApplicationContextAware {
+public class EtcdRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
 
 	private ApplicationContext applicationContext;
 
@@ -72,8 +71,7 @@ public class EtcdRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh i
 		Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));
 
 		ClientBuilder clientBuilder = Client.builder().endpoints(endpoints.split(","));
-
-		client = applicationContext.getBean(Client.class);
+		//todo 
 		if (Objects.isNull(client)) {
 			client = StringUtil.isAllNotEmpty(user, password) ? clientBuilder.user(ByteSequence.from(user, charset))
 					.password(ByteSequence.from(password, charset)).authority(authority)
@@ -81,11 +79,11 @@ public class EtcdRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh i
 		}
 
 		// todo Currently only supports json
-		KeyValue keyValue = client.getKVClient().get(ByteSequence.from(key, charset)).get().getKvs().get(0);
+		GetResponse getResponse = client.getKVClient().get(ByteSequence.from(key, charset)).get();
+		KeyValue keyValue = getResponse.getKvs().get(0);
 		if (Objects.isNull(keyValue)) {
 			return;
 		}
-
 		client.getWatchClient().watch(ByteSequence.from(key, charset), new Watch.Listener() {
 
 			@Override
@@ -115,8 +113,4 @@ public class EtcdRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh i
 
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
 }
