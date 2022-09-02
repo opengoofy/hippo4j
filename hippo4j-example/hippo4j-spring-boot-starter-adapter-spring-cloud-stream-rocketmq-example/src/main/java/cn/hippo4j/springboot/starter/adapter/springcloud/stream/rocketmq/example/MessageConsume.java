@@ -17,8 +17,8 @@
 
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq.example;
 
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.example.core.dto.SendMessageDTO;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Headers;
@@ -41,7 +41,7 @@ public class MessageConsume {
             // ignore
         } finally {
             log.info("Keys: {}, Msg id: {}, Execute time: {} ms, Message: {}", headers.get("rocketmq_KEYS"), headers.get("rocketmq_MESSAGE_ID"), System.currentTimeMillis() - startTime,
-                    JSON.toJSONString(message));
+                    JSONUtil.toJSONString(message));
         }
         log.info("Input current thread name: {}", Thread.currentThread().getName());
     }
@@ -53,7 +53,7 @@ public class MessageConsume {
             // ignore
         } finally {
             log.info("Keys: {}, Msg id: {}, Execute time: {} ms, Message: {}", headers.get("rocketmq_KEYS"), headers.get("rocketmq_MESSAGE_ID"), System.currentTimeMillis() - startTime,
-                    JSON.toJSONString(message));
+                    JSONUtil.toJSONString(message));
         }
         log.info("Input2 current thread name: {}", Thread.currentThread().getName());
     }
