@@ -53,12 +53,14 @@ public class JSONUtilTest {
 
     @Test
     public void assertParseObjectTypeReference() {
-        Assert.assertNull(JSONUtil.parseObject(null, new TypeReference<List<Foo>>() {}));
-        Assert.assertNull(JSONUtil.parseObject(" ", new TypeReference<List<Foo>>() {}));
+        Assert.assertNull(JSONUtil.parseObject(null, new TypeReference<List<Foo>>() {
+        }));
+        Assert.assertNull(JSONUtil.parseObject(" ", new TypeReference<List<Foo>>() {
+        }));
         Assert.assertEquals(
-            EXPECTED_FOO_ARRAY,
-            JSONUtil.parseObject(EXPECTED_FOO_JSON_ARRAY, new TypeReference<List<Foo>>() {})
-        );
+                EXPECTED_FOO_ARRAY,
+                JSONUtil.parseObject(EXPECTED_FOO_JSON_ARRAY, new TypeReference<List<Foo>>() {
+                }));
     }
 
     @Test
@@ -66,9 +68,8 @@ public class JSONUtilTest {
         Assert.assertNull(JSONUtil.parseArray(null, Foo.class));
         Assert.assertNull(JSONUtil.parseArray("  ", Foo.class));
         Assert.assertEquals(
-            EXPECTED_FOO_ARRAY,
-            JSONUtil.parseArray(EXPECTED_FOO_JSON_ARRAY, Foo.class)
-        );
+                EXPECTED_FOO_ARRAY,
+                JSONUtil.parseArray(EXPECTED_FOO_JSON_ARRAY, Foo.class));
     }
 
     @EqualsAndHashCode
@@ -76,6 +77,7 @@ public class JSONUtilTest {
     @NoArgsConstructor
     @Data
     private static class Foo {
+
         private Integer id;
         private String name;
         private Foo foo;
