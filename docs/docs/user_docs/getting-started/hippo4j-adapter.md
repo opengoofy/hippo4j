@@ -53,9 +53,9 @@ Hippo4J Server 仅需要引入上述 Jar 包，即可在 Hippo4J Server 的控�
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220531194810047.png)
 
-## Hippo4J Core
+## Hippo4J Config
 
-Hippo4J Core 除了依赖上述适配 Jar 包外，还需要在配置中心添加以下配置项。
+Hippo4J Config 除了依赖上述适配 Jar 包外，还需要在配置中心添加以下配置项。
 
 ```yaml
 spring:
