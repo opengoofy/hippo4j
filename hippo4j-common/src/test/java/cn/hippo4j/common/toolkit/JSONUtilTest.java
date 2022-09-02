@@ -17,30 +17,68 @@
 
 package cn.hippo4j.common.toolkit;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * JSON util test.
  */
 public class JSONUtilTest {
 
+    private static final Foo EXPECTED_FOO = new Foo(1, "foo1", new Foo(2, "foo2", null));
+    private static final List<Foo> EXPECTED_FOO_ARRAY = Arrays.asList(EXPECTED_FOO, EXPECTED_FOO);
+    private static final String EXPECTED_FOO_JSON = "{\"id\":1,\"name\":\"foo1\",\"foo\":{\"id\":2,\"name\":\"foo2\"}}";
+    private static final String EXPECTED_FOO_JSON_ARRAY = "[" + EXPECTED_FOO_JSON + "," + EXPECTED_FOO_JSON + "]";
+
     @Test
     public void assertToJSONString() {
-
+        Assert.assertNull(JSONUtil.toJSONString(null));
+        Assert.assertEquals(EXPECTED_FOO_JSON, JSONUtil.toJSONString(EXPECTED_FOO));
     }
 
     @Test
     public void assertParseObject() {
-
+        Assert.assertNull(JSONUtil.parseObject(null, Foo.class));
+        Assert.assertNull(JSONUtil.parseObject(" ", Foo.class));
+        Assert.assertEquals(EXPECTED_FOO, JSONUtil.parseObject(EXPECTED_FOO_JSON, Foo.class));
     }
 
     @Test
     public void assertParseObjectTypeReference() {
-
+        Assert.assertNull(JSONUtil.parseObject(null, new TypeReference<List<Foo>>() {}));
+        Assert.assertNull(JSONUtil.parseObject(" ", new TypeReference<List<Foo>>() {}));
+        Assert.assertEquals(
+            EXPECTED_FOO_ARRAY,
+            JSONUtil.parseObject(EXPECTED_FOO_JSON_ARRAY, new TypeReference<List<Foo>>() {})
+        );
     }
 
     @Test
     public void assertParseArray() {
-
+        Assert.assertNull(JSONUtil.parseArray(null, Foo.class));
+        Assert.assertNull(JSONUtil.parseArray("  ", Foo.class));
+        Assert.assertEquals(
+            EXPECTED_FOO_ARRAY,
+            JSONUtil.parseArray(EXPECTED_FOO_JSON_ARRAY, Foo.class)
+        );
     }
+
+    @EqualsAndHashCode
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    private static class Foo {
+        private Integer id;
+        private String name;
+        private Foo foo;
+    }
+
 }
