@@ -14,7 +14,7 @@ public class Test {
 
 	public static void main(String[] args) throws Exception{
 
-		Client client = Client.builder().endpoints("http://192.168.0.154:2379").build();
+		Client client = Client.builder().endpoints("http://127.0.0.1:2379").build();
 		GetResponse getResponse = client.getKVClient().get(ByteSequence.from("/thread", StandardCharsets.UTF_8)).get();
 		System.out.println("hahah");
 	}
