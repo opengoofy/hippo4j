@@ -47,7 +47,7 @@ public class ConfigHandlerConfiguration {
 
     private static final String ZOOKEEPER_CONNECT_STR_KEY = "zookeeper.zk-connect-str";
 
-    private static final String ETCD = "endpoints";
+    private static final String ETCD = "etcd.endpoints";
 
     @RequiredArgsConstructor
     @ConditionalOnClass(ConfigService.class)
