@@ -23,15 +23,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- *@author : wh
- *@date : 2022/9/2 19:06
- *@description:
+ * @author : wh
+ * @date : 2022/9/2 19:06
+ * @description:
  */
 @EnableDynamicThreadPool
 @SpringBootApplication(scanBasePackages = "cn.hippo4j.example.config")
 public class ConfigEtcdExampleApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ConfigEtcdExampleApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigEtcdExampleApplication.class, args);
+    }
 }
