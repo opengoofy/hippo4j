@@ -24,6 +24,12 @@
             <artifactId>dubbo</artifactId>
             <version>${dubbo.version}</version>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>fastjson</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

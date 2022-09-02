@@ -17,8 +17,8 @@
 
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rabbitmq.example;
 
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.enable.EnableDynamicThreadPool;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.boot.SpringApplication;
@@ -44,7 +44,7 @@ public class ServerAdapterSpringCloudStreamRabbitMQApplication {
             MessageHeaders headers = message.getHeaders();
             log.info("Input current thread name: {} ,{} received from partition {}",
                     Thread.currentThread().getName(),
-                    JSON.toJSONString(message.getPayload()),
+                    JSONUtil.toJSONString(message.getPayload()),
                     headers.get(AmqpHeaders.CONSUMER_QUEUE));
         };
     }
