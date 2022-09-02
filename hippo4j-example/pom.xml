@@ -22,8 +22,8 @@
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rabbitmq-example</module>
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq-example</module>
         <module>hippo4j-spring-boot-starter-adapter-rocketmq-example</module>
-		<module>hippo4j-config-etcd-spring-boot-starter-example</module>
-	</modules>
+        <module>hippo4j-config-etcd-spring-boot-starter-example</module>
+    </modules>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
