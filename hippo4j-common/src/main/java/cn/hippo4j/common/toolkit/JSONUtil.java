@@ -33,7 +33,6 @@ public class JSONUtil {
         if (object == null) {
             return null;
         }
-
         return JSON_FACADE.toJSONString(object);
     }
 
@@ -41,7 +40,6 @@ public class JSONUtil {
         if (StringUtil.isBlank(text)) {
             return null;
         }
-
         return JSON_FACADE.parseObject(text, clazz);
     }
 
@@ -49,7 +47,6 @@ public class JSONUtil {
         if (StringUtil.isBlank(text)) {
             return null;
         }
-
         return JSON_FACADE.parseObject(text, valueTypeRef);
     }
 
@@ -57,7 +54,6 @@ public class JSONUtil {
         if (StringUtil.isBlank(text)) {
             return null;
         }
-
         return JSON_FACADE.parseArray(text, clazz);
     }
 }

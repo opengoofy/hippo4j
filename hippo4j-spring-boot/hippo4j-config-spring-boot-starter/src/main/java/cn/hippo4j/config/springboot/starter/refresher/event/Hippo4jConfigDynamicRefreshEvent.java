@@ -15,16 +15,24 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.refresher.event;
 
-import org.junit.Test;
+import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.context.ApplicationEvent;
 
-public class CalculateUtilTest {
+/**
+ * Hippo-4j config dynamic refresh event.
+ */
+public class Hippo4jConfigDynamicRefreshEvent extends ApplicationEvent {
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
+    @Getter
+    @Setter
+    private BootstrapConfigProperties bootstrapConfigProperties;
+
+    public Hippo4jConfigDynamicRefreshEvent(Object source, BootstrapConfigProperties bootstrapConfigProperties) {
+        super(source);
+        this.bootstrapConfigProperties = bootstrapConfigProperties;
     }
 }

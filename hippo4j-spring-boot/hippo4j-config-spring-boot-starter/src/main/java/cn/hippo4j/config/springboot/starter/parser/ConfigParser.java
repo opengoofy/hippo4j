@@ -15,16 +15,38 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.parser;
 
-import org.junit.Test;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-public class CalculateUtilTest {
+/**
+ * Config parser.
+ */
+public interface ConfigParser {
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
-    }
+    /**
+     * Supports.
+     *
+     * @param type
+     * @return
+     */
+    boolean supports(ConfigFileTypeEnum type);
+
+    /**
+     * Do parse.
+     *
+     * @param content
+     * @return
+     * @throws IOException
+     */
+    Map<Object, Object> doParse(String content) throws IOException;
+
+    /**
+     * Get config file types.
+     *
+     * @return
+     */
+    List<ConfigFileTypeEnum> getConfigFileTypes();
 }

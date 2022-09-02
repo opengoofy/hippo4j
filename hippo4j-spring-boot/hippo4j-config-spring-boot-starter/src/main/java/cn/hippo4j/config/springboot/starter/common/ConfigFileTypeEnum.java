@@ -15,16 +15,50 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.common;
 
-import org.junit.Test;
+/**
+ * Config file type enum.
+ */
+public enum ConfigFileTypeEnum {
 
-public class CalculateUtilTest {
+    /**
+     * PROPERTIES
+     */
+    PROPERTIES {
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
-    }
+        @Override
+        public String type() {
+            return "properties";
+        }
+    },
+
+    /***
+     * YML
+     */
+    YML {
+
+        @Override
+        public String type() {
+            return "yml";
+        }
+    },
+
+    /***
+     * YAML
+     */
+    YAML {
+
+        @Override
+        public String type() {
+            return "yaml";
+        }
+    };
+
+    /**
+     * Type.
+     *
+     * @return
+     */
+    public abstract String type();
 }

@@ -15,16 +15,28 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.config;
 
-import org.junit.Test;
+import lombok.Data;
 
-public class CalculateUtilTest {
+/**
+ * Web thread pool properties.
+ */
+@Data
+public class WebThreadPoolProperties {
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
-    }
+    /**
+     * Core pool size
+     */
+    private Integer corePoolSize;
+
+    /**
+     * Maximum pool size
+     */
+    private Integer maximumPoolSize;
+
+    /**
+     * Keep alive time
+     */
+    private Integer keepAliveTime;
 }

@@ -15,16 +15,34 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.config;
 
-import org.junit.Test;
+import lombok.Data;
 
-public class CalculateUtilTest {
+/**
+ * Notify platform properties.
+ */
+@Data
+public class NotifyPlatformProperties {
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
-    }
+    /**
+     * Platform
+     */
+    private String platform;
+
+    /**
+     * Secret key. {@link NotifyPlatformProperties#token}
+     */
+    @Deprecated
+    private String secretKey;
+
+    /**
+     * Token
+     */
+    private String token;
+
+    /**
+     * Secret
+     */
+    private String secret;
 }

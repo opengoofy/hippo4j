@@ -15,16 +15,18 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.refresher.event;
 
-import org.junit.Test;
+/**
+ * Hippo-4j config dynamic refresh event order.
+ */
+public interface Hippo4jConfigDynamicRefreshEventOrder {
 
-public class CalculateUtilTest {
+    int WEB_EXECUTOR_LISTENER = 0;
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
-    }
+    int PLATFORMS_LISTENER = 1;
+
+    int EXECUTORS_LISTENER = 2;
+
+    int ADAPTER_EXECUTORS_LISTENER = 3;
 }

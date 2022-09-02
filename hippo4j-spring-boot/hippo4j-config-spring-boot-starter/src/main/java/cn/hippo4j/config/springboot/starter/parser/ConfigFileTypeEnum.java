@@ -15,16 +15,58 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.parser;
 
-import org.junit.Test;
+import lombok.Getter;
 
-public class CalculateUtilTest {
+/**
+ * Config file type enum
+ */
+@Getter
+public enum ConfigFileTypeEnum {
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
+    /**
+     * PROPERTIES
+     */
+    PROPERTIES("properties"),
+
+    /**
+     * XML
+     */
+    XML("xml"),
+
+    /**
+     * JSON
+     */
+    JSON("json"),
+
+    /**
+     * YML
+     */
+    YML("yml"),
+
+    /**
+     * YAML
+     */
+    YAML("yaml"),
+
+    /**
+     * TXT
+     */
+    TXT("txt");
+
+    private final String value;
+
+    ConfigFileTypeEnum(String value) {
+        this.value = value;
+    }
+
+    public static ConfigFileTypeEnum of(String value) {
+        for (ConfigFileTypeEnum typeEnum : ConfigFileTypeEnum.values()) {
+            if (typeEnum.value.equals(value)) {
+                return typeEnum;
+            }
+        }
+        return PROPERTIES;
     }
 }

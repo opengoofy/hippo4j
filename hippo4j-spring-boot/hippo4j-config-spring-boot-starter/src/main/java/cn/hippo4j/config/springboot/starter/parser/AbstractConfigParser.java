@@ -15,16 +15,15 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.parser;
 
-import org.junit.Test;
+/**
+ * Abstract config parser
+ */
+public abstract class AbstractConfigParser implements ConfigParser {
 
-public class CalculateUtilTest {
-
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
+    @Override
+    public boolean supports(ConfigFileTypeEnum type) {
+        return getConfigFileTypes().contains(type);
     }
 }

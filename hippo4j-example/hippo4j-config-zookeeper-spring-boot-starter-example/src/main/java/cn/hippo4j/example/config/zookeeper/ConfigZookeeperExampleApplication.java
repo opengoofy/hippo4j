@@ -15,16 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.example.config.zookeeper;
 
-import org.junit.Test;
+import cn.hippo4j.core.enable.EnableDynamicThreadPool;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class CalculateUtilTest {
+@EnableDynamicThreadPool
+@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.config")
+public class ConfigZookeeperExampleApplication {
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigZookeeperExampleApplication.class, args);
     }
 }

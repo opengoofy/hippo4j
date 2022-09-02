@@ -15,16 +15,33 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.config;
 
-import org.junit.Test;
+import lombok.Data;
 
-public class CalculateUtilTest {
+/**
+ * Adapter executor properties.
+ */
+@Data
+public class AdapterExecutorProperties {
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
-    }
+    /**
+     * Mark
+     */
+    private String mark;
+
+    /**
+     * Thread-pool key
+     */
+    private String threadPoolKey;
+
+    /**
+     * Core pool size
+     */
+    private Integer corePoolSize;
+
+    /**
+     * Maximum pool size
+     */
+    private Integer maximumPoolSize;
 }

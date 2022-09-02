@@ -15,16 +15,30 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.parser;
 
-import org.junit.Test;
+import com.google.common.collect.Lists;
 
-public class CalculateUtilTest {
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
+/**
+ * Properties config parser.
+ */
+public class PropertiesConfigParser extends AbstractConfigParser {
+
+    @Override
+    public Map<Object, Object> doParse(String content) throws IOException {
+        Properties properties = new Properties();
+        properties.load(new StringReader(content));
+        return properties;
+    }
+
+    @Override
+    public List<ConfigFileTypeEnum> getConfigFileTypes() {
+        return Lists.newArrayList(ConfigFileTypeEnum.PROPERTIES);
     }
 }

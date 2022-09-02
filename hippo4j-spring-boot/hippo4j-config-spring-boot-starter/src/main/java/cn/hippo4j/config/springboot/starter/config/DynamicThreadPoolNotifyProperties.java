@@ -15,16 +15,27 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.config.springboot.starter.config;
 
-import org.junit.Test;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class CalculateUtilTest {
+/**
+ * Dynamic thread-pool notify properties.
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class DynamicThreadPoolNotifyProperties {
 
-    @Test
-    public void assertDivide() {
-        Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
-        Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
-        Assert.isTrue(CalculateUtil.divide(100, 100) == 100);
-    }
+    /**
+     * Thread pool run alarm interval. unit: s
+     */
+    private Integer interval;
+
+    /**
+     * Receives
+     */
+    private String receives;
 }
