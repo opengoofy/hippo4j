@@ -20,9 +20,6 @@ package cn.hippo4j.config.springboot.starter.config;
 import java.util.List;
 import java.util.Map;
 
-import java.util.List;
-import java.util.Map;
-
 import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import cn.hippo4j.config.springboot.starter.parser.ConfigFileTypeEnum;
 import lombok.Getter;

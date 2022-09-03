@@ -25,7 +25,6 @@ import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
-import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
@@ -37,7 +36,7 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
  * Platforms refresh listener.
  */
 @Order(PLATFORMS_LISTENER)
-public class PlatformsRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
+public class PlatformsRefreshListener extends AbstractRefreshListener<ExecutorProperties> {
 
     @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {

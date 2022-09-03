@@ -38,7 +38,6 @@ import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
@@ -60,7 +59,7 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
 @Slf4j
 @RequiredArgsConstructor
 @Order(EXECUTORS_LISTENER)
-public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
+public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<ExecutorProperties> {
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
@@ -69,18 +68,24 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
     private final Hippo4jBaseSendMessageService hippo4jBaseSendMessageService;
 
     @Override
+    public boolean match(ExecutorProperties properties) {
+        String nodes = properties.getNodes();
+        return checkArray(nodes);
+    }
+
+    @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent event) {
         BootstrapConfigProperties bindableConfigProperties = event.getBootstrapConfigProperties();
         List<ExecutorProperties> executors = bindableConfigProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
-            /**
+            if (!match(properties) || !checkConsistency(threadPoolId, properties)) {
+                continue;
+            }
+            /*
              * Check whether the notification configuration is consistent, this operation will not trigger the notification.
              */
             checkNotifyConsistencyAndReplace(properties);
-            if (!checkConsistency(threadPoolId, properties)) {
-                continue;
-            }
             dynamicRefreshPool(threadPoolId, properties);
             ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
             GlobalCoreThreadPoolManage.refresh(threadPoolId, failDefaultExecutorProperties(beforeProperties, properties));

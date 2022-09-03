@@ -17,11 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
-import cn.hippo4j.config.springboot.starter.refresher.ApolloRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.NacosCloudRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.NacosRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.ZookeeperRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.EtcdRefresherHandler;
+import cn.hippo4j.config.springboot.starter.refresher.*;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.config.ConfigService;
 import io.etcd.jetcd.Client;
