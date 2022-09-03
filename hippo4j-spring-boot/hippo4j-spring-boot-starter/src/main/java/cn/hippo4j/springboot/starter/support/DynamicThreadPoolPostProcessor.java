@@ -172,7 +172,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                     dynamicThreadPoolWrapper.setExecutor(newDynamicThreadPoolExecutor);
                     isSubscribe = true;
                 }
-            }else {
+            } else {
                 // DynamicThreadPool configuration undefined in server
                 DynamicThreadPoolRegisterParameter parameterInfo = DynamicThreadPoolRegisterParameter.builder()
                         .threadPoolId(threadPoolId)
@@ -182,9 +182,9 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .blockingQueueType(BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName(executor.getQueue().getClass().getSimpleName()))
                         .capacity(executor.getQueue().remainingCapacity())
                         .allowCoreThreadTimeOut(executor.allowsCoreThreadTimeOut())
+                        .keepAliveTime(executor.getKeepAliveTime(TimeUnit.MILLISECONDS))
                         .isAlarm(false)
-                        //todo 如何根据拒绝策略的代理类获取到对应的枚举
-                        .rejectedPolicyType(RejectedPolicyTypeEnum.ABORT_POLICY)
+                        .rejectedPolicyType(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(((DynamicThreadPoolExecutor) executor).getRedundancyHandler().getClass().getSimpleName()))
                         .build();
                 DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()
                         .dynamicThreadPoolRegisterParameter(parameterInfo)
