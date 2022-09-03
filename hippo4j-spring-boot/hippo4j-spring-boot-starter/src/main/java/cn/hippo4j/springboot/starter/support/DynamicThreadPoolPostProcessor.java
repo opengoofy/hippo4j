@@ -176,7 +176,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 // DynamicThreadPool configuration undefined in server
                 DynamicThreadPoolRegisterParameter parameterInfo = DynamicThreadPoolRegisterParameter.builder()
                         .threadPoolId(threadPoolId)
-                        .threadNamePrefix(threadPoolId)
                         .corePoolSize(executor.getCorePoolSize())
                         .maximumPoolSize(executor.getMaximumPoolSize())
                         .blockingQueueType(BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName(executor.getQueue().getClass().getSimpleName()))
@@ -184,6 +183,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .allowCoreThreadTimeOut(executor.allowsCoreThreadTimeOut())
                         .keepAliveTime(executor.getKeepAliveTime(TimeUnit.MILLISECONDS))
                         .isAlarm(false)
+                        .activeAlarm(80)
+                        .capacityAlarm(80)
                         .rejectedPolicyType(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(((DynamicThreadPoolExecutor) executor).getRedundancyHandler().getClass().getSimpleName()))
                         .build();
                 DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()
