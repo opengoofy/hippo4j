@@ -99,4 +99,11 @@ public enum RejectedPolicyTypeEnum {
     public static String getRejectedNameByType(int type) {
         return createPolicy(type).getClass().getSimpleName();
     }
+
+    public static RejectedPolicyTypeEnum getRejectedPolicyTypeEnumByName(String name) {
+        Optional<RejectedPolicyTypeEnum> rejectedTypeEnum = Stream.of(RejectedPolicyTypeEnum.values())
+                .filter(each -> each.name.equals(name))
+                .findFirst();
+        return rejectedTypeEnum.orElse(ABORT_POLICY);
+    }
 }
