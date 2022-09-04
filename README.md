@@ -32,7 +32,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 通知报警 - 内置四种报警通知策略，线程池活跃度、容量水位、拒绝策略以及任务执行时间超长；
 - 运行监控 - 实时查看线程池运行时数据，最近半小时线程池运行数据图表展示；
 - 功能扩展 - 支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务；
-- 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-core-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-server-start)；
+- 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting-started/config/hippo4j-core-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting-started/server/hippo4j-server-start)；
 - 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
 - 中间件适配 - Apache RocketMQ、Dubbo、RabbitMQ、Hystrix 消费线程池运行时数据查看和线程数变更。
 
@@ -52,15 +52,13 @@ Hippo-4J 获得了一些宝贵的荣誉，肯定了 Hippo-4J 作为一款开源�
 
 <img align="center" width="680" alt="image" src="https://user-images.githubusercontent.com/77398366/187014905-b50bdc8b-ca0e-4137-9a02-1e6b06106191.jpg">
 
-
 ## 开发者
 
-Hippo-4J 获得的成就属于每一位对 Hippo-4J 做出过贡献的成员，感谢各位的贡献。
+Hippo-4J 获得的成就属于每一位对 Hippo-4J 做出过贡献的成员，感谢各位的付出。
 
 如果屏幕前的同学有意提交 Hippo-4J，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 任务列表。
 
 <a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false" /></a>
-
 
 ## 友情链接
 
@@ -71,7 +69,6 @@ Hippo-4J 获得的成就属于每一位对 Hippo-4J 做出过贡献的成员，�
 - [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
 
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
-
 
 ## 联系我
 

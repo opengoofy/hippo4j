@@ -2,9 +2,9 @@
 sidebar_position: 1
 ---
 
-# hippo4j config 接入
+# 接入流程
 
-Nacos、Apollo、Zookeeper 配置中心任选其一。
+Nacos、Apollo、Zookeeper、ETCD 配置中心任选其一。
 
 ## hippo4j 配置
 
@@ -190,57 +190,4 @@ messageConsumeDynamicExecutor.execute(() -> xxx);
 private ThreadPoolExecutor messageProduceDynamicExecutor;
 
 messageProduceDynamicExecutor.execute(() -> xxx);
-```
-
-## ThreadPoolTaskExecutor 适配
-
-Spring 针对 JDK 线程池提供了增强版的 `ThreadPoolTaskExecutor`，Hippo4J 对此进行了适配。
-
-```java
-package cn.hippo4j.example;
-
-import cn.hippo4j.core.executor.DynamicThreadPool;
-import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
-import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-@Configuration
-public class ThreadPoolConfig {
-
-    @Bean
-    @DynamicThreadPool
-    public ThreadPoolExecutor dynamicThreadPoolExecutor() {
-        String threadPoolId = "message-consume";
-        ThreadPoolExecutor dynamicExecutor = ThreadPoolBuilder.builder()
-                .threadFactory(threadPoolId)
-                .threadPoolId(threadPoolId)
-                .corePoolSize(5)
-                .maxPoolNum(10)
-                .workQueue(new ResizableCapacityLinkedBlockIngQueue(1024))
-                .rejected(new ThreadPoolExecutor.AbortPolicy())
-                .keepAliveTime(6000, TimeUnit.MILLISECONDS)
-                // 等待终止毫秒
-                .awaitTerminationMillis(5000)
-                // 线程任务装饰器
-                .taskDecorator((task) -> {
-                    String placeholderVal = MDC.get("xxx");
-                    return () -> {
-                        try {
-                            MDC.put("xxx", placeholderVal);
-                            task.run();
-                        } finally {
-                            MDC.clear();
-                        }
-                    };
-                })
-                .dynamicPool()
-                .build();
-        return dynamicExecutor;
-    }
-
-}
 ```

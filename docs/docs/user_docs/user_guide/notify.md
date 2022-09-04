@@ -2,17 +2,11 @@
 sidebar_position: 4
 ---
 
-# 参数变更 & 报警通知
+# 通知报警
 
-
-:::tip
 现阶段已集成钉钉、企业微信、飞书的消息推送，后续会持续接入邮箱、短信和自定义通知渠道。
-:::
 
-
-## 创建通知
-
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220109000449862.png)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220904181527453.png)
 
 **通知平台**
 
@@ -47,14 +41,14 @@ WECHART：填写user_id会以@的消息发给用户，填写姓名则是普通�
 LARK：填写ou_开头用户唯一标识会以@的消息发给用户，填写手机号则是普通的@
 ```
 
+
 ## 钉钉平台
+
+[钉钉创建群机器人](https://www.dingtalk.com/qidian/help-detail-20781541.html)
 
 | 配置变更 | 报警通知 |
 | :---: |  :---: |
 | ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211013122816688.png) | ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211013113649068.png) |
-
-
-### 自定义关键词
 
 添加钉钉机器人后，需在机器人配置自定义关键字，才可发送成功。如下所示：
 
@@ -62,11 +56,15 @@ LARK：填写ou_开头用户唯一标识会以@的消息发给用户，填写手
 
 ## 企业微信
 
+[企业微信创建群机器人](https://open.work.weixin.qq.com/help2/pc/14931?person_id=1&from=homesearch)
+
 | 配置变更 | 报警通知 |
 | :---: |  :---: |
 | ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213443242.png) | ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211203213512019.png) |
 
 ## 飞书平台
+
+[飞书创建群机器人](https://www.feishu.cn/hc/zh-CN/articles/360024984973)
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220304081729347.png)
 
