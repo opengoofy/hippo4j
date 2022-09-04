@@ -47,5 +47,5 @@ docker run -d -p 6691:6691 --name hippo4j-server \
 -e MYSQL_DB=hippo4j_manager \
 -e MYSQL_USERNAME=root \
 -e MYSQL_PASSWORD=root \
-hippo4j-server 
+hippo4j/hippo4j-server 
 ```
