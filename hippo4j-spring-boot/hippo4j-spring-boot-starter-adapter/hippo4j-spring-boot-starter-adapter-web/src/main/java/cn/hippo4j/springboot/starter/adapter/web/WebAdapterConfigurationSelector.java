@@ -28,5 +28,4 @@ public class WebAdapterConfigurationSelector implements DeferredImportSelector {
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
         return new String[]{WebAdapterConfiguration.class.getName()};
     }
-
 }

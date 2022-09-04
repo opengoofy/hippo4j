@@ -67,12 +67,12 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * Dynamic thread-pool auto-configuration.
  */
 @Configuration
+@EnableWebAdapter
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 @ImportAutoConfiguration({HttpClientConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageConfiguration.class, UtilAutoConfiguration.class})
-@EnableWebAdapter
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapProperties properties;

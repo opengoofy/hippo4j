@@ -33,7 +33,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * Web adapter auto configuration.
  */
 @Configuration
-@ConditionalOnBean(value = {InetUtils.class})
 @Import({WebThreadPoolHandlerConfiguration.EmbeddedTomcat.class,
         WebThreadPoolHandlerConfiguration.EmbeddedJetty.class,
         WebThreadPoolHandlerConfiguration.EmbeddedUndertow.class})
