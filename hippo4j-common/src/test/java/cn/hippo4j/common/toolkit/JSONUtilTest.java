@@ -28,9 +28,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * JSON util test.
- */
 public class JSONUtilTest {
 
     private static final Foo EXPECTED_FOO = new Foo(1, "foo1", new Foo(2, "foo2", null));
