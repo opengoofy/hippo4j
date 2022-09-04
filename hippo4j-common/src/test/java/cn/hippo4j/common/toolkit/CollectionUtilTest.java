@@ -30,7 +30,6 @@ public class CollectionUtilTest {
     @Test
     public void assertGetFirst() {
         Assert.isNull(CollectionUtil.getFirst(null));
-
         String first = CollectionUtil.getFirst(Lists.newArrayList("1", "2"));
         Assert.notEmpty(first);
     }
@@ -39,28 +38,20 @@ public class CollectionUtilTest {
     public void assertIsEmpty() {
         List list = null;
         Assert.isTrue(CollectionUtil.isEmpty(list));
-
         list = Lists.newArrayList();
         Assert.isTrue(CollectionUtil.isEmpty(list));
-
         list = Lists.newArrayList("1");
         Assert.isTrue(!CollectionUtil.isEmpty(list));
-
         Map map = null;
         Assert.isTrue(CollectionUtil.isEmpty(map));
-
         map = Maps.newHashMap();
         Assert.isTrue(CollectionUtil.isEmpty(map));
-
         map.put("key", "value");
         Assert.isTrue(!CollectionUtil.isEmpty(map));
-
         Iterator iterator = null;
         Assert.isTrue(CollectionUtil.isEmpty(iterator));
-
         iterator = Lists.emptyList().iterator();
         Assert.isTrue(CollectionUtil.isEmpty(iterator));
-
         iterator = Lists.newArrayList("1").iterator();
         Assert.isTrue(!CollectionUtil.isEmpty(iterator));
     }
@@ -69,28 +60,20 @@ public class CollectionUtilTest {
     public void assertIsNotEmpty() {
         List list = null;
         Assert.isTrue(!CollectionUtil.isNotEmpty(list));
-
         list = Lists.newArrayList();
         Assert.isTrue(!CollectionUtil.isNotEmpty(list));
-
         list = Lists.newArrayList("1");
         Assert.isTrue(CollectionUtil.isNotEmpty(list));
-
         Map map = null;
         Assert.isTrue(!CollectionUtil.isNotEmpty(map));
-
         map = Maps.newHashMap();
         Assert.isTrue(!CollectionUtil.isNotEmpty(map));
-
         map.put("key", "value");
         Assert.isTrue(CollectionUtil.isNotEmpty(map));
-
         Iterator iterator = null;
         Assert.isTrue(!CollectionUtil.isNotEmpty(iterator));
-
         iterator = Lists.emptyList().iterator();
         Assert.isTrue(!CollectionUtil.isNotEmpty(iterator));
-
         iterator = Lists.newArrayList("1").iterator();
         Assert.isTrue(CollectionUtil.isNotEmpty(iterator));
     }
