@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# docker hippo4j server 构建
+# hippo4j server docker 构建
 
 可以通过以下命令快速构建 Hippo4J Server：
 

@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # 线程池监控
 
-已完成 hippo4j-config 的 [接入工作](/docs/user_docs/getting-started/hippo4j-core-start) 。
+已完成 hippo4j-config 的 [接入工作](/docs/user_docs/getting_started/config/hippo4j-config-start) 。
 
 ## 安装 Grafana + Prometheus
 
