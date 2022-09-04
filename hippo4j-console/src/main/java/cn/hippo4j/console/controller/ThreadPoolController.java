@@ -96,7 +96,7 @@ public class ThreadPoolController {
         String groupKey = getGroupKey(reqDTO.getTpId(), itemTenantKey);
         Map<String, CacheItem> content = ConfigCacheService.getContent(groupKey);
         if (!content.isEmpty()) {
-            return Results.failure(ErrorCodeEnum.SERVICE_ERROR.getCode(), "this pool has instances running");
+            return Results.failure(ErrorCodeEnum.SERVICE_ERROR.getCode(), "this thread pool has instances running");
         }
         threadPoolService.deletePool(reqDTO);
         return Results.success();
