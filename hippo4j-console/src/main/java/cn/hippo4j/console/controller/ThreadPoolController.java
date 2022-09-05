@@ -23,6 +23,7 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.web.exception.ErrorCodeEnum;
 import cn.hippo4j.config.model.CacheItem;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
@@ -84,6 +85,19 @@ public class ThreadPoolController {
 
     @DeleteMapping("/delete")
     public Result deletePool(@RequestBody ThreadPoolDelReqDTO reqDTO) {
+        List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(reqDTO.getItemId());
+        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+        if (first == null) {
+            threadPoolService.deletePool(reqDTO);
+            return Results.success();
+        }
+        InstanceInfo holder = first.getHolder();
+        String itemTenantKey = holder.getGroupKey();
+        String groupKey = getGroupKey(reqDTO.getTpId(), itemTenantKey);
+        Map<String, CacheItem> content = ConfigCacheService.getContent(groupKey);
+        if (!content.isEmpty()) {
+            return Results.failure(ErrorCodeEnum.SERVICE_ERROR.getCode(), "this thread pool has instances running");
+        }
         threadPoolService.deletePool(reqDTO);
         return Results.success();
     }

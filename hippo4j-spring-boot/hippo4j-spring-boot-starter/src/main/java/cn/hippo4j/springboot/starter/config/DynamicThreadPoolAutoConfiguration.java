@@ -35,6 +35,7 @@ import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
+import cn.hippo4j.springboot.starter.adapter.web.EnableWebAdapter;
 import cn.hippo4j.springboot.starter.controller.ThreadPoolAdapterController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolRunStateController;
@@ -66,6 +67,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * Dynamic thread-pool auto-configuration.
  */
 @Configuration
+@EnableWebAdapter
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
@@ -201,7 +203,7 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler(Hippo4jSendMessageService hippoSendMessageService) {
-        return new ThreadPoolNotifyAlarmHandler(hippoSendMessageService);
+    public ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler(Hippo4jSendMessageService hippo4jSendMessageService) {
+        return new ThreadPoolNotifyAlarmHandler(hippo4jSendMessageService);
     }
 }
