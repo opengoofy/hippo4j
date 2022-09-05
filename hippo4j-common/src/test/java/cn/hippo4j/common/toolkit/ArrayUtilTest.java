@@ -19,10 +19,7 @@ package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.function.Matcher;
 import com.google.common.base.Strings;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
-
-import java.lang.reflect.Array;
 
 public class ArrayUtilTest {
 
@@ -41,13 +38,10 @@ public class ArrayUtilTest {
     @Test
     public void assertFirstMatch() {
         Matcher<String> matcher = (str) -> "1".equalsIgnoreCase(str);
-
         String[] array = new String[0];
         Assert.isTrue(Strings.isNullOrEmpty(ArrayUtil.firstMatch(matcher, array)));
-
         array = new String[]{"0"};
         Assert.isTrue(Strings.isNullOrEmpty(ArrayUtil.firstMatch(matcher, array)));
-
         array = new String[]{"1"};
         Assert.isTrue(!Strings.isNullOrEmpty(ArrayUtil.firstMatch(matcher, array)));
     }
@@ -57,14 +51,12 @@ public class ArrayUtilTest {
         String[] array = new String[]{"1"};
         Assert.isTrue(ArrayUtil.addAll(array, null).length == 1);
         Assert.isTrue(ArrayUtil.addAll(null, array).length == 1);
-
         Assert.isTrue(ArrayUtil.addAll(array, new String[]{"1"}).length == 2);
     }
 
     @Test
     public void assertClone() {
         Assert.isNull(ArrayUtil.clone(null));
-
         String[] array = new String[0];
         Assert.isTrue(array != ArrayUtil.clone(array));
         Assert.isTrue(array.length == ArrayUtil.clone(array).length);

@@ -45,8 +45,9 @@ public class RunStateHandlerTest {
     @Resource
     private ThreadPoolExecutor messageProduceDynamicThreadPool;
 
-    /*@Resource
-    private ThreadPoolTaskExecutor testSpringThreadPoolTaskExecutor;*/
+    /*
+     * @Resource private ThreadPoolTaskExecutor testSpringThreadPoolTaskExecutor;
+     */
 
     private final ThreadPoolExecutor runStateHandlerTestExecutor = new ThreadPoolExecutor(
             4,

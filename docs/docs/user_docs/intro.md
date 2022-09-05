@@ -18,7 +18,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 - 👐 功能扩展 - 支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务；
 
-- 👯‍♀️ 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-core-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-server-start)；
+- 👯‍♀️ 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting-started/config/hippo4j-config-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting-started/server/hippo4j-server-start)；
 
 - 🛠 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
 
@@ -28,7 +28,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 ## 快速开始
 
-对于本地演示目的，请参阅 [Quick start](getting-started/hippo4j-server-start)
+对于本地演示目的，请参阅 [Quick start](docs/user_docs/getting_started/server/hippo4j-server-start)
 
 演示环境：
 - [http://console.hippo4j.cn/index.html](http://console.hippo4j.cn/index.html)

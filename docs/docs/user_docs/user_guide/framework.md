@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# 架构设计介绍
+# 架构设计
 
 简单来说，Hippo4J 从部署的角度上分为两种角色：Server 端和 Client 端。
 
@@ -20,7 +20,6 @@ Client 端指的是我们 SpringBoot 应用，通过引入 Hippo4J Starter Jar �
 
 代码设计基于 Nacos 1.x 版本的 **长轮询以及异步 Servlet 机制** 实现。
 
-
 ### 注册中心（Discovery）
 
 负责管理 Client 端（单机或集群）注册到 Server 端的实例，包括不限于**实例注册、续约、过期剔除** 等操作，代码基于 Eureka 源码实现。
@@ -30,7 +29,6 @@ Client 端指的是我们 SpringBoot 应用，通过引入 Hippo4J Starter Jar �
 注册中心管理 Client 端注册的实例，通过这些实例可以 **实时获取线程池的运行时参数信息**。
 
 目前的设计是如此，不排除后续基于 Discovery 做更多的扩展。
-
 
 ### 控制台（Console）
 
@@ -44,7 +42,6 @@ Hippo4J 内置了很多需要通知的事件，比如：线程池参数变更通
 
 目前 Notify 已经接入了钉钉、企业微信和飞书，后续持续集成邮件、短信等通知渠道；并且，Notify 模块提供了消息事件的 SPI 方案，可以接受三方自定义的推送。
 
-
 ## Hippo4j-Spring-Boot-Starter
 
 熟悉 SpringBoot 的小伙伴对 Starter 应该不会陌生。Hippo4J 提供以 Starter Jar 包的形式嵌套在应用内，负责与 Server 端完成交互。
@@ -52,4 +49,3 @@ Hippo4J 内置了很多需要通知的事件，比如：线程池参数变更通
 ## 功能架构
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20211105230953626.png)
-
