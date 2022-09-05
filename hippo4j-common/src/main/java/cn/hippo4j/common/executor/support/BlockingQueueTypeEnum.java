@@ -145,4 +145,11 @@ public enum BlockingQueueTypeEnum {
                 .findFirst();
         return queueTypeEnum.map(each -> each.name).orElse("");
     }
+
+    public static BlockingQueueTypeEnum getBlockingQueueTypeEnumByName(String name) {
+        Optional<BlockingQueueTypeEnum> queueTypeEnum = Arrays.stream(BlockingQueueTypeEnum.values())
+                .filter(each -> each.name.equals(name))
+                .findFirst();
+        return queueTypeEnum.orElse(LINKED_BLOCKING_QUEUE);
+    }
 }

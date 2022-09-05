@@ -15,50 +15,23 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.common;
+package cn.hippo4j.example.config.etcd;
+
+import cn.hippo4j.core.enable.EnableDynamicThreadPool;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Config file type enum.
+ * @author : wh
+ * @date : 2022/9/2 19:06
+ * @description:
  */
-public enum ConfigFileTypeEnum {
+@EnableDynamicThreadPool
+@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.config")
+public class ConfigEtcdExampleApplication {
 
-    /**
-     * PROPERTIES
-     */
-    PROPERTIES {
-
-        @Override
-        public String type() {
-            return "properties";
-        }
-    },
-
-    /***
-     * YML
-     */
-    YML {
-
-        @Override
-        public String type() {
-            return "yml";
-        }
-    },
-
-    /***
-     * YAML
-     */
-    YAML {
-
-        @Override
-        public String type() {
-            return "yaml";
-        }
-    };
-
-    /**
-     * Type.
-     *
-     * @return
-     */
-    public abstract String type();
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigEtcdExampleApplication.class, args);
+    }
 }
