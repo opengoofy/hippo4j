@@ -2,7 +2,7 @@
 sidebar_position: 0
 ---
 
-# hippo4j 的两种使用模式
+# 运行模式介绍
 
 1.1.0 版本发布后，Hippo-4J 分为两种使用模式：轻量级依赖配置中心以及无中间件依赖版本。
 
@@ -12,7 +12,7 @@ sidebar_position: 0
 
 **轻量级动态线程池管理**，依赖 Apollo、Nacos、Zookeeper 等三方配置中心（任选其一）完成线程池参数动态变更，支持运行时报警、监控等功能。
 
-> 监控功能配置详见：[线程池监控](/docs/user_docs/getting-started/hippo4j-core-monitor)
+> 监控功能配置详见：[线程池监控](/docs/user_docs/getting_started/config/hippo4j-config-monitor)
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/20220814_hippo4j_monitor.jpg)
 

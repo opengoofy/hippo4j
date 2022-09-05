@@ -2,7 +2,7 @@
 sidebar_position: 6
 ---
 
-# hippo4j 三方框架线程池适配
+# 三方框架线程池适配
 
 Hippo4J 目前已支持的三方框架线程池列表：
 

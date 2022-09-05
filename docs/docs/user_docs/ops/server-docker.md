@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# docker hippo4j server 构建
+# hippo4j server docker 构建
 
 可以通过以下命令快速构建 Hippo4J Server：
 
@@ -41,11 +41,11 @@ docker run -p 6691:6691 --name hippo4j-server -d hippo4j-server:{指定版本}
 * 暂时只暴露以下参数
 * MYSQL_HOST、MYSQL_PORT、MYSQL_DB、MYSQL_USERNAME、MYSQL_PASSWORD
 */
-docker run -p 6691:6691 --name hippo4j-server \
+docker run -d -p 6691:6691 --name hippo4j-server \
 -e MYSQL_HOST=127.0.0.1 \
 -e MYSQL_PORT=3306 \
 -e MYSQL_DB=hippo4j_manager \
 -e MYSQL_USERNAME=root \
--e MYSQL_PASSWORD=mysql \
--d hippo4j-server 
+-e MYSQL_PASSWORD=root \
+hippo4j/hippo4j-server 
 ```

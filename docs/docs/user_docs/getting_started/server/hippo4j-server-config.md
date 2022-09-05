@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# hippo4j server 服务端配置
+# 服务端配置
 
 `hippo4j.core.clean-history-data-enable`
 

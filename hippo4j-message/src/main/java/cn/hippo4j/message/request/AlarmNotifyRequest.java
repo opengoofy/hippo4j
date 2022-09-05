@@ -19,13 +19,19 @@ package cn.hippo4j.message.request;
 
 import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.request.base.BaseNotifyRequest;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
  * Alarm notify request.
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 public class AlarmNotifyRequest extends BaseNotifyRequest {
 

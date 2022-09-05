@@ -80,8 +80,8 @@ public class DynamicThreadPoolCoreAutoConfiguration {
     }
 
     @Bean
-    public ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler(Hippo4jSendMessageService hippoSendMessageService) {
-        return new ThreadPoolNotifyAlarmHandler(hippoSendMessageService);
+    public ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler(Hippo4jSendMessageService hippo4jSendMessageService) {
+        return new ThreadPoolNotifyAlarmHandler(hippo4jSendMessageService);
     }
 
     @Bean
