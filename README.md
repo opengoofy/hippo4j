@@ -40,7 +40,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 ## 快速开始
 
-对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/user_docs/getting-started/hippo4j-server-start)
+对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/user_docs/getting_started/server/hippo4j-server-start/)
 
 演示环境：
 - http://console.hippo4j.cn/index.html
