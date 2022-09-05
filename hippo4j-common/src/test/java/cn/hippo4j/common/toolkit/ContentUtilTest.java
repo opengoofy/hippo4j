@@ -20,7 +20,6 @@ package cn.hippo4j.common.toolkit;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import org.junit.Test;
 
-
 public class ContentUtilTest {
 
     @Test

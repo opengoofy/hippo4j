@@ -22,7 +22,7 @@ import org.junit.Test;
 import java.util.Objects;
 
 public class StringUtilTest {
-    
+
     @Test
     public void assertIsEmpty() {
         String string = "";
@@ -59,7 +59,6 @@ public class StringUtilTest {
         Assert.isTrue(StringUtil.isBlank(string));
     }
 
- 
     @Test
     public void isNotBlank() {
         String string = "null";
@@ -82,13 +81,13 @@ public class StringUtilTest {
     public void toUnderlineCase() {
         String string = "str";
         String s = StringUtil.toUnderlineCase(string);
-        Assert.isTrue(Objects.equals(s,"str"));
+        Assert.isTrue(Objects.equals(s, "str"));
     }
 
     @Test
     public void toSymbolCase() {
         String string = "str";
-        String s = StringUtil.toSymbolCase(string,StringUtil.UNDERLINE);
-        Assert.isTrue(Objects.equals(s,"str"));
+        String s = StringUtil.toSymbolCase(string, StringUtil.UNDERLINE);
+        Assert.isTrue(Objects.equals(s, "str"));
     }
 }
