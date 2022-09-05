@@ -51,7 +51,7 @@ management:
 spring:
   dynamic:
     thread-pool:
-      collect-type: metric
+      collect-type: prometheus
 ```
 
 Prometheus 配置任务，配置成功后需重启。
@@ -75,7 +75,6 @@ Grafana DashBoard 配置。
 关注公众号 `龙台的技术笔记`，回复：`监控`，获取 DashBoard JSON。
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/43_65f6020ed111b6bb3808ec338576bd6b.png)
-
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220327171957444.png)
 
