@@ -23,5 +23,8 @@ package cn.hippo4j.common.function;
 @FunctionalInterface
 public interface NoArgsConsumer {
 
+    /**
+     * Execute operation without parameters.
+     */
     void accept();
 }
