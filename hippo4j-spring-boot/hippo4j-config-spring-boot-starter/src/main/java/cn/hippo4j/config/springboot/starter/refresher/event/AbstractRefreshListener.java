@@ -123,7 +123,7 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
             }
             String[] ipPort = node.split(COLON);
             if (ipPort.length != 2) {
-                log.error("The IP address format is error : " + node);
+                log.error("The IP address format is error : {}", node);
                 return null;
             }
             return new IpAndPort(ipPort[0], ipPort[1]);
