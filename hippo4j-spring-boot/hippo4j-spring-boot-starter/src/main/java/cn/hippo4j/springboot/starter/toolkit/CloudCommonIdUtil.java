@@ -29,7 +29,7 @@ public class CloudCommonIdUtil {
     private static final String SEPARATOR = ":";
 
     public static String getClientIpPort(PropertyResolver resolver, InetUtils inetUtils) {
-        String hostname = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+        String hostname = inetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
         String port = resolver.getProperty("server.port", "8080");
         return combineParts(hostname, SEPARATOR, port);
     }
@@ -43,7 +43,7 @@ public class CloudCommonIdUtil {
 
     @SneakyThrows
     public static String getIpApplicationName(PropertyResolver resolver, InetUtils inetUtils) {
-        String hostname = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+        String hostname = inetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
         String appName = resolver.getProperty("spring.application.name");
         return combineParts(hostname, SEPARATOR, appName);
     }

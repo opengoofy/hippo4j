@@ -55,9 +55,9 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
 
     AbstractRefreshListener() {
         InetUtils inetUtils = ApplicationContextHolder.getBean(InetUtils.class);
-        InetUtils.HostInfo loopbackHostInfo = inetUtils.findFirstNonLoopbackHostInfo();
-        Assert.notNull(loopbackHostInfo, "Unable to get the application IP address");
-        ipSegment = loopbackHostInfo.getIpAddress().split(SPOT);
+        InetUtils.HostInfo loopBackHostInfo = inetUtils.findFirstNonLoopBackHostInfo();
+        Assert.notNull(loopBackHostInfo, "Unable to get the application IP address");
+        ipSegment = loopBackHostInfo.getIpAddress().split(SPOT);
     }
 
     @EventListener(WebServerInitializedEvent.class)

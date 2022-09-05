@@ -57,7 +57,7 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
                 ByteConvertUtil.getPrintSize(runtimeInfo.getMaxMemory())).toString();
         poolRunStateInfo.setCurrentLoad(poolRunStateInfo.getCurrentLoad() + "%");
         poolRunStateInfo.setPeakLoad(poolRunStateInfo.getPeakLoad() + "%");
-        String ipAddress = hippo4JInetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+        String ipAddress = hippo4JInetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
         poolRunStateInfo.setHost(ipAddress);
         poolRunStateInfo.setMemoryProportion(memoryProportion);
         poolRunStateInfo.setFreeMemory(ByteConvertUtil.getPrintSize(runtimeInfo.getFreeMemory()));
