@@ -22,19 +22,39 @@ import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hutool.core.util.IdUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.net.URLDecoder;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import static cn.hippo4j.common.constant.Constants.*;
+import static cn.hippo4j.common.constant.Constants.CONFIG_CONTROLLER_PATH;
+import static cn.hippo4j.common.constant.Constants.CONFIG_LONG_POLL_TIMEOUT;
+import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER_TRANSLATION;
+import static cn.hippo4j.common.constant.Constants.LINE_SEPARATOR;
+import static cn.hippo4j.common.constant.Constants.LISTENER_PATH;
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_CLIENT_IDENTIFICATION;
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_TIMEOUT;
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_TIMEOUT_NO_HANGUP;
+import static cn.hippo4j.common.constant.Constants.NULL;
+import static cn.hippo4j.common.constant.Constants.PROBE_MODIFY_REQUEST;
+import static cn.hippo4j.common.constant.Constants.WEIGHT_CONFIGS;
+import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
 
 /**
  * Client worker.
@@ -43,8 +63,6 @@ import static cn.hippo4j.common.constant.Constants.*;
 public class ClientWorker {
 
     private long timeout;
-
-    private double currentLongingTaskCount = 0;
 
     private final HttpAgent agent;
 
@@ -75,26 +93,14 @@ public class ClientWorker {
         this.executorService = Executors.newSingleThreadScheduledExecutor(
                 ThreadFactoryBuilder.builder().prefix("client.long.polling.executor").daemon(true).build());
         log.info("Client identify: {}", identify);
-        this.executor.scheduleWithFixedDelay(() -> {
+        this.executor.schedule(() -> {
             try {
                 awaitApplicationComplete.await();
-                checkConfigInfo();
+                executorService.execute(new LongPollingRunnable());
             } catch (Throwable ex) {
                 log.error("Sub check rotate check error.", ex);
             }
-        }, 1L, 1024L, TimeUnit.MILLISECONDS);
-    }
-
-    public void checkConfigInfo() {
-        int listenerSize = cacheMap.size();
-        double perTaskConfigSize = 3000D;
-        int longingTaskCount = (int) Math.ceil(listenerSize / perTaskConfigSize);
-        if (longingTaskCount > currentLongingTaskCount) {
-            for (int i = (int) currentLongingTaskCount; i < longingTaskCount; i++) {
-                executorService.execute(new LongPollingRunnable());
-            }
-            currentLongingTaskCount = longingTaskCount;
-        }
+        }, 1L, TimeUnit.MILLISECONDS);
     }
 
     class LongPollingRunnable implements Runnable {
