@@ -79,13 +79,16 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
         List<ExecutorProperties> executors = bindableConfigProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
-            if (!match(properties) || !checkConsistency(threadPoolId, properties)) {
+            if (!match(properties)) {
                 continue;
             }
             /*
              * Check whether the notification configuration is consistent, this operation will not trigger the notification.
              */
             checkNotifyConsistencyAndReplace(properties);
+            if (!checkConsistency(threadPoolId, properties)) {
+                continue;
+            }
             dynamicRefreshPool(threadPoolId, properties);
             ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
             GlobalCoreThreadPoolManage.refresh(threadPoolId, failDefaultExecutorProperties(beforeProperties, properties));

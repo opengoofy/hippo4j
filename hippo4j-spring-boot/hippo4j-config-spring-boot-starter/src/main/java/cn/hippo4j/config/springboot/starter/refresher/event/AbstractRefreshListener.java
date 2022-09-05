@@ -95,10 +95,10 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
         }
         String[] splitNodes = nodes.split(SEPARATOR);
         return Arrays.stream(splitNodes)
-            .distinct()
-            .map(IpAndPort::build)
-            .filter(Objects::nonNull)
-            .anyMatch(i -> i.check(ipSegment, port));
+                .distinct()
+                .map(IpAndPort::build)
+                .filter(Objects::nonNull)
+                .anyMatch(i -> i.check(ipSegment, port));
     }
 
     /**
