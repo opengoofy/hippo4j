@@ -22,7 +22,7 @@ import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 
@@ -32,7 +32,7 @@ import java.util.Objects;
 /**
  * Refresh listener abstract base class.
  */
-@Slf4j
+@Log4j2
 public abstract class AbstractRefreshListener<M> implements RefreshListener<Hippo4jConfigDynamicRefreshEvent, M> {
 
     protected static final String ALL = "*";
@@ -95,10 +95,10 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
         }
         String[] splitNodes = nodes.split(SEPARATOR);
         return Arrays.stream(splitNodes)
-            .distinct()
-            .map(IpAndPort::build)
-            .filter(Objects::nonNull)
-            .anyMatch(i -> i.check(ipSegment, port));
+                .distinct()
+                .map(IpAndPort::build)
+                .filter(Objects::nonNull)
+                .anyMatch(i -> i.check(ipSegment, port));
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
             }
             String[] ipPort = node.split(COLON);
             if (ipPort.length != 2) {
-                log.error("The IP address format is error : {}", node);
+                log.error("The IP address format is error:{}", node);
                 return null;
             }
             return new IpAndPort(ipPort[0], ipPort[1]);
