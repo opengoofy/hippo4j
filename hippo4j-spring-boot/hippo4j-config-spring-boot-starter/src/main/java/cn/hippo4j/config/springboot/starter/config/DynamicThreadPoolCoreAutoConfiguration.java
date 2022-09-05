@@ -38,7 +38,6 @@ import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import cn.hippo4j.springboot.starter.adapter.web.EnableWebAdapter;
 import lombok.AllArgsConstructor;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

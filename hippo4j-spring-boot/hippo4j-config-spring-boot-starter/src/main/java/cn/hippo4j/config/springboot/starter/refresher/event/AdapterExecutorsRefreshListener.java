@@ -25,7 +25,6 @@ import cn.hippo4j.config.springboot.starter.config.AdapterExecutorProperties;
 import cn.hippo4j.config.springboot.starter.support.DynamicThreadPoolAdapterRegister;
 import cn.hutool.core.bean.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
@@ -40,7 +39,13 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
  */
 @Slf4j
 @Order(ADAPTER_EXECUTORS_LISTENER)
-public class AdapterExecutorsRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
+public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<AdapterExecutorProperties> {
+
+    @Override
+    public boolean match(AdapterExecutorProperties properties) {
+        String nodes = properties.getNodes();
+        return checkArray(nodes);
+    }
 
     @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent event) {
@@ -52,7 +57,7 @@ public class AdapterExecutorsRefreshListener implements ApplicationListener<Hipp
         for (AdapterExecutorProperties each : adapterExecutors) {
             String buildKey = each.getMark() + IDENTIFY_SLICER_SYMBOL + each.getThreadPoolKey();
             AdapterExecutorProperties adapterExecutorProperties = DynamicThreadPoolAdapterRegister.ADAPTER_EXECUTORS_MAP.get(buildKey);
-            if (adapterExecutorProperties == null) {
+            if (adapterExecutorProperties == null || !match(adapterExecutorProperties)) {
                 continue;
             }
             if (!Objects.equals(adapterExecutorProperties.getCorePoolSize(), each.getCorePoolSize())
