@@ -17,5 +17,78 @@
 
 package cn.hippo4j.common.toolkit;
 
+import org.junit.Test;
+
+import java.util.Objects;
+
 public class StringUtilTest {
+    
+    @Test
+    public void assertIsEmpty() {
+        String string = "";
+        Assert.isTrue(StringUtil.isEmpty(string));
+    }
+
+    @Test
+    public void assertIsNotEmpty() {
+        String string = "string";
+        Assert.isTrue(StringUtil.isNotEmpty(string));
+    }
+
+    @Test
+    public void emptyToNull() {
+        String string = "";
+        Assert.isNull(StringUtil.emptyToNull(string));
+    }
+
+    @Test
+    public void nullToEmpty() {
+        String string = "null";
+        Assert.notEmpty(StringUtil.nullToEmpty(string));
+    }
+
+    @Test
+    public void isNullOrEmpty() {
+        String string = "null";
+        Assert.isTrue(!StringUtil.isNullOrEmpty(string));
+    }
+
+    @Test
+    public void isBlank() {
+        String string = "";
+        Assert.isTrue(StringUtil.isBlank(string));
+    }
+
+ 
+    @Test
+    public void isNotBlank() {
+        String string = "null";
+        Assert.isTrue(StringUtil.isNotBlank(string));
+    }
+
+    @Test
+    public void isAllNotEmpty() {
+        String strings = "str";
+        Assert.isTrue(StringUtil.isAllNotEmpty(strings));
+    }
+
+    @Test
+    public void hasEmpty() {
+        String strings = "";
+        Assert.isTrue(StringUtil.hasEmpty(strings));
+    }
+
+    @Test
+    public void toUnderlineCase() {
+        String string = "str";
+        String s = StringUtil.toUnderlineCase(string);
+        Assert.isTrue(Objects.equals(s,"str"));
+    }
+
+    @Test
+    public void toSymbolCase() {
+        String string = "str";
+        String s = StringUtil.toSymbolCase(string,StringUtil.UNDERLINE);
+        Assert.isTrue(Objects.equals(s,"str"));
+    }
 }
