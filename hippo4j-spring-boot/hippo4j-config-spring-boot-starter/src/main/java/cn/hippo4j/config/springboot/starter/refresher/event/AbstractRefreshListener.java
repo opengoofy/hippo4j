@@ -95,10 +95,10 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
         }
         String[] splitNodes = nodes.split(SEPARATOR);
         return Arrays.stream(splitNodes)
-                .distinct()
-                .map(IpAndPort::build)
-                .filter(Objects::nonNull)
-                .anyMatch(i -> i.check(ipSegment, port));
+            .distinct()
+            .map(IpAndPort::build)
+            .filter(Objects::nonNull)
+            .anyMatch(i -> i.check(ipSegment, port));
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
             }
             String[] ipPort = node.split(COLON);
             if (ipPort.length != 2) {
-                log.error("The IP address format is error");
+                log.error("The IP address format is error : " + node);
                 return null;
             }
             return new IpAndPort(ipPort[0], ipPort[1]);
