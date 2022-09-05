@@ -81,24 +81,26 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
      */
     @Override
     public boolean match(M properties) {
-        return false;
-    }
-
-    /**
-     * check all
-     *
-     * @param nodes nodes
-     */
-    protected boolean checkArray(String nodes) {
+        String nodes = getNodes(properties);
         if (StringUtil.isEmpty(nodes) || ALL.equals(nodes)) {
             return true;
         }
         String[] splitNodes = nodes.split(SEPARATOR);
         return Arrays.stream(splitNodes)
-            .distinct()
-            .map(IpAndPort::build)
-            .filter(Objects::nonNull)
-            .anyMatch(i -> i.check(ipSegment, port));
+                .distinct()
+                .map(IpAndPort::build)
+                .filter(Objects::nonNull)
+                .anyMatch(i -> i.check(ipSegment, port));
+    }
+
+    /**
+     * get nodes in new properties
+     *
+     * @param properties new properties
+     * @return nodes in properties
+     */
+    protected String getNodes(M properties) {
+        return ALL;
     }
 
     /**
