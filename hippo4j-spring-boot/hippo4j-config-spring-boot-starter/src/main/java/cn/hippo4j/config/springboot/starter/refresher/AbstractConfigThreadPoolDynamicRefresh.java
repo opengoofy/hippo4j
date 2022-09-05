@@ -37,13 +37,13 @@ import java.util.concurrent.ExecutorService;
  */
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean {
+public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean {
 
     protected final BootstrapConfigProperties bootstrapConfigProperties;
 
     protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder().singlePool("client.dynamic.refresh").build();
 
-    public AbstractCoreThreadPoolDynamicRefresh() {
+    public AbstractConfigThreadPoolDynamicRefresh() {
         bootstrapConfigProperties = ApplicationContextHolder.getBean(BootstrapConfigProperties.class);
     }
 
@@ -59,7 +59,7 @@ public abstract class AbstractCoreThreadPoolDynamicRefresh implements ThreadPool
             if (CollectionUtil.isNotEmpty(newValueChangeMap)) {
                 Optional.ofNullable(configInfo).ifPresent(each -> each.putAll(newValueChangeMap));
             }
-            BootstrapConfigProperties bindableCoreProperties = BootstrapCorePropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
+            BootstrapConfigProperties bindableCoreProperties = BootstrapConfigPropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
             ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, bindableCoreProperties));
         } catch (Exception ex) {
             log.error("Hippo-4J core dynamic refresh failed.", ex);
