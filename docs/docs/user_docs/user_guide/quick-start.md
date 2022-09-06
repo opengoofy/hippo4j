@@ -6,6 +6,8 @@ sidebar_position: 3
 
 ## 服务启动
 
+MySQL 数据库导入 [Hippo4J 初始化 SQL 语句](https://github.com/longtai-cn/hippo4j/blob/develop/hippo4j-server/conf/hippo4j_manager.sql)。
+
 使用 Docker 运行服务端，可以灵活定制相关参数。如果 MySQL 非 Docker 部署，`MYSQL_HOST` 需要使用本地 IP。
 
 ```shell
