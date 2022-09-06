@@ -60,7 +60,7 @@ public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<Ada
                 continue;
             }
             if (!Objects.equals(adapterExecutorProperties.getCorePoolSize(), each.getCorePoolSize())
-                || !Objects.equals(adapterExecutorProperties.getMaximumPoolSize(), each.getMaximumPoolSize())) {
+                    || !Objects.equals(adapterExecutorProperties.getMaximumPoolSize(), each.getMaximumPoolSize())) {
                 threadPoolAdapterMap.forEach((key, val) -> {
                     if (Objects.equals(val.mark(), each.getMark())) {
                         val.updateThreadPool(BeanUtil.toBean(each, ThreadPoolAdapterParameter.class));
