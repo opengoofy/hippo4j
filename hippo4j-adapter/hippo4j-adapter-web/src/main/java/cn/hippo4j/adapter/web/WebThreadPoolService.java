@@ -73,6 +73,4 @@ public interface WebThreadPoolService {
     default WebServer getWebServer() {
         return null;
     }
-
-    ;
 }
