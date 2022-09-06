@@ -39,7 +39,7 @@ import java.util.Map;
  * Zookeeper refresher handler.
  */
 @Slf4j
-public class ZookeeperRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
+public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
     private CuratorFramework curatorFramework;
 

@@ -15,38 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.config.springboot.starter.refresher.event;
 
-import lombok.Data;
+import cn.hippo4j.common.function.Matcher;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 
 /**
- * Adapter executor properties.
+ * Refresh listener interface.
+ * T：event.
+ * M：properties.
  */
-@Data
-public class AdapterExecutorProperties {
+public interface RefreshListener<T extends ApplicationEvent, M> extends ApplicationListener<T>, Matcher<M> {
 
-    /**
-     * Mark
-     */
-    private String mark;
-
-    /**
-     * Thread-pool key
-     */
-    private String threadPoolKey;
-
-    /**
-     * Core pool size
-     */
-    private Integer corePoolSize;
-
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
-
-    /**
-     * Nodes, application startup is not affect, change properties is effect
-     */
-    private String nodes;
 }

@@ -51,7 +51,7 @@ public class IdentifyUtil {
         if (StrUtil.isNotBlank(IDENTIFY)) {
             return IDENTIFY;
         }
-        String ip = hippo4JInetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+        String ip = hippo4JInetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
         String port = environment.getProperty("server.port", "8080");
         String identification = StrUtil.builder(ip,
                 ":",

@@ -102,4 +102,9 @@ public class ExecutorProperties {
      * Notify
      */
     private DynamicThreadPoolNotifyProperties notify;
+
+    /**
+     * Nodes, application startup is not affect, change properties is effect
+     */
+    private String nodes;
 }

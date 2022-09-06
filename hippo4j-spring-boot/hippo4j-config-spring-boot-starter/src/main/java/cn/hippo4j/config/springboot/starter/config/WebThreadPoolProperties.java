@@ -39,4 +39,9 @@ public class WebThreadPoolProperties {
      * Keep alive time
      */
     private Integer keepAliveTime;
+
+    /**
+     * Nodes, application startup is not affect, change properties is effect
+     */
+    private String nodes;
 }

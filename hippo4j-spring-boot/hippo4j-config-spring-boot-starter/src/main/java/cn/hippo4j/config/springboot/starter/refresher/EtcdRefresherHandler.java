@@ -36,7 +36,7 @@ import java.util.Objects;
  * @description:
  */
 @Slf4j
-public class EtcdRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
+public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
     private Client client;
 

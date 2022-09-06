@@ -38,7 +38,7 @@ import java.util.Map;
 /**
  * Bootstrap core properties binder adapt.
  */
-public class BootstrapCorePropertiesBinderAdapt {
+public class BootstrapConfigPropertiesBinderAdapt {
 
     /**
      * Bootstrap core properties binder.
