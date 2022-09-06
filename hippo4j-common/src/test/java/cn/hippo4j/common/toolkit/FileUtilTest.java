@@ -27,4 +27,14 @@ public class FileUtilTest {
         String contentByFileUtil = FileUtil.readUtf8String(testFilePath);
         Assert.notEmpty(contentByFileUtil);
     }
+
+    @Test
+    public void assertReadUtf8String2() {
+        String testText = "abcd简体繁体\uD83D\uDE04\uD83D\uDD25& *\r\n" +
+                "second line\r\n" +
+                "empty line next\r\n";
+        String testFilePath = "test/test_utf8.txt";
+        String contentByFileUtil = FileUtil.readUtf8String(testFilePath);
+        Assert.isTrue(testText.equals(contentByFileUtil));
+    }
 }
