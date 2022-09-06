@@ -1,5 +1,3 @@
-
-
 /******************************************/
 /*   数据库全名 = hippo4j_manager   */
 /*   表名称 = tenant   */
@@ -19,7 +17,10 @@ CREATE TABLE `tenant` (
                           KEY `uk_tenantinfo_tenantid` (`tenant_id`,`del_flag`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='租户表';
 
-
+/******************************************/
+/*   数据库全名 = hippo4j_manager   */
+/*   表名称 = item   */
+/******************************************/
 DROP TABLE IF EXISTS `item`, `item_info`;
 CREATE TABLE `item` (
                         `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
