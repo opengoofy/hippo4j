@@ -36,10 +36,11 @@ import java.util.Objects;
 public abstract class AbstractRefreshListener<M> implements RefreshListener<Hippo4jConfigDynamicRefreshEvent, M> {
 
     protected static final String ALL = "*";
+
     protected static final String SEPARATOR = ",";
 
     /**
-     * application ip and  application post
+     * Application ip and  application post
      */
     protected static volatile WebIpAndPortInfo webIpAndPort;
 
@@ -60,7 +61,7 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
         String ip = loopBackHostInfo.getIpAddress();
         WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
         WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
-        // when get the port at startup, can get the message: "port xxx was already in use" or use two ports
+        // When get the port at startup, can get the message: "port xxx was already in use" or use two ports
         String port = String.valueOf(webThreadPoolService.getWebServer().getPort());
         return new WebIpAndPortInfo(ip, port);
     }
@@ -93,11 +94,11 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
                 .distinct()
                 .map(WebIpAndPortInfo::build)
                 .filter(Objects::nonNull)
-                .anyMatch(i -> i.check(webIpAndPort.getIpSegment(), webIpAndPort.getPort()));
+                .anyMatch(each -> each.check(webIpAndPort.getIpSegment(), webIpAndPort.getPort()));
     }
 
     /**
-     * get nodes in new properties
+     * Get nodes in new properties.
      *
      * @param properties new properties
      * @return nodes in properties
@@ -105,5 +106,4 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
     protected String getNodes(M properties) {
         return ALL;
     }
-
 }

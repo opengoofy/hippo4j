@@ -21,17 +21,22 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * web ip and port info
+ * Web ip and port info
  */
 @Data
 @Slf4j
 public class WebIpAndPortInfo {
 
     protected static final String ALL = "*";
+
     protected static final String SPOT = "\\.";
+
     protected static final String COLON = ":";
+
     private String ip;
+
     private String port;
+
     private String[] ipSegment;
 
     public WebIpAndPortInfo(String ip, String port) {
@@ -53,7 +58,7 @@ public class WebIpAndPortInfo {
     }
 
     /**
-     * check
+     * Check.
      *
      * @param appIpSegment application ip segment
      * @param port         application port
@@ -63,7 +68,7 @@ public class WebIpAndPortInfo {
     }
 
     /**
-     * check ip
+     * Check ip.
      *
      * @param appIpSegment application ip segment
      */
@@ -81,7 +86,7 @@ public class WebIpAndPortInfo {
     }
 
     /**
-     * check port
+     * Check port.
      *
      * @param port application port
      */
@@ -90,7 +95,7 @@ public class WebIpAndPortInfo {
     }
 
     /**
-     * Check whether the strings are the same
+     * Check whether the strings are the same.
      *
      * @param appIp  appIp
      * @param propIp propIp
