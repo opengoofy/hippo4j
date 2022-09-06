@@ -17,5 +17,26 @@
 
 package cn.hippo4j.common.toolkit;
 
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+
 public class ThreadUtilTest {
+
+    @Test
+    public void testNewThread() {
+        // Setup
+        final Runnable runnable = null;
+
+        // Run the test
+        final Thread result = ThreadUtil.newThread(runnable, "name", false);
+
+        // Verify the results
+        Assert.notNull(result);
+    }
+
+    @Test
+    public void testSleep() {
+        assertTrue(ThreadUtil.sleep(0L));
+    }
 }
