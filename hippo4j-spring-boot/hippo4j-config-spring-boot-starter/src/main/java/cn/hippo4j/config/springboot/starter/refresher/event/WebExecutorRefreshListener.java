@@ -39,9 +39,8 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
 public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThreadPoolProperties> {
 
     @Override
-    public boolean match(WebThreadPoolProperties properties) {
-        String nodes = properties.getNodes();
-        return checkArray(nodes);
+    public String getNodes(WebThreadPoolProperties properties) {
+        return properties.getNodes();
     }
 
     @Override

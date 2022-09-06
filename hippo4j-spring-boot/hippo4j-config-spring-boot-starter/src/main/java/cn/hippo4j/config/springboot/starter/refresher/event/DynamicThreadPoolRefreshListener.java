@@ -21,6 +21,7 @@ import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.config.springboot.starter.config.AdapterExecutorProperties;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.notify.CoreNotifyConfigBuilder;
@@ -68,9 +69,8 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
     private final Hippo4jBaseSendMessageService hippo4jBaseSendMessageService;
 
     @Override
-    public boolean match(ExecutorProperties properties) {
-        String nodes = properties.getNodes();
-        return checkArray(nodes);
+    public String getNodes(ExecutorProperties properties) {
+        return properties.getNodes();
     }
 
     @Override

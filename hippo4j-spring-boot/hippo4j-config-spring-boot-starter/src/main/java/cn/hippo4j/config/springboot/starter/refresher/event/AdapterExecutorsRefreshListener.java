@@ -42,9 +42,8 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
 public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<AdapterExecutorProperties> {
 
     @Override
-    public boolean match(AdapterExecutorProperties properties) {
-        String nodes = properties.getNodes();
-        return checkArray(nodes);
+    public String getNodes(AdapterExecutorProperties properties) {
+        return properties.getNodes();
     }
 
     @Override
@@ -61,7 +60,7 @@ public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<Ada
                 continue;
             }
             if (!Objects.equals(adapterExecutorProperties.getCorePoolSize(), each.getCorePoolSize())
-                    || !Objects.equals(adapterExecutorProperties.getMaximumPoolSize(), each.getMaximumPoolSize())) {
+                || !Objects.equals(adapterExecutorProperties.getMaximumPoolSize(), each.getMaximumPoolSize())) {
                 threadPoolAdapterMap.forEach((key, val) -> {
                     if (Objects.equals(val.mark(), each.getMark())) {
                         val.updateThreadPool(BeanUtil.toBean(each, ThreadPoolAdapterParameter.class));
