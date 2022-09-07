@@ -64,7 +64,7 @@ import org.springframework.core.annotation.Order;
         ConfigHandlerConfiguration.EmbeddedApollo.class, ConfigHandlerConfiguration.EmbeddedZookeeper.class,
         ConfigHandlerConfiguration.EmbeddedEtcd.class
 })
-public class DynamicThreadPoolCoreAutoConfiguration {
+public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapConfigProperties bootstrapConfigProperties;
 
