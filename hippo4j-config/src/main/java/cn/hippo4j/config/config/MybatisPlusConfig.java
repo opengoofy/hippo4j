@@ -30,8 +30,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class MybatisPlusConfig {
-    
-    @Value("${spring.profiles.active}")
+
+    @Value("${spring.profiles.active:mysql}")
     private String profilesActive;
 
     @Bean
