@@ -19,6 +19,8 @@ package cn.hippo4j.common.toolkit;
 
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
+
 public class FileUtilTest {
 
     @Test
@@ -26,5 +28,14 @@ public class FileUtilTest {
         String testFilePath = "test/test_utf8.txt";
         String contentByFileUtil = FileUtil.readUtf8String(testFilePath);
         Assert.notEmpty(contentByFileUtil);
+    }
+
+    @Test
+    public void assertReadUtf8String2() {
+        String testText = "abcd简体繁体\uD83D\uDE04\uD83D\uDD25& *\nsecond line\n" +
+                "empty line next\n";
+        String testFilePath = "test/test_utf8.txt";
+        String contentByFileUtil = FileUtil.readUtf8String(testFilePath);
+        Assert.isTrue(testText.equals(contentByFileUtil));
     }
 }
