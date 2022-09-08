@@ -2,14 +2,11 @@
 sidebar_position: 3
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 # 快速开始
 
 ## 服务启动
 
-MySQL 创建名为 `hippo4j_manager` 的数据库，字符集选择 `utf8mb4`，并导入 [Hippo4J 初始化 SQL 语句](https://github.com/longtai-cn/hippo4j/blob/develop/hippo4j-server/conf/hippo4j_manager.sql)。
+MySQL 数据库导入 [Hippo4J 初始化 SQL 语句](https://github.com/longtai-cn/hippo4j/blob/develop/hippo4j-server/conf/hippo4j_manager.sql)。
 
 使用 Docker 运行服务端，可以灵活定制相关参数。如果 MySQL 非 Docker 部署，`MYSQL_HOST` 需要使用本地 IP。
 

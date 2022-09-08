@@ -17,6 +17,12 @@
 
 package cn.hippo4j.console.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.GroupKey;
@@ -24,9 +30,17 @@ import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.HisRunDataMapper;
 import cn.hippo4j.config.mapper.ItemInfoMapper;
 import cn.hippo4j.config.mapper.TenantInfoMapper;
-import cn.hippo4j.config.model.*;
+import cn.hippo4j.config.model.CacheItem;
+import cn.hippo4j.config.model.ConfigAllInfo;
+import cn.hippo4j.config.model.ConfigInfoBase;
+import cn.hippo4j.config.model.ItemInfo;
+import cn.hippo4j.config.model.TenantInfo;
 import cn.hippo4j.config.service.ConfigCacheService;
-import cn.hippo4j.console.model.*;
+import cn.hippo4j.console.model.ChartInfo;
+import cn.hippo4j.console.model.LineChartInfo;
+import cn.hippo4j.console.model.PieChartInfo;
+import cn.hippo4j.console.model.RankingChart;
+import cn.hippo4j.console.model.TenantChart;
 import cn.hippo4j.console.service.DashboardService;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
@@ -38,13 +52,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 import static cn.hippo4j.common.toolkit.ContentUtil.getGroupKey;
 
@@ -67,9 +76,9 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public ChartInfo getChartInfo() {
-        Integer tenantCount = tenantInfoMapper.selectCount(Wrappers.lambdaQuery(TenantInfo.class).eq(TenantInfo::getDelFlag, DelEnum.NORMAL));
-        Integer itemCount = itemInfoMapper.selectCount(Wrappers.lambdaQuery(ItemInfo.class).eq(ItemInfo::getDelFlag, DelEnum.NORMAL));
-        Integer threadPoolCount = configInfoMapper.selectCount(Wrappers.lambdaQuery(ConfigAllInfo.class).eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL));
+        Integer tenantCount = tenantInfoMapper.selectCount(Wrappers.lambdaQuery(TenantInfo.class).eq(TenantInfo::getDelFlag, DelEnum.NORMAL.getCode()));
+        Integer itemCount = itemInfoMapper.selectCount(Wrappers.lambdaQuery(ItemInfo.class).eq(ItemInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
+        Integer threadPoolCount = configInfoMapper.selectCount(Wrappers.lambdaQuery(ConfigAllInfo.class).eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getCode()));
         ChartInfo chartInfo = new ChartInfo();
         chartInfo.setTenantCount(tenantCount)
                 .setItemCount(itemCount)

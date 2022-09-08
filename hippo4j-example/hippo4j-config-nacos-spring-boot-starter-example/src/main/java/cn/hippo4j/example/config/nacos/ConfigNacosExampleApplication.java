@@ -28,5 +28,4 @@ public class ConfigNacosExampleApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConfigNacosExampleApplication.class, args);
     }
-
 }
