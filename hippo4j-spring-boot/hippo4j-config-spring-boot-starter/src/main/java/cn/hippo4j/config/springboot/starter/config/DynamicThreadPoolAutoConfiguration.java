@@ -36,7 +36,7 @@ import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
-import cn.hippo4j.springboot.starter.adapter.web.EnableWebAdapter;
+import cn.hippo4j.springboot.starter.adapter.web.WebAdapterConfiguration;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -53,11 +53,10 @@ import org.springframework.core.annotation.Order;
  * Dynamic thread-pool core auto configuration.
  */
 @Configuration
-@EnableWebAdapter
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapConfigProperties.class)
-@ImportAutoConfiguration({UtilAutoConfiguration.class, MessageConfiguration.class})
+@ImportAutoConfiguration({WebAdapterConfiguration.class, UtilAutoConfiguration.class, MessageConfiguration.class})
 @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 @Import({
         ConfigHandlerConfiguration.EmbeddedNacos.class, ConfigHandlerConfiguration.EmbeddedNacosCloud.class,
