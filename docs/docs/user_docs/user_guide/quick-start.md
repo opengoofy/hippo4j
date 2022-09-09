@@ -35,14 +35,14 @@ hippo4j/hippo4j-server
 观察 Hippo4j-Example 控制台日志输出，日志输出包括不限于此信息即为成功。
 
 ```tex
-2022-08-13 21:26:25.814  INFO 38972 --- [change.config-5] c.h.s.s.c.ServerThreadPoolDynamicRefresh : [message-consume] Dynamic thread pool change parameter.
-    corePoolSize: [5 => 5]
-    maximumPoolSize: [6 => 7]
-    capacity: [10 => 10]
-    keepAliveTime: [3 => 3]
-    executeTimeOut: [0 => 0]
-    rejectedType: [CustomErrorLogRejectedExecutionHandler => CustomErrorLogRejectedExecutionHandler]
-    allowCoreThreadTimeOut: [false => false]
+2022-09-10 00:23:29.783  INFO 50322 --- [change.config_0] c.h.s.s.c.ServerThreadPoolDynamicRefresh : [message-consume] Dynamic thread pool change parameter.
+    corePoolSize: 2 => 4
+    maximumPoolSize: 6 => 12
+    capacity: 1024 => 2048
+    keepAliveTime: 9999 => 9999
+    executeTimeOut: 800 => 3000
+    rejectedType: SyncPutQueuePolicy => RunsOldestTaskPolicy
+    allowCoreThreadTimeOut: true => true
 ```
 
 另外，当 Client 集群部署时，可以修改某一个实例，或选择 `全部修改` 按钮，修改所有实例线程池信息。
