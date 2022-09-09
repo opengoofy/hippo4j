@@ -51,7 +51,7 @@ management:
 spring:
   dynamic:
     thread-pool:
-      collect-type: prometheus
+      collect-type: micrometer
 ```
 
 Prometheus 配置任务，配置成功后需重启。

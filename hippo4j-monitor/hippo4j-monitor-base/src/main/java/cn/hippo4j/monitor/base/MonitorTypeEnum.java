@@ -28,9 +28,9 @@ public enum MonitorTypeEnum {
     LOG,
 
     /**
-     * PROMETHEUS
+     * MICROMETER
      */
-    PROMETHEUS,
+    MICROMETER,
 
     /**
      * SERVER

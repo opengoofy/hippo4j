@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.prometheus;
+package cn.hippo4j.monitor.micrometer;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
@@ -32,9 +32,9 @@ import org.springframework.core.env.Environment;
 import java.util.Map;
 
 /**
- * Prometheus monitor handler.
+ * Micrometer monitor handler.
  */
-public class PrometheusMonitorHandler extends AbstractDynamicThreadPoolMonitor {
+public class MicrometerMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     private final static String METRIC_NAME_PREFIX = "dynamic.thread-pool";
 
@@ -44,7 +44,7 @@ public class PrometheusMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     private final Map<String, ThreadPoolRunStateInfo> RUN_STATE_CACHE = Maps.newConcurrentMap();
 
-    public PrometheusMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+    public MicrometerMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
         super(threadPoolRunStateHandler);
     }
 
@@ -81,6 +81,6 @@ public class PrometheusMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     @Override
     public String getType() {
-        return MonitorTypeEnum.PROMETHEUS.name().toLowerCase();
+        return MonitorTypeEnum.MICROMETER.name().toLowerCase();
     }
 }

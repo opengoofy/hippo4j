@@ -4,22 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-monitor</artifactId>
+        <artifactId>hippo4j-spring-boot-starter-monitor</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>hippo4j-monitor-prometheus</artifactId>
+    <artifactId>hippo4j-spring-boot-starter-monitor-micrometer</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-monitor-base</artifactId>
+            <artifactId>hippo4j-monitor-micrometer</artifactId>
             <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-core</artifactId>
-            <version>${micrometer-core.version}</version>
         </dependency>
     </dependencies>
 

@@ -15,21 +15,21 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.monitor.prometheus;
+package cn.hippo4j.springboot.starter.monitor.micrometer;
 
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.monitor.prometheus.PrometheusMonitorHandler;
+import cn.hippo4j.monitor.micrometer.MicrometerMonitorHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Prometheus monitor auto configuration.
+ * Micrometer monitor auto configuration.
  */
 @Configuration
-public class PrometheusMonitorAutoConfiguration {
+public class MicrometerMonitorAutoConfiguration {
 
     @Bean
-    public PrometheusMonitorHandler prometheusMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        return new PrometheusMonitorHandler(threadPoolRunStateHandler);
+    public MicrometerMonitorHandler micrometerMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
+        return new MicrometerMonitorHandler(threadPoolRunStateHandler);
     }
 }
