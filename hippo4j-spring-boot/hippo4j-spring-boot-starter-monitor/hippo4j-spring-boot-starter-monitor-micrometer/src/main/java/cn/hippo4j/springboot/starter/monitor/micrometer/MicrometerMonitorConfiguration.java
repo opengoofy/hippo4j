@@ -23,10 +23,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Micrometer monitor auto configuration.
+ * Micrometer monitor configuration.
  */
 @Configuration
-public class MicrometerMonitorAutoConfiguration {
+public class MicrometerMonitorConfiguration {
 
     @Bean
     public MicrometerMonitorHandler micrometerMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {

@@ -23,10 +23,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Local log monitor auto configuration.
+ * Local log monitor configuration.
  */
 @Configuration
-public class LocalLogMonitorAutoConfiguration {
+public class LocalLogMonitorConfiguration {
 
     @Bean
     public LocalLogMonitorHandler localLogMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
