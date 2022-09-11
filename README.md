@@ -10,7 +10,8 @@
 
 线程池是一种基于池化思想管理线程的工具，使用线程池可以减少创建销毁线程的开销，避免线程过多导致系统资源耗尽。在高并发以及大批量的任务处理场景，线程池的使用是必不可少的。
 
-如果有在项目中实际使用线程池，相信你可能会遇到以下痛点：
+<details>
+<summary>如果有在项目中实际使用线程池，相信你可能会遇到以下痛点：</summary>
 
 - 线程池随便定义，线程资源过多，造成服务器高负载。
 
@@ -21,10 +22,14 @@
 - 原生线程池不支持运行时变量的传递，比如 MDC 上下文遇到线程池就 GG。
 - 无法执行优雅关闭，当项目关闭时，大量正在运行的线程池任务被丢弃。
 - 线程池运行中，任务执行停止，怀疑发生死锁或执行耗时操作，但是无从下手。
+</details>
 
 ## 什么是 Hippo-4J
 
 Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
+
+<details>
+<summary>提供以下功能支持：</summary>
 
 - 全局管控 - 管理应用线程池实例；
 
@@ -36,15 +41,15 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更；
 - 中间件适配 - Apache RocketMQ、Dubbo、RabbitMQ、Hystrix 消费线程池运行时数据查看和线程数变更。
 
+</details>
+
 > 开源作者为爱发电不容易，看完有收获，右上角帮忙点个小星星 🤩
 
 ## 快速开始
 
 对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/user_docs/user_guide/quick-start)
 
-演示环境：
-- http://console.hippo4j.cn/index.html
-- 用户名/密码：hippo4j/hippo4j
+演示环境： http://console.hippo4j.cn/index.html
 
 ## 荣誉墙
 
@@ -54,7 +59,7 @@ Hippo-4J 获得了一些宝贵的荣誉，肯定了 Hippo-4J 作为一款开源�
 
 ## 开发者
 
-Hippo-4J 获得的成就属于每一位对 Hippo-4J 做出过贡献的成员，感谢各位的付出。
+Hippo-4J 获得了一些成就，这属于每一位对 Hippo-4J 做出过贡献的成员，感谢各位的付出。
 
 如果屏幕前的同学有意提交 Hippo-4J，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 任务列表。
 
@@ -72,6 +77,6 @@ Hippo-4J 获得的成就属于每一位对 Hippo-4J 做出过贡献的成员，�
 
 ## 联系我
 
-![image](https://user-images.githubusercontent.com/77398366/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)
+![](https://user-images.githubusercontent.com/77398366/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)
 
 扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)
