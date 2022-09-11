@@ -25,7 +25,7 @@
     </modules>
 
     <properties>
-        <revision>1.4.1</revision>
+        <revision>1.4.2-SNAPSHOT</revision>
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
         <guava.version>30.0-jre</guava.version>
