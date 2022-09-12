@@ -8,11 +8,11 @@ sidebar_position: 3
 
 MySQL 数据库导入 [Hippo4J 初始化 SQL 语句](https://github.com/longtai-cn/hippo4j/blob/develop/hippo4j-server/conf/hippo4j_manager.sql)。
 
-使用 Docker 运行服务端，可以灵活定制相关参数。如果 MySQL 非 Docker 部署，`MYSQL_HOST` 需要使用本地 IP。
+使用 Docker 运行服务端，可以灵活定制相关参数。`MYSQL_HOST` 需要使用本地 IP，不能使用 `127.0.0.1`。
 
 ```shell
 docker run -d -p 6691:6691 --name hippo4j-server \
--e MYSQL_HOST=127.0.0.1 \
+-e MYSQL_HOST=xxx.xxx.x.x \
 -e MYSQL_PORT=3306 \
 -e MYSQL_DB=hippo4j_manager \
 -e MYSQL_USERNAME=root \
