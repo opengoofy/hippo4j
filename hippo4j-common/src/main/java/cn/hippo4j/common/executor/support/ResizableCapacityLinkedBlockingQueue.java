@@ -524,8 +524,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
             Node<E> first = head.next;
             if (first == null) {
                 return null;
-            }
-            else {
+            } else {
                 return first.item;
             }
         } finally {
