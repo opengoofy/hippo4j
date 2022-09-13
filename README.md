@@ -46,19 +46,11 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 演示环境： http://console.hippo4j.cn/index.html
 
-## 荣誉墙
+## 联系我
 
-Hippo-4J 获得了一些宝贵的荣誉，肯定了 Hippo-4J 作为一款开源框架所带来的价值。
+![](https://user-images.githubusercontent.com/77398366/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)
 
-<img align="center" width="680" alt="image" src="https://user-images.githubusercontent.com/77398366/187014905-b50bdc8b-ca0e-4137-9a02-1e6b06106191.jpg">
-
-## 开发者
-
-Hippo-4J 获得了一些成就，这属于每一位对 Hippo-4J 做出过贡献的成员，感谢各位的付出。
-
-如果屏幕前的同学有意提交 Hippo-4J，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 任务列表。
-
-<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false" /></a>
+扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)
 
 ## 友情链接
 
@@ -70,8 +62,32 @@ Hippo-4J 获得了一些成就，这属于每一位对 Hippo-4J 做出过贡献�
 
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 
-## 联系我
+## 开发者
 
-![](https://user-images.githubusercontent.com/77398366/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)
+Hippo-4J 获得了一些成就，这属于每一位对 Hippo-4J 做出过贡献的成员，感谢各位的付出。
 
-扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)
+如果屏幕前的同学有意提交 Hippo-4J，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 任务列表。
+
+<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false" /></a>
+
+## 荣誉墙
+
+Hippo-4J 获得了一些宝贵的荣誉，肯定了 Hippo-4J 作为一款开源框架所带来的价值。
+
+<img align="center" width="900" alt="image" src="https://user-images.githubusercontent.com/77398366/187014905-b50bdc8b-ca0e-4137-9a02-1e6b06106191.jpg">
+
+## 谁在使用
+
+![身边云](https://user-images.githubusercontent.com/77398366/189787832-f51d475c-d758-40f2-9812-997637804e6f.png)
+![Medbanks](https://user-images.githubusercontent.com/77398366/189787960-16f89af9-a615-4da3-8309-18d0793aed05.png)
+![神州数码](https://user-images.githubusercontent.com/77398366/189786973-1a924f41-1558-4b03-acfd-49f279b99ce7.png)
+![payermax](https://user-images.githubusercontent.com/77398366/189787071-ccfa45fa-31c0-4a39-9969-9d20d6948a7b.png)
+![轻松到家](https://user-images.githubusercontent.com/77398366/189787144-fb6f7c4a-bdd8-4bdf-8ce1-c1e386c7aecd.png)
+![鲁班到家](https://user-images.githubusercontent.com/77398366/189787219-09201124-8ac6-496e-b562-9b4eecc11806.png)
+![广东天枢新能源科技有限公司](https://user-images.githubusercontent.com/77398366/189787263-d1998874-51ec-42ea-89d8-961cf1c2a557.png)
+![FitTime](https://user-images.githubusercontent.com/77398366/189787924-c6f1835c-c81b-403b-a7ec-386c261766a9.png)
+![51社保](https://user-images.githubusercontent.com/77398366/189787481-b9eae343-8310-4333-b385-b68e224d1438.png)
+![好货云店](https://user-images.githubusercontent.com/77398366/189787520-7ea68573-2232-4ba5-bedc-94754884c75c.png)
+![斗象科技](https://user-images.githubusercontent.com/77398366/189788405-ea93d8f0-3c17-49e0-bd96-8fc259d0eb89.png)
+![深圳航天信息有限公司](https://user-images.githubusercontent.com/77398366/189787780-7815f0c0-8478-4403-99ec-27fe07537b99.png)
+![新东方](https://user-images.githubusercontent.com/77398366/189787802-2bb240bd-307f-4e8d-aaa5-ff71e0d46acc.png)
