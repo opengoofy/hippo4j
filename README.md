@@ -70,11 +70,11 @@ Hippo-4J 获得了一些宝贵的荣誉，肯定了 Hippo-4J 作为一款开源�
 
 ## 开发者
 
-Hippo-4J 获得了一些成就，这属于每一位对 Hippo-4J 做出过贡献的成员，感谢各位的付出。
+Hippo-4J 获得的成就属于每一位贡献者！如果有意贡献，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22)。
 
-如果屏幕前的同学有意提交 Hippo-4J，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 任务列表。
-
-<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/opengoofy/hippo4j/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=opengoofy/hippo4j" />
+</a>
 
 ## 谁在使用
 
