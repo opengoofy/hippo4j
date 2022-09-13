@@ -62,6 +62,12 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 
+## 荣誉墙
+
+Hippo-4J 获得了一些宝贵的荣誉，肯定了 Hippo-4J 作为一款开源框架所带来的价值。
+
+<img align="center" width="800" alt="image" src="https://user-images.githubusercontent.com/77398366/187014905-b50bdc8b-ca0e-4137-9a02-1e6b06106191.jpg">
+
 ## 开发者
 
 Hippo-4J 获得了一些成就，这属于每一位对 Hippo-4J 做出过贡献的成员，感谢各位的付出。
@@ -69,12 +75,6 @@ Hippo-4J 获得了一些成就，这属于每一位对 Hippo-4J 做出过贡献�
 如果屏幕前的同学有意提交 Hippo-4J，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 任务列表。
 
 <a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false" /></a>
-
-## 荣誉墙
-
-Hippo-4J 获得了一些宝贵的荣誉，肯定了 Hippo-4J 作为一款开源框架所带来的价值。
-
-<img align="center" width="900" alt="image" src="https://user-images.githubusercontent.com/77398366/187014905-b50bdc8b-ca0e-4137-9a02-1e6b06106191.jpg">
 
 ## 谁在使用
 
