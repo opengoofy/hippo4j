@@ -85,7 +85,7 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
     private Boolean collect = true;
 
     /**
-     * Type of collection thread pool running data. eg: server,prometheus. Multiple can be used at the same time.
+     * Type of collection thread pool running data. eg: server,micrometer. Multiple can be used at the same time.
      */
     private String collectType;
 

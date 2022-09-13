@@ -17,15 +17,14 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
-import java.util.List;
-import java.util.Map;
-
-import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import cn.hippo4j.config.springboot.starter.parser.ConfigFileTypeEnum;
+import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Bootstrap core properties.
@@ -53,7 +52,7 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
     private Boolean collect = Boolean.TRUE;
 
     /**
-     * Type of collection thread pool running data. eg: log,prometheus. Multiple can be used at the same time.
+     * Type of collection thread pool running data. eg: log,micrometer. Multiple can be used at the same time.
      */
     private String collectType;
 

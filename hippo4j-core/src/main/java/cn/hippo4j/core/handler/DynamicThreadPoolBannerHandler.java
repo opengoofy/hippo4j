@@ -38,7 +38,7 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
 
     private final String HIPPO4J_GITHUB = "GitHub:  https://github.com/opengoofy/hippo4j";
 
-    private final String HIPPO4J_SITE = "Site:    https://hippo4j.cn";
+    private final String HIPPO4J_SITE = "Site:    https://www.hippo4j.cn";
 
     private final int STRAP_LINE_SIZE = 50;
 
@@ -48,11 +48,12 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
     }
 
     private void printBanner() {
-        String banner = "___                       _      _____ ___ \n" +
-                "|   \\ _  _ _ _  __ _ _ __ (_)__  |_   _| _ \\\n" +
-                "| |) | || | ' \\/ _` | '  \\| / _|   | | |  _/\n" +
-                "|___/ \\_, |_||_\\__,_|_|_|_|_\\__|   |_| |_|  \n" +
-                "      |__/                                  \n";
+        String banner = "  __     __                       ___ ___   __ \n" +
+                " |  |--.|__|.-----..-----..-----.|   |   | |__|\n" +
+                " |     ||  ||  _  ||  _  ||  _  ||   |   | |  |\n" +
+                " |__|__||__||   __||   __||_____||____   | |  |\n" +
+                "            |__|   |__|              |:  ||___|\n" +
+                "                                     `---'     \n";
         if (properties.getBanner()) {
             String version = getVersion();
             version = (version != null) ? " (v" + version + ")" : "no version.";

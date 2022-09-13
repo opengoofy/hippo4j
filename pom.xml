@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-all</artifactId>
     <version>${revision}</version>
@@ -26,8 +25,7 @@
     </modules>
 
     <properties>
-        <revision>1.4.1-SNAPSHOT</revision>
-
+        <revision>1.4.2-SNAPSHOT</revision>
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
         <guava.version>30.0-jre</guava.version>
@@ -40,7 +38,6 @@
         <jjwt.version>0.9.0</jjwt.version>
         <jackson-bom.version>2.11.1</jackson-bom.version>
         <dingtalk-sdk.version>2.0.0</dingtalk-sdk.version>
-
         <!-- Framework -->
         <slf4j-api.version>1.7.7</slf4j-api.version>
         <logback.version>1.2.9</logback.version>
@@ -58,7 +55,6 @@
         <spring-cloud-starter-stream-rabbitmq.version>3.1.0</spring-cloud-starter-stream-rabbitmq.version>
         <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
         <spring-cloud-starter-alibaba-nacos-config.version>2.2.5.RELEASE</spring-cloud-starter-alibaba-nacos-config.version>
-
         <!-- Maven & Build -->
         <java.version>1.8</java.version>
         <skip.maven.gpg.plugin>true</skip.maven.gpg.plugin>
