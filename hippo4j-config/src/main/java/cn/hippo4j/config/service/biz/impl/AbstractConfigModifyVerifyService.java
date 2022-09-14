@@ -15,15 +15,28 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.mapper;
+package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import cn.hippo4j.config.model.HisConfigVerifyInfo;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import cn.hippo4j.config.model.biz.threadpool.ConfigChangeSaveReqDTO;
+import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
+import cn.hippo4j.config.toolkit.BeanUtil;
+import lombok.AllArgsConstructor;
 
-/**
- * his config verify info mapper
- */
-@Mapper
-public interface HisConfigVerifyMapper extends BaseMapper<HisConfigVerifyInfo> {
+@AllArgsConstructor
+public abstract class AbstractConfigModifyVerifyService implements ConfigModifyVerifyService {
+
+    private final HisConfigVerifyMapper hisConfigVerifyMapper;
+
+    @Override
+    public void saveConfigModifyApplication(ConfigChangeSaveReqDTO reqDTO) {
+        HisConfigVerifyInfo convert = BeanUtil.convert(reqDTO, HisConfigVerifyInfo.class);
+
+    }
+
+    @Override
+    public void rejectModification(String id) {
+        // todo reject
+    }
 }

@@ -15,15 +15,36 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.mapper;
+package cn.hippo4j.config.service.biz;
 
-import cn.hippo4j.config.model.HisConfigVerifyInfo;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import cn.hippo4j.config.model.biz.threadpool.ConfigChangeSaveReqDTO;
 
 /**
- * his config verify info mapper
+ * config change verify service
  */
-@Mapper
-public interface HisConfigVerifyMapper extends BaseMapper<HisConfigVerifyInfo> {
+public interface ConfigModifyVerifyService {
+
+    /**
+     * get type
+     * @return
+     */
+    Integer type();
+
+    /**
+     * save config change application
+     * @param reqDTO
+     */
+    void saveConfigModifyApplication(ConfigChangeSaveReqDTO reqDTO);
+
+    /**
+     * reject config modification
+     * @param id
+     */
+    void rejectModification(String id);
+
+    /**
+     * accept config modification
+     * @param id
+     */
+    void acceptModification(String id);
 }

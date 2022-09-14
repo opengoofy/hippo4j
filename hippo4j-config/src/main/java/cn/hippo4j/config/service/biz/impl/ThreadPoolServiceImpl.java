@@ -17,20 +17,19 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.LogRecordInfo;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.*;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.service.biz.OperationLogService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
 import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.config.verify.ConfigModifyVerifyServiceChoose;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -54,6 +53,8 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
     private final ConfigInfoMapper configInfoMapper;
 
     private final OperationLogService operationLogService;
+
+    private final ConfigModifyVerifyServiceChoose configModifyVerifyServiceChoose;
 
     @Override
     public IPage<ThreadPoolRespDTO> queryThreadPoolPage(ThreadPoolQueryReqDTO reqDTO) {
@@ -82,10 +83,19 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     @Override
     public void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO) {
-        ConfigAllInfo configAllInfo = BeanUtil.convert(reqDTO, ConfigAllInfo.class);
-        Long executeTimeOut = Objects.equals(configAllInfo.getExecuteTimeOut(), 0L) ? null : configAllInfo.getExecuteTimeOut();
-        configAllInfo.setExecuteTimeOut(executeTimeOut);
-        configService.insertOrUpdate(identify, false, configAllInfo);
+        // TODO to optimize the Role of judgment
+        if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
+            ConfigAllInfo configAllInfo = BeanUtil.convert(reqDTO, ConfigAllInfo.class);
+            Long executeTimeOut = Objects.equals(configAllInfo.getExecuteTimeOut(), 0L) ? null : configAllInfo.getExecuteTimeOut();
+            configAllInfo.setExecuteTimeOut(executeTimeOut);
+            configService.insertOrUpdate(identify, false, configAllInfo);
+        } else {
+            ConfigChangeSaveReqDTO changeSaveReqDTO = BeanUtil.convert(reqDTO, ConfigChangeSaveReqDTO.class);
+            changeSaveReqDTO.setModifyUser(UserContext.getUserName());
+            changeSaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_MANAGER);
+            configModifyVerifyServiceChoose.choose(changeSaveReqDTO.getType()).saveConfigModifyApplication(changeSaveReqDTO);
+        }
+
     }
 
     @Override

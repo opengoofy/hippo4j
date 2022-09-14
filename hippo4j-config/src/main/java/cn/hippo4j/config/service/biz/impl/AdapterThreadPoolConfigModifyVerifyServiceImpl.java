@@ -15,15 +15,29 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.mapper;
+package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.config.model.HisConfigVerifyInfo;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
+import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
-/**
- * his config verify info mapper
- */
-@Mapper
-public interface HisConfigVerifyMapper extends BaseMapper<HisConfigVerifyInfo> {
+@Slf4j
+@Service
+public class AdapterThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
+
+    public AdapterThreadPoolConfigModifyVerifyServiceImpl(HisConfigVerifyMapper hisConfigVerifyMapper) {
+        super(hisConfigVerifyMapper);
+    }
+
+    @Override
+    public Integer type() {
+        return ConfigModifyTypeConstants.ADAPTER_THREAD_POOL;
+    }
+
+    @Override
+    public void acceptModification(String id) {
+
+    }
+
 }

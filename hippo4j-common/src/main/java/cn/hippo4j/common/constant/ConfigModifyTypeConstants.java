@@ -15,15 +15,16 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.mapper;
+package cn.hippo4j.common.constant;
 
-import cn.hippo4j.config.model.HisConfigVerifyInfo;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+public class ConfigModifyTypeConstants {
 
-/**
- * his config verify info mapper
- */
-@Mapper
-public interface HisConfigVerifyMapper extends BaseMapper<HisConfigVerifyInfo> {
+    public static final int THREAD_POOL_MANAGER = 1;
+
+    public static final int THREAD_POOL_INSTANCE = 2;
+
+    public static final int WEB_THREAD_POOL = 3;
+
+    public static final int ADAPTER_THREAD_POOL = 4;
+
 }
