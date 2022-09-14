@@ -17,8 +17,119 @@
 
 package cn.hippo4j.config.toolkit;
 
+import cn.hippo4j.common.toolkit.Assert;
+import cn.hutool.core.collection.CollectionUtil;
+import com.google.common.collect.ImmutableMap;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiFunction;
+
 /**
  * MapUtil Test
  */
 public class MapUtilTest {
+
+    @Test
+    public void parseMapForFilterRetIsEmptyTest() {
+        Map<String, Object> map = ImmutableMap.of("abc", "123", "bcd", "456", "cde", "789");
+        List<String> ret = MapUtil.parseMapForFilter(map, "x");
+        Assert.isTrue(CollectionUtil.isEmpty(ret));
+    }
+
+    @Test
+    public void parseMapForFilterRetIsNotEmptyTest() {
+        Map<String, Object> map = ImmutableMap.of("abc", "123", "bcd", "456", "cde", "789");
+        List<String> ret = MapUtil.parseMapForFilter(map, "b");
+        Assert.isTrue(CollectionUtil.isNotEmpty(ret));
+    }
+
+    @Test
+    public void computeIfAbsentNotExistTargetTest() {
+        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        try {
+            MapUtil.computeIfAbsent(null, "key", mappingFunction, "param1", "param2");
+        } catch (Exception e) {
+            if (e instanceof NullPointerException) {
+                Assert.isTrue(Objects.equals("target", e.getMessage()));
+            }
+        }
+    }
+
+    @Test
+    public void computeIfAbsentNotExistKeyTest() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("abc", "123");
+        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        try {
+            MapUtil.computeIfAbsent(map, null, mappingFunction, "param1", "param2");
+        } catch (Exception e) {
+            if (e instanceof NullPointerException) {
+                Assert.isTrue(Objects.equals("key", e.getMessage()));
+            }
+        }
+    }
+
+    @Test
+    public void computeIfAbsentNotExistMappingFunctionTest() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("abc", "123");
+        try {
+            MapUtil.computeIfAbsent(map, "abc", null, "param1", "param2");
+        } catch (Exception e) {
+            if (e instanceof NullPointerException) {
+                Assert.isTrue(Objects.equals("mappingFunction", e.getMessage()));
+            }
+        }
+    }
+
+    @Test
+    public void computeIfAbsentNotExistParam1Test() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("abc", "123");
+        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        try {
+            MapUtil.computeIfAbsent(map, "abc", mappingFunction, null, "param2");
+        } catch (Exception e) {
+            if (e instanceof NullPointerException) {
+                Assert.isTrue(Objects.equals("param1", e.getMessage()));
+            }
+        }
+    }
+
+    @Test
+    public void computeIfAbsentNotExistParam2Test() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("abc", "123");
+        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        try {
+            MapUtil.computeIfAbsent(map, "abc", mappingFunction, "param1", null);
+        } catch (Exception e) {
+            if (e instanceof NullPointerException) {
+                Assert.isTrue(Objects.equals("param2", e.getMessage()));
+            }
+        }
+    }
+
+    @Test
+    public void computeIfAbsentValNotNullTest() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("abc", "123");
+        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        Object ret = MapUtil.computeIfAbsent(map, "abc", mappingFunction, "param1", "param2");
+        Assert.isTrue(Objects.equals("123", String.valueOf(ret)));
+    }
+
+    @Test
+    public void computeIfAbsentValIsNullTest() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("abc", "123");
+        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        Object ret = MapUtil.computeIfAbsent(map, "xyz", mappingFunction, "param1", "param2");
+        Assert.isTrue(Objects.equals("param1param2", String.valueOf(ret)));
+    }
+
 }
