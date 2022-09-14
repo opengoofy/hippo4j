@@ -20,11 +20,14 @@ package cn.hippo4j.config.service.biz.impl;
 import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.enums.VerifyEnum;
 import cn.hippo4j.common.toolkit.ContentUtil;
+import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import cn.hippo4j.config.model.HisConfigVerifyInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigChangeSaveReqDTO;
 import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -44,6 +47,12 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
 
     @Override
     public void rejectModification(String id) {
-        // todo reject
+        LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
+                .set(HisConfigVerifyInfo::getVerifyStatus,VerifyEnum.VERIFY_REJECT.getVerifyStatus())
+                .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName())
+                .eq(HisConfigVerifyInfo::getId,id);
+
+        hisConfigVerifyMapper.update(null,updateWrapper);
+
     }
 }
