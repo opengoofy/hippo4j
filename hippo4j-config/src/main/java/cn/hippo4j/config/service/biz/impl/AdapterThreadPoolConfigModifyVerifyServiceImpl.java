@@ -37,7 +37,7 @@ public class AdapterThreadPoolConfigModifyVerifyServiceImpl extends AbstractConf
 
     @Override
     public void acceptModification(String id) {
-
+        //TODO 审核通过
     }
 
 }
