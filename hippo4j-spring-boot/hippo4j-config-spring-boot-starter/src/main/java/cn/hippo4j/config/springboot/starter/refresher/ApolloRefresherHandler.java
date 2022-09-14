@@ -34,7 +34,7 @@ import java.util.Map;
  * Apollo refresher handler.
  */
 @Slf4j
-public class ApolloRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
+public class ApolloRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
     private static final String APOLLO_PROPERTY = "${spring.dynamic.thread-pool.apollo.namespace:application}";
 

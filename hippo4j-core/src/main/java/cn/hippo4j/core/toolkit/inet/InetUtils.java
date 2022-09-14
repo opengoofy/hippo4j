@@ -58,7 +58,7 @@ public class InetUtils implements Closeable {
         this.executorService.shutdown();
     }
 
-    public HostInfo findFirstNonLoopbackHostInfo() {
+    public HostInfo findFirstNonLoopBackHostInfo() {
         InetAddress address = findFirstNonLoopbackAddress();
         if (address != null) {
             return convertAddress(address);

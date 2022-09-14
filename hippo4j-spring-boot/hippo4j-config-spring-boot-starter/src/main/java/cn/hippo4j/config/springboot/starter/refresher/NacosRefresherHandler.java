@@ -30,7 +30,7 @@ import java.util.concurrent.Executor;
  * Nacos refresher handler.
  */
 @Slf4j
-public class NacosRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
+public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
     @NacosInjected
     private ConfigService configService;

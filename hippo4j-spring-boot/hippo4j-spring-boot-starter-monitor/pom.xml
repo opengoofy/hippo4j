@@ -13,6 +13,6 @@
     <modules>
         <module>hippo4j-spring-boot-starter-monitor-elasticsearch</module>
         <module>hippo4j-spring-boot-starter-monitor-local-log</module>
-        <module>hippo4j-spring-boot-starter-monitor-prometheus</module>
+        <module>hippo4j-spring-boot-starter-monitor-micrometer</module>
     </modules>
 </project>

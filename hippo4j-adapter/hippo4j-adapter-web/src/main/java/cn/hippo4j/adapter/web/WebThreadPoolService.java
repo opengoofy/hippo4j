@@ -21,6 +21,7 @@ import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import org.springframework.boot.web.server.WebServer;
 
 import java.util.concurrent.Executor;
 
@@ -63,4 +64,13 @@ public interface WebThreadPoolService {
      * @param threadPoolParameterInfo
      */
     void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo);
+
+    /**
+     * Get web server.
+     *
+     * @return
+     */
+    default WebServer getWebServer() {
+        return null;
+    }
 }

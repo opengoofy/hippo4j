@@ -14,7 +14,7 @@
         <module>hippo4j-monitor-base</module>
         <module>hippo4j-monitor-elasticsearch</module>
         <module>hippo4j-monitor-local-log</module>
-        <module>hippo4j-monitor-prometheus</module>
+        <module>hippo4j-monitor-micrometer</module>
     </modules>
 
     <build>

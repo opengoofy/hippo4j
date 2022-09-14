@@ -25,7 +25,6 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.WebThreadPoolProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 
 import java.util.Objects;
@@ -37,7 +36,12 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
  */
 @Slf4j
 @Order(WEB_EXECUTOR_LISTENER)
-public class WebExecutorRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
+public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThreadPoolProperties> {
+
+    @Override
+    public String getNodes(WebThreadPoolProperties properties) {
+        return properties.getNodes();
+    }
 
     @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
@@ -75,7 +79,7 @@ public class WebExecutorRefreshListener implements ApplicationListener<Hippo4jCo
         } else if (bindableCoreProperties.getJetty() != null) {
             webThreadPoolProperties = bindableCoreProperties.getJetty();
         }
-        if (webThreadPoolProperties != null) {
+        if (webThreadPoolProperties != null && match(webThreadPoolProperties)) {
             threadPoolParameterInfo = ThreadPoolParameterInfo.builder()
                     .coreSize(webThreadPoolProperties.getCorePoolSize())
                     .maximumPoolSize(webThreadPoolProperties.getMaximumPoolSize())

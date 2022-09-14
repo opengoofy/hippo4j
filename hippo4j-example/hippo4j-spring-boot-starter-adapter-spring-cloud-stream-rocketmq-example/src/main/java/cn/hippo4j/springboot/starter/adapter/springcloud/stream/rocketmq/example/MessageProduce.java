@@ -17,8 +17,8 @@
 
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq.example;
 
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.example.core.dto.SendMessageDTO;
-import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageConst;
@@ -61,7 +61,7 @@ public class MessageProduce {
                 .uid(keys)
                 .build();
         Message<?> message = MessageBuilder
-                .withPayload(JSON.toJSONString(payload))
+                .withPayload(JSONUtil.toJSONString(payload))
                 .setHeader(MessageConst.PROPERTY_KEYS, keys)
                 .setHeader(MessageConst.PROPERTY_TAGS, tags)
                 .build();
@@ -74,7 +74,7 @@ public class MessageProduce {
                     sendResult,
                     keys,
                     System.currentTimeMillis() - startTime,
-                    JSON.toJSONString(payload));
+                    JSONUtil.toJSONString(payload));
         }
     }
 }

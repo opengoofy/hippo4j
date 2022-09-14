@@ -29,7 +29,7 @@ import java.util.concurrent.Executor;
  * Nacos cloud refresher handler.
  */
 @Slf4j
-public class NacosCloudRefresherHandler extends AbstractCoreThreadPoolDynamicRefresh {
+public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
     private final NacosConfigManager nacosConfigManager;
 

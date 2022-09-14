@@ -21,6 +21,7 @@ import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.config.springboot.starter.config.AdapterExecutorProperties;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.notify.CoreNotifyConfigBuilder;
@@ -38,7 +39,6 @@ import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
@@ -60,7 +60,7 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
 @Slf4j
 @RequiredArgsConstructor
 @Order(EXECUTORS_LISTENER)
-public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hippo4jConfigDynamicRefreshEvent> {
+public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<ExecutorProperties> {
 
     private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
 
@@ -69,12 +69,20 @@ public class DynamicThreadPoolRefreshListener implements ApplicationListener<Hip
     private final Hippo4jBaseSendMessageService hippo4jBaseSendMessageService;
 
     @Override
+    public String getNodes(ExecutorProperties properties) {
+        return properties.getNodes();
+    }
+
+    @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent event) {
         BootstrapConfigProperties bindableConfigProperties = event.getBootstrapConfigProperties();
         List<ExecutorProperties> executors = bindableConfigProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
-            /**
+            if (!match(properties)) {
+                continue;
+            }
+            /*
              * Check whether the notification configuration is consistent, this operation will not trigger the notification.
              */
             checkNotifyConsistencyAndReplace(properties);
