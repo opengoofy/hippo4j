@@ -17,9 +17,7 @@
 
 package cn.hippo4j.common.toolkit;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
