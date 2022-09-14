@@ -156,8 +156,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                     if (executor instanceof AbstractDynamicExecutorSupport) {
                         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
                                 BooleanUtil.toBoolean(threadPoolParameterInfo.getIsAlarm().toString()),
-                                threadPoolParameterInfo.getCapacityAlarm(),
-                                threadPoolParameterInfo.getLivenessAlarm());
+                                threadPoolParameterInfo.getLivenessAlarm(),
+                                threadPoolParameterInfo.getCapacityAlarm());
                         GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
                         TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) executor).getTaskDecorator();
                         ((DynamicThreadPoolExecutor) newDynamicThreadPoolExecutor).setTaskDecorator(taskDecorator);
