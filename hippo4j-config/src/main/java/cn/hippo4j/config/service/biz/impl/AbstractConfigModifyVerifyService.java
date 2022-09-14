@@ -26,7 +26,6 @@ import cn.hippo4j.config.model.HisConfigVerifyInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigChangeSaveReqDTO;
 import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.AllArgsConstructor;
 
@@ -48,11 +47,11 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
     @Override
     public void rejectModification(String id) {
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
-                .set(HisConfigVerifyInfo::getVerifyStatus,VerifyEnum.VERIFY_REJECT.getVerifyStatus())
+                .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_REJECT.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName())
-                .eq(HisConfigVerifyInfo::getId,id);
+                .eq(HisConfigVerifyInfo::getId, id);
 
-        hisConfigVerifyMapper.update(null,updateWrapper);
+        hisConfigVerifyMapper.update(null, updateWrapper);
 
     }
 }
