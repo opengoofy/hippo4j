@@ -17,12 +17,14 @@
 
 package cn.hippo4j.config.model.biz.threadpool;
 
+import cn.hippo4j.common.enums.EnableEnum;
+import cn.hippo4j.common.model.ThreadPoolParameter;
 import lombok.Data;
 
 import javax.validation.constraints.Pattern;
 
 @Data
-public class ConfigChangeSaveReqDTO {
+public class ConfigChangeSaveReqDTO implements ThreadPoolParameter {
 
     /**
      * thread pool config change type
@@ -37,7 +39,7 @@ public class ConfigChangeSaveReqDTO {
     /**
      * weather modify all instances
      */
-    private Integer modifyAll;
+    private Integer modifyAll = EnableEnum.NO.getIntCode();
 
     /**
      * TenantId

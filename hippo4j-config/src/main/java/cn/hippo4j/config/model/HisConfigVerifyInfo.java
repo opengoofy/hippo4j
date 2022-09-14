@@ -17,7 +17,9 @@
 
 package cn.hippo4j.config.model;
 
+import cn.hippo4j.common.model.ThreadPoolParameter;
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
@@ -65,7 +67,7 @@ public class HisConfigVerifyInfo {
     /**
      * weather modify all thread pool instances
      */
-    private Integer modifyAll;
+    private Integer modifyAll = 0;
 
     /**
      * gmtCreate
