@@ -117,7 +117,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());
         Collection<DynamicThreadPoolMonitor> dynamicThreadPoolMonitors =
                 DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
-        boolean customerDynamicThreadPoolMonitorFlag = CollectionUtil.isNotEmpty(dynamicThreadPoolMonitors) || (collectType.contains(MonitorTypeEnum.PROMETHEUS.name().toLowerCase())
+        boolean customerDynamicThreadPoolMonitorFlag = CollectionUtil.isNotEmpty(dynamicThreadPoolMonitors) || (collectType.contains(MonitorTypeEnum.MICROMETER.name().toLowerCase())
                 || collectType.contains(MonitorTypeEnum.LOG.name().toLowerCase())
                 || collectType.contains(MonitorTypeEnum.ELASTICSEARCH.name().toLowerCase()));
         if (customerDynamicThreadPoolMonitorFlag) {

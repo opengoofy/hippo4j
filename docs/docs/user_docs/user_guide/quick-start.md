@@ -2,20 +2,17 @@
 sidebar_position: 3
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 # 快速开始
 
 ## 服务启动
 
-MySQL 创建名为 `hippo4j_manager` 的数据库，字符集选择 `utf8mb4`，并导入 [Hippo4J 初始化 SQL 语句](https://github.com/longtai-cn/hippo4j/blob/develop/hippo4j-server/conf/hippo4j_manager.sql)。
+MySQL 数据库导入 [Hippo4J 初始化 SQL 语句](https://github.com/longtai-cn/hippo4j/blob/develop/hippo4j-server/conf/hippo4j_manager.sql)。
 
-使用 Docker 运行服务端，可以灵活定制相关参数。如果 MySQL 非 Docker 部署，`MYSQL_HOST` 需要使用本地 IP。
+使用 Docker 运行服务端，可以灵活定制相关参数。`MYSQL_HOST` 需要使用本地 IP，不能使用 `127.0.0.1`。
 
 ```shell
 docker run -d -p 6691:6691 --name hippo4j-server \
--e MYSQL_HOST=127.0.0.1 \
+-e MYSQL_HOST=xxx.xxx.x.x \
 -e MYSQL_PORT=3306 \
 -e MYSQL_DB=hippo4j_manager \
 -e MYSQL_USERNAME=root \
@@ -38,14 +35,14 @@ hippo4j/hippo4j-server
 观察 Hippo4j-Example 控制台日志输出，日志输出包括不限于此信息即为成功。
 
 ```tex
-2022-08-13 21:26:25.814  INFO 38972 --- [change.config-5] c.h.s.s.c.ServerThreadPoolDynamicRefresh : [message-consume] Dynamic thread pool change parameter.
-    corePoolSize: [5 => 5]
-    maximumPoolSize: [6 => 7]
-    capacity: [10 => 10]
-    keepAliveTime: [3 => 3]
-    executeTimeOut: [0 => 0]
-    rejectedType: [CustomErrorLogRejectedExecutionHandler => CustomErrorLogRejectedExecutionHandler]
-    allowCoreThreadTimeOut: [false => false]
+2022-09-10 00:23:29.783  INFO 50322 --- [change.config_0] c.h.s.s.c.ServerThreadPoolDynamicRefresh : [message-consume] Dynamic thread pool change parameter.
+    corePoolSize: 2 => 4
+    maximumPoolSize: 6 => 12
+    capacity: 1024 => 2048
+    keepAliveTime: 9999 => 9999
+    executeTimeOut: 800 => 3000
+    rejectedType: SyncPutQueuePolicy => RunsOldestTaskPolicy
+    allowCoreThreadTimeOut: true => true
 ```
 
 另外，当 Client 集群部署时，可以修改某一个实例，或选择 `全部修改` 按钮，修改所有实例线程池信息。

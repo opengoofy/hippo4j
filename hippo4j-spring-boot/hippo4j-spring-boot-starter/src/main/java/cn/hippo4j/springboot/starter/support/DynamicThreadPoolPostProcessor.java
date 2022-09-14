@@ -153,20 +153,19 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                             .allowCoreThreadTimeOut(EnableEnum.getBool(threadPoolParameterInfo.getAllowCoreThreadTimeOut()))
                             .build();
                     // Set dynamic thread pool enhancement parameters.
-                    ThreadPoolExecutor customDynamicThreadPool;
-                    if ((customDynamicThreadPool = executor) instanceof AbstractDynamicExecutorSupport) {
+                    if (executor instanceof AbstractDynamicExecutorSupport) {
                         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
                                 BooleanUtil.toBoolean(threadPoolParameterInfo.getIsAlarm().toString()),
-                                threadPoolParameterInfo.getCapacityAlarm(),
-                                threadPoolParameterInfo.getLivenessAlarm());
+                                threadPoolParameterInfo.getLivenessAlarm(),
+                                threadPoolParameterInfo.getCapacityAlarm());
                         GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
-                        TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) customDynamicThreadPool).getTaskDecorator();
+                        TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) executor).getTaskDecorator();
                         ((DynamicThreadPoolExecutor) newDynamicThreadPoolExecutor).setTaskDecorator(taskDecorator);
-                        long awaitTerminationMillis = ((DynamicThreadPoolExecutor) customDynamicThreadPool).awaitTerminationMillis;
-                        boolean waitForTasksToCompleteOnShutdown = ((DynamicThreadPoolExecutor) customDynamicThreadPool).waitForTasksToCompleteOnShutdown;
+                        long awaitTerminationMillis = ((DynamicThreadPoolExecutor) executor).awaitTerminationMillis;
+                        boolean waitForTasksToCompleteOnShutdown = ((DynamicThreadPoolExecutor) executor).waitForTasksToCompleteOnShutdown;
                         ((DynamicThreadPoolExecutor) newDynamicThreadPoolExecutor).setSupportParam(awaitTerminationMillis, waitForTasksToCompleteOnShutdown);
                         long executeTimeOut = Optional.ofNullable(threadPoolParameterInfo.getExecuteTimeOut())
-                                .orElse(((DynamicThreadPoolExecutor) customDynamicThreadPool).getExecuteTimeOut());
+                                .orElse(((DynamicThreadPoolExecutor) executor).getExecuteTimeOut());
                         ((DynamicThreadPoolExecutor) newDynamicThreadPoolExecutor).setExecuteTimeOut(executeTimeOut);
                     }
                     dynamicThreadPoolWrapper.setExecutor(newDynamicThreadPoolExecutor);

@@ -37,7 +37,7 @@ public class ReflectUtilTest {
     }
 
     @Test
-    public void getFieldValueByFiledTest(){
+    public void getFieldValueByFiledTest() {
         TestSubClass testSubClass = new TestSubClass();
         Field privateField = ReflectUtil.getField(TestSubClass.class, "privateField");
 
@@ -46,7 +46,7 @@ public class ReflectUtilTest {
     }
 
     @Test
-    public void getFieldTest(){
+    public void getFieldTest() {
         Field privateField = ReflectUtil.getField(TestSubClass.class, "privateField");
         Assert.notNull(privateField);
 
@@ -55,13 +55,13 @@ public class ReflectUtilTest {
     }
 
     @Test
-    public void getFieldsTest(){
+    public void getFieldsTest() {
         Field[] fields = ReflectUtil.getFields(TestSubClass.class);
         Assert.isTrue(Objects.equals(4, fields.length));
     }
 
     @Test
-    public void getFieldsDirectlyTest(){
+    public void getFieldsDirectlyTest() {
         Field[] fields = ReflectUtil.getFieldsDirectly(TestSubClass.class, false);
         Assert.isTrue(Objects.equals(2, fields.length));
 
@@ -70,7 +70,7 @@ public class ReflectUtilTest {
     }
 
     @Test
-    public void getFieldNameTest(){
+    public void getFieldNameTest() {
         Field privateField = ReflectUtil.getField(TestSubClass.class, "privateField");
         String fieldName = ReflectUtil.getFieldName(privateField);
         Assert.notNull(fieldName);
@@ -81,7 +81,7 @@ public class ReflectUtilTest {
     }
 
     @Test
-    public void setFieldValueTest(){
+    public void setFieldValueTest() {
         TestClass testClass = new TestClass();
         ReflectUtil.setFieldValue(testClass, "field", "fieldVal");
         Assert.isTrue(Objects.equals("fieldVal", testClass.getField()));
@@ -92,9 +92,9 @@ public class ReflectUtilTest {
 
     }
 
-
     @Getter
     static class TestClass {
+
         private String privateField;
         protected String field;
 
@@ -105,6 +105,7 @@ public class ReflectUtilTest {
     }
 
     class TestSubClass extends TestClass {
+
         private String subField;
     }
 

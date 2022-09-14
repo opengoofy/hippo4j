@@ -12,7 +12,7 @@ Nacos、Apollo、Zookeeper、ETCD 配置中心任选其一。
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-config-spring-boot-starter</artifactId>
-    <version>1.4.0-RC</version>
+    <version>1.4.1</version>
 </dependency>
 ```
 
@@ -46,7 +46,7 @@ spring:
       enable: true
       # 是否打印 banner
       banner: true
-      # 是否开启线程池数据采集，对接 Prometheus、ES、Log 等
+      # 是否开启线程池数据采集，对接 Micrometer、ES、Log 等
       collect: true
       # 检查线程池状态，是否达到报警条件，单位毫秒
       check-state-interval: 3000

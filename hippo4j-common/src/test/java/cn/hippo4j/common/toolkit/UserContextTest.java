@@ -17,5 +17,45 @@
 
 package cn.hippo4j.common.toolkit;
 
+import cn.hutool.core.util.ReflectUtil;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
+
 public class UserContextTest {
+
+    private static final String USERNAME = "test";
+
+    private static final String USER_ROLE = "role1";
+
+    @Test
+    public void testSetUserInfo() {
+        UserContext.setUserInfo(USERNAME, USER_ROLE);
+        ThreadLocal<UserContext.User> userThreadLocal = (ThreadLocal<UserContext.User>) ReflectUtil.getFieldValue(UserContext.class, "USER_THREAD_LOCAL");
+        Assert.notNull(userThreadLocal.get());
+    }
+
+    @Test
+    public void testGetUserName() {
+        UserContext.setUserInfo(USERNAME, USER_ROLE);
+        String userName = UserContext.getUserName();
+        Assert.isTrue(USERNAME.equals(userName));
+    }
+
+    @Test
+    public void testGetUserRole() {
+        UserContext.setUserInfo(USERNAME, USER_ROLE);
+        String userRole = UserContext.getUserRole();
+        Assert.isTrue(USER_ROLE.equals(userRole));
+    }
+
+    @Test
+    public void testClear() {
+        UserContext.setUserInfo(USERNAME, USER_ROLE);
+        ThreadLocal<UserContext.User> userThreadLocal = (ThreadLocal<UserContext.User>) ReflectUtil.getFieldValue(UserContext.class, "USER_THREAD_LOCAL");
+        Assert.notNull(userThreadLocal.get());
+        UserContext.clear();
+        Assert.isNull(userThreadLocal.get());
+    }
+
 }

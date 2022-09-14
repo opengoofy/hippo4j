@@ -35,11 +35,15 @@ import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
-import cn.hippo4j.springboot.starter.adapter.web.EnableWebAdapter;
+import cn.hippo4j.springboot.starter.adapter.web.WebAdapterConfiguration;
 import cn.hippo4j.springboot.starter.controller.ThreadPoolAdapterController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolRunStateController;
-import cn.hippo4j.springboot.starter.core.*;
+import cn.hippo4j.springboot.starter.core.BaseThreadDetailStateHandler;
+import cn.hippo4j.springboot.starter.core.ClientWorker;
+import cn.hippo4j.springboot.starter.core.DynamicThreadPoolSubscribeConfig;
+import cn.hippo4j.springboot.starter.core.ServerThreadPoolDynamicRefresh;
+import cn.hippo4j.springboot.starter.core.ThreadPoolAdapterRegister;
 import cn.hippo4j.springboot.starter.event.ApplicationContentPostProcessor;
 import cn.hippo4j.springboot.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.springboot.starter.monitor.collect.RunTimeInfoCollector;
@@ -67,12 +71,12 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * Dynamic thread-pool auto-configuration.
  */
 @Configuration
-@EnableWebAdapter
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@ImportAutoConfiguration({HttpClientConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageConfiguration.class, UtilAutoConfiguration.class})
+@ImportAutoConfiguration({WebAdapterConfiguration.class, HttpClientConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageConfiguration.class,
+        UtilAutoConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapProperties properties;

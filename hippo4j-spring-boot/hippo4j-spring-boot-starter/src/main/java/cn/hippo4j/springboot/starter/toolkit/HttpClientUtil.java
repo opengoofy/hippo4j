@@ -52,7 +52,7 @@ public class HttpClientUtil {
         try {
             return new String(doGet(url), "utf-8");
         } catch (Exception e) {
-            log.error("httpGet 调用失败. {}", url, e);
+            log.error("HttpGet call failed. {}", url, e);
             throw e;
         }
     }
@@ -121,7 +121,7 @@ public class HttpClientUtil {
         try {
             return doPost(url, body);
         } catch (Exception e) {
-            log.error("httpPost 调用失败. {} message: {}", url, e.getMessage());
+            log.error("HttpPost call failed. {} message: {}", url, e.getMessage());
             throw e;
         }
     }
@@ -179,7 +179,7 @@ public class HttpClientUtil {
         try (Response resp = hippo4JOkHttpClient.newCall(request).execute()) {
             try (ResponseBody responseBody = resp.body()) {
                 if (resp.code() != HTTP_OK_CODE) {
-                    String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s [body] %s", resp.code(), url, jsonBody);
+                    String msg = String.format("HttpPost response code error. [code] %s [url] %s [body] %s", resp.code(), url, jsonBody);
                     throw new ServiceException(msg);
                 }
                 return responseBody.string();
@@ -193,7 +193,7 @@ public class HttpClientUtil {
         try (Response resp = hippo4JOkHttpClient.newCall(request).execute()) {
             try (ResponseBody responseBody = resp.body()) {
                 if (resp.code() != HTTP_OK_CODE) {
-                    String msg = String.format("HttpGet 响应 code 异常. [code] %s [url] %s", resp.code(), url);
+                    String msg = String.format("HttpGet response code error. [code] %s [url] %s", resp.code(), url);
                     throw new ServiceException(msg);
                 }
                 return responseBody.bytes();
@@ -215,7 +215,7 @@ public class HttpClientUtil {
         try (Response resp = call.execute()) {
             try (ResponseBody responseBody = resp.body()) {
                 if (resp.code() != HTTP_OK_CODE) {
-                    String msg = String.format("HttpGet 响应 code 异常. [code] %s [url] %s", resp.code(), url);
+                    String msg = String.format("HttpGet response code error. [code] %s [url] %s", resp.code(), url);
                     log.error(msg);
                     throw new ServiceException(msg);
                 }
@@ -238,7 +238,7 @@ public class HttpClientUtil {
         try (Response resp = call.execute()) {
             try (ResponseBody responseBody = resp.body()) {
                 if (resp.code() != HTTP_OK_CODE) {
-                    String msg = String.format("HttpPost 响应 code 异常. [code] %s [url] %s.", resp.code(), url);
+                    String msg = String.format("HttpPost response code error. [code] %s [url] %s.", resp.code(), url);
                     log.error(msg);
                     throw new ServiceException(msg);
                 }

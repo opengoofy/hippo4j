@@ -35,7 +35,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class BeforeCheckConfiguration {
 
-    private final String bootstrapPropertiesClassName = "cn.hippo4j.starter.config.BootstrapProperties";
+    private final String bootstrapPropertiesClassName = "cn.hippo4j.springboot.starter.config.BootstrapProperties";
 
     @Bean
     public BeforeCheckConfiguration.BeforeCheck dynamicThreadPoolBeforeCheckBean(@Autowired(required = false) BootstrapPropertiesInterface properties,
@@ -79,7 +79,6 @@ public class BeforeCheckConfiguration {
                         "Please check whether the [spring.application.name] configuration is empty or an empty string.");
             }
         }
-
         return new BeforeCheckConfiguration.BeforeCheck();
     }
 

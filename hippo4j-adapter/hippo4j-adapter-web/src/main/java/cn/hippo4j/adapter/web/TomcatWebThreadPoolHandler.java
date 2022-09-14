@@ -113,30 +113,18 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         }
         ThreadPoolRunStateInfo runStateInfo = new ThreadPoolRunStateInfo();
         org.apache.tomcat.util.threads.ThreadPoolExecutor tomcatThreadPoolExecutor = (org.apache.tomcat.util.threads.ThreadPoolExecutor) executor;
-        // 核心线程数
         int corePoolSize = tomcatThreadPoolExecutor.getCorePoolSize();
-        // 最大线程数
         int maximumPoolSize = tomcatThreadPoolExecutor.getMaximumPoolSize();
-        // 线程池当前线程数 (有锁)
         int poolSize = tomcatThreadPoolExecutor.getPoolSize();
-        // 活跃线程数 (有锁)
         int activeCount = tomcatThreadPoolExecutor.getActiveCount();
-        // 同时进入池中的最大线程数 (有锁)
         int largestPoolSize = tomcatThreadPoolExecutor.getLargestPoolSize();
-        // 线程池中执行任务总数量 (有锁)
         long completedTaskCount = tomcatThreadPoolExecutor.getCompletedTaskCount();
-        // 当前负载
         String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
-        // 峰值负载
         String peakLoad = CalculateUtil.divide(largestPoolSize, maximumPoolSize) + "";
         BlockingQueue<Runnable> queue = tomcatThreadPoolExecutor.getQueue();
-        // 队列元素个数
         int queueSize = queue.size();
-        // 队列类型
         String queueType = queue.getClass().getSimpleName();
-        // 队列剩余容量
         int remainingCapacity = queue.remainingCapacity();
-        // 队列容量
         int queueCapacity = queueSize + remainingCapacity;
         runStateInfo.setCoreSize(corePoolSize);
         runStateInfo.setPoolSize(poolSize);
@@ -168,7 +156,7 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
             tomcatThreadPoolExecutor.setCorePoolSize(threadPoolParameterInfo.corePoolSizeAdapt());
             tomcatThreadPoolExecutor.setMaximumPoolSize(threadPoolParameterInfo.maximumPoolSizeAdapt());
             tomcatThreadPoolExecutor.setKeepAliveTime(threadPoolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
-            log.info("[Tomcat] Changed web thread pool. corePoolSize: [{}], maximumPoolSize: [{}], keepAliveTime: [{}]",
+            log.info("[Tomcat] Changed web thread pool. corePoolSize: {}, maximumPoolSize: {}, keepAliveTime: {}",
                     String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalCoreSize, threadPoolParameterInfo.corePoolSizeAdapt()),
                     String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalMaximumPoolSize, threadPoolParameterInfo.maximumPoolSizeAdapt()),
                     String.format(ChangeThreadPoolConstants.CHANGE_DELIMITER, originalKeepAliveTime, threadPoolParameterInfo.getKeepAliveTime()));

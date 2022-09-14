@@ -20,6 +20,7 @@ package cn.hippo4j.config.springboot.starter.monitor;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
@@ -35,6 +36,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import static cn.hippo4j.core.executor.manage.GlobalThreadPoolManage.getThreadPoolNum;
 
 /**
  * Dynamic thread-pool monitor executor.
@@ -77,6 +80,9 @@ public class DynamicThreadPoolMonitorExecutor implements ApplicationRunner {
                 properties.getInitialDelay(),
                 properties.getCollectInterval(),
                 TimeUnit.MILLISECONDS);
+        if (GlobalThreadPoolManage.getThreadPoolNum() > 0) {
+            log.info("Dynamic thread pool: [{}]. The dynamic thread pool starts data collection and reporting.", getThreadPoolNum());
+        }
     }
 
     private void scheduleRunnable() {

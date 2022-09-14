@@ -38,7 +38,7 @@
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-spring-boot-starter-monitor-prometheus</artifactId>
+            <artifactId>hippo4j-spring-boot-starter-monitor-micrometer</artifactId>
             <version>${revision}</version>
         </dependency>
 

@@ -17,14 +17,14 @@
 
 package cn.hippo4j.config.springboot.starter.refresher.event;
 
+import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
+import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.model.WebIpAndPortInfo;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.context.WebServerInitializedEvent;
-import org.springframework.context.event.EventListener;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -37,32 +37,33 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
 
     protected static final String ALL = "*";
 
-    protected static final String SPOT = "\\.";
-
     protected static final String SEPARATOR = ",";
 
-    protected static final String COLON = ":";
-
     /**
-     * application ip
+     * Application ip and  application post
      */
-    protected final String[] ipSegment;
+    protected static volatile WebIpAndPortInfo webIpAndPort;
 
-    /**
-     * application post
-     */
-    protected String port;
+    protected void initIpAndPort() {
+        if (webIpAndPort == null) {
+            synchronized (AbstractRefreshListener.class) {
+                if (webIpAndPort == null) {
+                    webIpAndPort = getWebIpAndPortInfo();
+                }
+            }
+        }
+    }
 
-    AbstractRefreshListener() {
+    private WebIpAndPortInfo getWebIpAndPortInfo() {
         InetUtils inetUtils = ApplicationContextHolder.getBean(InetUtils.class);
         InetUtils.HostInfo loopBackHostInfo = inetUtils.findFirstNonLoopBackHostInfo();
         Assert.notNull(loopBackHostInfo, "Unable to get the application IP address");
-        ipSegment = loopBackHostInfo.getIpAddress().split(SPOT);
-    }
-
-    @EventListener(WebServerInitializedEvent.class)
-    public void webServerInitializedListener(WebServerInitializedEvent event) {
-        port = String.valueOf(event.getWebServer().getPort());
+        String ip = loopBackHostInfo.getIpAddress();
+        WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
+        WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
+        // When get the port at startup, can get the message: "port xxx was already in use" or use two ports
+        String port = String.valueOf(webThreadPoolService.getWebServer().getPort());
+        return new WebIpAndPortInfo(ip, port);
     }
 
     /**
@@ -81,6 +82,9 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
      */
     @Override
     public boolean match(M properties) {
+        if (webIpAndPort == null) {
+            initIpAndPort();
+        }
         String nodes = getNodes(properties);
         if (StringUtil.isEmpty(nodes) || ALL.equals(nodes)) {
             return true;
@@ -88,94 +92,18 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
         String[] splitNodes = nodes.split(SEPARATOR);
         return Arrays.stream(splitNodes)
                 .distinct()
-                .map(IpAndPort::build)
+                .map(WebIpAndPortInfo::build)
                 .filter(Objects::nonNull)
-                .anyMatch(i -> i.check(ipSegment, port));
+                .anyMatch(each -> each.check(webIpAndPort.getIpSegment(), webIpAndPort.getPort()));
     }
 
     /**
-     * get nodes in new properties
+     * Get nodes in new properties.
      *
      * @param properties new properties
      * @return nodes in properties
      */
     protected String getNodes(M properties) {
         return ALL;
-    }
-
-    /**
-     * ip + port
-     */
-    @Data
-    protected static class IpAndPort {
-
-        private String ip;
-        private String port;
-        private String[] propIpSegment;
-
-        private IpAndPort(String ip, String port) {
-            this.ip = ip;
-            this.port = port;
-            this.propIpSegment = ip.split(SPOT);
-        }
-
-        public static IpAndPort build(String node) {
-            if (ALL.equals(node)) {
-                return new IpAndPort(ALL, ALL);
-            }
-            String[] ipPort = node.split(COLON);
-            if (ipPort.length != 2) {
-                log.error("The IP address format is error : {}", node);
-                return null;
-            }
-            return new IpAndPort(ipPort[0], ipPort[1]);
-        }
-
-        /**
-         * check
-         *
-         * @param appIpSegment application ip segment
-         * @param port         application port
-         */
-        public boolean check(String[] appIpSegment, String port) {
-            return checkPort(port) && checkIp(appIpSegment);
-        }
-
-        /**
-         * check ip
-         *
-         * @param appIpSegment application ip segment
-         */
-        protected boolean checkIp(String[] appIpSegment) {
-            if (ALL.equals(this.ip)) {
-                return true;
-            }
-            boolean flag = true;
-            for (int i = 0; i < propIpSegment.length && flag; i++) {
-                String propIp = propIpSegment[i];
-                String appIp = appIpSegment[i];
-                flag = contrastSegment(appIp, propIp);
-            }
-            return flag;
-        }
-
-        /**
-         * check port
-         *
-         * @param port application port
-         */
-        protected boolean checkPort(String port) {
-            return contrastSegment(port, this.port);
-        }
-
-        /**
-         * Check whether the strings are the same
-         *
-         * @param appIp  appIp
-         * @param propIp propIp
-         */
-        protected boolean contrastSegment(String appIp, String propIp) {
-            return ALL.equals(propIp) || appIp.equals(propIp);
-        }
     }
 }
