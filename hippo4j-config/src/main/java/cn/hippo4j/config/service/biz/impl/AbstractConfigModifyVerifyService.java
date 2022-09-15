@@ -30,6 +30,7 @@ import cn.hippo4j.config.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 public abstract class AbstractConfigModifyVerifyService implements ConfigModifyVerifyService {
 
@@ -49,9 +50,10 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
     @Override
     public void rejectModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
+                .eq(HisConfigVerifyInfo::getId, id)
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_REJECT.getVerifyStatus())
-                .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName())
-                .eq(HisConfigVerifyInfo::getId, id);
+                .set(HisConfigVerifyInfo::getGmtVerify,new Date())
+                .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
 
         hisConfigVerifyMapper.update(null, updateWrapper);
 

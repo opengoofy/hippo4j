@@ -20,6 +20,7 @@ package cn.hippo4j.config.service.biz.impl;
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.enums.VerifyEnum;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import cn.hippo4j.config.model.HisConfigVerifyInfo;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -50,7 +52,10 @@ public class ThreadPoolManageConfigModifyVerifyServiceImpl extends AbstractConfi
     public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
                 .eq(HisConfigVerifyInfo::getId,id)
-                .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_ACCEPT.getVerifyStatus());
+                .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_ACCEPT.getVerifyStatus())
+                .set(HisConfigVerifyInfo::getGmtVerify,new Date())
+                .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
+
         hisConfigVerifyMapper.update(null,updateWrapper);
 
         ThreadPoolSaveOrUpdateReqDTO reqDTO = BeanUtil.convert(poolParameterInfo, ThreadPoolSaveOrUpdateReqDTO.class);

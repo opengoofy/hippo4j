@@ -19,6 +19,7 @@ package cn.hippo4j.config.model;
 
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -72,6 +73,7 @@ public class HisConfigVerifyInfo {
     /**
      * gmtCreate
      */
+    @JsonIgnore
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
@@ -88,6 +90,7 @@ public class HisConfigVerifyInfo {
     /**
      * gmtVerify
      */
+    @JsonIgnore
     @TableField(fill = FieldFill.UPDATE)
     private Date gmtVerify;
 
