@@ -18,17 +18,18 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
+import cn.hippo4j.config.model.ConfigAllInfo;
+import cn.hippo4j.config.model.HisConfigVerifyInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 public class ThreadPoolInstanceConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
 
-    public ThreadPoolInstanceConfigModifyVerifyServiceImpl(HisConfigVerifyMapper hisConfigVerifyMapper) {
-        super(hisConfigVerifyMapper);
-    }
 
     @Override
     public Integer type() {
@@ -36,8 +37,8 @@ public class ThreadPoolInstanceConfigModifyVerifyServiceImpl extends AbstractCon
     }
 
     @Override
-    public void acceptModification(String id) {
-
+    @Transactional(rollbackFor = Exception.class)
+    public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
     }
 
 }

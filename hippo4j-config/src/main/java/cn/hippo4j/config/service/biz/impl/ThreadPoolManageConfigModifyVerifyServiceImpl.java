@@ -18,17 +18,27 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
+import cn.hippo4j.common.enums.VerifyEnum;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
+import cn.hippo4j.config.model.HisConfigVerifyInfo;
+import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
+import cn.hippo4j.config.service.biz.ThreadPoolService;
+import cn.hippo4j.config.toolkit.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 @Slf4j
 @Service
 public class ThreadPoolManageConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
 
-    public ThreadPoolManageConfigModifyVerifyServiceImpl(HisConfigVerifyMapper hisConfigVerifyMapper) {
-        super(hisConfigVerifyMapper);
-    }
+    @Resource
+    private ThreadPoolService threadPoolService;
+
 
     @Override
     public Integer type() {
@@ -36,8 +46,15 @@ public class ThreadPoolManageConfigModifyVerifyServiceImpl extends AbstractConfi
     }
 
     @Override
-    public void acceptModification(String id) {
+    @Transactional(rollbackFor = Exception.class)
+    public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
+        LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
+                .eq(HisConfigVerifyInfo::getId,id)
+                .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_ACCEPT.getVerifyStatus());
+        hisConfigVerifyMapper.update(null,updateWrapper);
 
+        ThreadPoolSaveOrUpdateReqDTO reqDTO = BeanUtil.convert(poolParameterInfo, ThreadPoolSaveOrUpdateReqDTO.class);
+        threadPoolService.saveOrUpdateThreadPoolConfig(null,reqDTO);
     }
 
 }

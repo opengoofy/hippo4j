@@ -24,7 +24,7 @@ import lombok.Data;
 import javax.validation.constraints.Pattern;
 
 @Data
-public class ConfigChangeSaveReqDTO implements ThreadPoolParameter {
+public class ConfigModifySaveReqDTO implements ThreadPoolParameter {
 
     /**
      * thread pool config change type

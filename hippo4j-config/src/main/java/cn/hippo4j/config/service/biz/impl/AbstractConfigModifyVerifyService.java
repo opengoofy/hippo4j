@@ -19,23 +19,25 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.enums.VerifyEnum;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import cn.hippo4j.config.model.HisConfigVerifyInfo;
-import cn.hippo4j.config.model.biz.threadpool.ConfigChangeSaveReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+import javax.annotation.Resource;
+
 public abstract class AbstractConfigModifyVerifyService implements ConfigModifyVerifyService {
 
-    private final HisConfigVerifyMapper hisConfigVerifyMapper;
+    @Resource
+    protected HisConfigVerifyMapper hisConfigVerifyMapper;
 
     @Override
-    public void saveConfigModifyApplication(ConfigChangeSaveReqDTO reqDTO) {
+    public void saveConfigModifyApplication(ConfigModifySaveReqDTO reqDTO) {
         HisConfigVerifyInfo hisConfigVerifyInfo = BeanUtil.convert(reqDTO, HisConfigVerifyInfo.class);
         hisConfigVerifyInfo.setContent(ContentUtil.getPoolContent(reqDTO));
         hisConfigVerifyInfo.setVerifyStatus(VerifyEnum.TO_VERIFY.getVerifyStatus());
@@ -45,7 +47,7 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
     }
 
     @Override
-    public void rejectModification(String id) {
+    public void rejectModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_REJECT.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName())

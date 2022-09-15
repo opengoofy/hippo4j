@@ -17,7 +17,8 @@
 
 package cn.hippo4j.config.service.biz;
 
-import cn.hippo4j.config.model.biz.threadpool.ConfigChangeSaveReqDTO;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 
 /**
  * config change verify service
@@ -34,17 +35,17 @@ public interface ConfigModifyVerifyService {
      * save config change application
      * @param reqDTO
      */
-    void saveConfigModifyApplication(ConfigChangeSaveReqDTO reqDTO);
+    void saveConfigModifyApplication(ConfigModifySaveReqDTO reqDTO);
 
     /**
      * reject config modification
      * @param id
      */
-    void rejectModification(String id);
+    void rejectModification(Long id, ThreadPoolParameterInfo poolParameterInfo);
 
     /**
      * accept config modification
      * @param id
      */
-    void acceptModification(String id);
+    void acceptModification(Long id,ThreadPoolParameterInfo poolParameterInfo);
 }

@@ -90,10 +90,10 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
             configAllInfo.setExecuteTimeOut(executeTimeOut);
             configService.insertOrUpdate(identify, false, configAllInfo);
         } else {
-            ConfigChangeSaveReqDTO changeSaveReqDTO = BeanUtil.convert(reqDTO, ConfigChangeSaveReqDTO.class);
-            changeSaveReqDTO.setModifyUser(UserContext.getUserName());
-            changeSaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_MANAGER);
-            configModifyVerifyServiceChoose.choose(changeSaveReqDTO.getType()).saveConfigModifyApplication(changeSaveReqDTO);
+            ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(reqDTO, ConfigModifySaveReqDTO.class);
+            modifySaveReqDTO.setModifyUser(UserContext.getUserName());
+            modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_MANAGER);
+            configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
 
     }

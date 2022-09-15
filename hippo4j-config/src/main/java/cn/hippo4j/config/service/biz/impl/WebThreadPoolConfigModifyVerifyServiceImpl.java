@@ -18,7 +18,9 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
+import cn.hippo4j.config.model.ConfigAllInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,18 +28,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
 
-    public WebThreadPoolConfigModifyVerifyServiceImpl(HisConfigVerifyMapper hisConfigVerifyMapper) {
-        super(hisConfigVerifyMapper);
-    }
-
     @Override
     public Integer type() {
         return ConfigModifyTypeConstants.WEB_THREAD_POOL;
     }
 
     @Override
-    public void acceptModification(String id) {
-
+    public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
     }
 
 }
