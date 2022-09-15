@@ -19,18 +19,12 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class AdapterThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
-
-    public AdapterThreadPoolConfigModifyVerifyServiceImpl(HisConfigVerifyMapper hisConfigVerifyMapper) {
-        super(hisConfigVerifyMapper);
-    }
-
 
     @Override
     public Integer type() {
