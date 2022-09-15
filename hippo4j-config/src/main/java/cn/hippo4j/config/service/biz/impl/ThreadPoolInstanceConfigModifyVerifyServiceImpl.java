@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ThreadPoolInstanceConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
 
-
     @Override
     public Integer type() {
         return ConfigModifyTypeConstants.THREAD_POOL_INSTANCE;

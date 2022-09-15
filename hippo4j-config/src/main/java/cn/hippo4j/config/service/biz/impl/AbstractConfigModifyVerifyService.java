@@ -52,7 +52,7 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
                 .eq(HisConfigVerifyInfo::getId, id)
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_REJECT.getVerifyStatus())
-                .set(HisConfigVerifyInfo::getGmtVerify,new Date())
+                .set(HisConfigVerifyInfo::getGmtVerify, new Date())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
 
         hisConfigVerifyMapper.update(null, updateWrapper);

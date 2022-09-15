@@ -47,5 +47,5 @@ public interface ConfigModifyVerifyService {
      * accept config modification
      * @param id
      */
-    void acceptModification(Long id,ThreadPoolParameterInfo poolParameterInfo);
+    void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo);
 }

@@ -41,7 +41,6 @@ public class ThreadPoolManageConfigModifyVerifyServiceImpl extends AbstractConfi
     @Resource
     private ThreadPoolService threadPoolService;
 
-
     @Override
     public Integer type() {
         return ConfigModifyTypeConstants.THREAD_POOL_MANAGER;
@@ -51,15 +50,15 @@ public class ThreadPoolManageConfigModifyVerifyServiceImpl extends AbstractConfi
     @Transactional(rollbackFor = Exception.class)
     public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
-                .eq(HisConfigVerifyInfo::getId,id)
+                .eq(HisConfigVerifyInfo::getId, id)
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_ACCEPT.getVerifyStatus())
-                .set(HisConfigVerifyInfo::getGmtVerify,new Date())
+                .set(HisConfigVerifyInfo::getGmtVerify, new Date())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
 
-        hisConfigVerifyMapper.update(null,updateWrapper);
+        hisConfigVerifyMapper.update(null, updateWrapper);
 
         ThreadPoolSaveOrUpdateReqDTO reqDTO = BeanUtil.convert(poolParameterInfo, ThreadPoolSaveOrUpdateReqDTO.class);
-        threadPoolService.saveOrUpdateThreadPoolConfig(null,reqDTO);
+        threadPoolService.saveOrUpdateThreadPoolConfig(null, reqDTO);
     }
 
 }
