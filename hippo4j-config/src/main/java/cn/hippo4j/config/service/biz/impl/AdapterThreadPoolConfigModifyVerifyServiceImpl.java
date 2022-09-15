@@ -32,8 +32,7 @@ public class AdapterThreadPoolConfigModifyVerifyServiceImpl extends AbstractConf
     }
 
     @Override
-    public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
-        // TODO 审核通过
-    }
+    protected void updateThreadPoolParameter(ThreadPoolParameterInfo poolParameterInfo) {
 
+    }
 }

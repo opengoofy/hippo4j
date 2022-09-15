@@ -34,7 +34,7 @@ public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigMo
     }
 
     @Override
-    public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
-    }
+    protected void updateThreadPoolParameter(ThreadPoolParameterInfo poolParameterInfo) {
 
+    }
 }

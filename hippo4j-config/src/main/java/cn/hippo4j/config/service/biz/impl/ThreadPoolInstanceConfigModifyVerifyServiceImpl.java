@@ -36,8 +36,8 @@ public class ThreadPoolInstanceConfigModifyVerifyServiceImpl extends AbstractCon
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
+    protected void updateThreadPoolParameter(ThreadPoolParameterInfo poolParameterInfo) {
+
     }
 
 }

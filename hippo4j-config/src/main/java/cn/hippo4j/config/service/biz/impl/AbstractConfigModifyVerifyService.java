@@ -58,4 +58,22 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
         hisConfigVerifyMapper.update(null, updateWrapper);
 
     }
+
+    public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
+        LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
+                .eq(HisConfigVerifyInfo::getId, id)
+                .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_ACCEPT.getVerifyStatus())
+                .set(HisConfigVerifyInfo::getGmtVerify, new Date())
+                .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
+
+        hisConfigVerifyMapper.update(null, updateWrapper);
+
+        updateThreadPoolParameter(poolParameterInfo);
+    }
+
+    /**
+     * update thread pool parameter
+     * @param poolParameterInfo
+     */
+    protected abstract void updateThreadPoolParameter(ThreadPoolParameterInfo poolParameterInfo);
 }
