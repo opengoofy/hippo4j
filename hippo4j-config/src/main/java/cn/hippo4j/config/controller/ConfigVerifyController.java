@@ -39,8 +39,8 @@ public class ConfigVerifyController {
         ConfigModifyVerifyService modifyVerifyService = serviceChoose.choose(reqDTO.getType());
         ConditionUtil
                 .condition(reqDTO.getAccept(),
-                        () -> modifyVerifyService.acceptModification(reqDTO.getId(), reqDTO.getThreadPoolParameterInfo()),
-                        () -> modifyVerifyService.rejectModification(reqDTO.getId(), reqDTO.getThreadPoolParameterInfo()));
+                        () -> modifyVerifyService.acceptModification(reqDTO),
+                        () -> modifyVerifyService.rejectModification(reqDTO));
         return Results.success();
     }
 

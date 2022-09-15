@@ -19,6 +19,7 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
 import cn.hippo4j.config.toolkit.BeanUtil;
@@ -40,9 +41,10 @@ public class ThreadPoolManageConfigModifyVerifyServiceImpl extends AbstractConfi
     }
 
     @Override
-    public void updateThreadPoolParameter(ThreadPoolParameterInfo poolParameterInfo) {
-        ThreadPoolSaveOrUpdateReqDTO reqDTO = BeanUtil.convert(poolParameterInfo, ThreadPoolSaveOrUpdateReqDTO.class);
-        threadPoolService.saveOrUpdateThreadPoolConfig(null, reqDTO);
+    public void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
+        ThreadPoolParameterInfo poolParameterInfo = reqDTO.getThreadPoolParameterInfo();
+        ThreadPoolSaveOrUpdateReqDTO saveOrUpdateReqDTO = BeanUtil.convert(poolParameterInfo, ThreadPoolSaveOrUpdateReqDTO.class);
+        threadPoolService.saveOrUpdateThreadPoolConfig(null, saveOrUpdateReqDTO);
     }
 
 }

@@ -17,16 +17,23 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Slf4j
 @Service
 public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
+
+    @Resource
+    private WebThreadPoolHandlerChoose webThreadPoolServiceChoose;
 
     @Override
     public Integer type() {
@@ -34,7 +41,8 @@ public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigMo
     }
 
     @Override
-    protected void updateThreadPoolParameter(ThreadPoolParameterInfo poolParameterInfo) {
-
+    protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
+        ThreadPoolParameterInfo poolParameterInfo = reqDTO.getThreadPoolParameterInfo();
+        webThreadPoolServiceChoose.choose().updateWebThreadPool(poolParameterInfo);
     }
 }

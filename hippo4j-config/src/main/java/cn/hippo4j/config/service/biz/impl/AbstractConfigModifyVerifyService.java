@@ -25,6 +25,7 @@ import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import cn.hippo4j.config.model.HisConfigVerifyInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -48,9 +49,9 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
     }
 
     @Override
-    public void rejectModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
+    public void rejectModification(ConfigModifyVerifyReqDTO reqDTO) {
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
-                .eq(HisConfigVerifyInfo::getId, id)
+                .eq(HisConfigVerifyInfo::getId, reqDTO.getId())
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_REJECT.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getGmtVerify, new Date())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
@@ -59,21 +60,21 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
 
     }
 
-    public void acceptModification(Long id, ThreadPoolParameterInfo poolParameterInfo) {
+    public void acceptModification(ConfigModifyVerifyReqDTO reqDTO) {
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
-                .eq(HisConfigVerifyInfo::getId, id)
+                .eq(HisConfigVerifyInfo::getId, reqDTO.getId())
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_ACCEPT.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getGmtVerify, new Date())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
 
         hisConfigVerifyMapper.update(null, updateWrapper);
 
-        updateThreadPoolParameter(poolParameterInfo);
+        updateThreadPoolParameter(reqDTO);
     }
 
     /**
      * update thread pool parameter
-     * @param poolParameterInfo
+     * @param reqDTO
      */
-    protected abstract void updateThreadPoolParameter(ThreadPoolParameterInfo poolParameterInfo);
+    protected abstract void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO);
 }

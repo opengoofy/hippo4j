@@ -17,6 +17,7 @@
 
 package cn.hippo4j.config.model.biz.threadpool;
 
+import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import lombok.Data;
 
@@ -45,4 +46,9 @@ public class ConfigModifyVerifyReqDTO {
      * thread pool parameter info
      */
     private ThreadPoolParameterInfo threadPoolParameterInfo;
+
+    /**
+     * thread pool adapter parameter
+     */
+    private ThreadPoolAdapterParameter threadPoolAdapterParameter;
 }
