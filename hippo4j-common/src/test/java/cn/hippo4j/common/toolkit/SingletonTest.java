@@ -17,5 +17,30 @@
 
 package cn.hippo4j.common.toolkit;
 
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import org.junit.Assert;
+import org.junit.Test;
+
 public class SingletonTest {
+
+    @Test
+    public void assertSingletonGet() {
+        Assert.assertNull(Singleton.get("userName"));
+        Singleton.put("userName", "hippo4j");
+        Assert.assertEquals("hippo4j", Singleton.get("userName"));
+        ThreadPoolParameterInfo threadPoolParameterInfo = ThreadPoolParameterInfo.builder().tenantId("prescription")
+                .itemId("dynamic-threadpool-example").tpId("message-consume").content("描述信息").corePoolSize(1)
+                .maximumPoolSize(2).queueType(1).capacity(4).keepAliveTime(513).executeTimeOut(null).rejectedType(4)
+                .isAlarm(1).capacityAlarm(80).livenessAlarm(80).allowCoreThreadTimeOut(1).build();
+        Singleton.put(threadPoolParameterInfo);
+        Assert.assertEquals(threadPoolParameterInfo, Singleton.get(ThreadPoolParameterInfo.class.getName()));
+    }
+
+    @Test
+    public void assertSingletonGet2() {
+        Assert.assertNull(Singleton.get("userName1", () -> null));
+        Assert.assertEquals("hippo4j", Singleton.get("userName1", () -> "hippo4j"));
+        Assert.assertEquals("123456", Singleton.get("pw", () -> "123456") + "");
+        Assert.assertNotEquals("135790", Singleton.get("pw", () -> "135790") + "");
+    }
 }
