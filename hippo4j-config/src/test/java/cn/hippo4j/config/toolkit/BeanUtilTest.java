@@ -17,6 +17,18 @@
 
 package cn.hippo4j.config.toolkit;
 
+import cn.hippo4j.common.toolkit.Assert;
+import com.github.dozermapper.core.converters.ConversionException;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import lombok.*;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * BeanUtil Test
  */
@@ -40,7 +52,7 @@ public class BeanUtilTest {
     @Test
     public void mapToBeanConvertTest() {
         // 测试MapToBean
-        final HashMap<String, Object> map = MapUtil.newHashMap();
+        final HashMap<String, Object> map = Maps.newHashMap();
         map.put("name", "Hippo4j");
         map.put("age", 1);
         map.put("address", "hippo4j.cn");
@@ -74,6 +86,16 @@ public class BeanUtilTest {
 
         // static属性应被忽略
         Assert.isTrue(!convert.containsKey("STATIC_NAME"));
+    }
+
+    /**
+     * 测试在不忽略错误情况下，转换失败需要报错。
+     */
+    @Test(expected = ConversionException.class)
+    public void mapToBeanWinErrorTest() {
+        final Map<String, String> map = new HashMap<>();
+        map.put("age", "Hippo4j");
+        BeanUtil.convert(map, Person.class);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
