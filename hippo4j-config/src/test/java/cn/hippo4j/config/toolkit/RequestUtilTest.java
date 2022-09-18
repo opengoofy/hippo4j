@@ -17,8 +17,32 @@
 
 package cn.hippo4j.config.toolkit;
 
+import cn.hippo4j.common.toolkit.Assert;
+import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
+
+import java.util.Objects;
+
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_CLIENT_IDENTIFICATION;
+
 /**
  * RequestUtil Test
  */
 public class RequestUtilTest {
+
+    @Test
+    public void existClientIdentifyTest() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader(LONG_PULLING_CLIENT_IDENTIFICATION, "test");
+        String clientIdentify = RequestUtil.getClientIdentify(request);
+        Assert.isTrue(Objects.equals(clientIdentify, "test"));
+    }
+
+    @Test
+    public void notExistClientIdentifyTest() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        String clientIdentify = RequestUtil.getClientIdentify(request);
+        Assert.isTrue(Objects.equals(clientIdentify, ""));
+    }
+
 }
