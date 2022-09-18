@@ -84,4 +84,22 @@ public interface BootstrapPropertiesInterface {
     default Boolean getBanner() {
         return null;
     }
+
+    /**
+     * get web thread pool init configuration
+     *
+     * @return true : is open ; false : is close
+     */
+    default Boolean getWebInit() {
+        return null;
+    }
+
+    /**
+     * get adapter thread pool init configuration
+     *
+     * @return true : is open ; false : is close
+     */
+    default Boolean getAdapterInit() {
+        return null;
+    }
 }

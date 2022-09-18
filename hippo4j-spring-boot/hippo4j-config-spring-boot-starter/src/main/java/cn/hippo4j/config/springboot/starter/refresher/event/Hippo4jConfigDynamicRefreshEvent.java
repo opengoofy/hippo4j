@@ -31,8 +31,20 @@ public class Hippo4jConfigDynamicRefreshEvent extends ApplicationEvent {
     @Setter
     private BootstrapConfigProperties bootstrapConfigProperties;
 
-    public Hippo4jConfigDynamicRefreshEvent(Object source, BootstrapConfigProperties bootstrapConfigProperties) {
+    /**
+     * is init
+     */
+    @Getter
+    @Setter
+    private Boolean isInit;
+
+    public Hippo4jConfigDynamicRefreshEvent(Object source, BootstrapConfigProperties bootstrapConfigProperties, Boolean isInit) {
         super(source);
         this.bootstrapConfigProperties = bootstrapConfigProperties;
+        this.isInit = isInit;
+    }
+
+    public Hippo4jConfigDynamicRefreshEvent(Object source, BootstrapConfigProperties bootstrapConfigProperties) {
+        this(source, bootstrapConfigProperties, false);
     }
 }

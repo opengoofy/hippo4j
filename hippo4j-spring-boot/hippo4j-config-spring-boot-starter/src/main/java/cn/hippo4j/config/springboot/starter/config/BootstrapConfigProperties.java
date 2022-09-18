@@ -52,6 +52,16 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
     private Boolean collect = Boolean.TRUE;
 
     /**
+     * Init web configuration
+     */
+    private Boolean webInit = Boolean.TRUE;
+
+    /**
+     * Init adapter configuration
+     */
+    private Boolean adapterInit = Boolean.TRUE;
+
+    /**
      * Type of collection thread pool running data. eg: log,micrometer. Multiple can be used at the same time.
      */
     private String collectType;
