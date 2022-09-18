@@ -19,10 +19,12 @@ package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import com.alibaba.cloud.nacos.NacosConfigManager;
+import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 /**
@@ -40,8 +42,13 @@ public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicR
     @Override
     public void afterPropertiesSet() throws Exception {
         Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
-        nacosConfigManager.getConfigService().addListener(nacosConfig.get("data-id"),
-                nacosConfig.get("group"), new Listener() {
+        ConfigService configService = nacosConfigManager.getConfigService();
+        String dataId = nacosConfig.get("data-id");
+        String group = nacosConfig.get("group");
+        String configStr = configService.getConfig(dataId, group, Long.MAX_VALUE);
+        initRefresh(configStr);
+        configService.addListener(dataId, group,
+                new Listener() {
 
                     @Override
                     public Executor getExecutor() {
@@ -53,6 +60,6 @@ public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicR
                         dynamicRefresh(configInfo);
                     }
                 });
-        log.info("Dynamic thread pool refresher, add nacos cloud listener success. data-id: {}, group: {}", nacosConfig.get("data-id"), nacosConfig.get("group"));
+        log.info("Dynamic thread pool refresher, add nacos cloud listener success. data-id: {}, group: {}", dataId, group);
     }
 }

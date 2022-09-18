@@ -25,7 +25,14 @@ import java.util.Map;
 public interface ThreadPoolDynamicRefresh {
 
     /**
-     * Dynamic refresh.
+     * init, add an initialization operation at Application startup
+     *
+     * @param content new Properties
+     */
+    void initRefresh(String content);
+
+    /**
+     * Dynamic refresh.<br>
      *
      * @param content
      */

@@ -46,19 +46,21 @@ public class ApolloRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
         String[] apolloNamespaces = this.namespace.split(",");
         this.namespace = apolloNamespaces[0];
         Config config = ConfigService.getConfig(String.format("%s.%s", namespace, bootstrapConfigProperties.getConfigFileType().getValue()));
+        String replaceNamespace = this.namespace.replaceAll("." + bootstrapConfigProperties.getConfigFileType().getValue(), "");
+        ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(bootstrapConfigProperties.getConfigFileType().getValue());
+        ConfigFile configFile = ConfigService.getConfigFile(replaceNamespace, configFileFormat);
+        String content = configFile.getContent();
+        initRefresh(content);
         ConfigChangeListener configChangeListener = configChangeEvent -> {
-            String namespace = this.namespace.replaceAll("." + bootstrapConfigProperties.getConfigFileType().getValue(), "");
-            ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(bootstrapConfigProperties.getConfigFileType().getValue());
-            ConfigFile configFile = ConfigService.getConfigFile(namespace, configFileFormat);
             Map<String, Object> newChangeValueMap = Maps.newHashMap();
             configChangeEvent.changedKeys().stream().filter(each -> each.contains(BootstrapConfigProperties.PREFIX)).forEach(each -> {
                 ConfigChange change = configChangeEvent.getChange(each);
                 String newValue = change.getNewValue();
                 newChangeValueMap.put(each, newValue);
             });
-            dynamicRefresh(configFile.getContent(), newChangeValueMap);
+            dynamicRefresh(content, newChangeValueMap);
         };
         config.addChangeListener(configChangeListener);
-        log.info("Dynamic thread pool refresher, add apollo listener success. namespace: {}", namespace);
+        log.info("Dynamic thread pool refresher, add apollo listener success. namespace: {}", replaceNamespace);
     }
 }

@@ -79,7 +79,7 @@ public interface WebThreadPoolService {
      *
      * @return WebServer
      */
-    default WebServer getWebServerBlocker(){
+    default WebServer getWebServerBlocker() {
         return getWebServer();
     }
 }

@@ -26,6 +26,8 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * Abstract web thread pool service.
@@ -37,6 +39,7 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
      * Thread pool executor.
      */
     protected volatile Executor executor;
+    private final AtomicReference<Thread> threadReference = new AtomicReference<>();
 
     /**
      * Get web thread pool by server.
@@ -52,10 +55,23 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
             synchronized (AbstractWebThreadPoolService.class) {
                 if (executor == null) {
                     executor = getWebThreadPoolByServer(getWebServer());
+                    Thread thread = threadReference.get();
+                    if (thread != null) {
+                        LockSupport.unpark(thread);
+                    }
                 }
             }
         }
         return executor;
+    }
+
+    @Override
+    public WebServer getWebServerBlocker() {
+        if (executor == null && threadReference.get() == null) {
+            threadReference.compareAndSet(null, Thread.currentThread());
+            LockSupport.park();
+        }
+        return getWebServer();
     }
 
     @Override

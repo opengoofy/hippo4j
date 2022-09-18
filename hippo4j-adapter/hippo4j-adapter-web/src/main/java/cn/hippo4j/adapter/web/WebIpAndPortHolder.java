@@ -59,7 +59,7 @@ public class WebIpAndPortHolder {
         WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
         // When get the port at startup, can get the message: "port xxx was already in use" or use two ports
         WebServer webServer = webThreadPoolService.getWebServerBlocker();
-        if (webServer == null){
+        if (webServer == null) {
             return null;
         }
         String port = String.valueOf(webServer.getPort());

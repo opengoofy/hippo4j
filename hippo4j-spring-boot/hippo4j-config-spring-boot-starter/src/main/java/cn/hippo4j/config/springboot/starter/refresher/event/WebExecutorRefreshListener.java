@@ -46,6 +46,15 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
     @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
         BootstrapConfigProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapConfigProperties();
+        if (bindableCoreProperties == null) {
+            return;
+        }
+        Boolean isInit = threadPoolDynamicRefreshEvent.getIsInit();
+        Boolean webInit = bindableCoreProperties.getWebInit();
+        // is not init or not enable, Prevents confusion between null and false
+        if (Boolean.TRUE.equals(isInit) && !Boolean.TRUE.equals(webInit)) {
+            return;
+        }
         boolean isNullFlag = bindableCoreProperties.getJetty() == null
                 && bindableCoreProperties.getUndertow() == null
                 && bindableCoreProperties.getTomcat() == null;

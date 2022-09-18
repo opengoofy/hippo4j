@@ -51,10 +51,9 @@ public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRe
         String nodePath = ZKPaths.makePath(ZKPaths.makePath(zkConfigs.get("root-node"),
                 zkConfigs.get("config-version")), zkConfigs.get("node"));
         final ConnectionStateListener connectionStateListener = (client, newState) -> {
-            if (newState == ConnectionState.CONNECTED) {
-                loadNode(nodePath);
-            } else if (newState == ConnectionState.RECONNECTED) {
-                loadNode(nodePath);
+            // the init and re-connected
+            if (newState == ConnectionState.CONNECTED || newState == ConnectionState.RECONNECTED) {
+                loadNode(nodePath, true);
             }
         };
         final CuratorListener curatorListener = (client, curatorEvent) -> {
@@ -63,7 +62,7 @@ public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRe
                 switch (watchedEvent.getType()) {
                     case NodeChildrenChanged:
                     case NodeDataChanged:
-                        loadNode(nodePath);
+                        loadNode(nodePath, false);
                         break;
                     default:
                         break;
@@ -79,8 +78,9 @@ public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRe
      * Load config info and refresh.
      *
      * @param nodePath zk config node path.
+     * @param isInit   when app init it is true. Otherwise, it is false
      */
-    public void loadNode(String nodePath) {
+    public void loadNode(String nodePath, boolean isInit) {
         try {
             final GetChildrenBuilder childrenBuilder = curatorFramework.getChildren();
             final List<String> children = childrenBuilder.watched().forPath(nodePath);
@@ -97,7 +97,11 @@ public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRe
                 }
                 content.append(nodeName).append("=").append(value).append("\n");
             });
-            dynamicRefresh(content.toString());
+            if (isInit) {
+                initRefresh(content.toString());
+            } else {
+                dynamicRefresh(content.toString());
+            }
             registerNotifyAlarmManage();
         } catch (Exception ex) {
             log.error("Load zookeeper node error, nodePath is: {}", nodePath, ex);

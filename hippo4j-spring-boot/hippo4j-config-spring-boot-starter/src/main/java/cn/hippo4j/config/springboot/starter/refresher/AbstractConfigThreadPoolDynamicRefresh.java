@@ -20,6 +20,7 @@ package cn.hippo4j.config.springboot.starter.refresher;
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.parser.ConfigParserHandler;
 import cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEvent;
@@ -30,7 +31,9 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Abstract core thread-pool dynamic refresh.
@@ -41,10 +44,23 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
 
     protected final BootstrapConfigProperties bootstrapConfigProperties;
 
+    /**
+     * This value is true when the application starts
+     */
+    private static final AtomicBoolean IS_INIT = new AtomicBoolean(Boolean.TRUE);
+
     protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder().singlePool("client.dynamic.refresh").build();
 
     public AbstractConfigThreadPoolDynamicRefresh() {
         bootstrapConfigProperties = ApplicationContextHolder.getBean(BootstrapConfigProperties.class);
+    }
+
+    @Override
+    public void initRefresh(String content) {
+        if (StringUtil.isEmpty(content)) {
+            IS_INIT.set(false);
+        }
+        CompletableFuture.runAsync(() -> dynamicRefresh(content));
     }
 
     @Override
@@ -60,7 +76,7 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
                 Optional.ofNullable(configInfo).ifPresent(each -> each.putAll(newValueChangeMap));
             }
             BootstrapConfigProperties bindableCoreProperties = BootstrapConfigPropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
-            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, bindableCoreProperties));
+            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, bindableCoreProperties, IS_INIT.getAndSet(Boolean.FALSE)));
         } catch (Exception ex) {
             log.error("Hippo-4J core dynamic refresh failed.", ex);
         }

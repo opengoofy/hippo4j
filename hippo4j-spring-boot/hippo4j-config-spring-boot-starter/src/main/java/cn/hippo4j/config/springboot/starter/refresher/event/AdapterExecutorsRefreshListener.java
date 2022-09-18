@@ -22,6 +22,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.config.AdapterExecutorProperties;
+import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.support.DynamicThreadPoolAdapterRegister;
 import cn.hutool.core.bean.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,14 @@ public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<Ada
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent event) {
         List<AdapterExecutorProperties> adapterExecutors;
         Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
-        if (CollectionUtil.isEmpty(adapterExecutors = event.getBootstrapConfigProperties().getAdapterExecutors()) || CollectionUtil.isEmpty(threadPoolAdapterMap)) {
+        BootstrapConfigProperties configProperties = event.getBootstrapConfigProperties();
+        Boolean isInit = event.getIsInit();
+        Boolean adapterInit = configProperties.getAdapterInit();
+        // is not init or not enable, Prevents confusion between null and false
+        if (Boolean.TRUE.equals(isInit) && !Boolean.TRUE.equals(adapterInit)) {
+            return;
+        }
+        if (CollectionUtil.isEmpty(adapterExecutors = configProperties.getAdapterExecutors()) || CollectionUtil.isEmpty(threadPoolAdapterMap)) {
             return;
         }
         for (AdapterExecutorProperties each : adapterExecutors) {

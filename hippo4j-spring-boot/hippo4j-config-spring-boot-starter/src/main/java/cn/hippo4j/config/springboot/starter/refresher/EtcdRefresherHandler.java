@@ -74,6 +74,7 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
         if (Objects.isNull(keyValue)) {
             return;
         }
+        initRefresh(keyValue.getValue().toString(charset));
         client.getWatchClient().watch(ByteSequence.from(key, charset), new Watch.Listener() {
 
             @Override

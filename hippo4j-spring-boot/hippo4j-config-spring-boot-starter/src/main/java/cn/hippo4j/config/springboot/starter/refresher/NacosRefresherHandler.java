@@ -24,6 +24,7 @@ import com.alibaba.nacos.api.config.listener.Listener;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 /**
@@ -42,8 +43,11 @@ public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefres
     @Override
     public void afterPropertiesSet() throws Exception {
         Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
-
-        configService.addListener(nacosConfig.get("data-id"), nacosConfig.get("group"),
+        String dataId = nacosConfig.get("data-id");
+        String group = nacosConfig.get("group");
+        String configStr = configService.getConfig(dataId, group, Long.MAX_VALUE);
+        initRefresh(configStr);
+        configService.addListener(dataId, group,
                 new Listener() {
 
                     @Override
@@ -56,6 +60,6 @@ public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefres
                         dynamicRefresh(configInfo);
                     }
                 });
-        log.info("Dynamic thread pool refresher, add nacos listener success. data-id: {}, group: {}", nacosConfig.get("data-id"), nacosConfig.get("group"));
+        log.info("Dynamic thread pool refresher, add nacos listener success. data-id: {}, group: {}", dataId, group);
     }
 }
