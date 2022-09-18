@@ -23,7 +23,7 @@ package cn.hippo4j.config.toolkit;
 public class BeanUtilTest {
 
     @Test
-    public void beanToMapConvertTest(){
+    public void beanToMapConvertTest() {
         // 测试BeanToMap
         final Person person = new Person();
         person.setName("Hippo4j");
@@ -38,7 +38,7 @@ public class BeanUtilTest {
     }
 
     @Test
-    public void mapToBeanConvertTest(){
+    public void mapToBeanConvertTest() {
         // 测试MapToBean
         final HashMap<String, Object> map = MapUtil.newHashMap();
         map.put("name", "Hippo4j");
@@ -76,16 +76,6 @@ public class BeanUtilTest {
         Assert.isTrue(!convert.containsKey("STATIC_NAME"));
     }
 
-    /**
-     * 测试在不忽略错误情况下，转换失败需要报错。
-     */
-    @Test(expected = ConversionException.class)
-    public void mapToBeanWinErrorTest() {
-        final Map<String, String> map = new HashMap<>();
-        map.put("age", "Hippo4j");
-        BeanUtil.convert(map, Person.class);
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
 
     @Getter
@@ -94,6 +84,7 @@ public class BeanUtilTest {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Person {
+
         public static final String STATIC_NAME = "STATIC_NAME";
 
         private String name;
@@ -104,6 +95,7 @@ public class BeanUtilTest {
 
     @Setter
     public static class PersonVo {
+
         private String name;
         private int age;
     }
