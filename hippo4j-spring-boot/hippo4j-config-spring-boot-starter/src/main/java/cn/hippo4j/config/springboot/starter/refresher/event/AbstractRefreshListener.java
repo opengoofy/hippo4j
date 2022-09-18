@@ -17,54 +17,14 @@
 
 package cn.hippo4j.config.springboot.starter.refresher.event;
 
-import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
-import cn.hippo4j.adapter.web.WebThreadPoolService;
-import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.model.WebIpAndPortInfo;
-import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.core.toolkit.inet.InetUtils;
+import cn.hippo4j.adapter.web.WebIpAndPortHolder;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Refresh listener abstract base class.
  */
 @Slf4j
 public abstract class AbstractRefreshListener<M> implements RefreshListener<Hippo4jConfigDynamicRefreshEvent, M> {
-
-    protected static final String ALL = "*";
-
-    protected static final String SEPARATOR = ",";
-
-    /**
-     * Application ip and  application post
-     */
-    protected static volatile WebIpAndPortInfo webIpAndPort;
-
-    protected void initIpAndPort() {
-        if (webIpAndPort == null) {
-            synchronized (AbstractRefreshListener.class) {
-                if (webIpAndPort == null) {
-                    webIpAndPort = getWebIpAndPortInfo();
-                }
-            }
-        }
-    }
-
-    private WebIpAndPortInfo getWebIpAndPortInfo() {
-        InetUtils inetUtils = ApplicationContextHolder.getBean(InetUtils.class);
-        InetUtils.HostInfo loopBackHostInfo = inetUtils.findFirstNonLoopBackHostInfo();
-        Assert.notNull(loopBackHostInfo, "Unable to get the application IP address");
-        String ip = loopBackHostInfo.getIpAddress();
-        WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
-        WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
-        // When get the port at startup, can get the message: "port xxx was already in use" or use two ports
-        String port = String.valueOf(webThreadPoolService.getWebServer().getPort());
-        return new WebIpAndPortInfo(ip, port);
-    }
 
     /**
      * Matching nodes<br>
@@ -82,19 +42,8 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
      */
     @Override
     public boolean match(M properties) {
-        if (webIpAndPort == null) {
-            initIpAndPort();
-        }
         String nodes = getNodes(properties);
-        if (StringUtil.isEmpty(nodes) || ALL.equals(nodes)) {
-            return true;
-        }
-        String[] splitNodes = nodes.split(SEPARATOR);
-        return Arrays.stream(splitNodes)
-                .distinct()
-                .map(WebIpAndPortInfo::build)
-                .filter(Objects::nonNull)
-                .anyMatch(each -> each.check(webIpAndPort.getIpSegment(), webIpAndPort.getPort()));
+        return WebIpAndPortHolder.check(nodes);
     }
 
     /**
@@ -104,6 +53,6 @@ public abstract class AbstractRefreshListener<M> implements RefreshListener<Hipp
      * @return nodes in properties
      */
     protected String getNodes(M properties) {
-        return ALL;
+        return WebIpAndPortHolder.ALL;
     }
 }
