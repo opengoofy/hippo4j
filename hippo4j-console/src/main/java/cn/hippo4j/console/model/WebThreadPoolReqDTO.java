@@ -28,6 +28,21 @@ import java.util.List;
 public class WebThreadPoolReqDTO {
 
     /**
+     * Thread-pool id
+     */
+    private String tenantId;
+
+    /**
+     * Item id
+     */
+    private String itemId;
+
+    /**
+     * thread pool instance id
+     */
+    private String instanceId;
+
+    /**
      * Core pool size
      */
     private Integer corePoolSize;
@@ -41,6 +56,11 @@ public class WebThreadPoolReqDTO {
      * Keep alive time
      */
     private Integer keepAliveTime;
+
+    /**
+     * weather modify all instances
+     */
+    private Integer modifyAll;
 
     /**
      * Client address list

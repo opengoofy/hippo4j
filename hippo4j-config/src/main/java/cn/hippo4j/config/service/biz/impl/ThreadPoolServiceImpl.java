@@ -91,6 +91,8 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
             configService.insertOrUpdate(identify, false, configAllInfo);
         } else {
             ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(reqDTO, ConfigModifySaveReqDTO.class);
+            modifySaveReqDTO.setCorePoolSize(reqDTO.getCoreSize());
+            modifySaveReqDTO.setMaximumPoolSize(reqDTO.getMaxSize());
             modifySaveReqDTO.setModifyUser(UserContext.getUserName());
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_MANAGER);
             configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);

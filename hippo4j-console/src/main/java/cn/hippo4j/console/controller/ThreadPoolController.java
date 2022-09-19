@@ -17,21 +17,21 @@
 
 package cn.hippo4j.console.controller;
 
+import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
 import cn.hippo4j.config.model.CacheItem;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.*;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
 import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.config.verify.ConfigModifyVerifyServiceChoose;
 import cn.hippo4j.console.model.ThreadPoolInstanceInfo;
 import cn.hippo4j.console.model.WebThreadPoolReqDTO;
 import cn.hippo4j.console.model.WebThreadPoolRespDTO;
@@ -65,6 +65,8 @@ public class ThreadPoolController {
     private final ThreadPoolService threadPoolService;
 
     private final BaseInstanceRegistry baseInstanceRegistry;
+
+    private final ConfigModifyVerifyServiceChoose configModifyVerifyServiceChoose;
 
     @PostMapping("/query/page")
     public Result<IPage<ThreadPoolRespDTO>> queryNameSpacePage(@RequestBody ThreadPoolQueryReqDTO reqDTO) {
@@ -172,9 +174,16 @@ public class ThreadPoolController {
 
     @PostMapping("/web/update/pool")
     public Result<Void> updateWebThreadPool(@RequestBody WebThreadPoolReqDTO requestParam) {
-        for (String each : requestParam.getClientAddressList()) {
-            String urlString = StrBuilder.create("http://", each, "/web/update/pool").toString();
-            HttpUtil.post(urlString, JSONUtil.toJSONString(requestParam), HTTP_EXECUTE_TIMEOUT);
+        if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
+            for (String each : requestParam.getClientAddressList()) {
+                String urlString = StrBuilder.create("http://", each, "/web/update/pool").toString();
+                HttpUtil.post(urlString, JSONUtil.toJSONString(requestParam), HTTP_EXECUTE_TIMEOUT);
+            }
+        }else {
+            ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParam, ConfigModifySaveReqDTO.class);
+            modifySaveReqDTO.setModifyUser(UserContext.getUserName());
+            modifySaveReqDTO.setType(ConfigModifyTypeConstants.WEB_THREAD_POOL);
+            configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
         return Results.success();
     }

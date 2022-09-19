@@ -21,6 +21,7 @@ import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.enums.VerifyEnum;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import cn.hippo4j.config.model.HisConfigVerifyInfo;
@@ -41,7 +42,7 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
     @Override
     public void saveConfigModifyApplication(ConfigModifySaveReqDTO reqDTO) {
         HisConfigVerifyInfo hisConfigVerifyInfo = BeanUtil.convert(reqDTO, HisConfigVerifyInfo.class);
-        hisConfigVerifyInfo.setContent(ContentUtil.getPoolContent(reqDTO));
+        hisConfigVerifyInfo.setContent(JSONUtil.toJSONString(reqDTO));
         hisConfigVerifyInfo.setVerifyStatus(VerifyEnum.TO_VERIFY.getVerifyStatus());
         hisConfigVerifyInfo.setModifyAll(EnableEnum.NO.getIntCode());
 

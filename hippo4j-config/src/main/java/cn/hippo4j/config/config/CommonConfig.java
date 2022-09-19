@@ -17,10 +17,12 @@
 
 package cn.hippo4j.config.config;
 
+import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -30,6 +32,7 @@ import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
  * Common config.
  */
 @Configuration
+@Import(WebThreadPoolHandlerChoose.class)
 public class CommonConfig {
 
     @Bean
@@ -50,4 +53,5 @@ public class CommonConfig {
         monitorThreadPool.setAwaitTerminationMillis(5000);
         return monitorThreadPool;
     }
+
 }

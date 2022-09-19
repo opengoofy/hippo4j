@@ -57,6 +57,9 @@ public interface ThreadPoolParameter {
      */
     Integer getMaxSize();
 
+    Integer getCorePoolSize();
+
+    Integer getMaximumPoolSize();
     /**
      * Get queue type
      *

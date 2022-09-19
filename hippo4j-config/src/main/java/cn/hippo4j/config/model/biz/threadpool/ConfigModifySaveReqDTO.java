@@ -24,7 +24,7 @@ import lombok.Data;
 import javax.validation.constraints.Pattern;
 
 @Data
-public class ConfigModifySaveReqDTO implements ThreadPoolParameter {
+public class ConfigModifySaveReqDTO {
 
     /**
      * thread pool config change type
@@ -60,14 +60,14 @@ public class ConfigModifySaveReqDTO implements ThreadPoolParameter {
     private String itemId;
 
     /**
-     * Core size
+     * Core pool size
      */
-    private Integer coreSize;
+    private Integer corePoolSize;
 
     /**
-     * Max size
+     * Maximum pool size
      */
-    private Integer maxSize;
+    private Integer maximumPoolSize;
 
     /**
      * Queue type
