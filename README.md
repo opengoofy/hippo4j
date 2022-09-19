@@ -2,7 +2,7 @@
 
 # 动态可观测线程池框架，提高线上运行保障能力
 
-[![Gitee](https://gitee.com/agentart/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/agentart/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![Docker Pulls](https://img.shields.io/docker/pulls/hippo4j/hippo4j-server.svg)](https://store.docker.com/community/images/hippo4j/hippo4j-server) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=3ba272)](https://github.com/opengoofy/hippo4j/graphs/contributors) [![License](https://img.shields.io/github/license/opengoofy/hippo4j?color=5470c6)](https://github.com/opengoofy/hippo4j/blob/develop/LICENSE)
+[![Gitee](https://gitee.com/itmachen/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/itmachen/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![Docker Pulls](https://img.shields.io/docker/pulls/hippo4j/hippo4j-server.svg)](https://store.docker.com/community/images/hippo4j/hippo4j-server) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=3ba272)](https://github.com/opengoofy/hippo4j/graphs/contributors) [![License](https://img.shields.io/github/license/opengoofy/hippo4j?color=5470c6)](https://github.com/opengoofy/hippo4j/blob/develop/LICENSE)
 
 -------
 
@@ -38,7 +38,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更。
 - 中间件适配 - Dubbo、Hystrix、RocketMQ、RabbitMQ 等消费线程池运行时数据查看和线程数变更。
 
-> 开源作者为爱发电不容易，看完有收获，右上角帮忙点个小星星 🤩
+> 开源作者为爱发电不容易，看完有收获，右上角帮忙点个 Star 🤩
 
 ## 快速开始
 
