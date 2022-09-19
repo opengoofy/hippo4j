@@ -66,11 +66,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 Hippo-4J 获得的成就属于每一位贡献者！如果有意贡献，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22)。
 
-<a href="https://github.com/opengoofy/hippo4j/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=opengoofy/hippo4j" />
-</a>
-
-
+<a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false" /></a>
 
 ## 谁在使用
 
