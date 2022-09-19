@@ -49,6 +49,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
@@ -179,7 +180,7 @@ public class ThreadPoolController {
                 String urlString = StrBuilder.create("http://", each, "/web/update/pool").toString();
                 HttpUtil.post(urlString, JSONUtil.toJSONString(requestParam), HTTP_EXECUTE_TIMEOUT);
             }
-        }else {
+        } else {
             ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParam, ConfigModifySaveReqDTO.class);
             modifySaveReqDTO.setModifyUser(UserContext.getUserName());
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.WEB_THREAD_POOL);

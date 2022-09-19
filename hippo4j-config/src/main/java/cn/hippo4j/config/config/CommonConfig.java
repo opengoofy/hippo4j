@@ -32,7 +32,6 @@ import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
  * Common config.
  */
 @Configuration
-@Import(WebThreadPoolHandlerChoose.class)
 public class CommonConfig {
 
     @Bean
@@ -52,6 +51,11 @@ public class CommonConfig {
         monitorThreadPool.setAllowCoreThreadTimeOut(true);
         monitorThreadPool.setAwaitTerminationMillis(5000);
         return monitorThreadPool;
+    }
+
+    @Bean
+    public WebThreadPoolHandlerChoose webThreadPoolHandlerChoose() {
+        return new WebThreadPoolHandlerChoose();
     }
 
 }
