@@ -49,7 +49,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
