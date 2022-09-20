@@ -17,21 +17,22 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
+import cn.hippo4j.console.model.WebThreadPoolReqDTO;
+import cn.hutool.core.text.StrBuilder;
+import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+
+import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 
 @Slf4j
 @Service
 public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
 
-    @Resource
-    private WebThreadPoolHandlerChoose webThreadPoolServiceChoose;
 
     @Override
     public Integer type() {
@@ -40,7 +41,10 @@ public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigMo
 
     @Override
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
-        ThreadPoolParameterInfo poolParameterInfo = reqDTO.getThreadPoolParameterInfo();
-        webThreadPoolServiceChoose.choose().updateWebThreadPool(poolParameterInfo);
+        WebThreadPoolReqDTO webThreadPoolReqDTO = reqDTO.getWebThreadPoolReqDTO();
+        for (String each : webThreadPoolReqDTO.getClientAddressList()) {
+            String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/update").toString();
+            HttpUtil.post(urlString, JSONUtil.toJSONString(webThreadPoolReqDTO), HTTP_EXECUTE_TIMEOUT);
+        }
     }
 }

@@ -17,7 +17,6 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.enums.VerifyEnum;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;

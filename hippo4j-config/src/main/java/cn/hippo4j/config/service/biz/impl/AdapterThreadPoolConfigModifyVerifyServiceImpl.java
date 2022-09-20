@@ -17,16 +17,18 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.adapter.base.ThreadPoolAdapter;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
+
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
+import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
+import cn.hutool.core.text.StrBuilder;
+import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 
-import static cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer.THREAD_POOL_ADAPTER_BEAN_CONTAINER;
 
 @Slf4j
 @Service
@@ -39,8 +41,10 @@ public class AdapterThreadPoolConfigModifyVerifyServiceImpl extends AbstractConf
 
     @Override
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
-        ThreadPoolAdapterParameter adapterParameter = reqDTO.getThreadPoolAdapterParameter();
-        ThreadPoolAdapter threadPoolAdapter = THREAD_POOL_ADAPTER_BEAN_CONTAINER.get(adapterParameter.getMark());
-        Optional.ofNullable(threadPoolAdapter).ifPresent(each -> each.updateThreadPool(adapterParameter));
+        ThreadPoolAdapterReqDTO threadPoolAdapterReqDTO = reqDTO.getThreadPoolAdapterReqDTO();
+        for (String each : threadPoolAdapterReqDTO.getClientAddressList()) {
+            String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/update").toString();
+            HttpUtil.post(urlString, JSONUtil.toJSONString(threadPoolAdapterReqDTO), HTTP_EXECUTE_TIMEOUT);
+        }
     }
 }

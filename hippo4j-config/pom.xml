@@ -74,6 +74,12 @@
         </dependency>
 
         <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-console</artifactId>
+            <version>${version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>
