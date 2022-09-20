@@ -17,7 +17,6 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
@@ -28,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
-
 
 @Slf4j
 @Service

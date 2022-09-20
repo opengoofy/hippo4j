@@ -20,19 +20,17 @@ package cn.hippo4j.config.service.biz.impl;
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
-import cn.hippo4j.console.model.WebThreadPoolReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.WebThreadPoolReqDTO;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 
 import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 
 @Slf4j
 @Service
 public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
-
 
     @Override
     public Integer type() {

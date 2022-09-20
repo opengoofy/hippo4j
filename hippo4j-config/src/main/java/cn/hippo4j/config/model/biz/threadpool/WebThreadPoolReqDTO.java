@@ -17,43 +17,50 @@
 
 package cn.hippo4j.config.model.biz.threadpool;
 
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import lombok.Data;
 
-/**
- * config modify verify dto
- */
+import java.util.List;
+
 @Data
-public class ConfigModifyVerifyReqDTO {
+public class WebThreadPoolReqDTO {
 
     /**
-     * his config verify id
+     * Thread-pool id
      */
-    private Long id;
+    private String tenantId;
 
     /**
-     * config verify type
+     * Item id
      */
-    private Integer type;
+    private String itemId;
 
     /**
-     * weather accept config modification
+     * thread pool instance id
      */
-    private Boolean accept;
+    private String instanceId;
 
     /**
-     * thread pool parameter info
+     * Core pool size
      */
-    private ThreadPoolParameterInfo threadPoolParameterInfo;
+    private Integer corePoolSize;
 
     /**
-     * web thread pool req dto
+     * Maximum pool size
      */
-    private WebThreadPoolReqDTO webThreadPoolReqDTO;
+    private Integer maximumPoolSize;
 
     /**
-     * thread pool adapter req dto
+     * Keep alive time
      */
-    private ThreadPoolAdapterReqDTO threadPoolAdapterReqDTO;
+    private Integer keepAliveTime;
+
+    /**
+     * weather modify all instances
+     */
+    private Integer modifyAll;
+
+    /**
+     * Client address list
+     */
+    private List<String> clientAddressList;
 }
