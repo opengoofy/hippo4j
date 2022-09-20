@@ -17,12 +17,17 @@
 
 package cn.hippo4j.console.controller;
 
+import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.service.ThreadPoolAdapterService;
+import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.config.verify.ConfigModifyVerifyServiceChoose;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.http.HttpUtil;
 import lombok.AllArgsConstructor;
@@ -46,6 +51,8 @@ public class ThreadPoolAdapterController {
 
     private final ThreadPoolAdapterService threadPoolAdapterService;
 
+    private final ConfigModifyVerifyServiceChoose configModifyVerifyServiceChoose;
+
     @GetMapping(REGISTER_ADAPTER_BASE_PATH + "/query")
     public Result<List<ThreadPoolAdapterRespDTO>> queryAdapterThreadPool(ThreadPoolAdapterReqDTO requestParameter) {
         List<ThreadPoolAdapterRespDTO> result = threadPoolAdapterService.query(requestParameter);
@@ -60,9 +67,19 @@ public class ThreadPoolAdapterController {
 
     @PostMapping(REGISTER_ADAPTER_BASE_PATH + "/update")
     public Result<Void> updateAdapterThreadPool(@RequestBody ThreadPoolAdapterReqDTO requestParameter) {
-        for (String each : requestParameter.getClientAddressList()) {
-            String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/update").toString();
-            HttpUtil.post(urlString, JSONUtil.toJSONString(requestParameter), HTTP_EXECUTE_TIMEOUT);
+        if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
+            for (String each : requestParameter.getClientAddressList()) {
+                String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/update").toString();
+                HttpUtil.post(urlString, JSONUtil.toJSONString(requestParameter), HTTP_EXECUTE_TIMEOUT);
+            }
+        } else {
+            ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParameter, ConfigModifySaveReqDTO.class);
+            modifySaveReqDTO.setModifyUser(UserContext.getUserName());
+            modifySaveReqDTO.setTenantId(requestParameter.getTenant());
+            modifySaveReqDTO.setItemId(requestParameter.getItem());
+            modifySaveReqDTO.setInstanceId(requestParameter.getIdentify());
+            modifySaveReqDTO.setType(ConfigModifyTypeConstants.ADAPTER_THREAD_POOL);
+            configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
         return Results.success();
     }
