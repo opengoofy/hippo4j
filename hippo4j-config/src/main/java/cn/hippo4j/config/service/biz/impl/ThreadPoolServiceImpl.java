@@ -19,6 +19,7 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
@@ -94,6 +95,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
             modifySaveReqDTO.setCorePoolSize(reqDTO.getCoreSize());
             modifySaveReqDTO.setMaximumPoolSize(reqDTO.getMaxSize());
             modifySaveReqDTO.setModifyUser(UserContext.getUserName());
+            modifySaveReqDTO.setModifyAll(EnableEnum.NO.getIntCode());
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_MANAGER);
             configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }

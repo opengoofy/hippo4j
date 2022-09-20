@@ -17,16 +17,23 @@
 
 package cn.hippo4j.config.controller;
 
+import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.ConfigInfoBase;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigServletInner;
 import cn.hippo4j.config.service.biz.ConfigService;
+import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hippo4j.config.toolkit.Md5ConfigUtil;
+import cn.hippo4j.config.verify.ConfigModifyVerifyServiceChoose;
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -50,6 +57,8 @@ public class ConfigController {
 
     private final ConfigServletInner configServletInner;
 
+    private final ConfigModifyVerifyServiceChoose configModifyVerifyServiceChoose;
+
     @GetMapping
     public Result<ConfigInfoBase> detailConfigInfo(@RequestParam("tpId") String tpId,
                                                    @RequestParam("itemId") String itemId,
@@ -62,7 +71,18 @@ public class ConfigController {
     @PostMapping
     public Result<Boolean> publishConfig(@RequestParam(value = "identify", required = false) String identify,
                                          @RequestBody ConfigAllInfo config) {
-        configService.insertOrUpdate(identify, true, config);
+        if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
+            configService.insertOrUpdate(identify, true, config);
+        } else {
+            ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(config, ConfigModifySaveReqDTO.class);
+            modifySaveReqDTO.setCorePoolSize(config.getCoreSize());
+            modifySaveReqDTO.setMaximumPoolSize(config.getMaxSize());
+            modifySaveReqDTO.setModifyUser(UserContext.getUserName());
+            modifySaveReqDTO.setModifyAll(StringUtil.isNotBlank(identify) ? EnableEnum.NO.getIntCode() : EnableEnum.YES.getIntCode());
+            modifySaveReqDTO.setInstanceId(identify);
+            modifySaveReqDTO.setType(ConfigModifyTypeConstants.WEB_THREAD_POOL);
+            configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
+        }
         return Results.success(true);
     }
 
