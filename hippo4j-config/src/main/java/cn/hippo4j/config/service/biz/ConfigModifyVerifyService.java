@@ -17,7 +17,6 @@
 
 package cn.hippo4j.config.service.biz;
 
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 
