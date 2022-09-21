@@ -21,13 +21,11 @@ import cn.hippo4j.common.toolkit.Assert;
 import com.github.dozermapper.core.converters.ConversionException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.*;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * BeanUtil Test
@@ -73,6 +71,17 @@ public class BeanUtilTest {
 
         final List<PersonVo> persons = BeanUtil.convert(list, PersonVo.class);
         Assert.isTrue(Objects.equals(list.size(), persons.size()));
+    }
+
+    @Test
+    public void SetToSetConvertTest() {
+        final Set<Person> sets = Sets.newHashSet();
+        sets.add(Person.builder().name("one").age(1).build());
+        sets.add(Person.builder().name("two").age(2).build());
+        sets.add(Person.builder().name("three").age(3).build());
+
+        final Set<PersonVo> persons = BeanUtil.convert(sets, PersonVo.class);
+        Assert.isTrue(Objects.equals(sets.size(), persons.size()));
     }
 
     @Test
