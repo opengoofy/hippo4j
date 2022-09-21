@@ -38,50 +38,28 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更。
 - 中间件适配 - Dubbo、Hystrix、RocketMQ、RabbitMQ 等消费线程池运行时数据查看和线程数变更。
 
-> 开源作者为爱发电不容易，看完有收获，右上角帮忙点个 Star 🤩
-
 ## 快速开始
 
 对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/user_docs/user_guide/quick-start)
 
-演示环境： http://console.hippo4j.cn/index.html
+演示环境： [http://console.hippo4j.cn/index.html](http://console.hippo4j.cn/index.html)
 
 ## 联系我
 
 ![](https://user-images.githubusercontent.com/77398366/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)
 
-扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)
+扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)。
 
 ## 友情链接
 
-- [[ Sa-Token ]](https://github.com/dromara/sa-token)：一个轻量级 java 权限认证框架，让鉴权变得简单、优雅！   
+- [[ Sa-Token ]](https://github.com/dromara/sa-token)：一个轻量级 java 权限认证框架，让鉴权变得简单、优雅！  
 
 - [[ HertzBeat ]](https://github.com/dromara/hertzbeat)：易用友好的云监控系统, 无需 Agent, 强大自定义监控能力。   
-
 - [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
-
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 
-## 开发者
+## 贡献者
 
-Hippo-4J 获得的成就属于每一位贡献者！如果有意贡献，请参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或者 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22)。
+感谢所有为项目作出贡献的开发者 [[Contributors](https://github.com/opengoofy/hippo4j/graphs/contributors)]。如果有意贡献，参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)。
 
 <a href="https://github.com/opengoofy/hippo4j/graphs/contributors"><img src="https://opencollective.com/hippo4j/contributors.svg?width=890&button=false" /></a>
-
-## 谁在使用
-
-如果您正在使用这个项目，可以在 [此处](https://github.com/opengoofy/hippo4j/issues/13) 登记您所在的组织或公司，谢谢。
-
-![身边云](https://user-images.githubusercontent.com/77398366/189787832-f51d475c-d758-40f2-9812-997637804e6f.png)
-![Medbanks](https://user-images.githubusercontent.com/77398366/189787960-16f89af9-a615-4da3-8309-18d0793aed05.png)
-![神州数码](https://user-images.githubusercontent.com/77398366/189786973-1a924f41-1558-4b03-acfd-49f279b99ce7.png)
-![payermax](https://user-images.githubusercontent.com/77398366/189787071-ccfa45fa-31c0-4a39-9969-9d20d6948a7b.png)
-![轻松到家](https://user-images.githubusercontent.com/77398366/189787144-fb6f7c4a-bdd8-4bdf-8ce1-c1e386c7aecd.png)
-![鲁班到家](https://user-images.githubusercontent.com/77398366/189787219-09201124-8ac6-496e-b562-9b4eecc11806.png)
-![广东天枢新能源科技有限公司](https://user-images.githubusercontent.com/77398366/189787263-d1998874-51ec-42ea-89d8-961cf1c2a557.png)
-![FitTime](https://user-images.githubusercontent.com/77398366/189787924-c6f1835c-c81b-403b-a7ec-386c261766a9.png)
-![51社保](https://user-images.githubusercontent.com/77398366/189787481-b9eae343-8310-4333-b385-b68e224d1438.png)
-![好货云店](https://user-images.githubusercontent.com/77398366/189787520-7ea68573-2232-4ba5-bedc-94754884c75c.png)
-![斗象科技](https://user-images.githubusercontent.com/77398366/189788405-ea93d8f0-3c17-49e0-bd96-8fc259d0eb89.png)
-![深圳航天信息有限公司](https://user-images.githubusercontent.com/77398366/189787780-7815f0c0-8478-4403-99ec-27fe07537b99.png)
-![新东方](https://user-images.githubusercontent.com/77398366/189787802-2bb240bd-307f-4e8d-aaa5-ff71e0d46acc.png)
