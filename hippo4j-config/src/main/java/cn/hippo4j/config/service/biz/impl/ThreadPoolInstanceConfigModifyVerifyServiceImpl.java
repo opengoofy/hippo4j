@@ -18,13 +18,21 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
+import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
+import cn.hippo4j.config.service.biz.ConfigService;
+import cn.hippo4j.config.toolkit.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Slf4j
 @Service
 public class ThreadPoolInstanceConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
+
+    @Resource
+    private ConfigService configService;
 
     @Override
     public Integer type() {
@@ -33,7 +41,8 @@ public class ThreadPoolInstanceConfigModifyVerifyServiceImpl extends AbstractCon
 
     @Override
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
-
+        ConfigAllInfo config = BeanUtil.convert(reqDTO.getThreadPoolParameterInfo(), ConfigAllInfo.class);
+        configService.insertOrUpdate(reqDTO.getInstanceId(), true, config);
     }
 
 }

@@ -80,7 +80,7 @@ public class ConfigController {
             modifySaveReqDTO.setModifyUser(UserContext.getUserName());
             modifySaveReqDTO.setModifyAll(StringUtil.isNotBlank(identify) ? EnableEnum.NO.getIntCode() : EnableEnum.YES.getIntCode());
             modifySaveReqDTO.setInstanceId(identify);
-            modifySaveReqDTO.setType(ConfigModifyTypeConstants.WEB_THREAD_POOL);
+            modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_INSTANCE);
             configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
         return Results.success(true);

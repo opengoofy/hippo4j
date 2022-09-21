@@ -35,11 +35,6 @@ public class WebThreadPoolReqDTO {
     private String itemId;
 
     /**
-     * thread pool instance id
-     */
-    private String instanceId;
-
-    /**
      * Core pool size
      */
     private Integer corePoolSize;

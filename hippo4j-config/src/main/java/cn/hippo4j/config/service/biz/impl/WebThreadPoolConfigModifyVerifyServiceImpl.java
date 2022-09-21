@@ -41,7 +41,7 @@ public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigMo
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
         WebThreadPoolReqDTO webThreadPoolReqDTO = reqDTO.getWebThreadPoolReqDTO();
         for (String each : webThreadPoolReqDTO.getClientAddressList()) {
-            String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/update").toString();
+            String urlString = StrBuilder.create("http://", each, "/web/update/pool").toString();
             HttpUtil.post(urlString, JSONUtil.toJSONString(webThreadPoolReqDTO), HTTP_EXECUTE_TIMEOUT);
         }
     }

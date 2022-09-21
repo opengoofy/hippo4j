@@ -38,6 +38,11 @@ public class ConfigModifyVerifyReqDTO {
     private Integer type;
 
     /**
+     * instance id
+     */
+    private String instanceId;
+
+    /**
      * weather accept config modification
      */
     private Boolean accept;
