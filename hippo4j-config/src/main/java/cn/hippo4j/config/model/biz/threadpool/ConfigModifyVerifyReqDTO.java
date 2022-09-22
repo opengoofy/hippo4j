@@ -65,11 +65,6 @@ public class ConfigModifyVerifyReqDTO {
     private Boolean modifyAll;
 
     /**
-     * Client address list
-     */
-    private List<String> clientAddressList;
-
-    /**
      * weather accept config modification
      */
     private Boolean accept;

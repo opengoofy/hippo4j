@@ -76,8 +76,6 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
 
         hisConfigVerifyMapper.update(null, updateWrapper);
 
-        reqDTO.setClientAddressList(getClientAddress(reqDTO));
-
         updateThreadPoolParameter(reqDTO);
     }
 
@@ -86,7 +84,7 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
      * @param reqDTO
      * @return
      */
-    private List<String> getClientAddress(ConfigModifyVerifyReqDTO reqDTO) {
+    protected List<String> getClientAddress(ConfigModifyVerifyReqDTO reqDTO) {
         List<String> clientAddressList = new ArrayList<>();
         ConditionUtil
                 .condition(reqDTO.getModifyAll(),
