@@ -17,11 +17,11 @@
 
 package cn.hippo4j.config.toolkit;
 
-import cn.hippo4j.common.toolkit.Assert;
-import org.junit.Test;
-
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import cn.hippo4j.common.toolkit.Assert;
+import org.junit.Test;
 
 /**
  * SimpleReadWriteLock Test
@@ -116,7 +116,7 @@ public class SimpleReadWriteLockTest {
             try {
                 TimeUnit.SECONDS.sleep(2);
                 while (true) {
-                    if (simpleReadWriteLock.tryWriteLock()){
+                    if (simpleReadWriteLock.tryWriteLock()) {
                         System.out.println(Thread.currentThread() + " -2 get write lock success");
                         TimeUnit.SECONDS.sleep(1);
                         System.out.println(Thread.currentThread() + " -2 execute done");
@@ -126,7 +126,7 @@ public class SimpleReadWriteLockTest {
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
-            }finally {
+            } finally {
                 simpleReadWriteLock.releaseWriteLock();
             }
         }).start();
