@@ -21,12 +21,6 @@
             <version>${revision}</version>
         </dependency>
 
-        <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-discovery</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
         <!-- Adapter start -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
