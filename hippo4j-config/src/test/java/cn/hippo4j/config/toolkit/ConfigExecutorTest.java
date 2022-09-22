@@ -17,8 +17,28 @@
 
 package cn.hippo4j.config.toolkit;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import java.util.concurrent.TimeUnit;
+
 /**
  * ConfigExecutor Test
  */
+@Slf4j
 public class ConfigExecutorTest {
+
+    @Test
+    public void executeLongPollingTest() {
+        ConfigExecutor.executeLongPolling(() -> log.info(Thread.currentThread().getName()));
+    }
+
+    @Test
+    public void scheduleLongPollingTest() {
+        ConfigExecutor.scheduleLongPolling(() -> log.info(Thread.currentThread().getName()), 5, TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void scheduleLongPollingInitialTest() {
+        ConfigExecutor.scheduleLongPolling(() -> log.info(Thread.currentThread().getName()), 0, 5, TimeUnit.SECONDS);
+    }
 }
