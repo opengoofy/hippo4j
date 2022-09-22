@@ -39,10 +39,9 @@ public class AdapterThreadPoolConfigModifyVerifyServiceImpl extends AbstractConf
 
     @Override
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
-        ThreadPoolAdapterReqDTO threadPoolAdapterReqDTO = reqDTO.getThreadPoolAdapterReqDTO();
-        for (String each : threadPoolAdapterReqDTO.getClientAddressList()) {
+        for (String each : reqDTO.getClientAddressList()) {
             String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/update").toString();
-            HttpUtil.post(urlString, JSONUtil.toJSONString(threadPoolAdapterReqDTO), HTTP_EXECUTE_TIMEOUT);
+            HttpUtil.post(urlString, JSONUtil.toJSONString(reqDTO), HTTP_EXECUTE_TIMEOUT);
         }
     }
 }

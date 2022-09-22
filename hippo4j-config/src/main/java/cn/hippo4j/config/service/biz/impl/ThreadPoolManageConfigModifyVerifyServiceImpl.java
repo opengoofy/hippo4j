@@ -42,8 +42,9 @@ public class ThreadPoolManageConfigModifyVerifyServiceImpl extends AbstractConfi
 
     @Override
     public void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
-        ThreadPoolParameterInfo poolParameterInfo = reqDTO.getThreadPoolParameterInfo();
-        ThreadPoolSaveOrUpdateReqDTO saveOrUpdateReqDTO = BeanUtil.convert(poolParameterInfo, ThreadPoolSaveOrUpdateReqDTO.class);
+        ThreadPoolSaveOrUpdateReqDTO saveOrUpdateReqDTO = BeanUtil.convert(reqDTO, ThreadPoolSaveOrUpdateReqDTO.class);
+        saveOrUpdateReqDTO.setCoreSize(reqDTO.getCorePoolSize());
+        saveOrUpdateReqDTO.setMaxSize(reqDTO.getMaximumPoolSize());
         threadPoolService.saveOrUpdateThreadPoolConfig(null, saveOrUpdateReqDTO);
     }
 

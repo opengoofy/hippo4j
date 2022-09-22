@@ -39,7 +39,7 @@ public class ConfigModifySaveReqDTO {
     /**
      * weather modify all instances
      */
-    private Integer modifyAll = EnableEnum.NO.getIntCode();
+    private Boolean modifyAll = false;
 
     /**
      * TenantId

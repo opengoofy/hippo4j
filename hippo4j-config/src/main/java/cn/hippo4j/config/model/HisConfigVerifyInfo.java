@@ -73,7 +73,7 @@ public class HisConfigVerifyInfo {
     /**
      * weather modify all thread pool instances
      */
-    private Integer modifyAll = 0;
+    private Boolean modifyAll = false;
 
     /**
      * gmtCreate

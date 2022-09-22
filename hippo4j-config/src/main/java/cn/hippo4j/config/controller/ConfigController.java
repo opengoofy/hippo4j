@@ -78,7 +78,7 @@ public class ConfigController {
             modifySaveReqDTO.setCorePoolSize(config.getCoreSize());
             modifySaveReqDTO.setMaximumPoolSize(config.getMaxSize());
             modifySaveReqDTO.setModifyUser(UserContext.getUserName());
-            modifySaveReqDTO.setModifyAll(StringUtil.isNotBlank(identify) ? EnableEnum.NO.getIntCode() : EnableEnum.YES.getIntCode());
+            modifySaveReqDTO.setModifyAll(StringUtil.isEmpty(identify) ? true : false);
             modifySaveReqDTO.setInstanceId(identify);
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_INSTANCE);
             configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);

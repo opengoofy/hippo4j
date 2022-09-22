@@ -17,9 +17,10 @@
 
 package cn.hippo4j.config.model.biz.threadpool;
 
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * config modify verify dto
@@ -38,9 +39,35 @@ public class ConfigModifyVerifyReqDTO {
     private Integer type;
 
     /**
+     * Tenant id
+     */
+    private String tenantId;
+
+    /**
+     * item id
+     */
+    private String itemId;
+
+    /**
      * instance id
      */
     private String instanceId;
+
+    /**
+     * Thread-pool id
+     */
+    @JsonAlias("threadPoolId")
+    private String tpId;
+
+    /**
+     * weather modify all instances
+     */
+    private Boolean modifyAll;
+
+    /**
+     * Client address list
+     */
+    private List<String> clientAddressList;
 
     /**
      * weather accept config modification
@@ -48,17 +75,59 @@ public class ConfigModifyVerifyReqDTO {
     private Boolean accept;
 
     /**
-     * thread pool parameter info
+     * Core pool size
      */
-    private ThreadPoolParameterInfo threadPoolParameterInfo;
+    private Integer corePoolSize;
 
     /**
-     * web thread pool req dto
+     * Maximum pool size
      */
-    private WebThreadPoolReqDTO webThreadPoolReqDTO;
+    private Integer maximumPoolSize;
 
     /**
-     * thread pool adapter req dto
+     * Queue type
      */
-    private ThreadPoolAdapterReqDTO threadPoolAdapterReqDTO;
+    private Integer queueType;
+
+    /**
+     * Capacity
+     */
+    private Integer capacity;
+
+    /**
+     * Keep alive time
+     */
+    private Integer keepAliveTime;
+
+    /**
+     * Execute time out
+     */
+    private Long executeTimeOut;
+
+    /**
+     * Rejected type
+     */
+    private Integer rejectedType;
+
+    /**
+     * Is alarm
+     */
+    private Integer isAlarm;
+
+    /**
+     * Capacity alarm
+     */
+    private Integer capacityAlarm;
+
+    /**
+     * Liveness alarm
+     */
+    @JsonAlias("activeAlarm")
+    private Integer livenessAlarm;
+
+    /**
+     * Allow core thread timeout
+     */
+    private Integer allowCoreThreadTimeOut;
+
 }

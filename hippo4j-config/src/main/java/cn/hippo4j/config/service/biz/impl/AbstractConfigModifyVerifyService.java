@@ -18,6 +18,8 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.enums.VerifyEnum;
+import cn.hippo4j.common.model.InstanceInfo;
+import cn.hippo4j.common.toolkit.ConditionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
@@ -26,15 +28,23 @@ import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.discovery.core.BaseInstanceRegistry;
+import cn.hippo4j.discovery.core.Lease;
+import cn.hutool.core.text.StrBuilder;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public abstract class AbstractConfigModifyVerifyService implements ConfigModifyVerifyService {
 
     @Resource
     protected HisConfigVerifyMapper hisConfigVerifyMapper;
+
+    @Resource
+    private BaseInstanceRegistry baseInstanceRegistry;
 
     @Override
     public void saveConfigModifyApplication(ConfigModifySaveReqDTO reqDTO) {
@@ -66,7 +76,27 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
 
         hisConfigVerifyMapper.update(null, updateWrapper);
 
+        reqDTO.setClientAddressList(getClientAddress(reqDTO));
+
         updateThreadPoolParameter(reqDTO);
+    }
+
+    /**
+     * get client address according to weather modifyAll
+     * @param reqDTO
+     * @return
+     */
+    private List<String> getClientAddress(ConfigModifyVerifyReqDTO reqDTO) {
+        List<String> clientAddressList = new ArrayList<>();
+        ConditionUtil
+                .condition(reqDTO.getModifyAll(),
+                        () -> {
+                            List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(reqDTO.getItemId());
+                            leases.stream()
+                                    .forEach(lease -> clientAddressList.add(StrBuilder.create(lease.getHolder().getHostName(), ":", lease.getHolder().getPort()).toString()));
+                        },
+                        () -> clientAddressList.add(reqDTO.getInstanceId().split("_")[0]));
+        return clientAddressList;
     }
 
     /**
@@ -74,4 +104,5 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
      * @param reqDTO
      */
     protected abstract void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO);
+
 }

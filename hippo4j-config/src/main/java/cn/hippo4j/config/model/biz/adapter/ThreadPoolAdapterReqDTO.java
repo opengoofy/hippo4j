@@ -70,5 +70,5 @@ public class ThreadPoolAdapterReqDTO {
     /**
      * weather Modify all instances
      */
-    private Integer modifyAll;
+    private Boolean modifyAll;
 }

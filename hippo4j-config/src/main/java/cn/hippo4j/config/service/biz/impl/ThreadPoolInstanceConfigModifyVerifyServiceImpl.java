@@ -41,7 +41,7 @@ public class ThreadPoolInstanceConfigModifyVerifyServiceImpl extends AbstractCon
 
     @Override
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
-        ConfigAllInfo config = BeanUtil.convert(reqDTO.getThreadPoolParameterInfo(), ConfigAllInfo.class);
+        ConfigAllInfo config = BeanUtil.convert(reqDTO, ConfigAllInfo.class);
         configService.insertOrUpdate(reqDTO.getInstanceId(), true, config);
     }
 
