@@ -60,6 +60,11 @@ public class ConfigModifySaveReqDTO {
     private String itemId;
 
     /**
+     * thread pool mark
+     */
+    private String mark;
+
+    /**
      * Core pool size
      */
     private Integer corePoolSize;

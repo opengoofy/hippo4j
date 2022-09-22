@@ -56,6 +56,11 @@ public class HisConfigVerifyInfo {
     private String tpId;
 
     /**
+     * thread pool mark
+     */
+    private String mark;
+
+    /**
      * thread pool instance id
      */
     private String instanceId;

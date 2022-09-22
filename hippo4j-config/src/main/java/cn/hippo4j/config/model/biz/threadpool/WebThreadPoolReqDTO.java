@@ -54,8 +54,4 @@ public class WebThreadPoolReqDTO {
      */
     private Integer modifyAll;
 
-    /**
-     * Client address list
-     */
-    private List<String> clientAddressList;
 }

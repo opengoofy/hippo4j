@@ -18,19 +18,33 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
+import cn.hippo4j.common.enums.EnableEnum;
+import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.WebThreadPoolReqDTO;
+import cn.hippo4j.discovery.core.BaseInstanceRegistry;
+import cn.hippo4j.discovery.core.Lease;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 
 @Slf4j
 @Service
 public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
+
+    @Resource
+    private BaseInstanceRegistry baseInstanceRegistry;
 
     @Override
     public Integer type() {
@@ -40,7 +54,17 @@ public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigMo
     @Override
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
         WebThreadPoolReqDTO webThreadPoolReqDTO = reqDTO.getWebThreadPoolReqDTO();
-        for (String each : webThreadPoolReqDTO.getClientAddressList()) {
+        List<String> clientAddressList = new ArrayList<>();
+        // modify all instances
+        if (EnableEnum.YES.getIntCode() == webThreadPoolReqDTO.getModifyAll()) {
+            List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(webThreadPoolReqDTO.getItemId());
+            leases.stream()
+                    .forEach(lease -> clientAddressList.add(StrBuilder.create(lease.getHolder().getHostName(), ":", lease.getHolder().getPort()).toString()));
+        } else {
+            clientAddressList.add(reqDTO.getInstanceId().split("_")[0]);
+        }
+
+        for (String each : clientAddressList) {
             String urlString = StrBuilder.create("http://", each, "/web/update/pool").toString();
             HttpUtil.post(urlString, JSONUtil.toJSONString(webThreadPoolReqDTO), HTTP_EXECUTE_TIMEOUT);
         }

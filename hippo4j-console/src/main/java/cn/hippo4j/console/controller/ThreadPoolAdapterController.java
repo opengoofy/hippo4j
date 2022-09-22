@@ -77,6 +77,7 @@ public class ThreadPoolAdapterController {
             modifySaveReqDTO.setModifyUser(UserContext.getUserName());
             modifySaveReqDTO.setTenantId(requestParameter.getTenant());
             modifySaveReqDTO.setItemId(requestParameter.getItem());
+            modifySaveReqDTO.setTpId(requestParameter.getThreadPoolKey());
             modifySaveReqDTO.setInstanceId(requestParameter.getIdentify());
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.ADAPTER_THREAD_POOL);
             configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
