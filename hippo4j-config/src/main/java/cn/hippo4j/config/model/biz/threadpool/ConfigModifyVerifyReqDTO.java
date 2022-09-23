@@ -49,9 +49,9 @@ public class ConfigModifyVerifyReqDTO {
     private String itemId;
 
     /**
-     * instance id
+     * instance identify
      */
-    private String instanceId;
+    private String identify;
 
     /**
      * Thread-pool id

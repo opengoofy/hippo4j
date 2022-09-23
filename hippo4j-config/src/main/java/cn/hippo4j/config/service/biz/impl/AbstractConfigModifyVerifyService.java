@@ -30,7 +30,6 @@ import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
-import cn.hutool.core.text.StrBuilder;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 
 import javax.annotation.Resource;
@@ -86,14 +85,16 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
      */
     protected List<String> getClientAddress(ConfigModifyVerifyReqDTO reqDTO) {
         List<String> clientAddressList = new ArrayList<>();
+        List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(reqDTO.getItemId());
         ConditionUtil
                 .condition(reqDTO.getModifyAll(),
                         () -> {
-                            List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(reqDTO.getItemId());
-                            leases.stream()
-                                    .forEach(lease -> clientAddressList.add(StrBuilder.create(lease.getHolder().getHostName(), ":", lease.getHolder().getPort()).toString()));
+                            leases.forEach(lease -> clientAddressList.add(lease.getHolder().getCallBackUrl()));
                         },
-                        () -> clientAddressList.add(reqDTO.getInstanceId().split("_")[0]));
+                        () -> clientAddressList.add(
+                                leases.stream()
+                                        .filter(lease -> lease.getHolder().getIdentify().equals(reqDTO.getIdentify())).findAny().orElseThrow(() -> new RuntimeException("线程池实例并不存在")).getHolder()
+                                        .getCallBackUrl()));
         return clientAddressList;
     }
 

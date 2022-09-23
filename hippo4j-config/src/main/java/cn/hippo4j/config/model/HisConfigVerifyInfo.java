@@ -61,9 +61,9 @@ public class HisConfigVerifyInfo {
     private String mark;
 
     /**
-     * thread pool instance id
+     * thread pool instance identify
      */
-    private String instanceId;
+    private String identify;
 
     /**
      * config content

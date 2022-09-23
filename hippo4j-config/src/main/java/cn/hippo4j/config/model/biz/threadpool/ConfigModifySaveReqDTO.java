@@ -34,7 +34,7 @@ public class ConfigModifySaveReqDTO {
     /**
      * thread pool instance id
      */
-    private String instanceId;
+    private String identify;
 
     /**
      * weather modify all instances
