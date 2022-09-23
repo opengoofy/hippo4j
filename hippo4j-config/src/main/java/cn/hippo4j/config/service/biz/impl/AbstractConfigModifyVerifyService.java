@@ -67,6 +67,8 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
     }
 
     public void acceptModification(ConfigModifyVerifyReqDTO reqDTO) {
+        updateThreadPoolParameter(reqDTO);
+
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
                 .eq(HisConfigVerifyInfo::getId, reqDTO.getId())
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_ACCEPT.getVerifyStatus())
@@ -75,11 +77,10 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
 
         hisConfigVerifyMapper.update(null, updateWrapper);
 
-        updateThreadPoolParameter(reqDTO);
     }
 
     /**
-     * get client address according to weather modifyAll
+     * get client address
      * @param reqDTO
      * @return
      */
@@ -88,9 +89,7 @@ public abstract class AbstractConfigModifyVerifyService implements ConfigModifyV
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(reqDTO.getItemId());
         ConditionUtil
                 .condition(reqDTO.getModifyAll(),
-                        () -> {
-                            leases.forEach(lease -> clientAddressList.add(lease.getHolder().getCallBackUrl()));
-                        },
+                        () -> leases.forEach(lease -> clientAddressList.add(lease.getHolder().getCallBackUrl())),
                         () -> clientAddressList.add(
                                 leases.stream()
                                         .filter(lease -> lease.getHolder().getIdentify().equals(reqDTO.getIdentify())).findAny().orElseThrow(() -> new RuntimeException("线程池实例并不存在")).getHolder()

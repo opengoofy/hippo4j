@@ -25,7 +25,6 @@ import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-
 import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 
 @Slf4j
