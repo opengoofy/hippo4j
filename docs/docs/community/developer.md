@@ -47,4 +47,11 @@ sidebar_position: 2
     <td align="center" ><a href="https://blog.csdn.net/qq_34741165">Only丶Big</a></td>
     <td align="center" >1064730540@qq.com</td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/pizihao"><img src="https://avatars.githubusercontent.com/u/48643103?v=4?s=64" width="64px;"/></a></td>
+    <td align="center">刘文浩</td>
+    <td align="center" ><a href="https://github.com/pizihao">pizihao</a></td>
+    <td align="center" ><a href="https://www.yuque.com/chenghu-08dla/pizig1">pizihao</a></td>
+    <td align="center" >hao3073liu@163.com</td>
+  </tr>
 </table>
