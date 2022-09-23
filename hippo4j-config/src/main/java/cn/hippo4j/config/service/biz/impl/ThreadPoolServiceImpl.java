@@ -61,7 +61,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
                 .eq(!StringUtils.isBlank(reqDTO.getTenantId()), ConfigAllInfo::getTenantId, reqDTO.getTenantId())
                 .eq(!StringUtils.isBlank(reqDTO.getItemId()), ConfigAllInfo::getItemId, reqDTO.getItemId())
                 .eq(!StringUtils.isBlank(reqDTO.getTpId()), ConfigAllInfo::getTpId, reqDTO.getTpId())
-                .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL)
+                .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode())
                 .orderByDesc(reqDTO.getDesc() != null, ConfigAllInfo::getGmtCreate);
         return configInfoMapper.selectPage(reqDTO, wrapper).convert(each -> BeanUtil.convert(each, ThreadPoolRespDTO.class));
     }
