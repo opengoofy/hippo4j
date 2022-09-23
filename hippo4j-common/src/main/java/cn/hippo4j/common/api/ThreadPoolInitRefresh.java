@@ -15,43 +15,37 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.common.api;
 
-import lombok.Data;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 
 /**
- * Adapter executor properties.
+ * when init thread-pool dynamic refresh.
  */
-@Data
-public class AdapterExecutorProperties {
+public interface ThreadPoolInitRefresh extends ApplicationRunner {
 
     /**
-     * Mark
+     * Initializes the thread pool after system startup
+     *
+     * @param context new properties
      */
-    private String mark;
+    void initRefresh(String context);
 
     /**
-     * Thread-pool key
+     * get from the Configuration center
+     *
+     * @return new properties
+     * @throws Exception exception
      */
-    private String threadPoolKey;
+    String getProperties() throws Exception;
 
-    /**
-     * Core pool size
-     */
-    private Integer corePoolSize;
-
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
-
-    /**
-     * Nodes, application startup is not affect, change properties is effect
-     */
-    private String nodes;
-
-    /**
-     * these propertied is enabled?
-     */
-    private Boolean enable = true;
+    @Override
+    default void run(ApplicationArguments args) throws Exception {
+        String properties = getProperties();
+        if (properties == null) {
+            return;
+        }
+        initRefresh(properties);
+    }
 }
