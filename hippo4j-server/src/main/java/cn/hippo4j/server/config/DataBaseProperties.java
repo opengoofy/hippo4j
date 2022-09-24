@@ -23,7 +23,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Database properties.
  *
- * @see org.apache.shenyu.admin.config.properties.DataBaseProperties
+ * <p> Quoted from org.apache.shenyu.admin.config.properties.DataBaseProperties
  */
 @Data
 @ConfigurationProperties(prefix = "hippo4j.database")

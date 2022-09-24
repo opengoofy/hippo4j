@@ -1,7 +1,3 @@
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = tenant   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `tenant` (
     `id`           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `tenant_id`    varchar(128) DEFAULT NULL COMMENT '租户ID',
@@ -14,10 +10,6 @@ CREATE TABLE IF NOT EXISTS `tenant` (
     PRIMARY KEY (`id`)
 );
 
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = item   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `item` (
     `id`           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `tenant_id`    varchar(128) DEFAULT NULL COMMENT '租户ID',
@@ -31,10 +23,6 @@ CREATE TABLE IF NOT EXISTS `item` (
     PRIMARY KEY (`id`)
 );
 
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = config   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `config` (
     `id`                         bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `tenant_id`                  varchar(128) DEFAULT NULL COMMENT '租户ID',
@@ -60,10 +48,6 @@ CREATE TABLE IF NOT EXISTS `config` (
     PRIMARY KEY (`id`)
 );
 
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = inst_config   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `inst_config` (
     `id`           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `tenant_id`    varchar(128) DEFAULT NULL COMMENT '租户ID',
@@ -77,10 +61,6 @@ CREATE TABLE IF NOT EXISTS `inst_config` (
     PRIMARY KEY (`id`)
 );
 
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = his_run_data   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `his_run_data` (
     `id`                       bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     `tenant_id`                varchar(128) DEFAULT NULL COMMENT '租户ID',
@@ -102,10 +82,6 @@ CREATE TABLE IF NOT EXISTS `his_run_data` (
     PRIMARY KEY (`id`)
 );
 
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = log_record_info   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `log_record_info` (
     `id`          bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
     `tenant`      varchar(128)  NOT NULL DEFAULT '' COMMENT '租户标识',
@@ -119,10 +95,6 @@ CREATE TABLE IF NOT EXISTS `log_record_info` (
     PRIMARY KEY (`id`)
 );
 
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = user   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `user` (
     `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     `user_name`    varchar(64)  NOT NULL COMMENT '用户名',
@@ -134,10 +106,6 @@ CREATE TABLE IF NOT EXISTS `user` (
     PRIMARY KEY (`id`)
 );
 
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = role   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `role` (
     `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     `role`         varchar(64) NOT NULL COMMENT '角色',
@@ -148,10 +116,6 @@ CREATE TABLE IF NOT EXISTS `role` (
     PRIMARY KEY (`id`)
 );
 
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = permission   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `permission` (
     `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     `role`         varchar(512) NOT NULL COMMENT '角色',
@@ -163,10 +127,6 @@ CREATE TABLE IF NOT EXISTS `permission` (
     PRIMARY KEY (`id`)
 );
 
-/******************************************/
-/*   数据库全名 = hippo4j_manager   */
-/*   表名称 = notify   */
-/******************************************/
 CREATE TABLE IF NOT EXISTS `notify` (
     `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     `tenant_id`    varchar(128) NOT NULL DEFAULT '' COMMENT '租户ID',
@@ -184,17 +144,12 @@ CREATE TABLE IF NOT EXISTS `notify` (
     PRIMARY KEY (`id`)
 );
 
-/* 租户 */
-INSERT IGNORE INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
+INSERT INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
 
-/* 项目 */
-INSERT IGNORE INTO `item` (`id`, `tenant_id`, `item_id`, `item_name`, `item_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', '动态线程池示例项目', '动态线程池示例项目，对应 Hippo 项目的 example 模块', '马称', '2021-10-24 16:11:00', '2021-10-24 16:11:00', '0');
+INSERT INTO `item` (`id`, `tenant_id`, `item_id`, `item_name`, `item_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', '动态线程池示例项目', '动态线程池示例项目，对应 Hippo 项目的 example 模块', '马称', '2021-10-24 16:11:00', '2021-10-24 16:11:00', '0');
 
-/* 线程池 */
-INSERT IGNORE INTO `config` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `core_size`, `max_size`, `queue_type`, `capacity`, `rejected_type`, `keep_alive_time`, `allow_core_thread_time_out`, `content`, `md5`, `is_alarm`, `capacity_alarm`, `liveness_alarm`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-consume', '示例消费者线程池', '5', '10', '9', '1024', '2', '9999', '0', '{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":\"message-consume\",\"coreSize\":5,\"maxSize\":10,\"queueType\":9,\"capacity\":1024,\"keepAliveTime\":9999,\"rejectedType\":2,\"isAlarm\":0,\"capacityAlarm\":80,\"livenessAlarm\":80,\"allowCoreThreadTimeOut\":0}', 'f80ea89044889fb6cec20e1a517f2ec3', '0', '80', '80', '2021-10-24 10:24:00', '2021-12-22 08:58:55', '0'), ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', '示例生产者线程池', '5', '15', '9', '1024', '1', '9999', '0', '{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":\"message-produce\",\"coreSize\":5,\"maxSize\":15,\"queueType\":9,\"capacity\":1024,\"keepAliveTime\":9999,\"rejectedType\":1,\"isAlarm\":0,\"capacityAlarm\":30,\"livenessAlarm\":30,\"allowCoreThreadTimeOut\":0}', '525e1429468bcfe98df7e70a75710051', '0', '30', '30', '2021-10-24 10:24:00', '2021-12-22 08:59:02', '0');
+INSERT INTO `config` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `core_size`, `max_size`, `queue_type`, `capacity`, `rejected_type`, `keep_alive_time`, `allow_core_thread_time_out`, `content`, `md5`, `is_alarm`, `capacity_alarm`, `liveness_alarm`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-consume', '示例消费者线程池', '5', '10', '9', '1024', '2', '9999', '0', '{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":\"message-consume\",\"coreSize\":5,\"maxSize\":10,\"queueType\":9,\"capacity\":1024,\"keepAliveTime\":9999,\"rejectedType\":2,\"isAlarm\":0,\"capacityAlarm\":80,\"livenessAlarm\":80,\"allowCoreThreadTimeOut\":0}', 'f80ea89044889fb6cec20e1a517f2ec3', '0', '80', '80', '2021-10-24 10:24:00', '2021-12-22 08:58:55', '0'), ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', '示例生产者线程池', '5', '15', '9', '1024', '1', '9999', '0', '{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":\"message-produce\",\"coreSize\":5,\"maxSize\":15,\"queueType\":9,\"capacity\":1024,\"keepAliveTime\":9999,\"rejectedType\":1,\"isAlarm\":0,\"capacityAlarm\":30,\"livenessAlarm\":30,\"allowCoreThreadTimeOut\":0}', '525e1429468bcfe98df7e70a75710051', '0', '30', '30', '2021-10-24 10:24:00', '2021-12-22 08:59:02', '0');
 
-/* 用户 */
-INSERT IGNORE INTO `user` (`id`, `user_name`, `password`, `role`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'admin', '$2a$10$2KCqRbra0Yn2TwvkZxtfLuWuUP5KyCWsljO/ci5pLD27pqR3TV1vy', 'ROLE_ADMIN', '2021-11-04 21:35:17', '2021-11-15 23:04:59', '0');
+INSERT INTO `user` (`id`, `user_name`, `password`, `role`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'admin', '$2a$10$2KCqRbra0Yn2TwvkZxtfLuWuUP5KyCWsljO/ci5pLD27pqR3TV1vy', 'ROLE_ADMIN', '2021-11-04 21:35:17', '2021-11-15 23:04:59', '0');
 
-/* 通知表 */
-INSERT IGNORE INTO `notify` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `type`, `secret_key`, `interval`, `receives`, `enable`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'CONFIG', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', NULL, '15601166691', '0', '2021-11-18 22:49:50', '2021-11-18 22:49:50', '0'), ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'ALARM', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '0', '2021-11-18 22:50:06', '2021-11-18 22:50:06', '0');
+INSERT INTO `notify` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `type`, `secret_key`, `interval`, `receives`, `enable`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'CONFIG', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', NULL, '15601166691', '0', '2021-11-18 22:49:50', '2021-11-18 22:49:50', '0'), ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'ALARM', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '0', '2021-11-18 22:50:06', '2021-11-18 22:50:06', '0');

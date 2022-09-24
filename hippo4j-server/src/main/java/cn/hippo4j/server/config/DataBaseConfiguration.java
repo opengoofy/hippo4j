@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Database configuration.
  *
- * @see org.apache.shenyu.admin.config.DataBaseConfiguration
+ * <p> Quoted from org.apache.shenyu.admin.config.DataBaseConfiguration
  */
 @Configuration
 public class DataBaseConfiguration {

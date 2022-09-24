@@ -29,7 +29,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ADD conf/hippo4j-logback.xml ${BASE_DIR}/logback.xml
 ADD target/hippo4j-server.jar ${BASE_DIR}/hippo4j-server.jar
-ADD target/classes/sql-script/h2/hippo4j_manager.sql ${BASE_DIR}/hippo4j_manager.sql
 
 WORKDIR ${BASE_DIR}
 
@@ -45,10 +44,6 @@ ENTRYPOINT ["sh","-c","java -jar \
     --server.tomcat.basedir=${BASE_DIR}/tomcat \
     --logging.config=${BASE_DIR}/logback.xml \
     --spring.profiles.active=h2 \
-    --spring.datasource.driver-class-name=org.h2.Driver \
     --spring.datasource.url=jdbc:h2:file:${BASE_DIR}/h2_hippo4j;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL \
-    --spring.datasource.username=sa \
-    --spring.datasource.password=sa \
-    --spring.datasource.schema=${BASE_DIR}/hippo4j_manager.sql \
  "]
  
