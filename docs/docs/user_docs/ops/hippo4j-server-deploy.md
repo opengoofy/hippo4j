@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# hippo4j server 部署
+# 源码包部署
 
 [RELEASE](https://github.com/opengoofy/hippo4j/releases) 页面下载对应版本并进行解压。
 
