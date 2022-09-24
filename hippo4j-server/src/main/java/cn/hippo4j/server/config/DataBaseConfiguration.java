@@ -32,9 +32,11 @@ public class DataBaseConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(value = DataBaseProperties.class)
-    public DataBaseProperties dataBaseProperties(@Value("${hippo4j.database.init_script:sql-script/h2/schema.sql}") String initScript,
-                                                 @Value("${hippo4j.database.init_enable:true}") Boolean initEnable) {
+    public DataBaseProperties dataBaseProperties(@Value("${hippo4j.database.dialect:h2}") String dialect,
+                                                 @Value("${hippo4j.database.init_script:sql-script/h2/schema.sql}") String initScript,
+                                                 @Value("${hippo4j.database.init_enable:false}") Boolean initEnable) {
         DataBaseProperties dataSourceProperties = new DataBaseProperties();
+        dataSourceProperties.setDialect(dialect);
         dataSourceProperties.setInitScript(initScript);
         dataSourceProperties.setInitEnable(initEnable);
         return dataSourceProperties;

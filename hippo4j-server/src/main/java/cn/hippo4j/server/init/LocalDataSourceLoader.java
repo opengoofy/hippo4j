@@ -38,6 +38,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Local datasource loader.
@@ -64,31 +65,36 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
 
     private void init(final DataSourceProperties properties) {
         try {
+            String jdbcUrl = properties.getUrl();
             // If jdbcUrl in the configuration file specifies the hippo4j database, it is removed,
             // because the hippo4j database does not need to be specified when executing the SQL file,
             // otherwise the hippo4j database will be disconnected when the hippo4j database does not exist
-            String jdbcUrl = StringUtils.replace(properties.getUrl(), "/hippo4j_manager?", "?");
+            if (Objects.equals(dataBaseProperties.getDialect(), "mysql")) {
+                jdbcUrl = StringUtils.replace(properties.getUrl(), "/hippo4j_manager?", "?");
+            }
             Connection connection = DriverManager.getConnection(jdbcUrl, properties.getUsername(), properties.getPassword());
             // TODO Compatible with h2 to execute `INSERT IGNORE INTO` statement error
-            if (ifExecute(connection)) {
-                execute(connection, dataBaseProperties.getInitScript());
+            if (Objects.equals(dataBaseProperties.getDialect(), "h2") && ifNonExecute(connection)) {
+                return;
             }
+            execute(connection, dataBaseProperties.getInitScript());
         } catch (Exception ex) {
             log.error("Datasource init error.", ex);
             throw new RuntimeException(ex.getMessage());
         }
     }
 
-    private boolean ifExecute(final Connection conn) throws SQLException {
+    private boolean ifNonExecute(final Connection conn) throws SQLException {
         try (Statement statement = conn.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `user`")) {
             if (resultSet.next()) {
                 int countUser = resultSet.getInt(1);
-                return countUser > 0 ? false : true;
+                return countUser > 0 ? true : false;
             }
         } catch (Exception ignored) {
+            log.error("Query data for errors.", ignored);
         }
-        return true;
+        return false;
     }
 
     private void execute(final Connection conn, final String script) throws Exception {

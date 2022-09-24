@@ -30,6 +30,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class DataBaseProperties {
 
     /**
+     * Dialect
+     */
+    private String dialect;
+
+    /**
      * Init script
      */
     private String initScript;
