@@ -29,19 +29,26 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ADD conf/hippo4j-logback.xml ${BASE_DIR}/logback.xml
 ADD target/hippo4j-server.jar ${BASE_DIR}/hippo4j-server.jar
+ADD target/classes/sql-script/h2/hippo4j_manager.sql ${BASE_DIR}/hippo4j_manager.sql
 
 WORKDIR ${BASE_DIR}
 
 ENTRYPOINT ["sh","-c","java -jar \
  -Xloggc:${BASE_DIR}/hippo4j_gc.log -verbose:gc -XX:+PrintGCDetails \
-      -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation \
-      -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M \
-      -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${BASE_DIR}/java_heapdump.hprof \
-      -Xms1024m -Xmx1024m -Xmn512m \
-      -Dhippo4j.standalone=true -Dhippo4j.home=${BASE_DIR} \
+     -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation \
+     -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M \
+     -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${BASE_DIR}/java_heapdump.hprof \
+     -Xms1024m -Xmx1024m -Xmn512m \
+     -Dhippo4j.standalone=true -Dhippo4j.home=${BASE_DIR} \
  hippo4j-server.jar \
- --server.max-http-header-size=524288 --server.tomcat.basedir=${BASE_DIR}/tomcat/ \
-     --logging.config=${BASE_DIR}/logback.xml \
-     --spring.datasource.url=\"jdbc:mysql://$MYSQL_HOST:$MYSQL_PORT/$MYSQL_DB?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8\" \
-     --spring.datasource.username=$MYSQL_USERNAME --spring.datasource.password=$MYSQL_PASSWORD \
+    --server.max-http-header-size=524288 \
+    --server.tomcat.basedir=${BASE_DIR}/tomcat \
+    --logging.config=${BASE_DIR}/logback.xml \
+    --spring.profiles.active=h2 \
+    --spring.datasource.driver-class-name=org.h2.Driver \
+    --spring.datasource.url=jdbc:h2:file:${BASE_DIR}/h2_hippo4j;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL \
+    --spring.datasource.username=sa \
+    --spring.datasource.password=sa \
+    --spring.datasource.schema=${BASE_DIR}/hippo4j_manager.sql \
  "]
+ 
