@@ -85,8 +85,9 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
     }
 
     private boolean ifNonExecute(final Connection conn) throws SQLException {
-        try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `user`")) {
+        try (
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `user`")) {
             if (resultSet.next()) {
                 int countUser = resultSet.getInt(1);
                 return countUser > 0 ? true : false;
