@@ -31,7 +31,7 @@ import cn.hippo4j.config.model.biz.threadpool.*;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
 import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hippo4j.config.verify.ConfigModifyVerifyServiceChoose;
+import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import cn.hippo4j.console.model.ThreadPoolInstanceInfo;
 import cn.hippo4j.console.model.WebThreadPoolReqDTO;
 import cn.hippo4j.console.model.WebThreadPoolRespDTO;
@@ -66,7 +66,7 @@ public class ThreadPoolController {
 
     private final BaseInstanceRegistry baseInstanceRegistry;
 
-    private final ConfigModifyVerifyServiceChoose configModifyVerifyServiceChoose;
+    private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
 
     @PostMapping("/query/page")
     public Result<IPage<ThreadPoolRespDTO>> queryNameSpacePage(@RequestBody ThreadPoolQueryReqDTO reqDTO) {
@@ -183,7 +183,7 @@ public class ThreadPoolController {
             ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParam, ConfigModifySaveReqDTO.class);
             modifySaveReqDTO.setModifyUser(UserContext.getUserName());
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.WEB_THREAD_POOL);
-            configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
+            configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
         return Results.success();
     }

@@ -19,7 +19,6 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.enums.DelEnum;
-import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
@@ -30,7 +29,7 @@ import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.service.biz.OperationLogService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
 import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hippo4j.config.verify.ConfigModifyVerifyServiceChoose;
+import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -55,7 +54,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     private final OperationLogService operationLogService;
 
-    private final ConfigModifyVerifyServiceChoose configModifyVerifyServiceChoose;
+    private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
 
     @Override
     public IPage<ThreadPoolRespDTO> queryThreadPoolPage(ThreadPoolQueryReqDTO reqDTO) {
@@ -97,7 +96,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
             modifySaveReqDTO.setModifyUser(UserContext.getUserName());
             modifySaveReqDTO.setModifyAll(false);
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_MANAGER);
-            configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
+            configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
 
     }

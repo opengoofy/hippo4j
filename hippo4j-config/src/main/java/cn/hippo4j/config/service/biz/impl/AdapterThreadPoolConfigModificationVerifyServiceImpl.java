@@ -18,34 +18,29 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
-import cn.hippo4j.config.service.biz.ThreadPoolService;
-import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hutool.core.text.StrBuilder;
+import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 
 @Slf4j
 @Service
-public class ThreadPoolManageConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
-
-    @Resource
-    private ThreadPoolService threadPoolService;
+public class AdapterThreadPoolConfigModificationVerifyServiceImpl extends AbstractConfigModificationVerifyService {
 
     @Override
     public Integer type() {
-        return ConfigModifyTypeConstants.THREAD_POOL_MANAGER;
+        return ConfigModifyTypeConstants.ADAPTER_THREAD_POOL;
     }
 
     @Override
-    public void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
-        ThreadPoolSaveOrUpdateReqDTO saveOrUpdateReqDTO = BeanUtil.convert(reqDTO, ThreadPoolSaveOrUpdateReqDTO.class);
-        saveOrUpdateReqDTO.setCoreSize(reqDTO.getCorePoolSize());
-        saveOrUpdateReqDTO.setMaxSize(reqDTO.getMaximumPoolSize());
-        threadPoolService.saveOrUpdateThreadPoolConfig(null, saveOrUpdateReqDTO);
+    protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
+        for (String each : getClientAddress(reqDTO)) {
+            String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/update").toString();
+            HttpUtil.post(urlString, JSONUtil.toJSONString(reqDTO), HTTP_EXECUTE_TIMEOUT);
+        }
     }
-
 }

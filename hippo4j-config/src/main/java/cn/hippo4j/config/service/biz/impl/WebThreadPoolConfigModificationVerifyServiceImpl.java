@@ -29,7 +29,7 @@ import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 
 @Slf4j
 @Service
-public class WebThreadPoolConfigModifyVerifyServiceImpl extends AbstractConfigModifyVerifyService {
+public class WebThreadPoolConfigModificationVerifyServiceImpl extends AbstractConfigModificationVerifyService {
 
     @Override
     public Integer type() {

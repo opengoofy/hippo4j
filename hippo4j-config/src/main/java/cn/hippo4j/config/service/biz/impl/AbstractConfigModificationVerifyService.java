@@ -26,7 +26,7 @@ import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import cn.hippo4j.config.model.HisConfigVerifyInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
-import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
+import cn.hippo4j.config.service.biz.ConfigModificationVerifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class AbstractConfigModifyVerifyService implements ConfigModifyVerifyService {
+public abstract class AbstractConfigModificationVerifyService implements ConfigModificationVerifyService {
 
     @Resource
     protected HisConfigVerifyMapper hisConfigVerifyMapper;

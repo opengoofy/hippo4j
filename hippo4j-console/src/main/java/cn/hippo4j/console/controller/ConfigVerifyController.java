@@ -21,9 +21,13 @@ import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.toolkit.ConditionUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModificationQueryRespDTO;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
-import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
-import cn.hippo4j.config.verify.ConfigModifyVerifyServiceChoose;
+import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
+import cn.hippo4j.config.service.biz.ConfigModificationQueryService;
+import cn.hippo4j.config.service.biz.ConfigModificationVerifyService;
+import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,16 +39,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(Constants.VERIFY_PATH)
 public class ConfigVerifyController {
 
-    private final ConfigModifyVerifyServiceChoose serviceChoose;
+    private final ConfigModificationVerifyServiceChoose serviceChoose;
+
+    private final ConfigModificationQueryService queryService;
 
     @PostMapping
     public Result<Void> verifyConfigModification(@RequestBody ConfigModifyVerifyReqDTO reqDTO) {
-        ConfigModifyVerifyService modifyVerifyService = serviceChoose.choose(reqDTO.getType());
+        ConfigModificationVerifyService modifyVerifyService = serviceChoose.choose(reqDTO.getType());
         ConditionUtil
                 .condition(reqDTO.getAccept(),
                         () -> modifyVerifyService.acceptModification(reqDTO),
                         () -> modifyVerifyService.rejectModification(reqDTO));
         return Results.success();
+    }
+
+    @PostMapping("/query/application/page")
+    public Result<IPage<ConfigModificationQueryRespDTO>> modificationApplicationPage(@RequestBody ThreadPoolQueryReqDTO reqDTO) {
+        return Results.success(queryService.queryApplicationPage(reqDTO));
     }
 
 }

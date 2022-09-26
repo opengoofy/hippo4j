@@ -27,7 +27,7 @@ import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.service.ThreadPoolAdapterService;
 import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hippo4j.config.verify.ConfigModifyVerifyServiceChoose;
+import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.http.HttpUtil;
 import lombok.AllArgsConstructor;
@@ -51,7 +51,7 @@ public class ThreadPoolAdapterController {
 
     private final ThreadPoolAdapterService threadPoolAdapterService;
 
-    private final ConfigModifyVerifyServiceChoose configModifyVerifyServiceChoose;
+    private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
 
     @GetMapping(REGISTER_ADAPTER_BASE_PATH + "/query")
     public Result<List<ThreadPoolAdapterRespDTO>> queryAdapterThreadPool(ThreadPoolAdapterReqDTO requestParameter) {
@@ -79,7 +79,7 @@ public class ThreadPoolAdapterController {
             modifySaveReqDTO.setItemId(requestParameter.getItem());
             modifySaveReqDTO.setTpId(requestParameter.getThreadPoolKey());
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.ADAPTER_THREAD_POOL);
-            configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
+            configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
         return Results.success();
     }

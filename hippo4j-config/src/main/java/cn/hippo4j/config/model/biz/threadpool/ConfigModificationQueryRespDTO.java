@@ -15,37 +15,70 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.service.biz;
+package cn.hippo4j.config.model.biz.threadpool;
 
-import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
+import lombok.Data;
+
+import java.util.Date;
 
 /**
- * config change verify service
+ * config modify query resp
  */
-public interface ConfigModifyVerifyService {
+@Data
+public class ConfigModificationQueryRespDTO {
 
     /**
-     * get type
-     * @return
+     * his_config_verify id
      */
-    Integer type();
+    private String id;
 
     /**
-     * save config change application
-     * @param reqDTO
+     * config modify type
      */
-    void saveConfigModifyApplication(ConfigModifySaveReqDTO reqDTO);
+    private Integer type;
 
     /**
-     * reject config modification
-     * @param reqDTO
+     * tenant id
      */
-    void rejectModification(ConfigModifyVerifyReqDTO reqDTO);
+    private String tenantId;
 
     /**
-     * accept config modification
-     * @param reqDTO
+     * item id
      */
-    void acceptModification(ConfigModifyVerifyReqDTO reqDTO);
+    private String itemId;
+
+    /**
+     * thread pool id
+     */
+    private String tpId;
+
+    /**
+     * thread pool identify
+     */
+    private String identify;
+
+    /**
+     * modify user
+     */
+    private String modifyUser;
+
+    /**
+     * verify status
+     */
+    private Integer verifyStatus;
+
+    /**
+     * gmt create
+     */
+    private Date gmtCreate;
+
+    /**
+     * gmt verify
+     */
+    private Date gmtVerify;
+
+    /**
+     * verify user
+     */
+    private String verifyUser;
 }

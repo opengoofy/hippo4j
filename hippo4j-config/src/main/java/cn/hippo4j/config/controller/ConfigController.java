@@ -19,7 +19,6 @@ package cn.hippo4j.config.controller;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.UserContext;
@@ -33,7 +32,7 @@ import cn.hippo4j.config.service.ConfigServletInner;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hippo4j.config.toolkit.Md5ConfigUtil;
-import cn.hippo4j.config.verify.ConfigModifyVerifyServiceChoose;
+import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -57,7 +56,7 @@ public class ConfigController {
 
     private final ConfigServletInner configServletInner;
 
-    private final ConfigModifyVerifyServiceChoose configModifyVerifyServiceChoose;
+    private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
 
     @GetMapping
     public Result<ConfigInfoBase> detailConfigInfo(@RequestParam("tpId") String tpId,
@@ -81,7 +80,7 @@ public class ConfigController {
             modifySaveReqDTO.setModifyAll(StringUtil.isEmpty(identify) ? true : false);
             modifySaveReqDTO.setIdentify(identify);
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_INSTANCE);
-            configModifyVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
+            configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
         return Results.success(true);
     }

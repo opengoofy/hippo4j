@@ -19,7 +19,7 @@ package cn.hippo4j.config.verify;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
-import cn.hippo4j.config.service.biz.ConfigModifyVerifyService;
+import cn.hippo4j.config.service.biz.ConfigModificationVerifyService;
 import com.google.common.collect.Maps;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -30,12 +30,12 @@ import java.util.Map;
  * config change verify service choose
  */
 @Component
-public class ConfigModifyVerifyServiceChoose implements CommandLineRunner {
+public class ConfigModificationVerifyServiceChoose implements CommandLineRunner {
 
     /**
      * Storage config change verify service container.
      */
-    private Map<Integer, ConfigModifyVerifyService> configChangeVerifyServiceChooseMap = Maps.newHashMap();
+    private Map<Integer, ConfigModificationVerifyService> configChangeVerifyServiceChooseMap = Maps.newHashMap();
 
     /**
      * Choose by type.
@@ -43,15 +43,15 @@ public class ConfigModifyVerifyServiceChoose implements CommandLineRunner {
      * @param type {@link ConfigModifyTypeConstants}
      * @return
      */
-    public ConfigModifyVerifyService choose(Integer type) {
-        ConfigModifyVerifyService verifyService = configChangeVerifyServiceChooseMap.get(type);
+    public ConfigModificationVerifyService choose(Integer type) {
+        ConfigModificationVerifyService verifyService = configChangeVerifyServiceChooseMap.get(type);
         return verifyService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        Map<String, ConfigModifyVerifyService> configChangeVerifyServiceMap =
-                ApplicationContextHolder.getBeansOfType(ConfigModifyVerifyService.class);
+        Map<String, ConfigModificationVerifyService> configChangeVerifyServiceMap =
+                ApplicationContextHolder.getBeansOfType(ConfigModificationVerifyService.class);
         configChangeVerifyServiceMap.values().forEach(each -> configChangeVerifyServiceChooseMap.put(each.type(), each));
     }
 }
