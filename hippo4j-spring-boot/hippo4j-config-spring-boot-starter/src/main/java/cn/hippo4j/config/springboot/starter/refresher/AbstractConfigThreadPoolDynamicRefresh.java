@@ -18,6 +18,7 @@
 package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
+import cn.hippo4j.common.api.ThreadPoolInitRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
@@ -37,7 +38,11 @@ import java.util.concurrent.ExecutorService;
  */
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean {
+public abstract class AbstractConfigThreadPoolDynamicRefresh
+        implements
+            ThreadPoolDynamicRefresh,
+            ThreadPoolInitRefresh,
+            InitializingBean {
 
     protected final BootstrapConfigProperties bootstrapConfigProperties;
 
@@ -45,6 +50,11 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
 
     public AbstractConfigThreadPoolDynamicRefresh() {
         bootstrapConfigProperties = ApplicationContextHolder.getBean(BootstrapConfigProperties.class);
+    }
+
+    @Override
+    public void initRefresh(String context) {
+        dynamicRefresh(context);
     }
 
     @Override

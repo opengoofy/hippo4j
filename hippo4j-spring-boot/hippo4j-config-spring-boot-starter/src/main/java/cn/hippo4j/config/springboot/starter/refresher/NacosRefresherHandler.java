@@ -32,6 +32,9 @@ import java.util.concurrent.Executor;
 @Slf4j
 public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
+    static final String DATA_ID = "data-id";
+    static final String GROUP = "group";
+
     @NacosInjected
     private ConfigService configService;
 
@@ -40,10 +43,18 @@ public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefres
     }
 
     @Override
+    public String getProperties() throws Exception {
+        Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
+        String dataId = nacosConfig.get(DATA_ID);
+        String group = nacosConfig.get(GROUP);
+        return configService.getConfig(dataId, group, Long.MAX_VALUE);
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
 
-        configService.addListener(nacosConfig.get("data-id"), nacosConfig.get("group"),
+        configService.addListener(nacosConfig.get(DATA_ID), nacosConfig.get(GROUP),
                 new Listener() {
 
                     @Override
@@ -56,6 +67,6 @@ public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefres
                         dynamicRefresh(configInfo);
                     }
                 });
-        log.info("Dynamic thread pool refresher, add nacos listener success. data-id: {}, group: {}", nacosConfig.get("data-id"), nacosConfig.get("group"));
+        log.info("Dynamic thread pool refresher, add nacos listener success. data-id: {}, group: {}", nacosConfig.get(DATA_ID), nacosConfig.get(GROUP));
     }
 }

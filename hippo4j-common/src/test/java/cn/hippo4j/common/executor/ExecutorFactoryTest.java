@@ -15,43 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.common.executor;
 
-import lombok.Data;
-
-/**
- * Adapter executor properties.
- */
-@Data
-public class AdapterExecutorProperties {
-
-    /**
-     * Mark
-     */
-    private String mark;
-
-    /**
-     * Thread-pool key
-     */
-    private String threadPoolKey;
-
-    /**
-     * Core pool size
-     */
-    private Integer corePoolSize;
-
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
-
-    /**
-     * Nodes, application startup is not affect, change properties is effect
-     */
-    private String nodes;
-
-    /**
-     * these propertied is enabled?
-     */
-    private Boolean enable = true;
+public final class ExecutorFactoryTest {
 }

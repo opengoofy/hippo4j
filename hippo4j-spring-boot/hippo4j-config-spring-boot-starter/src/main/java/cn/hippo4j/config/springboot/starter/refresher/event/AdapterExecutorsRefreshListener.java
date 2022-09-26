@@ -56,7 +56,7 @@ public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<Ada
         for (AdapterExecutorProperties each : adapterExecutors) {
             String buildKey = each.getMark() + IDENTIFY_SLICER_SYMBOL + each.getThreadPoolKey();
             AdapterExecutorProperties adapterExecutorProperties = DynamicThreadPoolAdapterRegister.ADAPTER_EXECUTORS_MAP.get(buildKey);
-            if (adapterExecutorProperties == null || !match(adapterExecutorProperties)) {
+            if (adapterExecutorProperties == null || !adapterExecutorProperties.getEnable() || !match(adapterExecutorProperties)) {
                 continue;
             }
             if (!Objects.equals(adapterExecutorProperties.getCorePoolSize(), each.getCorePoolSize())

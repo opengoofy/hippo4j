@@ -15,43 +15,32 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.server.config;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Adapter executor properties.
+ * Database properties.
+ *
+ * <p> Quoted from org.apache.shenyu.admin.config.properties.DataBaseProperties
  */
 @Data
-public class AdapterExecutorProperties {
+@ConfigurationProperties(prefix = "hippo4j.database")
+public class DataBaseProperties {
 
     /**
-     * Mark
+     * Dialect
      */
-    private String mark;
+    private String dialect;
 
     /**
-     * Thread-pool key
+     * Init script
      */
-    private String threadPoolKey;
+    private String initScript;
 
     /**
-     * Core pool size
+     * Init enable
      */
-    private Integer corePoolSize;
-
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
-
-    /**
-     * Nodes, application startup is not affect, change properties is effect
-     */
-    private String nodes;
-
-    /**
-     * these propertied is enabled?
-     */
-    private Boolean enable = true;
+    private Boolean initEnable;
 }

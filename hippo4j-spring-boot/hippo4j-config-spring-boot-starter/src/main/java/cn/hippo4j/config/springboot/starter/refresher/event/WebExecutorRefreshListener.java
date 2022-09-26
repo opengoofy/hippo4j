@@ -79,7 +79,7 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
         } else if (bindableCoreProperties.getJetty() != null) {
             webThreadPoolProperties = bindableCoreProperties.getJetty();
         }
-        if (webThreadPoolProperties != null && match(webThreadPoolProperties)) {
+        if (webThreadPoolProperties != null && webThreadPoolProperties.getEnable() && match(webThreadPoolProperties)) {
             threadPoolParameterInfo = ThreadPoolParameterInfo.builder()
                     .coreSize(webThreadPoolProperties.getCorePoolSize())
                     .maximumPoolSize(webThreadPoolProperties.getMaximumPoolSize())

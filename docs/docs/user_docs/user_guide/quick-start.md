@@ -6,18 +6,10 @@ sidebar_position: 3
 
 ## 服务启动
 
-MySQL 数据库导入 [Hippo4J 初始化 SQL 语句](https://github.com/longtai-cn/hippo4j/blob/develop/hippo4j-server/conf/hippo4j_manager.sql)。
-
-使用 Docker 运行服务端，可以灵活定制相关参数。`MYSQL_HOST` 需要使用本地 IP，不能使用 `127.0.0.1`。
+使用 Docker 运行服务端，默认使用内置 H2 数据库，数据持久化到 Docker 容器存储卷中。
 
 ```shell
-docker run -d -p 6691:6691 --name hippo4j-server \
--e MYSQL_HOST=xxx.xxx.x.x \
--e MYSQL_PORT=3306 \
--e MYSQL_DB=hippo4j_manager \
--e MYSQL_USERNAME=root \
--e MYSQL_PASSWORD=root \
-hippo4j/hippo4j-server
+docker run -d -p 6691:6691 --name hippo4j-server hippo4j/hippo4j-server
 ```
 
 > 如果没有 Docker，可以使用源码编译的方式，启动 [Hippo4J-Server](https://github.com/longtai-cn/hippo4j/tree/develop/hippo4j-server) 模块下 ServerApplication 应用类。
