@@ -54,6 +54,16 @@ public class ConfigModifyVerifyReqDTO {
     private String identify;
 
     /**
+     * adapter thread pool mark
+     */
+    private String mark;
+
+    /**
+     * adapter thread pool key
+     */
+    private String threadPoolKey;
+
+    /**
      * Thread-pool id
      */
     @JsonAlias("threadPoolId")
