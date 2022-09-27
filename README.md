@@ -22,6 +22,8 @@
 - 无法执行优雅关闭，当项目关闭时，大量正在运行的线程池任务被丢弃。
 - 线程池运行中，任务执行停止，怀疑发生死锁或执行耗时操作，但是无从下手。
 
+---
+
 ## 什么是 Hippo-4J
 
 Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
@@ -38,17 +40,23 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更。
 - 中间件适配 - Dubbo、Hystrix、RocketMQ、RabbitMQ 等消费线程池运行时数据查看和线程数变更。
 
+---
+
 ## 快速开始
 
 对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/user_docs/user_guide/quick-start)
 
 演示环境： [http://console.hippo4j.cn/index.html](http://console.hippo4j.cn/index.html)
 
+---
+
 ## 联系我
 
 ![](https://user-images.githubusercontent.com/77398366/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)
 
 扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)。
+
+---
 
 ## 友情链接
 
@@ -57,6 +65,8 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - [[ HertzBeat ]](https://github.com/dromara/hertzbeat)：易用友好的云监控系统, 无需 Agent, 强大自定义监控能力。   
 - [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
+
+---
 
 ## 贡献者
 
