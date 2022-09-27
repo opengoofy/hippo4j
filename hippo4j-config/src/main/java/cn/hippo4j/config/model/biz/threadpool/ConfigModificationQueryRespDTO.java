@@ -17,6 +17,7 @@
 
 package cn.hippo4j.config.model.biz.threadpool;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -58,6 +59,11 @@ public class ConfigModificationQueryRespDTO {
     private String identify;
 
     /**
+     * weather modify all instances
+     */
+    private Boolean modifyAll;
+
+    /**
      * modify user
      */
     private String modifyUser;
@@ -70,11 +76,13 @@ public class ConfigModificationQueryRespDTO {
     /**
      * gmt create
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
      * gmt verify
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtVerify;
 
     /**
