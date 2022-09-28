@@ -17,6 +17,7 @@
 
 package cn.hippo4j.config.service.biz;
 
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModificationQueryRespDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -32,4 +33,11 @@ public interface ConfigModificationQueryService {
      * @return
      */
     IPage<ConfigModificationQueryRespDTO> queryApplicationPage(ThreadPoolQueryReqDTO reqDTO);
+
+    /**
+     * query config modification detail by application id
+     * @param id
+     * @return
+     */
+    ThreadPoolParameterInfo queryApplicationDetail(Long id);
 }

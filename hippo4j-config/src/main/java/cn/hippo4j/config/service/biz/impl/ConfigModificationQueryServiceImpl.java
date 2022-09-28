@@ -17,13 +17,12 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
-import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.HisConfigVerifyInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModificationQueryRespDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
 import cn.hippo4j.config.service.biz.ConfigModificationQueryService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -47,5 +46,14 @@ public class ConfigModificationQueryServiceImpl implements ConfigModificationQue
                 .eq(!StringUtils.isBlank(reqDTO.getItemId()), HisConfigVerifyInfo::getItemId, reqDTO.getItemId())
                 .orderByDesc(HisConfigVerifyInfo::getGmtCreate);
         return hisConfigVerifyMapper.selectPage(reqDTO, wrapper).convert(each -> BeanUtil.convert(each, ConfigModificationQueryRespDTO.class));
+    }
+
+    @Override
+    public ThreadPoolParameterInfo queryApplicationDetail(Long id) {
+        HisConfigVerifyInfo hisConfigVerifyInfo = hisConfigVerifyMapper.selectById(id);
+        ThreadPoolParameterInfo poolParameterInfo = JSONUtil.parseObject(hisConfigVerifyInfo.getContent(), ThreadPoolParameterInfo.class);
+        poolParameterInfo.setCorePoolSize(poolParameterInfo.corePoolSizeAdapt());
+        poolParameterInfo.setMaximumPoolSize(poolParameterInfo.maximumPoolSizeAdapt());
+        return poolParameterInfo;
     }
 }

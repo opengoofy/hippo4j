@@ -18,6 +18,7 @@
 package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.ConditionUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
@@ -29,10 +30,7 @@ import cn.hippo4j.config.service.biz.ConfigModificationVerifyService;
 import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -56,6 +54,11 @@ public class ConfigVerifyController {
     @PostMapping("/query/application/page")
     public Result<IPage<ConfigModificationQueryRespDTO>> modificationApplicationPage(@RequestBody ThreadPoolQueryReqDTO reqDTO) {
         return Results.success(queryService.queryApplicationPage(reqDTO));
+    }
+
+    @GetMapping("/query/application/detail")
+    public Result<ThreadPoolParameterInfo> modificationApplicationDetail(@RequestParam("id") Long id) {
+        return Results.success(queryService.queryApplicationDetail(id));
     }
 
 }
