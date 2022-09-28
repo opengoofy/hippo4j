@@ -47,6 +47,7 @@
     </logger>
 
     <root level="${logLevel}">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE-ALL"/>
         <appender-ref ref="FILE-ERROR"/>
     </root>
