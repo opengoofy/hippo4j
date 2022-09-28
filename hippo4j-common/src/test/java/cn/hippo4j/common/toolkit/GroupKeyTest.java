@@ -17,5 +17,67 @@
 
 package cn.hippo4j.common.toolkit;
 
-public final class GroupKeyTest {
+import org.checkerframework.checker.units.qual.A;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+public class GroupKeyTest {
+
+    @Test
+    public void getKey() {
+        String dataId = "dataId";
+        String group = "group";
+        String datumStr = "datumStr";
+        String expected = "dataId+group+datumStr";
+        String key = GroupKey.getKey(dataId, group, datumStr);
+        Assert.isTrue(key.equals(expected));
+    }
+
+    @Test
+    public void testGetKey() {
+        String dataId = "dataId";
+        String group = "group";
+        String expected = "dataId+group";
+        String key = GroupKey.getKey(dataId, group);
+        Assert.isTrue(key.equals(expected));
+    }
+
+    @Test
+    public void testGetKey1() {
+        String[] strings = {"dataId", "group", "datumStr"};
+        String expected = "dataId+group+datumStr";
+        String key = GroupKey.getKey(strings);
+        Assert.isTrue(key.equals(expected));
+    }
+
+    @Test
+    public void getKeyTenant() {
+        String dataId = "dataId";
+        String group = "group";
+        String datumStr = "datumStr";
+        String expected = "dataId+group+datumStr";
+
+        String keyTenant = GroupKey.getKeyTenant(dataId, group, datumStr);
+        Assert.isTrue(keyTenant.equals(expected));
+    }
+
+    @Test
+    public void parseKey() {
+        String groupKey = "prescription+dynamic-threadpool-example+message-consume+12";
+        String[] strings = GroupKey.parseKey(groupKey);
+        Assert.isTrue(strings.length == 4);
+    }
+
+    @Test
+    public void urlEncode() {
+        String str = "hello+World%";
+        String expected = "hello%2BWorld%25";
+        StringBuilder stringBuilder = new StringBuilder();
+        GroupKey.urlEncode(str, stringBuilder);
+        Assert.isTrue(stringBuilder.toString().contains(expected));
+    }
 }
