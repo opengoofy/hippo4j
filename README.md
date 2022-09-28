@@ -386,6 +386,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
     </td></tr>
 <tr>
     <td align="center">
+        <a href="https://github.com/baymax55">
+            <img src="https://avatars.githubusercontent.com/u/35788491?v=4" width="50;" alt="baymax55"/>
+            <br />
+            <sub><b>Baymax55</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/qizhongju">
             <img src="https://avatars.githubusercontent.com/u/19883548?v=4" width="50;" alt="qizhongju"/>
             <br />
@@ -440,15 +447,15 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/stronglong">
             <img src="https://avatars.githubusercontent.com/u/15846157?v=4" width="50;" alt="stronglong"/>
             <br />
             <sub><b>Itermis</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/janey668">
             <img src="https://avatars.githubusercontent.com/u/99872936?v=4" width="50;" alt="janey668"/>
@@ -473,13 +480,6 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
     <td align="center">
         <a href="https://github.com/kongyanbo-cx">
             <img src="https://avatars.githubusercontent.com/u/58963923?v=4" width="50;" alt="kongyanbo-cx"/>
-            <br />
-            <sub><b>Null</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/lishiyu">
-            <img src="https://avatars.githubusercontent.com/u/36871640?v=4" width="50;" alt="lishiyu"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
