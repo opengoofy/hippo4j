@@ -12,14 +12,11 @@ Docker 镜像默认使用内置 H2 数据库，数据持久化到 Docker 容器�
 docker run -d -p 6691:6691 --name hippo4j-server hippo4j/hippo4j-server
 ```
 
-使用mysql
+或者，底层存储数据库切换为 MySQL。`DATASOURCE_HOST` 需要切换为本地 IP，不能使用 `127.0.0.1` 或 `localhost`。
+
 ```shell
-/**
-* 暂时只暴露以下参数
-* DATASOURCE_HOST、DATASOURCE_PORT、DATASOURCE_DB、DATASOURCE_USERNAME、DATASOURCE_PASSWORD
-*/
 docker run -d -p 6691:6691 --name hippo4j-server \
--e DATASOURCE_HOST=127.0.0.1 \
+-e DATASOURCE_HOST=xxx.xxx.xxx.xxx \
 -e DATASOURCE_PORT=3306 \
 -e DATASOURCE_DB=hippo4j_manager \
 -e DATASOURCE_USERNAME=root \
