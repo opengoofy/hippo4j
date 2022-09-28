@@ -17,5 +17,19 @@
 
 package cn.hippo4j.common.function;
 
+import cn.hippo4j.common.toolkit.Assert;
+import java.math.BigDecimal;
+import org.junit.Test;
+
 public final class MatcherFunctionTest {
+    
+    public static <T> boolean matchTest(Matcher<T> matcher, T value) {
+        return matcher.match(value);
+    }
+
+    @Test
+    public void assertMatch() {
+        Assert.isTrue(matchTest(Boolean.TRUE::equals, true));
+        Assert.isTrue(matchTest(BigDecimal.ZERO::equals, BigDecimal.ZERO));
+    }
 }
