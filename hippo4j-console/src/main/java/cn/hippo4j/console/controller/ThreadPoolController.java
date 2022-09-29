@@ -148,6 +148,8 @@ public class ThreadPoolController {
                 continue;
             }
             WebThreadPoolRespDTO result = BeanUtil.convert(data, WebThreadPoolRespDTO.class);
+            result.setItemId(itemId);
+            result.setTenantId(each.getHolder().getGroupKey().split("[+]")[1]);
             result.setActive(each.getHolder().getActive());
             result.setIdentify(each.getHolder().getIdentify());
             result.setClientAddress(each.getHolder().getCallBackUrl());
@@ -218,4 +220,5 @@ public class ThreadPoolController {
         });
         return Results.success(returnThreadPool);
     }
+
 }

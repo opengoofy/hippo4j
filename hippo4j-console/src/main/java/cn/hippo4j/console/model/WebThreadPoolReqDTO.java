@@ -60,7 +60,7 @@ public class WebThreadPoolReqDTO {
     /**
      * weather modify all instances
      */
-    private Integer modifyAll;
+    private Boolean modifyAll;
 
     /**
      * Client address list
