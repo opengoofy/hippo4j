@@ -39,6 +39,11 @@ public class ConfigModificationQueryRespDTO {
     private Integer type;
 
     /**
+     * thread pool mark
+     */
+    private String mark;
+
+    /**
      * tenant id
      */
     private String tenantId;
