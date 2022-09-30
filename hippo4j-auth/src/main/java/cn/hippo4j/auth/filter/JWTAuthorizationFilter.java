@@ -1,13 +1,33 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.auth.filter;
 
+import cn.hippo4j.auth.security.JwtTokenManager;
 import cn.hippo4j.auth.toolkit.JwtTokenUtil;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ServiceException;
-import com.alibaba.fastjson.JSON;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -19,47 +39,67 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
+import static cn.hippo4j.common.constant.Constants.ACCESS_TOKEN;
+import static cn.hippo4j.common.web.exception.ErrorCodeEnum.LOGIN_TIMEOUT;
+
 /**
  * JWT authorization filter.
- *
- * @author chen.ma
- * @date 2021/11/9 22:21
  */
 @Slf4j
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+    private final JwtTokenManager tokenManager;
+
+    public JWTAuthorizationFilter(JwtTokenManager tokenManager, AuthenticationManager authenticationManager) {
         super(authenticationManager);
+        this.tokenManager = tokenManager;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
+        // Token when verifying client interaction.
+        String accessToken = request.getParameter(ACCESS_TOKEN);
+        if (StrUtil.isNotBlank(accessToken)) {
+            tokenManager.validateToken(accessToken);
+            Authentication authentication = this.tokenManager.getAuthentication(accessToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            chain.doFilter(request, response);
+            return;
+        }
 
+        // If there is no Authorization information in the request header, it will be released directly.
         String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
-        // 如果请求头中没有 Authorization 信息则直接放行
         if (tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
-        // 如果请求头中有 Token, 则进行解析, 并且设置认证信息
+
+        // If there is a Token in the request header, it is parsed and the authentication information is set.
         try {
             SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader));
         } catch (Exception ex) {
-            // 返回 Json 形式的错误信息
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
-            response.getWriter().write(JSON.toJSONString(Results.failure("-1", ex.getMessage())));
+            String resultStatus = "-1";
+            if (ex instanceof ServiceException) {
+                ServiceException serviceException = (ServiceException) ex;
+                resultStatus = serviceException.errorCode.getCode();
+            }
+            response.getWriter().write(JSONUtil.toJSONString(Results.failure(resultStatus, ex.getMessage())));
             response.getWriter().flush();
             return;
         }
-
-        super.doFilterInternal(request, response, chain);
+        try {
+            super.doFilterInternal(request, response, chain);
+        } finally {
+            UserContext.clear();
+        }
     }
 
     /**
-     * Token 中获取用户信息并新建一个 Token.
+     * Obtain user information from Token and create a new Token.
      *
      * @param tokenHeader
      * @return
@@ -68,20 +108,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String token = tokenHeader.replace(JwtTokenUtil.TOKEN_PREFIX, "");
         boolean expiration = JwtTokenUtil.isExpiration(token);
         if (expiration) {
-            throw new ServiceException("登录时间过长，请退出重新登录");
+            throw new ServiceException(LOGIN_TIMEOUT);
         }
-
         String username = JwtTokenUtil.getUsername(token);
-        UserContext.setUserName(username);
-
+        String userRole = JwtTokenUtil.getUserRole(token);
+        UserContext.setUserInfo(username, userRole);
         String role = JwtTokenUtil.getUserRole(token);
         if (username != null) {
             return new UsernamePasswordAuthenticationToken(username, null,
-                    Collections.singleton(new SimpleGrantedAuthority(role))
-            );
+                    Collections.singleton(new SimpleGrantedAuthority(role)));
         }
-
         return null;
     }
-
 }

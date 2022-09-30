@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.springboot.starter.config.DynamicThreadPoolAutoConfiguration
+org.springframework.boot.diagnostics.FailureAnalyzer=cn.hippo4j.springboot.starter.core.ConfigEmptyAnalyzer

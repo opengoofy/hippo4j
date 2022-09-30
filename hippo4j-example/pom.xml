@@ -2,67 +2,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>cn.hippo4j</groupId>
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
-
     <artifactId>hippo4j-example</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
-    <name>${project.artifactId}</name>
-    <description>Demo project for Spring Boot</description>
+    <modules>
+        <module>hippo4j-example-core</module>
+        <module>hippo4j-spring-boot-starter-example</module>
+        <module>hippo4j-spring-boot-starter-es-monitor-example</module>
+        <module>hippo4j-config-nacos-spring-boot-starter-example</module>
+        <module>hippo4j-config-apollo-spring-boot-starter-example</module>
+        <module>hippo4j-config-zookeeper-spring-boot-starter-example</module>
+        <module>hippo4j-spring-boot-starter-adapter-kafka-example</module>
+        <module>hippo4j-spring-boot-starter-adapter-rabbitmq-example</module>
+        <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rabbitmq-example</module>
+        <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq-example</module>
+        <module>hippo4j-spring-boot-starter-adapter-rocketmq-example</module>
+        <module>hippo4j-config-etcd-spring-boot-starter-example</module>
+    </modules>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-spring-boot-starter</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>open-change-tool</artifactId>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

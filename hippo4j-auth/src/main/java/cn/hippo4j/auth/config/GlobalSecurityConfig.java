@@ -1,11 +1,31 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.auth.config;
 
 import cn.hippo4j.auth.constant.Constants;
 import cn.hippo4j.auth.filter.JWTAuthenticationFilter;
 import cn.hippo4j.auth.filter.JWTAuthorizationFilter;
+import cn.hippo4j.auth.security.JwtTokenManager;
 import cn.hippo4j.auth.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,10 +43,7 @@ import javax.annotation.Resource;
 import java.util.stream.Stream;
 
 /**
- * 安全配置.
- *
- * @author chen.ma
- * @date 2021/11/9 21:10
+ * Global security config.
  */
 @Configuration
 @EnableWebSecurity
@@ -36,6 +53,9 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private UserDetailsService userDetailsService;
 
+    @Resource
+    private JwtTokenManager tokenManager;
+
     @Bean
     public UserDetailsService customUserService() {
         return new UserDetailsServiceImpl();
@@ -44,6 +64,12 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
@@ -70,23 +96,13 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(tokenManager, authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        String[] ignores = Stream
-                .of(
-                        "/v1/cs/apps/renew/**",
-                        "/v1/cs/apps/remove/**",
-                        "/v1/cs/apps/register/**",
-                        "/v1/cs/configs/**",
-                        "/v1/cs/listener/**",
-                        "/v1/cs/notify/list/config/**"
-                )
-                .toArray(String[]::new);
+        String[] ignores = Stream.of("/hippo4j/v1/cs/auth/users/apply/token/**").toArray(String[]::new);
         web.ignoring().antMatchers(ignores);
     }
-
 }

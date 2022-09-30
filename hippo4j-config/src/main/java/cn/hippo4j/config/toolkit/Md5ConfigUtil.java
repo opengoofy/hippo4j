@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.toolkit;
 
 import cn.hippo4j.common.toolkit.GroupKey;
@@ -17,12 +34,8 @@ import java.util.Map;
 import static cn.hippo4j.common.constant.Constants.LINE_SEPARATOR;
 import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
 
-
 /**
  * Md5 config util.
- *
- * @author chen.ma
- * @date 2021/6/21 18:32
  */
 public class Md5ConfigUtil {
 
@@ -50,19 +63,17 @@ public class Md5ConfigUtil {
     public static List<String> compareMd5(HttpServletRequest request, Map<String, String> clientMd5Map) {
         List<String> changedGroupKeys = new ArrayList();
         clientMd5Map.forEach((key, val) -> {
-            String remoteIp = RequestUtil.getRemoteIp(request);
-            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, remoteIp);
+            String clientIdentify = RequestUtil.getClientIdentify(request);
+            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify);
             if (!isUpdateData) {
                 changedGroupKeys.add(key);
             }
         });
-
         return changedGroupKeys;
     }
 
     public static Map<String, String> getClientMd5Map(String configKeysString) {
         Map<String, String> md5Map = new HashMap(5);
-
         if (null == configKeysString || "".equals(configKeysString)) {
             return md5Map;
         }
@@ -83,12 +94,10 @@ public class Md5ConfigUtil {
                     endValue = configKeysString.substring(start, i);
                 }
                 start = i + 1;
-
                 String groupKey = getKey(tmpList.get(0), tmpList.get(1), tmpList.get(2), tmpList.get(3));
                 groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
                 md5Map.put(groupKey, endValue);
                 tmpList.clear();
-
                 // Protect malformed messages
                 if (md5Map.size() > 10000) {
                     throw new IllegalArgumentException("invalid protocol, too much listener");
@@ -116,7 +125,6 @@ public class Md5ConfigUtil {
             GroupKey.urlEncode(tenant, sb);
             sb.append("+").append(identify);
         }
-
         return sb.toString();
     }
 
@@ -124,9 +132,7 @@ public class Md5ConfigUtil {
         if (null == changedGroupKeys) {
             return "";
         }
-
         StringBuilder sb = new StringBuilder();
-
         for (String groupKey : changedGroupKeys) {
             String[] dataIdGroupId = GroupKey.parseKey(groupKey);
             sb.append(dataIdGroupId[0]);
@@ -141,8 +147,6 @@ public class Md5ConfigUtil {
             }
             sb.append(LINE_SEPARATOR);
         }
-
         return URLEncoder.encode(sb.toString(), "UTF-8");
     }
-
 }

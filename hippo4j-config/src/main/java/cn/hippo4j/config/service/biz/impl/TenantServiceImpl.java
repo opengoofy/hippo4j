@@ -1,7 +1,24 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.config.enums.DelEnum;
 import cn.hippo4j.config.mapper.TenantInfoMapper;
 import cn.hippo4j.config.model.TenantInfo;
 import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
@@ -13,7 +30,6 @@ import cn.hippo4j.config.model.biz.tenant.TenantUpdateReqDTO;
 import cn.hippo4j.config.service.biz.ItemService;
 import cn.hippo4j.config.service.biz.TenantService;
 import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hippo4j.tools.logrecord.annotation.LogRecord;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -28,9 +44,6 @@ import java.util.List;
 
 /**
  * Tenant service impl.
- *
- * @author chen.ma
- * @date 2021/6/29 21:12
  */
 @Service
 @AllArgsConstructor
@@ -49,7 +62,6 @@ public class TenantServiceImpl implements TenantService {
     public TenantRespDTO getTenantByTenantId(String tenantId) {
         LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers
                 .lambdaQuery(TenantInfo.class).eq(TenantInfo::getTenantId, tenantId);
-
         TenantInfo tenantInfo = tenantInfoMapper.selectOne(queryWrapper);
         TenantRespDTO result = BeanUtil.convert(tenantInfo, TenantRespDTO.class);
         return result;
@@ -60,8 +72,8 @@ public class TenantServiceImpl implements TenantService {
         LambdaQueryWrapper<TenantInfo> wrapper = Wrappers.lambdaQuery(TenantInfo.class)
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), TenantInfo::getTenantId, reqDTO.getTenantId())
                 .eq(!StringUtils.isEmpty(reqDTO.getTenantName()), TenantInfo::getTenantName, reqDTO.getTenantName())
-                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), TenantInfo::getOwner, reqDTO.getOwner());
-
+                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), TenantInfo::getOwner, reqDTO.getOwner())
+                .orderByDesc(reqDTO.getDesc() != null, TenantInfo::getGmtCreate);
         Page resultPage = tenantInfoMapper.selectPage(reqDTO, wrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, TenantRespDTO.class));
     }
@@ -70,32 +82,24 @@ public class TenantServiceImpl implements TenantService {
     public void saveTenant(TenantSaveReqDTO reqDTO) {
         LambdaQueryWrapper<TenantInfo> queryWrapper = Wrappers.lambdaQuery(TenantInfo.class)
                 .eq(TenantInfo::getTenantId, reqDTO.getTenantId());
-
-        TenantInfo existTenantInfo = tenantInfoMapper.selectOne(queryWrapper);
-        Assert.isNull(existTenantInfo, "租户 ID 不允许重复.");
-
-        TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
-        int insertResult = tenantInfoMapper.insert(tenantInfo);
-
-        boolean retBool = SqlHelper.retBool(insertResult);
-        if (!retBool) {
-            throw new RuntimeException("Save Error.");
+        // Currently it is a single application, and it supports switching distributed locks during cluster deployment in the future.
+        synchronized (TenantService.class) {
+            TenantInfo existTenantInfo = tenantInfoMapper.selectOne(queryWrapper);
+            Assert.isNull(existTenantInfo, "租户配置已存在.");
+            TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
+            int insertResult = tenantInfoMapper.insert(tenantInfo);
+            boolean retBool = SqlHelper.retBool(insertResult);
+            if (!retBool) {
+                throw new RuntimeException("Save Error.");
+            }
         }
     }
 
     @Override
-    @LogRecord(
-            prefix = "item",
-            bizNo = "{{#reqDTO.tenantId}}_{{#reqDTO.tenantName}}",
-            category = "TENANT_UPDATE",
-            success = "更新租户, ID :: {{#reqDTO.id}}, 租户名称由 :: {TENANT{#reqDTO.id}} -> {{#reqDTO.tenantName}}",
-            detail = "{{#reqDTO.toString()}}"
-    )
     public void updateTenant(TenantUpdateReqDTO reqDTO) {
         TenantInfo tenantInfo = BeanUtil.convert(reqDTO, TenantInfo.class);
         int updateResult = tenantInfoMapper.update(tenantInfo, Wrappers
                 .lambdaUpdate(TenantInfo.class).eq(TenantInfo::getTenantId, reqDTO.getTenantId()));
-
         boolean retBool = SqlHelper.retBool(updateResult);
         if (!retBool) {
             throw new RuntimeException("Update Error.");
@@ -108,9 +112,8 @@ public class TenantServiceImpl implements TenantService {
         reqDTO.setTenantId(tenantId);
         List<ItemRespDTO> itemList = itemService.queryItem(reqDTO);
         if (CollectionUtils.isNotEmpty(itemList)) {
-            throw new RuntimeException("The line of business contains project references, and the deletion failed.");
+            throw new RuntimeException("租户包含项目引用, 删除失败.");
         }
-
         int updateResult = tenantInfoMapper.update(new TenantInfo(),
                 Wrappers.lambdaUpdate(TenantInfo.class)
                         .eq(TenantInfo::getTenantId, tenantId)

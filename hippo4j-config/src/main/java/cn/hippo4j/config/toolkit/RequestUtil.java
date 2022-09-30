@@ -1,6 +1,23 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.config.toolkit;
 
-import org.springframework.util.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,9 +25,6 @@ import static cn.hippo4j.common.constant.Constants.LONG_PULLING_CLIENT_IDENTIFIC
 
 /**
  * Request util.
- *
- * @author chen.ma
- * @date 2021/6/23 18:28
  */
 public class RequestUtil {
 
@@ -20,14 +34,8 @@ public class RequestUtil {
 
     private static final String X_FORWARDED_FOR_SPLIT_SYMBOL = ",";
 
-    public static String getRemoteIp(HttpServletRequest request) {
-        String xForwardedFor = request.getHeader(X_FORWARDED_FOR);
-        if (!StringUtils.isEmpty(xForwardedFor)) {
-            return xForwardedFor.split(X_FORWARDED_FOR_SPLIT_SYMBOL)[0].trim();
-        }
-        String nginxHeader = request.getHeader(X_REAL_IP);
-        String ipPort = request.getHeader(LONG_PULLING_CLIENT_IDENTIFICATION);
-        return StringUtils.isEmpty(nginxHeader) ? ipPort : nginxHeader;
+    public static String getClientIdentify(HttpServletRequest request) {
+        String identify = request.getHeader(LONG_PULLING_CLIENT_IDENTIFICATION);
+        return StrUtil.isBlank(identify) ? "" : identify;
     }
-
 }

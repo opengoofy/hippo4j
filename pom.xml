@@ -2,61 +2,73 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-all</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
-
     <name>${project.artifactId}</name>
-    <url>https://github.com/acmenlt/dynamic-threadpool</url>
-    <description>🔥 强大的动态线程池，附带监控报警功能（没有依赖中间件）</description>
+    <description>Dynamic observable thread pool framework</description>
 
     <modules>
+        <module>hippo4j-adapter</module>
         <module>hippo4j-auth</module>
         <module>hippo4j-common</module>
-        <module>hippo4j-console</module>
-        <module>hippo4j-server</module>
         <module>hippo4j-config</module>
+        <module>hippo4j-console</module>
+        <module>hippo4j-core</module>
         <module>hippo4j-discovery</module>
         <module>hippo4j-example</module>
-        <module>hippo4j-tools</module>
-        <module>hippo4j-spring-boot-starter</module>
+        <module>hippo4j-message</module>
+        <module>hippo4j-monitor</module>
+        <module>hippo4j-server</module>
+        <module>hippo4j-spring-boot</module>
     </modules>
 
     <properties>
-        <java.version>1.8</java.version>
-        <revision>1.0.0-RC3</revision>
-
+        <revision>1.4.2-SNAPSHOT</revision>
+        <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
-        <guava.version>29.0-jre</guava.version>
-        <okhttp3.version>3.8.1</okhttp3.version>
-        <hutool-core.version>5.4.7</hutool-core.version>
-        <fastjson.version>1.2.75</fastjson.version>
+        <guava.version>30.0-jre</guava.version>
+        <okhttp3.version>3.12.0</okhttp3.version>
+        <hutool-all.version>5.4.7</hutool-all.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
         <forest.version>1.5.11</forest.version>
         <jjwt.version>0.9.0</jjwt.version>
-
-        <dingtalk-sdk.version>1.0.1</dingtalk-sdk.version>
-
+        <jackson-bom.version>2.11.1</jackson-bom.version>
+        <dingtalk-sdk.version>2.0.0</dingtalk-sdk.version>
+        <!-- Framework -->
         <slf4j-api.version>1.7.7</slf4j-api.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.9</logback.version>
+        <micrometer-core.version>1.8.4</micrometer-core.version>
+        <nacos-client.version>2.0.4</nacos-client.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
-
+        <apollo.version>1.9.1</apollo.version>
+        <jetcd.version>0.7.3</jetcd.version>
+        <rocketmq.version>2.2.2</rocketmq.version>
+        <netty.version>4.1.56.Final</netty.version>
+        <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
+        <curator-framework.version>5.1.0</curator-framework.version>
+        <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
+        <spring-cloud-starter-stream-rabbitmq.version>3.1.0</spring-cloud-starter-stream-rabbitmq.version>
+        <spring-cloud-starter-netflix-hystrix.version>2.2.9.RELEASE</spring-cloud-starter-netflix-hystrix.version>
+        <spring-cloud-starter-alibaba-nacos-config.version>2.2.5.RELEASE</spring-cloud-starter-alibaba-nacos-config.version>
+        <!-- Maven & Build -->
+        <java.version>1.8</java.version>
+        <skip.maven.gpg.plugin>true</skip.maven.gpg.plugin>
+        <skip.spotless.apply>false</skip.spotless.apply>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- Maven -->
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
         <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
+        <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -71,21 +83,14 @@
 
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
-                <artifactId>logging-interceptor</artifactId>
+                <artifactId>okhttp</artifactId>
                 <version>${okhttp3.version}</version>
-                <optional>true</optional>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
-                <version>${hutool-core.version}</version>
+                <version>${hutool-all.version}</version>
             </dependency>
 
             <dependency>
@@ -96,43 +101,19 @@
 
             <dependency>
                 <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-common</artifactId>
+                <artifactId>hippo4j-message</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-config</artifactId>
+                <artifactId>hippo4j-core</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-console</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-discovery</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>log-record-tool</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-auth</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>open-change-tool</artifactId>
+                <artifactId>hippo4j-adapter-base</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -173,12 +154,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.dtflys.forest</groupId>
-                <artifactId>forest-spring-boot-starter</artifactId>
-                <version>${forest.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j-api.version}</version>
@@ -195,30 +170,21 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-json</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>acmenlt</id>
-            <name>chen.ma</name>
-            <email>m7798432@163.com</email>
-            <url>https://github.com/acmenlt</url>
-        </developer>
-    </developers>
-
-    <issueManagement>
-        <system>Github Issue</system>
-        <url>https://github.com/acmenlt/dynamic-threadpool/issues</url>
-    </issueManagement>
 
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -235,7 +201,6 @@
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
                 </configuration>
             </plugin>
-
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${maven.jar.plugin.version}</version>
@@ -247,7 +212,6 @@
                     </archive>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
@@ -259,41 +223,41 @@
                 <executions>
                     <execution>
                         <id>flatten</id>
-                        <phase>process-resources</phase>
                         <goals>
                             <goal>flatten</goal>
                         </goals>
+                        <phase>process-resources</phase>
                     </execution>
                     <execution>
                         <id>flatten.clean</id>
-                        <phase>clean</phase>
                         <goals>
                             <goal>clean</goal>
                         </goals>
+                        <phase>clean</phase>
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
+                <configuration>
+                    <skip>${skip.maven.gpg.plugin}</skip>
+                </configuration>
                 <executions>
                     <execution>
-                        <phase>verify</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -302,7 +266,6 @@
                     <additionalparam>${javadoc.opts}</additionalparam>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -312,18 +275,106 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>package</phase>
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless-maven-plugin.version}</version>
+                <configuration>
+                    <applySkip>${skip.spotless.apply}</applySkip>
+                    <java>
+                        <eclipse>
+                            <file>${maven.multiModuleProjectDirectory}/dev-support/hippo4j_spotless_formatter.xml</file>
+                        </eclipse>
+                        <licenseHeader>
+                            <file>${maven.multiModuleProjectDirectory}/dev-support/license-header</file>
+                        </licenseHeader>
+                    </java>
+                    <pom>
+                        <sortPom>
+                            <encoding>UTF-8</encoding>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                            <keepBlankLines>true</keepBlankLines>
+                            <indentBlankLines>false</indentBlankLines>
+                            <indentSchemaLocation>true</indentSchemaLocation>
+                            <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                            <sortModules>false</sortModules>
+                            <sortExecutions>false</sortExecutions>
+                            <predefinedSortOrder>custom_1</predefinedSortOrder>
+                            <expandEmptyElements>false</expandEmptyElements>
+                            <sortProperties>false</sortProperties>
+                        </sortPom>
+                    </pom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                        <phase>compile</phase>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
 
+    <url>https://github.com/opengoofy/hippo4j</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>chen.ma</name>
+            <email>machen@apache.org</email>
+            <url>https://github.com/itmachen</url>
+            <organization>OpenGoofy</organization>
+            <organizationUrl>https://github.com/opengoofy</organizationUrl>
+            <roles>
+                <role>Project lead</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>shining-stars-lk</name>
+            <email>1031900093@qq.com</email>
+            <url>https://github.com/shining-stars-lk</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git@github.com:opengoofy/hippo4j</connection>
+        <developerConnection>scm:git@github.com:opengoofy/hippo4j.git</developerConnection>
+        <url>git@github.com:opengoofy/hippo4j.git</url>
+    </scm>
+
+    <issueManagement>
+        <system>Github Issue</system>
+        <url>https://github.com/opengoofy/hippo4j/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <profiles>
-        <!-- 禁用注释检查 -->
         <profile>
             <id>disable-javadoc-doclint</id>
             <activation>
@@ -334,22 +385,4 @@
             </properties>
         </profile>
     </profiles>
-
-    <scm>
-        <connection>scm:git@github.com:acmenlt/dynamic-threadpool</connection>
-        <developerConnection>scm:git@github.com:acmenlt/dynamic-threadpool.git</developerConnection>
-        <url>git@github.com:acmenlt/dynamic-threadpool.git</url>
-    </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
 </project>
