@@ -41,7 +41,7 @@ public class BeforeCheckConfiguration {
     public BeforeCheckConfiguration.BeforeCheck dynamicThreadPoolBeforeCheckBean(@Autowired(required = false) BootstrapPropertiesInterface properties,
                                                                                  ConfigurableEnvironment environment) {
         boolean checkFlag = properties != null && Objects.equals(bootstrapPropertiesClassName, properties.getClass().getName()) && properties.getEnable();
-        if (checkFlag) {
+        if (checkFlag && Boolean.TRUE.equals(properties.getEnableAuthentication())) {
             String username = properties.getUsername();
             if (StringUtil.isBlank(username)) {
                 throw new ConfigEmptyException(

@@ -31,6 +31,10 @@ public interface BootstrapPropertiesInterface {
         return null;
     }
 
+    default Boolean getEnableAuthentication() {
+        return null;
+    }
+
     /**
      * Get username.
      *

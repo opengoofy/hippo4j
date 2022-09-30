@@ -22,6 +22,7 @@ import cn.hippo4j.auth.filter.JWTAuthenticationFilter;
 import cn.hippo4j.auth.filter.JWTAuthorizationFilter;
 import cn.hippo4j.auth.security.JwtTokenManager;
 import cn.hippo4j.auth.service.impl.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,6 +51,8 @@ import java.util.stream.Stream;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Value("${spring.dynamic.thread-pool.enableAuthentication:true}")
+    private Boolean enableAuthentication;
     @Resource
     private UserDetailsService userDetailsService;
 
@@ -93,16 +96,26 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/static/**", "/index.html", "/favicon.ico", "/avatar.jpg").permitAll()
                 .antMatchers("/doc.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs").anonymous()
-                .anyRequest().authenticated()
+                // .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(tokenManager, authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        disableAuthenticationIfNeeded(http);
+        http.authorizeRequests().anyRequest().authenticated();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         String[] ignores = Stream.of("/hippo4j/v1/cs/auth/users/apply/token/**").toArray(String[]::new);
         web.ignoring().antMatchers(ignores);
+    }
+
+    private void disableAuthenticationIfNeeded(HttpSecurity http) throws Exception {
+        if (Boolean.FALSE.equals(enableAuthentication)) {
+            http.authorizeRequests().antMatchers("/hippo4j/v1/cs/**").permitAll();
+        }
+
     }
 }

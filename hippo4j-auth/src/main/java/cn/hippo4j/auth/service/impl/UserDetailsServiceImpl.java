@@ -20,14 +20,22 @@ package cn.hippo4j.auth.service.impl;
 import cn.hippo4j.auth.mapper.UserMapper;
 import cn.hippo4j.auth.model.UserInfo;
 import cn.hippo4j.auth.model.biz.user.JwtUser;
+import cn.hippo4j.auth.model.biz.user.LoginUser;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
@@ -41,8 +49,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
     private UserMapper userMapper;
 
+    @Value("${spring.dynamic.thread-pool.enableAuthentication:true}")
+    private Boolean enableAuthentication;
+
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+
+        JwtUser anonymous = dealWithAnonymous();
+        if (ObjectUtil.isNotNull(anonymous)) {
+            return anonymous;
+        }
         UserInfo userInfo = userMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, userName));
         if (Objects.isNull(userInfo)) {
             log.warn("User {} not found", userName);
@@ -55,5 +71,28 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(userInfo.getRole() + ""));
         jwtUser.setAuthorities(authorities);
         return jwtUser;
+    }
+
+    private JwtUser dealWithAnonymous() {
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes == null) {
+            return null;
+        }
+        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+        LoginUser loginUser = (LoginUser) request.getAttribute("loginUser");
+        if (ObjectUtil.isNull(loginUser)) {
+            return null;
+        }
+        if (Boolean.FALSE.equals(enableAuthentication)) {
+            JwtUser jwtUser = new JwtUser();
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            jwtUser.setId(1L);
+            jwtUser.setUsername("anonymous");
+            jwtUser.setPassword(bCryptPasswordEncoder.encode(loginUser.getPassword()));
+            Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            jwtUser.setAuthorities(authorities);
+            return jwtUser;
+        }
+        return null;
     }
 }

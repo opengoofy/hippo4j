@@ -53,9 +53,12 @@ public class SecurityProxy {
 
     private long tokenRefreshWindow;
 
+    private boolean enableAuthentication;
+
     public SecurityProxy(HttpClientUtil httpClientUtil, BootstrapProperties properties) {
         username = properties.getUsername();
         password = properties.getPassword();
+        enableAuthentication = properties.getEnableAuthentication();
         this.httpClientUtil = httpClientUtil;
     }
 
@@ -65,6 +68,9 @@ public class SecurityProxy {
                 return true;
             }
             for (String server : servers) {
+                if (!enableAuthentication) {
+                    return true;
+                }
                 if (applyToken(server)) {
                     lastRefreshTime = System.currentTimeMillis();
                     return true;

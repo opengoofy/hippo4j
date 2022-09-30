@@ -103,4 +103,9 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
      * Time interval for client to collect monitoring data. unit: ms
      */
     private Long collectInterval = 5000L;
+
+    /**
+     * Whether to enable authentication
+     */
+    private Boolean enableAuthentication = true;
 }
