@@ -49,4 +49,9 @@ public class AdapterExecutorProperties {
      * Nodes, application startup is not affect, change properties is effect
      */
     private String nodes;
+
+    /**
+     * these propertied is enabled?
+     */
+    private Boolean enable = true;
 }

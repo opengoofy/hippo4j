@@ -41,7 +41,7 @@ public class GroupKey {
         for (int i = 1; i < params.length - 1; i++) {
             groupKey.append(params[i]).append(GROUP_KEY_DELIMITER);
         }
-        groupKey.append(params[params.length]);
+        groupKey.append(params[params.length - 1]);
         return groupKey.toString();
     }
 

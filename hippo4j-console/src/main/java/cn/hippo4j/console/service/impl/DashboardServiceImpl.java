@@ -17,12 +17,6 @@
 
 package cn.hippo4j.console.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.GroupKey;
@@ -30,17 +24,9 @@ import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.HisRunDataMapper;
 import cn.hippo4j.config.mapper.ItemInfoMapper;
 import cn.hippo4j.config.mapper.TenantInfoMapper;
-import cn.hippo4j.config.model.CacheItem;
-import cn.hippo4j.config.model.ConfigAllInfo;
-import cn.hippo4j.config.model.ConfigInfoBase;
-import cn.hippo4j.config.model.ItemInfo;
-import cn.hippo4j.config.model.TenantInfo;
+import cn.hippo4j.config.model.*;
 import cn.hippo4j.config.service.ConfigCacheService;
-import cn.hippo4j.console.model.ChartInfo;
-import cn.hippo4j.console.model.LineChartInfo;
-import cn.hippo4j.console.model.PieChartInfo;
-import cn.hippo4j.console.model.RankingChart;
-import cn.hippo4j.console.model.TenantChart;
+import cn.hippo4j.console.model.*;
 import cn.hippo4j.console.service.DashboardService;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
@@ -52,8 +38,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
-
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static cn.hippo4j.common.toolkit.ContentUtil.getGroupKey;
 
@@ -76,9 +67,9 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public ChartInfo getChartInfo() {
-        Integer tenantCount = tenantInfoMapper.selectCount(Wrappers.lambdaQuery(TenantInfo.class).eq(TenantInfo::getDelFlag, DelEnum.NORMAL.getCode()));
+        Integer tenantCount = tenantInfoMapper.selectCount(Wrappers.lambdaQuery(TenantInfo.class).eq(TenantInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
         Integer itemCount = itemInfoMapper.selectCount(Wrappers.lambdaQuery(ItemInfo.class).eq(ItemInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
-        Integer threadPoolCount = configInfoMapper.selectCount(Wrappers.lambdaQuery(ConfigAllInfo.class).eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getCode()));
+        Integer threadPoolCount = configInfoMapper.selectCount(Wrappers.lambdaQuery(ConfigAllInfo.class).eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
         ChartInfo chartInfo = new ChartInfo();
         chartInfo.setTenantCount(tenantCount)
                 .setItemCount(itemCount)
@@ -111,16 +102,16 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public TenantChart getTenantChart() {
         List<Map<String, Object>> tenantChartList = Lists.newArrayList();
-        List<TenantInfo> tenantInfos = tenantInfoMapper.selectList(Wrappers.lambdaQuery(TenantInfo.class).eq(TenantInfo::getDelFlag, DelEnum.NORMAL));
+        List<TenantInfo> tenantInfos = tenantInfoMapper.selectList(Wrappers.lambdaQuery(TenantInfo.class).eq(TenantInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
         for (TenantInfo tenant : tenantInfos) {
             int tenantThreadPoolNum = 0;
             LambdaQueryWrapper<ItemInfo> itemQueryWrapper =
-                    Wrappers.lambdaQuery(ItemInfo.class).eq(ItemInfo::getTenantId, tenant.getTenantId()).eq(ItemInfo::getDelFlag, DelEnum.NORMAL).select(ItemInfo::getItemId);
+                    Wrappers.lambdaQuery(ItemInfo.class).eq(ItemInfo::getTenantId, tenant.getTenantId()).eq(ItemInfo::getDelFlag, DelEnum.NORMAL.getIntCode()).select(ItemInfo::getItemId);
             List<ItemInfo> itemInfos = itemInfoMapper.selectList(itemQueryWrapper);
             for (ItemInfo item : itemInfos) {
                 LambdaQueryWrapper<ConfigAllInfo> threadPoolQueryWrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
                         .eq(ConfigInfoBase::getItemId, item.getItemId())
-                        .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL);
+                        .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode());
                 Integer threadPoolCount = configInfoMapper.selectCount(threadPoolQueryWrapper);
                 tenantThreadPoolNum += threadPoolCount;
             }
@@ -136,13 +127,13 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public PieChartInfo getPieChart() {
-        LambdaQueryWrapper<ItemInfo> itemQueryWrapper = Wrappers.lambdaQuery(ItemInfo.class).eq(ItemInfo::getDelFlag, DelEnum.NORMAL).select(ItemInfo::getItemId);
+        LambdaQueryWrapper<ItemInfo> itemQueryWrapper = Wrappers.lambdaQuery(ItemInfo.class).eq(ItemInfo::getDelFlag, DelEnum.NORMAL.getIntCode()).select(ItemInfo::getItemId);
         List<Object> itemNameList = itemInfoMapper.selectObjs(itemQueryWrapper);
         List<Map<String, Object>> pieDataList = Lists.newArrayList();
         for (Object each : itemNameList) {
             LambdaQueryWrapper<ConfigAllInfo> threadPoolQueryWrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
                     .eq(ConfigInfoBase::getItemId, each)
-                    .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL);
+                    .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode());
             Integer threadPoolCount = configInfoMapper.selectCount(threadPoolQueryWrapper);
             if (threadPoolCount != null) {
                 Dict dict = Dict.create().set("name", each).set("value", threadPoolCount);

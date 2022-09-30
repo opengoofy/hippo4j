@@ -94,13 +94,15 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        boolean is2xVersion = false;
+        boolean isLegacyVersion = false;
         String poolKey = ExecutorService.class.getName();
-        if (Version.getIntVersion(Version.getVersion()) < 3000000) {
-            is2xVersion = true;
+        // Since 2.7.5, Dubbo has changed the way thread pools are used
+        // fixed https://github.com/opengoofy/hippo4j/issues/708
+        if (Version.getIntVersion(Version.getVersion()) < 2070500) {
+            isLegacyVersion = true;
         }
         try {
-            if (is2xVersion) {
+            if (isLegacyVersion) {
                 DataStore dataStore = ExtensionLoader.getExtensionLoader(DataStore.class).getDefaultExtension();
                 Map<String, Object> executors = dataStore.get(poolKey);
                 executors.forEach((key, value) -> DUBBO_PROTOCOL_EXECUTOR.put(key, (ThreadPoolExecutor) value));
@@ -112,7 +114,7 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
             ConcurrentMap<Integer, ExecutorService> executorServiceMap = data.get(poolKey);
             executorServiceMap.forEach((key, value) -> DUBBO_PROTOCOL_EXECUTOR.put(String.valueOf(key), (ThreadPoolExecutor) value));
         } catch (Exception ex) {
-            log.error("Failed to get Dubbo {}.X protocol thread pool", is2xVersion ? "2" : "3", ex);
+            log.error("Failed to get Dubbo {}.X protocol thread pool", isLegacyVersion ? "2" : "3", ex);
         }
     }
 }
