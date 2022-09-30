@@ -35,6 +35,6 @@ public class EnvUtilTest {
     @Test
     public void getStandaloneMode() {
         boolean standaloneMode = EnvUtil.getStandaloneMode();
-        Assert.isTrue(standaloneMode);
+        Assert.isTrue(!standaloneMode);
     }
 }
