@@ -243,20 +243,27 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/baymax55">
+            <img src="https://avatars.githubusercontent.com/u/35788491?v=4" width="50;" alt="baymax55"/>
+            <br />
+            <sub><b>Baymax55</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/gewuwo">
             <img src="https://avatars.githubusercontent.com/u/97213587?v=4" width="50;" alt="gewuwo"/>
             <br />
             <sub><b>格悟沃</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/hushtian">
             <img src="https://avatars.githubusercontent.com/u/55479601?v=4" width="50;" alt="hushtian"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/jinlingmei">
             <img src="https://avatars.githubusercontent.com/u/24669082?v=4" width="50;" alt="jinlingmei"/>
@@ -312,15 +319,15 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/onesimplecoder">
             <img src="https://avatars.githubusercontent.com/u/30288465?v=4" width="50;" alt="onesimplecoder"/>
             <br />
             <sub><b>Alic</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/CalebZYC">
             <img src="https://avatars.githubusercontent.com/u/42887532?v=4" width="50;" alt="CalebZYC"/>
@@ -376,20 +383,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>WuLang</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/alexhaoxuan">
             <img src="https://avatars.githubusercontent.com/u/46749051?v=4" width="50;" alt="alexhaoxuan"/>
             <br />
             <sub><b>Alexli</b></sub>
-        </a>
-    </td></tr>
-<tr>
-    <td align="center">
-        <a href="https://github.com/baymax55">
-            <img src="https://avatars.githubusercontent.com/u/35788491?v=4" width="50;" alt="baymax55"/>
-            <br />
-            <sub><b>Baymax55</b></sub>
         </a>
     </td>
     <td align="center">
