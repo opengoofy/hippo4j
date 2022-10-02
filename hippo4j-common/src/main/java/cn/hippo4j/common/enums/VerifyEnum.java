@@ -34,7 +34,12 @@ public enum VerifyEnum {
     /**
      * reject
      */
-    VERIFY_REJECT(2, "审核拒绝");
+    VERIFY_REJECT(2, "审核拒绝"),
+
+    /**
+     * invalid
+     */
+    VERIFY_INVALID(3, "失效");
 
     private final Integer verifyStatus;
 

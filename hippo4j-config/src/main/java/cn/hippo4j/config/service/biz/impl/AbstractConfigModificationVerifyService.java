@@ -77,6 +77,17 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
 
         hisConfigVerifyMapper.update(null, updateWrapper);
 
+        Date gmtVerify = hisConfigVerifyMapper.selectById(reqDTO.getId()).getGmtVerify();
+        LambdaUpdateWrapper<HisConfigVerifyInfo> invalidUpdateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
+                .eq(HisConfigVerifyInfo::getType, reqDTO.getType())
+                .eq(reqDTO.getTenantId() != null, HisConfigVerifyInfo::getTenantId, reqDTO.getTenantId())
+                .eq(reqDTO.getItemId() != null, HisConfigVerifyInfo::getItemId, reqDTO.getItemId())
+                .eq(reqDTO.getTpId() != null, HisConfigVerifyInfo::getTpId, reqDTO.getTpId())
+                .and(reqDTO.getIdentify() != null, wrapper -> wrapper.eq(HisConfigVerifyInfo::getIdentify, reqDTO.getIdentify()).or().eq(HisConfigVerifyInfo::getModifyAll, true))
+                .le(HisConfigVerifyInfo::getGmtVerify, gmtVerify)
+                .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_INVALID.getVerifyStatus());
+        hisConfigVerifyMapper.update(null, invalidUpdateWrapper);
+
     }
 
     /**
