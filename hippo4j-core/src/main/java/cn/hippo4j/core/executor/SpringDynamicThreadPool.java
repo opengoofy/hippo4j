@@ -15,20 +15,22 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.function;
+package cn.hippo4j.core.executor;
 
-import cn.hippo4j.common.toolkit.Assert;
-import org.junit.jupiter.api.Test;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.springframework.context.annotation.Bean;
 
-final class NoArgsConsumerTest {
-
-    @Test
-    void accept() {
-        AtomicBoolean checkValue = new AtomicBoolean(false);
-        NoArgsConsumer noArgsConsumer = () -> checkValue.set(true);
-        noArgsConsumer.accept();
-        Assert.isTrue(checkValue.get());
-    }
+/**
+ *@author : wh
+ *@date : 2022/10/2 16:10
+ *@description:
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Bean
+public @interface SpringDynamicThreadPool {
 }
