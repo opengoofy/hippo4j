@@ -20,7 +20,7 @@ package cn.hippo4j.example.core.config;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import cn.hippo4j.core.executor.DynamicThreadPool;
+import cn.hippo4j.core.executor.SpringDynamicThreadPool;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.example.core.handler.TaskTraceBuilderHandler;
 import cn.hippo4j.example.core.inittest.TaskDecoratorTest;
@@ -41,7 +41,7 @@ import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_PRODUC
 @Configuration
 public class DynamicThreadPoolConfig {
 
-    @DynamicThreadPool
+    @SpringDynamicThreadPool
     public Executor messageConsumeTtlDynamicThreadPool() {
         String threadPoolId = MESSAGE_CONSUME;
         ThreadPoolExecutor customExecutor = ThreadPoolBuilder.builder()
@@ -58,7 +58,7 @@ public class DynamicThreadPoolConfig {
         return ttlExecutor;
     }
 
-    @DynamicThreadPool
+    @SpringDynamicThreadPool
     public ThreadPoolExecutor messageProduceDynamicThreadPool() {
         String threadPoolId = MESSAGE_PRODUCE;
         ThreadPoolExecutor produceExecutor = ThreadPoolBuilder.builder()
@@ -82,7 +82,7 @@ public class DynamicThreadPoolConfig {
      * @return
      */
     // @Bean
-    @DynamicThreadPool
+    @SpringDynamicThreadPool
     public ThreadPoolTaskExecutor testSpringThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         threadPoolTaskExecutor.setThreadNamePrefix("test-spring-task-executor_");
