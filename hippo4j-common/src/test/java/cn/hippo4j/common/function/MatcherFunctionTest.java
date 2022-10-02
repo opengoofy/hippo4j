@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import org.junit.Test;
 
 public final class MatcherFunctionTest {
-    
+
     public static <T> boolean matchTest(Matcher<T> matcher, T value) {
         return matcher.match(value);
     }
