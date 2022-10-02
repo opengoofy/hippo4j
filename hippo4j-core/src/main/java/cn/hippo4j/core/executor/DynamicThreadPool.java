@@ -22,11 +22,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.context.annotation.Bean;
+
 /**
  * Dynamic thread pool.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@Bean
 public @interface DynamicThreadPool {
 
 }

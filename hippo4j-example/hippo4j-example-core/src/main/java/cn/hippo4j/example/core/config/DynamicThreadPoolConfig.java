@@ -17,18 +17,18 @@
 
 package cn.hippo4j.example.core.config;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.example.core.handler.TaskTraceBuilderHandler;
 import cn.hippo4j.example.core.inittest.TaskDecoratorTest;
 import com.alibaba.ttl.threadpool.TtlExecutors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
 import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_CONSUME;
@@ -41,7 +41,6 @@ import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_PRODUC
 @Configuration
 public class DynamicThreadPoolConfig {
 
-    @Bean
     @DynamicThreadPool
     public Executor messageConsumeTtlDynamicThreadPool() {
         String threadPoolId = MESSAGE_CONSUME;
@@ -59,7 +58,6 @@ public class DynamicThreadPoolConfig {
         return ttlExecutor;
     }
 
-    @Bean
     @DynamicThreadPool
     public ThreadPoolExecutor messageProduceDynamicThreadPool() {
         String threadPoolId = MESSAGE_PRODUCE;

@@ -32,7 +32,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 public class ThreadPoolConfig {
 
-    @Bean
     @DynamicThreadPool
     public ThreadPoolExecutor messageConsumeDynamicExecutor() {
         String threadPoolId = "message-consume";
