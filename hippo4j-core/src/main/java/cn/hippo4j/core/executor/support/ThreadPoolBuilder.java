@@ -227,11 +227,11 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     /**
-     * Create thread pool by thread pool id
+     * Create dynamic thread pool by thread pool id
      * @param threadPoolId threadPoolId
      * @return ThreadPoolExecutor
      */
-    public static ThreadPoolExecutor builderById(String threadPoolId) {
+    public static ThreadPoolExecutor builderDynamicPoolById(String threadPoolId) {
         return ThreadPoolBuilder.builder()
                 .threadFactory(threadPoolId)
                 .threadPoolId(threadPoolId)

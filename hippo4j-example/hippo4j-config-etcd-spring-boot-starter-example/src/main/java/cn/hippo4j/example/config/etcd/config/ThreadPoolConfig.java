@@ -37,6 +37,6 @@ public class ThreadPoolConfig {
     @DynamicThreadPool
     public ThreadPoolExecutor messageConsumeDynamicExecutor() {
         String threadPoolId = "message-consume";
-        return ThreadPoolBuilder.builderById(threadPoolId);
+        return ThreadPoolBuilder.builderDynamicPoolById(threadPoolId);
     }
 }
