@@ -17,6 +17,7 @@
 
 package cn.hippo4j.adapter.base;
 
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -34,8 +35,7 @@ public class ThreadPoolAdapterBeanContainer implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        /*
-         * Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class); threadPoolAdapterMap.forEach((key, val) ->
-         * THREAD_POOL_ADAPTER_BEAN_CONTAINER.put(val.mark(), val));
-         */}
+        Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
+        threadPoolAdapterMap.forEach((key, val) -> THREAD_POOL_ADAPTER_BEAN_CONTAINER.put(val.mark(), val));
+    }
 }
