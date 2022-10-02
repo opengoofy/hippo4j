@@ -15,26 +15,22 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.example.config.etcd.config;
+package cn.hippo4j.core.executor;
 
-import java.util.concurrent.ThreadPoolExecutor;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import cn.hippo4j.core.executor.SpringDynamicThreadPool;
-import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
-
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Bean;
 
 /**
- * @author : wh
- * @date : 2022/9/2 19:26
- * @description:
+ *@author : wh
+ *@date : 2022/10/2 16:10
+ *@description:
  */
-@Configuration
-public class ThreadPoolConfig {
-
-    @SpringDynamicThreadPool
-    public ThreadPoolExecutor messageConsumeDynamicExecutor() {
-        String threadPoolId = "message-consume";
-        return ThreadPoolBuilder.builderDynamicPoolById(threadPoolId);
-    }
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Bean
+public @interface SpringDynamicThreadPool {
 }
