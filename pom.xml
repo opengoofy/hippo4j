@@ -47,6 +47,7 @@
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
         <jetcd.version>0.7.3</jetcd.version>
+        <polaris.version>1.7.2</polaris.version>
         <rocketmq.version>2.2.2</rocketmq.version>
         <netty.version>4.1.56.Final</netty.version>
         <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>

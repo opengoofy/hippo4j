@@ -20,9 +20,11 @@ package cn.hippo4j.config.springboot.starter.config;
 import cn.hippo4j.config.springboot.starter.refresher.*;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.config.ConfigService;
+import com.tencent.polaris.configuration.api.core.ConfigFileService;
 import io.etcd.jetcd.Client;
 import lombok.RequiredArgsConstructor;
 import org.apache.curator.framework.CuratorFramework;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -35,68 +37,79 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 public class ConfigHandlerConfiguration {
 
-    private static final String NACOS_CONFIG_MANAGER_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";
+	private static final String NACOS_CONFIG_MANAGER_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";
 
-    private static final String NACOS_DATA_ID_KEY = "nacos.data-id";
+	private static final String NACOS_DATA_ID_KEY = "nacos.data-id";
 
-    private static final String APOLLO_NAMESPACE_KEY = "apollo.namespace";
+	private static final String APOLLO_NAMESPACE_KEY = "apollo.namespace";
 
-    private static final String ZOOKEEPER_CONNECT_STR_KEY = "zookeeper.zk-connect-str";
+	private static final String ZOOKEEPER_CONNECT_STR_KEY = "zookeeper.zk-connect-str";
 
-    private static final String ETCD = "etcd.endpoints";
+	private static final String ETCD = "etcd.endpoints";
 
-    @RequiredArgsConstructor
-    @ConditionalOnClass(ConfigService.class)
-    @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
-    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
-    static class EmbeddedNacos {
+	private static final String POLARIS = "config.serverConnector";
 
-        public final BootstrapConfigProperties bootstrapConfigProperties;
+	@RequiredArgsConstructor
+	@ConditionalOnClass(ConfigService.class)
+	@ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
+	@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
+	static class EmbeddedNacos {
 
-        @Bean
-        public NacosRefresherHandler nacosRefresherHandler() {
-            return new NacosRefresherHandler(bootstrapConfigProperties);
-        }
-    }
+		public final BootstrapConfigProperties bootstrapConfigProperties;
 
-    @ConditionalOnClass(NacosConfigManager.class)
-    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
-    static class EmbeddedNacosCloud {
+		@Bean
+		public NacosRefresherHandler nacosRefresherHandler() {
+			return new NacosRefresherHandler(bootstrapConfigProperties);
+		}
+	}
 
-        @Bean
-        public NacosCloudRefresherHandler nacosCloudRefresherHandler() {
-            return new NacosCloudRefresherHandler();
-        }
-    }
+	@ConditionalOnClass(NacosConfigManager.class)
+	@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
+	static class EmbeddedNacosCloud {
 
-    @ConditionalOnClass(com.ctrip.framework.apollo.ConfigService.class)
-    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = APOLLO_NAMESPACE_KEY)
-    static class EmbeddedApollo {
+		@Bean
+		public NacosCloudRefresherHandler nacosCloudRefresherHandler() {
+			return new NacosCloudRefresherHandler();
+		}
+	}
 
-        @Bean
-        public ApolloRefresherHandler apolloRefresher() {
-            return new ApolloRefresherHandler();
-        }
-    }
+	@ConditionalOnClass(com.ctrip.framework.apollo.ConfigService.class)
+	@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = APOLLO_NAMESPACE_KEY)
+	static class EmbeddedApollo {
 
-    @ConditionalOnClass(CuratorFramework.class)
-    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ZOOKEEPER_CONNECT_STR_KEY)
-    static class EmbeddedZookeeper {
+		@Bean
+		public ApolloRefresherHandler apolloRefresher() {
+			return new ApolloRefresherHandler();
+		}
+	}
 
-        @Bean
-        public ZookeeperRefresherHandler zookeeperRefresher() {
-            return new ZookeeperRefresherHandler();
-        }
-    }
+	@ConditionalOnClass(CuratorFramework.class)
+	@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ZOOKEEPER_CONNECT_STR_KEY)
+	static class EmbeddedZookeeper {
 
-    @ConditionalOnClass(Client.class)
-    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ETCD)
-    static class EmbeddedEtcd {
+		@Bean
+		public ZookeeperRefresherHandler zookeeperRefresher() {
+			return new ZookeeperRefresherHandler();
+		}
+	}
 
-        @Bean
-        public EtcdRefresherHandler etcdRefresher() {
-            return new EtcdRefresherHandler();
-        }
-    }
+	@ConditionalOnClass(Client.class)
+	@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ETCD)
+	static class EmbeddedEtcd {
+
+		@Bean
+		public EtcdRefresherHandler etcdRefresher() {
+			return new EtcdRefresherHandler();
+		}
+	}
+
+	@ConditionalOnClass(ConfigFileService.class)
+	@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = POLARIS)
+	static class Polaris {
+		@Bean
+		public PolarisRefresherHandler polarisRefresher(ConfigFileService configFileService) {
+			return new PolarisRefresherHandler(configFileService);
+		}
+	}
 
 }
