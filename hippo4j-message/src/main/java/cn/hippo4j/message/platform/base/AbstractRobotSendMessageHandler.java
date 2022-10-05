@@ -17,6 +17,7 @@
 
 package cn.hippo4j.message.platform.base;
 
+import cn.hippo4j.common.toolkit.Joiner;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
@@ -25,7 +26,6 @@ import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.service.SendMessageHandler;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.base.Joiner;
 
 import java.util.Objects;
 

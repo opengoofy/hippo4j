@@ -29,13 +29,13 @@ import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +64,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
 
     @Override
     public List<ThreadPoolAdapterCacheConfig> getThreadPoolAdapterCacheConfigs(Map<String, ThreadPoolAdapter> threadPoolAdapterMap) {
-        List<ThreadPoolAdapterCacheConfig> adapterCacheConfigList = Lists.newArrayList();
+        List<ThreadPoolAdapterCacheConfig> adapterCacheConfigList = new ArrayList<>();
         for (Map.Entry<String, ThreadPoolAdapter> threadPoolAdapterEntry : threadPoolAdapterMap.entrySet()) {
             ThreadPoolAdapter threadPoolAdapter = threadPoolAdapterEntry.getValue();
             List<ThreadPoolAdapterState> threadPoolStates = threadPoolAdapter.getThreadPoolStates();

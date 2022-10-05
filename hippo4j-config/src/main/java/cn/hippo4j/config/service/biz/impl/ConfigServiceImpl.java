@@ -27,7 +27,10 @@ import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.ConfigInstanceMapper;
-import cn.hippo4j.config.model.*;
+import cn.hippo4j.config.model.ConfigAllInfo;
+import cn.hippo4j.config.model.ConfigInfoBase;
+import cn.hippo4j.config.model.ConfigInstanceInfo;
+import cn.hippo4j.config.model.LogRecordInfo;
 import cn.hippo4j.config.model.biz.notify.NotifyReqDTO;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigChangePublisher;
@@ -38,7 +41,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -152,7 +154,8 @@ public class ConfigServiceImpl implements ConfigService {
         }
         DynamicThreadPoolRegisterServerNotifyParameter serverNotifyParameter = registerWrapper.getDynamicThreadPoolRegisterServerNotifyParameter();
         if (serverNotifyParameter != null) {
-            ArrayList<String> notifyTypes = Lists.newArrayList("CONFIG", "ALARM");
+            ArrayList<String> notifyTypes = new ArrayList<>();
+            Collections.addAll(notifyTypes, "CONFIG", "ALARM");
             notifyTypes.forEach(each -> {
                 NotifyReqDTO notifyReqDTO = new NotifyReqDTO();
                 notifyReqDTO.setType(each)

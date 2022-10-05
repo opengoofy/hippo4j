@@ -29,6 +29,7 @@
         <revision>1.4.2-SNAPSHOT</revision>
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
+        <caffeine.version>2.9.3</caffeine.version>
         <guava.version>30.0-jre</guava.version>
         <okhttp3.version>3.12.0</okhttp3.version>
         <hutool-all.version>5.4.7</hutool-all.version>
@@ -124,6 +125,12 @@
                 <artifactId>dozer-core</artifactId>
                 <version>${dozer.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>

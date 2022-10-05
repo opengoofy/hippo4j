@@ -21,11 +21,12 @@ import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.message.dto.AlarmControlDTO;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.Maps;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -34,9 +35,9 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class AlarmControlHandler {
 
-    private final Map<String, ReentrantLock> threadPoolLock = Maps.newHashMap();
+    private final Map<String, ReentrantLock> threadPoolLock = new HashMap<>();
 
-    private final Map<String, Cache<String, String>> threadPoolAlarmCache = Maps.newConcurrentMap();
+    private final Map<String, Cache<String, String>> threadPoolAlarmCache = new ConcurrentHashMap<>();
 
     /**
      * Control message push alarm frequency.
@@ -77,7 +78,7 @@ public class AlarmControlHandler {
      */
     public void initCacheAndLock(String threadPoolId, String platform, Integer interval) {
         String threadPoolKey = StrUtil.builder(threadPoolId, Constants.GROUP_KEY_DELIMITER, platform).toString();
-        Cache<String, String> cache = CacheBuilder.newBuilder()
+        Cache<String, String> cache = Caffeine.newBuilder()
                 .expireAfterWrite(interval, TimeUnit.MINUTES)
                 .build();
         threadPoolAlarmCache.put(threadPoolKey, cache);

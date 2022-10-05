@@ -18,8 +18,8 @@
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.function.Matcher;
-import com.google.common.base.Strings;
 import org.junit.Test;
+import org.springframework.util.StringUtils;
 
 public class ArrayUtilTest {
 
@@ -39,11 +39,11 @@ public class ArrayUtilTest {
     public void assertFirstMatch() {
         Matcher<String> matcher = (str) -> "1".equalsIgnoreCase(str);
         String[] array = new String[0];
-        Assert.isTrue(Strings.isNullOrEmpty(ArrayUtil.firstMatch(matcher, array)));
+        Assert.isTrue(StringUtils.isEmpty(ArrayUtil.firstMatch(matcher, array)));
         array = new String[]{"0"};
-        Assert.isTrue(Strings.isNullOrEmpty(ArrayUtil.firstMatch(matcher, array)));
+        Assert.isTrue(StringUtils.isEmpty(ArrayUtil.firstMatch(matcher, array)));
         array = new String[]{"1"};
-        Assert.isTrue(!Strings.isNullOrEmpty(ArrayUtil.firstMatch(matcher, array)));
+        Assert.isTrue(!StringUtils.isEmpty(ArrayUtil.firstMatch(matcher, array)));
     }
 
     @Test

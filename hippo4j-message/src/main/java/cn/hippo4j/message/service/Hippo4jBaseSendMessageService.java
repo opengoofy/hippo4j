@@ -17,8 +17,8 @@
 
 package cn.hippo4j.message.service;
 
-import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.dto.AlarmControlDTO;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
@@ -26,12 +26,12 @@ import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +47,9 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     private final AlarmControlHandler alarmControlHandler;
 
     @Getter
-    public final Map<String, List<NotifyConfigDTO>> notifyConfigs = Maps.newHashMap();
+    public final Map<String, List<NotifyConfigDTO>> notifyConfigs = new HashMap<>();
 
-    private final Map<String, SendMessageHandler> sendMessageHandlers = Maps.newHashMap();
+    private final Map<String, SendMessageHandler> sendMessageHandlers = new HashMap<>();
 
     @Override
     public void sendAlarmMessage(NotifyTypeEnum typeEnum, AlarmNotifyRequest alarmNotifyRequest) {

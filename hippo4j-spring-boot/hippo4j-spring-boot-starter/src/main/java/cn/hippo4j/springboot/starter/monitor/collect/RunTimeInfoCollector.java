@@ -22,13 +22,13 @@ import cn.hippo4j.common.monitor.AbstractMessage;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageTypeEnum;
 import cn.hippo4j.common.monitor.RuntimeMessage;
-import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
+import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hutool.core.bean.BeanUtil;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static cn.hippo4j.core.toolkit.IdentifyUtil.getThreadPoolIdentify;
@@ -44,7 +44,7 @@ public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements C
     @Override
     public Message collectMessage() {
         AbstractMessage message = new RuntimeMessage();
-        List<Message> runtimeMessages = Lists.newArrayList();
+        List<Message> runtimeMessages = new ArrayList<>();
         List<String> listThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
         for (String each : listThreadPoolId) {
             ThreadPoolRunStateInfo poolRunState = getPoolRunState(each);

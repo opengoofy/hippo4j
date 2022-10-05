@@ -18,9 +18,8 @@
 package cn.hippo4j.config.springboot.starter.support;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.AdapterExecutorProperties;
-import com.google.common.collect.Maps;
+import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -28,6 +27,7 @@ import org.springframework.boot.ApplicationRunner;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 
@@ -40,7 +40,7 @@ public class DynamicThreadPoolAdapterRegister implements ApplicationRunner {
 
     private final BootstrapConfigProperties bootstrapConfigProperties;
 
-    public static final Map<String, AdapterExecutorProperties> ADAPTER_EXECUTORS_MAP = Maps.newConcurrentMap();
+    public static final Map<String, AdapterExecutorProperties> ADAPTER_EXECUTORS_MAP = new ConcurrentHashMap<>();
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

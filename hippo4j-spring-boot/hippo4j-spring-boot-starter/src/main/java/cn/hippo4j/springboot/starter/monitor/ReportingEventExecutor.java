@@ -33,7 +33,6 @@ import cn.hippo4j.springboot.starter.monitor.collect.Collector;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import cn.hutool.core.collection.CollUtil;
-import com.google.common.collect.Lists;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -41,10 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.CommandLineRunner;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -110,7 +106,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
         if (!properties.getCollect()) {
             return;
         }
-        threadPoolMonitors = Lists.newArrayList();
+        threadPoolMonitors = new ArrayList<>();
         String collectType = Optional.ofNullable(StringUtil.emptyToNull(properties.getCollectType())).orElse(MonitorTypeEnum.SERVER.name().toLowerCase());
         collectVesselExecutor = new ScheduledThreadPoolExecutor(
                 new Integer(collectType.split(",").length),

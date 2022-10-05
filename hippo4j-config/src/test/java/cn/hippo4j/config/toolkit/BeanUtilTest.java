@@ -19,9 +19,6 @@ package cn.hippo4j.config.toolkit;
 
 import cn.hippo4j.common.toolkit.Assert;
 import com.github.dozermapper.core.converters.ConversionException;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import lombok.*;
 import org.junit.Test;
 
@@ -50,7 +47,7 @@ public class BeanUtilTest {
     @Test
     public void mapToBeanConvertTest() {
         // 测试MapToBean
-        final HashMap<String, Object> map = Maps.newHashMap();
+        final HashMap<String, Object> map = new HashMap<>();
         map.put("name", "Hippo4j");
         map.put("age", 1);
         map.put("address", "hippo4j.cn");
@@ -64,7 +61,7 @@ public class BeanUtilTest {
 
     @Test
     public void ListToListConvertTest() {
-        final List<Person> list = Lists.newArrayList();
+        final List<Person> list = new ArrayList<>();
         list.add(Person.builder().name("one").age(1).build());
         list.add(Person.builder().name("two").age(2).build());
         list.add(Person.builder().name("three").age(3).build());
@@ -75,7 +72,7 @@ public class BeanUtilTest {
 
     @Test
     public void SetToSetConvertTest() {
-        final Set<Person> sets = Sets.newHashSet();
+        final Set<Person> sets = new HashSet<>();
         sets.add(Person.builder().name("one").age(1).build());
         sets.add(Person.builder().name("two").age(2).build());
         sets.add(Person.builder().name("three").age(3).build());

@@ -22,18 +22,14 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.config.NotifyPlatformProperties;
-import cn.hippo4j.message.service.AlarmControlHandler;
-import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
+import cn.hippo4j.message.dto.NotifyConfigDTO;
+import cn.hippo4j.message.service.AlarmControlHandler;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -49,7 +45,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
 
     @Override
     public Map<String, List<NotifyConfigDTO>> buildNotify() {
-        Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
+        Map<String, List<NotifyConfigDTO>> resultMap = new HashMap<>();
         boolean globalAlarm = Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getAlarm()).orElse(true);
         List<ExecutorProperties> executors = configProperties.getExecutors();
         if (CollectionUtil.isEmpty(executors)) {
@@ -75,10 +71,10 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
      * @return
      */
     public Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig(ExecutorProperties executorProperties) {
-        Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
+        Map<String, List<NotifyConfigDTO>> resultMap = new HashMap<>();
         String threadPoolId = executorProperties.getThreadPoolId();
         String alarmBuildKey = threadPoolId + "+ALARM";
-        List<NotifyConfigDTO> alarmNotifyConfigs = Lists.newArrayList();
+        List<NotifyConfigDTO> alarmNotifyConfigs = new ArrayList<>();
         List<NotifyPlatformProperties> notifyPlatforms = configProperties.getNotifyPlatforms();
         for (NotifyPlatformProperties platformProperties : notifyPlatforms) {
             NotifyConfigDTO notifyConfig = new NotifyConfigDTO();
@@ -96,7 +92,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
         }
         resultMap.put(alarmBuildKey, alarmNotifyConfigs);
         String changeBuildKey = threadPoolId + "+CONFIG";
-        List<NotifyConfigDTO> changeNotifyConfigs = Lists.newArrayList();
+        List<NotifyConfigDTO> changeNotifyConfigs = new ArrayList<>();
         for (NotifyPlatformProperties platformProperties : notifyPlatforms) {
             NotifyConfigDTO notifyConfig = new NotifyConfigDTO();
             notifyConfig.setPlatform(platformProperties.getPlatform());

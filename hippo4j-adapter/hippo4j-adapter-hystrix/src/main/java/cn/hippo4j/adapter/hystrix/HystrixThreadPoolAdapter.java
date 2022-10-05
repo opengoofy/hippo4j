@@ -20,8 +20,6 @@ package cn.hippo4j.adapter.hystrix;
 import cn.hippo4j.adapter.base.*;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.netflix.hystrix.HystrixThreadPool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -29,6 +27,7 @@ import org.springframework.context.ApplicationListener;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -49,7 +48,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     private static final String THREAD_POOLS_FIELD = "threadPools";
 
-    private final Map<String, ThreadPoolExecutor> HYSTRIX_CONSUME_EXECUTOR = Maps.newHashMap();
+    private final Map<String, ThreadPoolExecutor> HYSTRIX_CONSUME_EXECUTOR = new HashMap<>();
 
     private ThreadPoolAdapterScheduler threadPoolAdapterScheduler;
 
@@ -112,7 +111,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
         // Periodically refresh registration.
         ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction = ApplicationContextHolder.getBean(ThreadPoolAdapterRegisterAction.class);
         Map<String, ? extends HystrixThreadPoolAdapter> beansOfType = ApplicationContextHolder.getBeansOfType(this.getClass());
-        Map<String, ThreadPoolAdapter> map = Maps.newHashMap(beansOfType);
+        Map<String, ThreadPoolAdapter> map = new HashMap<>(beansOfType);
         ThreadPoolAdapterRegisterTask threadPoolAdapterRegisterTask = new ThreadPoolAdapterRegisterTask(scheduler, taskIntervalSeconds, map, threadPoolAdapterRegisterAction);
         scheduler.schedule(threadPoolAdapterRegisterTask, threadPoolAdapterScheduler.getTaskIntervalSeconds(), TimeUnit.SECONDS);
     }
@@ -207,7 +206,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
         ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction;
 
-        private List<ThreadPoolAdapterCacheConfig> cacheConfigList = Lists.newArrayList();
+        private List<ThreadPoolAdapterCacheConfig> cacheConfigList = new ArrayList<>();
 
         public ThreadPoolAdapterRegisterTask(ScheduledExecutorService scheduler, int taskIntervalSeconds,
                                              Map<String, ThreadPoolAdapter> threadPoolAdapterMap,

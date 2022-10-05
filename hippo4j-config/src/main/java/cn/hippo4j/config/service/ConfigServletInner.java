@@ -17,8 +17,8 @@
 
 package cn.hippo4j.config.service;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class ConfigServletInner {
     @NonNull
     private final LongPollingService longPollingService;
 
-    private final Cache<String, Long> deWeightCache = CacheBuilder.newBuilder()
+    private final Cache<String, Long> deWeightCache = Caffeine.newBuilder()
             .maximumSize(1024)
             .build();
 

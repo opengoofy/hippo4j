@@ -17,17 +17,16 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
-import java.util.Map;
-import java.util.Objects;
-
-import com.google.common.collect.Maps;
 import com.tencent.polaris.configuration.api.core.ConfigFileService;
 import com.tencent.polaris.configuration.api.core.ConfigKVFile;
 import com.tencent.polaris.configuration.api.core.ConfigKVFileChangeListener;
 import com.tencent.polaris.configuration.api.core.ConfigPropertyChangeInfo;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Value;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  *@author : wh
@@ -68,7 +67,7 @@ public class PolarisRefresherHandler extends AbstractConfigThreadPoolDynamicRefr
         ConfigKVFile configFile = getConfigKVFile();
         configFile.addChangeListener((ConfigKVFileChangeListener) event -> {
             String content = configFile.getContent();
-            Map<String, Object> newChangeValueMap = Maps.newHashMap();
+            Map<String, Object> newChangeValueMap = new HashMap<>();
             for (String key : event.changedKeys()) {
                 ConfigPropertyChangeInfo changeInfo = event.getChangeInfo(key);
                 newChangeValueMap.put(key, changeInfo.getNewValue());

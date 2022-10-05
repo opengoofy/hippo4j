@@ -22,14 +22,15 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.impl.consumer.ConsumeMessageService;
 import org.apache.rocketmq.spring.support.DefaultRocketMQListenerContainer;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -42,7 +43,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
 @Slf4j
 public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
-    private final Map<String, ThreadPoolExecutor> ROCKET_MQ_CONSUME_EXECUTOR = Maps.newHashMap();
+    private final Map<String, ThreadPoolExecutor> ROCKET_MQ_CONSUME_EXECUTOR = new HashMap<>();
 
     @Override
     public String mark() {
@@ -65,7 +66,7 @@ public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, Application
 
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
-        List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
+        List<ThreadPoolAdapterState> adapterStateList = new ArrayList<>();
         ROCKET_MQ_CONSUME_EXECUTOR.forEach(
                 (key, val) -> adapterStateList.add(getThreadPoolState(key)));
         return adapterStateList;

@@ -36,12 +36,12 @@ import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -90,15 +90,15 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
                 .between(HisRunDataInfo::getTimestamp, startTime, currentDate.getTime())
                 .orderByAsc(HisRunDataInfo::getTimestamp)
                 .list();
-        List<String> times = Lists.newArrayList();
-        List<Long> poolSizeList = Lists.newArrayList();
-        List<Long> activeSizeList = Lists.newArrayList();
-        List<Long> queueCapacityList = Lists.newArrayList();
-        List<Long> queueSizeList = Lists.newArrayList();
-        List<Long> completedTaskCountList = Lists.newArrayList();
-        List<Long> rejectCountList = Lists.newArrayList();
-        List<Long> queueRemainingCapacityList = Lists.newArrayList();
-        List<Long> currentLoadList = Lists.newArrayList();
+        List<String> times = new ArrayList<>();
+        List<Long> poolSizeList = new ArrayList<>();
+        List<Long> activeSizeList = new ArrayList<>();
+        List<Long> queueCapacityList = new ArrayList<>();
+        List<Long> queueSizeList = new ArrayList<>();
+        List<Long> completedTaskCountList = new ArrayList<>();
+        List<Long> rejectCountList = new ArrayList<>();
+        List<Long> queueRemainingCapacityList = new ArrayList<>();
+        List<Long> currentLoadList = new ArrayList<>();
         long countTemp = 0L;
         AtomicBoolean firstFlag = new AtomicBoolean(Boolean.TRUE);
         for (HisRunDataInfo each : hisRunDataInfos) {
@@ -146,7 +146,7 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
     @Transactional(rollbackFor = Exception.class)
     public void save(Message message) {
         List<RuntimeMessage> runtimeMessages = message.getMessages();
-        List<HisRunDataInfo> hisRunDataInfos = Lists.newArrayList();
+        List<HisRunDataInfo> hisRunDataInfos = new ArrayList<>();
         runtimeMessages.forEach(each -> {
             HisRunDataInfo hisRunDataInfo = BeanUtil.convert(each, HisRunDataInfo.class);
             String[] parseKey = GroupKey.parseKey(each.getGroupKey());
