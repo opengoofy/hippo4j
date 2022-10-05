@@ -65,8 +65,8 @@ import java.util.concurrent.locks.ReentrantLock;
  **/
 public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         implements
-        BlockingQueue<E>,
-        java.io.Serializable {
+            BlockingQueue<E>,
+            java.io.Serializable {
 
     private static final long serialVersionUID = -6903933977591709194L;
 
@@ -233,7 +233,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
      */
     public ResizableCapacityLinkedBlockingQueue(Collection<? extends E> c) {
         this(Integer.MAX_VALUE);
-        for (Iterator<? extends E> it = c.iterator(); it.hasNext(); ) {
+        for (Iterator<? extends E> it = c.iterator(); it.hasNext();) {
             add(it.next());
         }
     }
@@ -357,7 +357,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         final AtomicInteger count = this.count;
         putLock.lockInterruptibly();
         try {
-            for (; ; ) {
+            for (;;) {
                 if (count.get() < capacity) {
                     insert(o);
                     c = count.getAndIncrement();
@@ -463,7 +463,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         final ReentrantLock takeLock = this.takeLock;
         takeLock.lockInterruptibly();
         try {
-            for (; ; ) {
+            for (;;) {
                 if (count.get() > 0) {
                     x = extract();
                     c = count.getAndDecrement();
@@ -832,7 +832,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         last = head = new Node<E>(null);
 
         // Read in all elements and place in queue
-        for (; ; ) {
+        for (;;) {
             @SuppressWarnings("unchecked")
             E item = (E) s.readObject();
             if (item == null) {

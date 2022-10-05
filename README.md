@@ -28,7 +28,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 提供以下功能支持：
 
-- 全局管控 - 管理应用线程池实例；
+- 全局管控 - 管理应用线程池实例。
 
 - 动态变更 - 应用运行时动态变更线程池参数，包括不限于：核心、最大线程数、阻塞队列容量、拒绝策略等。
 - 通知报警 - 内置四种报警通知策略，线程池活跃度、容量水位、拒绝策略以及任务执行时间超长。
@@ -36,7 +36,7 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 功能扩展 - 支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务。
 - 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting_started/config/hippo4j-config-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting_started/server/hippo4j-server-start)。
 - 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更。
-- 中间件适配 - Dubbo、Hystrix、RocketMQ、RabbitMQ 等消费线程池运行时数据查看和线程数变更。
+- 中间件适配 - Dubbo、Hystrix、Polaris、RabbitMQ、RocketMQ 等消费线程池运行时数据查看和线程数变更。
 
 ## 快速开始
 

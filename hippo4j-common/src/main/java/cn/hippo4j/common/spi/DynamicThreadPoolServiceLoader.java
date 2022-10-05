@@ -91,7 +91,7 @@ public class DynamicThreadPoolServiceLoader {
         try {
             return clazz.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException
-                 | NoSuchMethodException e) {
+                | NoSuchMethodException e) {
             throw new ServiceLoaderInstantiationException(clazz, e);
         }
     }

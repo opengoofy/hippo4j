@@ -25,9 +25,9 @@ import java.text.DecimalFormat;
 public class ByteConvertUtil {
 
     public static final int KB_SIZE = 2 << 9;
-    
+
     public static final int MB_SIZE = 2 << 19;
-    
+
     public static final int GB_SIZE = 2 << 29;
 
     public static String getPrintSize(long size) {
