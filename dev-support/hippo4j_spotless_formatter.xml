@@ -18,6 +18,7 @@
  * limitations under the License.
  */
 -->
+
 <profiles version="13">
     <profile kind="CodeFormatterProfile" name="'Hippo4j Current'" version="13">
         <setting id="org.eclipse.jdt.core.compiler.source" value="1.8"/>
