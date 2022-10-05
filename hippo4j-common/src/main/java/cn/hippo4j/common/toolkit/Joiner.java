@@ -24,7 +24,6 @@ import java.util.Objects;
 
 /**
  * reference google guava
- *
  */
 public class Joiner {
 
@@ -34,7 +33,9 @@ public class Joiner {
         this.separator = Objects.requireNonNull(separator);
     }
 
-    /** Returns a joiner which automatically places {@code separator} between consecutive elements. */
+    /**
+     * Returns a joiner which automatically places {@code separator} between consecutive elements.
+     */
     public static Joiner on(String separator) {
         return new Joiner(separator);
     }
@@ -42,7 +43,6 @@ public class Joiner {
     /**
      * Returns a string containing the string representation of each of {@code parts}, using the
      * previously configured separator between each.
-     *
      */
     public final String join(Object[] parts) {
         return join(Arrays.asList(parts));
@@ -55,7 +55,6 @@ public class Joiner {
     /**
      * Returns a string containing the string representation of each of {@code parts}, using the
      * previously configured separator between each.
-     *
      */
     public final String join(Iterator<?> parts) {
         return appendTo(new StringBuilder(), parts).toString();
@@ -86,5 +85,4 @@ public class Joiner {
         Objects.requireNonNull(part);
         return (part instanceof CharSequence) ? (CharSequence) part : part.toString();
     }
-
 }

@@ -129,7 +129,7 @@ public class CollectionUtil {
      */
     @SafeVarargs
     public static <E> ArrayList<E> newArrayList(E... elements) {
-        Objects.requireNonNull(elements);// for GWT
+        Objects.requireNonNull(elements);
         // Avoid integer overflow when a large array is passed in
         int capacity = computeArrayListCapacity(elements.length);
         ArrayList<E> list = new ArrayList<>(capacity);
@@ -139,7 +139,6 @@ public class CollectionUtil {
 
     private static int computeArrayListCapacity(int arraySize) {
         checkNonnegative(arraySize);
-
         // TODO(kevinb): Figure out the right behavior, and document it
         return saturatedCast(5L + arraySize + (arraySize / 10));
     }
