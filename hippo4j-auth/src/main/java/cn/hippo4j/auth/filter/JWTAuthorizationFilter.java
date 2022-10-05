@@ -85,7 +85,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             String resultStatus = "-1";
             if (ex instanceof ServiceException) {
                 ServiceException serviceException = (ServiceException) ex;
-                resultStatus = serviceException.errorCode.getCode();
+                resultStatus = serviceException.getErrorCode().getCode();
             }
             response.getWriter().write(JSONUtil.toJSONString(Results.failure(resultStatus, ex.getMessage())));
             response.getWriter().flush();
