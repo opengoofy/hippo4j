@@ -17,11 +17,15 @@
 
 package cn.hippo4j.common.executor.support;
 
+import java.util.AbstractQueue;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.*;
-import java.util.concurrent.locks.*;
-import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A clone of {@linkplain java.util.concurrent.LinkedBlockingQueue}
@@ -61,8 +65,8 @@ import java.util.*;
  **/
 public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         implements
-            BlockingQueue<E>,
-            java.io.Serializable {
+        BlockingQueue<E>,
+        java.io.Serializable {
 
     private static final long serialVersionUID = -6903933977591709194L;
 
@@ -229,8 +233,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
      */
     public ResizableCapacityLinkedBlockingQueue(Collection<? extends E> c) {
         this(Integer.MAX_VALUE);
-        for (Iterator<? extends E> it = c.iterator(); it.hasNext();)
+        for (Iterator<? extends E> it = c.iterator(); it.hasNext(); ) {
             add(it.next());
+        }
     }
 
     // this doc comment is overridden to remove the reference to collections
@@ -352,7 +357,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         final AtomicInteger count = this.count;
         putLock.lockInterruptibly();
         try {
-            for (;;) {
+            for (; ; ) {
                 if (count.get() < capacity) {
                     insert(o);
                     c = count.getAndIncrement();
@@ -458,7 +463,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         final ReentrantLock takeLock = this.takeLock;
         takeLock.lockInterruptibly();
         try {
-            for (;;) {
+            for (; ; ) {
                 if (count.get() > 0) {
                     x = extract();
                     c = count.getAndDecrement();
@@ -698,6 +703,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         return new Itr();
     }
 
+    /**
+     * Itr.
+     */
     private class Itr implements Iterator<E> {
 
         /*
@@ -824,7 +832,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         last = head = new Node<E>(null);
 
         // Read in all elements and place in queue
-        for (;;) {
+        for (; ; ) {
             @SuppressWarnings("unchecked")
             E item = (E) s.readObject();
             if (item == null) {

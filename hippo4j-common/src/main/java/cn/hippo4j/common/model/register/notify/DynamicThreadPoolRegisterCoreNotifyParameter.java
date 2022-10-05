@@ -17,7 +17,10 @@
 
 package cn.hippo4j.common.model.register.notify;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Dynamic thread-pool register core notify parameter.

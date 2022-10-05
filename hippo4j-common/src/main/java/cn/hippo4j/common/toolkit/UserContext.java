@@ -46,6 +46,9 @@ public class UserContext {
         USER_THREAD_LOCAL.remove();
     }
 
+    /**
+     * User info.
+     */
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

@@ -35,11 +35,12 @@ public class CollectionUtil {
      * @return
      */
     public static <T> T getFirst(Iterable<T> iterable) {
-        Iterator<T> iterator;
-        if (iterable != null && (iterator = iterable.iterator()) != null && iterator.hasNext()) {
-            return iterator.next();
+        if (iterable != null) {
+            Iterator<T> iterator = iterable.iterator();
+            if (iterator != null && iterator.hasNext()) {
+                return iterator.next();
+            }
         }
-
         return null;
     }
 
@@ -90,7 +91,7 @@ public class CollectionUtil {
      * @return
      */
     public static boolean isEmpty(Iterator<?> iterator) {
-        return null == iterator || false == iterator.hasNext();
+        return null == iterator || !iterator.hasNext();
     }
 
     /**

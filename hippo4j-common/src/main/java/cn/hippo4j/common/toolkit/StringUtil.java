@@ -63,14 +63,17 @@ public class StringUtil {
      * @return
      */
     public static boolean isBlank(CharSequence str) {
-        int length;
-        if ((str == null) || ((length = str.length()) == 0)) {
+        if ((str == null)) {
+            return true;
+        }
+        int length = str.length();
+        if (length == 0) {
             return true;
         }
         for (int i = 0; i < length; i++) {
             char c = str.charAt(i);
             boolean charNotBlank = Character.isWhitespace(c) || Character.isSpaceChar(c) || c == '\ufeff' || c == '\u202a';
-            if (charNotBlank == false) {
+            if (!charNotBlank) {
                 return false;
             }
         }
@@ -104,7 +107,7 @@ public class StringUtil {
      * @return
      */
     public static boolean isNotBlank(CharSequence str) {
-        return isBlank(str) == false;
+        return !isBlank(str);
     }
 
     /**
@@ -114,7 +117,7 @@ public class StringUtil {
      * @return
      */
     public static boolean isAllNotEmpty(CharSequence... args) {
-        return false == hasEmpty(args);
+        return !hasEmpty(args);
     }
 
     /**

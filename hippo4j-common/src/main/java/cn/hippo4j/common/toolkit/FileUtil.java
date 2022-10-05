@@ -29,6 +29,8 @@ import java.io.InputStream;
  */
 public class FileUtil {
 
+    private static final int ERROR_CODE = -1;
+
     @SneakyThrows
     public static String readUtf8String(String path) {
         String resultReadStr;
@@ -38,7 +40,7 @@ public class FileUtil {
                 BufferedInputStream bis = new BufferedInputStream(inputStream);
                 ByteArrayOutputStream buf = new ByteArrayOutputStream()) {
             int result = bis.read();
-            while (result != -1) {
+            while (result != ERROR_CODE) {
                 buf.write((byte) result);
                 result = bis.read();
             }

@@ -61,7 +61,7 @@ public class ReflectUtil {
     }
 
     public static <T extends AccessibleObject> T setAccessible(T accessibleObject) {
-        if (null != accessibleObject && false == accessibleObject.isAccessible()) {
+        if (null != accessibleObject && !accessibleObject.isAccessible()) {
             accessibleObject.setAccessible(true);
         }
         return accessibleObject;
@@ -121,7 +121,7 @@ public class ReflectUtil {
         cn.hutool.core.lang.Assert.notNull(field, "Field in [{}] not exist !", obj);
         final Class<?> fieldType = field.getType();
         if (null != value) {
-            if (false == fieldType.isAssignableFrom(value.getClass())) {
+            if (!fieldType.isAssignableFrom(value.getClass())) {
                 final Object targetValue = Convert.convert(fieldType, value);
                 if (null != targetValue) {
                     value = targetValue;
