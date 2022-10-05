@@ -151,17 +151,17 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/liulinfei121">
-            <img src="https://avatars.githubusercontent.com/u/57127515?v=4" width="50;" alt="liulinfei121"/>
-            <br />
-            <sub><b>Null</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/road2master">
             <img src="https://avatars.githubusercontent.com/u/53806703?v=4" width="50;" alt="road2master"/>
             <br />
             <sub><b>Lijx</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/liulinfei121">
+            <img src="https://avatars.githubusercontent.com/u/57127515?v=4" width="50;" alt="liulinfei121"/>
+            <br />
+            <sub><b>Null</b></sub>
         </a>
     </td>
     <td align="center">
