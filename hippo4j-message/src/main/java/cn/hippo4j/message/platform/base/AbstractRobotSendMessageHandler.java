@@ -17,6 +17,7 @@
 
 package cn.hippo4j.message.platform.base;
 
+import cn.hippo4j.common.toolkit.Joiner;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
@@ -109,7 +110,7 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
                 // 拒绝策略次数
                 alarmNotifyRequest.getRejectCountNum(),
                 // 告警手机号
-                StringUtil.Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
+                Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
                 // 报警频率
                 notifyConfig.getInterval(),
                 // 当前时间
@@ -155,7 +156,7 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
                 changeParameterNotifyRequest.getBeforeRejectedName(),
                 changeParameterNotifyRequest.getNowRejectedName(),
                 // 告警手机号
-                StringUtil.Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
+                Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
                 // 当前时间
                 DateUtil.now());
         execute(RobotMessageExecuteDTO.builder().text(text).notifyConfig(notifyConfig).build());

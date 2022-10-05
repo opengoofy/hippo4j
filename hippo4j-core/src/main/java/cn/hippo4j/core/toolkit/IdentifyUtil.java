@@ -19,7 +19,7 @@ package cn.hippo4j.core.toolkit;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.Joiner;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hutool.core.util.IdUtil;
@@ -90,6 +90,6 @@ public class IdentifyUtil {
      */
     public static String getThreadPoolIdentify(String threadPoolId, String itemId, String namespace) {
         ArrayList<String> params = CollectionUtil.newArrayList(threadPoolId, itemId, namespace, getIdentify());
-        return StringUtil.Joiner.on(GROUP_KEY_DELIMITER).join(params);
+        return Joiner.on(GROUP_KEY_DELIMITER).join(params);
     }
 }

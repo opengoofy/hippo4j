@@ -24,8 +24,8 @@ import cn.hippo4j.common.design.observer.Observer;
 import cn.hippo4j.common.design.observer.ObserverMessage;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.Joiner;
 import cn.hippo4j.common.toolkit.Md5Util;
-import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.model.CacheItem;
 import cn.hippo4j.config.model.ConfigAllInfo;
@@ -148,7 +148,7 @@ public class ConfigCacheService {
 
     public static List<String> getIdentifyList(String tenantId, String itemId, String threadPoolId) {
         List<String> identifyList = null;
-        String buildKey = StringUtil.Joiner.on(GROUP_KEY_DELIMITER).join(CollectionUtil.newArrayList(threadPoolId, itemId, tenantId));
+        String buildKey = Joiner.on(GROUP_KEY_DELIMITER).join(CollectionUtil.newArrayList(threadPoolId, itemId, tenantId));
         List<String> keys = MapUtil.parseMapForFilter(CLIENT_CONFIG_CACHE, buildKey);
         if (CollectionUtil.isNotEmpty(keys)) {
             identifyList = new ArrayList<>(keys.size());
