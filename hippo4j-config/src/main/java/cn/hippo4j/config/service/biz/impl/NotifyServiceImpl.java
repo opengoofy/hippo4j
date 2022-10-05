@@ -18,6 +18,7 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.enums.EnableEnum;
+import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.mapper.NotifyInfoMapper;
@@ -29,17 +30,16 @@ import cn.hippo4j.config.model.biz.notify.NotifyRespDTO;
 import cn.hippo4j.config.service.biz.NotifyService;
 import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,7 +54,7 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public List<NotifyListRespDTO> listNotifyConfig(NotifyQueryReqDTO reqDTO) {
-        List<NotifyListRespDTO> notifyListRespList = Lists.newArrayList();
+        List<NotifyListRespDTO> notifyListRespList = new ArrayList<>();
         reqDTO.getGroupKeys().forEach(each -> {
             String[] parseKey = GroupKey.parseKey(each);
             List<NotifyInfo> notifyInfos = listNotifyCommon("CONFIG", parseKey);
@@ -93,7 +93,7 @@ public class NotifyServiceImpl implements NotifyService {
         if (BooleanUtil.isTrue(requestParam.getAlarmType())) {
             existNotify("ALARM", requestParam);
         }
-        List<NotifyInfo> notifyInfos = Lists.newArrayList();
+        List<NotifyInfo> notifyInfos = new ArrayList<>();
         if (BooleanUtil.isTrue(requestParam.getAlarmType())) {
             NotifyInfo alarmNotifyInfo = BeanUtil.convert(requestParam, NotifyInfo.class);
             alarmNotifyInfo.setType("ALARM");

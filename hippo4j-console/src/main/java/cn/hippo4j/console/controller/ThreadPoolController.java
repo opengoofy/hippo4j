@@ -42,11 +42,11 @@ import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -131,9 +131,9 @@ public class ThreadPoolController {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
         Lease<InstanceInfo> first = CollUtil.getFirst(leases);
         if (first == null) {
-            return Results.success(Lists.newArrayList());
+            return Results.success(new ArrayList<>());
         }
-        List<WebThreadPoolRespDTO> returnThreadPool = Lists.newArrayList();
+        List<WebThreadPoolRespDTO> returnThreadPool = new ArrayList<>();
         for (Lease<InstanceInfo> each : leases) {
             Result poolBaseState;
             try {
@@ -185,7 +185,7 @@ public class ThreadPoolController {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
         Lease<InstanceInfo> first = CollUtil.getFirst(leases);
         if (first == null) {
-            return Results.success(Lists.newArrayList());
+            return Results.success(new ArrayList<>());
         }
         InstanceInfo holder = first.getHolder();
         String itemTenantKey = holder.getGroupKey();
@@ -197,7 +197,7 @@ public class ThreadPoolController {
         Map<String, String> clientBasePathMap = leases.stream().map(each -> each.getHolder())
                 .filter(each -> StringUtil.isNotBlank(each.getClientBasePath()))
                 .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getClientBasePath));
-        List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
+        List<ThreadPoolInstanceInfo> returnThreadPool = new ArrayList<>();
         content.forEach((key, val) -> {
             ThreadPoolInstanceInfo threadPoolInstanceInfo =
                     BeanUtil.convert(val.configAllInfo, ThreadPoolInstanceInfo.class);

@@ -21,7 +21,6 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.common.Version;
 import org.apache.dubbo.common.extension.ExtensionLoader;
@@ -31,6 +30,7 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -45,7 +45,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
 @Slf4j
 public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
-    private final Map<String, ThreadPoolExecutor> DUBBO_PROTOCOL_EXECUTOR = Maps.newHashMap();
+    private final Map<String, ThreadPoolExecutor> DUBBO_PROTOCOL_EXECUTOR = new HashMap<>();
 
     @Override
     public String mark() {

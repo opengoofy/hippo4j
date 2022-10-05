@@ -25,7 +25,6 @@ import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.service.SendMessageHandler;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.base.Joiner;
 
 import java.util.Objects;
 
@@ -110,7 +109,7 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
                 // 拒绝策略次数
                 alarmNotifyRequest.getRejectCountNum(),
                 // 告警手机号
-                Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
+                StringUtil.Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
                 // 报警频率
                 notifyConfig.getInterval(),
                 // 当前时间
@@ -156,7 +155,7 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
                 changeParameterNotifyRequest.getBeforeRejectedName(),
                 changeParameterNotifyRequest.getNowRejectedName(),
                 // 告警手机号
-                Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
+                StringUtil.Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
                 // 当前时间
                 DateUtil.now());
         execute(RobotMessageExecuteDTO.builder().text(text).notifyConfig(notifyConfig).build());

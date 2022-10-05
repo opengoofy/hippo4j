@@ -17,8 +17,8 @@
 
 package cn.hippo4j.config.service;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import cn.hutool.cache.Cache;
+import cn.hutool.cache.CacheUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,9 +39,7 @@ public class ConfigServletInner {
     @NonNull
     private final LongPollingService longPollingService;
 
-    private final Cache<String, Long> deWeightCache = CacheBuilder.newBuilder()
-            .maximumSize(1024)
-            .build();
+    private final Cache<String, Long> deWeightCache = CacheUtil.newLRUCache(1024);
 
     /**
      * Poll configuration.
@@ -71,7 +69,8 @@ public class ConfigServletInner {
      */
     private boolean weightVerification(HttpServletRequest request) {
         String clientIdentify = request.getParameter(WEIGHT_CONFIGS);
-        Long timeVal = deWeightCache.getIfPresent(clientIdentify);
+//        Long timeVal = deWeightCache.getIfPresent(clientIdentify);
+        Long timeVal = deWeightCache.containsKey(clientIdentify) ? deWeightCache.get(clientIdentify) : null;
         if (timeVal == null) {
             deWeightCache.put(clientIdentify, System.currentTimeMillis());
             return true;

@@ -17,13 +17,7 @@
 
 package cn.hippo4j.common.toolkit;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class GroupKeyTest {
 

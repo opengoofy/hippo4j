@@ -20,13 +20,13 @@ package cn.hippo4j.springboot.starter.remote;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.security.SecurityProxy;
 import cn.hippo4j.springboot.starter.toolkit.HttpClientUtil;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.collect.Maps;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -141,7 +141,7 @@ public class ServerHttpAgent implements HttpAgent {
 
     @Deprecated
     private String injectSecurityInfoByPath(String path) {
-        String resultPath = httpClientUtil.buildUrl(path, injectSecurityInfo(Maps.newHashMap()));
+        String resultPath = httpClientUtil.buildUrl(path, injectSecurityInfo(new HashMap<>()));
         return resultPath;
     }
 }

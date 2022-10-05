@@ -25,13 +25,13 @@ import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.config.NotifyPlatformProperties;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +74,7 @@ public class BootstrapConfigPropertiesBinderAdapt {
         BootstrapConfigProperties bindableConfigProperties;
         try {
             // filter
-            Map<Object, Object> targetMap = Maps.newHashMap();
+            Map<Object, Object> targetMap = new HashMap<>();
             configInfo.forEach((key, val) -> {
                 boolean containFlag = key != null
                         && StringUtil.isNotBlank((String) key)
@@ -87,12 +87,12 @@ public class BootstrapConfigPropertiesBinderAdapt {
                 }
             });
             // convert
-            List<ExecutorProperties> executorPropertiesList = Lists.newArrayList();
-            List<NotifyPlatformProperties> notifyPropertiesList = Lists.newArrayList();
+            List<ExecutorProperties> executorPropertiesList = new ArrayList<>();
+            List<NotifyPlatformProperties> notifyPropertiesList = new ArrayList<>();
             for (int i = 0; i < Integer.MAX_VALUE; i++) {
-                Map<String, Object> executorSingleMap = Maps.newHashMap();
-                Map<String, Object> platformSingleMap = Maps.newHashMap();
-                Map<String, Object> notifySingleMap = Maps.newHashMap();
+                Map<String, Object> executorSingleMap = new HashMap<>();
+                Map<String, Object> platformSingleMap = new HashMap<>();
+                Map<String, Object> notifySingleMap = new HashMap<>();
 
                 for (Map.Entry entry : targetMap.entrySet()) {
                     String key = entry.getKey().toString();

@@ -24,6 +24,7 @@ import org.assertj.core.util.Lists;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -62,7 +63,7 @@ public class Md5ConfigUtilTest {
     public void compareMd5ResultStringEmptyTest() {
         String key = null;
         try {
-            key = Md5ConfigUtil.compareMd5ResultString(Lists.newArrayList());
+            key = Md5ConfigUtil.compareMd5ResultString(new ArrayList<>());
         } catch (IOException ignored) {
 
         }
