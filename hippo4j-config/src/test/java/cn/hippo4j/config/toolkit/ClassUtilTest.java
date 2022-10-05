@@ -18,7 +18,6 @@
 package cn.hippo4j.config.toolkit;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hutool.core.lang.caller.CallerUtil;
 import org.junit.Test;
 
 import java.util.Objects;

@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.state;
 
-import cn.hutool.core.util.ReflectUtil;
+import cn.hippo4j.common.toolkit.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
@@ -49,7 +49,7 @@ public class ThreadPoolStatusHandler {
         if (EXCEPTION_FLAG.get()) {
             try {
                 Method runStateLessThan = ReflectUtil.getMethodByName(ThreadPoolExecutor.class, "runStateLessThan");
-                cn.hippo4j.common.toolkit.ReflectUtil.setAccessible(runStateLessThan);
+                ReflectUtil.setAccessible(runStateLessThan);
                 AtomicInteger ctl = (AtomicInteger) ReflectUtil.getFieldValue(executor, "ctl");
                 int shutdown = (int) ReflectUtil.getFieldValue(executor, "SHUTDOWN");
                 boolean runStateLessThanBool = ReflectUtil.invoke(executor, runStateLessThan, ctl.get(), shutdown);

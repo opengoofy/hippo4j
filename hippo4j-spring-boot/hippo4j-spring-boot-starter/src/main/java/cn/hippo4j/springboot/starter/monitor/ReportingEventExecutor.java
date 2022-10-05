@@ -32,7 +32,6 @@ import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.monitor.collect.Collector;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
-import cn.hutool.core.collection.CollUtil;
 import com.google.common.collect.Lists;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -166,7 +165,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
      */
     private void runTimeGatherTask() {
         boolean healthStatus = serverHealthCheck.isHealthStatus();
-        if (!healthStatus || CollUtil.isEmpty(collectors)) {
+        if (!healthStatus || CollectionUtil.isEmpty(collectors)) {
             return;
         }
         collectors.forEach((beanName, collector) -> {

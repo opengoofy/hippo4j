@@ -17,8 +17,10 @@
 
 package cn.hippo4j.config.service;
 
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.event.AbstractEvent;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
@@ -28,8 +30,6 @@ import cn.hippo4j.config.toolkit.ConfigExecutor;
 import cn.hippo4j.config.toolkit.MapUtil;
 import cn.hippo4j.config.toolkit.Md5ConfigUtil;
 import cn.hippo4j.config.toolkit.RequestUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -118,7 +118,7 @@ public class LongPollingService {
                     ClientLongPolling clientSub = iter.next();
                     String identity = groupKey + GROUP_KEY_DELIMITER + identify;
                     List<String> parseMapForFilter = Lists.newArrayList(identity);
-                    if (StrUtil.isBlank(identify)) {
+                    if (StringUtil.isBlank(identify)) {
                         parseMapForFilter = MapUtil.parseMapForFilter(clientSub.clientMd5Map, groupKey);
                     }
                     parseMapForFilter.forEach(each -> {
@@ -274,7 +274,7 @@ public class LongPollingService {
      * @param changedGroups Changed thread pool group key
      */
     private void generateResponse(HttpServletResponse response, List<String> changedGroups) {
-        if (CollUtil.isNotEmpty(changedGroups)) {
+        if (CollectionUtil.isNotEmpty(changedGroups)) {
             try {
                 String respStr = buildRespStr(changedGroups);
                 response.setHeader("Pragma", "no-cache");

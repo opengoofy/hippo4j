@@ -19,12 +19,12 @@ package cn.hippo4j.springboot.starter.remote;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.security.SecurityProxy;
 import cn.hippo4j.springboot.starter.toolkit.HttpClientUtil;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
-import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
@@ -133,7 +133,7 @@ public class ServerHttpAgent implements HttpAgent {
     }
 
     private Map injectSecurityInfo(Map<String, String> params) {
-        if (StrUtil.isNotBlank(securityProxy.getAccessToken())) {
+        if (StringUtil.isNotBlank(securityProxy.getAccessToken())) {
             params.put(Constants.ACCESS_TOKEN, securityProxy.getAccessToken());
         }
         return params;

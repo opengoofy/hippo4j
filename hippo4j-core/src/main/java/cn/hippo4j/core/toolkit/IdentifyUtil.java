@@ -18,15 +18,15 @@
 package cn.hippo4j.core.toolkit;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
@@ -38,7 +38,7 @@ public class IdentifyUtil {
 
     private static String IDENTIFY;
 
-    public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
+    public static final String CLIENT_IDENTIFICATION_VALUE = UUID.randomUUID().toString();
 
     /**
      * Generate identify.
@@ -48,16 +48,18 @@ public class IdentifyUtil {
      * @return
      */
     public static synchronized String generate(ConfigurableEnvironment environment, InetUtils hippo4JInetUtils) {
-        if (StrUtil.isNotBlank(IDENTIFY)) {
+        if (StringUtil.isNotBlank(IDENTIFY)) {
             return IDENTIFY;
         }
         String ip = hippo4JInetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
         String port = environment.getProperty("server.port", "8080");
-        String identification = StrUtil.builder(ip,
-                ":",
-                port,
-                IDENTIFY_SLICER_SYMBOL,
-                CLIENT_IDENTIFICATION_VALUE).toString();
+        String identification = new StringBuilder()
+                .append(ip)
+                .append(":")
+                .append(port)
+                .append(IDENTIFY_SLICER_SYMBOL)
+                .append(CLIENT_IDENTIFICATION_VALUE)
+                .toString();
         IDENTIFY = identification;
         return identification;
     }
@@ -68,7 +70,7 @@ public class IdentifyUtil {
      * @return
      */
     public static String getIdentify() {
-        while (StrUtil.isBlank(IDENTIFY)) {
+        while (StringUtil.isBlank(IDENTIFY)) {
             ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
             InetUtils inetUtils = ApplicationContextHolder.getBean(InetUtils.class);
             if (environment != null && inetUtils != null) {
