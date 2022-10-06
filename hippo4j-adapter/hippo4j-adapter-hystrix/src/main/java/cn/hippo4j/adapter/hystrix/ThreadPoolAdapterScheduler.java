@@ -17,7 +17,7 @@
 
 package cn.hippo4j.adapter.hystrix;
 
-import cn.hutool.core.thread.ThreadFactoryBuilder;
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -36,8 +36,8 @@ public class ThreadPoolAdapterScheduler {
     public ThreadPoolAdapterScheduler() {
         scheduler = new ScheduledThreadPoolExecutor(2,
                 new ThreadFactoryBuilder()
-                        .setNamePrefix("threadPoolAdapter")
-                        .setDaemon(true)
+                        .prefix("threadPoolAdapter")
+                        .daemon(true)
                         .build());
     }
 

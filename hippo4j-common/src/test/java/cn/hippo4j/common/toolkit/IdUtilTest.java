@@ -20,17 +20,18 @@ package cn.hippo4j.common.toolkit;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class BooleanUtilTest {
+public class IdUtilTest {
 
     @Test
-    public void assertToBoolean() {
-        Assert.assertTrue(BooleanUtil.toBoolean("true"));
-        Assert.assertTrue(BooleanUtil.toBoolean("yes"));
-        Assert.assertTrue(BooleanUtil.toBoolean("1"));
+    public void randomUUIDTest() {
+        String randomUUID = IdUtil.randomUUID();
+        Assert.assertNotNull(randomUUID);
     }
 
     @Test
-    public void assertIsTrue() {
-        Assert.assertTrue(BooleanUtil.isTrue(true));
+    public void simpleUUIDTest() {
+        String simpleUUID = IdUtil.simpleUUID();
+        Assert.assertNotNull(simpleUUID);
+        Assert.assertFalse(simpleUUID.contains("-"));
     }
 }

@@ -20,7 +20,6 @@ package cn.hippo4j.example.core.inittest;
 import cn.hippo4j.example.core.constant.GlobalTestConstant;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hutool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.core.task.TaskDecorator;
@@ -60,12 +59,14 @@ public class TaskDecoratorTest {
     public void taskDecoratorTest() {
         taskDecoratorTestExecutor.execute(() -> {
             MDC.put(PLACEHOLDER, "View the official website: https://www.hippo4j.cn");
-            ThreadUtil.sleep(5000);
-            DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
-            ThreadPoolExecutor threadPoolExecutor = poolWrapper.getExecutor();
-            threadPoolExecutor.execute(() -> {
-                log.info("Pass context via taskDecorator MDC: {}", MDC.get(PLACEHOLDER));
-            });
+            try {
+                Thread.sleep(5000);
+                DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
+                ThreadPoolExecutor threadPoolExecutor = poolWrapper.getExecutor();
+                threadPoolExecutor.execute(() -> log.info("Pass context via taskDecorator MDC: {}", MDC.get(PLACEHOLDER)));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

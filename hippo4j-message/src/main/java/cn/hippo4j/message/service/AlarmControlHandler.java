@@ -18,9 +18,9 @@
 package cn.hippo4j.message.service;
 
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.toolkit.IdUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.message.dto.AlarmControlDTO;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
@@ -52,12 +52,12 @@ public class AlarmControlHandler {
             return false;
         }
         String pkId = cache.getIfPresent(alarmControl.getTypeEnum().name());
-        if (StrUtil.isBlank(pkId)) {
+        if (StringUtil.isBlank(pkId)) {
             ReentrantLock lock = threadPoolLock.get(threadPoolKey);
             lock.lock();
             try {
                 pkId = cache.getIfPresent(alarmControl.getTypeEnum().name());
-                if (StrUtil.isBlank(pkId)) {
+                if (StringUtil.isBlank(pkId)) {
                     // Val meaningless.
                     cache.put(alarmControl.getTypeEnum().name(), IdUtil.simpleUUID());
                     return true;
@@ -77,7 +77,7 @@ public class AlarmControlHandler {
      * @param interval
      */
     public void initCacheAndLock(String threadPoolId, String platform, Integer interval) {
-        String threadPoolKey = StrUtil.builder(threadPoolId, Constants.GROUP_KEY_DELIMITER, platform).toString();
+        String threadPoolKey = threadPoolId + Constants.GROUP_KEY_DELIMITER + platform;
         Cache<String, String> cache = Caffeine.newBuilder()
                 .expireAfterWrite(interval, TimeUnit.MINUTES)
                 .build();

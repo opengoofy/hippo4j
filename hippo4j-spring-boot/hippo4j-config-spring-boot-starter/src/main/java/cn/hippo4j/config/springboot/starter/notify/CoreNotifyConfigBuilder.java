@@ -25,7 +25,6 @@ import cn.hippo4j.config.springboot.starter.config.NotifyPlatformProperties;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.service.AlarmControlHandler;
-import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -110,7 +109,7 @@ public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
     public void initCacheAndLock(Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig) {
         buildSingleNotifyConfig.forEach(
                 (key, val) -> val.stream()
-                        .filter(each -> StrUtil.equals("ALARM", each.getType()))
+                        .filter(each -> Objects.equals("ALARM", each.getType()))
                         .forEach(each -> alarmControlHandler.initCacheAndLock(each.getTpId(), each.getPlatform(), each.getInterval())));
     }
 

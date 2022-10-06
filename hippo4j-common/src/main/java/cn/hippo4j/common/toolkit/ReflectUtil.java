@@ -17,22 +17,27 @@
 
 package cn.hippo4j.common.toolkit;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.util.ClassUtil;
+import cn.hippo4j.common.web.exception.IllegalException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Reflect util.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReflectUtil {
 
-    private static final Map<Class<?>, Field[]> FIELDS_CACHE = new ConcurrentHashMap();
+    private static final Map<Class<?>, Field[]> FIELDS_CACHE = new ConcurrentHashMap<>();
 
     public static Object getFieldValue(Object obj, String fieldName) {
         if (null == obj || StringUtil.isBlank(fieldName)) {
@@ -55,7 +60,7 @@ public class ReflectUtil {
             result = field.get(obj);
         } catch (IllegalAccessException e) {
             String exceptionMsg = String.format("IllegalAccess for %s.%s", field.getDeclaringClass(), field.getName());
-            throw new RuntimeException(exceptionMsg, e);
+            throw new IllegalException(exceptionMsg, e);
         }
         return result;
     }
@@ -69,7 +74,7 @@ public class ReflectUtil {
 
     public static Field getField(Class<?> beanClass, String name) throws SecurityException {
         final Field[] fields = getFields(beanClass);
-        return ArrayUtil.firstMatch((field) -> name.equals(getFieldName(field)), fields);
+        return ArrayUtil.firstMatch(field -> name.equals(getFieldName(field)), fields);
     }
 
     public static Field[] getFields(Class<?> beanClass) throws SecurityException {
@@ -109,32 +114,114 @@ public class ReflectUtil {
         return field.getName();
     }
 
-    public static void setFieldValue(Object obj, String fieldName, Object value) throws UtilException {
-        cn.hutool.core.lang.Assert.notNull(obj);
-        cn.hutool.core.lang.Assert.notBlank(fieldName);
+    public static void setFieldValue(Object obj, String fieldName, Object value) throws IllegalException {
+        Assert.notNull(obj);
+        Assert.notBlank(fieldName);
         final Field field = getField((obj instanceof Class) ? (Class<?>) obj : obj.getClass(), fieldName);
-        cn.hutool.core.lang.Assert.notNull(field, "Field [{}] is not exist in [{}]", fieldName, obj.getClass().getName());
+        Assert.notNull(field, "Field [" + fieldName + "] is not exist in [" + obj.getClass().getName() + "]");
         setFieldValue(obj, field, value);
     }
 
-    public static void setFieldValue(Object obj, Field field, Object value) throws UtilException {
-        cn.hutool.core.lang.Assert.notNull(field, "Field in [{}] not exist !", obj);
+    public static void setFieldValue(Object obj, Field field, Object value) throws IllegalException {
+        Assert.notNull(field, "Field in [" + obj + "] not exist !");
         final Class<?> fieldType = field.getType();
         if (null != value) {
             if (!fieldType.isAssignableFrom(value.getClass())) {
-                final Object targetValue = Convert.convert(fieldType, value);
+                final Object targetValue = cast(fieldType, value);
                 if (null != targetValue) {
                     value = targetValue;
                 }
             }
         } else {
-            value = ClassUtil.getDefaultValue(fieldType);
+            value = getDefaultValue(fieldType);
         }
         setAccessible(field);
         try {
             field.set(obj instanceof Class ? null : obj, value);
         } catch (IllegalAccessException e) {
-            throw new UtilException(e, "IllegalAccess for {}.{}", obj, field.getName());
+            throw new IllegalException("IllegalAccess for " + obj + "." + field.getName(), e);
+        }
+    }
+
+    /**
+     * find the method associated with the method name
+     *
+     * @param clazz      the class
+     * @param methodName retrieves the method name
+     * @param arguments  matched parameters class
+     * @return find method
+     */
+    public static Method getMethodByName(Class<?> clazz, String methodName, Class<?>... arguments) {
+        try {
+            if (Objects.nonNull(clazz) && Objects.nonNull(methodName)) {
+                return clazz.getMethod(methodName, arguments);
+            }
+        } catch (NoSuchMethodException e) {
+            throw new IllegalException(e);
+        }
+        return null;
+    }
+
+    /**
+     * Cast the value to the type <br>
+     * If a ClassCastException occurs, return null
+     *
+     * @param clazz Cast class
+     * @param value The cast value
+     * @return The value after the cast is completed
+     */
+    public static Object cast(Class<?> clazz, Object value) {
+        try {
+            return clazz.cast(value);
+        } catch (ClassCastException e) {
+            return null;
+        }
+    }
+
+    /**
+     * the default value is obtained if it is a primitive type, and NULL if it is not
+     *
+     * @param clazz clazz
+     * @return default value
+     */
+    public static Object getDefaultValue(Class<?> clazz) {
+        if (Objects.isNull(clazz) || !clazz.isPrimitive()) {
+            return null;
+        }
+        if (long.class.isAssignableFrom(clazz)) {
+            return 0L;
+        } else if (int.class.isAssignableFrom(clazz)) {
+            return 0;
+        } else if (short.class.isAssignableFrom(clazz)) {
+            return (short) 0;
+        } else if (char.class.isAssignableFrom(clazz)) {
+            return (char) 0;
+        } else if (byte.class.isAssignableFrom(clazz)) {
+            return (byte) 0;
+        } else if (double.class.isAssignableFrom(clazz)) {
+            return 0D;
+        } else if (float.class.isAssignableFrom(clazz)) {
+            return 0f;
+        } else if (boolean.class.isAssignableFrom(clazz)) {
+            return false;
+        }
+        return null;
+    }
+
+    /**
+     * invoke
+     *
+     * @param obj       the obj
+     * @param method    the method
+     * @param arguments parameters
+     * @return result for zhe method
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T invoke(Object obj, Method method, Object... arguments) {
+        try {
+            return (T) method.invoke(obj, arguments);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalException(e);
         }
     }
 }

@@ -18,6 +18,7 @@
 package cn.hippo4j.common.toolkit;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Collection util.
@@ -119,6 +120,21 @@ public class CollectionUtil {
      */
     public static boolean isNotEmpty(Collection<?> collection) {
         return !isEmpty(collection);
+    }
+
+    /**
+     * to list
+     *
+     * @param ts  elements
+     * @param <T> type
+     * @return List
+     */
+    public static <T> List<T> toList(T... ts) {
+        if (ts == null || ts.length == 0) {
+            return new ArrayList<>();
+        }
+        return Arrays.stream(ts)
+                .collect(Collectors.toList());
     }
 
     /**

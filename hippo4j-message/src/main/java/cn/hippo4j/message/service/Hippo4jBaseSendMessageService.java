@@ -17,15 +17,14 @@
 
 package cn.hippo4j.message.service;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.message.dto.AlarmControlDTO;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,9 +53,13 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     @Override
     public void sendAlarmMessage(NotifyTypeEnum typeEnum, AlarmNotifyRequest alarmNotifyRequest) {
         String threadPoolId = alarmNotifyRequest.getThreadPoolId();
-        String buildKey = StrUtil.builder(threadPoolId, "+", "ALARM").toString();
+        String buildKey = new StringBuilder()
+                .append(threadPoolId)
+                .append("+")
+                .append("ALARM")
+                .toString();
         List<NotifyConfigDTO> notifyList = notifyConfigs.get(buildKey);
-        if (CollUtil.isEmpty(notifyList)) {
+        if (CollectionUtil.isEmpty(notifyList)) {
             return;
         }
         notifyList.forEach(each -> {
@@ -79,9 +82,13 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     @Override
     public void sendChangeMessage(ChangeParameterNotifyRequest changeParameterNotifyRequest) {
         String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
-        String buildKey = StrUtil.builder(threadPoolId, "+", "CONFIG").toString();
+        String buildKey = new StringBuilder()
+                .append(threadPoolId)
+                .append("+")
+                .append("CONFIG")
+                .toString();
         List<NotifyConfigDTO> notifyList = notifyConfigs.get(buildKey);
-        if (CollUtil.isEmpty(notifyList)) {
+        if (CollectionUtil.isEmpty(notifyList)) {
             log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
             return;
         }

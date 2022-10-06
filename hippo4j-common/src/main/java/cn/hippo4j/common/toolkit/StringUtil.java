@@ -17,6 +17,9 @@
 
 package cn.hippo4j.common.toolkit;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * String util.
  */
@@ -192,4 +195,84 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * to camel case
+     *
+     * @param str    CharSequence
+     * @param symbol symbol
+     * @return toCamelCase String
+     */
+    public static String toCamelCase(CharSequence str, char symbol) {
+        if (null == str || str.length() == 0) {
+            return null;
+        }
+        int length = str.length();
+        StringBuilder sb = new StringBuilder(length);
+        boolean upperCase = false;
+        for (int i = 0; i < length; ++i) {
+            char c = str.charAt(i);
+            if (c == symbol) {
+                upperCase = true;
+            } else if (upperCase) {
+                sb.append(Character.toUpperCase(c));
+                upperCase = false;
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Replace a portion of the string, replacing all found
+     *
+     * @param str        A string to operate on
+     * @param searchStr  The replaced string
+     * @param replaceStr The replaced string
+     * @return Replace the result
+     */
+    public static String replace(String str, String searchStr, String replaceStr) {
+        return Pattern
+                .compile(searchStr, Pattern.LITERAL)
+                .matcher(str)
+                .replaceAll(Matcher.quoteReplacement(replaceStr));
+    }
+
+    /**
+     * Tests if this string starts with the specified prefix.
+     *
+     * @param str    this str
+     * @param prefix the suffix
+     * @return Whether the prefix exists
+     */
+    public static boolean startWith(String str, String prefix) {
+        if (isEmpty(str)) {
+            return false;
+        }
+        return str.startsWith(prefix);
+    }
+
+    /**
+     * get the string before the delimiter
+     *
+     * @param str    string
+     * @param symbol separator
+     * @return String
+     */
+    public static String subBefore(String str, String symbol) {
+        if (isEmpty(str) || symbol == null) {
+            return str;
+        }
+        if (symbol.isEmpty()) {
+            return EMPTY;
+        }
+        int pos = str.indexOf(symbol);
+        if (-1 == pos) {
+            return str;
+        }
+        if (0 == pos) {
+            return EMPTY;
+        }
+        return str.substring(0, pos);
+    }
 }

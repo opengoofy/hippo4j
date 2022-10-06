@@ -29,7 +29,6 @@ import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
-import cn.hutool.core.util.StrUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -198,7 +197,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      */
     public void sendPoolConfigChange(ChangeParameterNotifyRequest request) {
         request.setActive(active.toUpperCase());
-        String appName = StrUtil.isBlank(itemId) ? applicationName : itemId;
+        String appName = StringUtil.isBlank(itemId) ? applicationName : itemId;
         request.setAppName(appName);
         request.setIdentify(IdentifyUtil.getIdentify());
         hippo4jSendMessageService.sendChangeMessage(request);
@@ -218,8 +217,8 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
         long rejectCount = threadPoolExecutor instanceof DynamicThreadPoolExecutor
                 ? ((DynamicThreadPoolExecutor) threadPoolExecutor).getRejectCountNum()
                 : -1L;
-        AlarmNotifyRequest alarmNotifyRequest = AlarmNotifyRequest.builder()
-                .appName(StrUtil.isBlank(itemId) ? applicationName : itemId)
+        return AlarmNotifyRequest.builder()
+                .appName(StringUtil.isBlank(itemId) ? applicationName : itemId)
                 .active(active.toUpperCase())
                 .identify(IdentifyUtil.getIdentify())
                 .corePoolSize(threadPoolExecutor.getCorePoolSize())
@@ -235,6 +234,5 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
                 .rejectedExecutionHandlerName(rejectedExecutionHandler.getClass().getSimpleName())
                 .rejectCountNum(rejectCount)
                 .build();
-        return alarmNotifyRequest;
     }
 }

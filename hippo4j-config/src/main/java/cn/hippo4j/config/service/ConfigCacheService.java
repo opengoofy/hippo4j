@@ -26,14 +26,13 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Joiner;
 import cn.hippo4j.common.toolkit.Md5Util;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.model.CacheItem;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.notify.NotifyCenter;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.toolkit.MapUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -79,7 +78,7 @@ public class ConfigCacheService {
     private synchronized static String getContentMd5IsNullPut(String groupKey, String clientIdentify) {
         Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CLIENT_CONFIG_CACHE.get(groupKey)).orElse(new HashMap<>());
         CacheItem cacheItem = null;
-        if (CollUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(clientIdentify)) != null) {
+        if (CollectionUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(clientIdentify)) != null) {
             return cacheItem.md5;
         }
         if (CONFIG_SERVICE == null) {
@@ -87,7 +86,7 @@ public class ConfigCacheService {
         }
         String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
         ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
-        if (config != null && StrUtil.isNotBlank(config.getTpId())) {
+        if (config != null && StringUtil.isNotBlank(config.getTpId())) {
             cacheItem = new CacheItem(groupKey, config);
             cacheItemMap.put(clientIdentify, cacheItem);
             CLIENT_CONFIG_CACHE.put(groupKey, cacheItemMap);

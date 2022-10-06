@@ -90,4 +90,11 @@ public class StringUtilTest {
         String s = StringUtil.toSymbolCase(string, StringUtil.UNDERLINE);
         Assert.isTrue(Objects.equals(s, "str"));
     }
+
+    @Test
+    public void toCamelCase() {
+        String string = "str_str";
+        String s = StringUtil.toCamelCase(string, StringUtil.UNDERLINE);
+        Assert.isTrue(Objects.equals(s, "strStr"));
+    }
 }

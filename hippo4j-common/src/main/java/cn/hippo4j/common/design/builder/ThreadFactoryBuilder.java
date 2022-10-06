@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support;
-
-import cn.hippo4j.common.design.builder.Builder;
+package cn.hippo4j.common.design.builder;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;

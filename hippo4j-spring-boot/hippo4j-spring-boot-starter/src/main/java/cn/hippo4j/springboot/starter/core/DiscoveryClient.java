@@ -24,13 +24,12 @@ import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 
+import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -93,7 +92,7 @@ public class DiscoveryClient implements DisposableBean {
         String clientCloseUrlPath = Constants.BASE_PATH + "/client/close";
         Result clientCloseResult;
         try {
-            String groupKeyIp = StrBuilder.create()
+            String groupKeyIp = new StringBuilder()
                     .append(instanceInfo.getGroupKey())
                     .append(Constants.GROUP_KEY_DELIMITER)
                     .append(instanceInfo.getIdentify())
@@ -133,7 +132,7 @@ public class DiscoveryClient implements DisposableBean {
                     .setLastDirtyTimestamp(instanceInfo.getLastDirtyTimestamp().toString())
                     .setStatus(instanceInfo.getStatus().toString());
             renewResult = httpAgent.httpPostByDiscovery(BASE_PATH + "/apps/renew", instanceRenew);
-            if (StrUtil.equals(ErrorCodeEnum.NOT_FOUND.getCode(), renewResult.getCode())) {
+            if (Objects.equals(ErrorCodeEnum.NOT_FOUND.getCode(), renewResult.getCode())) {
                 long timestamp = instanceInfo.setIsDirtyWithTime();
                 boolean success = register();
                 // TODO Abstract server registration logic

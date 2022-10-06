@@ -17,13 +17,13 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.mapper.OperationLogMapper;
 import cn.hippo4j.config.model.LogRecordInfo;
 import cn.hippo4j.config.model.biz.log.LogRecordQueryReqDTO;
 import cn.hippo4j.config.model.biz.log.LogRecordRespDTO;
 import cn.hippo4j.config.service.biz.OperationLogService;
-import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -42,9 +42,9 @@ public class OperationLogServiceImpl implements OperationLogService {
     @Override
     public IPage<LogRecordRespDTO> queryPage(LogRecordQueryReqDTO pageQuery) {
         LambdaQueryWrapper<LogRecordInfo> queryWrapper = Wrappers.lambdaQuery(LogRecordInfo.class)
-                .eq(StrUtil.isNotBlank(pageQuery.getBizNo()), LogRecordInfo::getBizNo, pageQuery.getBizNo())
-                .eq(StrUtil.isNotBlank(pageQuery.getCategory()), LogRecordInfo::getCategory, pageQuery.getCategory())
-                .eq(StrUtil.isNotBlank(pageQuery.getOperator()), LogRecordInfo::getOperator, pageQuery.getOperator())
+                .eq(StringUtil.isNotBlank(pageQuery.getBizNo()), LogRecordInfo::getBizNo, pageQuery.getBizNo())
+                .eq(StringUtil.isNotBlank(pageQuery.getCategory()), LogRecordInfo::getCategory, pageQuery.getCategory())
+                .eq(StringUtil.isNotBlank(pageQuery.getOperator()), LogRecordInfo::getOperator, pageQuery.getOperator())
                 .orderByDesc(LogRecordInfo::getCreateTime);
         IPage<LogRecordInfo> selectPage = operationLogMapper.selectPage(pageQuery, queryWrapper);
         return selectPage.convert(each -> BeanUtil.convert(each, LogRecordRespDTO.class));

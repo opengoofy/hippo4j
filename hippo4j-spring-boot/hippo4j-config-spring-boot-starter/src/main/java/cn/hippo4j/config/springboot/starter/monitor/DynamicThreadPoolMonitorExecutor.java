@@ -22,7 +22,7 @@ import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.ThreadPoolMonitor;
 import lombok.RequiredArgsConstructor;

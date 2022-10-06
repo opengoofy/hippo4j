@@ -15,22 +15,33 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.common.web.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+/**
+ * A generic exception to handle illegal operations
+ */
+public class IllegalException extends RuntimeException {
 
-public class BooleanUtilTest {
+    private static final long serialVersionUID = 8247610319171014183L;
 
-    @Test
-    public void assertToBoolean() {
-        Assert.assertTrue(BooleanUtil.toBoolean("true"));
-        Assert.assertTrue(BooleanUtil.toBoolean("yes"));
-        Assert.assertTrue(BooleanUtil.toBoolean("1"));
+    public IllegalException() {
+        super();
     }
 
-    @Test
-    public void assertIsTrue() {
-        Assert.assertTrue(BooleanUtil.isTrue(true));
+    public IllegalException(String message) {
+        super(message);
     }
+
+    public IllegalException(Throwable e) {
+        super(e.getMessage(), e);
+    }
+
+    public IllegalException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
+    public IllegalException(String message, Throwable throwable, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, throwable, enableSuppression, writableStackTrace);
+    }
+
 }

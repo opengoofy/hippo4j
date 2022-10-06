@@ -24,7 +24,7 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
 import cn.hippo4j.monitor.base.ThreadPoolMonitor;
@@ -32,7 +32,6 @@ import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.monitor.collect.Collector;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
-import cn.hutool.core.collection.CollUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -162,7 +161,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
      */
     private void runTimeGatherTask() {
         boolean healthStatus = serverHealthCheck.isHealthStatus();
-        if (!healthStatus || CollUtil.isEmpty(collectors)) {
+        if (!healthStatus || CollectionUtil.isEmpty(collectors)) {
             return;
         }
         collectors.forEach((beanName, collector) -> {
