@@ -54,7 +54,7 @@ public class MicrometerMonitorHandler extends AbstractDynamicThreadPoolMonitor {
         if (stateInfo == null) {
             RUN_STATE_CACHE.put(poolRunStateInfo.getTpId(), poolRunStateInfo);
         } else {
-            BeanUtil.copyProperties(poolRunStateInfo, stateInfo);
+            BeanUtil.convert(poolRunStateInfo, stateInfo);
         }
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String applicationName = environment.getProperty("spring.application.name", "application");

@@ -104,13 +104,14 @@ public class BeanUtilTest {
 
     // -----------------------------------------------------------------------------------------------------------------
 
+    @Test
     public void testMapToBean() {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Test");
-        map.put("status", 12);
+        map.put("status_code", 12);
         Customer customer = BeanUtil.mapToBean(map, Customer.class, true);
         Assert.assertEquals("Test", customer.getName());
-        Assert.assertEquals(Integer.valueOf(12), customer.getStatus());
+        Assert.assertEquals(Integer.valueOf(12), customer.getStatusCode());
     }
 
     @Test
@@ -152,7 +153,7 @@ public class BeanUtilTest {
     static class Customer {
 
         String name;
-        Integer status;
+        Integer statusCode;
     }
 
     @Getter
@@ -160,6 +161,6 @@ public class BeanUtilTest {
     static class PreCustomer {
 
         String name;
-        Integer status;
+        Integer statusCode;
     }
 }

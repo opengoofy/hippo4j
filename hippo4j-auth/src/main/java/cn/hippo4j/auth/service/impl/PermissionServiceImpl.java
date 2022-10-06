@@ -44,7 +44,7 @@ public class PermissionServiceImpl implements PermissionService {
     public IPage<PermissionRespDTO> listPermission(int pageNo, int pageSize) {
         PermissionQueryPageReqDTO queryPage = new PermissionQueryPageReqDTO(pageNo, pageSize);
         IPage<PermissionInfo> selectPage = permissionMapper.selectPage(queryPage, null);
-        return selectPage.convert(each -> BeanUtil.copyProperties(each, new PermissionRespDTO()));
+        return selectPage.convert(each -> BeanUtil.convert(each, PermissionRespDTO.class));
     }
 
     @Override

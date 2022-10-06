@@ -196,6 +196,34 @@ public class StringUtil {
     }
 
     /**
+     * to camel case
+     *
+     * @param str    CharSequence
+     * @param symbol symbol
+     * @return toCamelCase String
+     */
+    public static String toCamelCase(CharSequence str, char symbol) {
+        if (null == str || str.length() == 0) {
+            return null;
+        }
+        int length = str.length();
+        StringBuilder sb = new StringBuilder(length);
+        boolean upperCase = false;
+        for (int i = 0; i < length; ++i) {
+            char c = str.charAt(i);
+            if (c == symbol) {
+                upperCase = true;
+            } else if (upperCase) {
+                sb.append(Character.toUpperCase(c));
+                upperCase = false;
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
      * Replace a portion of the string, replacing all found
      *
      * @param str        A string to operate on

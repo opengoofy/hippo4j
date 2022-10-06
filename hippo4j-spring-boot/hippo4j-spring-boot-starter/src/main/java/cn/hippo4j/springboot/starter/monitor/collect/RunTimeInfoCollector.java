@@ -49,7 +49,7 @@ public class RunTimeInfoCollector extends AbstractThreadPoolRuntime implements C
         List<String> listThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
         for (String each : listThreadPoolId) {
             ThreadPoolRunStateInfo poolRunState = getPoolRunState(each);
-            RuntimeMessage runtimeMessage = BeanUtil.copyProperties(poolRunState, new RuntimeMessage());
+            RuntimeMessage runtimeMessage = BeanUtil.convert(poolRunState, RuntimeMessage.class);
             runtimeMessage.setGroupKey(getThreadPoolIdentify(each, properties.getItemId(), properties.getNamespace()));
             runtimeMessages.add(runtimeMessage);
         }

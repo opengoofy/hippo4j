@@ -60,7 +60,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
-        EsThreadPoolRunStateInfo esThreadPoolRunStateInfo = BeanUtil.copyProperties(poolRunStateInfo, new EsThreadPoolRunStateInfo());
+        EsThreadPoolRunStateInfo esThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, EsThreadPoolRunStateInfo.class);
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String indexName = environment.getProperty("es.thread-pool-state.index.name", "thread-pool-state");
         String applicationName = environment.getProperty("spring.application.name", "application");

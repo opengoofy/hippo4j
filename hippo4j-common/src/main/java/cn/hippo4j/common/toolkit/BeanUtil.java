@@ -47,12 +47,17 @@ public class BeanUtil {
                 .orElse(null);
     }
 
+    public static <T, S> T convert(S source, T target) {
+        Optional.ofNullable(source)
+                .ifPresent(each -> BEAN_MAPPER_BUILDER.map(each, target));
+        return target;
+    }
+
     public static <T, S> List<T> convert(List<S> sources, Class<T> clazz) {
         return Optional.ofNullable(sources)
                 .map(each -> {
                     List<T> targetList = new ArrayList<T>(each.size());
-                    each.stream()
-                            .forEach(item -> targetList.add(BEAN_MAPPER_BUILDER.map(item, clazz)));
+                    each.forEach(item -> targetList.add(BEAN_MAPPER_BUILDER.map(item, clazz)));
                     return targetList;
                 })
                 .orElse(null);
@@ -62,39 +67,10 @@ public class BeanUtil {
         return Optional.ofNullable(sources)
                 .map(each -> {
                     Set<T> targetSize = new HashSet<T>(each.size());
-                    each.stream()
-                            .forEach(item -> targetSize.add(BEAN_MAPPER_BUILDER.map(item, clazz)));
+                    each.forEach(item -> targetSize.add(BEAN_MAPPER_BUILDER.map(item, clazz)));
                     return targetSize;
                 })
                 .orElse(null);
-    }
-
-    /**
-     * copyProperties
-     *
-     * @param source source obj
-     * @param target target obj
-     * @param <T>    target type
-     * @param <S>    source type
-     * @return T
-     */
-    public static <T, S> T copyProperties(S source, T target) {
-        return copyProperties(source, target, (String) null);
-    }
-
-    /**
-     * copyProperties
-     *
-     * @param source           source obj
-     * @param target           target obj
-     * @param ignoreProperties ignore name
-     * @param <T>              target type
-     * @param <S>              source type
-     * @return T
-     */
-    public static <T, S> T copyProperties(S source, T target, String... ignoreProperties) {
-        BeanUtils.copyProperties(source, target, ignoreProperties);
-        return target;
     }
 
     public static <T> T mapToBean(Map<String, Object> map, Class<T> clazz, boolean toCamelCase) {
@@ -127,7 +103,7 @@ public class BeanUtil {
         }
         Class<?> clazz = bean.getClass();
         map.forEach((s, o) -> {
-            String name = toCamelCase ? StringUtil.toUnderlineCase(s) : s;
+            String name = toCamelCase ? StringUtil.toCamelCase(s, StringUtil.UNDERLINE) : s;
             Method method = setter(clazz, name);
             if (method != null) {
                 ReflectUtil.invoke(bean, method, o);

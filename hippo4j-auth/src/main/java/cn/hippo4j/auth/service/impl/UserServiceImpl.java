@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         LambdaQueryWrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class)
                 .eq(StringUtil.isNotBlank(reqDTO.getUserName()), UserInfo::getUserName, reqDTO.getUserName());
         IPage<UserInfo> selectPage = userMapper.selectPage(reqDTO, queryWrapper);
-        return selectPage.convert(each -> BeanUtil.copyProperties(each, new UserRespDTO()));
+        return selectPage.convert(each -> BeanUtil.convert(each, UserRespDTO.class));
     }
 
     @Override
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("用户名重复");
         }
         reqDTO.setPassword(bCryptPasswordEncoder.encode(reqDTO.getPassword()));
-        UserInfo insertUser = BeanUtil.copyProperties(reqDTO, new UserInfo());
+        UserInfo insertUser = BeanUtil.convert(reqDTO, UserInfo.class);
         userMapper.insert(insertUser);
     }
 
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtil.isNotBlank(reqDTO.getPassword())) {
             reqDTO.setPassword(bCryptPasswordEncoder.encode(reqDTO.getPassword()));
         }
-        UserInfo updateUser = BeanUtil.copyProperties(reqDTO, new UserInfo());
+        UserInfo updateUser = BeanUtil.convert(reqDTO, UserInfo.class);
         LambdaUpdateWrapper<UserInfo> updateWrapper = Wrappers.lambdaUpdate(UserInfo.class)
                 .eq(UserInfo::getUserName, reqDTO.getUserName());
         userMapper.update(updateUser, updateWrapper);
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
         Wrapper queryWrapper = Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, reqDTO.getUserName());
         UserInfo userInfo = userMapper.selectOne(queryWrapper);
         UserRespDTO respUser = Optional.ofNullable(userInfo)
-                .map(each -> BeanUtil.copyProperties(each, new UserRespDTO()))
+                .map(each -> BeanUtil.convert(each, UserRespDTO.class))
                 .orElseThrow(() -> new ServiceException("查询无此用户, 可以尝试清空缓存或退出登录."));
         return respUser;
     }

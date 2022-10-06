@@ -76,7 +76,7 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
             rejectedName = pool.getRejectedExecutionHandler().getClass().getSimpleName();
         }
         poolRunStateInfo.setRejectedName(rejectedName);
-        ManyThreadPoolRunStateInfo manyThreadPoolRunStateInfo = BeanUtil.copyProperties(poolRunStateInfo, new ManyThreadPoolRunStateInfo());
+        ManyThreadPoolRunStateInfo manyThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, ManyThreadPoolRunStateInfo.class);
         manyThreadPoolRunStateInfo.setIdentify(CLIENT_IDENTIFICATION_VALUE);
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
         manyThreadPoolRunStateInfo.setActive(active.toUpperCase());

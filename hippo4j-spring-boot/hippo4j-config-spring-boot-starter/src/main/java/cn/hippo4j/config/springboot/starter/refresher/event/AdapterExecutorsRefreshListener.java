@@ -64,7 +64,7 @@ public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<Ada
                     || !Objects.equals(adapterExecutorProperties.getMaximumPoolSize(), each.getMaximumPoolSize())) {
                 threadPoolAdapterMap.forEach((key, val) -> {
                     if (Objects.equals(val.mark(), each.getMark())) {
-                        val.updateThreadPool(BeanUtil.copyProperties(each, new ThreadPoolAdapterParameter()));
+                        val.updateThreadPool(BeanUtil.convert(each, ThreadPoolAdapterParameter.class));
                         DynamicThreadPoolAdapterRegister.ADAPTER_EXECUTORS_MAP.put(buildKey, each);
                     }
                 });
