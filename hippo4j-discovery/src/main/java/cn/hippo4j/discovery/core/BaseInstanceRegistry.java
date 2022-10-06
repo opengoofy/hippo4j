@@ -17,10 +17,10 @@
 
 package cn.hippo4j.discovery.core;
 
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.InstanceInfo.InstanceStatus;
-import cn.hutool.core.thread.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -189,8 +189,8 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
             new ScheduledThreadPoolExecutor(
                     SCHEDULED_THREAD_CORE_NUM,
                     new ThreadFactoryBuilder()
-                            .setNamePrefix("registry-eviction")
-                            .setDaemon(true)
+                            .prefix("registry-eviction")
+                            .daemon(true)
                             .build());
 
     private final AtomicReference<EvictionTask> evictionTaskRef = new AtomicReference();

@@ -21,11 +21,10 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.security.SecurityProxy;
 import cn.hippo4j.springboot.starter.toolkit.HttpClientUtil;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 
 import java.util.HashMap;
 import java.util.Map;

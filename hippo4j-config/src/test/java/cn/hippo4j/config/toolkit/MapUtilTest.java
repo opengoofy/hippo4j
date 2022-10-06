@@ -18,7 +18,7 @@
 package cn.hippo4j.config.toolkit;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hutool.core.collection.CollectionUtil;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import org.junit.Test;
 
 import java.util.HashMap;
