@@ -19,8 +19,8 @@ package cn.hippo4j.config.service.handler;
 
 import cn.hippo4j.common.api.ClientCloseHookExecute;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.service.ConfigCacheService;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +36,7 @@ public class ClientCloseHookRemoveConfigCache implements ClientCloseHookExecute 
         log.info("Remove Config Cache, Execute client hook function. Request: {}", JSONUtil.toJSONString(requestParam));
         try {
             String groupKey = requestParam.getGroupKey();
-            if (StrUtil.isNotBlank(groupKey)) {
+            if (StringUtil.isNotBlank(groupKey)) {
                 ConfigCacheService.removeConfigCache(groupKey);
             }
         } catch (Exception ex) {

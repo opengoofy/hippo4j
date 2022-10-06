@@ -17,14 +17,13 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
+import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.DynamicThreadPoolNotifyProperties;
 import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.config.NotifyPlatformProperties;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
@@ -131,10 +130,10 @@ public class BootstrapConfigPropertiesBinderAdapt {
                     break;
                 }
                 if (CollectionUtil.isNotEmpty(executorSingleMap)) {
-                    ExecutorProperties executorProperties = BeanUtil.mapToBean(executorSingleMap, ExecutorProperties.class, true, CopyOptions.create());
+                    ExecutorProperties executorProperties = BeanUtil.mapToBean(executorSingleMap, ExecutorProperties.class, true);
                     if (executorProperties != null) {
                         if (CollectionUtil.isNotEmpty(notifySingleMap)) {
-                            DynamicThreadPoolNotifyProperties alarm = BeanUtil.mapToBean(notifySingleMap, DynamicThreadPoolNotifyProperties.class, true, CopyOptions.create());
+                            DynamicThreadPoolNotifyProperties alarm = BeanUtil.mapToBean(notifySingleMap, DynamicThreadPoolNotifyProperties.class, true);
                             alarm.setReceives(alarm.getReceives());
                             executorProperties.setNotify(alarm);
                         }
@@ -142,7 +141,7 @@ public class BootstrapConfigPropertiesBinderAdapt {
                     }
                 }
                 if (CollectionUtil.isNotEmpty(platformSingleMap)) {
-                    NotifyPlatformProperties notifyPlatformProperties = BeanUtil.mapToBean(platformSingleMap, NotifyPlatformProperties.class, true, CopyOptions.create());
+                    NotifyPlatformProperties notifyPlatformProperties = BeanUtil.mapToBean(platformSingleMap, NotifyPlatformProperties.class, true);
                     if (notifyPlatformProperties != null) {
                         notifyPropertiesList.add(notifyPlatformProperties);
                     }

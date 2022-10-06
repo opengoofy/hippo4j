@@ -25,18 +25,12 @@ import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
-import cn.hutool.core.util.IdUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -158,7 +152,7 @@ public class ClientWorker {
     public List<String> checkUpdateTpIds(String probeUpdateString, boolean isInitializingCacheList) {
         Map<String, String> params = new HashMap(2);
         params.put(PROBE_MODIFY_REQUEST, probeUpdateString);
-        params.put(WEIGHT_CONFIGS, IdUtil.simpleUUID());
+        params.put(WEIGHT_CONFIGS, UUID.randomUUID().toString());
         Map<String, String> headers = new HashMap(2);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
         // Confirm the identity of the client, and can be modified separately when modifying the thread pool configuration.

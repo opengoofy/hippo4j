@@ -20,6 +20,7 @@ package cn.hippo4j.console.service.impl;
 import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.DateUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.HisRunDataMapper;
@@ -31,19 +32,13 @@ import cn.hippo4j.console.model.*;
 import cn.hippo4j.console.service.DashboardService;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.lang.Dict;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.hippo4j.common.toolkit.ContentUtil.getGroupKey;
@@ -80,9 +75,11 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public LineChartInfo getLineChatInfo() {
-        Date currentDate = new Date();
-        DateTime startTime = DateUtil.offsetMinute(currentDate, -10);
-        List<HisRunDataMapper.ThreadPoolTaskRanking> threadPoolTaskRankings = hisRunDataMapper.queryThreadPoolMaxRanking(startTime.getTime(), currentDate.getTime());
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime startDate = currentDate.plusMinutes(-10);
+        long currentTime = DateUtil.getTime(currentDate);
+        long startTime = DateUtil.getTime(startDate);
+        List<HisRunDataMapper.ThreadPoolTaskRanking> threadPoolTaskRankings = hisRunDataMapper.queryThreadPoolMaxRanking(startTime, currentTime);
         List<Object> oneList = new ArrayList<>();
         List<Object> twoList = new ArrayList<>();
         List<Object> threeList = new ArrayList<>();
@@ -115,7 +112,9 @@ public class DashboardServiceImpl implements DashboardService {
                 Integer threadPoolCount = configInfoMapper.selectCount(threadPoolQueryWrapper);
                 tenantThreadPoolNum += threadPoolCount;
             }
-            Dict dict = Dict.create().set("name", tenant.getTenantId()).set("value", tenantThreadPoolNum);
+            Map<String, Object> dict = new LinkedHashMap<>();
+            dict.put("name", tenant.getTenantId());
+            dict.put("value", tenantThreadPoolNum);
             tenantChartList.add(dict);
         }
         List<Map<String, Object>> resultTenantChartList = tenantChartList.stream()
@@ -136,7 +135,9 @@ public class DashboardServiceImpl implements DashboardService {
                     .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode());
             Integer threadPoolCount = configInfoMapper.selectCount(threadPoolQueryWrapper);
             if (threadPoolCount != null) {
-                Dict dict = Dict.create().set("name", each).set("value", threadPoolCount);
+                Map<String, Object> dict = new LinkedHashMap<>();
+                dict.put("name", each);
+                dict.put("value", threadPoolCount);
                 pieDataList.add(dict);
             }
         }
@@ -154,15 +155,17 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public RankingChart getRankingChart() {
-        Date currentDate = new Date();
-        DateTime tenTime = DateUtil.offsetMinute(currentDate, -10);
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime startDate = currentDate.plusMinutes(-10);
+        long currentTime = DateUtil.getTime(currentDate);
+        long startTime = DateUtil.getTime(startDate);
         List<RankingChart.RankingChartInfo> resultList = new ArrayList<>();
-        List<HisRunDataMapper.ThreadPoolTaskRanking> threadPoolTaskRankings = hisRunDataMapper.queryThreadPoolTaskSumRanking(tenTime.getTime(), currentDate.getTime());
+        List<HisRunDataMapper.ThreadPoolTaskRanking> threadPoolTaskRankings = hisRunDataMapper.queryThreadPoolTaskSumRanking(startTime, currentTime);
         threadPoolTaskRankings.forEach(each -> {
             RankingChart.RankingChartInfo rankingChartInfo = new RankingChart.RankingChartInfo();
             rankingChartInfo.setMaxCompletedTaskCount(each.getMaxCompletedTaskCount());
             List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(each.getItemId());
-            Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+            Lease<InstanceInfo> first = CollectionUtil.getFirst(leases);
             if (first == null) {
                 rankingChartInfo.setInst(0);
             } else {

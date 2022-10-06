@@ -18,11 +18,10 @@
 package cn.hippo4j.config.monitor;
 
 import cn.hippo4j.common.executor.ExecutorFactory;
+import cn.hippo4j.common.toolkit.DateUtil;
 import cn.hippo4j.config.config.ServerBootstrapProperties;
 import cn.hippo4j.config.model.HisRunDataInfo;
 import cn.hippo4j.config.service.biz.HisRunDataService;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.NonNull;
@@ -30,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -53,10 +53,9 @@ public class TimeCleanHistoryDataTask implements Runnable, InitializingBean {
 
     @Override
     public void run() {
-        Date currentDate = new Date();
-        DateTime offsetMinuteDateTime = DateUtil.offsetMinute(currentDate, -properties.getCleanHistoryDataPeriod());
+        LocalDateTime offsetMinuteDateTime = LocalDateTime.now().plusMinutes(-properties.getCleanHistoryDataPeriod());
         LambdaQueryWrapper<HisRunDataInfo> queryWrapper = Wrappers.lambdaQuery(HisRunDataInfo.class)
-                .le(HisRunDataInfo::getTimestamp, offsetMinuteDateTime.getTime());
+                .le(HisRunDataInfo::getTimestamp, DateUtil.getTime(offsetMinuteDateTime));
         hisRunDataService.remove(queryWrapper);
     }
 

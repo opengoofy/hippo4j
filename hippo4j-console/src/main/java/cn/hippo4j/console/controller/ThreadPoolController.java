@@ -19,6 +19,7 @@ package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
@@ -37,15 +38,13 @@ import cn.hippo4j.console.model.WebThreadPoolReqDTO;
 import cn.hippo4j.console.model.WebThreadPoolRespDTO;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +64,8 @@ public class ThreadPoolController {
     private final ThreadPoolService threadPoolService;
 
     private final BaseInstanceRegistry baseInstanceRegistry;
+
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @PostMapping("/query/page")
     public Result<IPage<ThreadPoolRespDTO>> queryNameSpacePage(@RequestBody ThreadPoolQueryReqDTO reqDTO) {
@@ -86,7 +87,7 @@ public class ThreadPoolController {
     @DeleteMapping("/delete")
     public Result deletePool(@RequestBody ThreadPoolDelReqDTO reqDTO) {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(reqDTO.getItemId());
-        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+        Lease<InstanceInfo> first = CollectionUtil.getFirst(leases);
         if (first == null) {
             threadPoolService.deletePool(reqDTO);
             return Results.success();
@@ -111,8 +112,13 @@ public class ThreadPoolController {
     @GetMapping("/run/state/{tpId}")
     public Result runState(@PathVariable("tpId") String tpId,
                            @RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StrBuilder.create("http://", clientAddress, "/run/state/", tpId).toString();
-        String data = HttpUtil.get(urlString, HTTP_EXECUTE_TIMEOUT);
+        String urlString = new StringBuilder()
+                .append("http://")
+                .append(clientAddress)
+                .append("/run/state/")
+                .append(tpId)
+                .toString();
+        String data = restTemplate.getForObject(urlString, String.class, new HashMap<>());
         Result result = JSONUtil.parseObject(data, Result.class);
         return result;
     }
@@ -120,8 +126,13 @@ public class ThreadPoolController {
     @GetMapping("/run/thread/state/{tpId}")
     public Result runThreadState(@PathVariable("tpId") String tpId,
                                  @RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StrBuilder.create("http://", clientAddress, "/run/thread/state/", tpId).toString();
-        String data = HttpUtil.get(urlString, HTTP_EXECUTE_TIMEOUT);
+        String urlString = new StringBuilder()
+                .append("http://")
+                .append(clientAddress)
+                .append("/run/thread/state/")
+                .append(tpId)
+                .toString();
+        String data = restTemplate.getForObject(urlString, String.class, new HashMap<>());
         Result result = JSONUtil.parseObject(data, Result.class);
         return result;
     }
@@ -129,7 +140,7 @@ public class ThreadPoolController {
     @GetMapping("/list/client/instance/{itemId}")
     public Result listClientInstance(@PathVariable("itemId") String itemId) {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
-        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+        Lease<InstanceInfo> first = CollectionUtil.getFirst(leases);
         if (first == null) {
             return Results.success(new ArrayList<>());
         }
@@ -156,16 +167,24 @@ public class ThreadPoolController {
 
     @GetMapping("/web/base/info")
     public Result getPoolBaseState(@RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StrBuilder.create("http://", clientAddress, "/web/base/info").toString();
-        String data = HttpUtil.get(urlString, HTTP_EXECUTE_TIMEOUT);
+        String urlString = new StringBuilder()
+                .append("http://")
+                .append(clientAddress)
+                .append("/web/base/info")
+                .toString();
+        String data = restTemplate.getForObject(urlString, String.class, new HashMap<>());
         Result result = JSONUtil.parseObject(data, Result.class);
         return result;
     }
 
     @GetMapping("/web/run/state")
     public Result getPoolRunState(@RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StrBuilder.create("http://", clientAddress, "/web/run/state").toString();
-        String data = HttpUtil.get(urlString, HTTP_EXECUTE_TIMEOUT);
+        String urlString = new StringBuilder()
+                .append("http://")
+                .append(clientAddress)
+                .append("/web/run/state")
+                .toString();
+        String data = restTemplate.getForObject(urlString, String.class, new HashMap<>());
         Result result = JSONUtil.parseObject(data, Result.class);
         return result;
     }
@@ -173,8 +192,12 @@ public class ThreadPoolController {
     @PostMapping("/web/update/pool")
     public Result<Void> updateWebThreadPool(@RequestBody WebThreadPoolReqDTO requestParam) {
         for (String each : requestParam.getClientAddressList()) {
-            String urlString = StrBuilder.create("http://", each, "/web/update/pool").toString();
-            HttpUtil.post(urlString, JSONUtil.toJSONString(requestParam), HTTP_EXECUTE_TIMEOUT);
+            String urlString = new StringBuilder()
+                    .append("http://")
+                    .append(each)
+                    .append("/web/update/pool")
+                    .toString();
+            restTemplate.postForObject(urlString, JSONUtil.toJSONString(requestParam), Object.class);
         }
         return Results.success();
     }
@@ -183,7 +206,7 @@ public class ThreadPoolController {
     public Result<List<ThreadPoolInstanceInfo>> listInstance(@PathVariable("itemId") String itemId,
                                                              @PathVariable("tpId") String tpId) {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
-        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+        Lease<InstanceInfo> first = CollectionUtil.getFirst(leases);
         if (first == null) {
             return Results.success(new ArrayList<>());
         }
@@ -192,16 +215,16 @@ public class ThreadPoolController {
         String groupKey = getGroupKey(tpId, itemTenantKey);
         Map<String, CacheItem> content = ConfigCacheService.getContent(groupKey);
         Map<String, String> activeMap =
-                leases.stream().map(each -> each.getHolder()).filter(each -> StringUtil.isNotBlank(each.getActive()))
+                leases.stream().map(Lease::getHolder).filter(each -> StringUtil.isNotBlank(each.getActive()))
                         .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getActive));
-        Map<String, String> clientBasePathMap = leases.stream().map(each -> each.getHolder())
+        Map<String, String> clientBasePathMap = leases.stream().map(Lease::getHolder)
                 .filter(each -> StringUtil.isNotBlank(each.getClientBasePath()))
                 .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getClientBasePath));
         List<ThreadPoolInstanceInfo> returnThreadPool = new ArrayList<>();
         content.forEach((key, val) -> {
             ThreadPoolInstanceInfo threadPoolInstanceInfo =
                     BeanUtil.convert(val.configAllInfo, ThreadPoolInstanceInfo.class);
-            threadPoolInstanceInfo.setClientAddress(StrUtil.subBefore(key, Constants.IDENTIFY_SLICER_SYMBOL, false));
+            threadPoolInstanceInfo.setClientAddress(StringUtil.subBefore(key, Constants.IDENTIFY_SLICER_SYMBOL));
             threadPoolInstanceInfo.setActive(activeMap.get(key));
             threadPoolInstanceInfo.setIdentify(key);
             threadPoolInstanceInfo.setClientBasePath(clientBasePathMap.get(key));

@@ -19,11 +19,11 @@ package cn.hippo4j.monitor.micrometer;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
-import cn.hutool.core.bean.BeanUtil;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tag;
 import org.springframework.core.env.Environment;

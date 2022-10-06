@@ -18,8 +18,7 @@
 package cn.hippo4j.common.toolkit;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
+import org.junit.Assert;
 
 public class ThreadUtilTest {
 
@@ -32,11 +31,11 @@ public class ThreadUtilTest {
         final Thread result = ThreadUtil.newThread(runnable, "name", false);
 
         // Verify the results
-        Assert.notNull(result);
+        Assert.assertNotNull(result);
     }
 
     @Test
     public void testSleep() {
-        assertTrue(ThreadUtil.sleep(0L));
+        Assert.assertTrue(ThreadUtil.sleep(0L));
     }
 }

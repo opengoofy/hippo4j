@@ -28,11 +28,11 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -98,12 +98,18 @@ public class ThreadPoolAdapterService {
         List<String> addressList = actual.stream().map(ThreadPoolAdapterState::getClientAddress).collect(Collectors.toList());
         List<ThreadPoolAdapterRespDTO> result = new ArrayList<>(addressList.size());
         addressList.forEach(each -> {
-            String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/info").toString();
+            String urlString = new StringBuilder()
+                    .append("http://")
+                    .append(each)
+                    .append("/adapter/thread-pool/info")
+                    .toString();
             Map<String, Object> param = new HashMap<>();
             param.put("mark", requestParameter.getMark());
             param.put("threadPoolKey", requestParameter.getThreadPoolKey());
             try {
-                String resultStr = HttpUtil.get(urlString, param, HTTP_EXECUTE_TIMEOUT);
+
+                RestTemplate template = new RestTemplate();
+                String resultStr = template.getForObject(urlString, String.class, param);
                 if (StringUtil.isNotBlank(resultStr)) {
                     Result<ThreadPoolAdapterRespDTO> restResult = JSONUtil.parseObject(resultStr, new TypeReference<Result<ThreadPoolAdapterRespDTO>>() {
                     });
