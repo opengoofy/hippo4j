@@ -23,7 +23,7 @@ import cn.hippo4j.config.model.LogRecordInfo;
 import cn.hippo4j.config.model.biz.log.LogRecordQueryReqDTO;
 import cn.hippo4j.config.model.biz.log.LogRecordRespDTO;
 import cn.hippo4j.config.service.biz.OperationLogService;
-import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

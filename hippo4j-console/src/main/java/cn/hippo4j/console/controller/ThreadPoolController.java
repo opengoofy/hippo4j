@@ -32,7 +32,7 @@ import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
-import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.console.model.ThreadPoolInstanceInfo;
 import cn.hippo4j.console.model.WebThreadPoolReqDTO;
 import cn.hippo4j.console.model.WebThreadPoolRespDTO;

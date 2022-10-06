@@ -35,7 +35,7 @@ import cn.hippo4j.config.model.biz.notify.NotifyReqDTO;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigChangePublisher;
 import cn.hippo4j.config.service.biz.*;
-import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

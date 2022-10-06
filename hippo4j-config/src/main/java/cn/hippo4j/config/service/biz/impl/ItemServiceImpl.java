@@ -28,7 +28,7 @@ import cn.hippo4j.config.model.biz.item.ItemUpdateReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
 import cn.hippo4j.config.service.biz.ItemService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
-import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;

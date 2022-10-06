@@ -33,7 +33,7 @@ import cn.hippo4j.config.model.biz.monitor.MonitorQueryReqDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorRespDTO;
 import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
 import cn.hippo4j.config.service.biz.HisRunDataService;
-import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
