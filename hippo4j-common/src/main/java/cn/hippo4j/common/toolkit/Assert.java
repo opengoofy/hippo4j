@@ -92,7 +92,7 @@ public class Assert {
     }
 
     public static void notBlank(String str, String message) {
-        if (StringUtil.isNotBlank(str)) {
+        if (StringUtil.isBlank(str)) {
             throw new IllegalArgumentException(message);
         }
     }

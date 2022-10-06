@@ -17,6 +17,7 @@
 
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq.example;
 
+import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.example.core.dto.SendMessageDTO;
 import lombok.AllArgsConstructor;
@@ -27,8 +28,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 /**
  * Message produce.
@@ -55,7 +54,7 @@ public class MessageProduce {
     }
 
     private void sendMessage(String tags) {
-        String keys = UUID.randomUUID().toString();
+        String keys = IdUtil.randomUUID();
         SendMessageDTO payload = SendMessageDTO.builder()
                 .receiver("156011xxx91")
                 .uid(keys)

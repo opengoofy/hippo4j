@@ -123,7 +123,7 @@ public class ReflectUtilTest {
 
     @Test
     public void getMethodByNameTest() {
-        Method field = ReflectUtil.getMethodByName(TestClass.class, "getPrivateField", String.class);
+        Method field = ReflectUtil.getMethodByName(TestClass.class, "setPrivateField", String.class);
         Assert.assertNotNull(field);
     }
 

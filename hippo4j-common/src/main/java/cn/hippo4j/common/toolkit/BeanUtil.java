@@ -173,5 +173,4 @@ public class BeanUtil {
             throw new IllegalException("not find setter for" + propertiesName + "in" + o.getName(), e);
         }
     }
-
 }

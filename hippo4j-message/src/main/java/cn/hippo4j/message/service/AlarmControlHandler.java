@@ -18,6 +18,7 @@
 package cn.hippo4j.message.service;
 
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.message.dto.AlarmControlDTO;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -25,7 +26,6 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -59,7 +59,7 @@ public class AlarmControlHandler {
                 pkId = cache.getIfPresent(alarmControl.getTypeEnum().name());
                 if (StringUtil.isBlank(pkId)) {
                     // Val meaningless.
-                    cache.put(alarmControl.getTypeEnum().name(), UUID.randomUUID().toString());
+                    cache.put(alarmControl.getTypeEnum().name(), IdUtil.simpleUUID());
                     return true;
                 }
             } finally {

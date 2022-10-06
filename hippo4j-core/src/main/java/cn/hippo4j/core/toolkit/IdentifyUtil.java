@@ -18,10 +18,7 @@
 package cn.hippo4j.core.toolkit;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.common.toolkit.Joiner;
-import cn.hippo4j.common.toolkit.ThreadUtil;
+import cn.hippo4j.common.toolkit.*;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -38,7 +35,7 @@ public class IdentifyUtil {
 
     private static String IDENTIFY;
 
-    public static final String CLIENT_IDENTIFICATION_VALUE = UUID.randomUUID().toString();
+    public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
 
     /**
      * Generate identify.

@@ -27,7 +27,6 @@ import java.util.*;
 
 public class BeanUtilTest {
 
-
     @Test
     public void beanToMapConvertTest() {
         // 测试BeanToMap

@@ -20,6 +20,7 @@ package cn.hippo4j.springboot.starter.core;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
+import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
@@ -152,7 +153,7 @@ public class ClientWorker {
     public List<String> checkUpdateTpIds(String probeUpdateString, boolean isInitializingCacheList) {
         Map<String, String> params = new HashMap(2);
         params.put(PROBE_MODIFY_REQUEST, probeUpdateString);
-        params.put(WEIGHT_CONFIGS, UUID.randomUUID().toString());
+        params.put(WEIGHT_CONFIGS, IdUtil.simpleUUID());
         Map<String, String> headers = new HashMap(2);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
         // Confirm the identity of the client, and can be modified separately when modifying the thread pool configuration.

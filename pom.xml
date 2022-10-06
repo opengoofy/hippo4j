@@ -89,7 +89,6 @@
                 <artifactId>okhttp</artifactId>
                 <version>${okhttp3.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
