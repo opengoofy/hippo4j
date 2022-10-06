@@ -77,7 +77,7 @@ public class AlarmControlHandler {
      * @param interval
      */
     public void initCacheAndLock(String threadPoolId, String platform, Integer interval) {
-        String threadPoolKey = StrUtil.builder(threadPoolId, Constants.GROUP_KEY_DELIMITER, platform).toString();
+        String threadPoolKey = threadPoolId + Constants.GROUP_KEY_DELIMITER + platform;
         Cache<String, String> cache = Caffeine.newBuilder()
                 .expireAfterWrite(interval, TimeUnit.MINUTES)
                 .build();

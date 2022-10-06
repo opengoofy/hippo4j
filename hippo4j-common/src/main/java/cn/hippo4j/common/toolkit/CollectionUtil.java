@@ -18,6 +18,7 @@
 package cn.hippo4j.common.toolkit;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Collection util.

@@ -24,7 +24,6 @@ import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.service.SendMessageHandler;
-import com.google.common.base.Joiner;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -19,7 +19,6 @@ package cn.hippo4j.adapter.hystrix;
 
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
