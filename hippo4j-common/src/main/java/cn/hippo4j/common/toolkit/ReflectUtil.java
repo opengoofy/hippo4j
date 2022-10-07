@@ -144,6 +144,29 @@ public class ReflectUtil {
     }
 
     /**
+     * find the method associated with the method name<br>
+     * if find multiple, return the first, parameter is equivocal
+     *
+     * @param clazz      the class
+     * @param methodName retrieves the method name
+     * @return find method
+     */
+    public static Method getMethodByName(Class<?> clazz, String methodName) {
+        if (Objects.nonNull(clazz) && Objects.nonNull(methodName)) {
+            Method method = Arrays.stream(clazz.getMethods())
+                    .filter(m -> Objects.equals(m.getName(), methodName))
+                    .findFirst().orElse(null);
+            if (method != null) {
+                return method;
+            }
+            return Arrays.stream(clazz.getDeclaredMethods())
+                    .filter(m -> Objects.equals(m.getName(), methodName))
+                    .findFirst().orElse(null);
+        }
+        return null;
+    }
+
+    /**
      * find the method associated with the method name
      *
      * @param clazz      the class
