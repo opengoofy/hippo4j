@@ -24,6 +24,7 @@ import org.junit.Assert;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class ReflectUtilTest {
 
@@ -123,8 +124,15 @@ public class ReflectUtilTest {
 
     @Test
     public void getMethodByNameTest() {
-        Method field = ReflectUtil.getMethodByName(TestClass.class, "setPrivateField", String.class);
+        // private method
+        Method runStateLessThan = ReflectUtil.getMethodByName(ThreadPoolExecutor.class, "runStateLessThan");
+        Assert.assertNotNull(runStateLessThan);
+        // public method
+        Method field = ReflectUtil.getMethodByName(TestClass.class, "setPrivateField");
         Assert.assertNotNull(field);
+        // parameters
+        Method privateField = ReflectUtil.getMethodByName(TestClass.class, "setPrivateField", String.class);
+        Assert.assertNotNull(privateField);
     }
 
     @Test
