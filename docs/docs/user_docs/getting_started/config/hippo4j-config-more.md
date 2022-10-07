@@ -26,7 +26,7 @@ sidebar_position: 3
 
 ## 容器及三方框架线程池自定义启用
 
-容器及三方框架线程池启用配置，默认开启。动态线程池配置中也有该参数配置。
+容器及三方框架线程池添加启用配置，为了保持统一，动态线程池配置中也有该参数配置。配置项默认开启。
 
 ```yaml
 spring:
@@ -34,6 +34,9 @@ spring:
     thread-pool:
       tomcat:
         enable: true
+      executors:
+        - thread-pool-id: message-consume
+          enable: false
       adapter-executors:
         - threadPoolKey: 'input'
           enable: true
