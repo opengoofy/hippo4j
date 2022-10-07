@@ -23,8 +23,6 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
@@ -36,10 +34,7 @@ import org.springframework.cloud.stream.binding.InputBindingLifecycle;
 import org.springframework.context.ApplicationListener;
 import org.springframework.integration.amqp.inbound.AmqpInboundChannelAdapter;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 
@@ -49,7 +44,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
 @Slf4j
 public class SpringCloudStreamRabbitMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
-    private final Map<String, AbstractMessageListenerContainer> ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR = Maps.newHashMap();
+    private final Map<String, AbstractMessageListenerContainer> ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR = new HashMap<>();
 
     @Override
     public String mark() {
@@ -84,7 +79,7 @@ public class SpringCloudStreamRabbitMQThreadPoolAdapter implements ThreadPoolAda
 
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
-        List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
+        List<ThreadPoolAdapterState> adapterStateList = new ArrayList<>();
         ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.forEach(
                 (key, val) -> adapterStateList.add(getThreadPoolState(key)));
         return adapterStateList;

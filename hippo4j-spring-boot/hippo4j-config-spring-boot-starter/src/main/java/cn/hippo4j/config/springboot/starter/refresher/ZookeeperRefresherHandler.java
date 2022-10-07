@@ -19,7 +19,6 @@ package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -32,6 +31,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.utils.ZKPaths;
 import org.apache.zookeeper.WatchedEvent;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -121,7 +121,7 @@ public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRe
                 final GetDataBuilder data = curatorFramework.getData();
                 String value = "";
                 try {
-                    value = new String(data.watched().forPath(n), Charsets.UTF_8);
+                    value = new String(data.watched().forPath(n), StandardCharsets.UTF_8);
                 } catch (Exception ex) {
                     log.error("Load zookeeper node error", ex);
                 }

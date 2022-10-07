@@ -22,8 +22,8 @@ import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.support.service.DynamicThreadPoolService;
-import com.google.common.collect.Lists;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -123,7 +123,7 @@ public class GlobalThreadPoolManage {
      * @return
      */
     public static List<String> listThreadPoolId() {
-        return Lists.newArrayList(EXECUTOR_MAP.keySet());
+        return new ArrayList<>(EXECUTOR_MAP.keySet());
     }
 
     /**

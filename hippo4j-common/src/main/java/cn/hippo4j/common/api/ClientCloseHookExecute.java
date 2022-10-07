@@ -32,6 +32,9 @@ public interface ClientCloseHookExecute {
      */
     void closeHook(ClientCloseHookReq req);
 
+    /**
+     * Client close hook req.
+     */
     @Data
     @Accessors(chain = true)
     class ClientCloseHookReq {

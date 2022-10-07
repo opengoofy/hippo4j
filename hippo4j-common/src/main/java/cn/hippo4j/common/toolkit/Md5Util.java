@@ -33,6 +33,16 @@ public class Md5Util {
 
     private static final char[] DIGITS_LOWER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+    private static final char XF0 = 0xF0;
+
+    private static final char XF = 0x0F;
+
+    private static final int DATA_ID_GROUP_ID_THREE_LEN = 3;
+
+    private static final int DATA_ID_GROUP_ID_FOUR_LEN = 4;
+
+    private static final int DISPLACEMENT = 4;
+
     private static final ThreadLocal<MessageDigest> MESSAGE_DIGEST_LOCAL = ThreadLocal.withInitial(() -> {
         try {
             return MessageDigest.getInstance("MD5");
@@ -65,8 +75,8 @@ public class Md5Util {
         int l = bytes.length;
         char[] out = new char[l << 1];
         for (int i = 0, j = 0; i < l; i++) {
-            out[j++] = DIGITS_LOWER[(0xF0 & bytes[i]) >>> 4];
-            out[j++] = DIGITS_LOWER[0x0F & bytes[i]];
+            out[j++] = DIGITS_LOWER[(XF0 & bytes[i]) >>> DISPLACEMENT];
+            out[j++] = DIGITS_LOWER[XF & bytes[i]];
         }
         return new String(out);
     }
@@ -86,12 +96,12 @@ public class Md5Util {
             sb.append(Constants.WORD_SEPARATOR);
             sb.append(dataIdGroupId[1]);
             // if have tenant, then set it
-            if (dataIdGroupId.length == 3) {
+            if (dataIdGroupId.length == DATA_ID_GROUP_ID_THREE_LEN) {
                 if (StringUtil.isNotBlank(dataIdGroupId[2])) {
                     sb.append(Constants.WORD_SEPARATOR);
                     sb.append(dataIdGroupId[2]);
                 }
-            } else if (dataIdGroupId.length == 4) {
+            } else if (dataIdGroupId.length == DATA_ID_GROUP_ID_FOUR_LEN) {
                 if (StringUtil.isNotBlank(dataIdGroupId[2])) {
                     sb.append(Constants.WORD_SEPARATOR);
                     sb.append(dataIdGroupId[2]);

@@ -24,7 +24,6 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hutool.core.date.DateUtil;
 import io.undertow.Undertow;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServer;
@@ -35,6 +34,8 @@ import org.xnio.XnioWorker;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -128,7 +129,7 @@ public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
                 ? ((DynamicThreadPoolExecutor) fieldObject).getRejectCountNum()
                 : -1L;
         stateInfo.setRejectCount(rejectCount);
-        stateInfo.setClientLastRefreshTime(DateUtil.formatDateTime(new Date()));
+        stateInfo.setClientLastRefreshTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         stateInfo.setTimestamp(System.currentTimeMillis());
         return stateInfo;
     }

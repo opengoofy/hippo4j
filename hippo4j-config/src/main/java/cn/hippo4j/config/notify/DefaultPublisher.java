@@ -18,11 +18,13 @@
 package cn.hippo4j.config.notify;
 
 import cn.hippo4j.config.event.AbstractEvent;
-import cn.hutool.core.collection.ConcurrentHashSet;
 import cn.hippo4j.config.notify.listener.AbstractSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -34,7 +36,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 @Slf4j
 public class DefaultPublisher extends Thread implements EventPublisher {
 
-    protected final ConcurrentHashSet<AbstractSubscriber> subscribers = new ConcurrentHashSet();
+    protected final Set<AbstractSubscriber> subscribers = Collections.synchronizedSet(new HashSet<>());
 
     private BlockingQueue<AbstractEvent> queue;
 

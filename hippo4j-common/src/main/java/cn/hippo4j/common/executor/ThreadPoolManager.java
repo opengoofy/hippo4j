@@ -32,7 +32,7 @@ public class ThreadPoolManager {
 
     private Map<String, Map<String, Set<ExecutorService>>> resourcesManager;
 
-    private Map<String, Object> lockers = new ConcurrentHashMap(8);
+    private Map<String, Object> lockers = new ConcurrentHashMap();
 
     private static final ThreadPoolManager INSTANCE = new ThreadPoolManager();
 
@@ -47,7 +47,7 @@ public class ThreadPoolManager {
     }
 
     private void init() {
-        resourcesManager = new ConcurrentHashMap(8);
+        resourcesManager = new ConcurrentHashMap();
     }
 
     public void register(String tenantId, String group, ExecutorService executor) {
@@ -60,7 +60,7 @@ public class ThreadPoolManager {
         synchronized (monitor) {
             Map<String, Set<ExecutorService>> map = resourcesManager.get(tenantId);
             if (map == null) {
-                map = new HashMap(8);
+                map = new HashMap();
                 map.put(group, new HashSet());
                 map.get(group).add(executor);
                 resourcesManager.put(tenantId, map);

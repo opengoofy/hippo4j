@@ -17,9 +17,8 @@
 
 package cn.hippo4j.config.service;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import lombok.NonNull;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,20 +35,21 @@ import static cn.hippo4j.common.constant.Constants.WEIGHT_CONFIGS;
 @RequiredArgsConstructor
 public class ConfigServletInner {
 
-    @NonNull
     private final LongPollingService longPollingService;
 
-    private final Cache<String, Long> deWeightCache = CacheBuilder.newBuilder()
-            .maximumSize(1024)
+    private static final int CLIENT_IDENTIFY_MAXIMUM_SIZE = 16384;
+
+    private final Cache<String, Long> deWeightCache = Caffeine.newBuilder()
+            .maximumSize(CLIENT_IDENTIFY_MAXIMUM_SIZE)
             .build();
 
     /**
      * Poll configuration.
      *
-     * @param request
-     * @param response
-     * @param clientMd5Map
-     * @param probeRequestSize
+     * @param request          http servlet request
+     * @param response         http servlet response
+     * @param clientMd5Map     client md5 map
+     * @param probeRequestSize probe request size
      * @return
      */
     public String doPollingConfig(HttpServletRequest request, HttpServletResponse response, Map<String, String> clientMd5Map, int probeRequestSize) {
@@ -66,7 +66,7 @@ public class ConfigServletInner {
      * When a user proposes to deploy in the company environment, the same request will be called repeatedly.
      * This problem belongs to an extremely individual scenario. Since it cannot be reproduced, so first solve the problem in this way.
      *
-     * @param request
+     * @param request http servlet request
      * @return
      */
     private boolean weightVerification(HttpServletRequest request) {

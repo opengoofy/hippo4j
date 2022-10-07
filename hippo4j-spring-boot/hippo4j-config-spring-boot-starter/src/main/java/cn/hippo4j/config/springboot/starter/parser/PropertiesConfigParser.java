@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.parser;
 
-import com.google.common.collect.Lists;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -39,6 +39,6 @@ public class PropertiesConfigParser extends AbstractConfigParser {
 
     @Override
     public List<ConfigFileTypeEnum> getConfigFileTypes() {
-        return Lists.newArrayList(ConfigFileTypeEnum.PROPERTIES);
+        return CollectionUtil.newArrayList(ConfigFileTypeEnum.PROPERTIES);
     }
 }

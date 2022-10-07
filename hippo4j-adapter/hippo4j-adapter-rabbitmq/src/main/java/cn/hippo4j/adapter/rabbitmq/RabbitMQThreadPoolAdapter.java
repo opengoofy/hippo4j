@@ -21,17 +21,13 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -50,7 +46,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
 
     private final Map<String, AbstractConnectionFactory> abstractConnectionFactoryMap;
 
-    private final Map<String, ThreadPoolExecutor> RABBITMQ_THREAD_POOL_TASK_EXECUTOR = Maps.newHashMap();
+    private final Map<String, ThreadPoolExecutor> RABBITMQ_THREAD_POOL_TASK_EXECUTOR = new HashMap<>();
 
     @Override
     public String mark() {
@@ -71,7 +67,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
 
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
-        List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
+        List<ThreadPoolAdapterState> adapterStateList = new ArrayList<>();
         RABBITMQ_THREAD_POOL_TASK_EXECUTOR.forEach(
                 (key, val) -> adapterStateList.add(getThreadPoolState(key)));
         return adapterStateList;

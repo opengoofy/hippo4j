@@ -18,8 +18,7 @@
 package cn.hippo4j.config.toolkit;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hutool.core.collection.CollectionUtil;
-import com.google.common.collect.ImmutableMap;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -35,14 +34,20 @@ public class MapUtilTest {
 
     @Test
     public void parseMapForFilterRetIsEmptyTest() {
-        Map<String, Object> map = ImmutableMap.of("abc", "123", "bcd", "456", "cde", "789");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("abc", "123");
+        map.put("bcd", "456");
+        map.put("cde", "789");
         List<String> ret = MapUtil.parseMapForFilter(map, "x");
         Assert.isTrue(CollectionUtil.isEmpty(ret));
     }
 
     @Test
     public void parseMapForFilterRetIsNotEmptyTest() {
-        Map<String, Object> map = ImmutableMap.of("abc", "123", "bcd", "456", "cde", "789");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("abc", "123");
+        map.put("bcd", "456");
+        map.put("cde", "789");
         List<String> ret = MapUtil.parseMapForFilter(map, "b");
         Assert.isTrue(CollectionUtil.isNotEmpty(ret));
     }

@@ -17,8 +17,6 @@
 
 package cn.hippo4j.common.toolkit;
 
-import cn.hutool.core.util.StrUtil;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,7 +40,7 @@ public class BooleanUtil {
      * @return
      */
     public static boolean toBoolean(String valueStr) {
-        if (StrUtil.isNotBlank(valueStr)) {
+        if (StringUtil.isNotBlank(valueStr)) {
             valueStr = valueStr.trim().toLowerCase();
             return TREE_SET.contains(valueStr);
         }

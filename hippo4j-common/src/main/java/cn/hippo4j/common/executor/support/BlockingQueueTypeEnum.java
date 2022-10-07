@@ -24,7 +24,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.stream.Stream;
 
 /**
@@ -78,6 +84,8 @@ public enum BlockingQueueTypeEnum {
         this.name = name;
     }
 
+    private static final int DEFAULT_CAPACITY = 1024;
+
     static {
         DynamicThreadPoolServiceLoader.register(CustomBlockingQueue.class);
     }
@@ -105,7 +113,7 @@ public enum BlockingQueueTypeEnum {
                                 .orElseGet(() -> {
                                     int temCapacity = capacity;
                                     if (capacity == null || capacity <= 0) {
-                                        temCapacity = 1024;
+                                        temCapacity = DEFAULT_CAPACITY;
                                     }
                                     return new LinkedBlockingQueue(temCapacity);
                                 }));

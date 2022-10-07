@@ -24,7 +24,6 @@ import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
 import cn.hippo4j.springboot.starter.core.DiscoveryClient;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
-import cn.hutool.core.text.StrBuilder;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -57,7 +56,11 @@ public class DiscoveryConfiguration {
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
         InstanceInfo instanceInfo = new InstanceInfo();
         String instanceId = CloudCommonIdUtil.getDefaultInstanceId(environment, hippo4JInetUtils);
-        instanceId = StrBuilder.create().append(instanceId).append(IDENTIFY_SLICER_SYMBOL).append(CLIENT_IDENTIFICATION_VALUE).toString();
+        instanceId = new StringBuilder()
+                .append(instanceId)
+                .append(IDENTIFY_SLICER_SYMBOL)
+                .append(CLIENT_IDENTIFICATION_VALUE)
+                .toString();
         String contextPath = environment.getProperty("server.servlet.context-path", "");
         instanceInfo.setInstanceId(instanceId)
                 .setIpApplicationName(CloudCommonIdUtil.getIpApplicationName(environment, hippo4JInetUtils))

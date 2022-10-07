@@ -25,14 +25,15 @@ import cn.hippo4j.message.service.SendMessageHandler;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hutool.core.date.DateUtil;
 import cn.hippo4j.common.toolkit.FileUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpRequest;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -66,14 +67,14 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
             String larkAlarmTimoutTraceReplaceJson = Singleton.get(larkAlarmTimoutTraceReplaceJsonKey, () -> FileUtil.readUtf8String(larkAlarmTimoutTraceReplaceJsonKey));
             if (StringUtil.isNotBlank(executeTimeoutTrace)) {
                 String larkAlarmTimoutTraceReplaceTxt = String.format(larkAlarmTimoutTraceReplaceJson, executeTimeoutTrace);
-                larkAlarmTimoutReplaceTxt = StrUtil.replace(larkAlarmTimoutReplaceJson, larkAlarmTimoutTraceReplaceJson, larkAlarmTimoutTraceReplaceTxt);
+                larkAlarmTimoutReplaceTxt = StringUtil.replace(larkAlarmTimoutReplaceJson, larkAlarmTimoutTraceReplaceJson, larkAlarmTimoutTraceReplaceTxt);
             } else {
-                larkAlarmTimoutReplaceTxt = StrUtil.replace(larkAlarmTimoutReplaceJson, larkAlarmTimoutTraceReplaceJson, "");
+                larkAlarmTimoutReplaceTxt = StringUtil.replace(larkAlarmTimoutReplaceJson, larkAlarmTimoutTraceReplaceJson, "");
             }
             larkAlarmTimoutReplaceTxt = String.format(larkAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
-            larkAlarmTxt = StrUtil.replace(larkAlarmTxt, larkAlarmTimoutReplaceJson, larkAlarmTimoutReplaceTxt);
+            larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimoutReplaceJson, larkAlarmTimoutReplaceTxt);
         } else {
-            larkAlarmTxt = StrUtil.replace(larkAlarmTxt, larkAlarmTimoutReplaceJson, "");
+            larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimoutReplaceJson, "");
         }
 
         String text = String.format(larkAlarmTxt,
@@ -114,7 +115,7 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 // 告警手机号
                 afterReceives,
                 // 当前时间
-                DateUtil.now(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 // 报警频率
                 notifyConfig.getInterval());
         execute(notifyConfig.getSecretKey(), text);
@@ -156,7 +157,7 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
                 // 告警手机号
                 afterReceives,
                 // 当前时间
-                DateUtil.now());
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         execute(notifyConfig.getSecretKey(), text);
     }
 
@@ -165,14 +166,15 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
             return "";
         }
         return Arrays.stream(receives.split(","))
-                .map(receive -> StrUtil.startWith(receive, LARK_OPENID_PREFIX) ? String.format(LARK_AT_FORMAT_OPENID, receive) : String.format(LARK_AT_FORMAT_USERNAME, receive))
+                .map(receive -> StringUtil.startWith(receive, LARK_OPENID_PREFIX) ? String.format(LARK_AT_FORMAT_OPENID, receive) : String.format(LARK_AT_FORMAT_USERNAME, receive))
                 .collect(Collectors.joining(" "));
     }
 
     private void execute(String secretKey, String text) {
         String serverUrl = LARK_BOT_URL + secretKey;
         try {
-            HttpRequest.post(serverUrl).body(text).execute();
+            RestTemplate template = new RestTemplate();
+            template.postForObject(serverUrl, text, Object.class);
         } catch (Exception ex) {
             log.error("Lark failed to send message", ex);
         }

@@ -17,6 +17,7 @@
 
 package cn.hippo4j.core.executor.support;
 
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import lombok.Data;

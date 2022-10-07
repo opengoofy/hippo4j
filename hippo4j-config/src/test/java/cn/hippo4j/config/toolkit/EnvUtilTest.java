@@ -18,7 +18,7 @@
 package cn.hippo4j.config.toolkit;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hutool.core.util.StrUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import org.junit.Test;
 
 /**
@@ -29,7 +29,7 @@ public class EnvUtilTest {
     @Test
     public void getHippo4JHomeTest() {
         String hippo4JHome = EnvUtil.getHippo4JHome();
-        Assert.isTrue(StrUtil.isNotBlank(hippo4JHome));
+        Assert.isTrue(StringUtil.isNotBlank(hippo4JHome));
     }
 
     @Test
