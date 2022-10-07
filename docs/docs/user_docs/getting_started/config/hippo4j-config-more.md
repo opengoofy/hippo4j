@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # 个性化配置
 
-以下所述特性自 hippo4j-config v1.4.2 及以上版本提供，hippo4j 核心开发者 [@pizihao](https://github.com/pizihao) 完成对应功能开发。
+以下所述特性自 hippo4j-config v1.4.2 及以上版本提供，由 hippo4j 核心开发者 [@pizihao](https://github.com/pizihao) 完成相应功能开发。
 
 ## 需求背景
 
