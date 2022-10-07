@@ -65,7 +65,7 @@ public class DynamicThreadPoolConfig {
      */
     @SpringDynamicThreadPool
     public ThreadPoolExecutor messageProduceDynamicThreadPool() {
-        return ThreadPoolBuilder.builderDynamicPoolById(MESSAGE_PRODUCE);
+        return ThreadPoolBuilder.buildDynamicPoolById(MESSAGE_PRODUCE);
     }
 
     /**
