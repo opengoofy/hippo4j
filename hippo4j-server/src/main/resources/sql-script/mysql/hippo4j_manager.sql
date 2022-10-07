@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `tenant` (
 CREATE TABLE IF NOT EXISTS `item` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
-  `item_id` varchar(256) DEFAULT NULL COMMENT '项目ID',
+  `item_id` varchar(128) DEFAULT NULL COMMENT '项目ID',
   `item_name` varchar(128) DEFAULT NULL COMMENT '项目名称',
   `item_desc` varchar(256) DEFAULT NULL COMMENT '项目介绍',
   `owner` varchar(32) DEFAULT NULL COMMENT '负责人',
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `item` (
 CREATE TABLE IF NOT EXISTS `config` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
-  `item_id` varchar(256) DEFAULT NULL COMMENT '项目ID',
+  `item_id` varchar(128) DEFAULT NULL COMMENT '项目ID',
   `tp_id` varchar(256) DEFAULT NULL COMMENT '线程池ID',
   `tp_name` varchar(56) DEFAULT NULL COMMENT '线程池名称',
   `core_size` int(11) DEFAULT NULL COMMENT '核心线程数',
@@ -74,9 +74,9 @@ CREATE TABLE IF NOT EXISTS `config` (
 CREATE TABLE IF NOT EXISTS `inst_config` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
-  `item_id` varchar(256) DEFAULT NULL COMMENT '项目ID',
+  `item_id` varchar(128) DEFAULT NULL COMMENT '项目ID',
   `tp_id` varchar(256) DEFAULT NULL COMMENT '线程池ID',
-  `instance_id` varchar(256) DEFAULT NULL COMMENT '实例ID',
+  `instance_id` varchar(64) DEFAULT NULL COMMENT '实例ID',
   `content` longtext COMMENT '线程池内容',
   `md5` varchar(32) NOT NULL COMMENT 'MD5',
   `gmt_create` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -94,9 +94,9 @@ CREATE TABLE IF NOT EXISTS `inst_config` (
 CREATE TABLE IF NOT EXISTS `his_run_data` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
-  `item_id` varchar(256) DEFAULT NULL COMMENT '项目ID',
+  `item_id` varchar(128) DEFAULT NULL COMMENT '项目ID',
   `tp_id` varchar(256) DEFAULT NULL COMMENT '线程池ID',
-  `instance_id` varchar(256) DEFAULT NULL COMMENT '实例ID',
+  `instance_id` varchar(64) DEFAULT NULL COMMENT '实例ID',
   `current_load` bigint(20) DEFAULT NULL COMMENT '当前负载',
   `peak_load` bigint(20) DEFAULT NULL COMMENT '峰值负载',
   `pool_size` bigint(20) DEFAULT NULL COMMENT '线程数',
