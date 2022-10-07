@@ -17,20 +17,24 @@
 
 package cn.hippo4j.core.executor;
 
+import org.springframework.context.annotation.Bean;
+
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.context.annotation.Bean;
-
 /**
- *@author : wh
- *@date : 2022/10/2 16:10
- *@description:
+ * A convenience annotation that is itself annotated with
+ * {@link Bean @Bean} and {@link DynamicThreadPool @DynamicThreadPool}.
+ *
+ * @since 1.4.2
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 @Bean
+@DynamicThreadPool
 public @interface SpringDynamicThreadPool {
 }

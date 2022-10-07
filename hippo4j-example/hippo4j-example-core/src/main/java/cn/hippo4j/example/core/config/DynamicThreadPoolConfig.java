@@ -18,6 +18,7 @@
 package cn.hippo4j.example.core.config;
 
 import cn.hippo4j.core.executor.DynamicThreadPool;
+import cn.hippo4j.core.executor.SpringDynamicThreadPool;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.example.core.handler.TaskTraceBuilderHandler;
 import cn.hippo4j.example.core.inittest.TaskDecoratorTest;
@@ -59,8 +60,10 @@ public class DynamicThreadPoolConfig {
         return ttlExecutor;
     }
 
-    @Bean
-    @DynamicThreadPool
+    /**
+     * {@link Bean @Bean} and {@link DynamicThreadPool @DynamicThreadPool}.
+     */
+    @SpringDynamicThreadPool
     public ThreadPoolExecutor messageProduceDynamicThreadPool() {
         return ThreadPoolBuilder.builderDynamicPoolById(MESSAGE_PRODUCE);
     }
