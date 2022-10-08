@@ -28,7 +28,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 public interface ConfigModificationQueryService {
 
     /**
-     * query config modification application page
+     * query config modification application page.
+     *
      * @param reqDTO
      * @return
      */
@@ -36,6 +37,7 @@ public interface ConfigModificationQueryService {
 
     /**
      * query config modification detail by application id
+     *
      * @param id
      * @return
      */

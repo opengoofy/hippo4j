@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * config change verify service choose
+ * Config change verify service choose
  */
 @Component
 public class ConfigModificationVerifyServiceChoose implements CommandLineRunner {

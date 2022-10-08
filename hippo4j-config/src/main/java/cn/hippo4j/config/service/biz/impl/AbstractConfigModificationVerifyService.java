@@ -50,7 +50,6 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
         HisConfigVerifyInfo hisConfigVerifyInfo = BeanUtil.convert(reqDTO, HisConfigVerifyInfo.class);
         hisConfigVerifyInfo.setContent(JSONUtil.toJSONString(reqDTO));
         hisConfigVerifyInfo.setVerifyStatus(VerifyEnum.TO_VERIFY.getVerifyStatus());
-
         hisConfigVerifyMapper.insert(hisConfigVerifyInfo);
     }
 
@@ -61,22 +60,17 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_REJECT.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getGmtVerify, new Date())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
-
         hisConfigVerifyMapper.update(null, updateWrapper);
-
     }
 
     public void acceptModification(ConfigModifyVerifyReqDTO reqDTO) {
         updateThreadPoolParameter(reqDTO);
-
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
                 .eq(HisConfigVerifyInfo::getId, reqDTO.getId())
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_ACCEPT.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getGmtVerify, new Date())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
-
         hisConfigVerifyMapper.update(null, updateWrapper);
-
         Date gmtVerify = hisConfigVerifyMapper.selectById(reqDTO.getId()).getGmtVerify();
         LambdaUpdateWrapper<HisConfigVerifyInfo> invalidUpdateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
                 .eq(HisConfigVerifyInfo::getType, reqDTO.getType())
@@ -87,11 +81,11 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
                 .lt(HisConfigVerifyInfo::getGmtVerify, gmtVerify)
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_INVALID.getVerifyStatus());
         hisConfigVerifyMapper.update(null, invalidUpdateWrapper);
-
     }
 
     /**
      * get client address
+     *
      * @param reqDTO
      * @return
      */
@@ -103,7 +97,7 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
                         () -> leases.forEach(lease -> clientAddressList.add(lease.getHolder().getCallBackUrl())),
                         () -> clientAddressList.add(
                                 leases.stream()
-                                        .filter(lease -> lease.getHolder().getIdentify().equals(reqDTO.getIdentify())).findAny().orElseThrow(() -> new RuntimeException("线程池实例并不存在")).getHolder()
+                                        .filter(lease -> lease.getHolder().getIdentify().equals(reqDTO.getIdentify())).findAny().orElseThrow(() -> new RuntimeException("该线程池实例不存在")).getHolder()
                                         .getCallBackUrl()));
         return clientAddressList;
     }
@@ -113,5 +107,4 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
      * @param reqDTO
      */
     protected abstract void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO);
-
 }

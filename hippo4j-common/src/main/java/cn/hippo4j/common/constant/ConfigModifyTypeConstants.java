@@ -26,5 +26,4 @@ public class ConfigModifyTypeConstants {
     public static final int WEB_THREAD_POOL = 3;
 
     public static final int ADAPTER_THREAD_POOL = 4;
-
 }

@@ -21,30 +21,34 @@ import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 
 /**
- * config modification verify service
+ * Config modification verify service.
  */
 public interface ConfigModificationVerifyService {
 
     /**
-     * get type
+     * Get type
+     *
      * @return
      */
     Integer type();
 
     /**
-     * save config change application
+     * Save config change application.
+     *
      * @param reqDTO
      */
     void saveConfigModifyApplication(ConfigModifySaveReqDTO reqDTO);
 
     /**
-     * reject config modification
+     * Reject config modification.
+     *
      * @param reqDTO
      */
     void rejectModification(ConfigModifyVerifyReqDTO reqDTO);
 
     /**
-     * accept config modification
+     * Accept config modification.
+     *
      * @param reqDTO
      */
     void acceptModification(ConfigModifyVerifyReqDTO reqDTO);

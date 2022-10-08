@@ -27,7 +27,7 @@ import javax.validation.constraints.Pattern;
 public class ConfigModifySaveReqDTO {
 
     /**
-     * thread pool config change type
+     * Thread pool config change type.
      */
     private Integer type;
 
