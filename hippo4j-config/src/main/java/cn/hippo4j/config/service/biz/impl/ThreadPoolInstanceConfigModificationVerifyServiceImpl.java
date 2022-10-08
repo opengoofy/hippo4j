@@ -18,10 +18,10 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import cn.hippo4j.config.service.biz.ConfigService;
-import cn.hippo4j.config.toolkit.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

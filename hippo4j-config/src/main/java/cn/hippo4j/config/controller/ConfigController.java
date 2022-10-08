@@ -20,6 +20,7 @@ package cn.hippo4j.config.controller;
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Result;
@@ -30,10 +31,8 @@ import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigServletInner;
 import cn.hippo4j.config.service.biz.ConfigService;
-import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hippo4j.config.toolkit.Md5ConfigUtil;
 import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
-import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.util.StringUtils;
@@ -106,7 +105,7 @@ public class ConfigController {
     @PostMapping("/remove/config/cache")
     public Result removeConfigCache(@RequestBody Map<String, String> bodyMap) {
         String groupKey = bodyMap.get(Constants.GROUP_KEY);
-        if (StrUtil.isNotBlank(groupKey)) {
+        if (StringUtil.isNotBlank(groupKey)) {
             ConfigCacheService.removeConfigCache(groupKey);
         }
         return Results.success();

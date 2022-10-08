@@ -19,6 +19,7 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
@@ -28,7 +29,6 @@ import cn.hippo4j.config.model.biz.threadpool.*;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.service.biz.OperationLogService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
-import cn.hippo4j.config.toolkit.BeanUtil;
 import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;

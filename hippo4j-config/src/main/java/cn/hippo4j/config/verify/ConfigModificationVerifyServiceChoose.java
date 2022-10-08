@@ -20,10 +20,10 @@ package cn.hippo4j.config.verify;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.config.service.biz.ConfigModificationVerifyService;
-import com.google.common.collect.Maps;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,7 +35,7 @@ public class ConfigModificationVerifyServiceChoose implements CommandLineRunner 
     /**
      * Storage config change verify service container.
      */
-    private Map<Integer, ConfigModificationVerifyService> configChangeVerifyServiceChooseMap = Maps.newHashMap();
+    private Map<Integer, ConfigModificationVerifyService> configChangeVerifyServiceChooseMap = new HashMap<>();
 
     /**
      * Choose by type.
