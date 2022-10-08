@@ -41,7 +41,7 @@ public class MessageConvert {
         MessageWrapper wrapper = new MessageWrapper();
         wrapper.setResponseClass(message.getClass());
         wrapper.setMessageType(message.getMessageType());
-        List<Map<String, Object>> messageMapList = new ArrayList();
+        List<Map<String, Object>> messageMapList = new ArrayList<>();
         List<Message> messages = message.getMessages();
         messages.forEach(each -> {
             String eachVal = JSONUtil.toJSONString(each);

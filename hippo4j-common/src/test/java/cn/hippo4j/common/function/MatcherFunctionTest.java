@@ -18,8 +18,9 @@
 package cn.hippo4j.common.function;
 
 import cn.hippo4j.common.toolkit.Assert;
-import java.math.BigDecimal;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 
 public final class MatcherFunctionTest {
 

@@ -20,6 +20,7 @@ package cn.hippo4j.config.service.biz.impl;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
 import cn.hippo4j.common.monitor.RuntimeMessage;
+import cn.hippo4j.common.toolkit.DateUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.MessageConvert;
 import cn.hippo4j.common.web.base.Result;
@@ -32,21 +33,20 @@ import cn.hippo4j.config.model.biz.monitor.MonitorQueryReqDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorRespDTO;
 import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
 import cn.hippo4j.config.service.biz.HisRunDataService;
-import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static cn.hutool.core.date.DatePattern.NORM_TIME_PATTERN;
+import static cn.hippo4j.common.toolkit.DateUtil.NORM_TIME_PATTERN;
 
 /**
  * His run data service impl.
@@ -63,15 +63,15 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
 
     @Override
     public List<MonitorRespDTO> query(MonitorQueryReqDTO reqDTO) {
-        Date currentDate = new Date();
-        DateTime dateTime = DateUtil.offsetMinute(currentDate, -properties.getCleanHistoryDataPeriod());
-        long startTime = dateTime.getTime();
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime dateTime = currentDate.plusMinutes(-properties.getCleanHistoryDataPeriod());
+        long startTime = DateUtil.getTime(dateTime);
         List<HisRunDataInfo> hisRunDataInfos = this.lambdaQuery()
                 .eq(HisRunDataInfo::getTenantId, reqDTO.getTenantId())
                 .eq(HisRunDataInfo::getItemId, reqDTO.getItemId())
                 .eq(HisRunDataInfo::getTpId, reqDTO.getTpId())
                 .eq(HisRunDataInfo::getInstanceId, reqDTO.getInstanceId())
-                .between(HisRunDataInfo::getTimestamp, startTime, currentDate.getTime())
+                .between(HisRunDataInfo::getTimestamp, startTime, DateUtil.getTime(currentDate))
                 .orderByAsc(HisRunDataInfo::getTimestamp)
                 .list();
         return BeanUtil.convert(hisRunDataInfos, MonitorRespDTO.class);
@@ -79,26 +79,26 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
 
     @Override
     public MonitorActiveRespDTO queryInfoThreadPoolMonitor(MonitorQueryReqDTO reqDTO) {
-        Date currentDate = new Date();
-        DateTime dateTime = DateUtil.offsetMinute(currentDate, -properties.getCleanHistoryDataPeriod());
-        long startTime = dateTime.getTime();
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime dateTime = currentDate.plusMinutes(-properties.getCleanHistoryDataPeriod());
+        long startTime = DateUtil.getTime(dateTime);
         List<HisRunDataInfo> hisRunDataInfos = this.lambdaQuery()
                 .eq(HisRunDataInfo::getTenantId, reqDTO.getTenantId())
                 .eq(HisRunDataInfo::getItemId, reqDTO.getItemId())
                 .eq(HisRunDataInfo::getTpId, reqDTO.getTpId())
                 .eq(HisRunDataInfo::getInstanceId, reqDTO.getInstanceId())
-                .between(HisRunDataInfo::getTimestamp, startTime, currentDate.getTime())
+                .between(HisRunDataInfo::getTimestamp, startTime, DateUtil.getTime(currentDate))
                 .orderByAsc(HisRunDataInfo::getTimestamp)
                 .list();
-        List<String> times = Lists.newArrayList();
-        List<Long> poolSizeList = Lists.newArrayList();
-        List<Long> activeSizeList = Lists.newArrayList();
-        List<Long> queueCapacityList = Lists.newArrayList();
-        List<Long> queueSizeList = Lists.newArrayList();
-        List<Long> completedTaskCountList = Lists.newArrayList();
-        List<Long> rejectCountList = Lists.newArrayList();
-        List<Long> queueRemainingCapacityList = Lists.newArrayList();
-        List<Long> currentLoadList = Lists.newArrayList();
+        List<String> times = new ArrayList<>();
+        List<Long> poolSizeList = new ArrayList<>();
+        List<Long> activeSizeList = new ArrayList<>();
+        List<Long> queueCapacityList = new ArrayList<>();
+        List<Long> queueSizeList = new ArrayList<>();
+        List<Long> completedTaskCountList = new ArrayList<>();
+        List<Long> rejectCountList = new ArrayList<>();
+        List<Long> queueRemainingCapacityList = new ArrayList<>();
+        List<Long> currentLoadList = new ArrayList<>();
         long countTemp = 0L;
         AtomicBoolean firstFlag = new AtomicBoolean(Boolean.TRUE);
         for (HisRunDataInfo each : hisRunDataInfos) {
@@ -127,16 +127,16 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
 
     @Override
     public MonitorRespDTO queryThreadPoolLastTaskCount(MonitorQueryReqDTO reqDTO) {
-        Date currentDate = new Date();
-        DateTime dateTime = DateUtil.offsetMinute(currentDate, -properties.getCleanHistoryDataPeriod());
-        long startTime = dateTime.getTime();
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime dateTime = currentDate.plusMinutes(-properties.getCleanHistoryDataPeriod());
+        long startTime = DateUtil.getTime(dateTime);
         HisRunDataInfo hisRunDataInfo = this.lambdaQuery()
                 .eq(HisRunDataInfo::getTenantId, reqDTO.getTenantId())
                 .eq(HisRunDataInfo::getItemId, reqDTO.getItemId())
                 .eq(HisRunDataInfo::getTpId, reqDTO.getTpId())
                 .eq(HisRunDataInfo::getInstanceId, reqDTO.getInstanceId())
                 .orderByDesc(HisRunDataInfo::getTimestamp)
-                .between(HisRunDataInfo::getTimestamp, startTime, currentDate.getTime())
+                .between(HisRunDataInfo::getTimestamp, startTime, DateUtil.getTime(currentDate))
                 .last("LIMIT 1")
                 .one();
         return BeanUtil.convert(hisRunDataInfo, MonitorRespDTO.class);
@@ -146,7 +146,7 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
     @Transactional(rollbackFor = Exception.class)
     public void save(Message message) {
         List<RuntimeMessage> runtimeMessages = message.getMessages();
-        List<HisRunDataInfo> hisRunDataInfos = Lists.newArrayList();
+        List<HisRunDataInfo> hisRunDataInfos = new ArrayList<>();
         runtimeMessages.forEach(each -> {
             HisRunDataInfo hisRunDataInfo = BeanUtil.convert(each, HisRunDataInfo.class);
             String[] parseKey = GroupKey.parseKey(each.getGroupKey());

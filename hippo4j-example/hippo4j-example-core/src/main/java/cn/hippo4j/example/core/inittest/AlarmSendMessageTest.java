@@ -18,7 +18,6 @@
 package cn.hippo4j.example.core.inittest;
 
 import cn.hippo4j.example.core.constant.GlobalTestConstant;
-import cn.hutool.core.thread.ThreadUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +46,13 @@ public class AlarmSendMessageTest {
             DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
             ThreadPoolExecutor poolExecutor = poolWrapper.getExecutor();
             try {
-                poolExecutor.execute(() -> ThreadUtil.sleep(10240124));
+                poolExecutor.execute(() -> {
+                    try {
+                        Thread.sleep(10240124);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             } catch (Exception ex) {
                 log.error("Throw reject policy.", ex.getMessage());
             }

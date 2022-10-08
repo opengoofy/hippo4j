@@ -17,5 +17,18 @@
 
 package cn.hippo4j.common.function;
 
-public final class NoArgsConsumerTest {
+import cn.hippo4j.common.toolkit.Assert;
+import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+final class NoArgsConsumerTest {
+
+    @Test
+    void accept() {
+        AtomicBoolean checkValue = new AtomicBoolean(false);
+        NoArgsConsumer noArgsConsumer = () -> checkValue.set(true);
+        noArgsConsumer.accept();
+        Assert.isTrue(checkValue.get());
+    }
 }

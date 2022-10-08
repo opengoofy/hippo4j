@@ -17,14 +17,12 @@
 
 package cn.hippo4j.config.springboot.starter.parser;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Yaml config parser.
@@ -34,7 +32,7 @@ public class YamlConfigParser extends AbstractConfigParser {
     @Override
     public Map<Object, Object> doParse(String content) {
         if (StringUtils.isEmpty(content)) {
-            return Maps.newHashMapWithExpectedSize(0);
+            return new HashMap<>(1);
         }
         YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
         yamlPropertiesFactoryBean.setResources(new ByteArrayResource(content.getBytes()));
@@ -43,6 +41,6 @@ public class YamlConfigParser extends AbstractConfigParser {
 
     @Override
     public List<ConfigFileTypeEnum> getConfigFileTypes() {
-        return Lists.newArrayList(ConfigFileTypeEnum.YML, ConfigFileTypeEnum.YAML);
+        return CollectionUtil.newArrayList(ConfigFileTypeEnum.YML, ConfigFileTypeEnum.YAML);
     }
 }

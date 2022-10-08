@@ -15,21 +15,16 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.toolkit;
+package cn.hippo4j.common.toolkit;
 
-import cn.hippo4j.common.toolkit.Assert;
 import com.github.dozermapper.core.converters.ConversionException;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import lombok.*;
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
-/**
- * BeanUtil Test
- */
 public class BeanUtilTest {
 
     @Test
@@ -41,47 +36,47 @@ public class BeanUtilTest {
         person.setAddress("hippo4j.cn");
         person.setSize(999);
         final Map<?, ?> convert = BeanUtil.convert(person, Map.class);
-        Assert.isTrue(Objects.equals("Hippo4j", convert.get("name")));
-        Assert.isTrue(Objects.equals(1, convert.get("age")));
-        Assert.isTrue(Objects.equals("hippo4j.cn", convert.get("address")));
-        Assert.isTrue(Objects.equals(999, convert.get("size")));
+        Assert.assertEquals("Hippo4j", convert.get("name"));
+        Assert.assertEquals(1, convert.get("age"));
+        Assert.assertEquals("hippo4j.cn", convert.get("address"));
+        Assert.assertEquals(999, convert.get("size"));
     }
 
     @Test
     public void mapToBeanConvertTest() {
         // 测试MapToBean
-        final HashMap<String, Object> map = Maps.newHashMap();
+        final HashMap<String, Object> map = new HashMap<>();
         map.put("name", "Hippo4j");
         map.put("age", 1);
         map.put("address", "hippo4j.cn");
         map.put("size", 999);
         final Person person = BeanUtil.convert(map, Person.class);
-        Assert.isTrue(Objects.equals("Hippo4j", person.getName()));
-        Assert.isTrue(Objects.equals(1, person.getAge()));
-        Assert.isTrue(Objects.equals("hippo4j.cn", person.getAddress()));
-        Assert.isTrue(Objects.equals(999, person.getSize()));
+        Assert.assertEquals("Hippo4j", person.getName());
+        Assert.assertEquals(1, person.getAge());
+        Assert.assertEquals("hippo4j.cn", person.getAddress());
+        Assert.assertEquals(999, (int) person.getSize());
     }
 
     @Test
     public void ListToListConvertTest() {
-        final List<Person> list = Lists.newArrayList();
+        final List<Person> list = new ArrayList<>();
         list.add(Person.builder().name("one").age(1).build());
         list.add(Person.builder().name("two").age(2).build());
         list.add(Person.builder().name("three").age(3).build());
 
         final List<PersonVo> persons = BeanUtil.convert(list, PersonVo.class);
-        Assert.isTrue(Objects.equals(list.size(), persons.size()));
+        Assert.assertEquals(list.size(), persons.size());
     }
 
     @Test
     public void SetToSetConvertTest() {
-        final Set<Person> sets = Sets.newHashSet();
+        final Set<Person> sets = new HashSet<>();
         sets.add(Person.builder().name("one").age(1).build());
         sets.add(Person.builder().name("two").age(2).build());
         sets.add(Person.builder().name("three").age(3).build());
 
         final Set<PersonVo> persons = BeanUtil.convert(sets, PersonVo.class);
-        Assert.isTrue(Objects.equals(sets.size(), persons.size()));
+        Assert.assertEquals(sets.size(), persons.size());
     }
 
     @Test
@@ -91,10 +86,10 @@ public class BeanUtilTest {
         person.setName("Hippo4j");
 
         final Map<?, ?> convert = BeanUtil.convert(person, Map.class);
-        Assert.isTrue(Objects.equals("Hippo4j", convert.get("name")));
+        Assert.assertEquals("Hippo4j", convert.get("name"));
 
         // static属性应被忽略
-        Assert.isTrue(!convert.containsKey("STATIC_NAME"));
+        Assert.assertFalse(convert.containsKey("STATIC_NAME"));
     }
 
     /**
@@ -108,6 +103,28 @@ public class BeanUtilTest {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void testMapToBean() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "Test");
+        map.put("status_code", 12);
+        Customer customer = BeanUtil.mapToBean(map, Customer.class, true);
+        Assert.assertEquals("Test", customer.getName());
+        Assert.assertEquals(Integer.valueOf(12), customer.getStatusCode());
+    }
+
+    @Test
+    public void testGetter() {
+        Method name = BeanUtil.getter(Customer.class, "name");
+        Assert.assertEquals("getName", name.getName());
+    }
+
+    @Test
+    public void testSetter() {
+        Method name = BeanUtil.setter(Customer.class, "name");
+        Assert.assertEquals("setName", name.getName());
+    }
 
     @Getter
     @Setter
@@ -129,5 +146,21 @@ public class BeanUtilTest {
 
         private String name;
         private int age;
+    }
+
+    @Getter
+    @Setter
+    static class Customer {
+
+        String name;
+        Integer statusCode;
+    }
+
+    @Getter
+    @Setter
+    static class PreCustomer {
+
+        String name;
+        Integer statusCode;
     }
 }

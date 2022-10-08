@@ -19,11 +19,11 @@ package cn.hippo4j.monitor.es;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.FileUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.monitor.es.model.EsThreadPoolRunStateInfo;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.io.FileUtil;
 import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,6 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -61,13 +60,12 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
-        EsThreadPoolRunStateInfo esThreadPoolRunStateInfo = new EsThreadPoolRunStateInfo();
-        BeanUtil.copyProperties(poolRunStateInfo, esThreadPoolRunStateInfo);
+        EsThreadPoolRunStateInfo esThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, EsThreadPoolRunStateInfo.class);
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String indexName = environment.getProperty("es.thread-pool-state.index.name", "thread-pool-state");
         String applicationName = environment.getProperty("spring.application.name", "application");
         if (!this.isExists(indexName)) {
-            List<String> rawMapping = FileUtil.readLines(new File(Thread.currentThread().getContextClassLoader().getResource("mapping.json").getPath()), StandardCharsets.UTF_8);
+            List<String> rawMapping = FileUtil.readLines(Thread.currentThread().getContextClassLoader().getResource("mapping.json").getPath(), StandardCharsets.UTF_8);
             String mapping = String.join(" ", rawMapping);
             // if index doesn't exsit, this function may try to create one, but recommend to create index manually.
             this.createIndex(indexName, "_doc", mapping, null, null, null);

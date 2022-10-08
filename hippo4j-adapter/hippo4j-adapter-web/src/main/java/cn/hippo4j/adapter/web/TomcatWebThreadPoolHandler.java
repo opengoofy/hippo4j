@@ -24,12 +24,13 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
-import cn.hutool.core.date.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.server.WebServer;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -138,7 +139,7 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         runStateInfo.setQueueRemainingCapacity(remainingCapacity);
         runStateInfo.setLargestPoolSize(largestPoolSize);
         runStateInfo.setCompletedTaskCount(completedTaskCount);
-        runStateInfo.setClientLastRefreshTime(DateUtil.formatDateTime(new Date()));
+        runStateInfo.setClientLastRefreshTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         runStateInfo.setTimestamp(System.currentTimeMillis());
         String rejectedExecutionHandlerName = executor instanceof ThreadPoolExecutor ? ((ThreadPoolExecutor) executor).getRejectedExecutionHandler().getClass().getSimpleName()
                 : tomcatThreadPoolExecutor.getRejectedExecutionHandler().getClass().getSimpleName();

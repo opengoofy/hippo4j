@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.toolkit;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,6 +36,6 @@ public class RequestUtil {
 
     public static String getClientIdentify(HttpServletRequest request) {
         String identify = request.getHeader(LONG_PULLING_CLIENT_IDENTIFICATION);
-        return StrUtil.isBlank(identify) ? "" : identify;
+        return StringUtil.isBlank(identify) ? "" : identify;
     }
 }

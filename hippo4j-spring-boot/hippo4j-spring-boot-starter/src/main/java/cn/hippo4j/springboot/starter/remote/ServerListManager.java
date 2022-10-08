@@ -17,8 +17,8 @@
 
 package cn.hippo4j.springboot.starter.remote;
 
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
-import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -56,7 +56,7 @@ public class ServerListManager {
             List<String> serverAddrList = new ArrayList();
             String[] serverAddrListArr = this.serverAddrsStr.split(",");
             for (String serverAddr : serverAddrListArr) {
-                boolean whetherJoint = StrUtil.isNotBlank(serverAddr)
+                boolean whetherJoint = StringUtil.isNotBlank(serverAddr)
                         && !serverAddr.startsWith(HTTPS) && !serverAddr.startsWith(HTTP);
                 if (whetherJoint) {
                     serverAddr = HTTP + serverAddr;

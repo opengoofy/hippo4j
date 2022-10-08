@@ -18,7 +18,6 @@
 package cn.hippo4j.server.init;
 
 import cn.hippo4j.server.config.DataBaseProperties;
-import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.io.Resources;
@@ -37,7 +36,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -105,7 +103,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
             runner.setLogWriter(null);
             runner.setAutoCommit(true);
             Resources.setCharset(StandardCharsets.UTF_8);
-            List<String> initScripts = Splitter.on(";").splitToList(script);
+            String[] initScripts = StringUtils.split(script, ";");
             for (String sqlScript : initScripts) {
                 if (sqlScript.startsWith(PRE_FIX)) {
                     String sqlFile = sqlScript.substring(PRE_FIX.length());

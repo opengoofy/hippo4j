@@ -27,18 +27,19 @@ import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.ConfigInstanceMapper;
-import cn.hippo4j.config.model.*;
+import cn.hippo4j.config.model.ConfigAllInfo;
+import cn.hippo4j.config.model.ConfigInfoBase;
+import cn.hippo4j.config.model.ConfigInstanceInfo;
+import cn.hippo4j.config.model.LogRecordInfo;
 import cn.hippo4j.config.model.biz.notify.NotifyReqDTO;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.ConfigChangePublisher;
 import cn.hippo4j.config.service.biz.*;
-import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -70,9 +71,9 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenantId) {
         LambdaQueryWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
-                .eq(StrUtil.isNotBlank(tpId), ConfigAllInfo::getTpId, tpId)
-                .eq(StrUtil.isNotBlank(itemId), ConfigAllInfo::getItemId, itemId)
-                .eq(StrUtil.isNotBlank(tenantId), ConfigAllInfo::getTenantId, tenantId);
+                .eq(StringUtil.isNotBlank(tpId), ConfigAllInfo::getTpId, tpId)
+                .eq(StringUtil.isNotBlank(itemId), ConfigAllInfo::getItemId, itemId)
+                .eq(StringUtil.isNotBlank(tenantId), ConfigAllInfo::getTenantId, tenantId);
         ConfigAllInfo configAllInfo = configInfoMapper.selectOne(wrapper);
         return configAllInfo;
     }
@@ -82,7 +83,7 @@ public class ConfigServiceImpl implements ConfigService {
         ConfigAllInfo resultConfig;
         ConfigAllInfo configInstance = null;
         String instanceId = params[3];
-        if (StrUtil.isNotBlank(instanceId)) {
+        if (StringUtil.isNotBlank(instanceId)) {
             LambdaQueryWrapper<ConfigInstanceInfo> instanceQueryWrapper = Wrappers.lambdaQuery(ConfigInstanceInfo.class)
                     .eq(ConfigInstanceInfo::getTpId, params[0])
                     .eq(ConfigInstanceInfo::getItemId, params[1])
@@ -152,7 +153,8 @@ public class ConfigServiceImpl implements ConfigService {
         }
         DynamicThreadPoolRegisterServerNotifyParameter serverNotifyParameter = registerWrapper.getDynamicThreadPoolRegisterServerNotifyParameter();
         if (serverNotifyParameter != null) {
-            ArrayList<String> notifyTypes = Lists.newArrayList("CONFIG", "ALARM");
+            ArrayList<String> notifyTypes = new ArrayList<>();
+            Collections.addAll(notifyTypes, "CONFIG", "ALARM");
             notifyTypes.forEach(each -> {
                 NotifyReqDTO notifyReqDTO = new NotifyReqDTO();
                 notifyReqDTO.setType(each)

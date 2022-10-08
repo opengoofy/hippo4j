@@ -65,6 +65,47 @@
         </dependency>
 
         <dependency>
+            <groupId>com.tencent.polaris</groupId>
+            <artifactId>polaris-configuration-factory</artifactId>
+            <version>${polaris.version}</version>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.tencent.polaris</groupId>
+                    <artifactId>router-rule</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.tencent.polaris</groupId>
+                    <artifactId>router-nearby</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.tencent.polaris</groupId>
+                    <artifactId>router-metadata</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.tencent.polaris</groupId>
+                    <artifactId>router-canary</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.tencent.polaris</groupId>
+                    <artifactId>router-set</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.tencent.polaris</groupId>
+                    <artifactId>router-isolated</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.tencent.polaris</groupId>
+                    <artifactId>router-healthy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.grpc</groupId>
+                    <artifactId>grpc-all</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
