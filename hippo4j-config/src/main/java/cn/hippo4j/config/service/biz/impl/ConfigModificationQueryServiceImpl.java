@@ -33,6 +33,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+/**
+ * Config modification query service impl
+ */
 @Service
 public class ConfigModificationQueryServiceImpl implements ConfigModificationQueryService {
 

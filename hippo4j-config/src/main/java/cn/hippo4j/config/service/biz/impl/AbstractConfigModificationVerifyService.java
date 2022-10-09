@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Abstract config modification verify service.
+ */
 public abstract class AbstractConfigModificationVerifyService implements ConfigModificationVerifyService {
 
     @Resource

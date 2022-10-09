@@ -17,8 +17,6 @@
 
 package cn.hippo4j.common.enums;
 
-import java.util.Objects;
-
 public enum VerifyEnum {
 
     /**
@@ -57,5 +55,4 @@ public enum VerifyEnum {
     public Integer getVerifyStatus() {
         return this.verifyStatus;
     }
-
 }

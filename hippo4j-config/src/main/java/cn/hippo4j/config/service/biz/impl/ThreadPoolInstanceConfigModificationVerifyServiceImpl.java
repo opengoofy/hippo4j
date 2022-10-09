@@ -27,6 +27,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+/**
+ * Thread pool instance config modification verify service impl.
+ */
 @Slf4j
 @Service
 public class ThreadPoolInstanceConfigModificationVerifyServiceImpl extends AbstractConfigModificationVerifyService {
