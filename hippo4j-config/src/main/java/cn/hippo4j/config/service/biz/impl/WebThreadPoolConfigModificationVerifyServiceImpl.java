@@ -19,8 +19,12 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
