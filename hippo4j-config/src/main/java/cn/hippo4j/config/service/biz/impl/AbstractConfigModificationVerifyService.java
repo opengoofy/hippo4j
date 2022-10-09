@@ -82,7 +82,7 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
                 .eq(reqDTO.getTpId() != null, HisConfigVerifyInfo::getTpId, reqDTO.getTpId())
                 .and(reqDTO.getIdentify() != null, wrapper -> wrapper.eq(HisConfigVerifyInfo::getIdentify, reqDTO.getIdentify()).or().eq(HisConfigVerifyInfo::getModifyAll, true))
                 .lt(HisConfigVerifyInfo::getGmtCreate, gmtCreate)
-                .eq(HisConfigVerifyInfo::getVerifyStatus,VerifyEnum.TO_VERIFY.getVerifyStatus())
+                .eq(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.TO_VERIFY.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_INVALID.getVerifyStatus());
         hisConfigVerifyMapper.update(null, invalidUpdateWrapper);
     }
