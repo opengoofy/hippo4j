@@ -224,6 +224,56 @@ public class StringUtil {
     }
 
     /**
+     * combination CharSequence, get a String
+     *
+     * @param charSequences CharSequence, if null or empty, get {@link StringUtil#EMPTY}
+     * @return String
+     */
+    public static String newBuilder(CharSequence... charSequences) {
+        if (charSequences == null || charSequences.length == 0) {
+            return StringUtil.EMPTY;
+        }
+        return createBuilder(charSequences).toString();
+    }
+
+    /**
+     * combination CharSequence, get a StringBuilder
+     *
+     * @param charSequences CharSequence
+     * @return StringBuilder
+     */
+    public static StringBuilder createBuilder(CharSequence... charSequences) {
+        StringBuilder builder = new StringBuilder();
+        if (charSequences == null || charSequences.length == 0) {
+            return builder;
+        }
+        for (CharSequence sequence : charSequences) {
+            builder.append(sequence);
+        }
+        return builder;
+    }
+
+    /**
+     * combination CharSequence, to StringBuilder
+     *
+     * @param builder       StringBuilder, if null create a new
+     * @param charSequences CharSequence
+     * @return StringBuilder
+     */
+    public static StringBuilder appends(StringBuilder builder, CharSequence... charSequences) {
+        if (builder == null) {
+            return createBuilder(charSequences);
+        }
+        if (charSequences == null || charSequences.length == 0) {
+            return builder;
+        }
+        for (CharSequence sequence : charSequences) {
+            builder.append(sequence);
+        }
+        return builder;
+    }
+
+    /**
      * Replace a portion of the string, replacing all found
      *
      * @param str        A string to operate on

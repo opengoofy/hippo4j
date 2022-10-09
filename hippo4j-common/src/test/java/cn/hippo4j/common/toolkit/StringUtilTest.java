@@ -18,83 +18,108 @@
 package cn.hippo4j.common.toolkit;
 
 import org.junit.Test;
-
-import java.util.Objects;
+import org.junit.Assert;
 
 public class StringUtilTest {
 
     @Test
     public void assertIsEmpty() {
         String string = "";
-        Assert.isTrue(StringUtil.isEmpty(string));
+        Assert.assertTrue(StringUtil.isEmpty(string));
     }
 
     @Test
     public void assertIsNotEmpty() {
         String string = "string";
-        Assert.isTrue(StringUtil.isNotEmpty(string));
+        Assert.assertTrue(StringUtil.isNotEmpty(string));
     }
 
     @Test
     public void emptyToNull() {
         String string = "";
-        Assert.isNull(StringUtil.emptyToNull(string));
+        Assert.assertNull(StringUtil.emptyToNull(string));
     }
 
     @Test
     public void nullToEmpty() {
         String string = "null";
-        Assert.notEmpty(StringUtil.nullToEmpty(string));
+        Assert.assertEquals("null", StringUtil.nullToEmpty(string));
     }
 
     @Test
     public void isNullOrEmpty() {
         String string = "null";
-        Assert.isTrue(!StringUtil.isNullOrEmpty(string));
+        Assert.assertFalse(StringUtil.isNullOrEmpty(string));
     }
 
     @Test
     public void isBlank() {
         String string = "";
-        Assert.isTrue(StringUtil.isBlank(string));
+        Assert.assertTrue(StringUtil.isBlank(string));
     }
 
     @Test
     public void isNotBlank() {
         String string = "null";
-        Assert.isTrue(StringUtil.isNotBlank(string));
+        Assert.assertTrue(StringUtil.isNotBlank(string));
     }
 
     @Test
     public void isAllNotEmpty() {
         String strings = "str";
-        Assert.isTrue(StringUtil.isAllNotEmpty(strings));
+        Assert.assertTrue(StringUtil.isAllNotEmpty(strings));
     }
 
     @Test
     public void hasEmpty() {
         String strings = "";
-        Assert.isTrue(StringUtil.hasEmpty(strings));
+        Assert.assertTrue(StringUtil.hasEmpty(strings));
     }
 
     @Test
     public void toUnderlineCase() {
         String string = "str";
         String s = StringUtil.toUnderlineCase(string);
-        Assert.isTrue(Objects.equals(s, "str"));
+        Assert.assertEquals("str", s);
     }
 
     @Test
     public void toSymbolCase() {
         String string = "str";
         String s = StringUtil.toSymbolCase(string, StringUtil.UNDERLINE);
-        Assert.isTrue(Objects.equals(s, "str"));
+        Assert.assertEquals("str", s);
     }
 
     @Test
     public void toCamelCase() {
         String string = "str_str";
         String s = StringUtil.toCamelCase(string, StringUtil.UNDERLINE);
-        Assert.isTrue(Objects.equals(s, "strStr"));
+        Assert.assertEquals("strStr", s);
+    }
+
+    @Test
+    public void newBuilder() {
+        String s1 = StringUtil.newBuilder(null);
+        Assert.assertEquals("", s1);
+        String s2 = StringUtil.newBuilder("H", "ippo", "4j");
+        Assert.assertEquals("Hippo4j", s2);
+    }
+
+    @Test
+    public void createBuilder() {
+        StringBuilder s1 = StringUtil.createBuilder(null);
+        Assert.assertEquals("", s1.toString());
+        StringBuilder s2 = StringUtil.createBuilder("H", "ippo", "4j");
+        Assert.assertEquals("Hippo4j", s2.toString());
+    }
+
+    @Test
+    public void appends() {
+        StringBuilder sb1 = StringUtil.appends(null, "H", "ippo", "4j");
+        Assert.assertEquals("Hippo4j", sb1.toString());
+        StringBuilder sb2 = StringUtil.appends(StringUtil.createBuilder("To "), null);
+        Assert.assertEquals("To ", sb2.toString());
+        StringBuilder sb3 = StringUtil.appends(StringUtil.createBuilder("To "), "H", "ippo", "4j");
+        Assert.assertEquals("To Hippo4j", sb3.toString());
     }
 }
