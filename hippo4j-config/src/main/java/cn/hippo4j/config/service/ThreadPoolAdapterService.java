@@ -139,11 +139,8 @@ public class ThreadPoolAdapterService {
 
     public static void remove(String identify) {
         synchronized (ThreadPoolAdapterService.class) {
-            THREAD_POOL_ADAPTER_MAP.values().forEach(each -> each.forEach((key, val) ->
-                    val.forEach((threadPoolKey, states) ->
-                            states.removeIf(adapterState -> Objects.equals(adapterState.getIdentify(), identify))
-                    )
-            ));
+            THREAD_POOL_ADAPTER_MAP.values()
+                    .forEach(each -> each.forEach((key, val) -> val.forEach((threadPoolKey, states) -> states.removeIf(adapterState -> Objects.equals(adapterState.getIdentify(), identify)))));
         }
     }
 

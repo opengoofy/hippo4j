@@ -201,8 +201,7 @@ CREATE TABLE IF NOT EXISTS `notify` (
 -- ----------------------------
 -- Table structure for his_config_verify
 -- ----------------------------
-DROP TABLE IF EXISTS `his_config_verify`;
-CREATE TABLE `his_config_verify`  (
+CREATE TABLE IF NOT EXISTS `his_config_verify`  (
    `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
    `type` int NULL DEFAULT NULL COMMENT '变更类型',
    `mark` varchar(128)  DEFAULT NULL COMMENT '框架线程池类型',

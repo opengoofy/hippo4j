@@ -46,7 +46,6 @@ public class AdapterThreadPoolConfigModificationVerifyServiceImpl extends Abstra
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
         for (String each : getClientAddress(reqDTO)) {
             String urlString = StringUtil.newBuilder("http://", each, "/adapter/thread-pool/update");
-            RestTemplate restTemplate = new RestTemplate();
             // again appoint MediaType
             HttpHeaders requestHeaders = new HttpHeaders();
             requestHeaders.setContentType(MediaType.APPLICATION_JSON);
