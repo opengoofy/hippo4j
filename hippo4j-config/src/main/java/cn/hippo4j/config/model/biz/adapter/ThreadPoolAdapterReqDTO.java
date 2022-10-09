@@ -66,4 +66,9 @@ public class ThreadPoolAdapterReqDTO {
      * Client address list
      */
     private List<String> clientAddressList;
+
+    /**
+     * weather Modify all instances
+     */
+    private Boolean modifyAll;
 }

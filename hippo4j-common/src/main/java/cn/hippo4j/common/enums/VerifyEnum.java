@@ -15,55 +15,44 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.console.model;
+package cn.hippo4j.common.enums;
 
-import lombok.Data;
-
-import java.util.List;
-
-/**
- * Web thread-pool req dto.
- */
-@Data
-public class WebThreadPoolReqDTO {
+public enum VerifyEnum {
 
     /**
-     * Thread-pool id
+     * unVerify
      */
-    private String tenantId;
+    TO_VERIFY(0, "待审核"),
 
     /**
-     * Item id
+     * accept
      */
-    private String itemId;
+    VERIFY_ACCEPT(1, "审核通过"),
 
     /**
-     * thread pool instance id
+     * reject
      */
-    private String identify;
+    VERIFY_REJECT(2, "审核拒绝"),
 
     /**
-     * Core pool size
+     * invalid
      */
-    private Integer corePoolSize;
+    VERIFY_INVALID(3, "失效");
 
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
+    private final Integer verifyStatus;
 
-    /**
-     * Keep alive time
-     */
-    private Integer keepAliveTime;
+    private final String desc;
 
-    /**
-     * weather modify all instances
-     */
-    private Boolean modifyAll;
+    VerifyEnum(Integer verifyStatus, String desc) {
+        this.verifyStatus = verifyStatus;
+        this.desc = desc;
+    }
 
-    /**
-     * Client address list
-     */
-    private List<String> clientAddressList;
+    public String getDesc() {
+        return this.desc;
+    }
+
+    public Integer getVerifyStatus() {
+        return this.verifyStatus;
+    }
 }

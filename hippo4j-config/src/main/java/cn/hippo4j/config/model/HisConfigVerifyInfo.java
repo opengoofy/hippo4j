@@ -15,20 +15,31 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.console.model;
+package cn.hippo4j.config.model;
 
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Date;
 
 /**
- * Web thread-pool req dto.
+ * His config verify info
  */
 @Data
-public class WebThreadPoolReqDTO {
+@TableName("his_config_verify")
+public class HisConfigVerifyInfo {
+
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     /**
-     * Thread-pool id
+     * Change type
+     */
+    private Integer type;
+
+    /**
+     * Tenant id
      */
     private String tenantId;
 
@@ -38,32 +49,53 @@ public class WebThreadPoolReqDTO {
     private String itemId;
 
     /**
-     * thread pool instance id
+     * Thread pool id
+     */
+    private String tpId;
+
+    /**
+     * Thread pool mark
+     */
+    private String mark;
+
+    /**
+     * Thread pool instance identify
      */
     private String identify;
 
     /**
-     * Core pool size
+     * Config content
      */
-    private Integer corePoolSize;
+    private String content;
 
     /**
-     * Maximum pool size
+     * Weather modify all thread pool instances
      */
-    private Integer maximumPoolSize;
+    private Boolean modifyAll = false;
 
     /**
-     * Keep alive time
+     * GmtCreate
      */
-    private Integer keepAliveTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date gmtCreate;
 
     /**
-     * weather modify all instances
+     * ModifyUserId
      */
-    private Boolean modifyAll;
+    private String modifyUser;
 
     /**
-     * Client address list
+     * Verify status
      */
-    private List<String> clientAddressList;
+    private Integer verifyStatus;
+
+    /**
+     * GmtVerify
+     */
+    private Date gmtVerify;
+
+    /**
+     * VerifyUser
+     */
+    private String verifyUser;
 }

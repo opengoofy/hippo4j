@@ -17,22 +17,18 @@
 
 package cn.hippo4j.console.controller;
 
+import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.*;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
 import cn.hippo4j.config.model.CacheItem;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.*;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
-import cn.hippo4j.common.toolkit.BeanUtil;
+import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import cn.hippo4j.console.model.ThreadPoolInstanceInfo;
 import cn.hippo4j.console.model.WebThreadPoolReqDTO;
 import cn.hippo4j.console.model.WebThreadPoolRespDTO;
@@ -44,13 +40,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 import static cn.hippo4j.common.toolkit.ContentUtil.getGroupKey;
 
 /**
@@ -64,6 +59,8 @@ public class ThreadPoolController {
     private final ThreadPoolService threadPoolService;
 
     private final BaseInstanceRegistry baseInstanceRegistry;
+
+    private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -157,6 +154,8 @@ public class ThreadPoolController {
                 continue;
             }
             WebThreadPoolRespDTO result = BeanUtil.convert(data, WebThreadPoolRespDTO.class);
+            result.setItemId(itemId);
+            result.setTenantId(each.getHolder().getGroupKey().split("[+]")[1]);
             result.setActive(each.getHolder().getActive());
             result.setIdentify(each.getHolder().getIdentify());
             result.setClientAddress(each.getHolder().getCallBackUrl());
@@ -191,13 +190,20 @@ public class ThreadPoolController {
 
     @PostMapping("/web/update/pool")
     public Result<Void> updateWebThreadPool(@RequestBody WebThreadPoolReqDTO requestParam) {
-        for (String each : requestParam.getClientAddressList()) {
-            String urlString = new StringBuilder()
-                    .append("http://")
-                    .append(each)
-                    .append("/web/update/pool")
-                    .toString();
-            restTemplate.postForObject(urlString, JSONUtil.toJSONString(requestParam), Object.class);
+        if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
+            for (String each : requestParam.getClientAddressList()) {
+                String urlString = new StringBuilder()
+                        .append("http://")
+                        .append(each)
+                        .append("/web/update/pool")
+                        .toString();
+                restTemplate.postForObject(urlString, JSONUtil.toJSONString(requestParam), Object.class);
+            }
+        } else {
+            ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParam, ConfigModifySaveReqDTO.class);
+            modifySaveReqDTO.setModifyUser(UserContext.getUserName());
+            modifySaveReqDTO.setType(ConfigModifyTypeConstants.WEB_THREAD_POOL);
+            configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
         return Results.success();
     }
@@ -215,9 +221,9 @@ public class ThreadPoolController {
         String groupKey = getGroupKey(tpId, itemTenantKey);
         Map<String, CacheItem> content = ConfigCacheService.getContent(groupKey);
         Map<String, String> activeMap =
-                leases.stream().map(Lease::getHolder).filter(each -> StringUtil.isNotBlank(each.getActive()))
+                leases.stream().map(each -> each.getHolder()).filter(each -> StringUtil.isNotBlank(each.getActive()))
                         .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getActive));
-        Map<String, String> clientBasePathMap = leases.stream().map(Lease::getHolder)
+        Map<String, String> clientBasePathMap = leases.stream().map(each -> each.getHolder())
                 .filter(each -> StringUtil.isNotBlank(each.getClientBasePath()))
                 .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getClientBasePath));
         List<ThreadPoolInstanceInfo> returnThreadPool = new ArrayList<>();
@@ -232,4 +238,5 @@ public class ThreadPoolController {
         });
         return Results.success(returnThreadPool);
     }
+
 }

@@ -26,6 +26,16 @@ import lombok.Data;
 public class WebThreadPoolRespDTO {
 
     /**
+     * thread pool tenant id
+     */
+    private String tenantId;
+
+    /**
+     * item id
+     */
+    private String itemId;
+
+    /**
      * Active
      */
     private String active;

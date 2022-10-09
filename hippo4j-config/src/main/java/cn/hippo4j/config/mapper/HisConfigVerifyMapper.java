@@ -15,55 +15,15 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.console.model;
+package cn.hippo4j.config.mapper;
 
-import lombok.Data;
-
-import java.util.List;
+import cn.hippo4j.config.model.HisConfigVerifyInfo;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * Web thread-pool req dto.
+ * his config verify info mapper
  */
-@Data
-public class WebThreadPoolReqDTO {
-
-    /**
-     * Thread-pool id
-     */
-    private String tenantId;
-
-    /**
-     * Item id
-     */
-    private String itemId;
-
-    /**
-     * thread pool instance id
-     */
-    private String identify;
-
-    /**
-     * Core pool size
-     */
-    private Integer corePoolSize;
-
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
-
-    /**
-     * Keep alive time
-     */
-    private Integer keepAliveTime;
-
-    /**
-     * weather modify all instances
-     */
-    private Boolean modifyAll;
-
-    /**
-     * Client address list
-     */
-    private List<String> clientAddressList;
+@Mapper
+public interface HisConfigVerifyMapper extends BaseMapper<HisConfigVerifyInfo> {
 }
