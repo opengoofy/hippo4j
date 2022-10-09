@@ -23,18 +23,18 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * config modify verify dto
+ * Config modify verify dto
  */
 @Data
 public class ConfigModifyVerifyReqDTO {
 
     /**
-     * his config verify id
+     * His config verify id
      */
-    private Long id;
+    private String id;
 
     /**
-     * config verify type
+     * Config verify type
      */
     private Integer type;
 
@@ -44,38 +44,38 @@ public class ConfigModifyVerifyReqDTO {
     private String tenantId;
 
     /**
-     * item id
+     * Item id
      */
     private String itemId;
 
     /**
-     * instance identify
+     * Instance identify
      */
     private String identify;
 
     /**
-     * adapter thread pool mark
+     * Adapter thread pool mark
      */
     private String mark;
 
     /**
-     * adapter thread pool key
+     * Adapter thread pool key
      */
     private String threadPoolKey;
 
     /**
-     * Thread-pool id
+     * Thread pool id
      */
     @JsonAlias("threadPoolId")
     private String tpId;
 
     /**
-     * weather modify all instances
+     * Weather modify all instances
      */
     private Boolean modifyAll;
 
     /**
-     * weather accept config modification
+     * Weather accept config modification
      */
     private Boolean accept;
 

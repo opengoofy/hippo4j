@@ -57,8 +57,8 @@ public class ConfigVerifyController {
     }
 
     @GetMapping("/query/application/detail")
-    public Result<ThreadPoolParameterInfo> modificationApplicationDetail(@RequestParam("id") Long id) {
-        return Results.success(queryService.queryApplicationDetail(id));
+    public Result<ThreadPoolParameterInfo> modificationApplicationDetail(@RequestParam("id") String id) {
+        return Results.success(queryService.queryApplicationDetail(Long.parseLong(id)));
     }
 
 }

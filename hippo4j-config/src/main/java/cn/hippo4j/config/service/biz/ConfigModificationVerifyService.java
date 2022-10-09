@@ -26,7 +26,7 @@ import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 public interface ConfigModificationVerifyService {
 
     /**
-     * Get type
+     * Get type.
      *
      * @return
      */

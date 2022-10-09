@@ -17,16 +17,14 @@
 
 package cn.hippo4j.config.model;
 
-import cn.hippo4j.common.model.ThreadPoolParameter;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 /**
- * his config verify info
+ * His config verify info
  */
 @Data
 @TableName("his_config_verify")
@@ -36,71 +34,71 @@ public class HisConfigVerifyInfo {
     private Long id;
 
     /**
-     * change type
+     * Change type
      */
     private Integer type;
 
     /**
-     * tenant id
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * item id
+     * Item id
      */
     private String itemId;
 
     /**
-     * thread pool id
+     * Thread pool id
      */
     private String tpId;
 
     /**
-     * thread pool mark
+     * Thread pool mark
      */
     private String mark;
 
     /**
-     * thread pool instance identify
+     * Thread pool instance identify
      */
     private String identify;
 
     /**
-     * config content
+     * Config content
      */
     private String content;
 
     /**
-     * weather modify all thread pool instances
+     * Weather modify all thread pool instances
      */
     private Boolean modifyAll = false;
 
     /**
-     * gmtCreate
+     * GmtCreate
      */
     @JsonIgnore
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
     /**
-     * modifyUserId
+     * ModifyUserId
      */
     private String modifyUser;
 
     /**
-     * verify status
+     * Verify status
      */
     private Integer verifyStatus;
 
     /**
-     * gmtVerify
+     * GmtVerify
      */
     @JsonIgnore
     @TableField(fill = FieldFill.UPDATE)
     private Date gmtVerify;
 
     /**
-     * verifyUser
+     * VerifyUser
      */
     private String verifyUser;
 }

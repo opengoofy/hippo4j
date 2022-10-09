@@ -56,7 +56,7 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
     @Override
     public void rejectModification(ConfigModifyVerifyReqDTO reqDTO) {
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
-                .eq(HisConfigVerifyInfo::getId, reqDTO.getId())
+                .eq(HisConfigVerifyInfo::getId, Long.parseLong(reqDTO.getId()))
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_REJECT.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getGmtVerify, new Date())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
@@ -66,7 +66,7 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
     public void acceptModification(ConfigModifyVerifyReqDTO reqDTO) {
         updateThreadPoolParameter(reqDTO);
         LambdaUpdateWrapper<HisConfigVerifyInfo> updateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
-                .eq(HisConfigVerifyInfo::getId, reqDTO.getId())
+                .eq(HisConfigVerifyInfo::getId, Long.parseLong(reqDTO.getId()))
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_ACCEPT.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getGmtVerify, new Date())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
@@ -84,7 +84,7 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
     }
 
     /**
-     * get client address
+     * Get client address.
      *
      * @param reqDTO
      * @return
@@ -103,7 +103,8 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
     }
 
     /**
-     * update thread pool parameter
+     * Update thread pool parameter.
+     *
      * @param reqDTO
      */
     protected abstract void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO);

@@ -17,8 +17,6 @@
 
 package cn.hippo4j.config.model.biz.threadpool;
 
-import cn.hippo4j.common.enums.EnableEnum;
-import cn.hippo4j.common.model.ThreadPoolParameter;
 import lombok.Data;
 
 import javax.validation.constraints.Pattern;
@@ -32,23 +30,23 @@ public class ConfigModifySaveReqDTO {
     private Integer type;
 
     /**
-     * thread pool instance id
+     * Thread pool instance id
      */
     private String identify;
 
     /**
-     * weather modify all instances
+     * Weather modify all instances
      */
     private Boolean modifyAll = false;
 
     /**
-     * TenantId
+     * Tenant Id
      */
     @Pattern(regexp = "^((?!\\+).)*$", message = "租户、项目、线程池 ID 包含+号")
     private String tenantId;
 
     /**
-     * Thread-pool id
+     * Thread pool id
      */
     @Pattern(regexp = "^((?!\\+).)*$", message = "租户、项目、线程池 ID 包含+号")
     private String tpId;
@@ -60,7 +58,7 @@ public class ConfigModifySaveReqDTO {
     private String itemId;
 
     /**
-     * thread pool mark
+     * Thread pool mark
      */
     private String mark;
 

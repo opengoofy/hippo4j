@@ -23,75 +23,75 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * config modify query resp
+ * Config modify query resp
  */
 @Data
 public class ConfigModificationQueryRespDTO {
 
     /**
-     * his_config_verify id
+     * His_config_verify id
      */
     private String id;
 
     /**
-     * config modify type
+     * Config modify type
      */
     private Integer type;
 
     /**
-     * thread pool mark
+     * Thread pool mark
      */
     private String mark;
 
     /**
-     * tenant id
+     * Tenant id
      */
     private String tenantId;
 
     /**
-     * item id
+     * Item id
      */
     private String itemId;
 
     /**
-     * thread pool id
+     * Thread pool id
      */
     private String tpId;
 
     /**
-     * thread pool identify
+     * Thread pool identify
      */
     private String identify;
 
     /**
-     * weather modify all instances
+     * Weather modify all instances
      */
     private Boolean modifyAll;
 
     /**
-     * modify user
+     * Modify user
      */
     private String modifyUser;
 
     /**
-     * verify status
+     * Verify status
      */
     private Integer verifyStatus;
 
     /**
-     * gmt create
+     * GmtCreate
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
-     * gmt verify
+     * GmtVerify
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtVerify;
 
     /**
-     * verify user
+     * Verify user
      */
     private String verifyUser;
 }
