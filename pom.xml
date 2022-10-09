@@ -83,7 +83,7 @@
         <spring-cloud-starter-alibaba-nacos-config.version>2.2.5.RELEASE</spring-cloud-starter-alibaba-nacos-config.version>
         <!-- Maven & Build -->
         <java.version>1.8</java.version>
-        <skip.maven.gpg.plugin>false</skip.maven.gpg.plugin>
+        <skip.maven.gpg.plugin>true</skip.maven.gpg.plugin>
         <skip.spotless.apply>false</skip.spotless.apply>
         <skip.checkstyle.check>true</skip.checkstyle.check>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
