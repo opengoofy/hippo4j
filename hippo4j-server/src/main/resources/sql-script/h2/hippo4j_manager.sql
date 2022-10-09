@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `his_config_verify`  (
    `modify_all` tinyint(1)  COMMENT '是否全部修改',
    `gmt_create` datetime  COMMENT '参数变更时间',
    `modify_user` varchar(128) DEFAULT NULL COMMENT '修改人',
-   `verify_status` tinyint(1)  COMMENT '审核状态 0:待审核 1：审核通过 2：审核拒绝',
+   `verify_status` tinyint(1)  COMMENT '审核状态 0：待审核 1：审核通过 2：审核拒绝',
    `gmt_verify` datetime  COMMENT '审核时间',
    `verify_user` varchar(128) DEFAULT NULL COMMENT '审核人',
     PRIMARY KEY (`id`) USING BTREE

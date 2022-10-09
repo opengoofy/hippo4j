@@ -16,7 +16,6 @@ ALTER TABLE his_run_data Modify COLUMN tp_id varchar(256) COMMENT '线程池ID';
 
 ALTER TABLE notify Modify COLUMN tp_id varchar(256) COMMENT '线程池ID';
 
-DROP TABLE IF EXISTS `his_config_verify`;
 CREATE TABLE `his_config_verify`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `type` int NULL DEFAULT NULL COMMENT '变更类型',
@@ -29,9 +28,8 @@ CREATE TABLE `his_config_verify`  (
   `modify_all` tinyint(1) NULL DEFAULT NULL COMMENT '是否全部修改',
   `gmt_create` datetime NULL DEFAULT NULL COMMENT '参数变更时间',
   `modify_user` varchar(128)  DEFAULT NULL COMMENT '修改人',
-  `verify_status` tinyint(1) NULL DEFAULT NULL COMMENT '审核状态 0:待审核 1：审核通过 2：审核拒绝',
+  `verify_status` tinyint(1) NULL DEFAULT NULL COMMENT '审核状态 0：待审核 1：审核通过 2：审核拒绝',
   `gmt_verify` datetime NULL  DEFAULT NULL COMMENT '审核时间',
   `verify_user` varchar(128)  DEFAULT NULL COMMENT '审核人',
 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET=utf8mb4 COMMENT = '参数变更审核记录表';
-
