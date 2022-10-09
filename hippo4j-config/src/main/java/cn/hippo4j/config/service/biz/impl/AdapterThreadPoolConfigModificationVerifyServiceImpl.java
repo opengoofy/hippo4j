@@ -19,8 +19,12 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -41,12 +45,13 @@ public class AdapterThreadPoolConfigModificationVerifyServiceImpl extends Abstra
     @Override
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
         for (String each : getClientAddress(reqDTO)) {
-            String urlString = new StringBuilder()
-                    .append("http://")
-                    .append(each)
-                    .append("/adapter/thread-pool/update")
-                    .toString();
-            restTemplate.postForObject(urlString, JSONUtil.toJSONString(reqDTO), Object.class);
+            String urlString = StringUtil.newBuilder("http://", each, "/adapter/thread-pool/update");
+            RestTemplate restTemplate = new RestTemplate();
+            // again appoint MediaType
+            HttpHeaders requestHeaders = new HttpHeaders();
+            requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<String> requestEntity = new HttpEntity<>(JSONUtil.toJSONString(reqDTO), requestHeaders);
+            restTemplate.postForObject(urlString, requestEntity, Object.class);
         }
     }
 }

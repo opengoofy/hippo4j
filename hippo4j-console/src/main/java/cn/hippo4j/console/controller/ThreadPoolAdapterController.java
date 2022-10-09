@@ -39,11 +39,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 import static cn.hippo4j.common.constant.Constants.REGISTER_ADAPTER_BASE_PATH;
 
 /**
