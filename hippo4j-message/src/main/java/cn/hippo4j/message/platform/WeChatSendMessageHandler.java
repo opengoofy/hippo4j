@@ -26,7 +26,6 @@ import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.*;
