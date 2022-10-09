@@ -10,6 +10,32 @@
     <url>https://github.com/opengoofy/hippo4j</url>
     <description>Dynamic observable thread pool framework</description>
 
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>chen.ma</name>
+            <email>machen@apache.org</email>
+            <url>https://github.com/itmachen</url>
+            <organization>OpenGoofy</organization>
+            <organizationUrl>https://github.com/opengoofy</organizationUrl>
+            <roles>
+                <role>Project lead</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>shining-stars-lk</name>
+            <email>1031900093@qq.com</email>
+            <url>https://github.com/shining-stars-lk</url>
+        </developer>
+    </developers>
+
     <modules>
         <module>hippo4j-adapter</module>
         <module>hippo4j-auth</module>
@@ -26,16 +52,14 @@
     </modules>
 
     <properties>
-        <revision>1.4.2-SNAPSHOT</revision>
+        <revision>1.4.2-alpha.2</revision>
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
         <caffeine.version>2.9.3</caffeine.version>
-        <guava.version>30.0-jre</guava.version>
         <okhttp3.version>3.12.0</okhttp3.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
-        <forest.version>1.5.11</forest.version>
         <jjwt.version>0.9.0</jjwt.version>
         <jackson-bom.version>2.11.1</jackson-bom.version>
         <dingtalk-sdk.version>2.0.0</dingtalk-sdk.version>
@@ -59,7 +83,7 @@
         <spring-cloud-starter-alibaba-nacos-config.version>2.2.5.RELEASE</spring-cloud-starter-alibaba-nacos-config.version>
         <!-- Maven & Build -->
         <java.version>1.8</java.version>
-        <skip.maven.gpg.plugin>true</skip.maven.gpg.plugin>
+        <skip.maven.gpg.plugin>false</skip.maven.gpg.plugin>
         <skip.spotless.apply>false</skip.spotless.apply>
         <skip.checkstyle.check>true</skip.checkstyle.check>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
@@ -70,6 +94,10 @@
         <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+        <flatten-maven-plugin.version>1.1.0</flatten-maven-plugin.version>
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <maven-javadoc-plugin.version>3.0.0-M1</maven-javadoc-plugin.version>
+        <maven-source-plugin.version>2.4</maven-source-plugin.version>
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
@@ -123,11 +151,6 @@
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.aliyun</groupId>
@@ -189,11 +212,14 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven.jar.plugin.version}</version>
                 <configuration>
                     <archive>
                         <manifestEntries>
+                            <Implementation-Title>${project.artifactId}</Implementation-Title>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Build-Time>${maven.build.timestamp}</Build-Time>
                             <Built-By>chen.ma</Built-By>
                         </manifestEntries>
                     </archive>
@@ -202,7 +228,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.1.0</version>
+                <version>${flatten-maven-plugin.version}</version>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
                     <flattenMode>resolveCiFriendliesOnly</flattenMode>
@@ -232,7 +258,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
+                <version>${maven-gpg-plugin.version}</version>
                 <configuration>
                     <skip>${skip.maven.gpg.plugin}</skip>
                 </configuration>
@@ -248,15 +274,22 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <additionalparam>${javadoc.opts}</additionalparam>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.4</version>
+                <version>${maven-source-plugin.version}</version>
                 <configuration>
                     <attach>true</attach>
                 </configuration>
@@ -319,32 +352,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>chen.ma</name>
-            <email>machen@apache.org</email>
-            <url>https://github.com/itmachen</url>
-            <organization>OpenGoofy</organization>
-            <organizationUrl>https://github.com/opengoofy</organizationUrl>
-            <roles>
-                <role>Project lead</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>shining-stars-lk</name>
-            <email>1031900093@qq.com</email>
-            <url>https://github.com/shining-stars-lk</url>
-        </developer>
-    </developers>
 
     <scm>
         <connection>scm:git@github.com:opengoofy/hippo4j</connection>
