@@ -76,7 +76,6 @@ public class HisConfigVerifyInfo {
     /**
      * GmtCreate
      */
-    @JsonIgnore
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
@@ -93,7 +92,6 @@ public class HisConfigVerifyInfo {
     /**
      * GmtVerify
      */
-    @JsonIgnore
     @TableField(fill = FieldFill.UPDATE)
     private Date gmtVerify;
 
