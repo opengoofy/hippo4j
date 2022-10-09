@@ -23,7 +23,7 @@ import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
-import cn.hippo4j.core.toolkit.TraceContextUtil;
+import cn.hippo4j.core.toolkit.ExecutorTraceContextUtil;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
@@ -178,7 +178,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
                 alarmNotifyRequest.setThreadPoolId(threadPoolId);
                 alarmNotifyRequest.setExecuteTime(executeTime);
                 alarmNotifyRequest.setExecuteTimeOut(executeTimeOut);
-                String executeTimeoutTrace = TraceContextUtil.getAndRemove();
+                String executeTimeoutTrace = ExecutorTraceContextUtil.getAndRemoveTimeoutTrace();
                 if (StringUtil.isNotBlank(executeTimeoutTrace)) {
                     alarmNotifyRequest.setExecuteTimeoutTrace(executeTimeoutTrace);
                 }

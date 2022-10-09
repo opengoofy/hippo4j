@@ -15,23 +15,48 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support;
+package cn.hippo4j.core.toolkit;
 
 import org.slf4j.MDC;
 
 import static cn.hippo4j.common.constant.Constants.EXECUTE_TIMEOUT_TRACE;
 
 /**
- * Executor context.
+ * Trace context util.
  */
-public class ExecutorContext {
+public class ExecutorTraceContextUtil {
+
+    /**
+     * Execute timeout trace key.
+     */
+    private static String EXECUTE_TIMEOUT_TRACE_KEY = EXECUTE_TIMEOUT_TRACE;
+
+    /**
+     * Get and remove.
+     *
+     * @return
+     */
+    public static String getAndRemoveTimeoutTrace() {
+        String val = MDC.get(EXECUTE_TIMEOUT_TRACE_KEY);
+        MDC.remove(EXECUTE_TIMEOUT_TRACE_KEY);
+        return val;
+    }
 
     /**
      * Put execute timeout trace.
      *
-     * @param executeTimeoutTrace
+     * @param trace
      */
-    public static void putExecuteTimeoutTrace(String executeTimeoutTrace) {
-        MDC.put(EXECUTE_TIMEOUT_TRACE, executeTimeoutTrace);
+    public static void putExecuteTimeoutTrace(String trace) {
+        MDC.put(EXECUTE_TIMEOUT_TRACE, trace);
+    }
+
+    /**
+     * Set execute timeout trace key.
+     *
+     * @param key
+     */
+    public static void setExecuteTimeoutTraceKey(String key) {
+        EXECUTE_TIMEOUT_TRACE_KEY = key;
     }
 }

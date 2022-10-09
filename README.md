@@ -115,25 +115,25 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/Gdk666">
-            <img src="https://avatars.githubusercontent.com/u/22442067?v=4" width="50;" alt="Gdk666"/>
+        <a href="https://github.com/pizihao">
+            <img src="https://avatars.githubusercontent.com/u/48643103?v=4" width="50;" alt="pizihao"/>
             <br />
-            <sub><b>Null</b></sub>
+            <sub><b>Pizihao</b></sub>
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/xqxyxchy">
-            <img src="https://avatars.githubusercontent.com/u/21134578?v=4" width="50;" alt="xqxyxchy"/>
+        <a href="https://github.com/Gdk666">
+            <img src="https://avatars.githubusercontent.com/u/22442067?v=4" width="50;" alt="Gdk666"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
     </td></tr>
 <tr>
     <td align="center">
-        <a href="https://github.com/pizihao">
-            <img src="https://avatars.githubusercontent.com/u/48643103?v=4" width="50;" alt="pizihao"/>
+        <a href="https://github.com/xqxyxchy">
+            <img src="https://avatars.githubusercontent.com/u/21134578?v=4" width="50;" alt="xqxyxchy"/>
             <br />
-            <sub><b>Pizihao</b></sub>
+            <sub><b>Null</b></sub>
         </a>
     </td>
     <td align="center">
