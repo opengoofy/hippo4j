@@ -19,11 +19,23 @@ package cn.hippo4j.common.constant;
 
 public class ConfigModifyTypeConstants {
 
+    /**
+     * Thread pool manager change
+     */
     public static final int THREAD_POOL_MANAGER = 1;
 
+    /**
+     * Thread pool instance change
+     */
     public static final int THREAD_POOL_INSTANCE = 2;
 
+    /**
+     * Web thread pool change
+     */
     public static final int WEB_THREAD_POOL = 3;
 
+    /**
+     * Adapter thread pool change
+     */
     public static final int ADAPTER_THREAD_POOL = 4;
 }
