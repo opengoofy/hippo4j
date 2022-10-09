@@ -59,5 +59,4 @@ public class ExecutorTraceContextUtil {
     public static void setExecuteTimeoutTraceKey(String key) {
         EXECUTE_TIMEOUT_TRACE_KEY = key;
     }
-
 }
