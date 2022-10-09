@@ -43,6 +43,15 @@ public class TraceContextUtil {
     }
 
     /**
+     * set.
+     *
+     * @return
+     */
+    public static void set(String trace) {
+        MDC.put(EXECUTE_TIMEOUT_TRACE_KEY, trace);
+    }
+
+    /**
      * Set execute timeout trace key.
      *
      * @param key
