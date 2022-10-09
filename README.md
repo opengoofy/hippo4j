@@ -158,6 +158,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/baymax55">
+            <img src="https://avatars.githubusercontent.com/u/35788491?v=4" width="50;" alt="baymax55"/>
+            <br />
+            <sub><b>Baymax55</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/liulinfei121">
             <img src="https://avatars.githubusercontent.com/u/57127515?v=4" width="50;" alt="liulinfei121"/>
             <br />
@@ -169,13 +176,6 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <img src="https://avatars.githubusercontent.com/u/25747005?v=4" width="50;" alt="Atmanuclear"/>
             <br />
             <sub><b>Null</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/baymax55">
-            <img src="https://avatars.githubusercontent.com/u/35788491?v=4" width="50;" alt="baymax55"/>
-            <br />
-            <sub><b>Baymax55</b></sub>
         </a>
     </td>
     <td align="center">
