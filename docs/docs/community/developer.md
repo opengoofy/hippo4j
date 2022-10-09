@@ -55,7 +55,7 @@ sidebar_position: 2
     <td align="center" >hao3073liu@163.com</td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/pizihao"><img src="https://avatars.githubusercontent.com/u/49084314?v=4?s=400" width="64px;"/></a></td>
+    <td align="center"><a href="https://github.com/pizihao"><img src="https://avatars.githubusercontent.com/u/49084314?v=4?s=64" width="64px;"/></a></td>
     <td align="center">叶炜</td>
     <td align="center" ><a href="https://github.com/shanjianq">shanjianq</a></td>
     <td align="center" >-</td>
