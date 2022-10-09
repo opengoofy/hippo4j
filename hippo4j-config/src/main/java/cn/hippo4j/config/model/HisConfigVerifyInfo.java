@@ -92,7 +92,6 @@ public class HisConfigVerifyInfo {
     /**
      * GmtVerify
      */
-    @TableField(fill = FieldFill.UPDATE)
     private Date gmtVerify;
 
     /**
