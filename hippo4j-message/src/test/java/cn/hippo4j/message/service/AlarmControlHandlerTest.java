@@ -31,5 +31,4 @@ public class AlarmControlHandlerTest {
         Thread.sleep(60 * 1000);
         Assert.assertTrue(alarmControlHandler.isSendAlarm(alarmControlDTO));
     }
-
 }
