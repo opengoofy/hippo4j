@@ -101,17 +101,17 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/BigXin0109">
-            <img src="https://avatars.githubusercontent.com/u/24769514?v=4" width="50;" alt="BigXin0109"/>
-            <br />
-            <sub><b>BigXin0109</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/shanjianq">
             <img src="https://avatars.githubusercontent.com/u/49084314?v=4" width="50;" alt="shanjianq"/>
             <br />
             <sub><b>Shanjianq</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/BigXin0109">
+            <img src="https://avatars.githubusercontent.com/u/24769514?v=4" width="50;" alt="BigXin0109"/>
+            <br />
+            <sub><b>BigXin0109</b></sub>
         </a>
     </td>
     <td align="center">
