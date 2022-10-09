@@ -74,14 +74,15 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
                 .set(HisConfigVerifyInfo::getGmtVerify, new Date())
                 .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName());
         hisConfigVerifyMapper.update(null, updateWrapper);
-        Date gmtVerify = hisConfigVerifyMapper.selectById(reqDTO.getId()).getGmtVerify();
+        Date gmtCreate = hisConfigVerifyMapper.selectById(reqDTO.getId()).getGmtCreate();
         LambdaUpdateWrapper<HisConfigVerifyInfo> invalidUpdateWrapper = new LambdaUpdateWrapper<HisConfigVerifyInfo>()
                 .eq(HisConfigVerifyInfo::getType, reqDTO.getType())
                 .eq(reqDTO.getTenantId() != null, HisConfigVerifyInfo::getTenantId, reqDTO.getTenantId())
                 .eq(reqDTO.getItemId() != null, HisConfigVerifyInfo::getItemId, reqDTO.getItemId())
                 .eq(reqDTO.getTpId() != null, HisConfigVerifyInfo::getTpId, reqDTO.getTpId())
                 .and(reqDTO.getIdentify() != null, wrapper -> wrapper.eq(HisConfigVerifyInfo::getIdentify, reqDTO.getIdentify()).or().eq(HisConfigVerifyInfo::getModifyAll, true))
-                .lt(HisConfigVerifyInfo::getGmtVerify, gmtVerify)
+                .lt(HisConfigVerifyInfo::getGmtCreate, gmtCreate)
+                .eq(HisConfigVerifyInfo::getVerifyStatus,VerifyEnum.TO_VERIFY.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_INVALID.getVerifyStatus());
         hisConfigVerifyMapper.update(null, invalidUpdateWrapper);
     }
