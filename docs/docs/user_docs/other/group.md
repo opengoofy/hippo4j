@@ -4,11 +4,6 @@ sidebar_position: 1
 
 # 加群沟通
 
+扫码添加微信，备注：`hippo4j`，邀您加入群聊。
 
-对于这个项目，是否有什么不一样看法，欢迎在 Issue 一起沟通交流；或者添加小编微信进交流群。
-
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/64E583A0-B1DD-49A3-9AEC-8D246E9D5C12.PNG?x-oss-process=image/resize,h_500,w_800)
-
-
-
-
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)

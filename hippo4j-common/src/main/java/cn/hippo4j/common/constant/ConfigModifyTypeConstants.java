@@ -15,55 +15,27 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.console.model;
+package cn.hippo4j.common.constant;
 
-import lombok.Data;
-
-import java.util.List;
-
-/**
- * Web thread-pool req dto.
- */
-@Data
-public class WebThreadPoolReqDTO {
+public class ConfigModifyTypeConstants {
 
     /**
-     * Thread-pool id
+     * Thread pool manager change
      */
-    private String tenantId;
+    public static final int THREAD_POOL_MANAGER = 1;
 
     /**
-     * Item id
+     * Thread pool instance change
      */
-    private String itemId;
+    public static final int THREAD_POOL_INSTANCE = 2;
 
     /**
-     * thread pool instance id
+     * Web thread pool change
      */
-    private String identify;
+    public static final int WEB_THREAD_POOL = 3;
 
     /**
-     * Core pool size
+     * Adapter thread pool change
      */
-    private Integer corePoolSize;
-
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
-
-    /**
-     * Keep alive time
-     */
-    private Integer keepAliveTime;
-
-    /**
-     * weather modify all instances
-     */
-    private Boolean modifyAll;
-
-    /**
-     * Client address list
-     */
-    private List<String> clientAddressList;
+    public static final int ADAPTER_THREAD_POOL = 4;
 }

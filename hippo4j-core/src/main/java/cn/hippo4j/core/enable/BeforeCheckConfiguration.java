@@ -42,18 +42,6 @@ public class BeforeCheckConfiguration {
                                                                                  ConfigurableEnvironment environment) {
         boolean checkFlag = properties != null && Objects.equals(bootstrapPropertiesClassName, properties.getClass().getName()) && properties.getEnable();
         if (checkFlag) {
-            String username = properties.getUsername();
-            if (StringUtil.isBlank(username)) {
-                throw new ConfigEmptyException(
-                        "Web server failed to start. The dynamic thread pool username is empty.",
-                        "Please check whether the [spring.dynamic.thread-pool.username] configuration is empty or an empty string.");
-            }
-            String password = properties.getPassword();
-            if (StringUtil.isBlank(password)) {
-                throw new ConfigEmptyException(
-                        "Web server failed to start. The dynamic thread pool password is empty.",
-                        "Please check whether the [spring.dynamic.thread-pool.password] configuration is empty or an empty string.");
-            }
             String namespace = properties.getNamespace();
             if (StringUtil.isBlank(namespace)) {
                 throw new ConfigEmptyException(

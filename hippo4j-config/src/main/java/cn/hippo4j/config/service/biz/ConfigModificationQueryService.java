@@ -15,55 +15,31 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.console.model;
+package cn.hippo4j.config.service.biz;
 
-import lombok.Data;
-
-import java.util.List;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModificationQueryRespDTO;
+import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
- * Web thread-pool req dto.
+ * Config modification application query service.
  */
-@Data
-public class WebThreadPoolReqDTO {
+public interface ConfigModificationQueryService {
 
     /**
-     * Thread-pool id
+     * Query config modification application page.
+     *
+     * @param reqDTO
+     * @return
      */
-    private String tenantId;
+    IPage<ConfigModificationQueryRespDTO> queryApplicationPage(ThreadPoolQueryReqDTO reqDTO);
 
     /**
-     * Item id
+     * Query config modification detail by application id.
+     *
+     * @param id
+     * @return
      */
-    private String itemId;
-
-    /**
-     * thread pool instance id
-     */
-    private String identify;
-
-    /**
-     * Core pool size
-     */
-    private Integer corePoolSize;
-
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
-
-    /**
-     * Keep alive time
-     */
-    private Integer keepAliveTime;
-
-    /**
-     * weather modify all instances
-     */
-    private Boolean modifyAll;
-
-    /**
-     * Client address list
-     */
-    private List<String> clientAddressList;
+    ThreadPoolParameterInfo queryApplicationDetail(Long id);
 }

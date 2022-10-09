@@ -231,7 +231,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
      * @param threadPoolId threadPoolId
      * @return ThreadPoolExecutor
      */
-    public static ThreadPoolExecutor builderDynamicPoolById(String threadPoolId) {
+    public static ThreadPoolExecutor buildDynamicPoolById(String threadPoolId) {
         return ThreadPoolBuilder.builder()
                 .threadFactory(threadPoolId)
                 .threadPoolId(threadPoolId)

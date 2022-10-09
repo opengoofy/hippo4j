@@ -62,6 +62,8 @@ public class Constants {
 
     public static final String LISTENER_PATH = CONFIG_CONTROLLER_PATH + "/listener";
 
+    public static final String VERIFY_PATH = CONFIG_CONTROLLER_PATH + "/verify";
+
     public static final String MONITOR_PATH = BASE_PATH + "/monitor";
 
     public static final String REGISTER_ADAPTER_BASE_PATH = BASE_PATH + "/adapter/thread-pool";

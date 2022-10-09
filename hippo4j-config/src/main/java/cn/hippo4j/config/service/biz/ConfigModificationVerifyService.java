@@ -15,55 +15,41 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.console.model;
+package cn.hippo4j.config.service.biz;
 
-import lombok.Data;
-
-import java.util.List;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 
 /**
- * Web thread-pool req dto.
+ * Config modification verify service.
  */
-@Data
-public class WebThreadPoolReqDTO {
+public interface ConfigModificationVerifyService {
 
     /**
-     * Thread-pool id
+     * Get type.
+     *
+     * @return
      */
-    private String tenantId;
+    Integer type();
 
     /**
-     * Item id
+     * Save config change application.
+     *
+     * @param reqDTO
      */
-    private String itemId;
+    void saveConfigModifyApplication(ConfigModifySaveReqDTO reqDTO);
 
     /**
-     * thread pool instance id
+     * Reject config modification.
+     *
+     * @param reqDTO
      */
-    private String identify;
+    void rejectModification(ConfigModifyVerifyReqDTO reqDTO);
 
     /**
-     * Core pool size
+     * Accept config modification.
+     *
+     * @param reqDTO
      */
-    private Integer corePoolSize;
-
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
-
-    /**
-     * Keep alive time
-     */
-    private Integer keepAliveTime;
-
-    /**
-     * weather modify all instances
-     */
-    private Boolean modifyAll;
-
-    /**
-     * Client address list
-     */
-    private List<String> clientAddressList;
+    void acceptModification(ConfigModifyVerifyReqDTO reqDTO);
 }

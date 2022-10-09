@@ -35,6 +35,6 @@ public class ThreadPoolConfig {
     @SpringDynamicThreadPool
     public ThreadPoolExecutor messageConsumeDynamicExecutor() {
         String threadPoolId = "message-consume";
-        return ThreadPoolBuilder.builderDynamicPoolById(threadPoolId);
+        return ThreadPoolBuilder.buildDynamicPoolById(threadPoolId);
     }
 }

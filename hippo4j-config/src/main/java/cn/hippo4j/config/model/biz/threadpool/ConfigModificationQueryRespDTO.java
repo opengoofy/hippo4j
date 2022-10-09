@@ -15,20 +15,36 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.console.model;
+package cn.hippo4j.config.model.biz.threadpool;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Date;
 
 /**
- * Web thread-pool req dto.
+ * Config modify query resp
  */
 @Data
-public class WebThreadPoolReqDTO {
+public class ConfigModificationQueryRespDTO {
 
     /**
-     * Thread-pool id
+     * His_config_verify id
+     */
+    private String id;
+
+    /**
+     * Config modify type
+     */
+    private Integer type;
+
+    /**
+     * Thread pool mark
+     */
+    private String mark;
+
+    /**
+     * Tenant id
      */
     private String tenantId;
 
@@ -38,32 +54,44 @@ public class WebThreadPoolReqDTO {
     private String itemId;
 
     /**
-     * thread pool instance id
+     * Thread pool id
+     */
+    private String tpId;
+
+    /**
+     * Thread pool identify
      */
     private String identify;
 
     /**
-     * Core pool size
-     */
-    private Integer corePoolSize;
-
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
-
-    /**
-     * Keep alive time
-     */
-    private Integer keepAliveTime;
-
-    /**
-     * weather modify all instances
+     * Weather modify all instances
      */
     private Boolean modifyAll;
 
     /**
-     * Client address list
+     * Modify user
      */
-    private List<String> clientAddressList;
+    private String modifyUser;
+
+    /**
+     * Verify status
+     */
+    private Integer verifyStatus;
+
+    /**
+     * GmtCreate
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date gmtCreate;
+
+    /**
+     * GmtVerify
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date gmtVerify;
+
+    /**
+     * Verify user
+     */
+    private String verifyUser;
 }
