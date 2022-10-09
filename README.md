@@ -378,8 +378,8 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/sanliangitch">
-            <img src="https://avatars.githubusercontent.com/u/48200100?v=4" width="50;" alt="sanliangitch"/>
+        <a href="https://github.com/wulangcode">
+            <img src="https://avatars.githubusercontent.com/u/48200100?v=4" width="50;" alt="wulangcode"/>
             <br />
             <sub><b>WuLang</b></sub>
         </a>
