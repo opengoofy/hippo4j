@@ -46,7 +46,6 @@ public class WebThreadPoolConfigModificationVerifyServiceImpl extends AbstractCo
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
         for (String each : getClientAddress(reqDTO)) {
             String urlString = StringUtil.newBuilder("http://", each, "/web/update/pool");
-            RestTemplate restTemplate = new RestTemplate();
             // again appoint MediaType
             HttpHeaders requestHeaders = new HttpHeaders();
             requestHeaders.setContentType(MediaType.APPLICATION_JSON);
