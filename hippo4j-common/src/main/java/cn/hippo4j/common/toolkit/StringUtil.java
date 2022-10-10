@@ -17,13 +17,8 @@
 
 package cn.hippo4j.common.toolkit;
 
-import org.springframework.util.StringUtils;
-
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * String util.
