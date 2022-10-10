@@ -66,10 +66,5 @@
             <groupId>com.github.dozermapper</groupId>
             <artifactId>dozer-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 </project>
