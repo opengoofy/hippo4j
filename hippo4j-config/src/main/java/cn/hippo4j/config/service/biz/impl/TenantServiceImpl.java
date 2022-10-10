@@ -19,6 +19,7 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.toolkit.Assert;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.mapper.TenantInfoMapper;
 import cn.hippo4j.config.model.TenantInfo;
 import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
@@ -37,7 +38,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,9 +70,9 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public IPage<TenantRespDTO> queryTenantPage(TenantQueryReqDTO reqDTO) {
         LambdaQueryWrapper<TenantInfo> wrapper = Wrappers.lambdaQuery(TenantInfo.class)
-                .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), TenantInfo::getTenantId, reqDTO.getTenantId())
-                .eq(!StringUtils.isEmpty(reqDTO.getTenantName()), TenantInfo::getTenantName, reqDTO.getTenantName())
-                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), TenantInfo::getOwner, reqDTO.getOwner())
+                .eq(StringUtil.isNotEmpty(reqDTO.getTenantId()), TenantInfo::getTenantId, reqDTO.getTenantId())
+                .eq(StringUtil.isNotEmpty(reqDTO.getTenantName()), TenantInfo::getTenantName, reqDTO.getTenantName())
+                .eq(StringUtil.isNotEmpty(reqDTO.getOwner()), TenantInfo::getOwner, reqDTO.getOwner())
                 .orderByDesc(reqDTO.getDesc() != null, TenantInfo::getGmtCreate);
         Page resultPage = tenantInfoMapper.selectPage(reqDTO, wrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, TenantRespDTO.class));
