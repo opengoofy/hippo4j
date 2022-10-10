@@ -84,8 +84,8 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
                 .lt(HisConfigVerifyInfo::getGmtCreate, gmtCreate)
                 .eq(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.TO_VERIFY.getVerifyStatus())
                 .set(HisConfigVerifyInfo::getVerifyStatus, VerifyEnum.VERIFY_INVALID.getVerifyStatus())
-                .set(HisConfigVerifyInfo::getVerifyUser,UserContext.getUserName())
-                .set(HisConfigVerifyInfo::getGmtVerify,new Date());
+                .set(HisConfigVerifyInfo::getVerifyUser, UserContext.getUserName())
+                .set(HisConfigVerifyInfo::getGmtVerify, new Date());
         hisConfigVerifyMapper.update(null, invalidUpdateWrapper);
     }
 
