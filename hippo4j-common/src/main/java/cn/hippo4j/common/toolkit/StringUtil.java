@@ -17,8 +17,13 @@
 
 package cn.hippo4j.common.toolkit;
 
+import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * String util.
@@ -28,6 +33,8 @@ public class StringUtil {
     public static final String EMPTY = "";
 
     public static final char UNDERLINE = '_';
+
+    public static final String[] EMPTY_ARRAY = new String[0];
 
     /**
      * Returns the given string if it is nonempty; {@code null} otherwise.
@@ -52,9 +59,11 @@ public class StringUtil {
     /**
      * Returns {@code true} if the given string is null or is the empty string.
      *
+     * this method has been deprecated, use isEmpty() instead.
      * @param str
      * @return
      */
+    @Deprecated
     public static boolean isNullOrEmpty(String str) {
         return str == null || str.isEmpty();
     }
@@ -286,6 +295,33 @@ public class StringUtil {
                 .compile(searchStr, Pattern.LITERAL)
                 .matcher(str)
                 .replaceAll(Matcher.quoteReplacement(replaceStr));
+    }
+
+    /**
+     * <p>Splits the provided text into an array, separators specified.
+     *
+     * <pre>
+     * StringUtils.split(null, *)         = null
+     * StringUtils.split("", *)           = []
+     * StringUtils.split("abc def", null) = ["abc", "def"]
+     * StringUtils.split("abc def", " ")  = ["abc", "def"]
+     * StringUtils.split("ab:cd:ef", ":") = ["ab", "cd", "ef"]
+     * </pre>
+     * @param str the String to parse, may be null
+     * @param separatorChars the characters used as the delimiters,
+     * @return an array of parsed Strings
+     */
+    public static String[] split(final String str, final String separatorChars) {
+        if (str == null) {
+            return null;
+        }
+        if (isBlank(str)) {
+            return EMPTY_ARRAY;
+        }
+        if (isBlank(separatorChars)) {
+            return str.split(" ");
+        }
+        return str.split(separatorChars);
     }
 
     /**

@@ -57,7 +57,7 @@ public class EsClientHolder {
             userName = environment.getProperty("es.thread-pool-state.userName");
             password = environment.getProperty("es.thread-pool-state.password");
             List<HttpHost> hosts = parseHosts();
-            if (StringUtil.isNullOrEmpty(userName) || StringUtil.isNullOrEmpty(password)) {
+            if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(password)) {
                 client = new RestHighLevelClient(RestClient.builder(hosts.toArray(new HttpHost[]{})));
             } else {
                 client = new RestHighLevelClient(RestClient.builder(hosts.toArray(new HttpHost[]{}))
@@ -74,7 +74,7 @@ public class EsClientHolder {
     }
 
     private static BasicCredentialsProvider getCredentialsProvider() {
-        if (!StringUtil.isNullOrEmpty(userName) && !StringUtil.isNullOrEmpty(password)) {
+        if (StringUtil.isNotEmpty(userName) && StringUtil.isNotEmpty(password)) {
             final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(userName, password));
