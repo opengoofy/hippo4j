@@ -15,6 +15,7 @@ sidebar_position: 2
 - <a href="#群机器人接受不到通知报警">群机器人接受不到通知报警</a>
 - <a href="#设置线程池参数优先级问题">设置线程池参数优先级问题</a>
 - <a href="#线程池实例中修改队列容量参数问题">线程池实例中修改队列容量参数问题</a>
+- <a href="#控制台-sockettimeoutexception-connect-timed-out">控制台 SocketTimeoutException: connect timed out</a>
 
 ## 租户和项目在 Hippo4J 中是什么意思
 
@@ -94,3 +95,9 @@ Hippo4J 发布时可能会涉及到两端发布，分别是 Server 和 Starter�
 ## 线程池实例中修改队列容量参数问题
 
 在线程池管理中添加时，只有当选择队列类型为 `ResizableCapacityLinkedBlockingQueue` 时，后续再进行修改容量大小时才会实时的刷新修改成功。
+
+## 控制台 SocketTimeoutException: connect timed out
+
+控制台中触发的某些操作涉及到 hippo4j-server 调用客户端项目。如果 hippo4j-server 部署在测试环境，而客户端项目为本地启动，则会触发该问题。
+
+为什么编辑线程池参数不报错？因为线程池的动态变更是客户端主动发起连接，和服务端保持了一个长轮询，所以不存在服务端主动调用客户端行为。
