@@ -20,7 +20,57 @@ package cn.hippo4j.common.toolkit;
 import org.junit.Test;
 import org.junit.Assert;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public class StringUtilTest {
+
+    @Test
+    public void replace() {
+        String url = "http://localhost:8088/hippo4j_manager?";
+        String replace = StringUtil.replace(url, "/hippo4j_manager?", "?");
+        Assert.assertEquals(replace, "http://localhost:8088?");
+    }
+
+    /**
+     * <p>Splits the provided text into an array, separators specified.
+     *
+     * <pre>
+     * StringUtils.split(null, *)         = null
+     * StringUtils.split("", *)           = []
+     * StringUtils.split("abc def", null) = ["abc", "def"]
+     * StringUtils.split("abc def", " ")  = ["abc", "def"]
+     * StringUtils.split("ab:cd:ef", ":") = ["ab", "cd", "ef"]
+     * </pre>
+     */
+    @Test
+    public void split() {
+        String str1 = null;
+        String separator1 = "*";
+        String[] res1 = StringUtil.split(str1, separator1);
+        assert res1 == null;
+
+        String str2 = "";
+        String separator2 = "*";
+        String[] res2 = StringUtil.split(str2, separator2);
+        Assert.assertArrayEquals(res2, new String[0]);
+
+        String str3 = "abc def";
+        String separator3 = null;
+        String[] res3 = StringUtil.split(str3, separator3);
+        Assert.assertArrayEquals(res3, new String[]{"abc", "def"});
+
+        String str4 = "abc def";
+        String separator4 = " ";
+        String[] res4 = StringUtil.split(str4, separator4);
+        Assert.assertArrayEquals(res4, new String[]{"abc", "def"});
+
+        String str5 = "ab:cd:ef";
+        String separator5 = ":";
+        String[] res5 = StringUtil.split(str5, separator5);
+        Assert.assertArrayEquals(res5, new String[]{"ab", "cd", "ef"});
+
+    }
 
     @Test
     public void assertIsEmpty() {
@@ -49,7 +99,7 @@ public class StringUtilTest {
     @Test
     public void isNullOrEmpty() {
         String string = "null";
-        Assert.assertFalse(StringUtil.isNullOrEmpty(string));
+        Assert.assertFalse(StringUtil.isEmpty(string));
     }
 
     @Test
