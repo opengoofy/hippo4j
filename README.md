@@ -222,6 +222,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/hippo4jbot">
+            <img src="https://avatars.githubusercontent.com/u/93201205?v=4" width="50;" alt="hippo4jbot"/>
+            <br />
+            <sub><b>Hippo4jbot[bot]</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/skyemin">
             <img src="https://avatars.githubusercontent.com/u/38172444?v=4" width="50;" alt="skyemin"/>
             <br />
@@ -248,15 +255,15 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>Serenity</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/gewuwo">
             <img src="https://avatars.githubusercontent.com/u/97213587?v=4" width="50;" alt="gewuwo"/>
             <br />
             <sub><b>格悟沃</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/hushtian">
             <img src="https://avatars.githubusercontent.com/u/55479601?v=4" width="50;" alt="hushtian"/>
@@ -304,13 +311,6 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <img src="https://avatars.githubusercontent.com/u/64394486?v=4" width="50;" alt="backbay2-yzg"/>
             <br />
             <sub><b>游祖光</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/hippo4jbot">
-            <img src="https://avatars.githubusercontent.com/u/93201205?v=4" width="50;" alt="hippo4jbot"/>
-            <br />
-            <sub><b>Hippo4jbot[bot]</b></sub>
         </a>
     </td>
     <td align="center">
