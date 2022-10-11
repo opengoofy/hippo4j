@@ -17,6 +17,7 @@
 
 package cn.hippo4j.message.platform;
 
+import cn.hippo4j.common.toolkit.HttpClientUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
@@ -26,11 +27,9 @@ import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.FileUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -44,8 +43,10 @@ import static cn.hippo4j.message.platform.constant.LarkAlarmConstants.*;
  * Send lark notification message.
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
+
+    private HttpClientUtil httpClientUtil = HttpClientUtil.build();
 
     @Override
     public String getType() {
@@ -173,8 +174,7 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     private void execute(String secretKey, String text) {
         String serverUrl = LARK_BOT_URL + secretKey;
         try {
-            RestTemplate template = new RestTemplate();
-            template.postForObject(serverUrl, text, Object.class);
+            httpClientUtil.restApiPost(serverUrl, text, Object.class);
         } catch (Exception ex) {
             log.error("Lark failed to send message", ex);
         }

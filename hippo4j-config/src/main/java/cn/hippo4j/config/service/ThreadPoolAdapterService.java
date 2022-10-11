@@ -23,6 +23,7 @@ import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.design.observer.Observer;
 import cn.hippo4j.common.design.observer.ObserverMessage;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.HttpClientUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
@@ -31,7 +32,6 @@ import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,6 +45,8 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 @Slf4j
 @Service
 public class ThreadPoolAdapterService {
+
+    private HttpClientUtil httpClientUtil = HttpClientUtil.build();
 
     /**
      * Map&lt;mark, Map&lt;tenantItem, Map&lt;threadPoolKey, List&lt;ThreadPoolAdapterState&gt;&gt;&gt;&gt;
@@ -96,23 +98,12 @@ public class ThreadPoolAdapterService {
         List<String> addressList = actual.stream().map(ThreadPoolAdapterState::getClientAddress).collect(Collectors.toList());
         List<ThreadPoolAdapterRespDTO> result = new ArrayList<>(addressList.size());
         addressList.forEach(each -> {
-            StringBuilder builder = StringUtil.createBuilder("http://", each, "/adapter/thread-pool/info");
-            Map<String, Object> param = new HashMap<>();
+            String url = StringUtil.newBuilder("http://", each, "/adapter/thread-pool/info");
+            Map<String, String> param = new HashMap<>();
             param.put("mark", requestParameter.getMark());
             param.put("threadPoolKey", requestParameter.getThreadPoolKey());
-            List<String> paramKey = new ArrayList<>(param.keySet());
-            for (int i = 0; i < paramKey.size(); i++) {
-                if (i == 0) {
-                    builder.append("?");
-                } else {
-                    builder.append("&");
-                }
-                String s = paramKey.get(i);
-                builder.append(StringUtil.newBuilder(s, "={", s, "}"));
-            }
             try {
-                RestTemplate template = new RestTemplate();
-                String resultStr = template.getForObject(builder.toString(), String.class, param);
+                String resultStr = httpClientUtil.get(url, param);
                 if (StringUtil.isNotBlank(resultStr)) {
                     Result<ThreadPoolAdapterRespDTO> restResult = JSONUtil.parseObject(resultStr, new TypeReference<Result<ThreadPoolAdapterRespDTO>>() {
                     });
