@@ -35,16 +35,11 @@ import cn.hippo4j.console.model.WebThreadPoolRespDTO;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -55,7 +50,7 @@ import static cn.hippo4j.common.toolkit.ContentUtil.getGroupKey;
  * Thread pool controller.
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(Constants.BASE_PATH + "/thread/pool")
 public class ThreadPoolController {
 
@@ -64,6 +59,10 @@ public class ThreadPoolController {
     private final BaseInstanceRegistry baseInstanceRegistry;
 
     private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
+
+    private HttpClientUtil httpClientUtil = HttpClientUtil.build();
+
+    private static final String HTTP = "http://";
 
     @PostMapping("/query/page")
     public Result<IPage<ThreadPoolRespDTO>> queryNameSpacePage(@RequestBody ThreadPoolQueryReqDTO reqDTO) {
@@ -110,21 +109,15 @@ public class ThreadPoolController {
     @GetMapping("/run/state/{tpId}")
     public Result runState(@PathVariable("tpId") String tpId,
                            @RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StringUtil.newBuilder("http://", clientAddress, "/run/state/", tpId);
-        RestTemplate restTemplate = new RestTemplate();
-        String data = restTemplate.getForObject(urlString, String.class, new HashMap<>());
-        Result result = JSONUtil.parseObject(data, Result.class);
-        return result;
+        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/run/state/", tpId);
+        return httpClientUtil.restApiGet(urlString, Result.class);
     }
 
     @GetMapping("/run/thread/state/{tpId}")
     public Result runThreadState(@PathVariable("tpId") String tpId,
                                  @RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StringUtil.newBuilder("http://", clientAddress, "/run/thread/state/", tpId);
-        RestTemplate restTemplate = new RestTemplate();
-        String data = restTemplate.getForObject(urlString, String.class, new HashMap<>());
-        Result result = JSONUtil.parseObject(data, Result.class);
-        return result;
+        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/run/thread/state/", tpId);
+        return httpClientUtil.restApiGet(urlString, Result.class);
     }
 
     @GetMapping("/list/client/instance/{itemId}")
@@ -159,33 +152,22 @@ public class ThreadPoolController {
 
     @GetMapping("/web/base/info")
     public Result getPoolBaseState(@RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StringUtil.newBuilder("http://", clientAddress, "/web/base/info");
-        RestTemplate restTemplate = new RestTemplate();
-        String data = restTemplate.getForObject(urlString, String.class, new HashMap<>());
-        Result result = JSONUtil.parseObject(data, Result.class);
-        return result;
+        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/web/base/info");
+        return httpClientUtil.restApiGet(urlString, Result.class);
     }
 
     @GetMapping("/web/run/state")
     public Result getPoolRunState(@RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StringUtil.newBuilder("http://", clientAddress, "/web/run/state");
-        RestTemplate restTemplate = new RestTemplate();
-        String data = restTemplate.getForObject(urlString, String.class, new HashMap<>());
-        Result result = JSONUtil.parseObject(data, Result.class);
-        return result;
+        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/web/run/state");
+        return httpClientUtil.restApiGet(urlString, Result.class);
     }
 
     @PostMapping("/web/update/pool")
     public Result<Void> updateWebThreadPool(@RequestBody WebThreadPoolReqDTO requestParam) {
         if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
             for (String each : requestParam.getClientAddressList()) {
-                String urlString = StringUtil.newBuilder("http://", each, "/web/update/pool");
-                RestTemplate restTemplate = new RestTemplate();
-                // again appoint MediaType
-                HttpHeaders requestHeaders = new HttpHeaders();
-                requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-                HttpEntity<String> requestEntity = new HttpEntity<>(JSONUtil.toJSONString(requestParam), requestHeaders);
-                restTemplate.postForObject(urlString, requestEntity, Object.class);
+                String urlString = StringUtil.newBuilder(HTTP, each, "/web/update/pool");
+                httpClientUtil.restApiPost(urlString, requestParam, Object.class);
             }
         } else {
             ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParam, ConfigModifySaveReqDTO.class);
