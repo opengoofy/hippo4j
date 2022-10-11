@@ -24,7 +24,7 @@ import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.security.SecurityProxy;
-import cn.hippo4j.springboot.starter.toolkit.HttpClientUtil;
+import cn.hippo4j.common.toolkit.HttpClientUtil;
 
 import java.util.HashMap;
 import java.util.Map;

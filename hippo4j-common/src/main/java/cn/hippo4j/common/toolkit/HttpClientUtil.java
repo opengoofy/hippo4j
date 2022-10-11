@@ -15,18 +15,21 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.toolkit;
+package cn.hippo4j.common.toolkit;
 
-import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.exception.ServiceException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * HttpClient util.
@@ -34,12 +37,29 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class HttpClientUtil {
 
-    @Resource
     private OkHttpClient hippo4JOkHttpClient;
+
+    private static AtomicReference<HttpClientUtil> reference = new AtomicReference<>();
 
     private MediaType jsonMediaType = MediaType.parse("application/json; charset=utf-8");
 
     private static int HTTP_OK_CODE = 200;
+
+    private HttpClientUtil() {
+        OkHttpClient.Builder build = new OkHttpClient.Builder();
+        build.connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
+        supportHttps(build);
+        this.hippo4JOkHttpClient = build.build();
+    }
+
+    public static HttpClientUtil build() {
+        if (reference.get() == null) {
+            reference.compareAndSet(null, new HttpClientUtil());
+        }
+        return reference.get();
+    }
 
     /**
      * Get.
@@ -170,8 +190,13 @@ public class HttpClientUtil {
 
     @SneakyThrows
     private String doPost(String url, Object body) {
-        String jsonBody = JSONUtil.toJSONString(body);
-        RequestBody requestBody = RequestBody.create(jsonMediaType, jsonBody);
+        String bodyContent;
+        if (body instanceof String) {
+            bodyContent = (String) body;
+        } else {
+            bodyContent = JSONUtil.toJSONString(body);
+        }
+        RequestBody requestBody = RequestBody.create(jsonMediaType, bodyContent);
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
@@ -179,7 +204,7 @@ public class HttpClientUtil {
         try (Response resp = hippo4JOkHttpClient.newCall(request).execute()) {
             try (ResponseBody responseBody = resp.body()) {
                 if (resp.code() != HTTP_OK_CODE) {
-                    String msg = String.format("HttpPost response code error. [code] %s [url] %s [body] %s", resp.code(), url, jsonBody);
+                    String msg = String.format("HttpPost response code error. [code] %s [url] %s [body] %s", resp.code(), url, bodyContent);
                     throw new ServiceException(msg);
                 }
                 return responseBody.string();
@@ -245,5 +270,30 @@ public class HttpClientUtil {
                 return JSONUtil.parseObject(responseBody.string(), clazz);
             }
         }
+    }
+
+    @SneakyThrows
+    private void supportHttps(OkHttpClient.Builder builder) {
+        final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+
+            @Override
+            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+            }
+
+            @Override
+            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+            }
+
+            @Override
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[]{};
+            }
+        }};
+
+        final SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+        final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+        builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
+        builder.hostnameVerifier((hostname, session) -> true);
     }
 }

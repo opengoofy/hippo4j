@@ -18,6 +18,7 @@
 package cn.hippo4j.message.platform;
 
 import cn.hippo4j.common.toolkit.FileUtil;
+import cn.hippo4j.common.toolkit.HttpClientUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
@@ -26,7 +27,6 @@ import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.client.RestTemplate;
 
 import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.*;
 
@@ -35,6 +35,8 @@ import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.*;
  */
 @Slf4j
 public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
+
+    private final HttpClientUtil httpClientUtil = HttpClientUtil.build();
 
     @Override
     public String getType() {
@@ -64,8 +66,7 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
             Markdown markdown = new Markdown();
             markdown.setContent(robotMessageExecuteDTO.getText());
             weChatReq.setMarkdown(markdown);
-            RestTemplate template = new RestTemplate();
-            template.postForObject(serverUrl, weChatReq, Object.class);
+            httpClientUtil.restApiPost(serverUrl, weChatReq, Object.class);
         } catch (Exception ex) {
             log.error("WeChat failed to send message", ex);
         }
