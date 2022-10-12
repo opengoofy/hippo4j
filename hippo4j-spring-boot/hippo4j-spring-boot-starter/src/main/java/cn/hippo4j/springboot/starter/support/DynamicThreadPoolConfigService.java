@@ -45,6 +45,7 @@ import org.springframework.context.ApplicationListener;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.Constants.REGISTER_DYNAMIC_THREAD_POOL_PATH;
@@ -89,7 +90,8 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
             failDynamicThreadPoolRegisterWrapper(registerWrapper);
             Result registerResult = httpAgent.httpPost(REGISTER_DYNAMIC_THREAD_POOL_PATH, registerWrapper);
             if (registerResult == null || !registerResult.isSuccess()) {
-                throw new ServiceException("Dynamic thread pool registration returns error.");
+                throw new ServiceException("Dynamic thread pool registration returns error."
+                        + Optional.ofNullable(registerResult).map(Result::getMessage).orElse(""));
             }
         } catch (Throwable ex) {
             log.error("Dynamic thread pool registration execution error: {}", threadPoolId, ex);
