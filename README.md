@@ -151,6 +151,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/hippo4jbot">
+            <img src="https://avatars.githubusercontent.com/u/93201205?v=4" width="50;" alt="hippo4jbot"/>
+            <br />
+            <sub><b>Hippo4jbot[bot]</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/baymax55">
             <img src="https://avatars.githubusercontent.com/u/35788491?v=4" width="50;" alt="baymax55"/>
             <br />
@@ -162,13 +169,6 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <img src="https://avatars.githubusercontent.com/u/73152769?v=4" width="50;" alt="zhuanghaozhe"/>
             <br />
             <sub><b>庄昊哲</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/hippo4jbot">
-            <img src="https://avatars.githubusercontent.com/u/93201205?v=4" width="50;" alt="hippo4jbot"/>
-            <br />
-            <sub><b>Hippo4jbot[bot]</b></sub>
         </a>
     </td>
     <td align="center">
@@ -314,13 +314,20 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/wulangcode">
+            <img src="https://avatars.githubusercontent.com/u/48200100?v=4" width="50;" alt="wulangcode"/>
+            <br />
+            <sub><b>WuLang</b></sub>
+        </a>
+    </td></tr>
+<tr>
+    <td align="center">
         <a href="https://github.com/puppet4">
             <img src="https://avatars.githubusercontent.com/u/28887178?v=4" width="50;" alt="puppet4"/>
             <br />
             <sub><b>Tudo</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/2EXP">
             <img src="https://avatars.githubusercontent.com/u/26007713?v=4" width="50;" alt="2EXP"/>
@@ -376,20 +383,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>Lucas</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/gentlelynn">
             <img src="https://avatars.githubusercontent.com/u/19168453?v=4" width="50;" alt="gentlelynn"/>
             <br />
             <sub><b>Lynn</b></sub>
-        </a>
-    </td></tr>
-<tr>
-    <td align="center">
-        <a href="https://github.com/wulangcode">
-            <img src="https://avatars.githubusercontent.com/u/48200100?v=4" width="50;" alt="wulangcode"/>
-            <br />
-            <sub><b>WuLang</b></sub>
         </a>
     </td>
     <td align="center">
