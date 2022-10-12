@@ -17,15 +17,16 @@
 
 package cn.hippo4j.console.controller;
 
-import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
+import cn.hippo4j.common.toolkit.*;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.service.ThreadPoolAdapterService;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.http.HttpUtil;
-import lombok.AllArgsConstructor;
+import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,17 +35,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
 
-import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 import static cn.hippo4j.common.constant.Constants.REGISTER_ADAPTER_BASE_PATH;
 
 /**
  * Thread-pool adapter controller.
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController("threadPoolAdapterConsoleController")
 public class ThreadPoolAdapterController {
 
     private final ThreadPoolAdapterService threadPoolAdapterService;
+
+    private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
+
+    private HttpClientUtil httpClientUtil = HttpClientUtil.build();
 
     @GetMapping(REGISTER_ADAPTER_BASE_PATH + "/query")
     public Result<List<ThreadPoolAdapterRespDTO>> queryAdapterThreadPool(ThreadPoolAdapterReqDTO requestParameter) {
@@ -60,9 +64,19 @@ public class ThreadPoolAdapterController {
 
     @PostMapping(REGISTER_ADAPTER_BASE_PATH + "/update")
     public Result<Void> updateAdapterThreadPool(@RequestBody ThreadPoolAdapterReqDTO requestParameter) {
-        for (String each : requestParameter.getClientAddressList()) {
-            String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/update").toString();
-            HttpUtil.post(urlString, JSONUtil.toJSONString(requestParameter), HTTP_EXECUTE_TIMEOUT);
+        if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
+            for (String each : requestParameter.getClientAddressList()) {
+                String urlString = StringUtil.newBuilder("http://", each, "/adapter/thread-pool/update");
+                httpClientUtil.restApiPost(urlString, requestParameter, Object.class);
+            }
+        } else {
+            ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParameter, ConfigModifySaveReqDTO.class);
+            modifySaveReqDTO.setModifyUser(UserContext.getUserName());
+            modifySaveReqDTO.setTenantId(requestParameter.getTenant());
+            modifySaveReqDTO.setItemId(requestParameter.getItem());
+            modifySaveReqDTO.setTpId(requestParameter.getThreadPoolKey());
+            modifySaveReqDTO.setType(ConfigModifyTypeConstants.ADAPTER_THREAD_POOL);
+            configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
         return Results.success();
     }

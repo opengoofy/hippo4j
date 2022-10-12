@@ -17,20 +17,19 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.LogRecordInfo;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.*;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.service.biz.OperationLogService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
-import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -55,13 +54,15 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     private final OperationLogService operationLogService;
 
+    private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
+
     @Override
     public IPage<ThreadPoolRespDTO> queryThreadPoolPage(ThreadPoolQueryReqDTO reqDTO) {
         LambdaQueryWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
                 .eq(!StringUtils.isBlank(reqDTO.getTenantId()), ConfigAllInfo::getTenantId, reqDTO.getTenantId())
                 .eq(!StringUtils.isBlank(reqDTO.getItemId()), ConfigAllInfo::getItemId, reqDTO.getItemId())
                 .eq(!StringUtils.isBlank(reqDTO.getTpId()), ConfigAllInfo::getTpId, reqDTO.getTpId())
-                .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL)
+                .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode())
                 .orderByDesc(reqDTO.getDesc() != null, ConfigAllInfo::getGmtCreate);
         return configInfoMapper.selectPage(reqDTO, wrapper).convert(each -> BeanUtil.convert(each, ThreadPoolRespDTO.class));
     }
@@ -82,10 +83,22 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     @Override
     public void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO) {
-        ConfigAllInfo configAllInfo = BeanUtil.convert(reqDTO, ConfigAllInfo.class);
-        Long executeTimeOut = Objects.equals(configAllInfo.getExecuteTimeOut(), 0L) ? null : configAllInfo.getExecuteTimeOut();
-        configAllInfo.setExecuteTimeOut(executeTimeOut);
-        configService.insertOrUpdate(identify, false, configAllInfo);
+        // TODO to optimize the Role of judgment
+        if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
+            ConfigAllInfo configAllInfo = BeanUtil.convert(reqDTO, ConfigAllInfo.class);
+            Long executeTimeOut = Objects.equals(configAllInfo.getExecuteTimeOut(), 0L) ? null : configAllInfo.getExecuteTimeOut();
+            configAllInfo.setExecuteTimeOut(executeTimeOut);
+            configService.insertOrUpdate(identify, false, configAllInfo);
+        } else {
+            ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(reqDTO, ConfigModifySaveReqDTO.class);
+            modifySaveReqDTO.setCorePoolSize(reqDTO.getCoreSize());
+            modifySaveReqDTO.setMaximumPoolSize(reqDTO.getMaxSize());
+            modifySaveReqDTO.setModifyUser(UserContext.getUserName());
+            modifySaveReqDTO.setModifyAll(false);
+            modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_MANAGER);
+            configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
+        }
+
     }
 
     @Override

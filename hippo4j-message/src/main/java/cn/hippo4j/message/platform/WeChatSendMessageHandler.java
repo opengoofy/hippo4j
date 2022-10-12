@@ -18,13 +18,12 @@
 package cn.hippo4j.message.platform;
 
 import cn.hippo4j.common.toolkit.FileUtil;
-import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.HttpClientUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
 import cn.hippo4j.message.platform.base.RobotMessageActualContent;
 import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
-import cn.hutool.http.HttpRequest;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +36,8 @@ import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.*;
 @Slf4j
 public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
 
+    private final HttpClientUtil httpClientUtil = HttpClientUtil.build();
+
     @Override
     public String getType() {
         return NotifyPlatformEnum.WECHAT.name();
@@ -46,7 +47,7 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
     protected RobotMessageActualContent buildMessageActualContent() {
         String weChatAlarmTxtKey = "message/robot/dynamic-thread-pool/wechat-alarm.txt";
         String weChatConfigTxtKey = "message/robot/dynamic-thread-pool/wechat-config.txt";
-        RobotMessageActualContent robotMessageActualContent = RobotMessageActualContent.builder()
+        return RobotMessageActualContent.builder()
                 .receiveSeparator("><@")
                 .changeSeparator("  ➲  ")
                 .replaceTxt(WE_CHAT_ALARM_TIMOUT_REPLACE_TXT)
@@ -54,7 +55,6 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
                 .alarmMessageContent(Singleton.get(weChatAlarmTxtKey, () -> FileUtil.readUtf8String(weChatAlarmTxtKey)))
                 .configMessageContent(Singleton.get(weChatConfigTxtKey, () -> FileUtil.readUtf8String(weChatConfigTxtKey)))
                 .build();
-        return robotMessageActualContent;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
             Markdown markdown = new Markdown();
             markdown.setContent(robotMessageExecuteDTO.getText());
             weChatReq.setMarkdown(markdown);
-            HttpRequest.post(serverUrl).body(JSONUtil.toJSONString(weChatReq)).execute();
+            httpClientUtil.restApiPost(serverUrl, weChatReq, Object.class);
         } catch (Exception ex) {
             log.error("WeChat failed to send message", ex);
         }

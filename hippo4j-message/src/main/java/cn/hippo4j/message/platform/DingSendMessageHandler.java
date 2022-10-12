@@ -17,6 +17,8 @@
 
 package cn.hippo4j.message.platform;
 
+import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.FileUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
@@ -25,11 +27,9 @@ import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
 import cn.hippo4j.message.platform.base.RobotMessageActualContent;
 import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
 import cn.hippo4j.message.platform.constant.DingAlarmConstants;
-import cn.hippo4j.common.toolkit.FileUtil;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiRobotSendRequest;
-import com.google.common.collect.Lists;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -93,7 +93,7 @@ public class DingSendMessageHandler extends AbstractRobotSendMessageHandler {
         markdown.setTitle(Objects.equals(notifyConfig.getType(), "CONFIG") ? DING_NOTICE_TITLE : DING_ALARM_TITLE);
         markdown.setText(robotMessageExecuteDTO.getText());
         OapiRobotSendRequest.At at = new OapiRobotSendRequest.At();
-        at.setAtMobiles(Lists.newArrayList(notifyConfig.getReceives().split(",")));
+        at.setAtMobiles(CollectionUtil.newArrayList(notifyConfig.getReceives().split(",")));
         request.setAt(at);
         request.setMarkdown(markdown);
         try {

@@ -17,9 +17,12 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -32,24 +35,37 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.utils.ZKPaths;
 import org.apache.zookeeper.WatchedEvent;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Zookeeper refresher handler.
  */
 @Slf4j
 public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
+    static final String ZK_CONNECT_STR = "zk-connect-str";
+
+    static final String ROOT_NODE = "root-node";
+
+    static final String CONFIG_VERSION = "config-version";
+
+    static final String NODE = "node";
+
     private CuratorFramework curatorFramework;
+
+    @Override
+    public String getProperties() {
+        Map<String, String> zkConfigs = bootstrapConfigProperties.getZookeeper();
+        String nodePath = ZKPaths.makePath(ZKPaths.makePath(zkConfigs.get(ROOT_NODE),
+                zkConfigs.get(CONFIG_VERSION)), zkConfigs.get(NODE));
+        return nodePathResolver(nodePath);
+    }
 
     @Override
     public void afterPropertiesSet() {
         Map<String, String> zkConfigs = bootstrapConfigProperties.getZookeeper();
-        curatorFramework = CuratorFrameworkFactory.newClient(zkConfigs.get("zk-connect-str"),
+        curatorFramework = CuratorFrameworkFactory.newClient(zkConfigs.get(ZK_CONNECT_STR),
                 new ExponentialBackoffRetry(1000, 3));
-        String nodePath = ZKPaths.makePath(ZKPaths.makePath(zkConfigs.get("root-node"),
-                zkConfigs.get("config-version")), zkConfigs.get("node"));
+        String nodePath = ZKPaths.makePath(ZKPaths.makePath(zkConfigs.get(ROOT_NODE),
+                zkConfigs.get(CONFIG_VERSION)), zkConfigs.get(NODE));
         final ConnectionStateListener connectionStateListener = (client, newState) -> {
             if (newState == ConnectionState.CONNECTED) {
                 loadNode(nodePath);
@@ -81,6 +97,20 @@ public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRe
      * @param nodePath zk config node path.
      */
     public void loadNode(String nodePath) {
+        String content = nodePathResolver(nodePath);
+        if (content != null) {
+            dynamicRefresh(content);
+            registerNotifyAlarmManage();
+        }
+    }
+
+    /**
+     * resolver for zk config
+     *
+     * @param nodePath zk config node path
+     * @return resolver result
+     */
+    private String nodePathResolver(String nodePath) {
         try {
             final GetChildrenBuilder childrenBuilder = curatorFramework.getChildren();
             final List<String> children = childrenBuilder.watched().forPath(nodePath);
@@ -91,16 +121,16 @@ public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRe
                 final GetDataBuilder data = curatorFramework.getData();
                 String value = "";
                 try {
-                    value = new String(data.watched().forPath(n), Charsets.UTF_8);
+                    value = new String(data.watched().forPath(n), StandardCharsets.UTF_8);
                 } catch (Exception ex) {
                     log.error("Load zookeeper node error", ex);
                 }
                 content.append(nodeName).append("=").append(value).append("\n");
             });
-            dynamicRefresh(content.toString());
-            registerNotifyAlarmManage();
+            return content.toString();
         } catch (Exception ex) {
             log.error("Load zookeeper node error, nodePath is: {}", nodePath, ex);
+            return null;
         }
     }
 

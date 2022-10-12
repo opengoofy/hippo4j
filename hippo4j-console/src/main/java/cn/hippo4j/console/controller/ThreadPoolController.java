@@ -17,54 +17,52 @@
 
 package cn.hippo4j.console.controller;
 
+import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.*;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
 import cn.hippo4j.config.model.CacheItem;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
-import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.*;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
-import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import cn.hippo4j.console.model.ThreadPoolInstanceInfo;
 import cn.hippo4j.console.model.WebThreadPoolReqDTO;
 import cn.hippo4j.console.model.WebThreadPoolRespDTO;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 import static cn.hippo4j.common.toolkit.ContentUtil.getGroupKey;
 
 /**
  * Thread pool controller.
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(Constants.BASE_PATH + "/thread/pool")
 public class ThreadPoolController {
 
     private final ThreadPoolService threadPoolService;
 
     private final BaseInstanceRegistry baseInstanceRegistry;
+
+    private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
+
+    private HttpClientUtil httpClientUtil = HttpClientUtil.build();
+
+    private static final String HTTP = "http://";
 
     @PostMapping("/query/page")
     public Result<IPage<ThreadPoolRespDTO>> queryNameSpacePage(@RequestBody ThreadPoolQueryReqDTO reqDTO) {
@@ -86,7 +84,7 @@ public class ThreadPoolController {
     @DeleteMapping("/delete")
     public Result deletePool(@RequestBody ThreadPoolDelReqDTO reqDTO) {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(reqDTO.getItemId());
-        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+        Lease<InstanceInfo> first = CollectionUtil.getFirst(leases);
         if (first == null) {
             threadPoolService.deletePool(reqDTO);
             return Results.success();
@@ -111,29 +109,25 @@ public class ThreadPoolController {
     @GetMapping("/run/state/{tpId}")
     public Result runState(@PathVariable("tpId") String tpId,
                            @RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StrBuilder.create("http://", clientAddress, "/run/state/", tpId).toString();
-        String data = HttpUtil.get(urlString, HTTP_EXECUTE_TIMEOUT);
-        Result result = JSONUtil.parseObject(data, Result.class);
-        return result;
+        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/run/state/", tpId);
+        return httpClientUtil.restApiGet(urlString, Result.class);
     }
 
     @GetMapping("/run/thread/state/{tpId}")
     public Result runThreadState(@PathVariable("tpId") String tpId,
                                  @RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StrBuilder.create("http://", clientAddress, "/run/thread/state/", tpId).toString();
-        String data = HttpUtil.get(urlString, HTTP_EXECUTE_TIMEOUT);
-        Result result = JSONUtil.parseObject(data, Result.class);
-        return result;
+        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/run/thread/state/", tpId);
+        return httpClientUtil.restApiGet(urlString, Result.class);
     }
 
     @GetMapping("/list/client/instance/{itemId}")
     public Result listClientInstance(@PathVariable("itemId") String itemId) {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
-        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+        Lease<InstanceInfo> first = CollectionUtil.getFirst(leases);
         if (first == null) {
-            return Results.success(Lists.newArrayList());
+            return Results.success(new ArrayList<>());
         }
-        List<WebThreadPoolRespDTO> returnThreadPool = Lists.newArrayList();
+        List<WebThreadPoolRespDTO> returnThreadPool = new ArrayList<>();
         for (Lease<InstanceInfo> each : leases) {
             Result poolBaseState;
             try {
@@ -146,6 +140,8 @@ public class ThreadPoolController {
                 continue;
             }
             WebThreadPoolRespDTO result = BeanUtil.convert(data, WebThreadPoolRespDTO.class);
+            result.setItemId(itemId);
+            result.setTenantId(each.getHolder().getGroupKey().split("[+]")[1]);
             result.setActive(each.getHolder().getActive());
             result.setIdentify(each.getHolder().getIdentify());
             result.setClientAddress(each.getHolder().getCallBackUrl());
@@ -156,25 +152,28 @@ public class ThreadPoolController {
 
     @GetMapping("/web/base/info")
     public Result getPoolBaseState(@RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StrBuilder.create("http://", clientAddress, "/web/base/info").toString();
-        String data = HttpUtil.get(urlString, HTTP_EXECUTE_TIMEOUT);
-        Result result = JSONUtil.parseObject(data, Result.class);
-        return result;
+        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/web/base/info");
+        return httpClientUtil.restApiGet(urlString, Result.class);
     }
 
     @GetMapping("/web/run/state")
     public Result getPoolRunState(@RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StrBuilder.create("http://", clientAddress, "/web/run/state").toString();
-        String data = HttpUtil.get(urlString, HTTP_EXECUTE_TIMEOUT);
-        Result result = JSONUtil.parseObject(data, Result.class);
-        return result;
+        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/web/run/state");
+        return httpClientUtil.restApiGet(urlString, Result.class);
     }
 
     @PostMapping("/web/update/pool")
     public Result<Void> updateWebThreadPool(@RequestBody WebThreadPoolReqDTO requestParam) {
-        for (String each : requestParam.getClientAddressList()) {
-            String urlString = StrBuilder.create("http://", each, "/web/update/pool").toString();
-            HttpUtil.post(urlString, JSONUtil.toJSONString(requestParam), HTTP_EXECUTE_TIMEOUT);
+        if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
+            for (String each : requestParam.getClientAddressList()) {
+                String urlString = StringUtil.newBuilder(HTTP, each, "/web/update/pool");
+                httpClientUtil.restApiPost(urlString, requestParam, Object.class);
+            }
+        } else {
+            ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParam, ConfigModifySaveReqDTO.class);
+            modifySaveReqDTO.setModifyUser(UserContext.getUserName());
+            modifySaveReqDTO.setType(ConfigModifyTypeConstants.WEB_THREAD_POOL);
+            configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
         return Results.success();
     }
@@ -183,9 +182,9 @@ public class ThreadPoolController {
     public Result<List<ThreadPoolInstanceInfo>> listInstance(@PathVariable("itemId") String itemId,
                                                              @PathVariable("tpId") String tpId) {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
-        Lease<InstanceInfo> first = CollUtil.getFirst(leases);
+        Lease<InstanceInfo> first = CollectionUtil.getFirst(leases);
         if (first == null) {
-            return Results.success(Lists.newArrayList());
+            return Results.success(new ArrayList<>());
         }
         InstanceInfo holder = first.getHolder();
         String itemTenantKey = holder.getGroupKey();
@@ -197,11 +196,11 @@ public class ThreadPoolController {
         Map<String, String> clientBasePathMap = leases.stream().map(each -> each.getHolder())
                 .filter(each -> StringUtil.isNotBlank(each.getClientBasePath()))
                 .collect(Collectors.toMap(InstanceInfo::getIdentify, InstanceInfo::getClientBasePath));
-        List<ThreadPoolInstanceInfo> returnThreadPool = Lists.newArrayList();
+        List<ThreadPoolInstanceInfo> returnThreadPool = new ArrayList<>();
         content.forEach((key, val) -> {
             ThreadPoolInstanceInfo threadPoolInstanceInfo =
                     BeanUtil.convert(val.configAllInfo, ThreadPoolInstanceInfo.class);
-            threadPoolInstanceInfo.setClientAddress(StrUtil.subBefore(key, Constants.IDENTIFY_SLICER_SYMBOL, false));
+            threadPoolInstanceInfo.setClientAddress(StringUtil.subBefore(key, Constants.IDENTIFY_SLICER_SYMBOL));
             threadPoolInstanceInfo.setActive(activeMap.get(key));
             threadPoolInstanceInfo.setIdentify(key);
             threadPoolInstanceInfo.setClientBasePath(clientBasePathMap.get(key));

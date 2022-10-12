@@ -50,7 +50,7 @@ public enum RejectedPolicyTypeEnum {
     @Getter
     private String name;
 
-    public RejectedExecutionHandler rejectedHandler;
+    private RejectedExecutionHandler rejectedHandler;
 
     RejectedPolicyTypeEnum(Integer type, String name, RejectedExecutionHandler rejectedHandler) {
         this.type = type;

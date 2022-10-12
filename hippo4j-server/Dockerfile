@@ -17,31 +17,24 @@
 FROM openjdk:8-jre-slim
 MAINTAINER lijianxin
 
-ENV MYSQL_HOST="127.0.0.1" \
-    MYSQL_PORT="3306" \
-    MYSQL_DB="hippo4j_manager" \
-    MYSQL_USERNAME="root" \
-    MYSQL_PASSWORD="root" \
+ENV DATASOURCE_MODE="h2" \
+    DATASOURCE_HOST="127.0.0.1" \
+    DATASOURCE_PORT="3306" \
+    DATASOURCE_DB="hippo4j_manager" \
+    DATASOURCE_USERNAME="root" \
+    DATASOURCE_PASSWORD="root" \
     BASE_DIR="/opt/hippo4j"
 
 ENV TZ=PRC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-ADD conf/hippo4j-logback.xml ${BASE_DIR}/logback.xml
+ADD conf/hippo4j-logback.xml ${BASE_DIR}/conf/hippo4j-logback.xml
+ADD conf/application.properties ${BASE_DIR}/conf/application.properties
 ADD target/hippo4j-server.jar ${BASE_DIR}/hippo4j-server.jar
+ADD docker-startup.sh ${BASE_DIR}/docker-startup.sh
 
 WORKDIR ${BASE_DIR}
+RUN chmod +x docker-startup.sh
 
-ENTRYPOINT ["sh","-c","java -jar \
- -Xloggc:${BASE_DIR}/hippo4j_gc.log -verbose:gc -XX:+PrintGCDetails \
-      -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation \
-      -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M \
-      -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${BASE_DIR}/java_heapdump.hprof \
-      -Xms1024m -Xmx1024m -Xmn512m \
-      -Dhippo4j.standalone=true -Dhippo4j.home=${BASE_DIR} \
- hippo4j-server.jar \
- --server.max-http-header-size=524288 --server.tomcat.basedir=${BASE_DIR}/tomcat/ \
-     --logging.config=${BASE_DIR}/logback.xml \
-     --spring.datasource.url=\"jdbc:mysql://$MYSQL_HOST:$MYSQL_PORT/$MYSQL_DB?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8\" \
-     --spring.datasource.username=$MYSQL_USERNAME --spring.datasource.password=$MYSQL_PASSWORD \
- "]
+ENTRYPOINT  ["./docker-startup.sh"]
+ 

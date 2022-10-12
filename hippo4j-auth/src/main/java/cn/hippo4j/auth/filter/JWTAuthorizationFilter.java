@@ -20,10 +20,10 @@ package cn.hippo4j.auth.filter;
 import cn.hippo4j.auth.security.JwtTokenManager;
 import cn.hippo4j.auth.toolkit.JwtTokenUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ServiceException;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -61,7 +61,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                                     FilterChain chain) throws IOException, ServletException {
         // Token when verifying client interaction.
         String accessToken = request.getParameter(ACCESS_TOKEN);
-        if (StrUtil.isNotBlank(accessToken)) {
+        if (StringUtil.isNotBlank(accessToken)) {
             tokenManager.validateToken(accessToken);
             Authentication authentication = this.tokenManager.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -85,7 +85,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             String resultStatus = "-1";
             if (ex instanceof ServiceException) {
                 ServiceException serviceException = (ServiceException) ex;
-                resultStatus = serviceException.errorCode.getCode();
+                resultStatus = serviceException.getErrorCode().getCode();
             }
             response.getWriter().write(JSONUtil.toJSONString(Results.failure(resultStatus, ex.getMessage())));
             response.getWriter().flush();

@@ -23,7 +23,7 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
-import cn.hippo4j.springboot.starter.toolkit.HttpClientUtil;
+import cn.hippo4j.common.toolkit.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;

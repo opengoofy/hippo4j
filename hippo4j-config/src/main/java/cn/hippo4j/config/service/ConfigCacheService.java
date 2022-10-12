@@ -24,18 +24,15 @@ import cn.hippo4j.common.design.observer.Observer;
 import cn.hippo4j.common.design.observer.ObserverMessage;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.Joiner;
 import cn.hippo4j.common.toolkit.Md5Util;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.model.CacheItem;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.notify.NotifyCenter;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.toolkit.MapUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -79,9 +76,9 @@ public class ConfigCacheService {
      * @return
      */
     private synchronized static String getContentMd5IsNullPut(String groupKey, String clientIdentify) {
-        Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CLIENT_CONFIG_CACHE.get(groupKey)).orElse(Maps.newHashMap());
+        Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CLIENT_CONFIG_CACHE.get(groupKey)).orElse(new HashMap<>());
         CacheItem cacheItem = null;
-        if (CollUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(clientIdentify)) != null) {
+        if (CollectionUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(clientIdentify)) != null) {
             return cacheItem.md5;
         }
         if (CONFIG_SERVICE == null) {
@@ -89,7 +86,7 @@ public class ConfigCacheService {
         }
         String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
         ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
-        if (config != null && StrUtil.isNotBlank(config.getTpId())) {
+        if (config != null && StringUtil.isNotBlank(config.getTpId())) {
             cacheItem = new CacheItem(groupKey, config);
             cacheItemMap.put(clientIdentify, cacheItem);
             CLIENT_CONFIG_CACHE.put(groupKey, cacheItemMap);
@@ -129,7 +126,7 @@ public class ConfigCacheService {
             return item;
         }
         CacheItem tmp = new CacheItem(groupKey);
-        Map<String, CacheItem> cacheItemMap = Maps.newHashMap();
+        Map<String, CacheItem> cacheItemMap = new HashMap<>();
         cacheItemMap.put(ip, tmp);
         CLIENT_CONFIG_CACHE.putIfAbsent(groupKey, cacheItemMap);
         return tmp;
@@ -137,7 +134,7 @@ public class ConfigCacheService {
 
     public static Map<String, CacheItem> getContent(String identification) {
         List<String> identificationList = MapUtil.parseMapForFilter(CLIENT_CONFIG_CACHE, identification);
-        Map<String, CacheItem> returnStrCacheItemMap = Maps.newHashMap();
+        Map<String, CacheItem> returnStrCacheItemMap = new HashMap<>();
         identificationList.forEach(each -> returnStrCacheItemMap.putAll(CLIENT_CONFIG_CACHE.get(each)));
         return returnStrCacheItemMap;
     }
@@ -150,13 +147,13 @@ public class ConfigCacheService {
 
     public static List<String> getIdentifyList(String tenantId, String itemId, String threadPoolId) {
         List<String> identifyList = null;
-        String buildKey = Joiner.on(GROUP_KEY_DELIMITER).join(Lists.newArrayList(threadPoolId, itemId, tenantId));
+        String buildKey = Joiner.on(GROUP_KEY_DELIMITER).join(CollectionUtil.newArrayList(threadPoolId, itemId, tenantId));
         List<String> keys = MapUtil.parseMapForFilter(CLIENT_CONFIG_CACHE, buildKey);
         if (CollectionUtil.isNotEmpty(keys)) {
-            identifyList = new ArrayList(keys.size());
+            identifyList = new ArrayList<>(keys.size());
             for (String each : keys) {
                 String[] keyArray = each.split(GROUP_KEY_DELIMITER_TRANSLATION);
-                if (keyArray != null && keyArray.length > 2) {
+                if (keyArray.length > 2) {
                     identifyList.add(keyArray[3]);
                 }
             }

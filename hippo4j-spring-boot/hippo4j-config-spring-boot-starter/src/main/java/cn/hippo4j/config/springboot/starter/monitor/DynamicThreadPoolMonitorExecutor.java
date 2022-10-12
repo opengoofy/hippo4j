@@ -18,19 +18,19 @@
 package cn.hippo4j.config.springboot.starter.monitor;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.ThreadPoolMonitor;
-import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -59,7 +59,7 @@ public class DynamicThreadPoolMonitorExecutor implements ApplicationRunner {
             return;
         }
         log.info("Start monitoring the running status of dynamic thread pool.");
-        threadPoolMonitors = Lists.newArrayList();
+        threadPoolMonitors = new ArrayList<>();
         collectExecutor = new ScheduledThreadPoolExecutor(
                 new Integer(1),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());

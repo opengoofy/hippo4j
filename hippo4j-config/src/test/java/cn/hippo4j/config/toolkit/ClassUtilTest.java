@@ -17,8 +17,58 @@
 
 package cn.hippo4j.config.toolkit;
 
+import cn.hippo4j.common.toolkit.Assert;
+import org.junit.Test;
+
+import java.util.Objects;
+
 /**
  * ClassUtil Test
  */
 public class ClassUtilTest {
+
+    @Test
+    public void isAssignableFromTest() {
+        final boolean assignableFrom = ClassUtil.isAssignableFrom(TestClass.class, TestSubClass.class);
+        Assert.isTrue(assignableFrom);
+    }
+
+    @Test
+    public void isNotAssignableFromTest() {
+        final boolean assignableFrom = ClassUtil.isAssignableFrom(TestSubClass.class, TestClass.class);
+        Assert.isTrue(!assignableFrom);
+    }
+
+    @Test
+    public void getCanonicalNameTest() {
+        final String canonicalName = ClassUtil.getCanonicalName(TestClass.class);
+        Assert.isTrue(Objects.equals("cn.hippo4j.config.toolkit.ClassUtilTest.TestClass", canonicalName));
+    }
+
+    @SuppressWarnings("unused")
+    static class TestClass {
+
+        private String privateField;
+
+        protected String field;
+
+        private void privateMethod() {
+        }
+
+        public void publicMethod() {
+        }
+    }
+
+    @SuppressWarnings({"unused", "InnerClassMayBeStatic"})
+    class TestSubClass extends TestClass {
+
+        private String subField;
+
+        private void privateSubMethod() {
+        }
+
+        public void publicSubMethod() {
+        }
+
+    }
 }

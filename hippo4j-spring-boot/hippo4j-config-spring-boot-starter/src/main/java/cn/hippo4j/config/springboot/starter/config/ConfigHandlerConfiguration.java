@@ -20,9 +20,11 @@ package cn.hippo4j.config.springboot.starter.config;
 import cn.hippo4j.config.springboot.starter.refresher.*;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.config.ConfigService;
+import com.tencent.polaris.configuration.api.core.ConfigFileService;
 import io.etcd.jetcd.Client;
 import lombok.RequiredArgsConstructor;
 import org.apache.curator.framework.CuratorFramework;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -44,6 +46,8 @@ public class ConfigHandlerConfiguration {
     private static final String ZOOKEEPER_CONNECT_STR_KEY = "zookeeper.zk-connect-str";
 
     private static final String ETCD = "etcd.endpoints";
+
+    private static final String POLARIS = "config.serverConnector";
 
     @RequiredArgsConstructor
     @ConditionalOnClass(ConfigService.class)
@@ -96,6 +100,16 @@ public class ConfigHandlerConfiguration {
         @Bean
         public EtcdRefresherHandler etcdRefresher() {
             return new EtcdRefresherHandler();
+        }
+    }
+
+    @ConditionalOnClass(ConfigFileService.class)
+    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = POLARIS)
+    static class Polaris {
+
+        @Bean
+        public PolarisRefresherHandler polarisRefresher(ConfigFileService configFileService) {
+            return new PolarisRefresherHandler(configFileService);
         }
     }
 

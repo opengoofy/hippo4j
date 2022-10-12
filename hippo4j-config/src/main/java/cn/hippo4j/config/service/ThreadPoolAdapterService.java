@@ -23,23 +23,20 @@ import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.design.observer.Observer;
 import cn.hippo4j.common.design.observer.ObserverMessage;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.HttpClientUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 
 /**
@@ -49,10 +46,12 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 @Service
 public class ThreadPoolAdapterService {
 
+    private HttpClientUtil httpClientUtil = HttpClientUtil.build();
+
     /**
-     * Map<mark, Map<tenantItem, Map<threadPoolKey, List<ThreadPoolAdapterState>>>>
+     * Map&lt;mark, Map&lt;tenantItem, Map&lt;threadPoolKey, List&lt;ThreadPoolAdapterState&gt;&gt;&gt;&gt;
      */
-    private static final Map<String, Map<String, Map<String, List<ThreadPoolAdapterState>>>> THREAD_POOL_ADAPTER_MAP = Maps.newConcurrentMap();
+    private static final Map<String, Map<String, Map<String, List<ThreadPoolAdapterState>>>> THREAD_POOL_ADAPTER_MAP = new ConcurrentHashMap<>();
 
     static {
         AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.CLEAR_CONFIG_CACHE, new ClearThreadPoolAdapterCache());
@@ -64,19 +63,19 @@ public class ThreadPoolAdapterService {
                 String mark = each.getMark();
                 Map<String, Map<String, List<ThreadPoolAdapterState>>> actual = THREAD_POOL_ADAPTER_MAP.get(mark);
                 if (CollectionUtil.isEmpty(actual)) {
-                    actual = Maps.newHashMap();
+                    actual = new HashMap<>();
                     THREAD_POOL_ADAPTER_MAP.put(mark, actual);
                 }
                 Map<String, List<ThreadPoolAdapterState>> tenantItemMap = actual.get(each.getTenantItemKey());
                 if (CollectionUtil.isEmpty(tenantItemMap)) {
-                    tenantItemMap = Maps.newHashMap();
+                    tenantItemMap = new HashMap<>();
                     actual.put(each.getTenantItemKey(), tenantItemMap);
                 }
                 List<ThreadPoolAdapterState> threadPoolAdapterStates = each.getThreadPoolAdapterStates();
                 for (ThreadPoolAdapterState adapterState : threadPoolAdapterStates) {
                     List<ThreadPoolAdapterState> adapterStateList = tenantItemMap.get(adapterState.getThreadPoolKey());
                     if (CollectionUtil.isEmpty(adapterStateList)) {
-                        adapterStateList = Lists.newArrayList();
+                        adapterStateList = new ArrayList<>();
                         tenantItemMap.put(adapterState.getThreadPoolKey(), adapterStateList);
                     }
                     Optional<ThreadPoolAdapterState> first = adapterStateList.stream().filter(state -> Objects.equals(state.getClientAddress(), each.getClientAddress())).findFirst();
@@ -95,16 +94,16 @@ public class ThreadPoolAdapterService {
         List<ThreadPoolAdapterState> actual = Optional.ofNullable(THREAD_POOL_ADAPTER_MAP.get(requestParameter.getMark()))
                 .map(each -> each.get(requestParameter.getTenant() + IDENTIFY_SLICER_SYMBOL + requestParameter.getItem()))
                 .map(each -> each.get(requestParameter.getThreadPoolKey()))
-                .orElse(Lists.newArrayList());
+                .orElse(new ArrayList<>());
         List<String> addressList = actual.stream().map(ThreadPoolAdapterState::getClientAddress).collect(Collectors.toList());
         List<ThreadPoolAdapterRespDTO> result = new ArrayList<>(addressList.size());
         addressList.forEach(each -> {
-            String urlString = StrBuilder.create("http://", each, "/adapter/thread-pool/info").toString();
-            Map<String, Object> param = Maps.newHashMap();
+            String url = StringUtil.newBuilder("http://", each, "/adapter/thread-pool/info");
+            Map<String, String> param = new HashMap<>();
             param.put("mark", requestParameter.getMark());
             param.put("threadPoolKey", requestParameter.getThreadPoolKey());
             try {
-                String resultStr = HttpUtil.get(urlString, param, HTTP_EXECUTE_TIMEOUT);
+                String resultStr = httpClientUtil.get(url, param);
                 if (StringUtil.isNotBlank(resultStr)) {
                     Result<ThreadPoolAdapterRespDTO> restResult = JSONUtil.parseObject(resultStr, new TypeReference<Result<ThreadPoolAdapterRespDTO>>() {
                     });
@@ -126,22 +125,13 @@ public class ThreadPoolAdapterService {
                 return actual.keySet();
             }
         }
-        return new HashSet();
+        return new HashSet<>();
     }
 
     public static void remove(String identify) {
         synchronized (ThreadPoolAdapterService.class) {
-            THREAD_POOL_ADAPTER_MAP.values().forEach(each -> each.forEach((key, val) -> {
-                val.forEach((threadPoolKey, states) -> {
-                    Iterator<ThreadPoolAdapterState> iterator = states.iterator();
-                    while (iterator.hasNext()) {
-                        ThreadPoolAdapterState adapterState = iterator.next();
-                        if (Objects.equals(adapterState.getIdentify(), identify)) {
-                            iterator.remove();
-                        }
-                    }
-                });
-            }));
+            THREAD_POOL_ADAPTER_MAP.values()
+                    .forEach(each -> each.forEach((key, val) -> val.forEach((threadPoolKey, states) -> states.removeIf(adapterState -> Objects.equals(adapterState.getIdentify(), identify)))));
         }
     }
 

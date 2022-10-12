@@ -17,14 +17,19 @@
 
 package cn.hippo4j.core.executor.support;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import cn.hippo4j.common.design.builder.Builder;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.toolkit.Assert;
-import org.springframework.core.task.TaskDecorator;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-import java.util.concurrent.*;
+import org.springframework.core.task.TaskDecorator;
 
 /**
  * Thread-pool builder.
@@ -219,6 +224,19 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     public static ThreadPoolBuilder builder() {
         return new ThreadPoolBuilder();
+    }
+
+    /**
+     * Create dynamic thread pool by thread pool id
+     * @param threadPoolId threadPoolId
+     * @return ThreadPoolExecutor
+     */
+    public static ThreadPoolExecutor buildDynamicPoolById(String threadPoolId) {
+        return ThreadPoolBuilder.builder()
+                .threadFactory(threadPoolId)
+                .threadPoolId(threadPoolId)
+                .dynamicPool()
+                .build();
     }
 
     private static ThreadPoolExecutor buildPool(ThreadPoolBuilder builder) {

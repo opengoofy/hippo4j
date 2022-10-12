@@ -25,7 +25,7 @@ import lombok.Getter;
 public class AbstractException extends RuntimeException {
 
     @Getter
-    public final ErrorCode errorCode;
+    private final ErrorCode errorCode;
 
     public AbstractException(String message, Throwable throwable, ErrorCode errorCode) {
         super(message, throwable);

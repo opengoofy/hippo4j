@@ -22,9 +22,9 @@ import cn.hippo4j.auth.model.biz.role.RoleQueryPageReqDTO;
 import cn.hippo4j.auth.model.biz.role.RoleRespDTO;
 import cn.hippo4j.auth.service.PermissionService;
 import cn.hippo4j.auth.service.RoleService;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -51,7 +51,7 @@ public class RoleServiceImpl implements RoleService {
     public IPage<RoleRespDTO> listRole(int pageNo, int pageSize) {
         RoleQueryPageReqDTO queryPage = new RoleQueryPageReqDTO(pageNo, pageSize);
         IPage<RoleInfo> selectPage = roleMapper.selectPage(queryPage, null);
-        return selectPage.convert(each -> BeanUtil.toBean(each, RoleRespDTO.class));
+        return selectPage.convert(each -> BeanUtil.convert(each, RoleRespDTO.class));
     }
 
     @Override
@@ -70,14 +70,14 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void deleteRole(String role, String userName) {
-        List<String> roleStrList = CollUtil.toList(role);
-        if (StrUtil.isBlank(role)) {
+        List<String> roleStrList = CollectionUtil.toList(role);
+        if (StringUtil.isBlank(role)) {
             LambdaQueryWrapper<RoleInfo> queryWrapper = Wrappers.lambdaQuery(RoleInfo.class).eq(RoleInfo::getUserName, userName);
             roleStrList = roleMapper.selectList(queryWrapper).stream().map(RoleInfo::getRole).collect(Collectors.toList());
         }
         LambdaUpdateWrapper<RoleInfo> updateWrapper = Wrappers.lambdaUpdate(RoleInfo.class)
-                .eq(StrUtil.isNotBlank(role), RoleInfo::getRole, role)
-                .eq(StrUtil.isNotBlank(userName), RoleInfo::getUserName, userName);
+                .eq(StringUtil.isNotBlank(role), RoleInfo::getRole, role)
+                .eq(StringUtil.isNotBlank(userName), RoleInfo::getUserName, userName);
         roleMapper.delete(updateWrapper);
         roleStrList.forEach(each -> permissionService.deletePermission(each, "", ""));
     }

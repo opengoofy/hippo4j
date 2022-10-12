@@ -31,6 +31,9 @@ import java.util.concurrent.Executor;
 @Slf4j
 public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
+    static final String DATA_ID = "data-id";
+    static final String GROUP = "group";
+
     private final NacosConfigManager nacosConfigManager;
 
     public NacosCloudRefresherHandler() {
@@ -38,10 +41,18 @@ public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicR
     }
 
     @Override
+    public String getProperties() throws Exception {
+        Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
+        String dataId = nacosConfig.get(DATA_ID);
+        String group = nacosConfig.get(GROUP);
+        return nacosConfigManager.getConfigService().getConfig(dataId, group, 5000L);
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
-        nacosConfigManager.getConfigService().addListener(nacosConfig.get("data-id"),
-                nacosConfig.get("group"), new Listener() {
+        nacosConfigManager.getConfigService().addListener(nacosConfig.get(DATA_ID),
+                nacosConfig.get(GROUP), new Listener() {
 
                     @Override
                     public Executor getExecutor() {
@@ -53,6 +64,6 @@ public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicR
                         dynamicRefresh(configInfo);
                     }
                 });
-        log.info("Dynamic thread pool refresher, add nacos cloud listener success. data-id: {}, group: {}", nacosConfig.get("data-id"), nacosConfig.get("group"));
+        log.info("Dynamic thread pool refresher, add nacos cloud listener success. data-id: {}, group: {}", nacosConfig.get(DATA_ID), nacosConfig.get(GROUP));
     }
 }

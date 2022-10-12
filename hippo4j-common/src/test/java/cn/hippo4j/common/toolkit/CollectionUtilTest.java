@@ -17,10 +17,10 @@
 
 package cn.hippo4j.common.toolkit;
 
-import com.google.common.collect.Maps;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class CollectionUtilTest {
         Assert.isTrue(!CollectionUtil.isEmpty(list));
         Map map = null;
         Assert.isTrue(CollectionUtil.isEmpty(map));
-        map = Maps.newHashMap();
+        map = new HashMap<>();
         Assert.isTrue(CollectionUtil.isEmpty(map));
         map.put("key", "value");
         Assert.isTrue(!CollectionUtil.isEmpty(map));
@@ -66,7 +66,7 @@ public class CollectionUtilTest {
         Assert.isTrue(CollectionUtil.isNotEmpty(list));
         Map map = null;
         Assert.isTrue(!CollectionUtil.isNotEmpty(map));
-        map = Maps.newHashMap();
+        map = new HashMap<>();
         Assert.isTrue(!CollectionUtil.isNotEmpty(map));
         map.put("key", "value");
         Assert.isTrue(CollectionUtil.isNotEmpty(map));

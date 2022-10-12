@@ -16,7 +16,7 @@ Nacos、Apollo、Zookeeper、ETCD 配置中心任选其一。
 </dependency>
 ```
 
-启动类上添加注解 @EnableDynamicThreadPool。
+启动类上添加注解 `@EnableDynamicThreadPool`。
 
 ```java
 @SpringBootApplication

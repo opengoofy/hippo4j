@@ -18,10 +18,10 @@
 package cn.hippo4j.adapter.base;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import com.google.common.collect.Maps;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Thread-pool adapter bean container.
@@ -31,7 +31,7 @@ public class ThreadPoolAdapterBeanContainer implements InitializingBean {
     /**
      * Store three-party thread pool framework bean instances.
      */
-    public static final Map<String, ThreadPoolAdapter> THREAD_POOL_ADAPTER_BEAN_CONTAINER = Maps.newConcurrentMap();
+    public static final Map<String, ThreadPoolAdapter> THREAD_POOL_ADAPTER_BEAN_CONTAINER = new ConcurrentHashMap<>();
 
     @Override
     public void afterPropertiesSet() throws Exception {

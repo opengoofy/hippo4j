@@ -64,4 +64,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build with Maven
-        run: echo y | mvn clean install -Dskip.gpg=true -Dspotless.apply.skip=true
+        run: echo y | mvn clean install -Dskip.gpg=true -Dspotless.apply.skip=true -Dmaven.javadoc.skip=true
