@@ -33,6 +33,15 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class WebIpAndPortHolder {
 
+    private static boolean support = false;
+    static {
+        try {
+            Class.forName("org.springframework.boot.web.server.WebServer");
+            support = true;
+        } catch (Exception e) {
+
+        }
+    }
     /**
      * Application ip and  application post
      */
@@ -47,6 +56,9 @@ public class WebIpAndPortHolder {
     }
 
     protected static void initIpAndPort() {
+        if (!support) {
+            return;
+        }
         webIpAndPort.compareAndSet(null, getWebIpAndPortInfo());
     }
 
@@ -83,7 +95,7 @@ public class WebIpAndPortHolder {
      */
     public static boolean check(String nodes) {
         WebIpAndPortInfo webIpAndPort = WebIpAndPortHolder.getWebIpAndPort();
-        if (StringUtil.isEmpty(nodes) || ALL.equals(nodes)) {
+        if (StringUtil.isEmpty(nodes) || ALL.equals(nodes) || webIpAndPort == null) {
             return true;
         }
         String[] splitNodes = nodes.split(SEPARATOR);

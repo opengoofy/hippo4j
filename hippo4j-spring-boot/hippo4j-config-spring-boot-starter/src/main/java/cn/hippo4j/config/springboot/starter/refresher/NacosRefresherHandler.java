@@ -18,6 +18,7 @@
 package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.annotation.NacosInjected;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
@@ -38,8 +39,9 @@ public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefres
     @NacosInjected
     private ConfigService configService;
 
-    public NacosRefresherHandler(BootstrapConfigProperties bootstrapConfigProperties) {
-        super(bootstrapConfigProperties);
+    public NacosRefresherHandler(NacosConfigProperties nacosConfigProperties) {
+        super();
+        this.configService = nacosConfigProperties.configServiceInstance();
     }
 
     @Override
@@ -47,7 +49,7 @@ public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefres
         Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
         String dataId = nacosConfig.get(DATA_ID);
         String group = nacosConfig.get(GROUP);
-        return configService.getConfig(dataId, group, Long.MAX_VALUE);
+        return configService.getConfig(dataId, group, 60 * 10000);
     }
 
     @Override
