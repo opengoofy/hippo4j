@@ -24,6 +24,7 @@
         <module>hippo4j-spring-boot-starter-adapter-rocketmq-example</module>
         <module>hippo4j-config-etcd-spring-boot-starter-example</module>
         <module>hippo4j-config-nacos-spring-boot-1.5-starter-example</module>
+        <module>hippo4j-config-apollo-spring-boot-1.5-starter-example</module>
     </modules>
 
     <properties>
