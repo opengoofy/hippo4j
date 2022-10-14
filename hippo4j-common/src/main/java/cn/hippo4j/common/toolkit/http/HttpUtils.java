@@ -113,6 +113,7 @@ public class HttpUtils {
      * @param queryString
      * @return
      */
+    @SneakyThrows
     public static String buildUrl(String url, Map<String, String> queryString) {
         if (null == queryString) {
             return url;
@@ -128,9 +129,11 @@ public class HttpUtils {
                 } else {
                     builder.append("&");
                 }
+                String value = URLEncoder.encode(queryString.get(key), Constants.ENCODE)
+                        .replaceAll("\\+", "%20");
                 builder.append(key)
                         .append("=")
-                        .append(queryString.get(key));
+                        .append(value);
             }
         }
         return builder.toString();
@@ -212,7 +215,8 @@ public class HttpUtils {
 
     @SneakyThrows
     private static HttpURLConnection createConnection(String url, String method, long timeout) {
-        HttpURLConnection connection = (HttpURLConnection) new URL(URLEncoder.encode(url)).openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+
         connection.setDoInput(true);
         connection.setDoOutput(true);
         connection.setConnectTimeout(Integer.parseInt(String.valueOf(timeout)));
