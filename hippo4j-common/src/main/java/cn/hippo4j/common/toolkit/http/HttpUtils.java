@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.Map;
 
 /**
+ * Http request utilities.
  * @author Rongzhen Yan
  */
 @Slf4j

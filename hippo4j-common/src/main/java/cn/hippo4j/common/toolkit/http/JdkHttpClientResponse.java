@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * a http client response implementation by JDK.
+ * Represents a client-side HTTP response with JDK implementation
  *
  * @author Rongzhen Yan
  */
