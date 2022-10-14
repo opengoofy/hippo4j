@@ -31,7 +31,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Map;
+
+import static cn.hippo4j.common.constant.HttpHeaderConsts.CONTENT_LENGTH;
 
 /**
  * Http request utilities.
@@ -47,39 +50,44 @@ public class HttpUtils {
     private HttpUtils() {
     }
 
-    public static <T> T post(String url, Object param, Class<T> clazz) {
-        String result = post(url, param);
+    public static <T> T post(String url, Object body, Class<T> clazz) {
+        String result = post(url, body);
         return JSONUtil.parseObject(result, clazz);
     }
 
-    public static <T> T post(String url, Object param, long timeoutMillis, Class<T> clazz) {
-        String result = post(url, param, timeoutMillis);
+    public static <T> T post(String url, Object body, long timeoutMillis, Class<T> clazz) {
+        String result = post(url, body, timeoutMillis);
         return JSONUtil.parseObject(result, clazz);
     }
 
-    public static <T> T post(String url, Map<String, String> headers, Object param, long timeoutMillis, Class<T> clazz) {
-        String result = execute(url, HttpMethod.POST, param, headers, timeoutMillis).getBodyString();
+    public static <T> T post(String url, Map<String, String> headers, Map<String, String> params, long timeoutMillis, Class<T> clazz) {
+        String result = execute(buildUrl(url, params), HttpMethod.POST, null, headers, timeoutMillis).getBodyString();
         return JSONUtil.parseObject(result, clazz);
     }
 
-    public static String post(String url, Object param) {
-        return execute(url, HttpMethod.POST, param, null).getBodyString();
+    public static <T> T post(String url, Map<String, String> headers, Object body, long timeoutMillis, Class<T> clazz) {
+        String result = execute(url, HttpMethod.POST, body, headers, timeoutMillis).getBodyString();
+        return JSONUtil.parseObject(result, clazz);
     }
 
-    public static String post(String url, Object param, long timeoutMillis) {
-        return execute(url, HttpMethod.POST, param, null, timeoutMillis).getBodyString();
+    public static String post(String url, Object body) {
+        return execute(url, HttpMethod.POST, body, null).getBodyString();
+    }
+
+    public static String post(String url, Object body, long timeoutMillis) {
+        return execute(url, HttpMethod.POST, body, null, timeoutMillis).getBodyString();
     }
 
     public static String postJson(String url, String json) {
         return executeJson(url, HttpMethod.POST, json, null).getBodyString();
     }
 
-    public static String put(String url, Object param) {
-        return execute(url, HttpMethod.PUT, param, null).getBodyString();
+    public static String put(String url, Object body) {
+        return execute(url, HttpMethod.PUT, body, null).getBodyString();
     }
 
-    public static String put(String url, Object param, Map<String, String> headers) {
-        return execute(url, HttpMethod.PUT, param, headers).getBodyString();
+    public static String put(String url, Object body, Map<String, String> headers) {
+        return execute(url, HttpMethod.PUT, body, headers).getBodyString();
     }
 
     public static <T> T get(String url, Map<String, String> headers, Map<String, String> params, long readTimeoutMillis, Class<T> clazz) {
@@ -134,7 +142,7 @@ public class HttpUtils {
     }
 
     @SneakyThrows
-    public static HttpClientResponse doExecute(HttpURLConnection connection, Object param, Map<String, String> headers) {
+    public static HttpClientResponse doExecute(HttpURLConnection connection, Object body, Map<String, String> headers) {
         try {
             if (headers != null) {
                 for (String key : headers.keySet()) {
@@ -142,14 +150,17 @@ public class HttpUtils {
                 }
             }
             String bodyString;
-            if (param instanceof String) {
-                bodyString = (String) param;
+            if (body instanceof String) {
+                bodyString = (String) body;
             } else {
-                bodyString = JSONUtil.toJSONString(param);
+                bodyString = JSONUtil.toJSONString(body);
             }
-            if (StringUtil.isNotEmpty(bodyString)) {
+            if (!StringUtil.isEmpty(bodyString)) {
+                connection.setDoOutput(true);
+                byte[] b = bodyString.getBytes();
+                connection.setRequestProperty(CONTENT_LENGTH, String.valueOf(b.length));
                 OutputStream outputStream = connection.getOutputStream();
-                outputStream.write(bodyString.getBytes(Constants.ENCODE));
+                outputStream.write(b, 0, b.length);
                 outputStream.flush();
                 IoUtils.closeQuietly(outputStream);
             }
@@ -164,15 +175,15 @@ public class HttpUtils {
             log.error(LogMessage.getInstance().setMsg("Http Call error.")
                     .kv("url", connection.getURL())
                     .kv("method", connection.getRequestMethod())
-                    .kv("param", JSONUtil.toJSONString(param))
+                    .kv("body", JSONUtil.toJSONString(body))
                     .kv2String("headers", JSONUtil.toJSONString(headers)), e);
             throw e;
         }
     }
 
-    public static HttpClientResponse execute(String url, String method, Object param, Map<String, String> headers, long timeout) {
+    public static HttpClientResponse execute(String url, String method, Object body, Map<String, String> headers, long timeout) {
         HttpURLConnection connection = createConnection(url, method, timeout);
-        return doExecute(connection, param, headers);
+        return doExecute(connection, body, headers);
     }
 
     public static HttpClientResponse executeJson(String url, String method, String json, Map<String, String> headers) {
@@ -201,7 +212,7 @@ public class HttpUtils {
 
     @SneakyThrows
     private static HttpURLConnection createConnection(String url, String method, long timeout) {
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL(URLEncoder.encode(url)).openConnection();
         connection.setDoInput(true);
         connection.setDoOutput(true);
         connection.setConnectTimeout(Integer.parseInt(String.valueOf(timeout)));
