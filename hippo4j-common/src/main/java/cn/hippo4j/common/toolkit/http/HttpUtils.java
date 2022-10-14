@@ -39,8 +39,6 @@ import java.util.Map;
 @Slf4j
 public class HttpUtils {
 
-    private static final String CONTENT_TYPE = "application/json";
-
     private static final int CONNECT_TIMEOUT = 10000;
 
     private static final int READ_TIMEOUT = 300000;
