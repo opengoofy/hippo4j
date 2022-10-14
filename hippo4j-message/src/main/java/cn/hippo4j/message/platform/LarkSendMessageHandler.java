@@ -17,8 +17,8 @@
 
 package cn.hippo4j.message.platform;
 
-import cn.hippo4j.common.toolkit.HttpClientUtil;
 import cn.hippo4j.common.toolkit.Singleton;
+import cn.hippo4j.common.toolkit.http.HttpUtils;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
@@ -45,8 +45,6 @@ import static cn.hippo4j.message.platform.constant.LarkAlarmConstants.*;
 @Slf4j
 @RequiredArgsConstructor
 public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
-
-    private HttpClientUtil httpClientUtil = HttpClientUtil.build();
 
     @Override
     public String getType() {
@@ -174,7 +172,7 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     private void execute(String secretKey, String text) {
         String serverUrl = LARK_BOT_URL + secretKey;
         try {
-            httpClientUtil.restApiPost(serverUrl, text, Object.class);
+            HttpUtils.postJson(serverUrl, text);
         } catch (Exception ex) {
             log.error("Lark failed to send message", ex);
         }

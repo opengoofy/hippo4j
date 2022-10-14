@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.toolkit;
+package cn.hippo4j.common.toolkit.http;
 
+import cn.hippo4j.common.toolkit.JSONUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HttpClientUtilTest {
+public class HttpUtilsTest {
 
     /**
      * test post url
@@ -37,11 +39,9 @@ public class HttpClientUtilTest {
      */
     static String getUrl = "https://hippo4j.cn/";
 
-    HttpClientUtil httpClientUtil = HttpClientUtil.build();
-
     @Test
     public void get() {
-        String s = httpClientUtil.get(getUrl);
+        String s = HttpUtils.get(getUrl);
         Assert.assertNotNull(s);
     }
 
@@ -52,7 +52,7 @@ public class HttpClientUtilTest {
         loginInfo.setPassword("hippo4j");
         loginInfo.setUsername("hippo4j");
         loginInfo.setRememberMe(1);
-        String s = httpClientUtil.restApiPost(loginUrl, loginInfo);
+        String s = HttpUtils.post(loginUrl, loginInfo);
         Result result = JSONUtil.parseObject(s, Result.class);
         Assert.assertNotNull(result);
         String data = result.getData().getData();
@@ -66,10 +66,20 @@ public class HttpClientUtilTest {
         loginInfo.setPassword("hippo4j");
         loginInfo.setUsername("hippo4j");
         loginInfo.setRememberMe(1);
-        Result result = httpClientUtil.restApiPost(loginUrl, loginInfo, Result.class);
+        Result result = HttpUtils.post(loginUrl, loginInfo, Result.class);
         Assert.assertNotNull(result);
         String data = result.getData().getData();
         Assert.assertNotNull(data);
+    }
+
+    @Test
+    public void testRestApiPostTimeout() {
+        String loginUrl = postUrl + "auth/login";
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setPassword("hippo4j");
+        loginInfo.setUsername("hippo4j");
+        loginInfo.setRememberMe(1);
+        Assert.assertThrows(SocketTimeoutException.class, () -> HttpUtils.post(loginUrl, loginInfo, 1, Result.class));
     }
 
     @Test
@@ -77,7 +87,7 @@ public class HttpClientUtilTest {
         Map<String, String> map = new HashMap<>();
         map.put("password", "hippo4j");
         map.put("username", "hippo4j");
-        String s = httpClientUtil.buildUrl(getUrl, map);
+        String s = HttpUtils.buildUrl(getUrl, map);
         Assert.assertEquals(getUrl + "?password=hippo4j&username=hippo4j", s);
     }
 

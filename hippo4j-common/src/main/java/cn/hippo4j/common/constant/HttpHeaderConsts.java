@@ -15,20 +15,23 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.config;
-
-import cn.hippo4j.springboot.starter.remote.HttpAgent;
-import cn.hippo4j.springboot.starter.remote.ServerHttpAgent;
-import org.springframework.context.annotation.Bean;
+package cn.hippo4j.common.constant;
 
 /**
- * Http client config.
+ * header constants.
  */
-public class HttpClientConfiguration {
+public interface HttpHeaderConsts {
 
-    @Bean
-    @SuppressWarnings("all")
-    public HttpAgent httpAgent(BootstrapProperties properties) {
-        return new ServerHttpAgent(properties);
-    }
+    String CLIENT_VERSION_HEADER = "Client-Version";
+    String USER_AGENT_HEADER = "User-Agent";
+    String REQUEST_SOURCE_HEADER = "Request-Source";
+    String CONTENT_TYPE = "Content-Type";
+    String CONTENT_LENGTH = "Content-Length";
+    String ACCEPT_CHARSET = "Accept-Charset";
+    String ACCEPT_ENCODING = "Accept-Encoding";
+    String CONTENT_ENCODING = "Content-Encoding";
+    String CONNECTION = "Requester";
+    String REQUEST_ID = "RequestId";
+    String REQUEST_MODULE = "Request-Module";
+
 }

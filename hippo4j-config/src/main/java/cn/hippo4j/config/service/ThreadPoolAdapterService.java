@@ -23,9 +23,9 @@ import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.design.observer.Observer;
 import cn.hippo4j.common.design.observer.ObserverMessage;
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.common.toolkit.HttpClientUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.http.HttpUtils;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
@@ -45,8 +45,6 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 @Slf4j
 @Service
 public class ThreadPoolAdapterService {
-
-    private HttpClientUtil httpClientUtil = HttpClientUtil.build();
 
     /**
      * Map&lt;mark, Map&lt;tenantItem, Map&lt;threadPoolKey, List&lt;ThreadPoolAdapterState&gt;&gt;&gt;&gt;
@@ -103,7 +101,7 @@ public class ThreadPoolAdapterService {
             param.put("mark", requestParameter.getMark());
             param.put("threadPoolKey", requestParameter.getThreadPoolKey());
             try {
-                String resultStr = httpClientUtil.get(url, param);
+                String resultStr = HttpUtils.get(url, param);
                 if (StringUtil.isNotBlank(resultStr)) {
                     Result<ThreadPoolAdapterRespDTO> restResult = JSONUtil.parseObject(resultStr, new TypeReference<Result<ThreadPoolAdapterRespDTO>>() {
                     });
