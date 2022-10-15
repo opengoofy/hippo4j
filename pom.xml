@@ -56,7 +56,6 @@
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
         <caffeine.version>2.9.3</caffeine.version>
-        <okhttp3.version>3.12.0</okhttp3.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
         <jjwt.version>0.9.0</jjwt.version>
@@ -110,11 +109,6 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.squareup.okhttp3</groupId>
-                <artifactId>okhttp</artifactId>
-                <version>${okhttp3.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.hippo4j</groupId>

@@ -15,20 +15,28 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.config;
-
-import cn.hippo4j.springboot.starter.remote.HttpAgent;
-import cn.hippo4j.springboot.starter.remote.ServerHttpAgent;
-import org.springframework.context.annotation.Bean;
+package cn.hippo4j.common.constant;
 
 /**
- * Http client config.
+ * Http method constants.
+ *
+ * @author Rongzhen Yan
  */
-public class HttpClientConfiguration {
+public class HttpMethod {
 
-    @Bean
-    @SuppressWarnings("all")
-    public HttpAgent httpAgent(BootstrapProperties properties) {
-        return new ServerHttpAgent(properties);
-    }
+    public static final String GET = "GET";
+
+    public static final String HEAD = "HEAD";
+
+    public static final String POST = "POST";
+
+    public static final String PUT = "PUT";
+
+    public static final String PATCH = "PATCH";
+
+    public static final String DELETE = "DELETE";
+
+    public static final String OPTIONS = "OPTIONS";
+
+    public static final String TRACE = "TRACE";
 }

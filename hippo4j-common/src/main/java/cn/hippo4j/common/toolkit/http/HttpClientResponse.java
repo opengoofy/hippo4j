@@ -15,59 +15,55 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.api;
+package cn.hippo4j.common.toolkit.http;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
-import java.util.List;
+import java.io.Closeable;
+import java.io.InputStream;
 
 /**
- * Json facade.
+ * Represents a client-side HTTP response.
+ *
+ * @author mai.jh
  */
-public interface JsonFacade {
+public interface HttpClientResponse extends Closeable {
 
     /**
-     * To JSON string.
+     * Return the headers of this message.
      *
-     * @param object
-     * @return
+     * @return a corresponding HttpHeaders object (never {@code null})
      */
-    String toJSONString(Object object);
+    Header getHeaders();
 
     /**
-     * Parse object.
+     * Return the body of the message as an input stream.
      *
-     * @param text
-     * @param clazz
-     * @param <T>
-     * @return
+     * @return String response body
      */
-    <T> T parseObject(String text, Class<T> clazz);
+    InputStream getBody();
 
     /**
-     * Parse object.
+     * Return the HTTP status code.
      *
-     * @param text
-     * @param valueTypeRef
-     * @param <T>
-     * @return
+     * @return the HTTP status as an integer
      */
-    <T> T parseObject(String text, TypeReference<T> valueTypeRef);
+    int getStatusCode();
 
     /**
-     * Parse array.
+     * Return the HTTP status text of the response.
      *
-     * @param text
-     * @param clazz
-     * @param <T>
-     * @return
+     * @return the HTTP status text
      */
-    <T> List<T> parseArray(String text, Class<T> clazz);
+    String getStatusText();
 
     /**
-     * validate Json.
-     * @param text
+     * Return the body As string.
      * @return
      */
-    boolean isJson(String text);
+    String getBodyString();
+
+    /**
+     * close response InputStream.
+     */
+    @Override
+    void close();
 }

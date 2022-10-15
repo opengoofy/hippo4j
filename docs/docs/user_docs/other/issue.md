@@ -8,7 +8,6 @@ sidebar_position: 2
 - <a href="#控制台线程池管理和线程池实例的区别">控制台线程池管理和线程池实例的区别</a>
 - <a href="#示例项目为什么会有跨域请求">示例项目为什么会有跨域请求</a>
 - <a href="#更新代码后运行时服务端sql报错">更新代码后运行时服务端SQL报错</a>
-- <a href="#okhttp3-call-timeout-方法不存在">okHttp3 call.timeout() 方法不存在</a>
 - <a href="#生产环境如何不启用动态线程池">生产环境如何不启用动态线程池</a>
 - <a href="#server-端宕机会影响-client-运行么">Server 端宕机会影响 Client 运行么</a>
 - <a href="#hippo4j-的发布方式是怎样的-如何选择正确的版本">Hippo4J 的发布方式是怎样的？如何选择正确的版本</a>
@@ -47,18 +46,6 @@ Hippo4J 按照租户、项目、线程池的维度划分。
 如若第一次使用，初始化 SQL 脚本地址：[hippo4j_manager.sql](https://github.com/longtai-cn/hippo4j/blob/develop/hippo4j-server/conf/hippo4j_manager.sql)。
 
 > 友情提示：每次执行数据库表或数据变更时，一定要保持提前备份的好习惯。
-
-## okHttp3 call.timeout() 方法不存在
-
-请确保 okHttp3 依赖版本号 >= 3.12.0
-
-```xml
-<dependency>
-    <groupId>com.squareup.okhttp3</groupId>
-    <artifactId>okhttp</artifactId>
-    <version>3.12.0</version>
-</dependency>
-```
 
 ## 生产环境如何不启用动态线程池
 
