@@ -15,23 +15,22 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.refresher;
+package cn.hippo4j.config.springboot1x.starter.config;
 
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-
-import java.util.Map;
+import cn.hippo4j.config.springboot.starter.refresher.BootstrapConfigPropertiesBinderAdapt;
+import cn.hippo4j.config.springboot1x.starter.refresher.SpringBoot1xBootstrapConfigPropertiesBinderAdapt;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.bind.RelaxedDataBinder;
+import org.springframework.context.annotation.Bean;
 
 /**
- * Bootstrap config properties binder adapt.
+ * Config handler auto configuration.
  */
-public interface BootstrapConfigPropertiesBinderAdapt {
+public class ConfigHandlerAutoConfiguration {
 
-    /**
-     * Bootstrap core properties binder.
-     *
-     * @param configInfo                dynamic thread pool configuration
-     * @param bootstrapConfigProperties bootstrap config properties
-     * @return
-     */
-    BootstrapConfigProperties bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapConfigProperties bootstrapConfigProperties);
+    @Bean
+    @ConditionalOnClass(RelaxedDataBinder.class)
+    public BootstrapConfigPropertiesBinderAdapt bootstrapConfigPropertiesBinderAdapt() {
+        return new SpringBoot1xBootstrapConfigPropertiesBinderAdapt();
+    }
 }

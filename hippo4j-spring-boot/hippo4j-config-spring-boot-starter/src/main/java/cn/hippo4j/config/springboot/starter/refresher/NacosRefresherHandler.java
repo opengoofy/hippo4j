@@ -17,7 +17,6 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.annotation.NacosInjected;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -34,6 +33,7 @@ import java.util.concurrent.Executor;
 public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
     static final String DATA_ID = "data-id";
+
     static final String GROUP = "group";
 
     @NacosInjected

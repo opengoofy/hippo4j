@@ -1,1 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.config.springboot15x.starter.config.ConfigHandlerConfiguration

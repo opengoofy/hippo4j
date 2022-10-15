@@ -118,5 +118,4 @@ public class ConfigHandlerConfiguration {
             return new PolarisRefresherHandler(configFileService);
         }
     }
-
 }

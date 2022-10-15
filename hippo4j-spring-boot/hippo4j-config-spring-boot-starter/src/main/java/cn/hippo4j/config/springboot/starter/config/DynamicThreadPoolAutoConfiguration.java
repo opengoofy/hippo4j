@@ -57,9 +57,9 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
-@EnableConfigurationProperties(BootstrapConfigProperties.class)
 @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@Import({ConfigHandlerConfiguration.class})
+@EnableConfigurationProperties(BootstrapConfigProperties.class)
+@Import(ConfigHandlerConfiguration.class)
 @ImportAutoConfiguration({WebAdapterConfiguration.class, UtilAutoConfiguration.class, MessageConfiguration.class, LocalLogMonitorConfiguration.class, MicrometerMonitorConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 

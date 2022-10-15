@@ -43,5 +43,4 @@ public class DefaultBootstrapConfigPropertiesBinderAdapt implements BootstrapCon
         Binder binder = new Binder(sources);
         return binder.bind(BootstrapConfigProperties.PREFIX, Bindable.ofInstance(bootstrapConfigProperties)).get();
     }
-
 }

@@ -25,7 +25,6 @@ import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.parser.ConfigParserHandler;
 import cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEvent;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -71,8 +70,8 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh
             if (CollectionUtil.isNotEmpty(newValueChangeMap)) {
                 Optional.ofNullable(configInfo).ifPresent(each -> each.putAll(newValueChangeMap));
             }
-            BootstrapConfigProperties bindableCoreProperties = bootstrapConfigPropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
-            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, bindableCoreProperties));
+            BootstrapConfigProperties binderCoreProperties = bootstrapConfigPropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
+            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, binderCoreProperties));
         } catch (Exception ex) {
             log.error("Hippo-4J core dynamic refresh failed.", ex);
         }
