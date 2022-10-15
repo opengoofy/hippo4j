@@ -59,11 +59,7 @@ import org.springframework.core.annotation.Order;
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapConfigProperties.class)
 @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@Import({
-        ConfigHandlerConfiguration.EmbeddedNacos.class, ConfigHandlerConfiguration.EmbeddedNacosCloud.class,
-        ConfigHandlerConfiguration.EmbeddedApollo.class, ConfigHandlerConfiguration.EmbeddedZookeeper.class,
-        ConfigHandlerConfiguration.EmbeddedEtcd.class
-})
+@Import({ConfigHandlerConfiguration.class})
 @ImportAutoConfiguration({WebAdapterConfiguration.class, UtilAutoConfiguration.class, MessageConfiguration.class, LocalLogMonitorConfiguration.class, MicrometerMonitorConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 
