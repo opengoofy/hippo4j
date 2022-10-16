@@ -19,8 +19,6 @@ package cn.hippo4j.monitor.es;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.StringUtil;
-import com.google.common.base.Throwables;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -30,6 +28,9 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.core.env.Environment;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,7 +57,7 @@ public class EsClientHolder {
             userName = environment.getProperty("es.thread-pool-state.userName");
             password = environment.getProperty("es.thread-pool-state.password");
             List<HttpHost> hosts = parseHosts();
-            if (StringUtil.isNullOrEmpty(userName) || StringUtil.isNullOrEmpty(password)) {
+            if (StringUtil.isEmpty(userName) || StringUtil.isEmpty(password)) {
                 client = new RestHighLevelClient(RestClient.builder(hosts.toArray(new HttpHost[]{})));
             } else {
                 client = new RestHighLevelClient(RestClient.builder(hosts.toArray(new HttpHost[]{}))
@@ -65,13 +66,15 @@ public class EsClientHolder {
             log.info("[ES RestHighLevelClient] success to connect es！host:{},scheme:{}", host, scheme);
             return client;
         } catch (Exception ex) {
-            log.error("[ES RestHighLevelClient] fail to connect es! cause:{}", Throwables.getStackTraceAsString(ex));
+            StringWriter stackTrace = new StringWriter();
+            ex.printStackTrace(new PrintWriter(stackTrace));
+            log.error("[ES RestHighLevelClient] fail to connect es! cause:{}", stackTrace);
         }
         return null;
     }
 
     private static BasicCredentialsProvider getCredentialsProvider() {
-        if (!StringUtil.isNullOrEmpty(userName) && !StringUtil.isNullOrEmpty(password)) {
+        if (StringUtil.isNotEmpty(userName) && StringUtil.isNotEmpty(password)) {
             final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(userName, password));
@@ -86,7 +89,7 @@ public class EsClientHolder {
 
     private static List<HttpHost> parseHosts() {
         String[] hostAndPorts = host.split(",");
-        List<HttpHost> hosts = Lists.newArrayList();
+        List<HttpHost> hosts = new ArrayList<>();
         for (String hostAndPort : hostAndPorts) {
             hostAndPort = hostAndPort.trim();
             hosts.add(new HttpHost(hostAndPort.split(":")[0], Integer.parseInt(hostAndPort.split(":")[1]), scheme));

@@ -113,6 +113,9 @@ public class InstanceInfo {
         this.actionType = actionType;
     }
 
+    /**
+     * Instance status.
+     */
     public enum InstanceStatus {
 
         /**
@@ -153,6 +156,9 @@ public class InstanceInfo {
         }
     }
 
+    /**
+     * Action type.
+     */
     public enum ActionType {
         /**
          * ADDED
@@ -170,6 +176,9 @@ public class InstanceInfo {
         DELETED
     }
 
+    /**
+     * Instance renew.
+     */
     @Data
     @Accessors(chain = true)
     public static class InstanceRenew {

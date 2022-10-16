@@ -18,25 +18,21 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
+import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
-import cn.hutool.core.util.IdUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -96,7 +92,9 @@ public class ClientWorker {
         this.executor.schedule(() -> {
             try {
                 awaitApplicationComplete.await();
-                executorService.execute(new LongPollingRunnable());
+                if (CollectionUtil.isNotEmpty(cacheMap)) {
+                    executorService.execute(new LongPollingRunnable());
+                }
             } catch (Throwable ex) {
                 log.error("Sub check rotate check error.", ex);
             }
@@ -163,7 +161,7 @@ public class ClientWorker {
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
         // Confirm the identity of the client, and can be modified separately when modifying the thread pool configuration.
         headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, identify);
-        // told server do not hang me up if new initializing cacheData added in
+        // Told server do not hang me up if new initializing cacheData added in.
         if (isInitializingCacheList) {
             headers.put(LONG_PULLING_TIMEOUT_NO_HANGUP, "true");
         }

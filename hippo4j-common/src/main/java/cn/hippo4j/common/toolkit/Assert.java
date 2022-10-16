@@ -91,6 +91,16 @@ public class Assert {
         }
     }
 
+    public static void notBlank(String str, String message) {
+        if (StringUtil.isBlank(str)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void notBlank(String str) {
+        notBlank(str, "[Assertion failed] - this string must not be blank");
+    }
+
     public static void hasText(String text, String message) {
         if (!StringUtils.hasText(text)) {
             throw new IllegalArgumentException(message);

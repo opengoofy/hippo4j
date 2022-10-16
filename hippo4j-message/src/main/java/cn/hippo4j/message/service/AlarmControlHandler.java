@@ -17,26 +17,27 @@
 
 package cn.hippo4j.message.service;
 
-import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.message.dto.AlarmControlDTO;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.Maps;
-
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+
+import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.toolkit.IdUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.message.dto.AlarmControlDTO;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 /**
  * Alarm control assembly.
  */
 public class AlarmControlHandler {
 
-    private final Map<String, ReentrantLock> threadPoolLock = Maps.newHashMap();
+    private final Map<String, ReentrantLock> threadPoolLock = new HashMap<>();
 
-    private final Map<String, Cache<String, String>> threadPoolAlarmCache = Maps.newConcurrentMap();
+    private final Map<String, Cache<String, String>> threadPoolAlarmCache = new ConcurrentHashMap<>();
 
     /**
      * Control message push alarm frequency.
@@ -51,12 +52,12 @@ public class AlarmControlHandler {
             return false;
         }
         String pkId = cache.getIfPresent(alarmControl.getTypeEnum().name());
-        if (StrUtil.isBlank(pkId)) {
+        if (StringUtil.isBlank(pkId)) {
             ReentrantLock lock = threadPoolLock.get(threadPoolKey);
             lock.lock();
             try {
                 pkId = cache.getIfPresent(alarmControl.getTypeEnum().name());
-                if (StrUtil.isBlank(pkId)) {
+                if (StringUtil.isBlank(pkId)) {
                     // Val meaningless.
                     cache.put(alarmControl.getTypeEnum().name(), IdUtil.simpleUUID());
                     return true;
@@ -76,8 +77,8 @@ public class AlarmControlHandler {
      * @param interval
      */
     public void initCacheAndLock(String threadPoolId, String platform, Integer interval) {
-        String threadPoolKey = StrUtil.builder(threadPoolId, Constants.GROUP_KEY_DELIMITER, platform).toString();
-        Cache<String, String> cache = CacheBuilder.newBuilder()
+        String threadPoolKey = threadPoolId + Constants.GROUP_KEY_DELIMITER + platform;
+        Cache<String, String> cache = Caffeine.newBuilder()
                 .expireAfterWrite(interval, TimeUnit.MINUTES)
                 .build();
         threadPoolAlarmCache.put(threadPoolKey, cache);

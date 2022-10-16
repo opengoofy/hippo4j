@@ -31,9 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author : wh
- * @date : 2022/8/30 17:59
- * @description:
+ * Etcd refresher handler.
  */
 @Slf4j
 public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
@@ -57,7 +55,6 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
         Map<String, String> etcd = bootstrapConfigProperties.getEtcd();
         Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));
         initClient(etcd, charset);
-
         String key = etcd.get(KEY);
         GetResponse getResponse = client.getKVClient().get(ByteSequence.from(key, charset)).get();
         KeyValue keyValue = getResponse.getKvs().get(0);
@@ -70,8 +67,7 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
         String key = etcd.get(KEY);
         Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));
         initClient(etcd, charset);
-
-        // todo Currently only supports json
+        // TODO Currently only supports json
         GetResponse getResponse = client.getKVClient().get(ByteSequence.from(key, charset)).get();
         KeyValue keyValue = getResponse.getKvs().get(0);
         if (Objects.isNull(keyValue)) {
@@ -111,7 +107,7 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
      * @param charset charset
      */
     private void initClient(Map<String, String> etcd, Charset charset) {
-        // todo
+        // TODO
         if (Objects.isNull(client)) {
             String user = etcd.get(USER);
             String password = etcd.get(PASSWORD);
@@ -123,5 +119,4 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
                     .build() : clientBuilder.build();
         }
     }
-
 }

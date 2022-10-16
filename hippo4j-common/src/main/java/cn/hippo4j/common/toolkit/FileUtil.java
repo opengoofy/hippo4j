@@ -17,17 +17,22 @@
 
 package cn.hippo4j.common.toolkit;
 
+import cn.hippo4j.common.web.exception.IllegalException;
 import lombok.SneakyThrows;
 import org.springframework.core.io.ClassPathResource;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * File util;
  */
 public class FileUtil {
+
+    private static final int ERROR_CODE = -1;
 
     @SneakyThrows
     public static String readUtf8String(String path) {
@@ -38,12 +43,46 @@ public class FileUtil {
                 BufferedInputStream bis = new BufferedInputStream(inputStream);
                 ByteArrayOutputStream buf = new ByteArrayOutputStream()) {
             int result = bis.read();
-            while (result != -1) {
+            while (result != ERROR_CODE) {
                 buf.write((byte) result);
                 result = bis.read();
             }
             resultReadStr = buf.toString("UTF-8");
         }
         return resultReadStr;
+    }
+
+    public static List<String> readLines(String path, Charset charset) {
+        List<String> strList = new ArrayList<>();
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        ClassPathResource classPathResource = new ClassPathResource(path);
+        try {
+            inputStreamReader = new InputStreamReader(classPathResource.getInputStream(), charset);
+            bufferedReader = new BufferedReader(inputStreamReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                strList.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalException("file read error");
+        } finally {
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException e) {
+                    throw new IllegalException("file read error");
+                }
+            }
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    throw new IllegalException("file read error");
+                }
+            }
+        }
+        return strList;
     }
 }

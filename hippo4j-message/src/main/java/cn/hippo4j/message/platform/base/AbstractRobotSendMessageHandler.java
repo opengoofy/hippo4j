@@ -17,16 +17,16 @@
 
 package cn.hippo4j.message.platform.base;
 
+import cn.hippo4j.common.toolkit.Joiner;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.service.SendMessageHandler;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
-import com.google.common.base.Joiner;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -64,15 +64,15 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
             String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
             if (StringUtil.isNotBlank(executeTimeoutTrace)) {
                 String alarmTimoutTraceReplaceTxt = String.format(traceReplaceTxt, executeTimeoutTrace);
-                alarmTimoutReplaceTxt = StrUtil.replace(replaceTxt, traceReplaceTxt, alarmTimoutTraceReplaceTxt);
+                alarmTimoutReplaceTxt = StringUtil.replace(replaceTxt, traceReplaceTxt, alarmTimoutTraceReplaceTxt);
             } else {
-                alarmTimoutReplaceTxt = StrUtil.replace(replaceTxt, traceReplaceTxt, "");
+                alarmTimoutReplaceTxt = StringUtil.replace(replaceTxt, traceReplaceTxt, "");
             }
             replaceTxt = String.format(alarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
         } else {
             replaceTxt = "";
         }
-        alarmContentTxt = StrUtil.replace(alarmContentTxt, "${timout-content}", replaceTxt);
+        alarmContentTxt = StringUtil.replace(alarmContentTxt, "${timout-content}", replaceTxt);
         String text = String.format(
                 alarmContentTxt,
                 // 环境
@@ -114,7 +114,7 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
                 // 报警频率
                 notifyConfig.getInterval(),
                 // 当前时间
-                DateUtil.now());
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         execute(RobotMessageExecuteDTO.builder().text(text).notifyConfig(notifyConfig).build());
     }
 
@@ -158,7 +158,7 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
                 // 告警手机号
                 Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
                 // 当前时间
-                DateUtil.now());
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         execute(RobotMessageExecuteDTO.builder().text(text).notifyConfig(notifyConfig).build());
     }
 }

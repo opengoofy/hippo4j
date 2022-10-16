@@ -18,12 +18,13 @@
 package cn.hippo4j.config.toolkit;
 
 import cn.hippo4j.common.toolkit.Assert;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.model.ConfigAllInfo;
-import cn.hutool.core.util.StrUtil;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -62,11 +63,11 @@ public class Md5ConfigUtilTest {
     public void compareMd5ResultStringEmptyTest() {
         String key = null;
         try {
-            key = Md5ConfigUtil.compareMd5ResultString(Lists.newArrayList());
+            key = Md5ConfigUtil.compareMd5ResultString(new ArrayList<>());
         } catch (IOException ignored) {
 
         }
-        Assert.isTrue(Objects.equals(StrUtil.EMPTY, key));
+        Assert.isTrue(Objects.equals(StringUtil.EMPTY, key));
     }
 
     @Test
@@ -85,7 +86,7 @@ public class Md5ConfigUtilTest {
         ConfigAllInfo configAllInfo = new ConfigAllInfo();
         configAllInfo.setDesc("hippo4j config");
         String tpContentMd5 = Md5ConfigUtil.getTpContentMd5(configAllInfo);
-        Assert.isTrue(StrUtil.isNotEmpty(tpContentMd5));
+        Assert.isTrue(StringUtil.isNotEmpty(tpContentMd5));
     }
 
 }

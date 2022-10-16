@@ -17,10 +17,9 @@
 
 package cn.hippo4j.server.init;
 
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.server.config.DataBaseProperties;
-import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.springframework.beans.BeansException;
@@ -37,7 +36,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -70,7 +68,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
             // because the hippo4j database does not need to be specified when executing the SQL file,
             // otherwise the hippo4j database will be disconnected when the hippo4j database does not exist
             if (Objects.equals(dataBaseProperties.getDialect(), "mysql")) {
-                jdbcUrl = StringUtils.replace(properties.getUrl(), "/hippo4j_manager?", "?");
+                jdbcUrl = StringUtil.replace(properties.getUrl(), "/hippo4j_manager?", "?");
             }
             Connection connection = DriverManager.getConnection(jdbcUrl, properties.getUsername(), properties.getPassword());
             // TODO Compatible with h2 to execute `INSERT IGNORE INTO` statement error
@@ -105,7 +103,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
             runner.setLogWriter(null);
             runner.setAutoCommit(true);
             Resources.setCharset(StandardCharsets.UTF_8);
-            List<String> initScripts = Splitter.on(";").splitToList(script);
+            String[] initScripts = StringUtil.split(script, ";");
             for (String sqlScript : initScripts) {
                 if (sqlScript.startsWith(PRE_FIX)) {
                     String sqlFile = sqlScript.substring(PRE_FIX.length());

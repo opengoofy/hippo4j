@@ -20,10 +20,10 @@ package cn.hippo4j.config.monitor;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageTypeEnum;
-import com.google.common.collect.Maps;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,7 +35,7 @@ public class QueryMonitorExecuteChoose implements CommandLineRunner {
     /**
      * Storage monitoring data execution container.
      */
-    private Map<String, AbstractMonitorDataExecuteStrategy> monitorDataExecuteStrategyChooseMap = Maps.newHashMap();
+    private Map<String, AbstractMonitorDataExecuteStrategy> monitorDataExecuteStrategyChooseMap = new HashMap<>();
 
     /**
      * Choose by {@link cn.hippo4j.common.monitor.MessageTypeEnum}.

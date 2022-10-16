@@ -32,6 +32,7 @@ import java.util.concurrent.Executor;
 public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
     static final String DATA_ID = "data-id";
+
     static final String GROUP = "group";
 
     private final NacosConfigManager nacosConfigManager;

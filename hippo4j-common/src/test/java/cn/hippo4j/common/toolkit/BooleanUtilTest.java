@@ -17,19 +17,20 @@
 
 package cn.hippo4j.common.toolkit;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class BooleanUtilTest {
 
     @Test
     public void assertToBoolean() {
-        Assert.isTrue(BooleanUtil.toBoolean("true"));
-        Assert.isTrue(BooleanUtil.toBoolean("yes"));
-        Assert.isTrue(BooleanUtil.toBoolean("1"));
+        Assert.assertTrue(BooleanUtil.toBoolean("true"));
+        Assert.assertTrue(BooleanUtil.toBoolean("yes"));
+        Assert.assertTrue(BooleanUtil.toBoolean("1"));
     }
 
     @Test
     public void assertIsTrue() {
-        Assert.isTrue(BooleanUtil.isTrue(true));
+        Assert.assertTrue(BooleanUtil.isTrue(true));
     }
 }

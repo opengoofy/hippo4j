@@ -17,9 +17,9 @@
 
 package cn.hippo4j.config.toolkit;
 
-import cn.hutool.core.collection.CollUtil;
-import com.google.common.collect.Lists;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,8 +53,8 @@ public class MapUtil {
      * @return
      */
     public static List<String> parseMapForFilter(Map<String, ?> sourceMap, String filters) {
-        List<String> resultList = Lists.newArrayList();
-        if (CollUtil.isEmpty(sourceMap)) {
+        List<String> resultList = new ArrayList<>();
+        if (CollectionUtil.isEmpty(sourceMap)) {
             return resultList;
         }
         sourceMap.forEach((key, val) -> {

@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.remote;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
 import cn.hippo4j.springboot.starter.core.ShutdownExecuteException;
-import cn.hippo4j.core.executor.support.ThreadFactoryBuilder;
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;

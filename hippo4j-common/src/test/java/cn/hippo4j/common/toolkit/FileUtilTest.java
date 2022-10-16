@@ -18,6 +18,10 @@
 package cn.hippo4j.common.toolkit;
 
 import org.junit.Test;
+import org.junit.Assert;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class FileUtilTest {
 
@@ -25,7 +29,7 @@ public class FileUtilTest {
     public void assertReadUtf8String() {
         String testFilePath = "test/test_utf8.txt";
         String contentByFileUtil = FileUtil.readUtf8String(testFilePath);
-        Assert.notEmpty(contentByFileUtil);
+        Assert.assertFalse(contentByFileUtil.isEmpty());
     }
 
     @Test
@@ -36,6 +40,13 @@ public class FileUtilTest {
                 "empty line next" + linebreaks;
         String testFilePath = "test/test_utf8.txt";
         String contentByFileUtil = FileUtil.readUtf8String(testFilePath);
-        Assert.isTrue(testText.equals(contentByFileUtil));
+        Assert.assertTrue(testText.equals(contentByFileUtil));
+    }
+
+    @Test
+    public void assertReadLines() {
+        String testFilePath = "test/test_utf8.txt";
+        List<String> readLines = FileUtil.readLines(testFilePath, StandardCharsets.UTF_8);
+        Assert.assertEquals(3, readLines.size());
     }
 }

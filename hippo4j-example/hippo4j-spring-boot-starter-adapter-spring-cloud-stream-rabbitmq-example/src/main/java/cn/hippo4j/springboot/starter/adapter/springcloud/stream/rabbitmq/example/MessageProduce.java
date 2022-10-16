@@ -17,6 +17,7 @@
 
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rabbitmq.example;
 
+import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.example.core.dto.SendMessageDTO;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,6 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 /**
  * Message produce.
@@ -50,7 +49,7 @@ public class MessageProduce {
     }
 
     private void sendMessage0() {
-        String keys = UUID.randomUUID().toString();
+        String keys = IdUtil.randomUUID();
         SendMessageDTO payload = SendMessageDTO.builder()
                 .receiver("156011xxx91")
                 .uid(keys)

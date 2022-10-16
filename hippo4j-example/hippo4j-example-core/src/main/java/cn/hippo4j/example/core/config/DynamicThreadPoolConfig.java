@@ -17,18 +17,19 @@
 
 package cn.hippo4j.example.core.config;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
-
+import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.SpringDynamicThreadPool;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.example.core.handler.TaskTraceBuilderHandler;
 import cn.hippo4j.example.core.inittest.TaskDecoratorTest;
 import com.alibaba.ttl.threadpool.TtlExecutors;
 import lombok.extern.slf4j.Slf4j;
-
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
 import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_CONSUME;
@@ -41,7 +42,8 @@ import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_PRODUC
 @Configuration
 public class DynamicThreadPoolConfig {
 
-    @SpringDynamicThreadPool
+    @Bean
+    @DynamicThreadPool
     public Executor messageConsumeTtlDynamicThreadPool() {
         String threadPoolId = MESSAGE_CONSUME;
         ThreadPoolExecutor customExecutor = ThreadPoolBuilder.builder()
@@ -58,22 +60,12 @@ public class DynamicThreadPoolConfig {
         return ttlExecutor;
     }
 
+    /**
+     * {@link Bean @Bean} and {@link DynamicThreadPool @DynamicThreadPool}.
+     */
     @SpringDynamicThreadPool
     public ThreadPoolExecutor messageProduceDynamicThreadPool() {
-        String threadPoolId = MESSAGE_PRODUCE;
-        ThreadPoolExecutor produceExecutor = ThreadPoolBuilder.builder()
-                .dynamicPool()
-                .threadFactory(threadPoolId)
-                .threadPoolId(threadPoolId)
-                .executeTimeOut(900L)
-                .waitForTasksToCompleteOnShutdown(true)
-                .awaitTerminationMillis(5000L)
-                /**
-                 * Context passing, test cases: {@link TaskDecoratorTest}
-                 */
-                .taskDecorator(new TaskDecoratorTest.ContextCopyingDecorator())
-                .build();
-        return produceExecutor;
+        return ThreadPoolBuilder.buildDynamicPoolById(MESSAGE_PRODUCE);
     }
 
     /**
@@ -82,7 +74,7 @@ public class DynamicThreadPoolConfig {
      * @return
      */
     // @Bean
-    @SpringDynamicThreadPool
+    @DynamicThreadPool
     public ThreadPoolTaskExecutor testSpringThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         threadPoolTaskExecutor.setThreadNamePrefix("test-spring-task-executor_");

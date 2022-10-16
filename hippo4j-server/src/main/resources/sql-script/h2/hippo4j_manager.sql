@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS `item` (
 CREATE TABLE IF NOT EXISTS `config` (
     `id`                         bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `tenant_id`                  varchar(128) DEFAULT NULL COMMENT '租户ID',
-    `item_id`                    varchar(256) DEFAULT NULL COMMENT '项目ID',
-    `tp_id`                      varchar(56)  DEFAULT NULL COMMENT '线程池ID',
+    `item_id`                    varchar(128) DEFAULT NULL COMMENT '项目ID',
+    `tp_id`                      varchar(256)  DEFAULT NULL COMMENT '线程池ID',
     `tp_name`                    varchar(56)  DEFAULT NULL COMMENT '线程池名称',
     `core_size`                  int(11) DEFAULT NULL COMMENT '核心线程数',
     `max_size`                   int(11) DEFAULT NULL COMMENT '最大线程数',
@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS `config` (
 CREATE TABLE IF NOT EXISTS `inst_config` (
     `id`           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `tenant_id`    varchar(128) DEFAULT NULL COMMENT '租户ID',
-    `item_id`      varchar(256) DEFAULT NULL COMMENT '项目ID',
-    `tp_id`        varchar(56)  DEFAULT NULL COMMENT '线程池ID',
-    `instance_id`  varchar(256) DEFAULT NULL COMMENT '实例ID',
+    `item_id`      varchar(128) DEFAULT NULL COMMENT '项目ID',
+    `tp_id`        varchar(256)  DEFAULT NULL COMMENT '线程池ID',
+    `instance_id`  varchar(64) DEFAULT NULL COMMENT '实例ID',
     `content`      longtext COMMENT '线程池内容',
     `md5`          varchar(32) NOT NULL COMMENT 'MD5',
     `gmt_create`   datetime     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -64,9 +64,9 @@ CREATE TABLE IF NOT EXISTS `inst_config` (
 CREATE TABLE IF NOT EXISTS `his_run_data` (
     `id`                       bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     `tenant_id`                varchar(128) DEFAULT NULL COMMENT '租户ID',
-    `item_id`                  varchar(256) DEFAULT NULL COMMENT '项目ID',
-    `tp_id`                    varchar(56)  DEFAULT NULL COMMENT '线程池ID',
-    `instance_id`              varchar(256) DEFAULT NULL COMMENT '实例ID',
+    `item_id`                  varchar(128) DEFAULT NULL COMMENT '项目ID',
+    `tp_id`                    varchar(256)  DEFAULT NULL COMMENT '线程池ID',
+    `instance_id`              varchar(64) DEFAULT NULL COMMENT '实例ID',
     `current_load`             bigint(20) DEFAULT NULL COMMENT '当前负载',
     `peak_load`                bigint(20) DEFAULT NULL COMMENT '峰值负载',
     `pool_size`                bigint(20) DEFAULT NULL COMMENT '线程数',
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `notify` (
     `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     `tenant_id`    varchar(128) NOT NULL DEFAULT '' COMMENT '租户ID',
     `item_id`      varchar(128) NOT NULL COMMENT '项目ID',
-    `tp_id`        varchar(128) NOT NULL COMMENT '线程池ID',
+    `tp_id`        varchar(256) NOT NULL COMMENT '线程池ID',
     `platform`     varchar(32)  NOT NULL COMMENT '通知平台',
     `type`         varchar(32)  NOT NULL COMMENT '通知类型',
     `secret_key`   varchar(256) NOT NULL COMMENT '密钥',
@@ -142,6 +142,24 @@ CREATE TABLE IF NOT EXISTS `notify` (
     `gmt_modified` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
     `del_flag`     tinyint(1) NOT NULL COMMENT '是否删除',
     PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `his_config_verify`  (
+   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+   `type` int NULL DEFAULT NULL COMMENT '变更类型',
+   `mark` varchar(128) DEFAULT NULL COMMENT '框架线程池类型',
+   `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
+   `item_id` varchar(128) DEFAULT NULL COMMENT '项目ID',
+   `tp_id` varchar(256) DEFAULT NULL COMMENT '线程池ID',
+   `identify` varchar(64) DEFAULT NULL COMMENT '线程池唯一标识',
+   `content` longtext  COMMENT '参数变更内容',
+   `modify_all` tinyint(1)  COMMENT '是否全部修改',
+   `gmt_create` datetime  COMMENT '参数变更时间',
+   `modify_user` varchar(128) DEFAULT NULL COMMENT '修改人',
+   `verify_status` tinyint(1)  COMMENT '审核状态 0：待审核 1：审核通过 2：审核拒绝',
+   `gmt_verify` datetime  COMMENT '审核时间',
+   `verify_user` varchar(128) DEFAULT NULL COMMENT '审核人',
+    PRIMARY KEY (`id`) USING BTREE
 );
 
 INSERT INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');

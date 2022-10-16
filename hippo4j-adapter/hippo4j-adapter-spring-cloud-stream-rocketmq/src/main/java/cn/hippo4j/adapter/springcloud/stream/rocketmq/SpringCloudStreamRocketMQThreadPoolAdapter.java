@@ -25,8 +25,6 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import com.alibaba.cloud.stream.binder.rocketmq.consuming.RocketMQListenerBindingContainer;
 import com.alibaba.cloud.stream.binder.rocketmq.integration.RocketMQInboundChannelAdapter;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.impl.consumer.ConsumeMessageConcurrentlyService;
@@ -37,10 +35,7 @@ import org.springframework.cloud.stream.binder.DefaultBinding;
 import org.springframework.cloud.stream.binding.InputBindingLifecycle;
 import org.springframework.context.ApplicationListener;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
@@ -51,7 +46,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
 @Slf4j
 public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
-    private final Map<String, ThreadPoolExecutor> ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR = Maps.newHashMap();
+    private final Map<String, ThreadPoolExecutor> ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR = new HashMap<>();
 
     @Override
     public String mark() {
@@ -74,7 +69,7 @@ public class SpringCloudStreamRocketMQThreadPoolAdapter implements ThreadPoolAda
 
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
-        List<ThreadPoolAdapterState> adapterStateList = Lists.newArrayList();
+        List<ThreadPoolAdapterState> adapterStateList = new ArrayList<>();
         ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.forEach(
                 (key, val) -> adapterStateList.add(getThreadPoolState(key)));
         return adapterStateList;

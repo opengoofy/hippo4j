@@ -17,20 +17,15 @@
 
 package cn.hippo4j.config.springboot.starter.parser;
 
-import com.google.common.collect.Lists;
-
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.util.*;
 
 /**
  * Config parser handler.
  */
 public class ConfigParserHandler {
 
-    private static final List<ConfigParser> PARSERS = Lists.newArrayList();
+    private static final List<ConfigParser> PARSERS = new ArrayList<>();
 
     private ConfigParserHandler() {
         ServiceLoader<ConfigParser> loader = ServiceLoader.load(ConfigParser.class);
