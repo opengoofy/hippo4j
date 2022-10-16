@@ -17,7 +17,6 @@
 
 package cn.hippo4j.common.executor;
 
-
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,16 +29,16 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class ThreadPoolManagerTest {
 
-    // tenantId =  schedule，group = schedule
+    // tenantId = schedule，group = schedule
     ScheduledExecutorService executorService1 = Executors.newScheduledThreadPool(1);
 
-    // tenantId =  schedule，group = schedule
+    // tenantId = schedule，group = schedule
     ScheduledExecutorService executorService2 = Executors.newScheduledThreadPool(10);
 
-    // tenantId =  executor，group = executor
+    // tenantId = executor，group = executor
     ExecutorService executorService3 = Executors.newFixedThreadPool(8);
 
-    // tenantId =  executor，group = executor
+    // tenantId = executor，group = executor
     ExecutorService executorService4 = Executors.newFixedThreadPool(16);
 
     static final String schedule = "schedule";
