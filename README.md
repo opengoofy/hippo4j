@@ -101,17 +101,17 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/iwangjie">
-            <img src="https://avatars.githubusercontent.com/u/23075587?v=4" width="50;" alt="iwangjie"/>
-            <br />
-            <sub><b>王杰</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/hippo4jbot">
             <img src="https://avatars.githubusercontent.com/u/93201205?v=4" width="50;" alt="hippo4jbot"/>
             <br />
             <sub><b>Hippo4jbot[bot]</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/iwangjie">
+            <img src="https://avatars.githubusercontent.com/u/23075587?v=4" width="50;" alt="iwangjie"/>
+            <br />
+            <sub><b>王杰</b></sub>
         </a>
     </td>
     <td align="center">
