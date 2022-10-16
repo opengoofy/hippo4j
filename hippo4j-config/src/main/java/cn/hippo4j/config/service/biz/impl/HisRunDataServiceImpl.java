@@ -32,6 +32,7 @@ import cn.hippo4j.config.model.biz.monitor.MonitorActiveRespDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorQueryReqDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorRespDTO;
 import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
+import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.HisRunDataService;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -150,11 +151,14 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
         runtimeMessages.forEach(each -> {
             HisRunDataInfo hisRunDataInfo = BeanUtil.convert(each, HisRunDataInfo.class);
             String[] parseKey = GroupKey.parseKey(each.getGroupKey());
-            hisRunDataInfo.setTpId(parseKey[0]);
-            hisRunDataInfo.setItemId(parseKey[1]);
-            hisRunDataInfo.setTenantId(parseKey[2]);
-            hisRunDataInfo.setInstanceId(parseKey[3]);
-            hisRunDataInfos.add(hisRunDataInfo);
+            boolean checkFlag = ConfigCacheService.checkTpId(each.getGroupKey(), parseKey[0], parseKey[3]);
+            if (checkFlag) {
+                hisRunDataInfo.setTpId(parseKey[0]);
+                hisRunDataInfo.setItemId(parseKey[1]);
+                hisRunDataInfo.setTenantId(parseKey[2]);
+                hisRunDataInfo.setInstanceId(parseKey[3]);
+                hisRunDataInfos.add(hisRunDataInfo);
+            }
         });
         this.saveBatch(hisRunDataInfos);
     }
