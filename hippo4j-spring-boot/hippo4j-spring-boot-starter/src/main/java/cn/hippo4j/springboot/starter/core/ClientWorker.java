@@ -18,6 +18,7 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.IdUtil;
@@ -91,7 +92,9 @@ public class ClientWorker {
         this.executor.schedule(() -> {
             try {
                 awaitApplicationComplete.await();
-                executorService.execute(new LongPollingRunnable());
+                if (CollectionUtil.isNotEmpty(cacheMap)) {
+                    executorService.execute(new LongPollingRunnable());
+                }
             } catch (Throwable ex) {
                 log.error("Sub check rotate check error.", ex);
             }
