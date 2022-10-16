@@ -77,9 +77,9 @@ public class ConfigCacheService {
      * @return
      */
     public static boolean checkTpId(String groupKey, String tpId, String clientIdentify) {
-        Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CLIENT_CONFIG_CACHE.get(groupKey)).orElse(Maps.newHashMap());
+        Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CLIENT_CONFIG_CACHE.get(groupKey)).orElse(new HashMap<>());
         CacheItem cacheItem;
-        if (CollUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(clientIdentify)) != null) {
+        if (CollectionUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(clientIdentify)) != null) {
             return Objects.equals(tpId, cacheItem.configAllInfo.getTpId());
         }
         return Boolean.FALSE;
