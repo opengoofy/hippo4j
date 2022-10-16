@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.remote;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.toolkit.http.HttpUtils;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
@@ -82,35 +82,35 @@ public class ServerHttpAgent implements HttpAgent {
     @Override
     public Result httpGetSimple(String path) {
         path = injectSecurityInfoByPath(path);
-        return HttpUtils.get(buildUrl(path), Result.class);
+        return HttpUtil.get(buildUrl(path), Result.class);
     }
 
     @Override
     public Result httpPost(String path, Object body) {
         isHealthStatus();
         path = injectSecurityInfoByPath(path);
-        return HttpUtils.post(buildUrl(path), body, Result.class);
+        return HttpUtil.post(buildUrl(path), body, Result.class);
     }
 
     @Override
     public Result httpPostByDiscovery(String path, Object body) {
         isHealthStatus();
         path = injectSecurityInfoByPath(path);
-        return HttpUtils.post(buildUrl(path), body, Result.class);
+        return HttpUtil.post(buildUrl(path), body, Result.class);
     }
 
     @Override
     public Result httpGetByConfig(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
         isHealthStatus();
         injectSecurityInfo(paramValues);
-        return HttpUtils.get(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
+        return HttpUtil.get(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
     }
 
     @Override
     public Result httpPostByConfig(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
         isHealthStatus();
         injectSecurityInfo(paramValues);
-        return HttpUtils.post(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
+        return HttpUtil.post(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class ServerHttpAgent implements HttpAgent {
 
     @Deprecated
     private String injectSecurityInfoByPath(String path) {
-        String resultPath = HttpUtils.buildUrl(path, injectSecurityInfo(new HashMap<>()));
+        String resultPath = HttpUtil.buildUrl(path, injectSecurityInfo(new HashMap<>()));
         return resultPath;
     }
 }

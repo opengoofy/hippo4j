@@ -57,6 +57,7 @@ public interface HttpClientResponse extends Closeable {
 
     /**
      * Return the body As string.
+     *
      * @return
      */
     String getBodyString();

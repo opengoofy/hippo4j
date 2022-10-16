@@ -21,7 +21,7 @@ import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.TokenInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.toolkit.http.HttpUtils;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +79,7 @@ public class SecurityProxy {
             bodyMap.put("userName", username);
             bodyMap.put("password", password);
             try {
-                Result result = HttpUtils.post(url, bodyMap, Result.class);
+                Result result = HttpUtil.post(url, bodyMap, Result.class);
                 if (!result.isSuccess()) {
                     log.error("Error getting access token. message: {}", result.getMessage());
                     return false;

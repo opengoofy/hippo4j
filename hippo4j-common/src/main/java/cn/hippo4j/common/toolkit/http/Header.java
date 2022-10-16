@@ -18,7 +18,7 @@
 package cn.hippo4j.common.toolkit.http;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.constant.HttpHeaderConsts;
+import cn.hippo4j.common.constant.HttpHeaderConstants;
 import cn.hippo4j.common.constant.HttpMediaType;
 import cn.hippo4j.common.toolkit.MapUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
@@ -45,9 +45,8 @@ public class Header {
     private Header() {
         header = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         originalResponseHeader = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        addParam(HttpHeaderConsts.CONTENT_TYPE, HttpMediaType.APPLICATION_JSON);
-        addParam(HttpHeaderConsts.ACCEPT_CHARSET, DEFAULT_CHARSET);
-        // addParam(HttpHeaderConsts.ACCEPT_ENCODING, DEFAULT_ENCODING);
+        addParam(HttpHeaderConstants.CONTENT_TYPE, HttpMediaType.APPLICATION_JSON);
+        addParam(HttpHeaderConstants.ACCEPT_CHARSET, DEFAULT_CHARSET);
     }
 
     public static Header newInstance() {
@@ -57,7 +56,7 @@ public class Header {
     /**
      * Add the key and value to the header.
      *
-     * @param key the key
+     * @param key   the key
      * @param value the value
      * @return header
      */
@@ -72,7 +71,7 @@ public class Header {
         if (contentType == null) {
             contentType = HttpMediaType.APPLICATION_JSON;
         }
-        return addParam(HttpHeaderConsts.CONTENT_TYPE, contentType);
+        return addParam(HttpHeaderConstants.CONTENT_TYPE, contentType);
     }
 
     public Header build() {
@@ -144,7 +143,7 @@ public class Header {
      *
      * <p>Currently only corresponds to the response header of JDK.
      *
-     * @param key original response header key
+     * @param key    original response header key
      * @param values original response header values
      */
     public void addOriginalResponseHeader(String key, List<String> values) {
@@ -166,9 +165,9 @@ public class Header {
     }
 
     public String getCharset() {
-        String acceptCharset = getValue(HttpHeaderConsts.ACCEPT_CHARSET);
+        String acceptCharset = getValue(HttpHeaderConstants.ACCEPT_CHARSET);
         if (acceptCharset == null) {
-            String contentType = getValue(HttpHeaderConsts.CONTENT_TYPE);
+            String contentType = getValue(HttpHeaderConstants.CONTENT_TYPE);
             acceptCharset = StringUtil.isNotBlank(contentType) ? analysisCharset(contentType) : Constants.ENCODE;
         }
         return acceptCharset;

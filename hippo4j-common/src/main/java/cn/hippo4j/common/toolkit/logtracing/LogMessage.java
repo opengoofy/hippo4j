@@ -17,6 +17,9 @@
 
 package cn.hippo4j.common.toolkit.logtracing;
 
+import cn.hippo4j.common.toolkit.StringUtil;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -24,16 +27,16 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 日志KV打印框架
+ * Log message.
+ *
  * @author Rongzhen Yan
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LogMessage {
 
     private Map<String, Object> kvs = new ConcurrentHashMap<>();
-    private String msg = "";
 
-    private LogMessage() {
-    }
+    private String msg = "";
 
     public static LogMessage getInstance() {
         return new LogMessage();
@@ -75,16 +78,23 @@ public class LogMessage {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
-        if (msg != null && !msg.isEmpty()) {
-            sb.append("||_msg=").append(msg);
+        if (StringUtil.isNotEmpty(msg)) {
+            sb.append(msg);
         }
-
+        int tempCount = 0;
         for (Map.Entry<String, Object> kv : kvs.entrySet()) {
-            sb.append("||" + kv.getKey() + "=").append(kv.getValue());
+            tempCount++;
+            Object value = kv.getValue();
+            if (value != null) {
+                if (value instanceof String && StringUtil.isEmpty((String) value)) {
+                    continue;
+                }
+                sb.append(kv.getKey() + "=").append(kv.getValue());
+                if (tempCount != kvs.size()) {
+                    sb.append("||");
+                }
+            }
         }
-
         return sb.toString();
     }
-
 }

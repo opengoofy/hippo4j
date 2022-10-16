@@ -78,8 +78,8 @@ public class JacksonHandler implements JsonFacade {
         try {
             MAPPER.readTree(text);
             return true;
-        } catch (JsonProcessingException jpe) {
-            return false;
+        } catch (JsonProcessingException ignored) {
         }
+        return false;
     }
 }

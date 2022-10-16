@@ -20,7 +20,7 @@ package cn.hippo4j.common.constant;
 import cn.hippo4j.common.toolkit.StringUtil;
 
 /**
- * Http Media types.
+ * Http media type.
  *
  * @author Rongzhen Yan
  */
@@ -85,7 +85,7 @@ public final class HttpMediaType {
      * Use the given contentType and charset to assemble into a {@code MediaType} object.
      *
      * @param contentType contentType
-     * @param charset charset
+     * @param charset     charset
      * @return MediaType
      */
     public static HttpMediaType valueOf(String contentType, String charset) {

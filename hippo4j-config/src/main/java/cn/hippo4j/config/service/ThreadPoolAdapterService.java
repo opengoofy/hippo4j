@@ -25,7 +25,7 @@ import cn.hippo4j.common.design.observer.ObserverMessage;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.toolkit.http.HttpUtils;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
@@ -101,7 +101,7 @@ public class ThreadPoolAdapterService {
             param.put("mark", requestParameter.getMark());
             param.put("threadPoolKey", requestParameter.getThreadPoolKey());
             try {
-                String resultStr = HttpUtils.get(url, param);
+                String resultStr = HttpUtil.get(url, param);
                 if (StringUtil.isNotBlank(resultStr)) {
                     Result<ThreadPoolAdapterRespDTO> restResult = JSONUtil.parseObject(resultStr, new TypeReference<Result<ThreadPoolAdapterRespDTO>>() {
                     });

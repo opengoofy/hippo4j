@@ -19,7 +19,7 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.toolkit.http.HttpUtils;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,7 @@ public class WebThreadPoolConfigModificationVerifyServiceImpl extends AbstractCo
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
         for (String each : getClientAddress(reqDTO)) {
             String urlString = StringUtil.newBuilder("http://", each, "/web/update/pool");
-            HttpUtils.post(urlString, reqDTO);
+            HttpUtil.post(urlString, reqDTO);
         }
     }
 }

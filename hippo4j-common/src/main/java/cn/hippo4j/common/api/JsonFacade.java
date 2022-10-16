@@ -65,7 +65,8 @@ public interface JsonFacade {
     <T> List<T> parseArray(String text, Class<T> clazz);
 
     /**
-     * validate Json.
+     * Validate json.
+     *
      * @param text
      * @return
      */

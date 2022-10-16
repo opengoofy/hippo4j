@@ -19,7 +19,7 @@ package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.toolkit.*;
-import cn.hippo4j.common.toolkit.http.HttpUtils;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
@@ -66,7 +66,7 @@ public class ThreadPoolAdapterController {
         if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
             for (String each : requestParameter.getClientAddressList()) {
                 String urlString = StringUtil.newBuilder("http://", each, "/adapter/thread-pool/update");
-                HttpUtils.post(urlString, requestParameter);
+                HttpUtil.post(urlString, requestParameter);
             }
         } else {
             ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParameter, ConfigModifySaveReqDTO.class);

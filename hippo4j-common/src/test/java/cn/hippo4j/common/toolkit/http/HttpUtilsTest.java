@@ -41,7 +41,7 @@ public class HttpUtilsTest {
 
     @Test
     public void get() {
-        String s = HttpUtils.get(getUrl);
+        String s = HttpUtil.get(getUrl);
         Assert.assertNotNull(s);
     }
 
@@ -52,7 +52,7 @@ public class HttpUtilsTest {
         loginInfo.setPassword("hippo4j");
         loginInfo.setUsername("hippo4j");
         loginInfo.setRememberMe(1);
-        String s = HttpUtils.post(loginUrl, loginInfo);
+        String s = HttpUtil.post(loginUrl, loginInfo);
         Result result = JSONUtil.parseObject(s, Result.class);
         Assert.assertNotNull(result);
         String data = result.getData().getData();
@@ -66,7 +66,7 @@ public class HttpUtilsTest {
         loginInfo.setPassword("hippo4j");
         loginInfo.setUsername("hippo4j");
         loginInfo.setRememberMe(1);
-        Result result = HttpUtils.post(loginUrl, loginInfo, Result.class);
+        Result result = HttpUtil.post(loginUrl, loginInfo, Result.class);
         Assert.assertNotNull(result);
         String data = result.getData().getData();
         Assert.assertNotNull(data);
@@ -79,7 +79,7 @@ public class HttpUtilsTest {
         loginInfo.setPassword("hippo4j");
         loginInfo.setUsername("hippo4j");
         loginInfo.setRememberMe(1);
-        Assert.assertThrows(SocketTimeoutException.class, () -> HttpUtils.post(loginUrl, loginInfo, 1, Result.class));
+        Assert.assertThrows(SocketTimeoutException.class, () -> HttpUtil.post(loginUrl, loginInfo, 1, Result.class));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class HttpUtilsTest {
         Map<String, String> map = new HashMap<>();
         map.put("password", "hippo4j");
         map.put("username", "hippo4j");
-        String s = HttpUtils.buildUrl(getUrl, map);
+        String s = HttpUtil.buildUrl(getUrl, map);
         Assert.assertEquals(getUrl + "?password=hippo4j&username=hippo4j", s);
     }
 
@@ -96,7 +96,9 @@ public class HttpUtilsTest {
     private static class LoginInfo {
 
         private String username;
+
         private String password;
+
         private Integer rememberMe;
     }
 
@@ -105,6 +107,7 @@ public class HttpUtilsTest {
     private static class Result {
 
         private String code;
+
         private ResultData data;
     }
 
@@ -113,6 +116,7 @@ public class HttpUtilsTest {
     private static class ResultData {
 
         private String data;
+
         private String[] roles;
     }
 }

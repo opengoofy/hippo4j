@@ -18,7 +18,7 @@
 package cn.hippo4j.message.platform;
 
 import cn.hippo4j.common.toolkit.Singleton;
-import cn.hippo4j.common.toolkit.http.HttpUtils;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
@@ -75,7 +75,6 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
         } else {
             larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimoutReplaceJson, "");
         }
-
         String text = String.format(larkAlarmTxt,
                 // 环境
                 alarmNotifyRequest.getActive(),
@@ -172,7 +171,7 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     private void execute(String secretKey, String text) {
         String serverUrl = LARK_BOT_URL + secretKey;
         try {
-            HttpUtils.postJson(serverUrl, text);
+            HttpUtil.postJson(serverUrl, text);
         } catch (Exception ex) {
             log.error("Lark failed to send message", ex);
         }

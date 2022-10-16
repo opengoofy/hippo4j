@@ -18,8 +18,8 @@
 package cn.hippo4j.common.toolkit.http;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.constant.HttpHeaderConsts;
-import cn.hippo4j.common.toolkit.IoUtils;
+import cn.hippo4j.common.constant.HttpHeaderConstants;
+import cn.hippo4j.common.toolkit.IoUtil;
 import lombok.SneakyThrows;
 
 import java.io.ByteArrayInputStream;
@@ -64,10 +64,10 @@ public class JdkHttpClientResponse implements HttpClientResponse {
         Header headers = getHeaders();
         InputStream errorStream = this.conn.getErrorStream();
         this.responseStream = (errorStream != null ? errorStream : this.conn.getInputStream());
-        String contentEncoding = headers.getValue(HttpHeaderConsts.CONTENT_ENCODING);
+        String contentEncoding = headers.getValue(HttpHeaderConstants.CONTENT_ENCODING);
         // Used to process http content_encoding, when content_encoding is GZIP, use GZIPInputStream
         if (CONTENT_ENCODING.equals(contentEncoding)) {
-            byte[] bytes = IoUtils.tryDecompress(this.responseStream);
+            byte[] bytes = IoUtil.tryDecompress(this.responseStream);
             return new ByteArrayInputStream(bytes);
         }
         return this.responseStream;
@@ -87,11 +87,11 @@ public class JdkHttpClientResponse implements HttpClientResponse {
 
     @Override
     public String getBodyString() {
-        return IoUtils.toString(this.getBody(), Constants.ENCODE);
+        return IoUtil.toString(this.getBody(), Constants.ENCODE);
     }
 
     @Override
     public void close() {
-        IoUtils.closeQuietly(this.responseStream);
+        IoUtil.closeQuietly(this.responseStream);
     }
 }

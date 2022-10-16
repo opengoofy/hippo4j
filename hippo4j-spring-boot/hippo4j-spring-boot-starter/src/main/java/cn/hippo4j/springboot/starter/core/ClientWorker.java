@@ -158,7 +158,7 @@ public class ClientWorker {
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
         // Confirm the identity of the client, and can be modified separately when modifying the thread pool configuration.
         headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, identify);
-        // told server do not hang me up if new initializing cacheData added in
+        // Told server do not hang me up if new initializing cacheData added in.
         if (isInitializingCacheList) {
             headers.put(LONG_PULLING_TIMEOUT_NO_HANGUP, "true");
         }

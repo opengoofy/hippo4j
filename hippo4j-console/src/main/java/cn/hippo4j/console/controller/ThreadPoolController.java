@@ -21,7 +21,7 @@ import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.*;
-import cn.hippo4j.common.toolkit.http.HttpUtils;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ErrorCodeEnum;
@@ -109,14 +109,14 @@ public class ThreadPoolController {
     public Result runState(@PathVariable("tpId") String tpId,
                            @RequestParam(value = "clientAddress") String clientAddress) {
         String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/run/state/", tpId);
-        return HttpUtils.get(urlString, Result.class);
+        return HttpUtil.get(urlString, Result.class);
     }
 
     @GetMapping("/run/thread/state/{tpId}")
     public Result runThreadState(@PathVariable("tpId") String tpId,
                                  @RequestParam(value = "clientAddress") String clientAddress) {
         String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/run/thread/state/", tpId);
-        return HttpUtils.get(urlString, Result.class);
+        return HttpUtil.get(urlString, Result.class);
     }
 
     @GetMapping("/list/client/instance/{itemId}")
@@ -152,13 +152,13 @@ public class ThreadPoolController {
     @GetMapping("/web/base/info")
     public Result getPoolBaseState(@RequestParam(value = "clientAddress") String clientAddress) {
         String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/web/base/info");
-        return HttpUtils.get(urlString, Result.class);
+        return HttpUtil.get(urlString, Result.class);
     }
 
     @GetMapping("/web/run/state")
     public Result getPoolRunState(@RequestParam(value = "clientAddress") String clientAddress) {
         String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/web/run/state");
-        return HttpUtils.get(urlString, Result.class);
+        return HttpUtil.get(urlString, Result.class);
     }
 
     @PostMapping("/web/update/pool")
@@ -166,7 +166,7 @@ public class ThreadPoolController {
         if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
             for (String each : requestParam.getClientAddressList()) {
                 String urlString = StringUtil.newBuilder(HTTP, each, "/web/update/pool");
-                HttpUtils.post(urlString, requestParam);
+                HttpUtil.post(urlString, requestParam);
             }
         } else {
             ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParam, ConfigModifySaveReqDTO.class);
