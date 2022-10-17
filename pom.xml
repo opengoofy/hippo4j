@@ -52,7 +52,7 @@
     </modules>
 
     <properties>
-        <revision>1.4.2-SNAPSHOT</revision>
+        <revision>1.4.2</revision>
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
         <caffeine.version>2.9.3</caffeine.version>
