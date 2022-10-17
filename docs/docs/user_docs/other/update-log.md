@@ -4,6 +4,40 @@ sidebar_position: 4
 
 # 更新日志
 
+## 1.4.2 (Oct 18, 2022)
+
+这是一个功能增强版本，修复了少量 BUG。建议按照当前版本升级。具体信息可查看 Release 标签地址：[1.4.2](https://github.com/opengoofy/hippo4j/milestone/12?closed=1)
+
+**Feature**
+
+- 强制指定客户端注册的 ip + port
+- 支持 spring-cloud-tencent Polaris 线程池动态更新 @weihubeats
+- 服务启动时加载 MySQL、H2 数据库初始化语句
+- Adapter 初始化覆盖核心参数 @pizihao
+- Server 端新增是否开启认证模式 @baymax55
+
+**Refactor**
+
+- 替换底层网络工具类 OkHttp @yanrongzhen
+- 全局移除 commons-lang3 工具包依赖 @yanrongzhen
+- 去除三方工具类依赖 @pizihao
+- 全局移除 Guava 工具包依赖 @road2master
+- DockerFile 基于 H2 数据库重新构建 @BigXin0109
+
+**Bug**
+
+- Dubbo 2.7.15 无法获取线程池引用 @iwangjie
+- 动态线程池报警参数颠倒 @jinlingmei
+
+**Optimize**
+
+- 线程池实例运行数据采集，如果线程池id不存在，且长度超长，会报异常 @Gdk666
+- 项目中动态线程池数量为空时，存在 CPU 空转情况
+- 客户端注册服务端失败，输出服务端返回信息 @wulangcode
+- 调整数据库项目 id 和线程池 id 字段长度
+- 增加代码检查工具 maven-checkstyle-plugin
+- 调整控制台监控图表颜色展示
+
 ## 1.4.1 (Sep 12, 2022)
 
 这是一个功能增强版本，修复了若干 BUG。建议按照当前版本升级。具体信息可查看 Release 标签地址：[1.4.1](https://github.com/opengoofy/hippo4j/milestone/11?closed=1)
