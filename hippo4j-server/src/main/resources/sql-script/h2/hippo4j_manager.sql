@@ -144,30 +144,30 @@ CREATE TABLE IF NOT EXISTS `notify` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `his_config_verify`  (
-   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-   `type` int NULL DEFAULT NULL COMMENT '变更类型',
-   `mark` varchar(128) DEFAULT NULL COMMENT '框架线程池类型',
-   `tenant_id` varchar(128) DEFAULT NULL COMMENT '租户ID',
-   `item_id` varchar(128) DEFAULT NULL COMMENT '项目ID',
-   `tp_id` varchar(256) DEFAULT NULL COMMENT '线程池ID',
-   `identify` varchar(64) DEFAULT NULL COMMENT '线程池唯一标识',
-   `content` longtext  COMMENT '参数变更内容',
-   `modify_all` tinyint(1)  COMMENT '是否全部修改',
-   `gmt_create` datetime  COMMENT '参数变更时间',
-   `modify_user` varchar(128) DEFAULT NULL COMMENT '修改人',
-   `verify_status` tinyint(1)  COMMENT '审核状态 0：待审核 1：审核通过 2：审核拒绝',
-   `gmt_verify` datetime  COMMENT '审核时间',
-   `verify_user` varchar(128) DEFAULT NULL COMMENT '审核人',
-    PRIMARY KEY (`id`) USING BTREE
+CREATE TABLE IF NOT EXISTS `his_config_verify` (
+    `id`            bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `type`          int(11) DEFAULT NULL COMMENT '变更类型',
+    `mark`          varchar(128) DEFAULT NULL COMMENT '框架线程池类型',
+    `tenant_id`     varchar(128) DEFAULT NULL COMMENT '租户ID',
+    `item_id`       varchar(128) DEFAULT NULL COMMENT '项目ID',
+    `tp_id`         varchar(256) DEFAULT NULL COMMENT '线程池ID',
+    `identify`      varchar(64)  DEFAULT NULL COMMENT '线程池唯一标识',
+    `content`       longtext COMMENT '参数变更内容',
+    `modify_all`    tinyint(1) DEFAULT NULL COMMENT '是否全部修改',
+    `gmt_create`    datetime     DEFAULT NULL COMMENT '参数变更时间',
+    `modify_user`   varchar(128) DEFAULT NULL COMMENT '修改人',
+    `verify_status` tinyint(1) DEFAULT NULL COMMENT '审核状态 0:待审核 1：审核通过 2：审核拒绝',
+    `gmt_verify`    datetime     DEFAULT NULL COMMENT '审核时间',
+    `verify_user`   varchar(128) DEFAULT NULL COMMENT '审核人',
+    PRIMARY KEY (`id`)
 );
 
-INSERT INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
+INSERT IGNORE INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
 
-INSERT INTO `item` (`id`, `tenant_id`, `item_id`, `item_name`, `item_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', '动态线程池示例项目', '动态线程池示例项目，对应 Hippo 项目的 example 模块', '马称', '2021-10-24 16:11:00', '2021-10-24 16:11:00', '0');
+INSERT IGNORE INTO `item` (`id`, `tenant_id`, `item_id`, `item_name`, `item_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', '动态线程池示例项目', '动态线程池示例项目，对应 Hippo 项目的 example 模块', '马称', '2021-10-24 16:11:00', '2021-10-24 16:11:00', '0');
 
-INSERT INTO `config` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `core_size`, `max_size`, `queue_type`, `capacity`, `rejected_type`, `keep_alive_time`, `allow_core_thread_time_out`, `content`, `md5`, `is_alarm`, `capacity_alarm`, `liveness_alarm`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-consume', '示例消费者线程池', '5', '10', '9', '1024', '2', '9999', '0', '{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":\"message-consume\",\"coreSize\":5,\"maxSize\":10,\"queueType\":9,\"capacity\":1024,\"keepAliveTime\":9999,\"rejectedType\":2,\"isAlarm\":0,\"capacityAlarm\":80,\"livenessAlarm\":80,\"allowCoreThreadTimeOut\":0}', 'f80ea89044889fb6cec20e1a517f2ec3', '0', '80', '80', '2021-10-24 10:24:00', '2021-12-22 08:58:55', '0'), ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', '示例生产者线程池', '5', '15', '9', '1024', '1', '9999', '0', '{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":\"message-produce\",\"coreSize\":5,\"maxSize\":15,\"queueType\":9,\"capacity\":1024,\"keepAliveTime\":9999,\"rejectedType\":1,\"isAlarm\":0,\"capacityAlarm\":30,\"livenessAlarm\":30,\"allowCoreThreadTimeOut\":0}', '525e1429468bcfe98df7e70a75710051', '0', '30', '30', '2021-10-24 10:24:00', '2021-12-22 08:59:02', '0');
+INSERT IGNORE INTO `config` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `core_size`, `max_size`, `queue_type`, `capacity`, `rejected_type`, `keep_alive_time`, `allow_core_thread_time_out`, `content`, `md5`, `is_alarm`, `capacity_alarm`, `liveness_alarm`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-consume', '示例消费者线程池', '5', '10', '9', '1024', '2', '9999', '0', '{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":\"message-consume\",\"coreSize\":5,\"maxSize\":10,\"queueType\":9,\"capacity\":1024,\"keepAliveTime\":9999,\"rejectedType\":2,\"isAlarm\":0,\"capacityAlarm\":80,\"livenessAlarm\":80,\"allowCoreThreadTimeOut\":0}', 'f80ea89044889fb6cec20e1a517f2ec3', '0', '80', '80', '2021-10-24 10:24:00', '2021-12-22 08:58:55', '0'), ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', '示例生产者线程池', '5', '15', '9', '1024', '1', '9999', '0', '{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":\"message-produce\",\"coreSize\":5,\"maxSize\":15,\"queueType\":9,\"capacity\":1024,\"keepAliveTime\":9999,\"rejectedType\":1,\"isAlarm\":0,\"capacityAlarm\":30,\"livenessAlarm\":30,\"allowCoreThreadTimeOut\":0}', '525e1429468bcfe98df7e70a75710051', '0', '30', '30', '2021-10-24 10:24:00', '2021-12-22 08:59:02', '0');
 
-INSERT INTO `user` (`id`, `user_name`, `password`, `role`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'admin', '$2a$10$2KCqRbra0Yn2TwvkZxtfLuWuUP5KyCWsljO/ci5pLD27pqR3TV1vy', 'ROLE_ADMIN', '2021-11-04 21:35:17', '2021-11-15 23:04:59', '0');
+INSERT IGNORE INTO `user` (`id`, `user_name`, `password`, `role`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'admin', '$2a$10$2KCqRbra0Yn2TwvkZxtfLuWuUP5KyCWsljO/ci5pLD27pqR3TV1vy', 'ROLE_ADMIN', '2021-11-04 21:35:17', '2021-11-15 23:04:59', '0');
 
-INSERT INTO `notify` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `type`, `secret_key`, `interval`, `receives`, `enable`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'CONFIG', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', NULL, '15601166691', '0', '2021-11-18 22:49:50', '2021-11-18 22:49:50', '0'), ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'ALARM', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '0', '2021-11-18 22:50:06', '2021-11-18 22:50:06', '0');
+INSERT IGNORE INTO `notify` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `type`, `secret_key`, `interval`, `receives`, `enable`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'CONFIG', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', NULL, '15601166691', '0', '2021-11-18 22:49:50', '2021-11-18 22:49:50', '0'), ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'ALARM', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '0', '2021-11-18 22:50:06', '2021-11-18 22:50:06', '0');
