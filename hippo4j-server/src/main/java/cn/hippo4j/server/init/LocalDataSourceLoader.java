@@ -71,29 +71,11 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                 jdbcUrl = StringUtil.replace(properties.getUrl(), "/hippo4j_manager?", "?");
             }
             Connection connection = DriverManager.getConnection(jdbcUrl, properties.getUsername(), properties.getPassword());
-            // TODO Compatible with h2 to execute `INSERT IGNORE INTO` statement error
-            if (Objects.equals(dataBaseProperties.getDialect(), "h2") && ifNonExecute(connection)) {
-                return;
-            }
             execute(connection, dataBaseProperties.getInitScript());
         } catch (Exception ex) {
             log.error("Datasource init error.", ex);
             throw new RuntimeException(ex.getMessage());
         }
-    }
-
-    private boolean ifNonExecute(final Connection conn) throws SQLException {
-        try (
-                Statement statement = conn.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `user`")) {
-            if (resultSet.next()) {
-                int countUser = resultSet.getInt(1);
-                return countUser > 0 ? true : false;
-            }
-        } catch (Exception ignored) {
-            log.error("Query data for errors.", ignored);
-        }
-        return false;
     }
 
     private void execute(final Connection conn, final String script) throws Exception {
