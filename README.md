@@ -44,6 +44,10 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 演示环境： [http://console.hippo4j.cn/index.html](http://console.hippo4j.cn/index.html)
 
+## 接入登记
+
+更多接入的公司，欢迎在 [登记地址](https://github.com/opengoofy/hippo4j/issues/13) 登记，登记仅仅为了产品推广。
+
 ## 联系我
 
 ![](https://user-images.githubusercontent.com/77398366/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)
