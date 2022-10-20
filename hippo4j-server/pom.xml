@@ -14,38 +14,27 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-console</artifactId>
             <version>${revision}</version>
         </dependency>
-
-        <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-discovery</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
         <!-- Adapter start -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.3.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
             <version>2.3.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
             <version>2.3.0</version>
         </dependency>
-
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
@@ -58,20 +47,6 @@
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Implementation-Title>${project.artifactId}</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Build-Time>${maven.build.timestamp}</Build-Time>
-                            <Built-By>chen.ma</Built-By>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
@@ -82,7 +57,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- docker -->
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>

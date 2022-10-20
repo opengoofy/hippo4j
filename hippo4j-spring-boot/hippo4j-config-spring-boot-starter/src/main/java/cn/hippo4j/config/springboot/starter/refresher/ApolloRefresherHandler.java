@@ -24,10 +24,10 @@ import com.ctrip.framework.apollo.ConfigFile;
 import com.ctrip.framework.apollo.ConfigService;
 import com.ctrip.framework.apollo.core.enums.ConfigFileFormat;
 import com.ctrip.framework.apollo.model.ConfigChange;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -42,6 +42,16 @@ public class ApolloRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
     private String namespace;
 
     @Override
+    public String getProperties() {
+        String[] apolloNamespaces = this.namespace.split(",");
+        this.namespace = apolloNamespaces[0];
+        String copyNamespace = this.namespace.replaceAll("." + bootstrapConfigProperties.getConfigFileType().getValue(), "");
+        ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(bootstrapConfigProperties.getConfigFileType().getValue());
+        ConfigFile configFile = ConfigService.getConfigFile(copyNamespace, configFileFormat);
+        return configFile.getContent();
+    }
+
+    @Override
     public void afterPropertiesSet() {
         String[] apolloNamespaces = this.namespace.split(",");
         this.namespace = apolloNamespaces[0];
@@ -50,7 +60,7 @@ public class ApolloRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
             String namespace = this.namespace.replaceAll("." + bootstrapConfigProperties.getConfigFileType().getValue(), "");
             ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(bootstrapConfigProperties.getConfigFileType().getValue());
             ConfigFile configFile = ConfigService.getConfigFile(namespace, configFileFormat);
-            Map<String, Object> newChangeValueMap = Maps.newHashMap();
+            Map<String, Object> newChangeValueMap = new HashMap<>();
             configChangeEvent.changedKeys().stream().filter(each -> each.contains(BootstrapConfigProperties.PREFIX)).forEach(each -> {
                 ConfigChange change = configChangeEvent.getChange(each);
                 String newValue = change.getNewValue();

@@ -17,7 +17,7 @@
 
 package cn.hippo4j.auth.security;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -64,7 +64,7 @@ public class JwtTokenManager {
         Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
         List<GrantedAuthority> authorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList((String) claims.get(AUTHORITIES_KEY));
-        User principal = new User(claims.getSubject(), StrUtil.EMPTY, authorities);
-        return new UsernamePasswordAuthenticationToken(principal, StrUtil.EMPTY, authorities);
+        User principal = new User(claims.getSubject(), StringUtil.EMPTY, authorities);
+        return new UsernamePasswordAuthenticationToken(principal, StringUtil.EMPTY, authorities);
     }
 }

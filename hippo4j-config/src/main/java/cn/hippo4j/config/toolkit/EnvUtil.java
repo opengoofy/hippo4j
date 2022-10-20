@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.toolkit;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hippo4j.common.toolkit.StringUtil;
 
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -41,9 +41,9 @@ public class EnvUtil {
      * @return
      */
     public static String getHippo4JHome() {
-        if (StringUtils.isBlank(HIPPO4J_HOME_PATH)) {
+        if (StringUtil.isBlank(HIPPO4J_HOME_PATH)) {
             String hippo4jHome = System.getProperty(HIPPO4J_HOME_KEY);
-            if (StringUtils.isBlank(hippo4jHome)) {
+            if (StringUtil.isBlank(hippo4jHome)) {
                 hippo4jHome = Paths.get(System.getProperty("user.home"), "hippo4j").toString();
             }
             return hippo4jHome;

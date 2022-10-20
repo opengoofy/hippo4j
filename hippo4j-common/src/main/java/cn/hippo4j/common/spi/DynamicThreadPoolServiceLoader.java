@@ -18,7 +18,11 @@
 package cn.hippo4j.common.spi;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -86,7 +90,8 @@ public class DynamicThreadPoolServiceLoader {
     private static Object newServiceInstance(final Class<?> clazz) {
         try {
             return clazz.getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException
+                | NoSuchMethodException e) {
             throw new ServiceLoaderInstantiationException(clazz, e);
         }
     }

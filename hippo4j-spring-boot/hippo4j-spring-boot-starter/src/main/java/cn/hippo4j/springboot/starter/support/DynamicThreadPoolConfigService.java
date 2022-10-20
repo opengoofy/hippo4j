@@ -22,6 +22,7 @@ import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.BooleanUtil;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.exception.ServiceException;
@@ -38,14 +39,13 @@ import cn.hippo4j.springboot.starter.core.DynamicThreadPoolSubscribeConfig;
 import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
 import cn.hippo4j.springboot.starter.notify.ServerNotifyConfigBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
-import com.google.common.collect.Lists;
-import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static cn.hippo4j.common.constant.Constants.REGISTER_DYNAMIC_THREAD_POOL_PATH;
@@ -90,7 +90,8 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
             failDynamicThreadPoolRegisterWrapper(registerWrapper);
             Result registerResult = httpAgent.httpPost(REGISTER_DYNAMIC_THREAD_POOL_PATH, registerWrapper);
             if (registerResult == null || !registerResult.isSuccess()) {
-                throw new ServiceException("Dynamic thread pool registration returns error.");
+                throw new ServiceException("Dynamic thread pool registration returns error."
+                        + Optional.ofNullable(registerResult).map(Result::getMessage).orElse(""));
             }
         } catch (Throwable ex) {
             log.error("Dynamic thread pool registration execution error: {}", threadPoolId, ex);
@@ -117,7 +118,7 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
                 registerParameter.getActiveAlarm(),
                 registerParameter.getCapacityAlarm());
         GlobalNotifyAlarmManage.put(registerParameter.getThreadPoolId(), threadPoolNotifyAlarm);
-        Map<String, List<NotifyConfigDTO>> builderNotify = notifyConfigBuilder.getAndInitNotify(Lists.newArrayList(registerParameter.getThreadPoolId()));
+        Map<String, List<NotifyConfigDTO>> builderNotify = notifyConfigBuilder.getAndInitNotify(CollectionUtil.newArrayList(registerParameter.getThreadPoolId()));
         hippo4jBaseSendMessageService.putPlatform(builderNotify);
     }
 

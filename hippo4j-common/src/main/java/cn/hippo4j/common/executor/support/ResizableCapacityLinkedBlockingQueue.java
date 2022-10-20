@@ -17,11 +17,15 @@
 
 package cn.hippo4j.common.executor.support;
 
+import java.util.AbstractQueue;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.*;
-import java.util.concurrent.locks.*;
-import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A clone of {@linkplain java.util.concurrent.LinkedBlockingQueue}
@@ -229,8 +233,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
      */
     public ResizableCapacityLinkedBlockingQueue(Collection<? extends E> c) {
         this(Integer.MAX_VALUE);
-        for (Iterator<? extends E> it = c.iterator(); it.hasNext();)
+        for (Iterator<? extends E> it = c.iterator(); it.hasNext();) {
             add(it.next());
+        }
     }
 
     // this doc comment is overridden to remove the reference to collections
@@ -698,6 +703,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         return new Itr();
     }
 
+    /**
+     * Itr.
+     */
     private class Itr implements Iterator<E> {
 
         /*

@@ -13,9 +13,9 @@ sidebar_position: 2
     <td align="center" width="26%">联系方式</td>
   </tr>
   <tr>
-    <td align="center" ><a href="https://github.com/agentart"><img src="https://avatars.githubusercontent.com/u/77398366?v=4?s=64" width="64px;"/></a></td>
+    <td align="center" ><a href="https://github.com/itmachen"><img src="https://avatars.githubusercontent.com/u/77398366?v=4?s=64" width="64px;"/></a></td>
     <td align="center" >马称</td>
-    <td align="center" ><a href="https://github.com/agentart">agentart</a></td>
+    <td align="center" ><a href="https://github.com/itmachen">itmachen</a></td>
     <td align="center" ><a href="http://www.xiaomage.info/">小马哥的技术专栏</a></td>
     <td align="center" >machen@apache.org</td>
   </tr>
@@ -46,5 +46,19 @@ sidebar_position: 2
     <td align="center" ><a href="https://github.com/BigXin0109">BigXin0109</a></td>
     <td align="center" ><a href="https://blog.csdn.net/qq_34741165">Only丶Big</a></td>
     <td align="center" >1064730540@qq.com</td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/pizihao"><img src="https://avatars.githubusercontent.com/u/48643103?v=4?s=64" width="64px;"/></a></td>
+    <td align="center">刘文浩</td>
+    <td align="center" ><a href="https://github.com/pizihao">pizihao</a></td>
+    <td align="center" ><a href="https://www.yuque.com/chenghu-08dla/pizig1">pizihao</a></td>
+    <td align="center" >hao3073liu@163.com</td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/pizihao"><img src="https://avatars.githubusercontent.com/u/49084314?v=4?s=64" width="64px;"/></a></td>
+    <td align="center">叶炜</td>
+    <td align="center" ><a href="https://github.com/shanjianq">shanjianq</a></td>
+    <td align="center" >-</td>
+    <td align="center" >17855368071@163.com</td>
   </tr>
 </table>

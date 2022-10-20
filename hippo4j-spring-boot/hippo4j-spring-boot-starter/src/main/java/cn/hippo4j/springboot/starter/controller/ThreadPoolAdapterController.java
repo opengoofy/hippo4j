@@ -20,6 +20,9 @@ package cn.hippo4j.springboot.starter.controller;
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.api.ClientNetworkService;
+import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
@@ -56,7 +59,14 @@ public class ThreadPoolAdapterController {
             ThreadPoolAdapterState threadPoolState = each.getThreadPoolState(requestParameter.getThreadPoolKey());
             String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
             threadPoolState.setActive(active.toUpperCase());
-            String clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4JInetUtils);
+            String[] customerNetwork = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(ClientNetworkService.class)
+                    .stream().findFirst().map(network -> network.getNetworkIpPort(environment)).orElse(null);
+            String clientAddress;
+            if (customerNetwork != null) {
+                clientAddress = StringUtil.newBuilder(customerNetwork[0], ":", customerNetwork[1]);
+            } else {
+                clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4JInetUtils);
+            }
             threadPoolState.setClientAddress(clientAddress);
             threadPoolState.setIdentify(IdentifyUtil.getIdentify());
             return threadPoolState;

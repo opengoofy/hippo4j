@@ -17,11 +17,10 @@
 
 package cn.hippo4j.discovery.core;
 
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.InstanceInfo.InstanceStatus;
-import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -57,9 +56,9 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
     public List<Lease<InstanceInfo>> listInstance(String appName) {
         Map<String, Lease<InstanceInfo>> appNameLeaseMap = registry.get(appName);
         if (CollectionUtils.isEmpty(appNameLeaseMap)) {
-            return Lists.newArrayList();
+            return new ArrayList<>();
         }
-        List<Lease<InstanceInfo>> appNameLeaseList = Lists.newArrayList();
+        List<Lease<InstanceInfo>> appNameLeaseList = new ArrayList<>();
         appNameLeaseMap.values().forEach(each -> appNameLeaseList.add(each));
         return appNameLeaseList;
     }
@@ -82,7 +81,7 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
                 registrant = existingLease.getHolder();
             }
         }
-        Lease<InstanceInfo> lease = new Lease(registrant);
+        Lease<InstanceInfo> lease = new Lease<>(registrant);
         if (existingLease != null) {
             lease.setServiceUpTimestamp(existingLease.getServiceUpTimestamp());
         }
@@ -190,8 +189,8 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
             new ScheduledThreadPoolExecutor(
                     SCHEDULED_THREAD_CORE_NUM,
                     new ThreadFactoryBuilder()
-                            .setNameFormat("registry-eviction")
-                            .setDaemon(true)
+                            .prefix("registry-eviction")
+                            .daemon(true)
                             .build());
 
     private final AtomicReference<EvictionTask> evictionTaskRef = new AtomicReference();

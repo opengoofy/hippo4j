@@ -19,17 +19,17 @@ package cn.hippo4j.monitor.micrometer;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hutool.core.bean.BeanUtil;
 import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tag;
 import org.springframework.core.env.Environment;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Micrometer monitor handler.
@@ -42,7 +42,7 @@ public class MicrometerMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     private final static String APPLICATION_NAME_TAG = "application.name";
 
-    private final Map<String, ThreadPoolRunStateInfo> RUN_STATE_CACHE = Maps.newConcurrentMap();
+    private final Map<String, ThreadPoolRunStateInfo> RUN_STATE_CACHE = new ConcurrentHashMap<>();
 
     public MicrometerMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
         super(threadPoolRunStateHandler);
@@ -54,11 +54,11 @@ public class MicrometerMonitorHandler extends AbstractDynamicThreadPoolMonitor {
         if (stateInfo == null) {
             RUN_STATE_CACHE.put(poolRunStateInfo.getTpId(), poolRunStateInfo);
         } else {
-            BeanUtil.copyProperties(poolRunStateInfo, stateInfo);
+            BeanUtil.convert(poolRunStateInfo, stateInfo);
         }
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String applicationName = environment.getProperty("spring.application.name", "application");
-        Iterable<Tag> tags = Lists.newArrayList(
+        Iterable<Tag> tags = CollectionUtil.newArrayList(
                 Tag.of(DYNAMIC_THREAD_POOL_ID_TAG, poolRunStateInfo.getTpId()),
                 Tag.of(APPLICATION_NAME_TAG, applicationName));
         Metrics.gauge(metricName("current.load"), tags, poolRunStateInfo, ThreadPoolRunStateInfo::getSimpleCurrentLoad);

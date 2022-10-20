@@ -18,7 +18,10 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.enums.EnableEnum;
+import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.mapper.NotifyInfoMapper;
 import cn.hippo4j.config.model.NotifyInfo;
@@ -27,19 +30,16 @@ import cn.hippo4j.config.model.biz.notify.NotifyQueryReqDTO;
 import cn.hippo4j.config.model.biz.notify.NotifyReqDTO;
 import cn.hippo4j.config.model.biz.notify.NotifyRespDTO;
 import cn.hippo4j.config.service.biz.NotifyService;
-import cn.hippo4j.config.toolkit.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hippo4j.common.toolkit.BooleanUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,16 +54,16 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public List<NotifyListRespDTO> listNotifyConfig(NotifyQueryReqDTO reqDTO) {
-        List<NotifyListRespDTO> notifyListRespList = Lists.newArrayList();
+        List<NotifyListRespDTO> notifyListRespList = new ArrayList<>();
         reqDTO.getGroupKeys().forEach(each -> {
             String[] parseKey = GroupKey.parseKey(each);
             List<NotifyInfo> notifyInfos = listNotifyCommon("CONFIG", parseKey);
-            if (CollUtil.isNotEmpty(notifyInfos)) {
-                notifyListRespList.add(new NotifyListRespDTO(StrUtil.builder(parseKey[0], "+", "CONFIG").toString(), notifyInfos));
+            if (CollectionUtil.isNotEmpty(notifyInfos)) {
+                notifyListRespList.add(new NotifyListRespDTO(parseKey[0] + "+" + "CONFIG", notifyInfos));
             }
             List<NotifyInfo> alarmInfos = listNotifyCommon("ALARM", parseKey);
-            if (CollUtil.isNotEmpty(alarmInfos)) {
-                notifyListRespList.add(new NotifyListRespDTO(StrUtil.builder(parseKey[0], "+", "ALARM").toString(), alarmInfos));
+            if (CollectionUtil.isNotEmpty(alarmInfos)) {
+                notifyListRespList.add(new NotifyListRespDTO(parseKey[0] + "+" + "ALARM", alarmInfos));
             }
         });
         return notifyListRespList;
@@ -72,9 +72,9 @@ public class NotifyServiceImpl implements NotifyService {
     @Override
     public IPage<NotifyRespDTO> queryPage(NotifyQueryReqDTO reqDTO) {
         LambdaQueryWrapper<NotifyInfo> queryWrapper = Wrappers.lambdaQuery(NotifyInfo.class)
-                .eq(StrUtil.isNotBlank(reqDTO.getTenantId()), NotifyInfo::getTenantId, reqDTO.getTenantId())
-                .eq(StrUtil.isNotBlank(reqDTO.getItemId()), NotifyInfo::getItemId, reqDTO.getItemId())
-                .eq(StrUtil.isNotBlank(reqDTO.getTpId()), NotifyInfo::getTpId, reqDTO.getTpId())
+                .eq(StringUtil.isNotBlank(reqDTO.getTenantId()), NotifyInfo::getTenantId, reqDTO.getTenantId())
+                .eq(StringUtil.isNotBlank(reqDTO.getItemId()), NotifyInfo::getItemId, reqDTO.getItemId())
+                .eq(StringUtil.isNotBlank(reqDTO.getTpId()), NotifyInfo::getTpId, reqDTO.getTpId())
                 .orderByDesc(NotifyInfo::getGmtCreate);
         IPage<NotifyInfo> resultPage = notifyInfoMapper.selectPage(reqDTO, queryWrapper);
         return resultPage.convert(each -> {
@@ -93,7 +93,7 @@ public class NotifyServiceImpl implements NotifyService {
         if (BooleanUtil.isTrue(requestParam.getAlarmType())) {
             existNotify("ALARM", requestParam);
         }
-        List<NotifyInfo> notifyInfos = Lists.newArrayList();
+        List<NotifyInfo> notifyInfos = new ArrayList<>();
         if (BooleanUtil.isTrue(requestParam.getAlarmType())) {
             NotifyInfo alarmNotifyInfo = BeanUtil.convert(requestParam, NotifyInfo.class);
             alarmNotifyInfo.setType("ALARM");
@@ -173,7 +173,7 @@ public class NotifyServiceImpl implements NotifyService {
                 .eq(NotifyInfo::getPlatform, requestParam.getPlatform())
                 .eq(NotifyInfo::getType, type);
         List<NotifyInfo> existNotifyInfos = notifyInfoMapper.selectList(queryWrapper);
-        if (CollUtil.isNotEmpty(existNotifyInfos)) {
+        if (CollectionUtil.isNotEmpty(existNotifyInfos)) {
             throw new ServiceException(String.format("%s 新增通知报警配置重复", type));
         }
     }

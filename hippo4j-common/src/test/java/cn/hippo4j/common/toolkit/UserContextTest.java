@@ -17,10 +17,7 @@
 
 package cn.hippo4j.common.toolkit;
 
-import cn.hutool.core.util.ReflectUtil;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Field;
 
 public class UserContextTest {
 

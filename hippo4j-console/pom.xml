@@ -19,36 +19,19 @@
             <artifactId>hippo4j-config</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-discovery</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-auth</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

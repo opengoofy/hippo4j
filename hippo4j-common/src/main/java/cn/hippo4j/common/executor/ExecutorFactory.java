@@ -26,6 +26,9 @@ import java.util.concurrent.ThreadFactory;
  */
 public class ExecutorFactory {
 
+    /**
+     * Thread pool management tool.
+     */
     public static final class Managed {
 
         private static final String DEFAULT_NAMESPACE = "dynamic.thread-pool";

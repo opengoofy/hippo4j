@@ -22,7 +22,7 @@ SpringBoot Pom 引入 Hippo4j Starter Jar。
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-spring-boot-starter</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
 </dependency>
 ```
 
@@ -69,13 +69,11 @@ spring:
 package cn.hippo4j.example;
 
 import cn.hippo4j.core.executor.DynamicThreadPool;
-import cn.hippo4j.core.executor.support.ResizableCapacityLinkedBlockIngQueue;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class ThreadPoolConfig {

@@ -31,9 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author : wh
- * @date : 2022/8/30 17:59
- * @description:
+ * Etcd refresher handler.
  */
 @Slf4j
 public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
@@ -53,22 +51,23 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
     private static final String KEY = "key";
 
     @Override
+    public String getProperties() throws Exception {
+        Map<String, String> etcd = bootstrapConfigProperties.getEtcd();
+        Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));
+        initClient(etcd, charset);
+        String key = etcd.get(KEY);
+        GetResponse getResponse = client.getKVClient().get(ByteSequence.from(key, charset)).get();
+        KeyValue keyValue = getResponse.getKvs().get(0);
+        return Objects.isNull(keyValue) ? null : keyValue.getValue().toString(charset);
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         Map<String, String> etcd = bootstrapConfigProperties.getEtcd();
-        String user = etcd.get(USER);
-        String password = etcd.get(PASSWORD);
-        String endpoints = etcd.get(ENDPOINTS);
-        String authority = etcd.get(AUTHORITY);
         String key = etcd.get(KEY);
         Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));
-        ClientBuilder clientBuilder = Client.builder().endpoints(endpoints.split(","));
-        // todo
-        if (Objects.isNull(client)) {
-            client = StringUtil.isAllNotEmpty(user, password) ? clientBuilder.user(ByteSequence.from(user, charset))
-                    .password(ByteSequence.from(password, charset)).authority(authority)
-                    .build() : clientBuilder.build();
-        }
-        // todo Currently only supports json
+        initClient(etcd, charset);
+        // TODO Currently only supports json
         GetResponse getResponse = client.getKVClient().get(ByteSequence.from(key, charset)).get();
         KeyValue keyValue = getResponse.getKvs().get(0);
         if (Objects.isNull(keyValue)) {
@@ -99,5 +98,25 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
                 log.info("Dynamic thread pool etcd config key refreshed, config key {}", key);
             }
         });
+    }
+
+    /**
+     * if client is null, init it
+     *
+     * @param etcd    etcd configuration item
+     * @param charset charset
+     */
+    private void initClient(Map<String, String> etcd, Charset charset) {
+        // TODO
+        if (Objects.isNull(client)) {
+            String user = etcd.get(USER);
+            String password = etcd.get(PASSWORD);
+            String authority = etcd.get(AUTHORITY);
+            String endpoints = etcd.get(ENDPOINTS);
+            ClientBuilder clientBuilder = Client.builder().endpoints(endpoints.split(","));
+            client = StringUtil.isAllNotEmpty(user, password) ? clientBuilder.user(ByteSequence.from(user, charset))
+                    .password(ByteSequence.from(password, charset)).authority(authority)
+                    .build() : clientBuilder.build();
+        }
     }
 }

@@ -21,8 +21,8 @@ import cn.hippo4j.auth.model.biz.user.JwtUser;
 import cn.hippo4j.auth.model.biz.user.LoginUser;
 import cn.hippo4j.auth.toolkit.JwtTokenUtil;
 import cn.hippo4j.auth.toolkit.ReturnT;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Results;
-import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,7 +34,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -69,6 +68,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Authentication authenticate = null;
         try {
             LoginUser loginUser = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
+            request.setAttribute("loginUser", loginUser);
             rememberMe.set(loginUser.getRememberMe());
             authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList()));
@@ -100,7 +100,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Map<String, Object> maps = new HashMap(MAP_INITIAL_CAPACITY);
             maps.put("data", JwtTokenUtil.TOKEN_PREFIX + token);
             maps.put("roles", role.split(SPLIT_COMMA));
-            response.getWriter().write(JSONUtil.toJsonStr(Results.success(maps)));
+            response.getWriter().write(JSONUtil.toJSONString(Results.success(maps)));
         } finally {
             rememberMe.remove();
         }
@@ -109,6 +109,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(JSONUtil.toJsonStr(new ReturnT(-1, "Server Error")));
+        response.getWriter().write(JSONUtil.toJSONString(new ReturnT(-1, "Server Error")));
     }
 }

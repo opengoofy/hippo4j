@@ -64,12 +64,10 @@ public class AbstractSubjectCenter {
             log.warn("Register observer. A string whose subject or observer is empty or empty.");
             return;
         }
-
         List<Observer> observers = OBSERVERS_MAP.get(subject);
         if (CollectionUtil.isEmpty(observers)) {
             observers = new ArrayList();
         }
-
         observers.add(observer);
         OBSERVERS_MAP.put(subject, observers);
     }
@@ -90,12 +88,11 @@ public class AbstractSubjectCenter {
      * @param observer
      */
     public static void remove(String subject, Observer observer) {
-        List<Observer> observers;
-        if (StringUtil.isBlank(subject) || CollectionUtil.isEmpty((observers = OBSERVERS_MAP.get(subject))) || observer == null) {
+        List<Observer> observers = OBSERVERS_MAP.get(subject);
+        if (StringUtil.isBlank(subject) || CollectionUtil.isEmpty(observers) || observer == null) {
             log.warn("Remove observer. A string whose subject or observer is empty or empty.");
             return;
         }
-
         observers.remove(observer);
     }
 
@@ -121,7 +118,6 @@ public class AbstractSubjectCenter {
             log.warn("Under the subject, there is no observer group.");
             return;
         }
-
         observers.parallelStream().forEach(each -> {
             try {
                 each.accept(observerMessage);
@@ -131,6 +127,9 @@ public class AbstractSubjectCenter {
         });
     }
 
+    /**
+     * Subject type.
+     */
     public enum SubjectType {
 
         /**

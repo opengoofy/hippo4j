@@ -17,26 +17,26 @@
 
 package cn.hippo4j.springboot.starter.notify;
 
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.dto.ThreadPoolNotifyDTO;
-import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.request.ThreadPoolNotifyRequest;
+import cn.hippo4j.message.service.AlarmControlHandler;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static cn.hippo4j.common.constant.Constants.BASE_PATH;
 
@@ -56,16 +56,16 @@ public class ServerNotifyConfigBuilder implements NotifyConfigBuilder {
     @Override
     public Map<String, List<NotifyConfigDTO>> buildNotify() {
         List<String> threadPoolIds = GlobalThreadPoolManage.listThreadPoolId();
-        if (CollUtil.isEmpty(threadPoolIds)) {
+        if (CollectionUtil.isEmpty(threadPoolIds)) {
             log.warn("The client does not have a dynamic thread pool instance configured.");
-            return Maps.newHashMap();
+            return new HashMap<>();
         }
         return getAndInitNotify(threadPoolIds);
     }
 
     public Map<String, List<NotifyConfigDTO>> getAndInitNotify(List<String> threadPoolIds) {
-        Map<String, List<NotifyConfigDTO>> resultMap = Maps.newHashMap();
-        List<String> groupKeys = Lists.newArrayList();
+        Map<String, List<NotifyConfigDTO>> resultMap = new HashMap<>();
+        List<String> groupKeys = new ArrayList<>();
         threadPoolIds.forEach(each -> {
             String groupKey = GroupKey.getKeyTenant(each, properties.getItemId(), properties.getNamespace());
             groupKeys.add(groupKey);
@@ -81,7 +81,7 @@ public class ServerNotifyConfigBuilder implements NotifyConfigBuilder {
             List<ThreadPoolNotifyDTO> resultData = JSONUtil.parseArray(resultDataStr, ThreadPoolNotifyDTO.class);
             resultData.forEach(each -> resultMap.put(each.getNotifyKey(), each.getNotifyList()));
 
-            resultMap.forEach((key, val) -> val.stream().filter(each -> StrUtil.equals("ALARM", each.getType()))
+            resultMap.forEach((key, val) -> val.stream().filter(each -> Objects.equals("ALARM", each.getType()))
                     .forEach(each -> alarmControlHandler.initCacheAndLock(each.getTpId(), each.getPlatform(), each.getInterval())));
         }
         return resultMap;

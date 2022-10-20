@@ -44,7 +44,7 @@ public class HttpScheduledHealthCheck extends AbstractHealthCheck {
                 healthStatus = true;
             }
         } catch (Throwable ex) {
-            log.error("Failed to periodically check the health status of the server.", ex.getMessage());
+            log.error("Failed to periodically check the health status of the server. message: {}", ex.getMessage());
         }
         return healthStatus;
     }

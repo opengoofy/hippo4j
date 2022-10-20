@@ -29,7 +29,7 @@ import java.util.function.Supplier;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Singleton {
 
-    private static final ConcurrentHashMap<String, Object> SINGLE_OBJECT_POOL = new ConcurrentHashMap();
+    private static final ConcurrentHashMap<String, Object> SINGLE_OBJECT_POOL = new ConcurrentHashMap<>();
 
     /**
      * Get a singleton object by key.
@@ -55,8 +55,11 @@ public final class Singleton {
      */
     public static <T> T get(String key, Supplier<T> supplier) {
         Object result = SINGLE_OBJECT_POOL.get(key);
-        if (result == null && (result = supplier.get()) != null) {
-            SINGLE_OBJECT_POOL.put(key, result);
+        if (result == null) {
+            result = supplier.get();
+            if (result != null) {
+                SINGLE_OBJECT_POOL.put(key, result);
+            }
         }
         return result != null ? (T) result : null;
     }

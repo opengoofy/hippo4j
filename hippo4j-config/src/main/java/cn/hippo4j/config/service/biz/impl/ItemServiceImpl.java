@@ -19,6 +19,7 @@ package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.mapper.ItemInfoMapper;
 import cn.hippo4j.config.model.ItemInfo;
 import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
@@ -28,7 +29,7 @@ import cn.hippo4j.config.model.biz.item.ItemUpdateReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
 import cn.hippo4j.config.service.biz.ItemService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
-import cn.hippo4j.config.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -36,7 +37,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,10 +55,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public IPage<ItemRespDTO> queryItemPage(ItemQueryReqDTO reqDTO) {
         LambdaQueryWrapper<ItemInfo> wrapper = Wrappers.lambdaQuery(ItemInfo.class)
-                .eq(!StringUtils.isEmpty(reqDTO.getItemId()), ItemInfo::getItemId, reqDTO.getItemId())
-                .eq(!StringUtils.isEmpty(reqDTO.getItemName()), ItemInfo::getItemName, reqDTO.getItemName())
-                .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId())
-                .eq(!StringUtils.isEmpty(reqDTO.getOwner()), ItemInfo::getOwner, reqDTO.getOwner())
+                .eq(StringUtil.isNotEmpty(reqDTO.getItemId()), ItemInfo::getItemId, reqDTO.getItemId())
+                .eq(StringUtil.isNotEmpty(reqDTO.getItemName()), ItemInfo::getItemName, reqDTO.getItemName())
+                .eq(StringUtil.isNotEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId())
+                .eq(StringUtil.isNotEmpty(reqDTO.getOwner()), ItemInfo::getOwner, reqDTO.getOwner())
                 .orderByDesc(reqDTO.getDesc() != null, ItemInfo::getGmtCreate);
         Page<ItemInfo> resultPage = itemInfoMapper.selectPage(reqDTO, wrapper);
         return resultPage.convert(each -> BeanUtil.convert(each, ItemRespDTO.class));
@@ -78,8 +78,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemRespDTO> queryItem(ItemQueryReqDTO reqDTO) {
         LambdaQueryWrapper<ItemInfo> wrapper = Wrappers.lambdaQuery(ItemInfo.class)
-                .eq(!StringUtils.isEmpty(reqDTO.getItemId()), ItemInfo::getItemId, reqDTO.getItemId())
-                .eq(!StringUtils.isEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId());
+                .eq(StringUtil.isNotEmpty(reqDTO.getItemId()), ItemInfo::getItemId, reqDTO.getItemId())
+                .eq(StringUtil.isNotEmpty(reqDTO.getTenantId()), ItemInfo::getTenantId, reqDTO.getTenantId());
         List<ItemInfo> itemInfos = itemInfoMapper.selectList(wrapper);
         return BeanUtil.convert(itemInfos, ItemRespDTO.class);
     }

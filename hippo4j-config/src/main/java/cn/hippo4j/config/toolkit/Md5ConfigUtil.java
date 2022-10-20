@@ -19,6 +19,7 @@ package cn.hippo4j.config.toolkit;
 
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.Md5Util;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import org.springframework.util.StringUtils;
@@ -140,7 +141,7 @@ public class Md5ConfigUtil {
             sb.append(dataIdGroupId[1]);
             // if have tenant, then set it
             if (dataIdGroupId.length == 4) {
-                if (org.apache.commons.lang3.StringUtils.isNotBlank(dataIdGroupId[2])) {
+                if (StringUtil.isNotBlank(dataIdGroupId[2])) {
                     sb.append(WORD_SEPARATOR);
                     sb.append(dataIdGroupId[2]);
                 }

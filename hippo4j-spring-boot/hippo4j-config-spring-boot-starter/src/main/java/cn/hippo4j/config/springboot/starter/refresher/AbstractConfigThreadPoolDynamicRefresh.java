@@ -18,13 +18,13 @@
 package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
+import cn.hippo4j.common.api.ThreadPoolInitRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.parser.ConfigParserHandler;
 import cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEvent;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -36,15 +36,26 @@ import java.util.concurrent.ExecutorService;
  * Abstract core thread-pool dynamic refresh.
  */
 @Slf4j
-@RequiredArgsConstructor
-public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean {
+public abstract class AbstractConfigThreadPoolDynamicRefresh
+        implements
+            ThreadPoolDynamicRefresh,
+            ThreadPoolInitRefresh,
+            InitializingBean {
 
-    protected final BootstrapConfigProperties bootstrapConfigProperties;
+    private final BootstrapConfigPropertiesBinderAdapt bootstrapConfigPropertiesBinderAdapt;
+
+    protected BootstrapConfigProperties bootstrapConfigProperties;
 
     protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder().singlePool("client.dynamic.refresh").build();
 
     public AbstractConfigThreadPoolDynamicRefresh() {
         bootstrapConfigProperties = ApplicationContextHolder.getBean(BootstrapConfigProperties.class);
+        bootstrapConfigPropertiesBinderAdapt = ApplicationContextHolder.getBean(BootstrapConfigPropertiesBinderAdapt.class);
+    }
+
+    @Override
+    public void initRefresh(String context) {
+        dynamicRefresh(context);
     }
 
     @Override
@@ -59,8 +70,8 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
             if (CollectionUtil.isNotEmpty(newValueChangeMap)) {
                 Optional.ofNullable(configInfo).ifPresent(each -> each.putAll(newValueChangeMap));
             }
-            BootstrapConfigProperties bindableCoreProperties = BootstrapConfigPropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
-            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, bindableCoreProperties));
+            BootstrapConfigProperties binderCoreProperties = bootstrapConfigPropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
+            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, binderCoreProperties));
         } catch (Exception ex) {
             log.error("Hippo-4J core dynamic refresh failed.", ex);
         }

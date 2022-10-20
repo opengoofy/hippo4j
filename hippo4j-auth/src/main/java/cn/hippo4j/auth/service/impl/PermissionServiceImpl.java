@@ -21,8 +21,8 @@ import cn.hippo4j.auth.mapper.PermissionMapper;
 import cn.hippo4j.auth.model.biz.permission.PermissionQueryPageReqDTO;
 import cn.hippo4j.auth.model.biz.permission.PermissionRespDTO;
 import cn.hippo4j.auth.service.PermissionService;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hippo4j.common.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -44,8 +44,7 @@ public class PermissionServiceImpl implements PermissionService {
     public IPage<PermissionRespDTO> listPermission(int pageNo, int pageSize) {
         PermissionQueryPageReqDTO queryPage = new PermissionQueryPageReqDTO(pageNo, pageSize);
         IPage<PermissionInfo> selectPage = permissionMapper.selectPage(queryPage, null);
-
-        return selectPage.convert(each -> BeanUtil.toBean(each, PermissionRespDTO.class));
+        return selectPage.convert(each -> BeanUtil.convert(each, PermissionRespDTO.class));
     }
 
     @Override
@@ -68,9 +67,9 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public void deletePermission(String role, String resource, String action) {
         LambdaUpdateWrapper<PermissionInfo> updateWrapper = Wrappers.lambdaUpdate(PermissionInfo.class)
-                .eq(StrUtil.isNotBlank(role), PermissionInfo::getRole, role)
-                .eq(StrUtil.isNotBlank(resource), PermissionInfo::getResource, resource)
-                .eq(StrUtil.isNotBlank(action), PermissionInfo::getAction, action);
+                .eq(StringUtil.isNotBlank(role), PermissionInfo::getRole, role)
+                .eq(StringUtil.isNotBlank(resource), PermissionInfo::getResource, resource)
+                .eq(StringUtil.isNotBlank(action), PermissionInfo::getAction, action);
         permissionMapper.delete(updateWrapper);
     }
 }

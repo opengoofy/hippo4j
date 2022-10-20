@@ -17,7 +17,6 @@
 
 package cn.hippo4j.example.core.inittest;
 
-import cn.hutool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
@@ -83,7 +82,11 @@ public class RunStateHandlerTest {
              * When the execution of the thread pool task times out, the Trace flag is put into the MDC, and it is printed out when an alarm occurs.
              */
             MDC.put(EXECUTE_TIMEOUT_TRACE, "39948722194639841.251.16612352194691531");
-            ThreadUtil.sleep(5000);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             for (int i = 0; i < Integer.MAX_VALUE; i++) {
                 try {
                     executor.execute(() -> {
@@ -102,7 +105,11 @@ public class RunStateHandlerTest {
                     });
                 } catch (Exception ignored) {
                 }
-                ThreadUtil.sleep(500);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

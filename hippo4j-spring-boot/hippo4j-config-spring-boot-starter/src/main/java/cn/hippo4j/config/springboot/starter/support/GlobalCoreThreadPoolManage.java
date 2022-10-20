@@ -18,16 +18,16 @@
 package cn.hippo4j.config.springboot.starter.support;
 
 import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
-import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Global core thread-pool manage.
  */
 public class GlobalCoreThreadPoolManage {
 
-    private static final Map<String, ExecutorProperties> EXECUTOR_PROPERTIES = Maps.newConcurrentMap();
+    private static final Map<String, ExecutorProperties> EXECUTOR_PROPERTIES = new ConcurrentHashMap<>();
 
     /**
      * Get properties.

@@ -38,11 +38,13 @@ public class Constants {
 
     public static final String DEFAULT_NAMESPACE_ID = "public";
 
+    public static final String ENCODE = "UTF-8";
+
     public static final String NULL = "";
 
     public static final String UP = "UP";
 
-    public static final String ENCODE = "UTF-8";
+    public static final String CONTENT_TYPE = "Content-Type";
 
     public static final int CONFIG_LONG_POLL_TIMEOUT = 30000;
 
@@ -61,6 +63,8 @@ public class Constants {
     public static final String CONFIG_CONTROLLER_PATH = BASE_PATH + "/configs";
 
     public static final String LISTENER_PATH = CONFIG_CONTROLLER_PATH + "/listener";
+
+    public static final String VERIFY_PATH = CONFIG_CONTROLLER_PATH + "/verify";
 
     public static final String MONITOR_PATH = BASE_PATH + "/monitor";
 
