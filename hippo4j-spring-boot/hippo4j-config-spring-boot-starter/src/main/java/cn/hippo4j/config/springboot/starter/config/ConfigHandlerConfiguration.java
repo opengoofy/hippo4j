@@ -19,6 +19,7 @@ package cn.hippo4j.config.springboot.starter.config;
 
 import cn.hippo4j.config.springboot.starter.refresher.*;
 import com.alibaba.cloud.nacos.NacosConfigManager;
+import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.tencent.polaris.configuration.api.core.ConfigFileService;
 import io.etcd.jetcd.Client;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.curator.framework.CuratorFramework;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -49,17 +51,21 @@ public class ConfigHandlerConfiguration {
 
     private static final String POLARIS = "config.serverConnector";
 
+    @Bean
+    @ConditionalOnMissingBean
+    public BootstrapConfigPropertiesBinderAdapt bootstrapConfigPropertiesBinderAdapt() {
+        return new DefaultBootstrapConfigPropertiesBinderAdapt();
+    }
+
     @RequiredArgsConstructor
     @ConditionalOnClass(ConfigService.class)
     @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
     static class EmbeddedNacos {
 
-        public final BootstrapConfigProperties bootstrapConfigProperties;
-
         @Bean
-        public NacosRefresherHandler nacosRefresherHandler() {
-            return new NacosRefresherHandler(bootstrapConfigProperties);
+        public NacosRefresherHandler nacosRefresherHandler(NacosConfigProperties nacosConfigProperties) {
+            return new NacosRefresherHandler(nacosConfigProperties);
         }
     }
 
@@ -112,5 +118,4 @@ public class ConfigHandlerConfiguration {
             return new PolarisRefresherHandler(configFileService);
         }
     }
-
 }

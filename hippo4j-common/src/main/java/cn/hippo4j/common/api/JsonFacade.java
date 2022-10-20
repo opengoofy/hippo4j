@@ -63,4 +63,12 @@ public interface JsonFacade {
      * @return
      */
     <T> List<T> parseArray(String text, Class<T> clazz);
+
+    /**
+     * Validate json.
+     *
+     * @param text
+     * @return
+     */
+    boolean isJson(String text);
 }

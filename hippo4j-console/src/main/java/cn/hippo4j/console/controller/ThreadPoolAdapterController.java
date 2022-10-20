@@ -18,9 +18,8 @@
 package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
-import cn.hippo4j.common.toolkit.BeanUtil;
-import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.toolkit.UserContext;
+import cn.hippo4j.common.toolkit.*;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
@@ -28,12 +27,11 @@ import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.service.ThreadPoolAdapterService;
 import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Set;
@@ -43,15 +41,13 @@ import static cn.hippo4j.common.constant.Constants.REGISTER_ADAPTER_BASE_PATH;
 /**
  * Thread-pool adapter controller.
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController("threadPoolAdapterConsoleController")
 public class ThreadPoolAdapterController {
 
     private final ThreadPoolAdapterService threadPoolAdapterService;
 
     private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
-
-    private final RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping(REGISTER_ADAPTER_BASE_PATH + "/query")
     public Result<List<ThreadPoolAdapterRespDTO>> queryAdapterThreadPool(ThreadPoolAdapterReqDTO requestParameter) {
@@ -69,12 +65,8 @@ public class ThreadPoolAdapterController {
     public Result<Void> updateAdapterThreadPool(@RequestBody ThreadPoolAdapterReqDTO requestParameter) {
         if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
             for (String each : requestParameter.getClientAddressList()) {
-                String urlString = new StringBuilder()
-                        .append("http://")
-                        .append(each)
-                        .append("/adapter/thread-pool/update")
-                        .toString();
-                restTemplate.postForObject(urlString, JSONUtil.toJSONString(requestParameter), Object.class);
+                String urlString = StringUtil.newBuilder("http://", each, "/adapter/thread-pool/update");
+                HttpUtil.post(urlString, requestParameter);
             }
         } else {
             ConfigModifySaveReqDTO modifySaveReqDTO = BeanUtil.convert(requestParameter, ConfigModifySaveReqDTO.class);

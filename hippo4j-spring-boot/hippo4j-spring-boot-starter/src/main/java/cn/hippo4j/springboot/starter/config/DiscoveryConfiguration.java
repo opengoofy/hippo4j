@@ -17,19 +17,22 @@
 
 package cn.hippo4j.springboot.starter.config;
 
+import cn.hippo4j.common.api.ClientNetworkService;
 import cn.hippo4j.common.model.InstanceInfo;
+import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
-import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
 import cn.hippo4j.springboot.starter.core.DiscoveryClient;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
+import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.net.InetAddress;
+import java.util.Optional;
 
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
@@ -45,6 +48,10 @@ public class DiscoveryConfiguration {
     private final BootstrapProperties bootstrapProperties;
 
     private final InetUtils hippo4JInetUtils;
+
+    static {
+        DynamicThreadPoolServiceLoader.register(ClientNetworkService.class);
+    }
 
     @Bean
     @SneakyThrows
@@ -69,8 +76,10 @@ public class DiscoveryConfiguration {
                 .setPort(port)
                 .setClientBasePath(contextPath)
                 .setGroupKey(ContentUtil.getGroupKey(itemId, namespace));
-        String callBackUrl = new StringBuilder().append(instanceInfo.getHostName()).append(":")
-                .append(port).append(instanceInfo.getClientBasePath())
+        String[] customerNetwork = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(ClientNetworkService.class)
+                .stream().findFirst().map(each -> each.getNetworkIpPort(environment)).orElse(null);
+        String callBackUrl = new StringBuilder().append(Optional.ofNullable(customerNetwork).map(each -> each[0]).orElse(instanceInfo.getHostName())).append(":")
+                .append(Optional.ofNullable(customerNetwork).map(each -> each[1]).orElse(port)).append(instanceInfo.getClientBasePath())
                 .toString();
         instanceInfo.setCallBackUrl(callBackUrl);
         String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);

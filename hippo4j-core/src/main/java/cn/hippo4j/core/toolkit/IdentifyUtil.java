@@ -17,13 +17,18 @@
 
 package cn.hippo4j.core.toolkit;
 
+import cn.hippo4j.common.api.ClientNetworkService;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.toolkit.*;
+import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.IdUtil;
+import cn.hippo4j.common.toolkit.Joiner;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
@@ -37,34 +42,47 @@ public class IdentifyUtil {
 
     public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
 
+    static {
+        DynamicThreadPoolServiceLoader.register(ClientNetworkService.class);
+    }
+
     /**
      * Generate identify.
      *
-     * @param environment
-     * @param hippo4JInetUtils
-     * @return
+     * @param environment environment
+     * @param inetUtil    inet util
+     * @return identify
      */
-    public static synchronized String generate(ConfigurableEnvironment environment, InetUtils hippo4JInetUtils) {
+    public static synchronized String generate(ConfigurableEnvironment environment, InetUtils inetUtil) {
         if (StringUtil.isNotBlank(IDENTIFY)) {
             return IDENTIFY;
         }
-        String ip = hippo4JInetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
-        String port = environment.getProperty("server.port", "8080");
-        String identification = new StringBuilder()
+        String[] customerNetwork = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(ClientNetworkService.class)
+                .stream().findFirst().map(each -> each.getNetworkIpPort(environment)).orElse(null);
+        String ip;
+        String port;
+        if (customerNetwork != null && customerNetwork.length > 0) {
+            ip = customerNetwork[0];
+            port = customerNetwork[1];
+        } else {
+            ip = inetUtil.findFirstNonLoopBackHostInfo().getIpAddress();
+            port = environment.getProperty("server.port", "8080");
+        }
+        String identify = new StringBuilder()
                 .append(ip)
                 .append(":")
                 .append(port)
                 .append(IDENTIFY_SLICER_SYMBOL)
                 .append(CLIENT_IDENTIFICATION_VALUE)
                 .toString();
-        IDENTIFY = identification;
-        return identification;
+        IDENTIFY = identify;
+        return identify;
     }
 
     /**
      * Get identify.
      *
-     * @return
+     * @return identify
      */
     public static String getIdentify() {
         while (StringUtil.isBlank(IDENTIFY)) {
@@ -82,10 +100,10 @@ public class IdentifyUtil {
     /**
      * Get thread pool identify.
      *
-     * @param threadPoolId
-     * @param itemId
-     * @param namespace
-     * @return
+     * @param threadPoolId thread pool id
+     * @param itemId       item id
+     * @param namespace    namespace
+     * @return identify
      */
     public static String getThreadPoolIdentify(String threadPoolId, String itemId, String namespace) {
         ArrayList<String> params = CollectionUtil.newArrayList(threadPoolId, itemId, namespace, getIdentify());

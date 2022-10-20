@@ -18,11 +18,11 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
-import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Adapter thread pool config modification verify service impl.
@@ -30,8 +30,6 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @Service
 public class AdapterThreadPoolConfigModificationVerifyServiceImpl extends AbstractConfigModificationVerifyService {
-
-    private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
     public Integer type() {
@@ -41,12 +39,8 @@ public class AdapterThreadPoolConfigModificationVerifyServiceImpl extends Abstra
     @Override
     protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
         for (String each : getClientAddress(reqDTO)) {
-            String urlString = new StringBuilder()
-                    .append("http://")
-                    .append(each)
-                    .append("/adapter/thread-pool/update")
-                    .toString();
-            restTemplate.postForObject(urlString, JSONUtil.toJSONString(reqDTO), Object.class);
+            String urlString = StringUtil.newBuilder("http://", each, "/adapter/thread-pool/update");
+            HttpUtil.post(urlString, reqDTO);
         }
     }
 }

@@ -22,6 +22,7 @@ import cn.hippo4j.common.model.WebIpAndPortInfo;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.web.server.WebServer;
 
 import java.util.Arrays;
@@ -29,25 +30,35 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Ip and port Holder
+ * Ip and port holder.
  */
+@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class WebIpAndPortHolder {
+
+    private static boolean SUPPORT_VERSION = false;
+
+    static {
+        try {
+            Class.forName("org.springframework.boot.web.server.WebServer");
+            SUPPORT_VERSION = true;
+        } catch (Exception ignored) {
+        }
+    }
 
     /**
      * Application ip and  application post
      */
-    protected static AtomicReference<WebIpAndPortInfo> webIpAndPort = new AtomicReference<>();
+    protected static AtomicReference<WebIpAndPortInfo> WEB_IP_AND_PORT = new AtomicReference<>();
 
     public static final String ALL = "*";
 
     protected static final String SEPARATOR = ",";
 
-    private WebIpAndPortHolder() {
-
-    }
-
     protected static void initIpAndPort() {
-        webIpAndPort.compareAndSet(null, getWebIpAndPortInfo());
+        if (!SUPPORT_VERSION) {
+            return;
+        }
+        WEB_IP_AND_PORT.compareAndSet(null, getWebIpAndPortInfo());
     }
 
     private static WebIpAndPortInfo getWebIpAndPortInfo() {
@@ -64,26 +75,26 @@ public class WebIpAndPortHolder {
     }
 
     /**
-     * get WebIpAndPortInfo, If it is null, initialize it
+     * get WebIpAndPortInfo, If it is null, initialize it.
      *
-     * @return WebIpAndPortInfo
+     * @return Web ip and port info
      */
     public static WebIpAndPortInfo getWebIpAndPort() {
-        if (webIpAndPort.get() == null) {
+        if (WEB_IP_AND_PORT.get() == null) {
             initIpAndPort();
         }
-        return WebIpAndPortHolder.webIpAndPort.get();
+        return WebIpAndPortHolder.WEB_IP_AND_PORT.get();
     }
 
     /**
-     * Check the new properties and instance IP and port
+     * Check the new properties and instance IP and port.
      *
      * @param nodes nodes in properties
      * @return Whether it meets the conditions
      */
     public static boolean check(String nodes) {
         WebIpAndPortInfo webIpAndPort = WebIpAndPortHolder.getWebIpAndPort();
-        if (StringUtil.isEmpty(nodes) || ALL.equals(nodes)) {
+        if (StringUtil.isEmpty(nodes) || ALL.equals(nodes) || webIpAndPort == null) {
             return true;
         }
         String[] splitNodes = nodes.split(SEPARATOR);
@@ -93,5 +104,4 @@ public class WebIpAndPortHolder {
                 .filter(Objects::nonNull)
                 .anyMatch(each -> each.check(webIpAndPort.getIpSegment(), webIpAndPort.getPort()));
     }
-
 }

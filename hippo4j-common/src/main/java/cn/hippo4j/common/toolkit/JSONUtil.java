@@ -56,4 +56,11 @@ public class JSONUtil {
         }
         return JSON_FACADE.parseArray(text, clazz);
     }
+
+    public static boolean isJson(String json) {
+        if (StringUtil.isBlank(json)) {
+            return false;
+        }
+        return JSON_FACADE.isJson(json);
+    }
 }

@@ -10,7 +10,7 @@ sidebar_position: 0
 
 ### hippo4j-config
 
-**轻量级动态线程池管理**，依赖 Apollo、Nacos、Zookeeper 等三方配置中心（任选其一）完成线程池参数动态变更，支持运行时报警、监控等功能。
+**轻量级动态线程池管理**，依赖 Nacos、Apollo、Zookeeper、ETCD、Polaris 等三方配置中心（任选其一）完成线程池参数动态变更，支持运行时报警、监控等功能。
 
 > 监控功能配置详见：[线程池监控](/docs/user_docs/getting_started/config/hippo4j-config-monitor)
 
@@ -28,7 +28,7 @@ sidebar_position: 0
 
 |      | hippo4j-config                                 | hippo4j-server                                              |
 | ---- | ---------------------------------------------------- | ------------------------------------------------------------ |
-| 依赖 | Nacos、Apollo、Zookeeper 配置中心（任选其一） | 部署 Hippo-4J Server（内部无依赖中间件） |
+| 依赖 | Nacos、Apollo、Zookeeper、ETCD、Polaris 配置中心（任选其一） | 部署 Hippo-4J Server（内部无依赖中间件） |
 | 使用 | 配置中心补充线程池相关参数                 | Hippo-4J Server Web 控制台添加线程池记录                                                         |
 | 功能 | 包含基础功能：参数动态化、运行时监控、报警等         | 基础功能之外扩展控制台界面、线程池堆栈查看、线程池运行信息实时查看、历史运行信息查看、线程池配置集群个性化等 |
 
