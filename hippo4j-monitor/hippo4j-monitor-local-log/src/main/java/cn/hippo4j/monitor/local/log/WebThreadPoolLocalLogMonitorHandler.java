@@ -19,20 +19,15 @@ package cn.hippo4j.monitor.local.log;
 
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
+import cn.hippo4j.monitor.base.AbstractWebThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Local log monitor handler.
+ * Web thread-pool local log monitor handler.
  */
 @Slf4j
-public class LocalLogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
-
-    public LocalLogMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        super(threadPoolRunStateHandler);
-    }
+public class WebThreadPoolLocalLogMonitorHandler extends AbstractWebThreadPoolMonitor {
 
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {

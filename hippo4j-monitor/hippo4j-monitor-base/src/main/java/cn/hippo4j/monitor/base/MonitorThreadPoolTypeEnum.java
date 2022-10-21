@@ -15,21 +15,25 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.monitor.local.log;
-
-import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.monitor.local.log.LocalLogMonitorHandler;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package cn.hippo4j.monitor.base;
 
 /**
- * Local log monitor configuration.
+ * Monitor thread-pool type enum.
  */
-@Configuration
-public class LocalLogMonitorConfiguration {
+public enum MonitorThreadPoolTypeEnum {
 
-    @Bean
-    public LocalLogMonitorHandler localLogMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        return new LocalLogMonitorHandler(threadPoolRunStateHandler);
-    }
+    /**
+     * Dynamic thread-pool
+     */
+    DYNAMIC,
+
+    /**
+     * Web thread-pool
+     */
+    WEB,
+
+    /**
+     * Adapter thread-pool
+     */
+    ADAPTER
 }

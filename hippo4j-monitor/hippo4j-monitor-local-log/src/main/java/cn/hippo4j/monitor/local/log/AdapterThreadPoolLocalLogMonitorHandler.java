@@ -15,22 +15,27 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.base;
+package cn.hippo4j.monitor.local.log;
+
+import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.monitor.base.AbstractAdapterThreadPoolMonitor;
+import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Thread-pool runtime monitor.
+ * Adapter thread-pool local log monitor handler.
  */
-public interface ThreadPoolMonitor {
+@Slf4j
+public class AdapterThreadPoolLocalLogMonitorHandler extends AbstractAdapterThreadPoolMonitor {
 
-    /**
-     * Get thread-pool monitoring type.
-     *
-     * @return monitoring type
-     */
-    String getType();
+    @Override
+    protected void execute(ThreadPoolAdapterState threadPoolAdapterState) {
+        log.info("{}", JSONUtil.toJSONString(threadPoolAdapterState));
+    }
 
-    /**
-     * Collect thread-pool runtime data.
-     */
-    void collect();
+    @Override
+    public String getType() {
+        return MonitorTypeEnum.LOG.name().toLowerCase();
+    }
 }

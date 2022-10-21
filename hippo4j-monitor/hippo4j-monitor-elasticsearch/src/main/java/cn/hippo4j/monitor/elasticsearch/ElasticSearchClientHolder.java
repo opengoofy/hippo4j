@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.es;
+package cn.hippo4j.monitor.elasticsearch;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.StringUtil;
@@ -37,7 +37,7 @@ import java.util.List;
  * Elastic-search client holder.
  */
 @Slf4j
-public class EsClientHolder {
+public class ElasticSearchClientHolder {
 
     private static String host;
 

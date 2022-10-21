@@ -15,22 +15,24 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.base;
+package cn.hippo4j.monitor.micrometer;
+
+import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.monitor.base.AbstractAdapterThreadPoolMonitor;
+import cn.hippo4j.monitor.base.MonitorTypeEnum;
 
 /**
- * Thread-pool runtime monitor.
+ * Adapter thread-pool micrometer monitor handler.
  */
-public interface ThreadPoolMonitor {
+public class AdapterThreadPoolMicrometerMonitorHandler extends AbstractAdapterThreadPoolMonitor {
 
-    /**
-     * Get thread-pool monitoring type.
-     *
-     * @return monitoring type
-     */
-    String getType();
+    @Override
+    protected void execute(ThreadPoolAdapterState threadPoolAdapterState) {
 
-    /**
-     * Collect thread-pool runtime data.
-     */
-    void collect();
+    }
+
+    @Override
+    public String getType() {
+        return MonitorTypeEnum.MICROMETER.name().toLowerCase();
+    }
 }

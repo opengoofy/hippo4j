@@ -17,34 +17,29 @@
 
 package cn.hippo4j.monitor.base;
 
+import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
- * Abstract dynamic thread-pool monitor.
+ * Abstract web thread-pool monitor.
  */
-public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadPoolMonitor {
+public abstract class AbstractWebThreadPoolMonitor implements WebThreadPoolMonitor {
 
     @Resource
-    private ThreadPoolRunStateHandler threadPoolRunStateHandler;
+    private WebThreadPoolService webThreadPoolService;
 
     /**
      * Execute collection thread pool running data.
      *
-     * @param dynamicThreadPoolRunStateInfo dynamic thread-pool run state info
+     * @param webThreadPoolRunStateInfo web thread-pool run state info
      */
-    protected abstract void execute(ThreadPoolRunStateInfo dynamicThreadPoolRunStateInfo);
+    protected abstract void execute(ThreadPoolRunStateInfo webThreadPoolRunStateInfo);
 
     @Override
     public void collect() {
-        List<String> listDynamicThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
-        for (String each : listDynamicThreadPoolId) {
-            ThreadPoolRunStateInfo poolRunState = threadPoolRunStateHandler.getPoolRunState(each);
-            execute(poolRunState);
-        }
+        ThreadPoolRunStateInfo webThreadPoolRunStateInfo = webThreadPoolService.getWebRunStateInfo();
+        execute(webThreadPoolRunStateInfo);
     }
 }

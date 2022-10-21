@@ -17,34 +17,27 @@
 
 package cn.hippo4j.monitor.base;
 
-import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.adapter.base.ThreadPoolAdapter;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.config.ApplicationContextHolder;
 
-import javax.annotation.Resource;
-import java.util.List;
+import java.util.Map;
 
 /**
- * Abstract dynamic thread-pool monitor.
+ * Abstract adapter thread-pool monitor.
  */
-public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadPoolMonitor {
-
-    @Resource
-    private ThreadPoolRunStateHandler threadPoolRunStateHandler;
+public abstract class AbstractAdapterThreadPoolMonitor implements AdapterThreadPoolMonitor {
 
     /**
      * Execute collection thread pool running data.
      *
-     * @param dynamicThreadPoolRunStateInfo dynamic thread-pool run state info
+     * @param threadPoolAdapterState thread-pool adapter state
      */
-    protected abstract void execute(ThreadPoolRunStateInfo dynamicThreadPoolRunStateInfo);
+    protected abstract void execute(ThreadPoolAdapterState threadPoolAdapterState);
 
     @Override
     public void collect() {
-        List<String> listDynamicThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
-        for (String each : listDynamicThreadPoolId) {
-            ThreadPoolRunStateInfo poolRunState = threadPoolRunStateHandler.getPoolRunState(each);
-            execute(poolRunState);
-        }
+        Map<String, ThreadPoolAdapter> threadPoolAdapterMap = ApplicationContextHolder.getBeansOfType(ThreadPoolAdapter.class);
+        threadPoolAdapterMap.forEach((beanName, bean) -> bean.getThreadPoolStates().forEach(each -> execute(each)));
     }
 }

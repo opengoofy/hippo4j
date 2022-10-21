@@ -15,20 +15,27 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.es.model;
+package cn.hippo4j.monitor.local.log;
 
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import lombok.Getter;
-import lombok.Setter;
+import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
+import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Elastic-search thread-pool run state info.
+ * Dynamic thread-pool local log monitor handler.
  */
-@Getter
-@Setter
-public class EsThreadPoolRunStateInfo extends ThreadPoolRunStateInfo {
+@Slf4j
+public class DynamicThreadPoolLocalLogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
-    private String Id;
+    @Override
+    protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
+        log.info("{}", JSONUtil.toJSONString(poolRunStateInfo));
+    }
 
-    private String applicationName;
+    @Override
+    public String getType() {
+        return MonitorTypeEnum.LOG.name().toLowerCase();
+    }
 }

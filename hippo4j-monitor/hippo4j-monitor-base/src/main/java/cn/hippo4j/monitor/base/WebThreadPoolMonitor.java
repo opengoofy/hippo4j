@@ -15,21 +15,11 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.monitor.micrometer;
-
-import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.monitor.micrometer.MicrometerMonitorHandler;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package cn.hippo4j.monitor.base;
 
 /**
- * Micrometer monitor configuration.
+ * Web thread-pool monitor.
  */
-@Configuration
-public class MicrometerMonitorConfiguration {
+public interface WebThreadPoolMonitor extends ThreadPoolMonitor {
 
-    @Bean
-    public MicrometerMonitorHandler micrometerMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        return new MicrometerMonitorHandler(threadPoolRunStateHandler);
-    }
 }

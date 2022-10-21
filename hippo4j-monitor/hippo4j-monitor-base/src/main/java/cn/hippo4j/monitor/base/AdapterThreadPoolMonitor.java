@@ -18,19 +18,8 @@
 package cn.hippo4j.monitor.base;
 
 /**
- * Thread-pool runtime monitor.
+ * Adapter thread-pool monitor.
  */
-public interface ThreadPoolMonitor {
+public interface AdapterThreadPoolMonitor extends ThreadPoolMonitor {
 
-    /**
-     * Get thread-pool monitoring type.
-     *
-     * @return monitoring type
-     */
-    String getType();
-
-    /**
-     * Collect thread-pool runtime data.
-     */
-    void collect();
 }

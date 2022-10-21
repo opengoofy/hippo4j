@@ -15,26 +15,25 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.es;
+package cn.hippo4j.monitor.elasticsearch;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.FileUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.monitor.es.model.EsThreadPoolRunStateInfo;
 import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import cn.hippo4j.monitor.elasticsearch.model.ElasticSearchThreadPoolRunStateInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.core.env.Environment;
@@ -47,20 +46,16 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Elastic-search monitor handler.
+ * Dynamic thread-pool elastic-search monitor handler.
  */
 @Slf4j
-public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
-
-    public EsMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        super(threadPoolRunStateHandler);
-    }
+public class DynamicThreadPoolElasticSearchMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     private AtomicBoolean isIndexExist = null;
 
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
-        EsThreadPoolRunStateInfo esThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, EsThreadPoolRunStateInfo.class);
+        ElasticSearchThreadPoolRunStateInfo esThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, ElasticSearchThreadPoolRunStateInfo.class);
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String indexName = environment.getProperty("es.thread-pool-state.index.name", "thread-pool-state");
         String applicationName = environment.getProperty("spring.application.name", "application");
@@ -75,8 +70,8 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
         this.log2Es(esThreadPoolRunStateInfo, indexName);
     }
 
-    public void log2Es(EsThreadPoolRunStateInfo esThreadPoolRunStateInfo, String indexName) {
-        RestHighLevelClient client = EsClientHolder.getClient();
+    public void log2Es(ElasticSearchThreadPoolRunStateInfo esThreadPoolRunStateInfo, String indexName) {
+        RestHighLevelClient client = ElasticSearchClientHolder.getClient();
         try {
             IndexRequest request = new IndexRequest(indexName, "_doc");
             request.id(esThreadPoolRunStateInfo.getId());
@@ -99,7 +94,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
             boolean exists = false;
             GetIndexRequest request = new GetIndexRequest(index);
             try {
-                RestHighLevelClient client = EsClientHolder.getClient();
+                RestHighLevelClient client = ElasticSearchClientHolder.getClient();
                 exists = client.indices().exists(request, RequestOptions.DEFAULT);
             } catch (IOException e) {
                 log.error("check es index fail");
@@ -110,7 +105,7 @@ public class EsMonitorHandler extends AbstractDynamicThreadPoolMonitor {
     }
 
     public void createIndex(String index, String type, String mapping, Integer shards, Integer replicas, String alias) {
-        RestHighLevelClient client = EsClientHolder.getClient();
+        RestHighLevelClient client = ElasticSearchClientHolder.getClient();
         boolean acknowledged = false;
         CreateIndexRequest request = new CreateIndexRequest(index);
         if (StringUtils.hasText(mapping)) {

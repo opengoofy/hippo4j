@@ -21,7 +21,6 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
 import io.micrometer.core.instrument.Metrics;
@@ -32,9 +31,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Micrometer monitor handler.
+ * Dynamic thread-pool micrometer monitor handler.
  */
-public class MicrometerMonitorHandler extends AbstractDynamicThreadPoolMonitor {
+public class DynamicThreadPoolMicrometerMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     private final static String METRIC_NAME_PREFIX = "dynamic.thread-pool";
 
@@ -43,10 +42,6 @@ public class MicrometerMonitorHandler extends AbstractDynamicThreadPoolMonitor {
     private final static String APPLICATION_NAME_TAG = "application.name";
 
     private final Map<String, ThreadPoolRunStateInfo> RUN_STATE_CACHE = new ConcurrentHashMap<>();
-
-    public MicrometerMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        super(threadPoolRunStateHandler);
-    }
 
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {

@@ -15,22 +15,20 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.base;
+package cn.hippo4j.monitor.elasticsearch.model;
+
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * Thread-pool runtime monitor.
+ * Elastic-search thread-pool run state info.
  */
-public interface ThreadPoolMonitor {
+@Getter
+@Setter
+public class ElasticSearchThreadPoolRunStateInfo extends ThreadPoolRunStateInfo {
 
-    /**
-     * Get thread-pool monitoring type.
-     *
-     * @return monitoring type
-     */
-    String getType();
+    private String Id;
 
-    /**
-     * Collect thread-pool runtime data.
-     */
-    void collect();
+    private String applicationName;
 }

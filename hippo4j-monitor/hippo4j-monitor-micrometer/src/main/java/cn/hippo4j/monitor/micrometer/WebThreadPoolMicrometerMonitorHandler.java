@@ -15,21 +15,24 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.monitor.es;
+package cn.hippo4j.monitor.micrometer;
 
-import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.monitor.es.EsMonitorHandler;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.monitor.base.AbstractWebThreadPoolMonitor;
+import cn.hippo4j.monitor.base.MonitorTypeEnum;
 
 /**
- * Elastic-search monitor auto configuration.
+ * Web thread-pool micrometer monitor handler.
  */
-@Configuration
-public class EsMonitorAutoConfiguration {
+public class WebThreadPoolMicrometerMonitorHandler extends AbstractWebThreadPoolMonitor {
 
-    @Bean
-    public EsMonitorHandler esMonitorHandler(ThreadPoolRunStateHandler threadPoolRunStateHandler) {
-        return new EsMonitorHandler(threadPoolRunStateHandler);
+    @Override
+    protected void execute(ThreadPoolRunStateInfo webThreadPoolRunStateInfo) {
+
+    }
+
+    @Override
+    public String getType() {
+        return MonitorTypeEnum.MICROMETER.name().toLowerCase();
     }
 }

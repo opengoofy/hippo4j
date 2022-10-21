@@ -15,22 +15,26 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.base;
+package cn.hippo4j.monitor.elasticsearch;
+
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
+import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Thread-pool runtime monitor.
+ * Adapter thread-pool elastic-search monitor handler.
  */
-public interface ThreadPoolMonitor {
+@Slf4j
+public class AdapterThreadPoolElasticSearchMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
-    /**
-     * Get thread-pool monitoring type.
-     *
-     * @return monitoring type
-     */
-    String getType();
+    @Override
+    protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
+        // TODO
+    }
 
-    /**
-     * Collect thread-pool runtime data.
-     */
-    void collect();
+    @Override
+    public String getType() {
+        return MonitorTypeEnum.ELASTICSEARCH.name().toLowerCase();
+    }
 }
