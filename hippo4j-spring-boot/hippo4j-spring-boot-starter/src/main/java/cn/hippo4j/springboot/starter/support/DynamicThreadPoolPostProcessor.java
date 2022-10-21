@@ -33,7 +33,8 @@ import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.*;
+import cn.hippo4j.core.executor.support.CommonDynamicThreadPool;
+import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import cn.hippo4j.core.toolkit.inet.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
@@ -45,14 +46,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.task.TaskDecorator;
-import org.springframework.util.ClassUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -153,7 +152,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                             .allowCoreThreadTimeOut(EnableEnum.getBool(threadPoolParameterInfo.getAllowCoreThreadTimeOut()))
                             .build();
                     // Set dynamic thread pool enhancement parameters.
-                    if (executor instanceof AbstractDynamicExecutorSupport) {
+                    if (executor instanceof DynamicThreadPoolExecutor) {
                         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
                                 BooleanUtil.toBoolean(threadPoolParameterInfo.getIsAlarm().toString()),
                                 threadPoolParameterInfo.getLivenessAlarm(),
@@ -161,8 +160,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
                         TaskDecorator taskDecorator = ((DynamicThreadPoolExecutor) executor).getTaskDecorator();
                         ((DynamicThreadPoolExecutor) newDynamicThreadPoolExecutor).setTaskDecorator(taskDecorator);
-                        long awaitTerminationMillis = ((DynamicThreadPoolExecutor) executor).awaitTerminationMillis;
-                        boolean waitForTasksToCompleteOnShutdown = ((DynamicThreadPoolExecutor) executor).waitForTasksToCompleteOnShutdown;
+                        long awaitTerminationMillis = ((DynamicThreadPoolExecutor) executor).getAwaitTerminationMillis();
+                        boolean waitForTasksToCompleteOnShutdown = ((DynamicThreadPoolExecutor) executor).isWaitForTasksToCompleteOnShutdown();
                         ((DynamicThreadPoolExecutor) newDynamicThreadPoolExecutor).setSupportParam(awaitTerminationMillis, waitForTasksToCompleteOnShutdown);
                         long executeTimeOut = Optional.ofNullable(threadPoolParameterInfo.getExecuteTimeOut())
                                 .orElse(((DynamicThreadPoolExecutor) executor).getExecuteTimeOut());
@@ -184,7 +183,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .isAlarm(false)
                         .activeAlarm(80)
                         .capacityAlarm(80)
-                        .rejectedPolicyType(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(((DynamicThreadPoolExecutor) executor).getRedundancyHandler().getClass().getSimpleName()))
+                        .rejectedPolicyType(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()))
                         .build();
                 DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()
                         .dynamicThreadPoolRegisterParameter(parameterInfo)

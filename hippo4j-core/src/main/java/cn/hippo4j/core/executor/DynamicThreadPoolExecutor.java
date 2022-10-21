@@ -17,107 +17,180 @@
 
 package cn.hippo4j.core.executor;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
-import cn.hippo4j.core.proxy.RejectedProxyUtil;
-import cn.hippo4j.core.toolkit.SystemClock;
-import lombok.Getter;
+import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.core.plugin.DefaultThreadPoolPluginRegistrar;
+import cn.hippo4j.core.plugin.DefaultThreadPoolPluginRegistry;
+import cn.hippo4j.core.plugin.impl.TaskDecoratorPlugin;
+import cn.hippo4j.core.plugin.impl.TaskRejectCountRecordPlugin;
+import cn.hippo4j.core.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
+import cn.hippo4j.core.plugin.impl.ThreadPoolExecutorShutdownPlugin;
 import lombok.NonNull;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.task.TaskDecorator;
 
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Objects;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Enhanced dynamic and monitored thread pool.
  */
-public class DynamicThreadPoolExecutor extends AbstractDynamicExecutorSupport {
+@Slf4j
+public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor implements DisposableBean {
 
-    @Getter
-    @Setter
-    private Long executeTimeOut;
+    /**
+     * Creates a new {@code DynamicThreadPoolExecutor} with the given initial parameters.
+     *
+     * @param threadPoolId    thread-pool id
+     * @param executeTimeOut  execute time out
+     * @param waitForTasksToCompleteOnShutdown wait for tasks to complete on shutdown
+     * @param awaitTerminationMillis await termination millis
+     * @param corePoolSize    the number of threads to keep in the pool, even
+     *                        if they are idle, unless {@code allowCoreThreadTimeOut} is set
+     * @param maximumPoolSize the maximum number of threads to allow in the
+     *                        pool
+     * @param keepAliveTime   when the number of threads is greater than
+     *                        the core, this is the maximum time that excess idle threads
+     *                        will wait for new tasks before terminating.
+     * @param unit            the time unit for the {@code keepAliveTime} argument
+     * @param blockingQueue       the queue to use for holding tasks before they are
+     *                        executed.  This queue will hold only the {@code Runnable}
+     *                        tasks submitted by the {@code execute} method.
+     * @param threadFactory   the factory to use when the executor creates a new thread
+     * @param rejectedExecutionHandler the handler to use when execution is blocked because the thread bounds and queue capacities are reached
+     * @throws IllegalArgumentException if one of the following holds:<br>
+     *                                  {@code corePoolSize < 0}<br>
+     *                                  {@code keepAliveTime < 0}<br>
+     *                                  {@code maximumPoolSize <= 0}<br>
+     *                                  {@code maximumPoolSize < corePoolSize}
+     * @throws NullPointerException     if {@code workQueue}
+     *                                  or {@code threadFactory} or {@code handler} is null
+     */
+    public DynamicThreadPoolExecutor(
+        int corePoolSize, int maximumPoolSize,
+        long keepAliveTime, TimeUnit unit,
+        long executeTimeOut, boolean waitForTasksToCompleteOnShutdown, long awaitTerminationMillis,
+        @NonNull BlockingQueue<Runnable> blockingQueue,
+        @NonNull String threadPoolId,
+        @NonNull ThreadFactory threadFactory,
+        @NonNull RejectedExecutionHandler rejectedExecutionHandler) {
+        super(
+            threadPoolId, new DefaultThreadPoolPluginRegistry(),
+            corePoolSize, maximumPoolSize, keepAliveTime, unit,
+            blockingQueue, threadFactory, rejectedExecutionHandler
+        );
+        log.info("Initializing ExecutorService" + threadPoolId);
 
-    @Getter
-    @Setter
-    private TaskDecorator taskDecorator;
-
-    @Getter
-    @Setter
-    private RejectedExecutionHandler redundancyHandler;
-
-    @Getter
-    private final String threadPoolId;
-
-    @Getter
-    private final AtomicLong rejectCount = new AtomicLong();
-
-    private final ThreadLocal<Long> startTimeThreadLocal = new ThreadLocal<>();
-
-    public DynamicThreadPoolExecutor(int corePoolSize,
-                                     int maximumPoolSize,
-                                     long keepAliveTime,
-                                     TimeUnit unit,
-                                     long executeTimeOut,
-                                     boolean waitForTasksToCompleteOnShutdown,
-                                     long awaitTerminationMillis,
-                                     @NonNull BlockingQueue<Runnable> blockingQueue,
-                                     @NonNull String threadPoolId,
-                                     @NonNull ThreadFactory threadFactory,
-                                     @NonNull RejectedExecutionHandler rejectedExecutionHandler) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, waitForTasksToCompleteOnShutdown, awaitTerminationMillis, blockingQueue, threadPoolId, threadFactory, rejectedExecutionHandler);
-        this.threadPoolId = threadPoolId;
-        this.executeTimeOut = executeTimeOut;
-        // Number of dynamic proxy denial policies.
-        RejectedExecutionHandler rejectedProxy = RejectedProxyUtil.createProxy(rejectedExecutionHandler, threadPoolId, rejectCount);
-        setRejectedExecutionHandler(rejectedProxy);
-        // Redundant fields to avoid reflecting the acquired fields when sending change information.
-        redundancyHandler = rejectedExecutionHandler;
+        // init default aware processor
+        new DefaultThreadPoolPluginRegistrar(executeTimeOut, awaitTerminationMillis, waitForTasksToCompleteOnShutdown)
+            .doRegister(this, this);
     }
 
+    /**
+     * Invoked by the containing {@code BeanFactory} on destruction of a bean.
+     *
+     * @throws Exception in case of shutdown errors. Exceptions will get logged
+     *                   but not rethrown to allow other beans to release their resources as well.
+     */
     @Override
-    public void execute(@NonNull Runnable command) {
-        if (taskDecorator != null) {
-            command = taskDecorator.decorate(command);
-        }
-        super.execute(command);
-    }
-
-    @Override
-    protected void beforeExecute(Thread t, Runnable r) {
-        if (executeTimeOut == null || executeTimeOut <= 0) {
-            return;
-        }
-        startTimeThreadLocal.set(SystemClock.now());
-    }
-
-    @Override
-    protected void afterExecute(Runnable r, Throwable t) {
-        Long startTime;
-        if ((startTime = startTimeThreadLocal.get()) == null) {
-            return;
-        }
-        try {
-            long endTime = SystemClock.now();
-            long executeTime;
-            boolean executeTimeAlarm = (executeTime = (endTime - startTime)) > executeTimeOut;
-            if (executeTimeAlarm && ApplicationContextHolder.getInstance() != null) {
-                ThreadPoolNotifyAlarmHandler notifyAlarmHandler = ApplicationContextHolder.getBean(ThreadPoolNotifyAlarmHandler.class);
-                if (notifyAlarmHandler != null) {
-                    notifyAlarmHandler.asyncSendExecuteTimeOutAlarm(threadPoolId, executeTime, executeTimeOut, this);
-                }
+    public void destroy() throws Exception {
+        getAndThen(
+            ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME,
+            ThreadPoolExecutorShutdownPlugin.class,
+            processor -> {
+            if (processor.isWaitForTasksToCompleteOnShutdown()) {
+                super.shutdown();
+            } else {
+                super.shutdownNow();
             }
-        } finally {
-            startTimeThreadLocal.remove();
-        }
+        });
     }
 
-    @Override
-    protected ExecutorService initializeExecutor() {
-        return this;
+    public long getAwaitTerminationMillis() {
+        return getAndThen(
+            ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME,
+            ThreadPoolExecutorShutdownPlugin.class,
+            ThreadPoolExecutorShutdownPlugin::getAwaitTerminationMillis, -1L
+        );
+    }
+
+    public boolean isWaitForTasksToCompleteOnShutdown() {
+        return getAndThen(
+            ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME,
+            ThreadPoolExecutorShutdownPlugin.class,
+            ThreadPoolExecutorShutdownPlugin::isWaitForTasksToCompleteOnShutdown, false
+        );
+    }
+
+    /**
+     * Set support param.
+     *
+     * @param awaitTerminationMillis await termination millis
+     * @param waitForTasksToCompleteOnShutdown wait for tasks to complete on shutdown
+     */
+    public void setSupportParam(long awaitTerminationMillis, boolean waitForTasksToCompleteOnShutdown) {
+        getAndThen(
+            ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME,
+            ThreadPoolExecutorShutdownPlugin.class,
+            processor -> processor.setAwaitTerminationMillis(awaitTerminationMillis)
+                .setWaitForTasksToCompleteOnShutdown(waitForTasksToCompleteOnShutdown)
+        );
     }
 
     public Long getRejectCountNum() {
-        return rejectCount.get();
+        return getAndThen(
+            TaskRejectCountRecordPlugin.PLUGIN_NAME,
+            TaskRejectCountRecordPlugin.class,
+            TaskRejectCountRecordPlugin::getRejectCountNum, -1L
+        );
     }
+
+    public Long getExecuteTimeOut() {
+        return getAndThen(
+            TaskTimeoutNotifyAlarmPlugin.PLUGIN_NAME,
+            TaskTimeoutNotifyAlarmPlugin.class,
+            TaskTimeoutNotifyAlarmPlugin::getExecuteTimeOut, -1L
+        );
+    }
+
+    public void setExecuteTimeOut(Long executeTimeOut) {
+        getAndThen(
+            TaskTimeoutNotifyAlarmPlugin.PLUGIN_NAME,
+            TaskTimeoutNotifyAlarmPlugin.class,
+            processor -> processor.setExecuteTimeOut(executeTimeOut)
+        );
+    }
+
+    public TaskDecorator getTaskDecorator() {
+        return getAndThen(
+            TaskDecoratorPlugin.PLUGIN_NAME,
+            TaskDecoratorPlugin.class,
+            processor -> CollectionUtil.getFirst(processor.getDecorators()), null
+        );
+    }
+
+    public void setTaskDecorator(TaskDecorator taskDecorator) {
+        if (Objects.nonNull(taskDecorator)) {
+            getAndThen(
+                TaskDecoratorPlugin.PLUGIN_NAME,
+                TaskDecoratorPlugin.class,
+                processor -> {
+                    processor.clearDecorators();
+                    processor.addDecorator(taskDecorator);
+                }
+            );
+        }
+    }
+
+    public RejectedExecutionHandler getRedundancyHandler() {
+        return getRejectedExecutionHandler();
+    }
+
+    public void getRedundancyHandler(RejectedExecutionHandler handler) {
+        setRejectedExecutionHandler(handler);
+    }
+
 }

@@ -22,13 +22,13 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
-import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.ExecutorTraceContextUtil;
-import cn.hippo4j.message.service.Hippo4jSendMessageService;
+import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.service.Hippo4jSendMessageService;
+import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -211,9 +211,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      */
     public AlarmNotifyRequest buildAlarmNotifyRequest(ThreadPoolExecutor threadPoolExecutor) {
         BlockingQueue<Runnable> blockingQueue = threadPoolExecutor.getQueue();
-        RejectedExecutionHandler rejectedExecutionHandler = threadPoolExecutor instanceof DynamicThreadPoolExecutor
-                ? ((DynamicThreadPoolExecutor) threadPoolExecutor).getRedundancyHandler()
-                : threadPoolExecutor.getRejectedExecutionHandler();
+        RejectedExecutionHandler rejectedExecutionHandler = threadPoolExecutor.getRejectedExecutionHandler();
         long rejectCount = threadPoolExecutor instanceof DynamicThreadPoolExecutor
                 ? ((DynamicThreadPoolExecutor) threadPoolExecutor).getRejectCountNum()
                 : -1L;
