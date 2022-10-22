@@ -278,6 +278,7 @@ export default {
         size: 10,
         tpId: '',
         itemId: '',
+        mark: 'Jetty',
       },
       pluginTypeOptions: ['reader', 'writer'],
       dialogPluginVisible: false,

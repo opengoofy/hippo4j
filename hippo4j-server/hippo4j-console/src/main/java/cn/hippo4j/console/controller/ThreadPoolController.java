@@ -120,7 +120,8 @@ public class ThreadPoolController {
     }
 
     @GetMapping("/list/client/instance/{itemId}")
-    public Result listClientInstance(@PathVariable("itemId") String itemId) {
+    public Result listClientInstance(@PathVariable("itemId") String itemId,
+                                     @RequestParam(value = "mark", required = false) String mark) {
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(itemId);
         Lease<InstanceInfo> first = CollectionUtil.getFirst(leases);
         if (first == null) {
@@ -130,7 +131,7 @@ public class ThreadPoolController {
         for (Lease<InstanceInfo> each : leases) {
             Result poolBaseState;
             try {
-                poolBaseState = getPoolBaseState(each.getHolder().getCallBackUrl());
+                poolBaseState = getPoolBaseState(mark, each.getHolder().getCallBackUrl());
             } catch (Throwable ignored) {
                 continue;
             }
@@ -150,8 +151,9 @@ public class ThreadPoolController {
     }
 
     @GetMapping("/web/base/info")
-    public Result getPoolBaseState(@RequestParam(value = "clientAddress") String clientAddress) {
-        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/web/base/info");
+    public Result getPoolBaseState(@RequestParam(value = "mark") String mark,
+                                   @RequestParam(value = "clientAddress") String clientAddress) {
+        String urlString = StringUtil.newBuilder(HTTP, clientAddress, "/web/base/info", "?mark=", mark);
         return HttpUtil.get(urlString, Result.class);
     }
 

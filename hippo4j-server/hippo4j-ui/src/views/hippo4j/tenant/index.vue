@@ -44,9 +44,9 @@
       <el-table-column label="租户名称">
         <template slot-scope="scope">{{ scope.row.tenantName }}</template>
       </el-table-column>
-      <el-table-column label="租户简介">
+      <!-- <el-table-column label="租户简介">
         <template slot-scope="scope">{{ scope.row.tenantDesc | ellipsis }}</template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="负责人">
         <template slot-scope="scope">{{ scope.row.owner }} </template>
       </el-table-column>

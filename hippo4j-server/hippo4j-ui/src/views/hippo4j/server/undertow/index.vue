@@ -288,6 +288,7 @@ export default {
         size: 10,
         tpId: '',
         itemId: '',
+        mark: 'Undertow',
       },
       pluginTypeOptions: ['reader', 'writer'],
       dialogPluginVisible: false,

@@ -18,6 +18,7 @@
 package cn.hippo4j.springboot.starter.controller;
 
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
+import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
@@ -39,9 +40,12 @@ public class WebThreadPoolController {
     private final WebThreadPoolHandlerChoose webThreadPoolServiceChoose;
 
     @GetMapping("/web/base/info")
-    public Result<ThreadPoolBaseInfo> getPoolBaseState() {
-        ThreadPoolBaseInfo result = webThreadPoolServiceChoose.choose().simpleInfo();
-        return Results.success(result);
+    public Result<ThreadPoolBaseInfo> getPoolBaseState(@RequestParam(value = "mark") String mark) {
+        WebThreadPoolService webThreadPoolService = webThreadPoolServiceChoose.choose();
+        if (webThreadPoolService != null && webThreadPoolService.getClass().getSimpleName().contains(mark)) {
+            return Results.success(webThreadPoolService.simpleInfo());
+        }
+        return Results.success(null);
     }
 
     @GetMapping("/web/run/state")

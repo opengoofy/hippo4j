@@ -286,6 +286,7 @@ export default {
         size: 10,
         tpId: '',
         itemId: '',
+        mark: 'Tomcat',
       },
       pluginTypeOptions: ['reader', 'writer'],
       dialogPluginVisible: false,

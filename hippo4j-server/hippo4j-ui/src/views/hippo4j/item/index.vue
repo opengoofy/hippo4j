@@ -48,9 +48,9 @@
       <el-table-column label="项目名称">
         <template slot-scope="scope">{{ scope.row.itemName }}</template>
       </el-table-column>
-      <el-table-column label="项目简介">
+      <!-- <el-table-column label="项目简介">
         <template slot-scope="scope">{{ scope.row.itemDesc | ellipsis }}</template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="负责人">
         <template slot-scope="scope">{{ scope.row.owner }} </template>
       </el-table-column>
