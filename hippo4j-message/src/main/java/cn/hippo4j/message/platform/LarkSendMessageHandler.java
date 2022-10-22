@@ -55,66 +55,46 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
     @SneakyThrows
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
         String afterReceives = getReceives(notifyConfig.getReceives());
-        String larkAlarmTimoutReplaceTxt;
+        String larkAlarmTimeoutReplaceTxt;
         String larkAlarmTxtKey = "message/robot/dynamic-thread-pool/lark-alarm.json";
         String larkAlarmTxt = Singleton.get(larkAlarmTxtKey, () -> FileUtil.readUtf8String(larkAlarmTxtKey));
-        String larkAlarmTimoutReplaceJsonKey = "message/robot/dynamic-thread-pool/lark-alarm-timeout-replace.json";
-        String larkAlarmTimoutReplaceJson = Singleton.get(larkAlarmTimoutReplaceJsonKey, () -> FileUtil.readUtf8String(larkAlarmTimoutReplaceJsonKey));
+        String larkAlarmTimeoutReplaceJsonKey = "message/robot/dynamic-thread-pool/lark-alarm-timeout-replace.json";
+        String larkAlarmTimeoutReplaceJson = Singleton.get(larkAlarmTimeoutReplaceJsonKey, () -> FileUtil.readUtf8String(larkAlarmTimeoutReplaceJsonKey));
         if (Objects.equals(alarmNotifyRequest.getNotifyTypeEnum(), NotifyTypeEnum.TIMEOUT)) {
             String executeTimeoutTrace = alarmNotifyRequest.getExecuteTimeoutTrace();
             String larkAlarmTimoutTraceReplaceJsonKey = "message/robot/dynamic-thread-pool/lark-alarm-trace-replace.json";
             String larkAlarmTimoutTraceReplaceJson = Singleton.get(larkAlarmTimoutTraceReplaceJsonKey, () -> FileUtil.readUtf8String(larkAlarmTimoutTraceReplaceJsonKey));
             if (StringUtil.isNotBlank(executeTimeoutTrace)) {
                 String larkAlarmTimoutTraceReplaceTxt = String.format(larkAlarmTimoutTraceReplaceJson, executeTimeoutTrace);
-                larkAlarmTimoutReplaceTxt = StringUtil.replace(larkAlarmTimoutReplaceJson, larkAlarmTimoutTraceReplaceJson, larkAlarmTimoutTraceReplaceTxt);
+                larkAlarmTimeoutReplaceTxt = StringUtil.replace(larkAlarmTimeoutReplaceJson, larkAlarmTimoutTraceReplaceJson, larkAlarmTimoutTraceReplaceTxt);
             } else {
-                larkAlarmTimoutReplaceTxt = StringUtil.replace(larkAlarmTimoutReplaceJson, larkAlarmTimoutTraceReplaceJson, "");
+                larkAlarmTimeoutReplaceTxt = StringUtil.replace(larkAlarmTimeoutReplaceJson, larkAlarmTimoutTraceReplaceJson, "");
             }
-            larkAlarmTimoutReplaceTxt = String.format(larkAlarmTimoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
-            larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimoutReplaceJson, larkAlarmTimoutReplaceTxt);
+            larkAlarmTimeoutReplaceTxt = String.format(larkAlarmTimeoutReplaceTxt, alarmNotifyRequest.getExecuteTime(), alarmNotifyRequest.getExecuteTimeOut());
+            larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimeoutReplaceJson, larkAlarmTimeoutReplaceTxt);
         } else {
-            larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimoutReplaceJson, "");
+            larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimeoutReplaceJson, "");
         }
         String text = String.format(larkAlarmTxt,
-                // 环境
                 alarmNotifyRequest.getActive(),
-                // 报警类型
                 alarmNotifyRequest.getNotifyTypeEnum(),
-                // 线程池ID
                 alarmNotifyRequest.getThreadPoolId(),
-                // 应用名称
                 alarmNotifyRequest.getAppName(),
-                // 实例信息
                 alarmNotifyRequest.getIdentify(),
-                // 核心线程数
                 alarmNotifyRequest.getCorePoolSize(),
-                // 最大线程数
                 alarmNotifyRequest.getMaximumPoolSize(),
-                // 当前线程数
                 alarmNotifyRequest.getPoolSize(),
-                // 活跃线程数
                 alarmNotifyRequest.getActiveCount(),
-                // 最大任务数
                 alarmNotifyRequest.getLargestPoolSize(),
-                // 线程池任务总量
                 alarmNotifyRequest.getCompletedTaskCount(),
-                // 队列类型名称
                 alarmNotifyRequest.getQueueName(),
-                // 队列容量
                 alarmNotifyRequest.getCapacity(),
-                // 队列元素个数
                 alarmNotifyRequest.getQueueSize(),
-                // 队列剩余个数
                 alarmNotifyRequest.getRemainingCapacity(),
-                // 拒绝策略名称
                 alarmNotifyRequest.getRejectedExecutionHandlerName(),
-                // 拒绝策略次数
                 alarmNotifyRequest.getRejectCountNum(),
-                // 告警手机号
                 afterReceives,
-                // 当前时间
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                // 报警频率
                 notifyConfig.getInterval());
         execute(notifyConfig.getSecretKey(), text);
     }
@@ -127,34 +107,20 @@ public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyReq
         String larkNoticeJsonKey = "message/robot/dynamic-thread-pool/lark-config.json";
         String larkNoticeJson = Singleton.get(larkNoticeJsonKey, () -> FileUtil.readUtf8String(larkNoticeJsonKey));
         String text = String.format(larkNoticeJson,
-                // 环境
                 changeParameterNotifyRequest.getActive(),
-                // 线程池名称
                 threadPoolId,
-                // 应用名称
                 changeParameterNotifyRequest.getAppName(),
-                // 实例信息
                 changeParameterNotifyRequest.getIdentify(),
-                // 核心线程数
                 changeParameterNotifyRequest.getBeforeCorePoolSize() + "  ➲  " + changeParameterNotifyRequest.getNowCorePoolSize(),
-                // 最大线程数
                 changeParameterNotifyRequest.getBeforeMaximumPoolSize() + "  ➲  " + changeParameterNotifyRequest.getNowMaximumPoolSize(),
-                // 核心线程超时
                 changeParameterNotifyRequest.getBeforeAllowsCoreThreadTimeOut() + "  ➲  " + changeParameterNotifyRequest.getNowAllowsCoreThreadTimeOut(),
-                // 线程存活时间
                 changeParameterNotifyRequest.getBeforeKeepAliveTime() + "  ➲  " + changeParameterNotifyRequest.getNowKeepAliveTime(),
-                // 阻塞队列
                 changeParameterNotifyRequest.getBlockingQueueName(),
-                // 阻塞队列容量
                 changeParameterNotifyRequest.getBeforeQueueCapacity() + "  ➲  " + changeParameterNotifyRequest.getNowQueueCapacity(),
-                // 执行超时时间
                 changeParameterNotifyRequest.getBeforeExecuteTimeOut() + "  ➲  " + changeParameterNotifyRequest.getNowExecuteTimeOut(),
-                // 拒绝策略
                 changeParameterNotifyRequest.getBeforeRejectedName(),
                 changeParameterNotifyRequest.getNowRejectedName(),
-                // 告警手机号
                 afterReceives,
-                // 当前时间
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         execute(notifyConfig.getSecretKey(), text);
     }

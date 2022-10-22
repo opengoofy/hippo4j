@@ -29,15 +29,15 @@ public interface Hippo4jSendMessageService {
     /**
      * Send dynamic thread pool alert notifications.
      *
-     * @param typeEnum
-     * @param alarmNotifyRequest
+     * @param typeEnum           type enum
+     * @param alarmNotifyRequest alarm notify request
      */
     void sendAlarmMessage(NotifyTypeEnum typeEnum, AlarmNotifyRequest alarmNotifyRequest);
 
     /**
      * Send dynamic thread pool parameter change notification.
      *
-     * @param changeParameterNotifyRequest
+     * @param changeParameterNotifyRequest change parameter notify request
      */
     void sendChangeMessage(ChangeParameterNotifyRequest changeParameterNotifyRequest);
 }
