@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-all</artifactId>
+        <artifactId>hippo4j-server</artifactId>
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-auth</artifactId>
