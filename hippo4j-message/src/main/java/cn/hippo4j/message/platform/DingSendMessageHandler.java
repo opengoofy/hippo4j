@@ -60,8 +60,8 @@ public class DingSendMessageHandler extends AbstractRobotSendMessageHandler {
         RobotMessageActualContent robotMessageActualContent = RobotMessageActualContent.builder()
                 .receiveSeparator(", @")
                 .changeSeparator(" -> ")
-                .replaceTxt(DING_ALARM_TIMOUT_REPLACE_TXT)
-                .traceReplaceTxt(DING_ALARM_TIMOUT_TRACE_REPLACE_TXT)
+                .replaceTxt(DING_ALARM_TIMEOUT_REPLACE_TXT)
+                .traceReplaceTxt(DING_ALARM_TIMEOUT_TRACE_REPLACE_TXT)
                 .alarmMessageContent(Singleton.get(dingAlarmTxtKey, () -> FileUtil.readUtf8String(dingAlarmTxtKey)))
                 .configMessageContent(Singleton.get(dingConfigTxtKey, () -> FileUtil.readUtf8String(dingConfigTxtKey)))
                 .build();

@@ -17,18 +17,18 @@
 
 package cn.hippo4j.message.service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
-
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.message.dto.AlarmControlDTO;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Alarm control assembly.
@@ -42,8 +42,8 @@ public class AlarmControlHandler {
     /**
      * Control message push alarm frequency.
      *
-     * @param alarmControl
-     * @return
+     * @param alarmControl alarm control
+     * @return is it possible to send
      */
     public boolean isSendAlarm(AlarmControlDTO alarmControl) {
         String threadPoolKey = alarmControl.buildPk();
@@ -72,9 +72,9 @@ public class AlarmControlHandler {
     /**
      * Init cache and lock.
      *
-     * @param threadPoolId
-     * @param platform
-     * @param interval
+     * @param threadPoolId thread-pool id
+     * @param platform     platform
+     * @param interval     interval
      */
     public void initCacheAndLock(String threadPoolId, String platform, Integer interval) {
         String threadPoolKey = threadPoolId + Constants.GROUP_KEY_DELIMITER + platform;

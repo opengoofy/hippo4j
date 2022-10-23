@@ -8,41 +8,34 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-spring-boot-starter</artifactId>
-    <description>Thread pool dynamic parameter adjustment, alarming, status viewing and monitoring functions</description>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-core</artifactId>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-common</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>alibaba-dingtalk-service-sdk</artifactId>
@@ -55,79 +48,41 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jetty</artifactId>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-base</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-web</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-monitor-base</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Implementation-Title>${project.artifactId}</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Build-Time>${maven.build.timestamp}</Build-Time>
-                            <Built-By>chen.ma</Built-By>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

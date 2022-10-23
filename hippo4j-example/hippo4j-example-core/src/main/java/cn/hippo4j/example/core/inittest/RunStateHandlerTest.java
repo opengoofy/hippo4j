@@ -18,7 +18,6 @@
 package cn.hippo4j.example.core.inittest;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -28,8 +27,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import static cn.hippo4j.common.constant.Constants.EXECUTE_TIMEOUT_TRACE;
 
 /**
  * Run state handler test.
@@ -81,7 +78,7 @@ public class RunStateHandlerTest {
             /**
              * When the execution of the thread pool task times out, the Trace flag is put into the MDC, and it is printed out when an alarm occurs.
              */
-            MDC.put(EXECUTE_TIMEOUT_TRACE, "39948722194639841.251.16612352194691531");
+            // MDC.put(EXECUTE_TIMEOUT_TRACE, "39948722194639841.251.16612352194691531");
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {

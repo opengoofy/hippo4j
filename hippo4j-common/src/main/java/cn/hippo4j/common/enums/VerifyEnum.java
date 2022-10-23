@@ -17,30 +17,39 @@
 
 package cn.hippo4j.common.enums;
 
+/**
+ * Enumeration of thread pool audit status.
+ */
 public enum VerifyEnum {
 
     /**
-     * unVerify
+     * To verify
      */
     TO_VERIFY(0, "待审核"),
 
     /**
-     * accept
+     * Verify accept
      */
     VERIFY_ACCEPT(1, "审核通过"),
 
     /**
-     * reject
+     * Verify reject
      */
     VERIFY_REJECT(2, "审核拒绝"),
 
     /**
-     * invalid
+     * Verify invalid
      */
     VERIFY_INVALID(3, "失效");
 
+    /**
+     * Verify status
+     */
     private final Integer verifyStatus;
 
+    /**
+     * Desc
+     */
     private final String desc;
 
     VerifyEnum(Integer verifyStatus, String desc) {

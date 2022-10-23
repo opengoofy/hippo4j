@@ -46,24 +46,33 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
      */
     private Boolean banner = Boolean.TRUE;
 
-    /***
-     * Collect thread pool runtime indicators.
+    /**
+     * Thread pool monitoring related configuration.
      */
+    private MonitorProperties monitor;
+
+    /***
+     * Latest use {@link MonitorProperties#getEnable()}
+     */
+    @Deprecated
     private Boolean collect = Boolean.TRUE;
 
     /**
-     * Type of collection thread pool running data. eg: log,micrometer. Multiple can be used at the same time.
+     * Latest use {@link MonitorProperties#getCollectTypes()}
      */
+    @Deprecated
     private String collectType;
 
     /**
-     * Delay starting data acquisition task. unit: ms
+     * Latest use {@link MonitorProperties#getInitialDelay()}
      */
+    @Deprecated
     private Long initialDelay = 10000L;
 
     /**
-     * Collect interval. unit: ms
+     * Latest use {@link MonitorProperties#getCollectInterval()}
      */
+    @Deprecated
     private Long collectInterval = 5000L;
 
     /**

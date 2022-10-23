@@ -37,22 +37,22 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
     /**
      * Build message actual content.
      *
-     * @return
+     * @return robot message actual content
      */
     protected abstract RobotMessageActualContent buildMessageActualContent();
 
     /**
      * Execute.
      *
-     * @param robotMessageExecuteDTO
+     * @param robotMessageExecuteDTO robot message execute dto
      */
     protected abstract void execute(RobotMessageExecuteDTO robotMessageExecuteDTO);
 
     /**
      * Send alarm message.
      *
-     * @param notifyConfig
-     * @param alarmNotifyRequest
+     * @param notifyConfig       notify config
+     * @param alarmNotifyRequest alarm notify request
      */
     public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
         RobotMessageActualContent robotMessageActualContent = buildMessageActualContent();
@@ -75,45 +75,25 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
         alarmContentTxt = StringUtil.replace(alarmContentTxt, "${timout-content}", replaceTxt);
         String text = String.format(
                 alarmContentTxt,
-                // 环境
                 alarmNotifyRequest.getActive(),
-                // 报警类型
                 alarmNotifyRequest.getNotifyTypeEnum(),
-                // 线程池ID
                 alarmNotifyRequest.getThreadPoolId(),
-                // 应用名称
                 alarmNotifyRequest.getAppName(),
-                // 实例信息
                 alarmNotifyRequest.getIdentify(),
-                // 核心线程数
                 alarmNotifyRequest.getCorePoolSize(),
-                // 最大线程数
                 alarmNotifyRequest.getMaximumPoolSize(),
-                // 当前线程数
                 alarmNotifyRequest.getPoolSize(),
-                // 活跃线程数
                 alarmNotifyRequest.getActiveCount(),
-                // 最大任务数
                 alarmNotifyRequest.getLargestPoolSize(),
-                // 线程池任务总量
                 alarmNotifyRequest.getCompletedTaskCount(),
-                // 队列类型名称
                 alarmNotifyRequest.getQueueName(),
-                // 队列容量
                 alarmNotifyRequest.getCapacity(),
-                // 队列元素个数
                 alarmNotifyRequest.getQueueSize(),
-                // 队列剩余个数
                 alarmNotifyRequest.getRemainingCapacity(),
-                // 拒绝策略名称
                 alarmNotifyRequest.getRejectedExecutionHandlerName(),
-                // 拒绝策略次数
                 alarmNotifyRequest.getRejectCountNum(),
-                // 告警手机号
                 Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
-                // 报警频率
                 notifyConfig.getInterval(),
-                // 当前时间
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         execute(RobotMessageExecuteDTO.builder().text(text).notifyConfig(notifyConfig).build());
     }
@@ -121,8 +101,8 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
     /**
      * Send change message.
      *
-     * @param notifyConfig
-     * @param changeParameterNotifyRequest
+     * @param notifyConfig                 notify config
+     * @param changeParameterNotifyRequest change parameter notify request
      */
     public void sendChangeMessage(NotifyConfigDTO notifyConfig, ChangeParameterNotifyRequest changeParameterNotifyRequest) {
         RobotMessageActualContent robotMessageActualContent = buildMessageActualContent();
@@ -130,34 +110,20 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
         String changeSeparator = robotMessageActualContent.getChangeSeparator();
         String text = String.format(
                 robotMessageActualContent.getConfigMessageContent(),
-                // 环境
                 changeParameterNotifyRequest.getActive(),
-                // 线程池名称
                 threadPoolId,
-                // 应用名称
                 changeParameterNotifyRequest.getAppName(),
-                // 实例信息
                 changeParameterNotifyRequest.getIdentify(),
-                // 核心线程数
                 changeParameterNotifyRequest.getBeforeCorePoolSize() + changeSeparator + changeParameterNotifyRequest.getNowCorePoolSize(),
-                // 最大线程数
                 changeParameterNotifyRequest.getBeforeMaximumPoolSize() + changeSeparator + changeParameterNotifyRequest.getNowMaximumPoolSize(),
-                // 核心线程超时
                 changeParameterNotifyRequest.getBeforeAllowsCoreThreadTimeOut() + changeSeparator + changeParameterNotifyRequest.getNowAllowsCoreThreadTimeOut(),
-                // 线程存活时间
                 changeParameterNotifyRequest.getBeforeKeepAliveTime() + changeSeparator + changeParameterNotifyRequest.getNowKeepAliveTime(),
-                // 执行超时时间
                 changeParameterNotifyRequest.getBeforeExecuteTimeOut() + changeSeparator + changeParameterNotifyRequest.getNowExecuteTimeOut(),
-                // 阻塞队列
                 changeParameterNotifyRequest.getBlockingQueueName(),
-                // 阻塞队列容量
                 changeParameterNotifyRequest.getBeforeQueueCapacity() + changeSeparator + changeParameterNotifyRequest.getNowQueueCapacity(),
-                // 拒绝策略
                 changeParameterNotifyRequest.getBeforeRejectedName(),
                 changeParameterNotifyRequest.getNowRejectedName(),
-                // 告警手机号
                 Joiner.on(robotMessageActualContent.getReceiveSeparator()).join(notifyConfig.getReceives().split(",")),
-                // 当前时间
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         execute(RobotMessageExecuteDTO.builder().text(text).notifyConfig(notifyConfig).build());
     }
