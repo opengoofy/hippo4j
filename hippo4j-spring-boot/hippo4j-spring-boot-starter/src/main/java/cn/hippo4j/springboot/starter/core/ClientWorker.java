@@ -154,6 +154,9 @@ public class ClientWorker {
     }
 
     public List<String> checkUpdateTpIds(String probeUpdateString, boolean isInitializingCacheList) {
+        if (StringUtils.isEmpty(probeUpdateString)) {
+            return Collections.emptyList();
+        }
         Map<String, String> params = new HashMap(2);
         params.put(PROBE_MODIFY_REQUEST, probeUpdateString);
         params.put(WEIGHT_CONFIGS, IdUtil.simpleUUID());
@@ -164,9 +167,6 @@ public class ClientWorker {
         // Told server do not hang me up if new initializing cacheData added in.
         if (isInitializingCacheList) {
             headers.put(LONG_PULLING_TIMEOUT_NO_HANGUP, "true");
-        }
-        if (StringUtils.isEmpty(probeUpdateString)) {
-            return Collections.emptyList();
         }
         try {
             long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
