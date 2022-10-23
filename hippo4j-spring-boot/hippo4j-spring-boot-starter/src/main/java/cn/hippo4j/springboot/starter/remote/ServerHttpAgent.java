@@ -20,11 +20,11 @@ package cn.hippo4j.springboot.starter.remote;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.security.SecurityProxy;
-import cn.hippo4j.common.toolkit.HttpClientUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +41,6 @@ public class ServerHttpAgent implements HttpAgent {
 
     private final ServerListManager serverListManager;
 
-    private final HttpClientUtil httpClientUtil;
-
     private SecurityProxy securityProxy;
 
     private ServerHealthCheck serverHealthCheck;
@@ -51,11 +49,10 @@ public class ServerHttpAgent implements HttpAgent {
 
     private final long securityInfoRefreshIntervalMills = TimeUnit.SECONDS.toMillis(5);
 
-    public ServerHttpAgent(BootstrapProperties properties, HttpClientUtil httpClientUtil) {
+    public ServerHttpAgent(BootstrapProperties properties) {
         this.dynamicThreadPoolProperties = properties;
-        this.httpClientUtil = httpClientUtil;
         this.serverListManager = new ServerListManager(dynamicThreadPoolProperties);
-        this.securityProxy = new SecurityProxy(httpClientUtil, properties);
+        this.securityProxy = new SecurityProxy(properties);
         this.securityProxy.applyToken(this.serverListManager.getServerUrls());
         this.executorService = new ScheduledThreadPoolExecutor(
                 new Integer(1),
@@ -85,35 +82,35 @@ public class ServerHttpAgent implements HttpAgent {
     @Override
     public Result httpGetSimple(String path) {
         path = injectSecurityInfoByPath(path);
-        return httpClientUtil.restApiGetHealth(buildUrl(path), Result.class);
+        return HttpUtil.get(buildUrl(path), Result.class);
     }
 
     @Override
     public Result httpPost(String path, Object body) {
         isHealthStatus();
         path = injectSecurityInfoByPath(path);
-        return httpClientUtil.restApiPost(buildUrl(path), body, Result.class);
+        return HttpUtil.post(buildUrl(path), body, Result.class);
     }
 
     @Override
     public Result httpPostByDiscovery(String path, Object body) {
         isHealthStatus();
         path = injectSecurityInfoByPath(path);
-        return httpClientUtil.restApiPost(buildUrl(path), body, Result.class);
+        return HttpUtil.post(buildUrl(path), body, Result.class);
     }
 
     @Override
     public Result httpGetByConfig(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
         isHealthStatus();
         injectSecurityInfo(paramValues);
-        return httpClientUtil.restApiGetByThreadPool(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
+        return HttpUtil.get(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
     }
 
     @Override
     public Result httpPostByConfig(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
         isHealthStatus();
         injectSecurityInfo(paramValues);
-        return httpClientUtil.restApiPostByThreadPool(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
+        return HttpUtil.post(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
     }
 
     @Override
@@ -141,7 +138,7 @@ public class ServerHttpAgent implements HttpAgent {
 
     @Deprecated
     private String injectSecurityInfoByPath(String path) {
-        String resultPath = httpClientUtil.buildUrl(path, injectSecurityInfo(new HashMap<>()));
+        String resultPath = HttpUtil.buildUrl(path, injectSecurityInfo(new HashMap<>()));
         return resultPath;
     }
 }

@@ -18,8 +18,8 @@
 package cn.hippo4j.message.platform;
 
 import cn.hippo4j.common.toolkit.FileUtil;
-import cn.hippo4j.common.toolkit.HttpClientUtil;
 import cn.hippo4j.common.toolkit.Singleton;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
 import cn.hippo4j.message.platform.base.RobotMessageActualContent;
@@ -35,8 +35,6 @@ import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.*;
  */
 @Slf4j
 public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
-
-    private final HttpClientUtil httpClientUtil = HttpClientUtil.build();
 
     @Override
     public String getType() {
@@ -66,7 +64,7 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
             Markdown markdown = new Markdown();
             markdown.setContent(robotMessageExecuteDTO.getText());
             weChatReq.setMarkdown(markdown);
-            httpClientUtil.restApiPost(serverUrl, weChatReq, Object.class);
+            HttpUtil.post(serverUrl, weChatReq);
         } catch (Exception ex) {
             log.error("WeChat failed to send message", ex);
         }

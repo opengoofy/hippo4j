@@ -21,9 +21,9 @@ import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.TokenInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
-import cn.hippo4j.common.toolkit.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -39,8 +39,6 @@ public class SecurityProxy {
 
     private static final String APPLY_TOKEN_URL = Constants.BASE_PATH + "/auth/users/apply/token";
 
-    private final HttpClientUtil httpClientUtil;
-
     private final String username;
 
     private final String password;
@@ -53,10 +51,9 @@ public class SecurityProxy {
 
     private long tokenRefreshWindow;
 
-    public SecurityProxy(HttpClientUtil httpClientUtil, BootstrapProperties properties) {
+    public SecurityProxy(BootstrapProperties properties) {
         username = properties.getUsername();
         password = properties.getPassword();
-        this.httpClientUtil = httpClientUtil;
     }
 
     public boolean applyToken(List<String> servers) {
@@ -82,7 +79,7 @@ public class SecurityProxy {
             bodyMap.put("userName", username);
             bodyMap.put("password", password);
             try {
-                Result<String> result = httpClientUtil.restApiPost(url, bodyMap, Result.class);
+                Result result = HttpUtil.post(url, bodyMap, Result.class);
                 if (!result.isSuccess()) {
                     log.error("Error getting access token. message: {}", result.getMessage());
                     return false;

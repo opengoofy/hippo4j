@@ -17,7 +17,6 @@
 
 package cn.hippo4j.springboot.starter.config;
 
-import cn.hippo4j.common.toolkit.HttpClientUtil;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.ServerHttpAgent;
 import org.springframework.context.annotation.Bean;
@@ -28,13 +27,8 @@ import org.springframework.context.annotation.Bean;
 public class HttpClientConfiguration {
 
     @Bean
-    public HttpClientUtil hippo4JHttpClientUtil() {
-        return HttpClientUtil.build();
-    }
-
-    @Bean
     @SuppressWarnings("all")
-    public HttpAgent httpAgent(BootstrapProperties properties, HttpClientUtil hippo4JHttpClientUtil) {
-        return new ServerHttpAgent(properties, hippo4JHttpClientUtil);
+    public HttpAgent httpAgent(BootstrapProperties properties) {
+        return new ServerHttpAgent(properties);
     }
 }

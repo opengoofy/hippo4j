@@ -29,9 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- *@author : wh
- *@date : 2022/10/1 15:24
- *@description:
+ * Polaris refresher handler.
  */
 @RequiredArgsConstructor
 public class PolarisRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
@@ -80,5 +78,4 @@ public class PolarisRefresherHandler extends AbstractConfigThreadPoolDynamicRefr
         return Objects.equals(POLARIS_FILE_TYPE, "yaml") ? configFileService.getConfigYamlFile(namespace, fileGroup, fileName)
                 : configFileService.getConfigPropertiesFile(namespace, fileGroup, fileName);
     }
-
 }

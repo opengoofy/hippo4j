@@ -10,6 +10,10 @@
     <artifactId>hippo4j-example</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <modules>
         <module>hippo4j-example-core</module>
         <module>hippo4j-spring-boot-starter-example</module>
@@ -23,9 +27,7 @@
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq-example</module>
         <module>hippo4j-spring-boot-starter-adapter-rocketmq-example</module>
         <module>hippo4j-config-etcd-spring-boot-starter-example</module>
+        <module>hippo4j-config-nacos-spring-boot-1x-starter-example</module>
+        <module>hippo4j-config-apollo-spring-boot-1x-starter-example</module>
     </modules>
-
-    <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
-    </properties>
 </project>

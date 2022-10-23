@@ -42,6 +42,9 @@ public class ThreadPoolManager {
         return INSTANCE;
     }
 
+    private ThreadPoolManager() {
+    }
+
     static {
         INSTANCE.init();
     }

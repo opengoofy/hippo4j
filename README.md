@@ -1,5 +1,7 @@
 <img align="center" width="400" alt="image" src="https://user-images.githubusercontent.com/77398366/181906454-b46f6a14-7c2c-4b8f-8b0a-40432521bed8.png">
 
+中文 | [English](https://github.com/opengoofy/hippo4j/blob/develop/README-EN.md)
+
 # 动态可观测线程池框架，提高线上运行保障能力
 
 [![Gitee](https://gitee.com/itmachen/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/itmachen/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![Docker Pulls](https://img.shields.io/docker/pulls/hippo4j/hippo4j-server.svg)](https://store.docker.com/community/images/hippo4j/hippo4j-server) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=3ba272)](https://github.com/opengoofy/hippo4j/graphs/contributors) [![License](https://img.shields.io/github/license/opengoofy/hippo4j?color=5470c6)](https://github.com/opengoofy/hippo4j/blob/develop/LICENSE)
@@ -36,13 +38,17 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 - 功能扩展 - 支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务。
 - 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting_started/config/hippo4j-config-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting_started/server/hippo4j-server-start)。
 - 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更。
-- 中间件适配 - Dubbo、Hystrix、Polaris、RabbitMQ、RocketMQ 等消费线程池运行时数据查看和线程数变更。
+- 框架适配 - Dubbo、Hystrix、RabbitMQ、RocketMQ 等消费线程池运行时数据查看和线程数变更。
 
 ## 快速开始
 
 对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/user_docs/user_guide/quick-start)
 
 演示环境： [http://console.hippo4j.cn/index.html](http://console.hippo4j.cn/index.html)
+
+## 接入登记
+
+更多接入的公司，欢迎在 [登记地址](https://github.com/opengoofy/hippo4j/issues/13) 登记，登记仅仅为了产品推广。
 
 ## 联系我
 
@@ -101,17 +107,17 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/hippo4jbot">
+            <img src="https://avatars.githubusercontent.com/u/93201205?v=4" width="50;" alt="hippo4jbot"/>
+            <br />
+            <sub><b>Hippo4jbot[bot]</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/iwangjie">
             <img src="https://avatars.githubusercontent.com/u/23075587?v=4" width="50;" alt="iwangjie"/>
             <br />
             <sub><b>王杰</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/pizihao">
-            <img src="https://avatars.githubusercontent.com/u/48643103?v=4" width="50;" alt="pizihao"/>
-            <br />
-            <sub><b>Pizihao</b></sub>
         </a>
     </td>
     <td align="center">
@@ -122,13 +128,20 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/pizihao">
+            <img src="https://avatars.githubusercontent.com/u/48643103?v=4" width="50;" alt="pizihao"/>
+            <br />
+            <sub><b>Pizihao</b></sub>
+        </a>
+    </td></tr>
+<tr>
+    <td align="center">
         <a href="https://github.com/Gdk666">
             <img src="https://avatars.githubusercontent.com/u/22442067?v=4" width="50;" alt="Gdk666"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/xqxyxchy">
             <img src="https://avatars.githubusercontent.com/u/21134578?v=4" width="50;" alt="xqxyxchy"/>
@@ -162,13 +175,6 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <img src="https://avatars.githubusercontent.com/u/73152769?v=4" width="50;" alt="zhuanghaozhe"/>
             <br />
             <sub><b>庄昊哲</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/hippo4jbot">
-            <img src="https://avatars.githubusercontent.com/u/93201205?v=4" width="50;" alt="hippo4jbot"/>
-            <br />
-            <sub><b>Hippo4jbot[bot]</b></sub>
         </a>
     </td>
     <td align="center">
@@ -222,6 +228,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/wulangcode">
+            <img src="https://avatars.githubusercontent.com/u/48200100?v=4" width="50;" alt="wulangcode"/>
+            <br />
+            <sub><b>WuLang</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/gywanghai">
             <img src="https://avatars.githubusercontent.com/u/102774648?v=4" width="50;" alt="gywanghai"/>
             <br />
@@ -248,15 +261,15 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>Sean Wu</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/HKMV">
             <img src="https://avatars.githubusercontent.com/u/26456469?v=4" width="50;" alt="HKMV"/>
             <br />
             <sub><b>Serenity</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/gewuwo">
             <img src="https://avatars.githubusercontent.com/u/97213587?v=4" width="50;" alt="gewuwo"/>
@@ -312,15 +325,22 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>游祖光</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/puppet4">
             <img src="https://avatars.githubusercontent.com/u/28887178?v=4" width="50;" alt="puppet4"/>
             <br />
             <sub><b>Tudo</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
+    <td align="center">
+        <a href="https://github.com/yanrongzhen">
+            <img src="https://avatars.githubusercontent.com/u/106363931?v=4" width="50;" alt="yanrongzhen"/>
+            <br />
+            <sub><b>严荣振</b></sub>
+        </a>
+    </td>
     <td align="center">
         <a href="https://github.com/2EXP">
             <img src="https://avatars.githubusercontent.com/u/26007713?v=4" width="50;" alt="2EXP"/>
@@ -369,7 +389,8 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>Douspeng</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/hl1248">
             <img src="https://avatars.githubusercontent.com/u/70790953?v=4" width="50;" alt="hl1248"/>
@@ -382,14 +403,6 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <img src="https://avatars.githubusercontent.com/u/19168453?v=4" width="50;" alt="gentlelynn"/>
             <br />
             <sub><b>Lynn</b></sub>
-        </a>
-    </td></tr>
-<tr>
-    <td align="center">
-        <a href="https://github.com/wulangcode">
-            <img src="https://avatars.githubusercontent.com/u/48200100?v=4" width="50;" alt="wulangcode"/>
-            <br />
-            <sub><b>WuLang</b></sub>
         </a>
     </td>
     <td align="center">
@@ -440,15 +453,15 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>Guide</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/hbw1994">
             <img src="https://avatars.githubusercontent.com/u/22744421?v=4" width="50;" alt="hbw1994"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/hncboy">
             <img src="https://avatars.githubusercontent.com/u/27755574?v=4" width="50;" alt="hncboy"/>
@@ -504,15 +517,15 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>Op-lht</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/wangjie-github">
             <img src="https://avatars.githubusercontent.com/u/35762878?v=4" width="50;" alt="wangjie-github"/>
             <br />
             <sub><b>Wangjie</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/wangyi123456">
             <img src="https://avatars.githubusercontent.com/u/25248959?v=4" width="50;" alt="wangyi123456"/>
@@ -568,20 +581,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
             <br />
             <sub><b>Zhaojinchao</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/zj1997">
             <img src="https://avatars.githubusercontent.com/u/31212787?v=4" width="50;" alt="zj1997"/>
             <br />
             <sub><b>Null</b></sub>
-        </a>
-    </td></tr>
-<tr>
-    <td align="center">
-        <a href="https://github.com/yanrongzhen">
-            <img src="https://avatars.githubusercontent.com/u/106363931?v=4" width="50;" alt="yanrongzhen"/>
-            <br />
-            <sub><b>严荣振</b></sub>
         </a>
     </td>
     <td align="center">

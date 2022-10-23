@@ -38,12 +38,8 @@
 
     <modules>
         <module>hippo4j-adapter</module>
-        <module>hippo4j-auth</module>
         <module>hippo4j-common</module>
-        <module>hippo4j-config</module>
-        <module>hippo4j-console</module>
         <module>hippo4j-core</module>
-        <module>hippo4j-discovery</module>
         <module>hippo4j-example</module>
         <module>hippo4j-message</module>
         <module>hippo4j-monitor</module>
@@ -52,11 +48,10 @@
     </modules>
 
     <properties>
-        <revision>1.4.2-SNAPSHOT</revision>
+        <revision>1.4.3-SNAPSHOT</revision>
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
         <caffeine.version>2.9.3</caffeine.version>
-        <okhttp3.version>3.12.0</okhttp3.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
         <jjwt.version>0.9.0</jjwt.version>
@@ -110,11 +105,6 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.squareup.okhttp3</groupId>
-                <artifactId>okhttp</artifactId>
-                <version>${okhttp3.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.hippo4j</groupId>

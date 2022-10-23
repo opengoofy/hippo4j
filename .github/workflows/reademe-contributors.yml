@@ -21,7 +21,7 @@
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   contrib-readme-job:
