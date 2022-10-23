@@ -21,6 +21,7 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.config.springboot.starter.config.MonitorProperties;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
@@ -40,11 +41,11 @@ import java.util.concurrent.TimeUnit;
 import static cn.hippo4j.core.executor.manage.GlobalThreadPoolManage.getThreadPoolNum;
 
 /**
- * Dynamic thread-pool monitor executor.
+ * Thread-pool monitor executor.
  */
 @Slf4j
 @RequiredArgsConstructor
-public class DynamicThreadPoolMonitorExecutor implements ApplicationRunner {
+public class ThreadPoolMonitorExecutor implements ApplicationRunner {
 
     private final BootstrapConfigProperties properties;
 
@@ -54,8 +55,11 @@ public class DynamicThreadPoolMonitorExecutor implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        String collectType = properties.getCollectType();
-        if (!properties.getCollect() || StringUtil.isBlank(collectType)) {
+        MonitorProperties monitor = properties.getMonitor();
+        if (monitor == null
+                || !monitor.getEnable()
+                || StringUtil.isBlank(monitor.getThreadPoolTypes())
+                || StringUtil.isBlank(monitor.getCollectTypes())) {
             return;
         }
         log.info("Start monitoring the running status of dynamic thread pool.");
@@ -64,13 +68,8 @@ public class DynamicThreadPoolMonitorExecutor implements ApplicationRunner {
                 new Integer(1),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());
         // Get dynamic thread pool monitoring component.
-        List<String> collectTypes = Arrays.asList(collectType.split(","));
-        ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class)
-                .forEach((key, val) -> {
-                    if (collectTypes.contains(val.getType())) {
-                        threadPoolMonitors.add(val);
-                    }
-                });
+        List<String> collectTypes = Arrays.asList(monitor.getCollectTypes().split(","));
+        ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class).forEach((beanName, bean) -> threadPoolMonitors.add(bean));
         Collection<DynamicThreadPoolMonitor> dynamicThreadPoolMonitors =
                 DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
         dynamicThreadPoolMonitors.stream().filter(each -> collectTypes.contains(each.getType())).forEach(each -> threadPoolMonitors.add(each));
