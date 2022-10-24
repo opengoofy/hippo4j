@@ -38,6 +38,9 @@ public interface ThreadPoolPluginRegistry {
      * Register a {@link ThreadPoolPlugin}
      *
      * @param aware aware
+     * @throws IllegalArgumentException thrown when a plugin with the same {@link ThreadPoolPlugin#getId()}
+     *                                  already exists in the registry
+     * @see ThreadPoolPlugin#getId()
      */
     void register(ThreadPoolPlugin aware);
 

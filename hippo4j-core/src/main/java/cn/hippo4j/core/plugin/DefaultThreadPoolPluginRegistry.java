@@ -21,6 +21,9 @@ import cn.hippo4j.common.toolkit.Assert;
 import lombok.NonNull;
 
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * The default implementation of {@link ThreadPoolPluginRegistry}.
@@ -28,6 +31,11 @@ import java.util.*;
  * @author huangchengxing
  */
 public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry {
+
+    /**
+     * lock of this instance
+     */
+    private final ReadWriteLock instanceLock = new ReentrantReadWriteLock();
 
     /**
      * Registered {@link ThreadPoolPlugin}.
@@ -59,11 +67,17 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      */
     @Override
     public synchronized void clear() {
-        registeredPlugins.clear();
-        taskAwarePluginList.clear();
-        executeAwarePluginList.clear();
-        rejectedAwarePluginList.clear();
-        shutdownAwarePluginList.clear();
+        Lock writeLock = instanceLock.writeLock();
+        writeLock.lock();
+        try {
+            registeredPlugins.clear();
+            taskAwarePluginList.clear();
+            executeAwarePluginList.clear();
+            rejectedAwarePluginList.clear();
+            shutdownAwarePluginList.clear();
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     /**
@@ -74,24 +88,30 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      * @see ThreadPoolPlugin#getId()
      */
     @Override
-    public synchronized void register(@NonNull ThreadPoolPlugin aware) {
-        String id = aware.getId();
-        Assert.isTrue(!isRegistered(id), "The plug-in with id [" + id + "] has been registered");
+    public void register(@NonNull ThreadPoolPlugin aware) {
+        Lock writeLock = instanceLock.writeLock();
+        writeLock.lock();
+        try {
+            String id = aware.getId();
+            Assert.isTrue(!isRegistered(id), "The plug-in with id [" + id + "] has been registered");
 
-        // register aware
-        registeredPlugins.put(id, aware);
-        // quick index
-        if (aware instanceof TaskAwarePlugin) {
-            taskAwarePluginList.add((TaskAwarePlugin) aware);
-        }
-        if (aware instanceof ExecuteAwarePlugin) {
-            executeAwarePluginList.add((ExecuteAwarePlugin) aware);
-        }
-        if (aware instanceof RejectedAwarePlugin) {
-            rejectedAwarePluginList.add((RejectedAwarePlugin) aware);
-        }
-        if (aware instanceof ShutdownAwarePlugin) {
-            shutdownAwarePluginList.add((ShutdownAwarePlugin) aware);
+            // register aware
+            registeredPlugins.put(id, aware);
+            // quick index
+            if (aware instanceof TaskAwarePlugin) {
+                taskAwarePluginList.add((TaskAwarePlugin) aware);
+            }
+            if (aware instanceof ExecuteAwarePlugin) {
+                executeAwarePluginList.add((ExecuteAwarePlugin) aware);
+            }
+            if (aware instanceof RejectedAwarePlugin) {
+                rejectedAwarePluginList.add((RejectedAwarePlugin) aware);
+            }
+            if (aware instanceof ShutdownAwarePlugin) {
+                shutdownAwarePluginList.add((ShutdownAwarePlugin) aware);
+            }
+        } finally {
+            writeLock.unlock();
         }
     }
 
@@ -101,23 +121,30 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      * @param id name
      */
     @Override
-    public synchronized void unregister(String id) {
-        Optional.ofNullable(id)
-            .map(registeredPlugins::remove)
-            .ifPresent(old -> {
-                if (old instanceof TaskAwarePlugin) {
-                    taskAwarePluginList.remove(old);
-                }
-                if (old instanceof ExecuteAwarePlugin) {
-                    executeAwarePluginList.remove(old);
-                }
-                if (old instanceof RejectedAwarePlugin) {
-                    rejectedAwarePluginList.remove(old);
-                }
-                if (old instanceof ShutdownAwarePlugin) {
-                    shutdownAwarePluginList.remove(old);
-                }
-            });
+    public void unregister(String id) {
+        Lock writeLock = instanceLock.writeLock();
+        writeLock.lock();
+        try {
+            Optional.ofNullable(id)
+                .map(registeredPlugins::remove)
+                .ifPresent(old -> {
+                    // remove quick index if necessary
+                    if (old instanceof TaskAwarePlugin) {
+                        taskAwarePluginList.remove(old);
+                    }
+                    if (old instanceof ExecuteAwarePlugin) {
+                        executeAwarePluginList.remove(old);
+                    }
+                    if (old instanceof RejectedAwarePlugin) {
+                        rejectedAwarePluginList.remove(old);
+                    }
+                    if (old instanceof ShutdownAwarePlugin) {
+                        shutdownAwarePluginList.remove(old);
+                    }
+                });
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     /**
@@ -128,7 +155,12 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      */
     @Override
     public boolean isRegistered(String id) {
-        return registeredPlugins.containsKey(id);
+        Lock readLock = instanceLock.readLock();
+        try {
+            return registeredPlugins.containsKey(id);
+        } finally {
+            readLock.unlock();
+        }
     }
 
     /**
@@ -141,7 +173,12 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
     @Override
     @SuppressWarnings("unchecked")
     public <A extends ThreadPoolPlugin> A getAware(String id) {
-        return (A) registeredPlugins.get(id);
+        Lock readLock = instanceLock.readLock();
+        try {
+            return (A) registeredPlugins.get(id);
+        } finally {
+            readLock.unlock();
+        }
     }
 
     /**
@@ -151,7 +188,12 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      */
     @Override
     public Collection<ExecuteAwarePlugin> getExecuteAwareList() {
-        return executeAwarePluginList;
+        Lock readLock = instanceLock.readLock();
+        try {
+            return executeAwarePluginList;
+        } finally {
+            readLock.unlock();
+        }
     }
 
     /**
@@ -161,7 +203,12 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      */
     @Override
     public Collection<RejectedAwarePlugin> getRejectedAwareList() {
-        return rejectedAwarePluginList;
+        Lock readLock = instanceLock.readLock();
+        try {
+            return rejectedAwarePluginList;
+        } finally {
+            readLock.unlock();
+        }
     }
 
     /**
@@ -171,7 +218,12 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      */
     @Override
     public Collection<ShutdownAwarePlugin> getShutdownAwareList() {
-        return shutdownAwarePluginList;
+        Lock readLock = instanceLock.readLock();
+        try {
+            return shutdownAwarePluginList;
+        } finally {
+            readLock.unlock();
+        }
     }
 
     /**
@@ -181,7 +233,12 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      */
     @Override
     public Collection<TaskAwarePlugin> getTaskAwareList() {
-        return taskAwarePluginList;
+        Lock readLock = instanceLock.readLock();
+        try {
+            return taskAwarePluginList;
+        } finally {
+            readLock.unlock();
+        }
     }
 
 }

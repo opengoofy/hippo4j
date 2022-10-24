@@ -11,6 +11,7 @@ public interface ThreadPoolPluginRegistrar {
 
     /**
      * Get id.
+     * In spring container, the obtained id will be used as the alias of the bean name.
      *
      * @return id
      */

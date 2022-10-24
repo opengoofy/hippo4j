@@ -30,7 +30,7 @@ public class DefaultThreadPoolPluginRegistrar
     public static final String REGISTRAR_NAME = "DefaultThreadPoolPluginRegistrar";
 
     /**
-     * aliasRegistry
+     * alias registry
      */
     private AliasRegistry aliasRegistry;
 
