@@ -277,7 +277,7 @@ public class ExtensibleThreadPoolExecutor
      * @see RejectedAwarePlugin
      */
     @AllArgsConstructor
-    public static class RejectedAwareHandlerWrapper implements RejectedExecutionHandler {
+    private static class RejectedAwareHandlerWrapper implements RejectedExecutionHandler {
 
         /**
          * thread-pool action aware registry
