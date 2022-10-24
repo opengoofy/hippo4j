@@ -22,23 +22,38 @@ public class DefaultThreadPoolPluginRegistryTest {
     public void testRegister() {
         TaskAwarePlugin taskAwarePlugin = new TestTaskAwarePlugin();
         registry.register(taskAwarePlugin);
-        Assert.assertTrue(registry.isRegistered(taskAwarePlugin));
+        Assert.assertThrows(IllegalArgumentException.class, () -> registry.register(taskAwarePlugin));
+        Assert.assertTrue(registry.isRegistered(taskAwarePlugin.getId()));
         Assert.assertEquals(1, registry.getTaskAwareList().size());
+        Assert.assertSame(taskAwarePlugin, registry.getPlugin(taskAwarePlugin.getId()));
+        registry.getAndThen(taskAwarePlugin.getId(), TestTaskAwarePlugin.class, plugin -> Assert.assertSame(plugin, taskAwarePlugin));
+        Assert.assertEquals(taskAwarePlugin.getId(), registry.getAndThen(taskAwarePlugin.getId(), TestTaskAwarePlugin.class, TestTaskAwarePlugin::getId, null));
+        registry.unregister(taskAwarePlugin.getId());
+        Assert.assertNull(registry.getPlugin(taskAwarePlugin.getId()));
 
         ExecuteAwarePlugin executeAwarePlugin = new TestExecuteAwarePlugin();
         registry.register(executeAwarePlugin);
-        Assert.assertTrue(registry.isRegistered(executeAwarePlugin));
+        Assert.assertTrue(registry.isRegistered(executeAwarePlugin.getId()));
         Assert.assertEquals(1, registry.getExecuteAwareList().size());
+        Assert.assertSame(executeAwarePlugin, registry.getPlugin(executeAwarePlugin.getId()));
+        registry.unregister(executeAwarePlugin.getId());
+        Assert.assertNull(registry.getPlugin(executeAwarePlugin.getId()));
 
         RejectedAwarePlugin rejectedAwarePlugin = new TestRejectedAwarePlugin();
         registry.register(rejectedAwarePlugin);
-        Assert.assertTrue(registry.isRegistered(rejectedAwarePlugin));
+        Assert.assertTrue(registry.isRegistered(rejectedAwarePlugin.getId()));
         Assert.assertEquals(1, registry.getRejectedAwareList().size());
+        Assert.assertSame(rejectedAwarePlugin, registry.getPlugin(rejectedAwarePlugin.getId()));
+        registry.unregister(rejectedAwarePlugin.getId());
+        Assert.assertNull(registry.getPlugin(rejectedAwarePlugin.getId()));
 
         ShutdownAwarePlugin shutdownAwarePlugin = new TestShutdownAwarePlugin();
         registry.register(shutdownAwarePlugin);
-        Assert.assertTrue(registry.isRegistered(shutdownAwarePlugin));
+        Assert.assertTrue(registry.isRegistered(shutdownAwarePlugin.getId()));
         Assert.assertEquals(1, registry.getShutdownAwareList().size());
+        Assert.assertSame(shutdownAwarePlugin, registry.getPlugin(shutdownAwarePlugin.getId()));
+        registry.unregister(shutdownAwarePlugin.getId());
+        Assert.assertNull(registry.getPlugin(shutdownAwarePlugin.getId()));
     }
 
     private final static class TestTaskAwarePlugin implements TaskAwarePlugin {
