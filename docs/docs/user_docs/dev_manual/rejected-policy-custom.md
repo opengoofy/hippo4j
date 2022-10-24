@@ -52,6 +52,6 @@ cn.hippo4j.example.core.handler.ErrorLogRejectedExecutionHandler
 2022-08-01 21:27:49.515 ERROR 48928 --- [ateHandler.test] r$CustomErrorLogRejectedExecutionHandler : 线程池抛出拒绝策略
 ```
 
-:::tip
+:::note
 具体参考 `hippo4j-example/hippo4j-spring-boot-starter-example` 模块。
 :::

@@ -10,7 +10,7 @@ sidebar_position: 3
 
 需要注意，项目 ID 需要与配置文件 `{application.name}` 保持一致。
 
-:::tip
+:::note
 租户、项目、线程池 ID 如果由多个词组成，建议以 - 进行分割。比如：message-center。
 :::
 
@@ -107,7 +107,7 @@ public class ThreadPoolConfig {
 
 通过 ThreadPoolBuilder 构建动态线程池，只有 threadFactory、threadPoolId 为必填项，其它参数会从 hippo4j-server 服务拉取。
 
-:::tip
+:::note
 创建线程池时建议填充实际的参数。如果在连接 Hippo4J Server 端失败时，会使用填充配置创建线程池。
 :::
 
