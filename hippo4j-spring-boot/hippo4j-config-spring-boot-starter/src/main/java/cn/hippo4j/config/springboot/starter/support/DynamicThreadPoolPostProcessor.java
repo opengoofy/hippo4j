@@ -32,7 +32,7 @@ import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.CommonDynamicThreadPool;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
-import cn.hippo4j.core.toolkit.inet.DynamicThreadPoolAnnotationUtil;
+import cn.hippo4j.core.toolkit.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
