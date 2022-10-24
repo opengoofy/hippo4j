@@ -17,10 +17,7 @@
 
 package cn.hippo4j.common.toolkit;
 
-import java.util.Collection;
-import java.util.Dictionary;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
@@ -149,6 +146,41 @@ public class MapUtil {
             return ret;
         }
         return val;
+    }
+
+    /**
+     * Fuzzy matching based on Key.
+     *
+     * @param sourceMap
+     * @param filters
+     * @return
+     */
+    public static List<String> parseMapForFilter(Map<String, ?> sourceMap, String filters) {
+        List<String> resultList = new ArrayList<>();
+        if (CollectionUtil.isEmpty(sourceMap)) {
+            return resultList;
+        }
+        sourceMap.forEach((key, val) -> {
+            if (checkKey(key, filters)) {
+                resultList.add(key);
+            }
+        });
+        return resultList;
+    }
+
+    /**
+     * Match the characters you want to query.
+     *
+     * @param key
+     * @param filters
+     * @return
+     */
+    private static boolean checkKey(String key, String filters) {
+        if (key.indexOf(filters) > -1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

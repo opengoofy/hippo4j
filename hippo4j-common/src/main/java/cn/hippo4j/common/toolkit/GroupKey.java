@@ -24,6 +24,7 @@ import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
 
 /**
  * Group key.
+ * Refer to com.alibaba.nacos.client.config.common.GroupKey:<br>
  */
 public class GroupKey {
 

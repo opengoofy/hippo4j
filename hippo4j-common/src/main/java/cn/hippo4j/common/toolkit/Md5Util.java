@@ -28,6 +28,7 @@ import java.util.List;
 
 /**
  * MD5 util.
+ * Refer to com.alibaba.nacos.common.util.Md5Utils:<br>
  */
 public class Md5Util {
 
@@ -96,16 +97,12 @@ public class Md5Util {
             sb.append(Constants.WORD_SEPARATOR);
             sb.append(dataIdGroupId[1]);
             // if have tenant, then set it
-            if (dataIdGroupId.length == DATA_ID_GROUP_ID_THREE_LEN) {
-                if (StringUtil.isNotBlank(dataIdGroupId[2])) {
-                    sb.append(Constants.WORD_SEPARATOR);
-                    sb.append(dataIdGroupId[2]);
-                }
-            } else if (dataIdGroupId.length == DATA_ID_GROUP_ID_FOUR_LEN) {
-                if (StringUtil.isNotBlank(dataIdGroupId[2])) {
-                    sb.append(Constants.WORD_SEPARATOR);
-                    sb.append(dataIdGroupId[2]);
-                }
+            boolean b = (dataIdGroupId.length == DATA_ID_GROUP_ID_THREE_LEN
+                    || dataIdGroupId.length == DATA_ID_GROUP_ID_FOUR_LEN)
+                    && StringUtil.isNotBlank(dataIdGroupId[2]);
+            if (b) {
+                sb.append(Constants.WORD_SEPARATOR);
+                sb.append(dataIdGroupId[2]);
             }
             sb.append(Constants.LINE_SEPARATOR);
         }

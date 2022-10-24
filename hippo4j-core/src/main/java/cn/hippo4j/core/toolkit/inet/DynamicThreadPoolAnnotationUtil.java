@@ -18,6 +18,8 @@
 package cn.hippo4j.core.toolkit.inet;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -39,24 +41,23 @@ import java.util.Optional;
  * @author chen.ma
  * @date 2022/1/5 21:15
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DynamicThreadPoolAnnotationUtil {
 
     /**
      * 根据 {@param beanName} 查询注解 {@param annotationType} 是否存在.
      *
-     * @param beanName
-     * @param annotationType
-     * @param <A>
-     * @return
+     * @param beanName       bean name
+     * @param annotationType annotation class
+     * @param <A>            the Annotation type
      */
     public static <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType) {
         AbstractApplicationContext context = (AbstractApplicationContext) ApplicationContextHolder.getInstance();
         ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
-        A annotation = Optional.ofNullable(beanFactory)
+        return Optional.of(beanFactory)
                 .map(each -> (RootBeanDefinition) beanFactory.getMergedBeanDefinition(beanName))
-                .map(definition -> definition.getResolvedFactoryMethod())
+                .map(RootBeanDefinition::getResolvedFactoryMethod)
                 .map(factoryMethod -> AnnotationUtils.getAnnotation(factoryMethod, annotationType))
                 .orElse(null);
-        return annotation;
     }
 }
