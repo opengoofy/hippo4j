@@ -22,7 +22,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * System clock.
+ * System clock.<br>
+ * Refer to cn.hutool.core.date.SystemClock<br>
  */
 public class SystemClock {
 

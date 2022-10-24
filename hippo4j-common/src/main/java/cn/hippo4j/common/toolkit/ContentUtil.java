@@ -46,14 +46,13 @@ public class ContentUtil {
     }
 
     public static String getGroupKey(ThreadPoolParameter parameter) {
-        StringBuilder stringBuilder = new StringBuilder();
-        String resultStr = stringBuilder.append(parameter.getTpId())
+        return StringUtil.createBuilder()
+                .append(parameter.getTpId())
                 .append(Constants.GROUP_KEY_DELIMITER)
                 .append(parameter.getItemId())
                 .append(Constants.GROUP_KEY_DELIMITER)
                 .append(parameter.getTenantId())
                 .toString();
-        return resultStr;
     }
 
     public static String getGroupKey(String... parameters) {

@@ -15,10 +15,8 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.toolkit;
+package cn.hippo4j.common.toolkit;
 
-import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.common.toolkit.CollectionUtil;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -66,9 +64,9 @@ public class MapUtilTest {
 
     @Test
     public void computeIfAbsentNotExistKeyTest() {
-        Map<Object, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("abc", "123");
-        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        BiFunction<String, String, Object> mappingFunction = (a, b) -> a + b;
         try {
             MapUtil.computeIfAbsent(map, null, mappingFunction, "param1", "param2");
         } catch (Exception e) {
@@ -93,9 +91,9 @@ public class MapUtilTest {
 
     @Test
     public void computeIfAbsentNotExistParam1Test() {
-        Map<Object, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("abc", "123");
-        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        BiFunction<String, String, Object> mappingFunction = (a, b) -> a + b;
         try {
             MapUtil.computeIfAbsent(map, "abc", mappingFunction, null, "param2");
         } catch (Exception e) {
@@ -107,9 +105,9 @@ public class MapUtilTest {
 
     @Test
     public void computeIfAbsentNotExistParam2Test() {
-        Map<Object, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("abc", "123");
-        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        BiFunction<String, String, Object> mappingFunction = (a, b) -> a + b;
         try {
             MapUtil.computeIfAbsent(map, "abc", mappingFunction, "param1", null);
         } catch (Exception e) {
@@ -121,18 +119,18 @@ public class MapUtilTest {
 
     @Test
     public void computeIfAbsentValNotNullTest() {
-        Map<Object, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("abc", "123");
-        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        BiFunction<String, String, Object> mappingFunction = (a, b) -> a + b;
         Object ret = MapUtil.computeIfAbsent(map, "abc", mappingFunction, "param1", "param2");
         Assert.isTrue(Objects.equals("123", String.valueOf(ret)));
     }
 
     @Test
     public void computeIfAbsentValIsNullTest() {
-        Map<Object, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("abc", "123");
-        BiFunction<String, String, String> mappingFunction = (a, b) -> a + b;
+        BiFunction<String, String, Object> mappingFunction = (a, b) -> a + b;
         Object ret = MapUtil.computeIfAbsent(map, "xyz", mappingFunction, "param1", "param2");
         Assert.isTrue(Objects.equals("param1param2", String.valueOf(ret)));
     }

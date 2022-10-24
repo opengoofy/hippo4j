@@ -22,7 +22,6 @@ import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.BeanUtils;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -30,7 +29,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- * Bean util.
+ * Bean util.<br>
+ * use com.github.dozermapper
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BeanUtil {
@@ -73,6 +73,13 @@ public class BeanUtil {
                 .orElse(null);
     }
 
+    /**
+     * map to bean
+     *
+     * @param map         source data
+     * @param clazz       type
+     * @param toCamelCase key convert
+     */
     public static <T> T mapToBean(Map<String, Object> map, Class<T> clazz, boolean toCamelCase) {
         if (clazz == null) {
             return null;
