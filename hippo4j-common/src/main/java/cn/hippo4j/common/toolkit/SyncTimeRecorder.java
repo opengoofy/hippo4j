@@ -134,7 +134,7 @@ public class SyncTimeRecorder {
          * @return avg task time
          */
         public long getAvgTaskTimeMillis() {
-            return getMinTaskTime() / getTaskCount();
+            return getTotalTaskTime() / getTaskCount();
         }
 
     }

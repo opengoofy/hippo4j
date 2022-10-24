@@ -94,7 +94,7 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
      */
     @Override
     public void afterShutdown(ThreadPoolExecutor executor, List<Runnable> remainingTasks) {
-        if (executor instanceof ExtensibleThreadPoolExecutor && CollectionUtil.isNotEmpty(remainingTasks)) {
+        if (executor instanceof ExtensibleThreadPoolExecutor) {
             ExtensibleThreadPoolExecutor pool = (ExtensibleThreadPoolExecutor) executor;
             if (!waitForTasksToCompleteOnShutdown && CollectionUtil.isNotEmpty(remainingTasks)) {
                 remainingTasks.forEach(this::cancelRemainingTask);

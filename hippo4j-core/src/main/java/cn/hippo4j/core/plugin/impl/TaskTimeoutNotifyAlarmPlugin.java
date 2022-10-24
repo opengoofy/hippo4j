@@ -33,7 +33,7 @@ import java.util.Optional;
  * @author huangchengxing
  */
 @AllArgsConstructor
-public class TaskTimeoutNotifyAlarmPlugin extends TaskTimeRecordAwareProcessorPlugin {
+public class TaskTimeoutNotifyAlarmPlugin extends TaskTimeRecordPlugin {
 
     public static final String PLUGIN_NAME = "task-timeout-notify-alarm-plugin";
 

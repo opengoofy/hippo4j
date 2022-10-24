@@ -32,9 +32,9 @@ import java.util.Objects;
  * @see TaskTimeoutNotifyAlarmPlugin
  */
 @RequiredArgsConstructor
-public class TaskTimeRecordAwareProcessorPlugin extends SyncTimeRecorder implements ExecuteAwarePlugin {
+public class TaskTimeRecordPlugin extends SyncTimeRecorder implements ExecuteAwarePlugin {
 
-    public static final String PLUGIN_NAME = "task-time-record-aware-processor";
+    public static final String PLUGIN_NAME = "task-time-record-plugin";
 
     /**
      * Get id.
