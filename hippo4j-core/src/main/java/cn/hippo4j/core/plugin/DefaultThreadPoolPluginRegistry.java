@@ -19,6 +19,7 @@ package cn.hippo4j.core.plugin;
 
 import cn.hippo4j.common.toolkit.Assert;
 import lombok.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -83,32 +84,32 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
     /**
      * Register a {@link ThreadPoolPlugin}
      *
-     * @param aware aware
+     * @param plugin plugin
      * @throws IllegalArgumentException thrown when a plugin with the same {@link ThreadPoolPlugin#getId()} already exists in the registry
      * @see ThreadPoolPlugin#getId()
      */
     @Override
-    public void register(@NonNull ThreadPoolPlugin aware) {
+    public void register(@NonNull ThreadPoolPlugin plugin) {
         Lock writeLock = instanceLock.writeLock();
         writeLock.lock();
         try {
-            String id = aware.getId();
+            String id = plugin.getId();
             Assert.isTrue(!isRegistered(id), "The plug-in with id [" + id + "] has been registered");
 
-            // register aware
-            registeredPlugins.put(id, aware);
+            // register plugin
+            registeredPlugins.put(id, plugin);
             // quick index
-            if (aware instanceof TaskAwarePlugin) {
-                taskAwarePluginList.add((TaskAwarePlugin) aware);
+            if (plugin instanceof TaskAwarePlugin) {
+                taskAwarePluginList.add((TaskAwarePlugin)plugin);
             }
-            if (aware instanceof ExecuteAwarePlugin) {
-                executeAwarePluginList.add((ExecuteAwarePlugin) aware);
+            if (plugin instanceof ExecuteAwarePlugin) {
+                executeAwarePluginList.add((ExecuteAwarePlugin)plugin);
             }
-            if (aware instanceof RejectedAwarePlugin) {
-                rejectedAwarePluginList.add((RejectedAwarePlugin) aware);
+            if (plugin instanceof RejectedAwarePlugin) {
+                rejectedAwarePluginList.add((RejectedAwarePlugin)plugin);
             }
-            if (aware instanceof ShutdownAwarePlugin) {
-                shutdownAwarePluginList.add((ShutdownAwarePlugin) aware);
+            if (plugin instanceof ShutdownAwarePlugin) {
+                shutdownAwarePluginList.add((ShutdownAwarePlugin)plugin);
             }
         } finally {
             writeLock.unlock();
@@ -118,14 +119,14 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
     /**
      * Unregister {@link ThreadPoolPlugin}
      *
-     * @param id name
+     * @param pluginId plugin id
      */
     @Override
-    public void unregister(String id) {
+    public void unregister(String pluginId) {
         Lock writeLock = instanceLock.writeLock();
         writeLock.lock();
         try {
-            Optional.ofNullable(id)
+            Optional.ofNullable(pluginId)
                 .map(registeredPlugins::remove)
                 .ifPresent(old -> {
                     // remove quick index if necessary
@@ -150,14 +151,15 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
     /**
      * Whether the {@link ThreadPoolPlugin} has been registered.
      *
-     * @param id name
+     * @param pluginId plugin id
      * @return ture if target has been registered, false otherwise
      */
     @Override
-    public boolean isRegistered(String id) {
+    public boolean isRegistered(String pluginId) {
         Lock readLock = instanceLock.readLock();
+        readLock.lock();
         try {
-            return registeredPlugins.containsKey(id);
+            return registeredPlugins.containsKey(pluginId);
         } finally {
             readLock.unlock();
         }
@@ -166,29 +168,32 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
     /**
      * Get {@link ThreadPoolPlugin}
      *
-     * @param id target name
-     * @param <A> target aware type
+     * @param pluginId plugin id
+     * @param <A> plugin type
      * @return {@link ThreadPoolPlugin}, null if unregister
      */
+    @Nullable
     @Override
     @SuppressWarnings("unchecked")
-    public <A extends ThreadPoolPlugin> A getAware(String id) {
+    public <A extends ThreadPoolPlugin> A getPlugin(String pluginId) {
         Lock readLock = instanceLock.readLock();
+        readLock.lock();
         try {
-            return (A) registeredPlugins.get(id);
+            return (A) registeredPlugins.get(pluginId);
         } finally {
             readLock.unlock();
         }
     }
 
     /**
-     * Get execute aware list.
+     * Get execute plugin list.
      *
      * @return {@link ExecuteAwarePlugin}
      */
     @Override
     public Collection<ExecuteAwarePlugin> getExecuteAwareList() {
         Lock readLock = instanceLock.readLock();
+        readLock.lock();
         try {
             return executeAwarePluginList;
         } finally {
@@ -197,13 +202,14 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
     }
 
     /**
-     * Get rejected aware list.
+     * Get rejected plugin list.
      *
      * @return {@link RejectedAwarePlugin}
      */
     @Override
     public Collection<RejectedAwarePlugin> getRejectedAwareList() {
         Lock readLock = instanceLock.readLock();
+        readLock.lock();
         try {
             return rejectedAwarePluginList;
         } finally {
@@ -212,13 +218,14 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
     }
 
     /**
-     * Get shutdown aware list.
+     * Get shutdown plugin list.
      *
      * @return {@link ShutdownAwarePlugin}
      */
     @Override
     public Collection<ShutdownAwarePlugin> getShutdownAwareList() {
         Lock readLock = instanceLock.readLock();
+        readLock.lock();
         try {
             return shutdownAwarePluginList;
         } finally {
@@ -227,13 +234,14 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
     }
 
     /**
-     * Get shutdown aware list.
+     * Get shutdown plugin list.
      *
      * @return {@link ShutdownAwarePlugin}
      */
     @Override
     public Collection<TaskAwarePlugin> getTaskAwareList() {
         Lock readLock = instanceLock.readLock();
+        readLock.lock();
         try {
             return taskAwarePluginList;
         } finally {

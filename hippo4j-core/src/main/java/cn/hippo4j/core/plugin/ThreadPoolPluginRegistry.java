@@ -17,6 +17,8 @@
 
 package cn.hippo4j.core.plugin;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -37,97 +39,98 @@ public interface ThreadPoolPluginRegistry {
     /**
      * Register a {@link ThreadPoolPlugin}
      *
-     * @param aware aware
+     * @param plugin plugin
      * @throws IllegalArgumentException thrown when a plugin with the same {@link ThreadPoolPlugin#getId()}
      *                                  already exists in the registry
      * @see ThreadPoolPlugin#getId()
      */
-    void register(ThreadPoolPlugin aware);
+    void register(ThreadPoolPlugin plugin);
 
     /**
      * Whether the {@link ThreadPoolPlugin} has been registered.
      *
-     * @param name name
+     * @param pluginId plugin id
      * @return ture if target has been registered, false otherwise
      */
-    boolean isRegistered(String name);
+    boolean isRegistered(String pluginId);
 
     /**
      * Unregister {@link ThreadPoolPlugin}
      *
-     * @param name name
+     * @param pluginId plugin id
      */
-    void unregister(String name);
+    void unregister(String pluginId);
 
     /**
      * Get {@link ThreadPoolPlugin}
      *
-     * @param name target name
+     * @param pluginId  plugin id
      * @param <A> target aware type
      * @return {@link ThreadPoolPlugin}, null if unregister
      * @throws ClassCastException thrown when the object obtained by name cannot be converted to target type
      */
-    <A extends ThreadPoolPlugin> A getAware(String name);
+    @Nullable
+    <A extends ThreadPoolPlugin> A getPlugin(String pluginId);
 
     /**
-     * Get execute aware list.
+     * Get execute aware plugin list.
      *
      * @return {@link ExecuteAwarePlugin}
      */
     Collection<ExecuteAwarePlugin> getExecuteAwareList();
 
     /**
-     * Get rejected aware list.
+     * Get rejected aware plugin list.
      *
      * @return {@link RejectedAwarePlugin}
      */
     Collection<RejectedAwarePlugin> getRejectedAwareList();
 
     /**
-     * Get shutdown aware list.
+     * Get shutdown aware plugin list.
      *
      * @return {@link ShutdownAwarePlugin}
      */
     Collection<ShutdownAwarePlugin> getShutdownAwareList();
 
     /**
-     * Get shutdown aware list.
+     * Get shutdown aware plugin list.
      *
      * @return {@link ShutdownAwarePlugin}
      */
     Collection<TaskAwarePlugin> getTaskAwareList();
 
     /**
-     * Try to get target Aware and apply operation, do nothing if is not present.
+     * Try to get target plugin and apply operation, do nothing if it's not present.
      *
-     * @param name aware name
+     * @param pluginId plugin id
      * @param targetType target type
-     * @param consumer operation for target aware
-     * @param <A> aware type
+     * @param consumer operation for target plugin
+     * @param <A> plugin type
      * @return this instance
      * @throws ClassCastException thrown when the object obtained by name cannot be converted to target type
      */
     default <A extends ThreadPoolPlugin> ThreadPoolPluginRegistry getAndThen(
-        String name, Class<A> targetType, Consumer<A> consumer) {
-        Optional.ofNullable(getAware(name))
+        String pluginId, Class<A> targetType, Consumer<A> consumer) {
+        Optional.ofNullable(getPlugin(pluginId))
             .map(targetType::cast)
             .ifPresent(consumer);
         return this;
     }
 
     /**
-     * Try to get target Aware and return value of apply function, return default value if is not present.
+     * Try to get target plugin and return value of apply function, return default value if it's not present.
      *
-     * @param name aware name
+     * @param pluginId plugin id
      * @param targetType target type
-     * @param function operation for target aware
+     * @param function operation for target plugin
      * @param defaultValue default value
-     * @param <A> aware type
-     * @return value of apply function, default value if aware is not present
+     * @param <A> plugin type
+     * @return value of apply function, default value if plugin is not present
      * @throws ClassCastException thrown when the object obtained by name cannot be converted to target type
      */
-    default <A extends ThreadPoolPlugin, R> R getAndThen(String name, Class<A> targetType, Function<A, R> function, R defaultValue) {
-        return Optional.ofNullable(getAware(name))
+    default <A extends ThreadPoolPlugin, R> R getAndThen(String pluginId, Class<A> targetType, Function<A, R> function, R defaultValue) {
+        return Optional.ofNullable(getPlugin(pluginId))
             .map(targetType::cast)
             .map(function)
             .orElse(defaultValue);

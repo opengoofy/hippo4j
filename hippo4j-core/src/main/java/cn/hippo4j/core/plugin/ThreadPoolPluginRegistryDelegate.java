@@ -1,6 +1,7 @@
 package cn.hippo4j.core.plugin;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 
@@ -30,44 +31,45 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
     /**
      * Register a {@link ThreadPoolPlugin}
      *
-     * @param aware aware
+     * @param plugin aware
      */
     @Override
-    default void register(ThreadPoolPlugin aware) {
-        getThreadPoolPluginRegistry().register(aware);
+    default void register(ThreadPoolPlugin plugin) {
+        getThreadPoolPluginRegistry().register(plugin);
     }
 
     /**
      * Whether the {@link ThreadPoolPlugin} has been registered.
      *
-     * @param name name
+     * @param pluginId name
      * @return ture if target has been registered, false otherwise
      */
     @Override
-    default boolean isRegistered(String name) {
-        return getThreadPoolPluginRegistry().isRegistered(name);
+    default boolean isRegistered(String pluginId) {
+        return getThreadPoolPluginRegistry().isRegistered(pluginId);
     }
 
     /**
      * Unregister {@link ThreadPoolPlugin}
      *
-     * @param name name
+     * @param pluginId name
      */
     @Override
-    default void unregister(String name) {
-        getThreadPoolPluginRegistry().unregister(name);
+    default void unregister(String pluginId) {
+        getThreadPoolPluginRegistry().unregister(pluginId);
     }
 
     /**
      * Get {@link ThreadPoolPlugin}
      *
-     * @param name target name
+     * @param pluginId target name
      * @return {@link ThreadPoolPlugin}, null if unregister
      * @throws ClassCastException thrown when the object obtained by name cannot be converted to target type
      */
+    @Nullable
     @Override
-    default <A extends ThreadPoolPlugin> A getAware(String name) {
-        return getThreadPoolPluginRegistry().getAware(name);
+    default <A extends ThreadPoolPlugin> A getPlugin(String pluginId) {
+        return getThreadPoolPluginRegistry().getPlugin(pluginId);
     }
 
     /**
