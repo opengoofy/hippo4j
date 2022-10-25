@@ -88,7 +88,7 @@ public class Lease<T> {
     }
 
     public boolean isExpired(long additionalLeaseMs) {
-        return (evictionTimestamp > 0 || System.currentTimeMillis() > (lastUpdateTimestamp + duration + additionalLeaseMs));
+        return (evictionTimestamp > 0 || System.currentTimeMillis() > (lastUpdateTimestamp + additionalLeaseMs));
     }
 
     public long getRegistrationTimestamp() {
