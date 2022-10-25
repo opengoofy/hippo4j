@@ -68,7 +68,7 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
                 .allowCoreThreadTimeOut(BooleanUtil.toBoolean(String.valueOf(registerParameter.getAllowCoreThreadTimeOut())))
                 .keepAliveTime(registerParameter.getKeepAliveTime())
                 .blockingQueue(BlockingQueueTypeEnum.getBlockingQueueNameByType(registerParameter.getBlockingQueueType().getType()))
-                .capacityAlarm(registerParameter.getCapacity())
+                .queueCapacity(registerParameter.getCapacity())
                 .threadNamePrefix(registerParameter.getThreadNamePrefix())
                 .rejectedHandler(RejectedPolicyTypeEnum.getRejectedNameByType(registerParameter.getRejectedPolicyType().getType()))
                 .executeTimeOut(registerParameter.getExecuteTimeOut())

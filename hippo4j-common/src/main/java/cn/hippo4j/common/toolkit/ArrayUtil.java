@@ -22,7 +22,8 @@ import cn.hippo4j.common.function.Matcher;
 import java.lang.reflect.Array;
 
 /**
- * Array util.
+ * Array util.<br>
+ * Refer to cn.hutool.core.util.ArrayUtil:<br>
  */
 public class ArrayUtil {
 

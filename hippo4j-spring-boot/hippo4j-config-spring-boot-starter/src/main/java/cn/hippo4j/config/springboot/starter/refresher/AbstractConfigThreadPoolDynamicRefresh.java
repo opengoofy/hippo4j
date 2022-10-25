@@ -36,11 +36,7 @@ import java.util.concurrent.ExecutorService;
  * Abstract core thread-pool dynamic refresh.
  */
 @Slf4j
-public abstract class AbstractConfigThreadPoolDynamicRefresh
-        implements
-            ThreadPoolDynamicRefresh,
-            ThreadPoolInitRefresh,
-            InitializingBean {
+public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, ThreadPoolInitRefresh, InitializingBean {
 
     private final BootstrapConfigPropertiesBinderAdapt bootstrapConfigPropertiesBinderAdapt;
 

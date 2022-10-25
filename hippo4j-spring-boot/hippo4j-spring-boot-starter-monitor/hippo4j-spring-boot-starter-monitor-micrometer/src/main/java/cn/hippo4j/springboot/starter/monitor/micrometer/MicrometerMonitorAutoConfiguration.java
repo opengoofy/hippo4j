@@ -20,6 +20,7 @@ package cn.hippo4j.springboot.starter.monitor.micrometer;
 import cn.hippo4j.monitor.micrometer.AdapterThreadPoolMicrometerMonitorHandler;
 import cn.hippo4j.monitor.micrometer.DynamicThreadPoolMicrometerMonitorHandler;
 import cn.hippo4j.monitor.micrometer.WebThreadPoolMicrometerMonitorHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,19 +28,23 @@ import org.springframework.context.annotation.Configuration;
  * Micrometer monitor auto configuration.
  */
 @Configuration
+@ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.collect-types:}'.contains('micrometer')")
 public class MicrometerMonitorAutoConfiguration {
 
     @Bean
+    @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('dynamic')")
     public DynamicThreadPoolMicrometerMonitorHandler dynamicThreadPoolMicrometerMonitorHandler() {
         return new DynamicThreadPoolMicrometerMonitorHandler();
     }
 
     @Bean
+    @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('web')")
     public WebThreadPoolMicrometerMonitorHandler webThreadPoolMicrometerMonitorHandler() {
         return new WebThreadPoolMicrometerMonitorHandler();
     }
 
     @Bean
+    @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('adapter')")
     public AdapterThreadPoolMicrometerMonitorHandler adapterThreadPoolMicrometerMonitorHandler() {
         return new AdapterThreadPoolMicrometerMonitorHandler();
     }

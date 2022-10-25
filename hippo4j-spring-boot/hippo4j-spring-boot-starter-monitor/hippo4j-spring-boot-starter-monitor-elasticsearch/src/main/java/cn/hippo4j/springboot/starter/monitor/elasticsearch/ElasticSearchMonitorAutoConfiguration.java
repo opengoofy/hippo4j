@@ -20,6 +20,7 @@ package cn.hippo4j.springboot.starter.monitor.elasticsearch;
 import cn.hippo4j.monitor.elasticsearch.AdapterThreadPoolElasticSearchMonitorHandler;
 import cn.hippo4j.monitor.elasticsearch.DynamicThreadPoolElasticSearchMonitorHandler;
 import cn.hippo4j.monitor.elasticsearch.WebThreadPoolElasticSearchMonitorHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,19 +28,23 @@ import org.springframework.context.annotation.Configuration;
  * Elastic-search monitor auto configuration.
  */
 @Configuration
+@ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.collect-types:}'.contains('elasticsearch')")
 public class ElasticSearchMonitorAutoConfiguration {
 
     @Bean
+    @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('dynamic')")
     public DynamicThreadPoolElasticSearchMonitorHandler dynamicThreadPoolElasticSearchMonitorHandler() {
         return new DynamicThreadPoolElasticSearchMonitorHandler();
     }
 
     @Bean
+    @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('web')")
     public WebThreadPoolElasticSearchMonitorHandler webThreadPoolElasticSearchMonitorHandler() {
         return new WebThreadPoolElasticSearchMonitorHandler();
     }
 
     @Bean
+    @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('adapter')")
     public AdapterThreadPoolElasticSearchMonitorHandler adapterThreadPoolElasticSearchMonitorHandler() {
         return new AdapterThreadPoolElasticSearchMonitorHandler();
     }

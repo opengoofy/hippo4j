@@ -18,17 +18,51 @@
 package cn.hippo4j.monitor.micrometer;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.monitor.base.AbstractAdapterThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Tag;
+import org.springframework.core.env.Environment;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Adapter thread-pool micrometer monitor handler.
  */
 public class AdapterThreadPoolMicrometerMonitorHandler extends AbstractAdapterThreadPoolMonitor {
 
+    private final static String METRIC_NAME_PREFIX = "adapter.thread-pool";
+
+    private final static String ADAPTER_THREAD_POOL_ID_TAG = METRIC_NAME_PREFIX + ".id";
+
+    private final static String APPLICATION_NAME_TAG = "application.name";
+
+    private final Map<String, ThreadPoolAdapterState> RUN_STATE_CACHE = new ConcurrentHashMap<>();
+
     @Override
     protected void execute(ThreadPoolAdapterState threadPoolAdapterState) {
+        ThreadPoolAdapterState stateInfo = RUN_STATE_CACHE.get(threadPoolAdapterState.getThreadPoolKey());
+        if (stateInfo == null) {
+            RUN_STATE_CACHE.put(threadPoolAdapterState.getThreadPoolKey(), threadPoolAdapterState);
+        } else {
+            BeanUtil.convert(threadPoolAdapterState, stateInfo);
+        }
+        Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
+        String applicationName = environment.getProperty("spring.application.name", "application");
+        Iterable<Tag> tags = CollectionUtil.newArrayList(
+                Tag.of(ADAPTER_THREAD_POOL_ID_TAG, threadPoolAdapterState.getThreadPoolKey()),
+                Tag.of(APPLICATION_NAME_TAG, applicationName));
+        Metrics.gauge(metricName("core.size"), tags, threadPoolAdapterState, ThreadPoolAdapterState::getCoreSize);
+        Metrics.gauge(metricName("maximum.size"), tags, threadPoolAdapterState, ThreadPoolAdapterState::getMaximumSize);
+        Metrics.gauge(metricName("queue.capacity"), tags, threadPoolAdapterState, ThreadPoolAdapterState::getBlockingQueueCapacity);
+    }
 
+    private String metricName(String name) {
+        return String.join(".", METRIC_NAME_PREFIX, name);
     }
 
     @Override

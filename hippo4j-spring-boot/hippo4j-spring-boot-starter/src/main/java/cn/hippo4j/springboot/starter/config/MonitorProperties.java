@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.springboot.starter.config;
 
 import cn.hippo4j.monitor.base.MonitorThreadPoolTypeEnum;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
@@ -35,7 +35,7 @@ public class MonitorProperties {
     /**
      * Type of collection thread pool running data. eg: log,micrometer. Multiple can be used at the same time, default micrometer.
      */
-    private String collectTypes = MonitorTypeEnum.MICROMETER.toString().toLowerCase();
+    private String collectTypes = MonitorTypeEnum.SERVER.toString().toLowerCase();
 
     /**
      * Monitor the type of thread pool. eg: dynamic,web,adapter. Can be configured arbitrarily, default dynamic.
@@ -51,4 +51,9 @@ public class MonitorProperties {
      * Collect interval. unit: ms
      */
     private Long collectInterval = 5000L;
+
+    /**
+     * Task buffer container capacity
+     */
+    private Integer taskBufferSize = 4096;
 }

@@ -19,12 +19,10 @@ package cn.hippo4j.adapter.web;
 
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.ByteConvertUtil;
+import cn.hippo4j.common.toolkit.MemoryUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
 import lombok.extern.slf4j.Slf4j;
-
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryMXBean;
-import java.lang.management.MemoryUsage;
 
 /**
  * Web thread pool run state handler.
@@ -34,16 +32,13 @@ public class WebThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
 
     @Override
     public ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo poolRunStateInfo) {
-        MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
-        MemoryUsage heapMemoryUsage = memoryMXBean.getHeapMemoryUsage();
-        long used = heapMemoryUsage.getUsed();
-        long max = heapMemoryUsage.getMax();
-        String memoryProportion = new StringBuilder()
-                .append("已分配: ")
-                .append(ByteConvertUtil.getPrintSize(used))
-                .append(" / 最大可用: ")
-                .append(ByteConvertUtil.getPrintSize(max))
-                .toString();
+        long used = MemoryUtil.heapMemoryUsed();
+        long max = MemoryUtil.heapMemoryMax();
+        String memoryProportion = StringUtil.newBuilder(
+                "已分配: ",
+                ByteConvertUtil.getPrintSize(used),
+                " / 最大可用: ",
+                ByteConvertUtil.getPrintSize(max));
         poolRunStateInfo.setCurrentLoad(poolRunStateInfo.getCurrentLoad() + "%");
         poolRunStateInfo.setPeakLoad(poolRunStateInfo.getPeakLoad() + "%");
         poolRunStateInfo.setMemoryProportion(memoryProportion);
