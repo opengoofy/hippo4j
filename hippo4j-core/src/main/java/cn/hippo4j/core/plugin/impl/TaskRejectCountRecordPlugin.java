@@ -18,6 +18,7 @@
 package cn.hippo4j.core.plugin.impl;
 
 import cn.hippo4j.core.plugin.RejectedAwarePlugin;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,6 +39,7 @@ public class TaskRejectCountRecordPlugin implements RejectedAwarePlugin {
      *
      * @return id
      */
+    @JsonProperty("pluginId")
     @Override
     public String getId() {
         return PLUGIN_NAME;
@@ -66,6 +68,7 @@ public class TaskRejectCountRecordPlugin implements RejectedAwarePlugin {
      *
      * @return reject count num
      */
+    @JsonProperty("rejectCount")
     public Long getRejectCountNum() {
         return rejectCount.get();
     }

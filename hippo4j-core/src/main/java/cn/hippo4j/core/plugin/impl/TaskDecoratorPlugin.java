@@ -19,6 +19,7 @@ package cn.hippo4j.core.plugin.impl;
 
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.core.task.TaskDecorator;
@@ -40,6 +41,7 @@ public class TaskDecoratorPlugin implements ExecuteAwarePlugin {
      *
      * @return id
      */
+    @JsonProperty("pluginId")
     @Override
     public String getId() {
         return PLUGIN_NAME;
@@ -48,6 +50,7 @@ public class TaskDecoratorPlugin implements ExecuteAwarePlugin {
     /**
      * decorators
      */
+    @JsonProperty("decorators")
     @Getter
     private final List<TaskDecorator> decorators = new ArrayList<>();
 

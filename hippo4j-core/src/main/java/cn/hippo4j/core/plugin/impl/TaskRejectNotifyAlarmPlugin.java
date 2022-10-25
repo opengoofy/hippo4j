@@ -21,6 +21,7 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.plugin.RejectedAwarePlugin;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Optional;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -39,6 +40,7 @@ public class TaskRejectNotifyAlarmPlugin implements RejectedAwarePlugin {
      *
      * @return id
      */
+    @JsonProperty("pluginId")
     @Override
     public String getId() {
         return PLUGIN_NAME;

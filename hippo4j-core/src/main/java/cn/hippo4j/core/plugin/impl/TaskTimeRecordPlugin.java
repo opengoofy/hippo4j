@@ -21,6 +21,7 @@ import cn.hippo4j.common.toolkit.SyncTimeRecorder;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
 import cn.hippo4j.core.toolkit.SystemClock;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
@@ -41,9 +42,15 @@ public class TaskTimeRecordPlugin extends SyncTimeRecorder implements ExecuteAwa
      *
      * @return id
      */
+    @JsonProperty("pluginId")
     @Override
     public String getId() {
         return PLUGIN_NAME;
+    }
+
+    @JsonProperty("taskTimeInfo")
+    public Summary getInfo() {
+        return summarize();
     }
 
     /**

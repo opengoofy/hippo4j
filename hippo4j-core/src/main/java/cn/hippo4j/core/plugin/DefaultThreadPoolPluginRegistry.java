@@ -148,6 +148,17 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
         }
     }
 
+    @Override
+    public Collection<ThreadPoolPlugin> getAllPlugins() {
+        Lock readLock = instanceLock.readLock();
+        readLock.lock();
+        try {
+            return registeredPlugins.values();
+        } finally {
+            readLock.unlock();
+        }
+    }
+
     /**
      * Whether the {@link ThreadPoolPlugin} has been registered.
      *

@@ -37,6 +37,13 @@ public interface ThreadPoolPluginRegistry {
     void clear();
 
     /**
+     * Get all registered plugins.
+     *
+     * @return plugins
+     */
+    Collection<ThreadPoolPlugin> getAllPlugins();
+
+    /**
      * Register a {@link ThreadPoolPlugin}
      *
      * @param plugin plugin

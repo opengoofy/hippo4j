@@ -20,6 +20,7 @@ package cn.hippo4j.core.plugin.impl;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,7 @@ public class TaskTimeoutNotifyAlarmPlugin extends TaskTimeRecordPlugin {
      *
      * @return id
      */
+    @JsonProperty("pluginId")
     @Override
     public String getId() {
         return PLUGIN_NAME;

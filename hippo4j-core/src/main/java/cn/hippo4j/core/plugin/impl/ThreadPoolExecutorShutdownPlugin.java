@@ -20,6 +20,7 @@ package cn.hippo4j.core.plugin.impl;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.ShutdownAwarePlugin;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,6 +51,7 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
      *
      * @return id
      */
+    @JsonProperty("pluginId")
     @Override
     public String getId() {
         return PLUGIN_NAME;

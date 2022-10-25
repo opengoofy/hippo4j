@@ -60,6 +60,16 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
     }
 
     /**
+     * Get all registered plugins.
+     *
+     * @return plugins
+     */
+    @Override
+    default Collection<ThreadPoolPlugin> getAllPlugins() {
+        return getThreadPoolPluginRegistry().getAllPlugins();
+    }
+
+    /**
      * Get {@link ThreadPoolPlugin}
      *
      * @param pluginId target name
