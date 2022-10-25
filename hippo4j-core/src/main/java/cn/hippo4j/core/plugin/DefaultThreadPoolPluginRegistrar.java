@@ -66,7 +66,7 @@ public class DefaultThreadPoolPluginRegistrar
      * @param executor executor
      */
     @Override
-    public void doRegister(ThreadPoolPluginRegistry registry, ExtensibleThreadPoolExecutor executor) {
+    public void doRegister(ThreadPoolPluginManager registry, ExtensibleThreadPoolExecutor executor) {
         // callback when task execute
         registry.register(new TaskDecoratorPlugin());
         registry.register(new TaskTimeoutNotifyAlarmPlugin(executeTimeOut, executor));

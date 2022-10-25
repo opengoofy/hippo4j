@@ -5,17 +5,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * test for {@link DefaultThreadPoolPluginRegistry}
+ * test for {@link DefaultThreadPoolPluginManager}
  *
  * @author huangchengxing
  */
-public class DefaultThreadPoolPluginRegistryTest {
+public class DefaultThreadPoolPluginManagerTest {
 
-    private DefaultThreadPoolPluginRegistry registry;
+    private DefaultThreadPoolPluginManager registry;
 
     @Before
     public void initRegistry() {
-        registry = new DefaultThreadPoolPluginRegistry();
+        registry = new DefaultThreadPoolPluginManager();
     }
 
     @Test
@@ -24,17 +24,18 @@ public class DefaultThreadPoolPluginRegistryTest {
         registry.register(taskAwarePlugin);
         Assert.assertThrows(IllegalArgumentException.class, () -> registry.register(taskAwarePlugin));
         Assert.assertTrue(registry.isRegistered(taskAwarePlugin.getId()));
-        Assert.assertEquals(1, registry.getTaskAwareList().size());
+        Assert.assertEquals(1, registry.getTaskAwarePluginList().size());
         Assert.assertSame(taskAwarePlugin, registry.getPlugin(taskAwarePlugin.getId()));
-        registry.getAndThen(taskAwarePlugin.getId(), TestTaskAwarePlugin.class, plugin -> Assert.assertSame(plugin, taskAwarePlugin));
-        Assert.assertEquals(taskAwarePlugin.getId(), registry.getAndThen(taskAwarePlugin.getId(), TestTaskAwarePlugin.class, TestTaskAwarePlugin::getId, null));
+        registry.getPluginOfType(taskAwarePlugin.getId(), TestTaskAwarePlugin.class)
+            .ifPresent(plugin -> Assert.assertSame(plugin, taskAwarePlugin));
+        Assert.assertEquals(taskAwarePlugin.getId(), registry.getPluginOfType(taskAwarePlugin.getId(), TestTaskAwarePlugin.class).map(TestTaskAwarePlugin::getId).orElse(null));
         registry.unregister(taskAwarePlugin.getId());
         Assert.assertNull(registry.getPlugin(taskAwarePlugin.getId()));
 
         ExecuteAwarePlugin executeAwarePlugin = new TestExecuteAwarePlugin();
         registry.register(executeAwarePlugin);
         Assert.assertTrue(registry.isRegistered(executeAwarePlugin.getId()));
-        Assert.assertEquals(1, registry.getExecuteAwareList().size());
+        Assert.assertEquals(1, registry.getExecuteAwarePluginList().size());
         Assert.assertSame(executeAwarePlugin, registry.getPlugin(executeAwarePlugin.getId()));
         registry.unregister(executeAwarePlugin.getId());
         Assert.assertNull(registry.getPlugin(executeAwarePlugin.getId()));
@@ -42,7 +43,7 @@ public class DefaultThreadPoolPluginRegistryTest {
         RejectedAwarePlugin rejectedAwarePlugin = new TestRejectedAwarePlugin();
         registry.register(rejectedAwarePlugin);
         Assert.assertTrue(registry.isRegistered(rejectedAwarePlugin.getId()));
-        Assert.assertEquals(1, registry.getRejectedAwareList().size());
+        Assert.assertEquals(1, registry.getRejectedAwarePluginList().size());
         Assert.assertSame(rejectedAwarePlugin, registry.getPlugin(rejectedAwarePlugin.getId()));
         registry.unregister(rejectedAwarePlugin.getId());
         Assert.assertNull(registry.getPlugin(rejectedAwarePlugin.getId()));
@@ -50,7 +51,7 @@ public class DefaultThreadPoolPluginRegistryTest {
         ShutdownAwarePlugin shutdownAwarePlugin = new TestShutdownAwarePlugin();
         registry.register(shutdownAwarePlugin);
         Assert.assertTrue(registry.isRegistered(shutdownAwarePlugin.getId()));
-        Assert.assertEquals(1, registry.getShutdownAwareList().size());
+        Assert.assertEquals(1, registry.getShutdownAwarePluginList().size());
         Assert.assertSame(shutdownAwarePlugin, registry.getPlugin(shutdownAwarePlugin.getId()));
         registry.unregister(shutdownAwarePlugin.getId());
         Assert.assertNull(registry.getPlugin(shutdownAwarePlugin.getId()));

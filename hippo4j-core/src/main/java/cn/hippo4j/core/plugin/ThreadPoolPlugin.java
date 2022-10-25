@@ -24,7 +24,7 @@ import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
  *
  * @author huangchengxing
  * @see ExtensibleThreadPoolExecutor
- * @see ThreadPoolPluginRegistry
+ * @see ThreadPoolPluginManager
  * @see TaskAwarePlugin
  * @see ExecuteAwarePlugin
  * @see ShutdownAwarePlugin

@@ -23,6 +23,6 @@ public interface ThreadPoolPluginRegistrar {
      * @param registry thread pool plugin registry
      * @param executor executor
      */
-    void doRegister(ThreadPoolPluginRegistry registry, ExtensibleThreadPoolExecutor executor);
+    void doRegister(ThreadPoolPluginManager registry, ExtensibleThreadPoolExecutor executor);
 
 }

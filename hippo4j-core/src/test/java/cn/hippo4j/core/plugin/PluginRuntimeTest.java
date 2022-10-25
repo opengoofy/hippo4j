@@ -28,7 +28,7 @@ public class PluginRuntimeTest {
     @Test
     public void testGetPluginRuntime() {
         ExtensibleThreadPoolExecutor executor = new ExtensibleThreadPoolExecutor(
-            "test", new DefaultThreadPoolPluginRegistry(),
+            "test", new DefaultThreadPoolPluginManager(),
             1, 1, 1000L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(1), Thread::new, new ThreadPoolExecutor.DiscardPolicy()
         );

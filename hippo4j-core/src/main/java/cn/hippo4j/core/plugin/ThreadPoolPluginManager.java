@@ -17,19 +17,16 @@
 
 package cn.hippo4j.core.plugin;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
- * Registry of {@link ThreadPoolPlugin}
+ * Manager of {@link ThreadPoolPlugin}.
  *
  * @author huangchengxing
  */
-public interface ThreadPoolPluginRegistry {
+public interface ThreadPoolPluginManager {
 
     /**
      * Clear all.
@@ -73,74 +70,86 @@ public interface ThreadPoolPluginRegistry {
      *
      * @param pluginId  plugin id
      * @param <A> target aware type
-     * @return {@link ThreadPoolPlugin}, null if unregister
+     * @return {@link ThreadPoolPlugin}
      * @throws ClassCastException thrown when the object obtained by name cannot be converted to target type
      */
-    @Nullable
-    <A extends ThreadPoolPlugin> A getPlugin(String pluginId);
+    <A extends ThreadPoolPlugin> Optional<A> getPlugin(String pluginId);
 
     /**
      * Get execute aware plugin list.
      *
      * @return {@link ExecuteAwarePlugin}
      */
-    Collection<ExecuteAwarePlugin> getExecuteAwareList();
+    Collection<ExecuteAwarePlugin> getExecuteAwarePluginList();
 
     /**
      * Get rejected aware plugin list.
      *
      * @return {@link RejectedAwarePlugin}
      */
-    Collection<RejectedAwarePlugin> getRejectedAwareList();
+    Collection<RejectedAwarePlugin> getRejectedAwarePluginList();
 
     /**
      * Get shutdown aware plugin list.
      *
      * @return {@link ShutdownAwarePlugin}
      */
-    Collection<ShutdownAwarePlugin> getShutdownAwareList();
+    Collection<ShutdownAwarePlugin> getShutdownAwarePluginList();
 
     /**
      * Get shutdown aware plugin list.
      *
      * @return {@link ShutdownAwarePlugin}
      */
-    Collection<TaskAwarePlugin> getTaskAwareList();
+    Collection<TaskAwarePlugin> getTaskAwarePluginList();
+
+    // ==================== default methods ====================
 
     /**
-     * Try to get target plugin and apply operation, do nothing if it's not present.
+     * Get plugin of type.
      *
      * @param pluginId plugin id
-     * @param targetType target type
-     * @param consumer operation for target plugin
-     * @param <A> plugin type
-     * @return this instance
-     * @throws ClassCastException thrown when the object obtained by name cannot be converted to target type
+     * @param pluginType plugin type
+     * @return target plugin
      */
-    default <A extends ThreadPoolPlugin> ThreadPoolPluginRegistry getAndThen(
-        String pluginId, Class<A> targetType, Consumer<A> consumer) {
-        Optional.ofNullable(getPlugin(pluginId))
-            .map(targetType::cast)
-            .ifPresent(consumer);
-        return this;
+    default <A extends ThreadPoolPlugin> Optional<A> getPluginOfType(String pluginId, Class<A> pluginType) {
+        return getPlugin(pluginId)
+            .filter(pluginType::isInstance)
+            .map(pluginType::cast);
     }
 
     /**
-     * Try to get target plugin and return value of apply function, return default value if it's not present.
+     * Get all plugins of type.
      *
-     * @param pluginId plugin id
-     * @param targetType target type
-     * @param function operation for target plugin
-     * @param defaultValue default value
-     * @param <A> plugin type
-     * @return value of apply function, default value if plugin is not present
-     * @throws ClassCastException thrown when the object obtained by name cannot be converted to target type
+     * @param pluginType plugin type
+     * @return all plugins of type
      */
-    default <A extends ThreadPoolPlugin, R> R getAndThen(String pluginId, Class<A> targetType, Function<A, R> function, R defaultValue) {
-        return Optional.ofNullable(getPlugin(pluginId))
-            .map(targetType::cast)
-            .map(function)
-            .orElse(defaultValue);
+    default <A extends ThreadPoolPlugin> Collection<A> getAllPluginsOfType(Class<A> pluginType) {
+        return getAllPlugins().stream()
+            .filter(pluginType::isInstance)
+            .map(pluginType::cast)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Get {@link PluginRuntime} of all registered plugins.
+     *
+     * @return {@link PluginRuntime} of all registered plugins
+     */
+    default Collection<PluginRuntime> getAllPluginRuntimes() {
+        return getAllPlugins().stream()
+            .map(ThreadPoolPlugin::getPluginRuntime)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Get {@link PluginRuntime} of registered plugin.
+     *
+     * @return {@link PluginRuntime} of registered plugin
+     */
+    default Optional<PluginRuntime> getRuntime(String pluginId) {
+        return getPlugin(pluginId)
+            .map(ThreadPoolPlugin::getPluginRuntime);
     }
 
 }

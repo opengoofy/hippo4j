@@ -18,8 +18,8 @@
 package cn.hippo4j.core.executor;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.core.plugin.DefaultThreadPoolPluginManager;
 import cn.hippo4j.core.plugin.DefaultThreadPoolPluginRegistrar;
-import cn.hippo4j.core.plugin.DefaultThreadPoolPluginRegistry;
 import cn.hippo4j.core.plugin.impl.TaskDecoratorPlugin;
 import cn.hippo4j.core.plugin.impl.TaskRejectCountRecordPlugin;
 import cn.hippo4j.core.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
@@ -29,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.task.TaskDecorator;
 
-import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
@@ -78,7 +77,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
         @NonNull ThreadFactory threadFactory,
         @NonNull RejectedExecutionHandler rejectedExecutionHandler) {
         super(
-            threadPoolId, new DefaultThreadPoolPluginRegistry(),
+            threadPoolId, new DefaultThreadPoolPluginManager(),
             corePoolSize, maximumPoolSize, keepAliveTime, unit,
             blockingQueue, threadFactory, rejectedExecutionHandler
         );
@@ -92,37 +91,26 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
     /**
      * Invoked by the containing {@code BeanFactory} on destruction of a bean.
      *
-     * @throws Exception in case of shutdown errors. Exceptions will get logged
-     *                   but not rethrown to allow other beans to release their resources as well.
      */
     @Override
-    public void destroy() throws Exception {
-        getAndThen(
-            ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME,
-            ThreadPoolExecutorShutdownPlugin.class,
-            processor -> {
-            if (processor.isWaitForTasksToCompleteOnShutdown()) {
-                super.shutdown();
-            } else {
-                super.shutdownNow();
-            }
-        });
+    public void destroy() {
+        if (isWaitForTasksToCompleteOnShutdown()) {
+            super.shutdown();
+        } else {
+            super.shutdownNow();
+        }
     }
 
     public long getAwaitTerminationMillis() {
-        return getAndThen(
-            ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME,
-            ThreadPoolExecutorShutdownPlugin.class,
-            ThreadPoolExecutorShutdownPlugin::getAwaitTerminationMillis, -1L
-        );
+        return getPluginOfType(ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME, ThreadPoolExecutorShutdownPlugin.class)
+            .map(ThreadPoolExecutorShutdownPlugin::getAwaitTerminationMillis)
+            .orElse(-1L);
     }
 
     public boolean isWaitForTasksToCompleteOnShutdown() {
-        return getAndThen(
-            ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME,
-            ThreadPoolExecutorShutdownPlugin.class,
-            ThreadPoolExecutorShutdownPlugin::isWaitForTasksToCompleteOnShutdown, false
-        );
+        return getPluginOfType(ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME, ThreadPoolExecutorShutdownPlugin.class)
+            .map(ThreadPoolExecutorShutdownPlugin::isWaitForTasksToCompleteOnShutdown)
+            .orElse(false);
     }
 
     /**
@@ -132,57 +120,42 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
      * @param waitForTasksToCompleteOnShutdown wait for tasks to complete on shutdown
      */
     public void setSupportParam(long awaitTerminationMillis, boolean waitForTasksToCompleteOnShutdown) {
-        getAndThen(
-            ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME,
-            ThreadPoolExecutorShutdownPlugin.class,
-            processor -> processor.setAwaitTerminationMillis(awaitTerminationMillis)
+        getPluginOfType(ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME, ThreadPoolExecutorShutdownPlugin.class)
+            .ifPresent(processor -> processor
+                .setAwaitTerminationMillis(awaitTerminationMillis)
                 .setWaitForTasksToCompleteOnShutdown(waitForTasksToCompleteOnShutdown)
-        );
+            );
     }
 
     public Long getRejectCountNum() {
-        return getAndThen(
-            TaskRejectCountRecordPlugin.PLUGIN_NAME,
-            TaskRejectCountRecordPlugin.class,
-            TaskRejectCountRecordPlugin::getRejectCountNum, -1L
-        );
+        return getPluginOfType(TaskRejectCountRecordPlugin.PLUGIN_NAME, TaskRejectCountRecordPlugin.class)
+            .map(TaskRejectCountRecordPlugin::getRejectCountNum)
+            .orElse(-1L);
     }
 
     public Long getExecuteTimeOut() {
-        return getAndThen(
-            TaskTimeoutNotifyAlarmPlugin.PLUGIN_NAME,
-            TaskTimeoutNotifyAlarmPlugin.class,
-            TaskTimeoutNotifyAlarmPlugin::getExecuteTimeOut, -1L
-        );
+        return getPluginOfType(TaskTimeoutNotifyAlarmPlugin.PLUGIN_NAME, TaskTimeoutNotifyAlarmPlugin.class)
+            .map(TaskTimeoutNotifyAlarmPlugin::getExecuteTimeOut)
+            .orElse(-1L);
     }
 
     public void setExecuteTimeOut(Long executeTimeOut) {
-        getAndThen(
-            TaskTimeoutNotifyAlarmPlugin.PLUGIN_NAME,
-            TaskTimeoutNotifyAlarmPlugin.class,
-            processor -> processor.setExecuteTimeOut(executeTimeOut)
-        );
+        getPluginOfType(TaskTimeoutNotifyAlarmPlugin.PLUGIN_NAME, TaskTimeoutNotifyAlarmPlugin.class)
+            .ifPresent(processor -> processor.setExecuteTimeOut(executeTimeOut));
     }
 
     public TaskDecorator getTaskDecorator() {
-        return getAndThen(
-            TaskDecoratorPlugin.PLUGIN_NAME,
-            TaskDecoratorPlugin.class,
-            processor -> CollectionUtil.getFirst(processor.getDecorators()), null
-        );
+        return getPluginOfType(TaskDecoratorPlugin.PLUGIN_NAME, TaskDecoratorPlugin.class)
+            .map(processor -> CollectionUtil.getFirst(processor.getDecorators()))
+            .orElse(null);
     }
 
     public void setTaskDecorator(TaskDecorator taskDecorator) {
-        if (Objects.nonNull(taskDecorator)) {
-            getAndThen(
-                TaskDecoratorPlugin.PLUGIN_NAME,
-                TaskDecoratorPlugin.class,
-                processor -> {
-                    processor.clearDecorators();
-                    processor.addDecorator(taskDecorator);
-                }
-            );
-        }
+        getPluginOfType(TaskDecoratorPlugin.PLUGIN_NAME, TaskDecoratorPlugin.class)
+            .ifPresent(processor -> {
+                processor.clearDecorators();
+                processor.addDecorator(taskDecorator);
+            });
     }
 
     public RejectedExecutionHandler getRedundancyHandler() {

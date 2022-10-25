@@ -3,7 +3,7 @@ package cn.hippo4j.core.plugin.impl;
 import cn.hippo4j.common.toolkit.SyncTimeRecorder;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.plugin.DefaultThreadPoolPluginRegistry;
+import cn.hippo4j.core.plugin.DefaultThreadPoolPluginManager;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class TaskTimeRecordPluginTest {
     @Test
     public void testExecute() {
         ExtensibleThreadPoolExecutor executor = new ExtensibleThreadPoolExecutor(
-            "test", new DefaultThreadPoolPluginRegistry(),
+            "test", new DefaultThreadPoolPluginManager(),
             3, 3, 1000L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(1), Thread::new, new ThreadPoolExecutor.DiscardPolicy()
         );

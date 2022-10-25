@@ -19,7 +19,6 @@ package cn.hippo4j.core.plugin;
 
 import cn.hippo4j.common.toolkit.Assert;
 import lombok.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -27,11 +26,11 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * The default implementation of {@link ThreadPoolPluginRegistry}.
+ * The default implementation of {@link ThreadPoolPluginManager}.
  *
  * @author huangchengxing
  */
-public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry {
+public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
 
     /**
      * lock of this instance
@@ -183,14 +182,13 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      * @param <A> plugin type
      * @return {@link ThreadPoolPlugin}, null if unregister
      */
-    @Nullable
     @Override
     @SuppressWarnings("unchecked")
-    public <A extends ThreadPoolPlugin> A getPlugin(String pluginId) {
+    public <A extends ThreadPoolPlugin> Optional<A> getPlugin(String pluginId) {
         Lock readLock = instanceLock.readLock();
         readLock.lock();
         try {
-            return (A) registeredPlugins.get(pluginId);
+            return (Optional<A>) Optional.ofNullable(registeredPlugins.get(pluginId));
         } finally {
             readLock.unlock();
         }
@@ -202,7 +200,7 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      * @return {@link ExecuteAwarePlugin}
      */
     @Override
-    public Collection<ExecuteAwarePlugin> getExecuteAwareList() {
+    public Collection<ExecuteAwarePlugin> getExecuteAwarePluginList() {
         Lock readLock = instanceLock.readLock();
         readLock.lock();
         try {
@@ -218,7 +216,7 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      * @return {@link RejectedAwarePlugin}
      */
     @Override
-    public Collection<RejectedAwarePlugin> getRejectedAwareList() {
+    public Collection<RejectedAwarePlugin> getRejectedAwarePluginList() {
         Lock readLock = instanceLock.readLock();
         readLock.lock();
         try {
@@ -234,7 +232,7 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      * @return {@link ShutdownAwarePlugin}
      */
     @Override
-    public Collection<ShutdownAwarePlugin> getShutdownAwareList() {
+    public Collection<ShutdownAwarePlugin> getShutdownAwarePluginList() {
         Lock readLock = instanceLock.readLock();
         readLock.lock();
         try {
@@ -250,7 +248,7 @@ public class DefaultThreadPoolPluginRegistry implements ThreadPoolPluginRegistry
      * @return {@link ShutdownAwarePlugin}
      */
     @Override
-    public Collection<TaskAwarePlugin> getTaskAwareList() {
+    public Collection<TaskAwarePlugin> getTaskAwarePluginList() {
         Lock readLock = instanceLock.readLock();
         readLock.lock();
         try {

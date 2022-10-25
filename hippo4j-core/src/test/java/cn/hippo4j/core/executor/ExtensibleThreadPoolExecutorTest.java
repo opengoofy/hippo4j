@@ -25,7 +25,7 @@ public class ExtensibleThreadPoolExecutorTest {
     @Before
     public void initExecutor() {
         executor = new ExtensibleThreadPoolExecutor(
-            "test", new DefaultThreadPoolPluginRegistry(),
+            "test", new DefaultThreadPoolPluginManager(),
             5, 5, 1000L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(1), Thread::new, originalHandler
         );

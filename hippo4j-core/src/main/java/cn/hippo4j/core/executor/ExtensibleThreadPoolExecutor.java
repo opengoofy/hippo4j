@@ -38,7 +38,7 @@ import java.util.concurrent.*;
  * @author huangchengxing
  */
 public class ExtensibleThreadPoolExecutor
-    extends ThreadPoolExecutor implements ThreadPoolPluginRegistryDelegate {
+    extends ThreadPoolExecutor implements ThreadPoolPluginManagerDelegate {
 
     /**
      * thread pool id
@@ -51,7 +51,7 @@ public class ExtensibleThreadPoolExecutor
      * action aware registry
      */
     @Getter
-    private final ThreadPoolPluginRegistry threadPoolPluginRegistry;
+    private final ThreadPoolPluginManager threadPoolPluginManager;
 
     /**
      * handler wrapper, any changes to the current instance {@link RejectedExecutionHandler} should be made through this wrapper
@@ -62,7 +62,7 @@ public class ExtensibleThreadPoolExecutor
      * Creates a new {@code ExtensibleThreadPoolExecutor} with the given initial parameters.
      *
      * @param threadPoolId    thread-pool id
-     * @param threadPoolPluginRegistry  action aware registry
+     * @param threadPoolPluginManager  action aware registry
      * @param corePoolSize    the number of threads to keep in the pool, even
      *                        if they are idle, unless {@code allowCoreThreadTimeOut} is set
      * @param maximumPoolSize the maximum number of threads to allow in the
@@ -88,7 +88,7 @@ public class ExtensibleThreadPoolExecutor
      */
     public ExtensibleThreadPoolExecutor(
                                          @NonNull String threadPoolId,
-                                         @NonNull ThreadPoolPluginRegistry threadPoolPluginRegistry,
+                                         @NonNull ThreadPoolPluginManager threadPoolPluginManager,
                                          int corePoolSize, int maximumPoolSize,
                                          long keepAliveTime, TimeUnit unit,
                                          @NonNull BlockingQueue<Runnable> workQueue,
@@ -98,13 +98,13 @@ public class ExtensibleThreadPoolExecutor
 
         // pool extended info
         this.threadPoolId = threadPoolId;
-        this.threadPoolPluginRegistry = threadPoolPluginRegistry;
+        this.threadPoolPluginManager = threadPoolPluginManager;
 
         // proxy handler to support Aware callback
         while (handler instanceof RejectedAwareHandlerWrapper) {
             handler = ((RejectedAwareHandlerWrapper) handler).getHandler();
         }
-        this.handlerWrapper = new RejectedAwareHandlerWrapper(threadPoolPluginRegistry, handler);
+        this.handlerWrapper = new RejectedAwareHandlerWrapper(threadPoolPluginManager, handler);
         super.setRejectedExecutionHandler(handlerWrapper);
     }
 
@@ -118,7 +118,7 @@ public class ExtensibleThreadPoolExecutor
      */
     @Override
     protected void beforeExecute(Thread thread, Runnable runnable) {
-        Collection<ExecuteAwarePlugin> executeAwarePluginList = threadPoolPluginRegistry.getExecuteAwareList();
+        Collection<ExecuteAwarePlugin> executeAwarePluginList = threadPoolPluginManager.getExecuteAwarePluginList();
         executeAwarePluginList.forEach(aware -> aware.beforeExecute(thread, runnable));
     }
 
@@ -131,7 +131,7 @@ public class ExtensibleThreadPoolExecutor
      */
     @Override
     public void execute(@NonNull Runnable runnable) {
-        Collection<ExecuteAwarePlugin> executeAwarePluginList = threadPoolPluginRegistry.getExecuteAwareList();
+        Collection<ExecuteAwarePlugin> executeAwarePluginList = threadPoolPluginManager.getExecuteAwarePluginList();
         for (ExecuteAwarePlugin executeAwarePlugin : executeAwarePluginList) {
             runnable = executeAwarePlugin.execute(runnable);
         }
@@ -149,7 +149,7 @@ public class ExtensibleThreadPoolExecutor
      */
     @Override
     protected void afterExecute(Runnable runnable, Throwable throwable) {
-        Collection<ExecuteAwarePlugin> executeAwarePluginList = threadPoolPluginRegistry.getExecuteAwareList();
+        Collection<ExecuteAwarePlugin> executeAwarePluginList = threadPoolPluginManager.getExecuteAwarePluginList();
         executeAwarePluginList.forEach(aware -> aware.afterExecute(runnable, throwable));
     }
 
@@ -164,7 +164,7 @@ public class ExtensibleThreadPoolExecutor
      */
     @Override
     public void shutdown() {
-        Collection<ShutdownAwarePlugin> shutdownAwarePluginList = threadPoolPluginRegistry.getShutdownAwareList();
+        Collection<ShutdownAwarePlugin> shutdownAwarePluginList = threadPoolPluginManager.getShutdownAwarePluginList();
         shutdownAwarePluginList.forEach(aware -> aware.beforeShutdown(this));
         super.shutdown();
         shutdownAwarePluginList.forEach(aware -> aware.afterShutdown(this, Collections.emptyList()));
@@ -181,7 +181,7 @@ public class ExtensibleThreadPoolExecutor
      */
     @Override
     public List<Runnable> shutdownNow() {
-        Collection<ShutdownAwarePlugin> shutdownAwarePluginList = threadPoolPluginRegistry.getShutdownAwareList();
+        Collection<ShutdownAwarePlugin> shutdownAwarePluginList = threadPoolPluginManager.getShutdownAwarePluginList();
         shutdownAwarePluginList.forEach(aware -> aware.beforeShutdown(this));
         List<Runnable> tasks = super.shutdownNow();
         shutdownAwarePluginList.forEach(aware -> aware.afterShutdown(this, tasks));
@@ -196,7 +196,7 @@ public class ExtensibleThreadPoolExecutor
     @Override
     protected void terminated() {
         super.terminated();
-        Collection<ShutdownAwarePlugin> shutdownAwarePluginList = threadPoolPluginRegistry.getShutdownAwareList();
+        Collection<ShutdownAwarePlugin> shutdownAwarePluginList = threadPoolPluginManager.getShutdownAwarePluginList();
         shutdownAwarePluginList.forEach(aware -> aware.afterTerminated(this));
     }
 
@@ -215,7 +215,7 @@ public class ExtensibleThreadPoolExecutor
      */
     @Override
     protected <T> RunnableFuture<T> newTaskFor(Runnable runnable, T value) {
-        Collection<TaskAwarePlugin> taskAwarePluginList = threadPoolPluginRegistry.getTaskAwareList();
+        Collection<TaskAwarePlugin> taskAwarePluginList = threadPoolPluginManager.getTaskAwarePluginList();
         for (TaskAwarePlugin taskAwarePlugin : taskAwarePluginList) {
             runnable = taskAwarePlugin.beforeTaskCreate(this, runnable, value);
         }
@@ -236,7 +236,7 @@ public class ExtensibleThreadPoolExecutor
      */
     @Override
     protected <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
-        Collection<TaskAwarePlugin> taskAwarePluginList = threadPoolPluginRegistry.getTaskAwareList();
+        Collection<TaskAwarePlugin> taskAwarePluginList = threadPoolPluginManager.getTaskAwarePluginList();
         for (TaskAwarePlugin taskAwarePlugin : taskAwarePluginList) {
             callable = taskAwarePlugin.beforeTaskCreate(this, callable);
         }
@@ -270,6 +270,16 @@ public class ExtensibleThreadPoolExecutor
     }
 
     /**
+     * Get thread-pool executor.
+     *
+     * @return thread-pool executor
+     */
+    @Override
+    public ThreadPoolExecutor getThreadPoolExecutor() {
+        return this;
+    }
+
+    /**
      * Wrapper of original {@link RejectedExecutionHandler} of {@link ThreadPoolExecutor},
      * It's used to support the {@link RejectedAwarePlugin} on the basis of the {@link RejectedExecutionHandler}.
      *
@@ -282,7 +292,7 @@ public class ExtensibleThreadPoolExecutor
         /**
          * thread-pool action aware registry
          */
-        private final ThreadPoolPluginRegistry registry;
+        private final ThreadPoolPluginManager registry;
 
         /**
          * original target
@@ -300,7 +310,7 @@ public class ExtensibleThreadPoolExecutor
          */
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-            Collection<RejectedAwarePlugin> rejectedAwarePluginList = registry.getRejectedAwareList();
+            Collection<RejectedAwarePlugin> rejectedAwarePluginList = registry.getRejectedAwarePluginList();
             rejectedAwarePluginList.forEach(aware -> aware.beforeRejectedExecution(r, executor));
             handler.rejectedExecution(r, executor);
         }

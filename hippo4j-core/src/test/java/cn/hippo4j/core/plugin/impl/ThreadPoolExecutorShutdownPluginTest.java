@@ -2,7 +2,7 @@ package cn.hippo4j.core.plugin.impl;
 
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.plugin.DefaultThreadPoolPluginRegistry;
+import cn.hippo4j.core.plugin.DefaultThreadPoolPluginManager;
 import cn.hippo4j.core.plugin.ThreadPoolPlugin;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class ThreadPoolExecutorShutdownPluginTest {
 
     public ExtensibleThreadPoolExecutor getExecutor(ThreadPoolPlugin plugin) {
         ExtensibleThreadPoolExecutor executor = new ExtensibleThreadPoolExecutor(
-            "test", new DefaultThreadPoolPluginRegistry(),
+            "test", new DefaultThreadPoolPluginManager(),
             2, 2, 1000L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(1), Thread::new, new ThreadPoolExecutor.DiscardPolicy()
         );

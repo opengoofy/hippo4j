@@ -1,31 +1,48 @@
 package cn.hippo4j.core.plugin;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Thread pool action aware registry delegate.
+ * Thread pool plugin manager delegate.
  *
  * @author huangchengxing
  */
-public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegistry {
+public interface ThreadPoolPluginManagerDelegate extends ThreadPoolPluginManager {
 
     /**
      * Get thread pool action aware registry.
      *
-     * @return {@link ThreadPoolPluginRegistry}
+     * @return {@link ThreadPoolPluginManager}
      */
     @NonNull
-    ThreadPoolPluginRegistry getThreadPoolPluginRegistry();
+    ThreadPoolPluginManager getThreadPoolPluginManager();
+
+    /**
+     * Get thread-pool id
+     *
+     * @return thread-pool id
+     */
+    String getThreadPoolId();
+
+    /**
+     * Get thread-pool executor.
+     *
+     * @return thread-pool executor
+     */
+    ThreadPoolExecutor getThreadPoolExecutor();
+
+    // ======================== delegate methods ========================
 
     /**
      * Clear all.
      */
     @Override
     default void clear() {
-        getThreadPoolPluginRegistry().clear();
+        getThreadPoolPluginManager().clear();
     }
 
     /**
@@ -35,7 +52,7 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
      */
     @Override
     default void register(ThreadPoolPlugin plugin) {
-        getThreadPoolPluginRegistry().register(plugin);
+        getThreadPoolPluginManager().register(plugin);
     }
 
     /**
@@ -46,7 +63,7 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
      */
     @Override
     default boolean isRegistered(String pluginId) {
-        return getThreadPoolPluginRegistry().isRegistered(pluginId);
+        return getThreadPoolPluginManager().isRegistered(pluginId);
     }
 
     /**
@@ -56,7 +73,7 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
      */
     @Override
     default void unregister(String pluginId) {
-        getThreadPoolPluginRegistry().unregister(pluginId);
+        getThreadPoolPluginManager().unregister(pluginId);
     }
 
     /**
@@ -66,7 +83,7 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
      */
     @Override
     default Collection<ThreadPoolPlugin> getAllPlugins() {
-        return getThreadPoolPluginRegistry().getAllPlugins();
+        return getThreadPoolPluginManager().getAllPlugins();
     }
 
     /**
@@ -76,10 +93,9 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
      * @return {@link ThreadPoolPlugin}, null if unregister
      * @throws ClassCastException thrown when the object obtained by name cannot be converted to target type
      */
-    @Nullable
     @Override
-    default <A extends ThreadPoolPlugin> A getPlugin(String pluginId) {
-        return getThreadPoolPluginRegistry().getPlugin(pluginId);
+    default <A extends ThreadPoolPlugin> Optional<A> getPlugin(String pluginId) {
+        return getThreadPoolPluginManager().getPlugin(pluginId);
     }
 
     /**
@@ -88,8 +104,8 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
      * @return {@link ExecuteAwarePlugin}
      */
     @Override
-    default Collection<ExecuteAwarePlugin> getExecuteAwareList() {
-        return getThreadPoolPluginRegistry().getExecuteAwareList();
+    default Collection<ExecuteAwarePlugin> getExecuteAwarePluginList() {
+        return getThreadPoolPluginManager().getExecuteAwarePluginList();
     }
 
     /**
@@ -98,8 +114,8 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
      * @return {@link RejectedAwarePlugin}
      */
     @Override
-    default Collection<RejectedAwarePlugin> getRejectedAwareList() {
-        return getThreadPoolPluginRegistry().getRejectedAwareList();
+    default Collection<RejectedAwarePlugin> getRejectedAwarePluginList() {
+        return getThreadPoolPluginManager().getRejectedAwarePluginList();
     }
 
     /**
@@ -108,8 +124,8 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
      * @return {@link ShutdownAwarePlugin}
      */
     @Override
-    default Collection<ShutdownAwarePlugin> getShutdownAwareList() {
-        return getThreadPoolPluginRegistry().getShutdownAwareList();
+    default Collection<ShutdownAwarePlugin> getShutdownAwarePluginList() {
+        return getThreadPoolPluginManager().getShutdownAwarePluginList();
     }
 
     /**
@@ -118,7 +134,8 @@ public interface ThreadPoolPluginRegistryDelegate extends ThreadPoolPluginRegist
      * @return {@link ShutdownAwarePlugin}
      */
     @Override
-    default Collection<TaskAwarePlugin> getTaskAwareList() {
-        return getThreadPoolPluginRegistry().getTaskAwareList();
+    default Collection<TaskAwarePlugin> getTaskAwarePluginList() {
+        return getThreadPoolPluginManager().getTaskAwarePluginList();
     }
+
 }
