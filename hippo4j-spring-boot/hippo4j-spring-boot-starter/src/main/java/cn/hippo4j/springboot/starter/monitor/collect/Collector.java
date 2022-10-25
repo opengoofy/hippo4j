@@ -27,7 +27,7 @@ public interface Collector {
     /**
      * Collect message.
      *
-     * @return
+     * @return message
      */
     Message collectMessage();
 }

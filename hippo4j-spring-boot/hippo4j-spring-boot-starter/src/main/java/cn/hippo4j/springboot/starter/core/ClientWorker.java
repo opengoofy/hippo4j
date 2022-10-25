@@ -245,8 +245,6 @@ public class ClientWorker {
             } catch (Exception ex) {
                 log.error("Cache Data Error. Service Unavailable: {}", ex.getMessage());
             }
-            int taskId = cacheMap.size() / CONFIG_LONG_POLL_TIMEOUT;
-            cacheData.setTaskId(taskId);
             lastCacheData = cacheData;
         }
         return lastCacheData;

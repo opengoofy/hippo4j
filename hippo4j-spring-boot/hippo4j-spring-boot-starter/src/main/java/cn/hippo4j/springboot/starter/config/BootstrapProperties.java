@@ -35,17 +35,17 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
     public static final String PREFIX = "spring.dynamic.thread-pool";
 
     /**
-     * Username.
+     * Username
      */
     private String username;
 
     /**
-     * Password.
+     * Password
      */
     private String password;
 
     /**
-     * Server addr
+     * Server address
      */
     private String serverAddr;
 

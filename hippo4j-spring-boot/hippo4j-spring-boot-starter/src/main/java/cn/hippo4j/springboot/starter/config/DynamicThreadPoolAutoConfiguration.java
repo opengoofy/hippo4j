@@ -53,6 +53,7 @@ import cn.hippo4j.springboot.starter.notify.ServerNotifyConfigBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
+import cn.hippo4j.springboot.starter.remote.ServerHttpAgent;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import lombok.AllArgsConstructor;
@@ -75,8 +76,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @EnableConfigurationProperties(BootstrapProperties.class)
 @ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@ImportAutoConfiguration({WebAdapterConfiguration.class, HttpClientConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageConfiguration.class,
-        UtilAutoConfiguration.class})
+@ImportAutoConfiguration({WebAdapterConfiguration.class, NettyClientConfiguration.class, DiscoveryConfiguration.class, MessageConfiguration.class, UtilAutoConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapProperties properties;
@@ -209,5 +209,10 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     public ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler(Hippo4jSendMessageService hippo4jSendMessageService) {
         return new ThreadPoolNotifyAlarmHandler(hippo4jSendMessageService);
+    }
+
+    @Bean
+    public HttpAgent httpAgent(BootstrapProperties properties) {
+        return new ServerHttpAgent(properties);
     }
 }
