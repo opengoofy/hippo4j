@@ -38,7 +38,7 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 
 /**
- * Dynamic threadPool discovery config.
+ * Dynamic thread-pool discovery config.
  */
 @AllArgsConstructor
 public class DiscoveryConfiguration {
