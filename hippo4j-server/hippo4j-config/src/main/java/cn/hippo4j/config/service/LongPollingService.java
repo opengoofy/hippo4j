@@ -109,7 +109,7 @@ public class LongPollingService {
         @Override
         public void run() {
             try {
-                for (Iterator<ClientLongPolling> iter = allSubs.iterator(); iter.hasNext();) {
+                for (Iterator<ClientLongPolling> iter = allSubs.iterator(); iter.hasNext(); ) {
                     ClientLongPolling clientSub = iter.next();
                     String identity = groupKey + GROUP_KEY_DELIMITER + identify;
                     List<String> parseMapForFilter = CollectionUtil.newArrayList(identity);
@@ -150,7 +150,7 @@ public class LongPollingService {
             timeout = Math.max(10000, getFixedPollingInterval());
         } else {
             List<String> changedGroups = Md5ConfigUtil.compareMd5(req, clientMd5Map);
-            if (changedGroups.size() > 0) {
+            if (!changedGroups.isEmpty()) {
                 generateResponse(rsp, changedGroups);
                 return;
             } else if (noHangUpFlag != null && noHangUpFlag.equalsIgnoreCase(TRUE_STR)) {
@@ -203,7 +203,7 @@ public class LongPollingService {
                     allSubs.remove(ClientLongPolling.this);
                     if (isFixedPolling()) {
                         List<String> changedGroups = Md5ConfigUtil.compareMd5((HttpServletRequest) asyncContext.getRequest(), clientMd5Map);
-                        if (changedGroups.size() > 0) {
+                        if (!changedGroups.isEmpty()) {
                             sendResponse(changedGroups);
                         } else {
                             sendResponse(null);
@@ -237,12 +237,13 @@ public class LongPollingService {
          * @param changedGroups Changed thread pool group key
          */
         private void generateResponse(List<String> changedGroups) {
+            HttpServletResponse response = (HttpServletResponse) asyncContext.getResponse();
             if (null == changedGroups) {
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                 // Tell web container to send http response.
                 asyncContext.complete();
                 return;
             }
-            HttpServletResponse response = (HttpServletResponse) asyncContext.getResponse();
             try {
                 String respStr = buildRespStr(changedGroups);
                 response.setHeader("Pragma", "no-cache");
