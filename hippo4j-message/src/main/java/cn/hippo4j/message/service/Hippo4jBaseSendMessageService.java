@@ -17,9 +17,9 @@
 
 package cn.hippo4j.message.service;
 
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
-import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.message.dto.AlarmControlDTO;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
@@ -28,7 +28,7 @@ import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +39,7 @@ import java.util.Map;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService, CommandLineRunner {
+public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService, InitializingBean {
 
     private final NotifyConfigBuilder notifyConfigBuilder;
 
@@ -109,9 +109,9 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     /**
      * Is send alarm.
      *
-     * @param threadPoolId
-     * @param platform
-     * @param typeEnum
+     * @param threadPoolId thread-pool id
+     * @param platform     platform
+     * @param typeEnum     type enum
      * @return
      */
     private boolean isSendAlarm(String threadPoolId, String platform, NotifyTypeEnum typeEnum) {
@@ -123,21 +123,21 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
         return alarmControlHandler.isSendAlarm(alarmControl);
     }
 
+    /**
+     * Put platform.
+     *
+     * @param notifyConfigs notify configs
+     */
+    public synchronized void putPlatform(Map<String, List<NotifyConfigDTO>> notifyConfigs) {
+        this.notifyConfigs.putAll(notifyConfigs);
+    }
+
     @Override
-    public void run(String... args) throws Exception {
+    public void afterPropertiesSet() throws Exception {
         Map<String, SendMessageHandler> sendMessageHandlerMap =
                 ApplicationContextHolder.getBeansOfType(SendMessageHandler.class);
         sendMessageHandlerMap.values().forEach(each -> sendMessageHandlers.put(each.getType(), each));
         Map<String, List<NotifyConfigDTO>> buildNotify = notifyConfigBuilder.buildNotify();
         notifyConfigs.putAll(buildNotify);
-    }
-
-    /**
-     * Put platform.
-     *
-     * @param notifyConfigs
-     */
-    public synchronized void putPlatform(Map<String, List<NotifyConfigDTO>> notifyConfigs) {
-        this.notifyConfigs.putAll(notifyConfigs);
     }
 }

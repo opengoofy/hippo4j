@@ -21,7 +21,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * String util.
+ * String util.<br>
+ * Refer to cn.hutool.core.util.StrUtil:<br>
+ * {@link this#toSymbolCase(CharSequence, char)}<br>
+ * {@link this#toCamelCase(CharSequence, char)}<br>
+ * {@link this#subBefore(String, String)}<br>
  */
 public class StringUtil {
 
@@ -53,8 +57,9 @@ public class StringUtil {
 
     /**
      * Returns {@code true} if the given string is null or is the empty string.
-     *
+     * <p>
      * this method has been deprecated, use isEmpty() instead.
+     *
      * @param str
      * @return
      */
@@ -302,7 +307,8 @@ public class StringUtil {
      * StringUtils.split("abc def", " ")  = ["abc", "def"]
      * StringUtils.split("ab:cd:ef", ":") = ["ab", "cd", "ef"]
      * </pre>
-     * @param str the String to parse, may be null
+     *
+     * @param str            the String to parse, may be null
      * @param separatorChars the characters used as the delimiters,
      * @return an array of parsed Strings
      */

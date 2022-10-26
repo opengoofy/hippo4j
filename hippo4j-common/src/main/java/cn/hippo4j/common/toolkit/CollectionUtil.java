@@ -21,7 +21,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Collection util.
+ * Collection util.<br>
+ * Refer to cn.hutool.core.collection.CollUtil:<br>
  */
 public class CollectionUtil {
 

@@ -18,7 +18,7 @@
 package cn.hippo4j.config.springboot.starter.config;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.config.springboot.starter.monitor.DynamicThreadPoolMonitorExecutor;
+import cn.hippo4j.config.springboot.starter.monitor.ThreadPoolMonitorExecutor;
 import cn.hippo4j.config.springboot.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.config.springboot.starter.refresher.event.AdapterExecutorsRefreshListener;
 import cn.hippo4j.config.springboot.starter.refresher.event.DynamicThreadPoolRefreshListener;
@@ -37,8 +37,6 @@ import cn.hippo4j.message.service.AlarmControlHandler;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import cn.hippo4j.springboot.starter.adapter.web.WebAdapterConfiguration;
-import cn.hippo4j.springboot.starter.monitor.local.log.LocalLogMonitorConfiguration;
-import cn.hippo4j.springboot.starter.monitor.micrometer.MicrometerMonitorConfiguration;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -60,7 +58,7 @@ import org.springframework.core.annotation.Order;
 @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 @EnableConfigurationProperties(BootstrapConfigProperties.class)
 @Import(ConfigHandlerConfiguration.class)
-@ImportAutoConfiguration({WebAdapterConfiguration.class, UtilAutoConfiguration.class, MessageConfiguration.class, LocalLogMonitorConfiguration.class, MicrometerMonitorConfiguration.class})
+@ImportAutoConfiguration({WebAdapterConfiguration.class, UtilAutoConfiguration.class, MessageConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapConfigProperties bootstrapConfigProperties;
@@ -88,8 +86,8 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public DynamicThreadPoolMonitorExecutor hippo4jDynamicThreadPoolMonitorExecutor() {
-        return new DynamicThreadPoolMonitorExecutor(bootstrapConfigProperties);
+    public ThreadPoolMonitorExecutor hippo4jDynamicThreadPoolMonitorExecutor() {
+        return new ThreadPoolMonitorExecutor(bootstrapConfigProperties);
     }
 
     @Bean

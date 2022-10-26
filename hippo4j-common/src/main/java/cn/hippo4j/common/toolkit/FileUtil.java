@@ -23,7 +23,6 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,36 +51,24 @@ public class FileUtil {
         return resultReadStr;
     }
 
+    /**
+     * According to the line read
+     *
+     * @param path    the path
+     * @param charset the charset
+     */
     public static List<String> readLines(String path, Charset charset) {
         List<String> strList = new ArrayList<>();
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
         ClassPathResource classPathResource = new ClassPathResource(path);
-        try {
-            inputStreamReader = new InputStreamReader(classPathResource.getInputStream(), charset);
-            bufferedReader = new BufferedReader(inputStreamReader);
+        try (
+                InputStreamReader in = new InputStreamReader(classPathResource.getInputStream(), charset);
+                BufferedReader reader = new BufferedReader(in)) {
             String line;
-            while ((line = bufferedReader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 strList.add(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalException("file read error");
-        } finally {
-            if (inputStreamReader != null) {
-                try {
-                    inputStreamReader.close();
-                } catch (IOException e) {
-                    throw new IllegalException("file read error");
-                }
-            }
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    throw new IllegalException("file read error");
-                }
-            }
+            throw new IllegalException("file read error", e);
         }
         return strList;
     }

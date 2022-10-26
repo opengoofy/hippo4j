@@ -18,17 +18,17 @@
 package cn.hippo4j.springboot.starter.monitor;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
-import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
 import cn.hippo4j.monitor.base.ThreadPoolMonitor;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
+import cn.hippo4j.springboot.starter.config.MonitorProperties;
 import cn.hippo4j.springboot.starter.monitor.collect.Collector;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
@@ -39,7 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.CommandLineRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -102,24 +106,25 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
 
     @Override
     public void run(String... args) {
-        if (!properties.getCollect()) {
+        MonitorProperties monitor = properties.getMonitor();
+        if (monitor == null
+                || !monitor.getEnable()
+                || StringUtil.isBlank(monitor.getThreadPoolTypes())
+                || StringUtil.isBlank(monitor.getCollectTypes())) {
             return;
         }
         threadPoolMonitors = new ArrayList<>();
-        String collectType = Optional.ofNullable(StringUtil.emptyToNull(properties.getCollectType())).orElse(MonitorTypeEnum.SERVER.name().toLowerCase());
+        String collectType = Optional.ofNullable(StringUtil.emptyToNull(monitor.getCollectTypes())).orElse(MonitorTypeEnum.SERVER.name().toLowerCase());
         collectVesselExecutor = new ScheduledThreadPoolExecutor(
                 new Integer(collectType.split(",").length),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());
-        Collection<DynamicThreadPoolMonitor> dynamicThreadPoolMonitors =
-                DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
-        boolean customerDynamicThreadPoolMonitorFlag = CollectionUtil.isNotEmpty(dynamicThreadPoolMonitors) || (collectType.contains(MonitorTypeEnum.MICROMETER.name().toLowerCase())
-                || collectType.contains(MonitorTypeEnum.LOG.name().toLowerCase())
-                || collectType.contains(MonitorTypeEnum.ELASTICSEARCH.name().toLowerCase()));
+        Collection<ThreadPoolMonitor> dynamicThreadPoolMonitors =
+                DynamicThreadPoolServiceLoader.getSingletonServiceInstances(ThreadPoolMonitor.class);
+        Map<String, ThreadPoolMonitor> threadPoolMonitorMap = ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class);
+        boolean customerDynamicThreadPoolMonitorFlag = CollectionUtil.isNotEmpty(dynamicThreadPoolMonitors) || CollectionUtil.isNotEmpty(threadPoolMonitorMap);
         if (customerDynamicThreadPoolMonitorFlag) {
-            // Get all dynamic thread pool monitoring components.
-            Map<String, ThreadPoolMonitor> threadPoolMonitorMap = ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class);
-            threadPoolMonitorMap.forEach((beanName, monitor) -> threadPoolMonitors.add(monitor));
-            dynamicThreadPoolMonitors.stream().filter(each -> collectType.contains(each.getType())).forEach(each -> threadPoolMonitors.add(each));
+            threadPoolMonitorMap.forEach((beanName, bean) -> threadPoolMonitors.add(bean));
+            dynamicThreadPoolMonitors.forEach(each -> threadPoolMonitors.add(each));
             collectVesselExecutor.scheduleWithFixedDelay(
                     () -> dynamicThreadPoolMonitor(),
                     properties.getInitialDelay(),

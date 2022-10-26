@@ -26,25 +26,25 @@ import cn.hippo4j.message.request.base.NotifyRequest;
 public interface SendMessageHandler<T extends NotifyRequest, R extends NotifyRequest> {
 
     /**
-     * Get type.
+     * Get the message send type.
      *
-     * @return
+     * @return message type
      */
     String getType();
 
     /**
      * Send alarm message.
      *
-     * @param notifyConfig
-     * @param alarmNotifyRequest
+     * @param notifyConfig       notify config
+     * @param alarmNotifyRequest alarm notify request
      */
     void sendAlarmMessage(NotifyConfigDTO notifyConfig, T alarmNotifyRequest);
 
     /**
      * Send change message.
      *
-     * @param notifyConfig
-     * @param changeParameterNotifyRequest
+     * @param notifyConfig                 notify config
+     * @param changeParameterNotifyRequest change parameter notify request
      */
     void sendChangeMessage(NotifyConfigDTO notifyConfig, R changeParameterNotifyRequest);
 }

@@ -319,7 +319,7 @@ public class HttpUtil {
             }
             connection.connect();
             JdkHttpClientResponse response = new JdkHttpClientResponse(connection);
-            if (HttpResponseCode.SC_OK != response.getStatusCode()) {
+            if (!HttpResponseCode.isOk(response.getStatusCode())) {
                 String msg = String.format("HttpPost response code error. [code] %s [url] %s [body] %s", response.getStatusCode(), connection.getURL(), response.getBodyString());
                 throw new ServiceException(msg);
             }

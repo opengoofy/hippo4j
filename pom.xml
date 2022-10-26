@@ -38,12 +38,8 @@
 
     <modules>
         <module>hippo4j-adapter</module>
-        <module>hippo4j-auth</module>
         <module>hippo4j-common</module>
-        <module>hippo4j-config</module>
-        <module>hippo4j-console</module>
         <module>hippo4j-core</module>
-        <module>hippo4j-discovery</module>
         <module>hippo4j-example</module>
         <module>hippo4j-message</module>
         <module>hippo4j-monitor</module>

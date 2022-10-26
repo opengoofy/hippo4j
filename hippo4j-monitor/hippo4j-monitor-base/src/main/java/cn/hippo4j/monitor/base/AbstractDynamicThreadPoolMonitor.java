@@ -20,24 +20,24 @@ package cn.hippo4j.monitor.base;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import lombok.RequiredArgsConstructor;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * Abstract dynamic thread-pool monitor.
  */
-@RequiredArgsConstructor
 public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadPoolMonitor {
 
-    private final ThreadPoolRunStateHandler threadPoolRunStateHandler;
+    @Resource
+    private ThreadPoolRunStateHandler threadPoolRunStateHandler;
 
     /**
      * Execute collection thread pool running data.
      *
-     * @param poolRunStateInfo
+     * @param dynamicThreadPoolRunStateInfo dynamic thread-pool run state info
      */
-    protected abstract void execute(ThreadPoolRunStateInfo poolRunStateInfo);
+    protected abstract void execute(ThreadPoolRunStateInfo dynamicThreadPoolRunStateInfo);
 
     @Override
     public void collect() {

@@ -46,12 +46,7 @@ public class CacheData {
     public final String threadPoolId;
 
     @Setter
-    private int taskId;
-
-    @Setter
     private volatile boolean isInitializing = true;
-
-    private volatile long localConfigLastModified;
 
     private final CopyOnWriteArrayList<ManagerListenerWrapper> listeners;
 

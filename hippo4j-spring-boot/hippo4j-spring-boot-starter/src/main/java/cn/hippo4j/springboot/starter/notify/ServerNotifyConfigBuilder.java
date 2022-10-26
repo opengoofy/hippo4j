@@ -80,7 +80,6 @@ public class ServerNotifyConfigBuilder implements NotifyConfigBuilder {
             String resultDataStr = JSONUtil.toJSONString(result.getData());
             List<ThreadPoolNotifyDTO> resultData = JSONUtil.parseArray(resultDataStr, ThreadPoolNotifyDTO.class);
             resultData.forEach(each -> resultMap.put(each.getNotifyKey(), each.getNotifyList()));
-
             resultMap.forEach((key, val) -> val.stream().filter(each -> Objects.equals("ALARM", each.getType()))
                     .forEach(each -> alarmControlHandler.initCacheAndLock(each.getTpId(), each.getPlatform(), each.getInterval())));
         }

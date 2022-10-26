@@ -112,6 +112,9 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     public ThreadPoolBuilder maxPoolNum(int maxPoolSize) {
         this.maxPoolSize = maxPoolSize;
+        if (maxPoolSize < this.corePoolSize) {
+            this.corePoolSize = maxPoolSize;
+        }
         return this;
     }
 
@@ -228,6 +231,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     /**
      * Create dynamic thread pool by thread pool id
+     *
      * @param threadPoolId threadPoolId
      * @return ThreadPoolExecutor
      */

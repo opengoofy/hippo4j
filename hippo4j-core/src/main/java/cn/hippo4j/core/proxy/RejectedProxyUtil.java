@@ -17,6 +17,9 @@
 
 package cn.hippo4j.core.proxy;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.lang.reflect.Proxy;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.atomic.AtomicLong;
@@ -24,6 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Rejected proxy util.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RejectedProxyUtil {
 
     /**
@@ -35,11 +39,10 @@ public class RejectedProxyUtil {
      * @return
      */
     public static RejectedExecutionHandler createProxy(RejectedExecutionHandler rejectedExecutionHandler, String threadPoolId, AtomicLong rejectedNum) {
-        RejectedExecutionHandler rejectedProxy = (RejectedExecutionHandler) Proxy
+        return (RejectedExecutionHandler) Proxy
                 .newProxyInstance(
                         rejectedExecutionHandler.getClass().getClassLoader(),
                         new Class[]{RejectedExecutionHandler.class},
                         new RejectedProxyInvocationHandler(rejectedExecutionHandler, threadPoolId, rejectedNum));
-        return rejectedProxy;
     }
 }

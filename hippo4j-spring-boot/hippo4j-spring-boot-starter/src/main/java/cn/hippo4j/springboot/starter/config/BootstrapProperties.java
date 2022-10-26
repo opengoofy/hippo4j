@@ -35,17 +35,17 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
     public static final String PREFIX = "spring.dynamic.thread-pool";
 
     /**
-     * Username.
+     * Username
      */
     private String username;
 
     /**
-     * Password.
+     * Password
      */
     private String password;
 
     /**
-     * Server addr
+     * Server address
      */
     private String serverAddr;
 
@@ -80,27 +80,37 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
     private Boolean banner = true;
 
     /**
-     * Enable client data collect
+     * Thread pool monitoring related configuration.
      */
-    private Boolean collect = true;
+    private MonitorProperties monitor;
+
+    /***
+     * Latest use {@link MonitorProperties#getEnable()}
+     */
+    @Deprecated
+    private Boolean collect = Boolean.TRUE;
 
     /**
-     * Type of collection thread pool running data. eg: server,micrometer. Multiple can be used at the same time.
+     * Latest use {@link MonitorProperties#getCollectTypes()}
      */
+    @Deprecated
     private String collectType;
 
     /**
-     * Task buffer container capacity
+     * Latest use {@link MonitorProperties#getInitialDelay()}
      */
-    private Integer taskBufferSize = 4096;
-
-    /**
-     * Delay starting data acquisition task. unit: ms
-     */
+    @Deprecated
     private Long initialDelay = 10000L;
 
     /**
-     * Time interval for client to collect monitoring data. unit: ms
+     * Latest use {@link MonitorProperties#getCollectInterval()}
      */
+    @Deprecated
     private Long collectInterval = 5000L;
+
+    /**
+     * Latest use {@link MonitorProperties#getTaskBufferSize()}
+     */
+    @Deprecated
+    private Integer taskBufferSize = 4096;
 }

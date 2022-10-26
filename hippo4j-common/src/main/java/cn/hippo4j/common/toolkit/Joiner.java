@@ -23,7 +23,8 @@ import java.util.Iterator;
 import java.util.Objects;
 
 /**
- * reference google guava
+ * reference google guava<br>
+ * com.google.common.base.Joiner
  */
 public class Joiner {
 

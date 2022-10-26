@@ -27,14 +27,14 @@ public interface Listener {
     /**
      * Get executor.
      *
-     * @return
+     * @return executor
      */
     Executor getExecutor();
 
     /**
      * Receive config info.
      *
-     * @param configInfo
+     * @param configInfo config info
      */
     void receiveConfigInfo(String configInfo);
 }
