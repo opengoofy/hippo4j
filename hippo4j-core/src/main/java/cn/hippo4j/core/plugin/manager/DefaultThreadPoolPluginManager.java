@@ -21,13 +21,33 @@ import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.core.plugin.*;
 import lombok.NonNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * The default implementation of {@link ThreadPoolPluginManager}.
+ * <p>The default implementation of {@link ThreadPoolPluginManager}.
+ * Provide basic {@link ThreadPoolPlugin} registration, logout and acquisition functions.
+ * Most APIs ensure limited thread-safe.
+ *
+ * <p>Usually registered to {@link cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor},
+ * or bound to an {@link java.util.concurrent.ThreadPoolExecutor} instance through {@link ThreadPoolPluginSupport}
+ * to support its plugin based extension functions.
+ *
+ * <p><b>NOTE:</b>
+ * When the list of plugins is obtained through the {@code getXXX} method of manager, the list is not immutable.
+ * This means that until actually start iterating over the list,
+ * registering or unregistering plugins through the manager will affect the results of the iteration.
+ * Therefore, we should try to ensure that <b>get the latest plugin list from the manager before each use</b>.
+ *
+ * @see cn.hippo4j.core.executor.DynamicThreadPoolExecutor
+ * @see cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor
  */
 public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
 
@@ -39,27 +59,27 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
     /**
      * Registered {@link ThreadPoolPlugin}.
      */
-    private final Map<String, ThreadPoolPlugin> registeredPlugins = new HashMap<>(16);
+    private final Map<String, ThreadPoolPlugin> registeredPlugins = new ConcurrentHashMap<>(16);
 
     /**
      * Registered {@link TaskAwarePlugin}.
      */
-    private final List<TaskAwarePlugin> taskAwarePluginList = new ArrayList<>();
+    private final List<TaskAwarePlugin> taskAwarePluginList = new CopyOnWriteArrayList<>();
 
     /**
      * Registered {@link ExecuteAwarePlugin}.
      */
-    private final List<ExecuteAwarePlugin> executeAwarePluginList = new ArrayList<>();
+    private final List<ExecuteAwarePlugin> executeAwarePluginList = new CopyOnWriteArrayList<>();
 
     /**
      * Registered {@link RejectedAwarePlugin}.
      */
-    private final List<RejectedAwarePlugin> rejectedAwarePluginList = new ArrayList<>();
+    private final List<RejectedAwarePlugin> rejectedAwarePluginList = new CopyOnWriteArrayList<>();
 
     /**
      * Registered {@link ShutdownAwarePlugin}.
      */
-    private final List<ShutdownAwarePlugin> shutdownAwarePluginList = new ArrayList<>();
+    private final List<ShutdownAwarePlugin> shutdownAwarePluginList = new CopyOnWriteArrayList<>();
 
     /**
      * Clear all.
@@ -94,7 +114,7 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
         writeLock.lock();
         try {
             String id = plugin.getId();
-            Assert.isTrue(!isRegistered(id), "The plug-in with id [" + id + "] has been registered");
+            Assert.isTrue(!isRegistered(id), "The plugin with id [" + id + "] has been registered");
 
             // register plugin
             registeredPlugins.put(id, plugin);
@@ -171,6 +191,13 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
         }
     }
 
+    /**
+     * Get all registered plugins.
+     *
+     * @return plugins
+     * @apiNote Be sure to avoid directly modifying returned collection instances,
+     * otherwise, unexpected results may be obtained through the manager
+     */
     @Override
     public Collection<ThreadPoolPlugin> getAllPlugins() {
         Lock readLock = instanceLock.readLock();
@@ -238,6 +265,8 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
      * Get rejected plugin list.
      *
      * @return {@link RejectedAwarePlugin}
+     * @apiNote Be sure to avoid directly modifying returned collection instances,
+     * otherwise, unexpected results may be obtained through the manager
      */
     @Override
     public Collection<RejectedAwarePlugin> getRejectedAwarePluginList() {
@@ -254,6 +283,8 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
      * Get shutdown plugin list.
      *
      * @return {@link ShutdownAwarePlugin}
+     * @apiNote Be sure to avoid directly modifying returned collection instances,
+     * otherwise, unexpected results may be obtained through the manager
      */
     @Override
     public Collection<ShutdownAwarePlugin> getShutdownAwarePluginList() {
@@ -270,6 +301,8 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
      * Get shutdown plugin list.
      *
      * @return {@link ShutdownAwarePlugin}
+     * @apiNote Be sure to avoid directly modifying returned collection instances,
+     * otherwise, unexpected results may be obtained through the manager
      */
     @Override
     public Collection<TaskAwarePlugin> getTaskAwarePluginList() {
