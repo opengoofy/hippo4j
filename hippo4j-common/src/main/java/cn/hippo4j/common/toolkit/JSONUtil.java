@@ -20,6 +20,7 @@ package cn.hippo4j.common.toolkit;
 import cn.hippo4j.common.api.JsonFacade;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public class JSONUtil {
 
     public static <T> List<T> parseArray(String text, Class<T> clazz) {
         if (StringUtil.isBlank(text)) {
-            return null;
+            return Collections.emptyList();
         }
         return JSON_FACADE.parseArray(text, clazz);
     }
