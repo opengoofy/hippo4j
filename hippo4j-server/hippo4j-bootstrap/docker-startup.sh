@@ -19,7 +19,8 @@ JAVA_OPT="${JAVA_OPT} --server.max-http-header-size=524288"
 JAVA_OPT="${JAVA_OPT} --server.tomcat.basedir=${BASE_DIR}/bin"
 
 if [[ "${DATASOURCE_MODE}" == "mysql" ]]; then
-  JAVA_OPT="${JAVA_OPT} --spring.datasource.url=\"jdbc:mysql://${DATASOURCE_HOST}:${DATASOURCE_PORT}/${DATASOURCE_DB}?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8\" "
+  JAVA_OPT="${JAVA_OPT} --spring.profiles.active=mysql --hippo4j.database.init_enable=false "
+  JAVA_OPT="${JAVA_OPT} --spring.datasource.url=jdbc:mysql://${DATASOURCE_HOST}:${DATASOURCE_PORT}/${DATASOURCE_DB}?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8 "
   JAVA_OPT="${JAVA_OPT} --spring.datasource.username=${DATASOURCE_USERNAME} --spring.datasource.password=${DATASOURCE_PASSWORD} "
 elif [[ "${DATASOURCE_MODE}" == "h2" ]]; then
   JAVA_OPT="${JAVA_OPT} --spring.profiles.active=h2 --spring.datasource.url=jdbc:h2:file:${BASE_DIR}/h2_hippo4j;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL"
