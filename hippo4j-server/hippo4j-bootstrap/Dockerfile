@@ -30,6 +30,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ADD conf/hippo4j-logback.xml ${BASE_DIR}/conf/hippo4j-logback.xml
 ADD conf/application.properties ${BASE_DIR}/conf/application.properties
+ADD conf/application-h2.properties ${BASE_DIR}/conf/application-h2.properties
 ADD target/hippo4j-server.jar ${BASE_DIR}/hippo4j-server.jar
 ADD docker-startup.sh ${BASE_DIR}/docker-startup.sh
 
