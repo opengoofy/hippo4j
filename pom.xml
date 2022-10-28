@@ -80,8 +80,10 @@
         <skip.maven.gpg.plugin>true</skip.maven.gpg.plugin>
         <skip.spotless.apply>false</skip.spotless.apply>
         <skip.checkstyle.check>true</skip.checkstyle.check>
+        <skip.jacoco.plugin>true</skip.jacoco.plugin>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
@@ -331,6 +333,28 @@
                         <goals>
                             <goal>checkstyle</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <configuration>
+                    <skip>${skip.jacoco.plugin}</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <phase>test</phase>
                     </execution>
                 </executions>
             </plugin>
