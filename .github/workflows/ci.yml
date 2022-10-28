@@ -67,12 +67,22 @@ jobs:
         run: echo y | mvn clean install -Dskip.gpg=true -Dspotless.apply.skip=true -Dmaven.javadoc.skip=true -Djacoco.skip=true
 
   test-coverage:
+    if: github.repository == 'opengoofy/hippo4j'
     name: Test coverage report
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Cache Maven Repos
         uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: hippo4j-maven-third-party-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            hippo4j-maven-third-party-
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 8
       - name: Test with Maven
         run: echo y | mvn -T1C clean install -Dskip.gpg=true -Djacoco.skip=false
       - name: Upload to Codecov
