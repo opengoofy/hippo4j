@@ -2,7 +2,7 @@
 
 # Dynamic and observable thread pool framework
 
-[![Gitee](https://gitee.com/itmachen/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/itmachen/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![Docker Pulls](https://img.shields.io/docker/pulls/hippo4j/hippo4j-server.svg)](https://store.docker.com/community/images/hippo4j/hippo4j-server) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=3ba272)](https://github.com/opengoofy/hippo4j/graphs/contributors) [![License](https://img.shields.io/github/license/opengoofy/hippo4j?color=5470c6)](https://github.com/opengoofy/hippo4j/blob/develop/LICENSE)
+[![Gitee](https://gitee.com/itmachen/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/itmachen/hippo4j) [![GitHub](https://img.shields.io/github/stars/opengoofy/hippo4j)](https://github.com/opengoofy/hippo4j) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j?color=3ba272)](https://github.com/opengoofy/hippo4j/graphs/contributors) [![Docker Pulls](https://img.shields.io/docker/pulls/hippo4j/hippo4j-server.svg?label=docker%20pulls&color=fac858)](https://store.docker.com/community/images/hippo4j/hippo4j-server) [![codecov](https://codecov.io/gh/opengoofy/hippo4j/branch/develop/graph/badge.svg?token=WBUVJN107I)](https://codecov.io/gh/opengoofy/hippo4j)
 
 -------
 
