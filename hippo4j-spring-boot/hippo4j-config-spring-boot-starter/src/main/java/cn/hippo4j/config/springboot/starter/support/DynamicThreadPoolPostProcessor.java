@@ -204,17 +204,17 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     private ThreadPoolNotifyAlarm buildThreadPoolNotifyAlarm(ExecutorProperties executorProperties) {
         DynamicThreadPoolNotifyProperties notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
         boolean isAlarm = Optional.ofNullable(executorProperties.getAlarm())
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getAlarm()).orElse(true));
+                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).orElse(true));
         int activeAlarm = Optional.ofNullable(executorProperties.getActiveAlarm())
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getActiveAlarm()).orElse(80));
+                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getActiveAlarm).orElse(80));
         int capacityAlarm = Optional.ofNullable(executorProperties.getCapacityAlarm())
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getCapacityAlarm()).orElse(80));
+                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getCapacityAlarm).orElse(80));
         int interval = Optional.ofNullable(notify)
-                .map(each -> each.getInterval())
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getNotify()).map(each -> each.getInterval()).orElse(5));
+                .map(DynamicThreadPoolNotifyProperties::getInterval)
+                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).map(DynamicThreadPoolNotifyProperties::getInterval).orElse(5));
         String receive = Optional.ofNullable(notify)
-                .map(each -> each.getReceives())
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getNotify()).map(each -> each.getReceives()).orElse(""));
+                .map(DynamicThreadPoolNotifyProperties::getReceives)
+                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).map(DynamicThreadPoolNotifyProperties::getReceives).orElse(""));
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(isAlarm, activeAlarm, capacityAlarm);
         threadPoolNotifyAlarm.setInterval(interval);
         threadPoolNotifyAlarm.setReceives(receive);

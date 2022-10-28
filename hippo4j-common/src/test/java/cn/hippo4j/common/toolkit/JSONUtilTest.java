@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class JSONUtilTest {
@@ -65,8 +66,8 @@ public class JSONUtilTest {
 
     @Test
     public void assertParseArray() {
-        Assert.assertNull(JSONUtil.parseArray(null, Foo.class));
-        Assert.assertNull(JSONUtil.parseArray("  ", Foo.class));
+        Assert.assertEquals(Collections.emptyList(), JSONUtil.parseArray(null, Foo.class));
+        Assert.assertEquals(Collections.emptyList(), JSONUtil.parseArray("  ", Foo.class));
         Assert.assertEquals(
                 EXPECTED_FOO_ARRAY,
                 JSONUtil.parseArray(EXPECTED_FOO_JSON_ARRAY, Foo.class));

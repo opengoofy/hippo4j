@@ -130,7 +130,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         queryStrMap.put(TP_ID, threadPoolId);
         queryStrMap.put(ITEM_ID, properties.getItemId());
         queryStrMap.put(NAMESPACE, properties.getNamespace());
-        boolean isSubscribe = false;
         ThreadPoolExecutor newDynamicThreadPoolExecutor = null;
         ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
         try {
@@ -167,7 +166,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         ((DynamicThreadPoolExecutor) newDynamicThreadPoolExecutor).setExecuteTimeOut(executeTimeOut);
                     }
                     dynamicThreadPoolWrapper.setExecutor(newDynamicThreadPoolExecutor);
-                    isSubscribe = true;
                 }
             } else {
                 // DynamicThreadPool configuration undefined in server
@@ -197,8 +195,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             if (Objects.isNull(executor)) {
                 dynamicThreadPoolWrapper.setExecutor(CommonDynamicThreadPool.getInstance(threadPoolId));
             }
-            // Set whether to subscribe to the remote thread pool configuration.
-            dynamicThreadPoolWrapper.setSubscribeFlag(isSubscribe);
         }
         GlobalThreadPoolManage.register(dynamicThreadPoolWrapper.getThreadPoolId(), threadPoolParameterInfo, dynamicThreadPoolWrapper);
         return newDynamicThreadPoolExecutor;
