@@ -17,7 +17,8 @@
 
 package cn.hippo4j.auth.model.biz.conmuser;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 
 /**
