@@ -23,6 +23,7 @@ import cn.hippo4j.auth.model.ConsumerInfo;
 import cn.hippo4j.auth.model.ConsumerTokenInfo;
 import cn.hippo4j.auth.model.biz.conmuser.ConsumerDTO;
 import cn.hippo4j.auth.service.ConsumerService;
+import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +41,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/consumer")
+@RequestMapping(Constants.BASE_PATH + "/consumer")
 public class ConsumerController {
-
+    
     private final ConsumerService consumerService;
 
     /**

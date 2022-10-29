@@ -23,7 +23,6 @@ import java.util.GregorianCalendar;
 
 import cn.hippo4j.auth.mapper.ConsumerMapper;
 import cn.hippo4j.auth.mapper.ConsumerTokenMapper;
-import cn.hippo4j.auth.model.ConsumerDO;
 import cn.hippo4j.auth.model.ConsumerInfo;
 import cn.hippo4j.auth.model.ConsumerTokenInfo;
 import cn.hippo4j.auth.model.biz.conmuser.ConsumerDTO;
