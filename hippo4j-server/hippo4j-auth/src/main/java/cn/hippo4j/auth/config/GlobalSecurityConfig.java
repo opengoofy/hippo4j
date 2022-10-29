@@ -17,11 +17,17 @@
 
 package cn.hippo4j.auth.config;
 
+import java.util.stream.Stream;
+
+import javax.annotation.Resource;
+
 import cn.hippo4j.auth.constant.Constants;
 import cn.hippo4j.auth.filter.JWTAuthenticationFilter;
 import cn.hippo4j.auth.filter.JWTAuthorizationFilter;
 import cn.hippo4j.auth.security.JwtTokenManager;
+import cn.hippo4j.auth.service.ConsumerService;
 import cn.hippo4j.auth.service.impl.UserDetailsServiceImpl;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,9 +46,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.annotation.Resource;
-import java.util.stream.Stream;
-
 /**
  * Global security config.
  */
@@ -59,6 +62,9 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private JwtTokenManager tokenManager;
+
+    @Resource
+    private ConsumerService consumerService;
 
     @Bean
     public UserDetailsService customUserService() {
@@ -99,7 +105,7 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/doc.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs").anonymous()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(tokenManager, authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(tokenManager, authenticationManager(), consumerService))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         disableAuthenticationIfNeeded(http);
         http.authorizeRequests().anyRequest().authenticated();

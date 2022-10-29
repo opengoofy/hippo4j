@@ -17,7 +17,16 @@
 
 package cn.hippo4j.auth.filter;
 
+import java.io.IOException;
+import java.util.Collections;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import cn.hippo4j.auth.security.JwtTokenManager;
+import cn.hippo4j.auth.service.ConsumerService;
 import cn.hippo4j.auth.toolkit.JwtTokenUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
@@ -25,19 +34,13 @@ import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.common.web.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Collections;
 
 import static cn.hippo4j.common.constant.Constants.ACCESS_TOKEN;
 import static cn.hippo4j.common.web.exception.ErrorCodeEnum.LOGIN_TIMEOUT;
@@ -50,9 +53,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final JwtTokenManager tokenManager;
 
-    public JWTAuthorizationFilter(JwtTokenManager tokenManager, AuthenticationManager authenticationManager) {
+    private final ConsumerService consumerService;
+
+    private final String ROLE_DEFAULT = "ROLE_ADMIN";
+
+    public JWTAuthorizationFilter(JwtTokenManager tokenManager, AuthenticationManager authenticationManager,
+                                  ConsumerService consumerService) {
         super(authenticationManager);
         this.tokenManager = tokenManager;
+        this.consumerService = consumerService;
     }
 
     @Override
@@ -109,6 +118,11 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         boolean expiration = JwtTokenUtil.isExpiration(token);
         if (expiration) {
             throw new ServiceException(LOGIN_TIMEOUT);
+        }
+        Integer consumerId = consumerService.getConsumerId(token);
+        if (consumerId != null) {
+            return new UsernamePasswordAuthenticationToken(consumerId, null,
+                    Collections.singleton(new SimpleGrantedAuthority(ROLE_DEFAULT)));
         }
         String username = JwtTokenUtil.getUsername(token);
         String userRole = JwtTokenUtil.getUserRole(token);
