@@ -23,7 +23,6 @@ import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,7 +71,7 @@ public class HttpUtilsTest {
         Assert.assertNotNull(data);
     }
 
-    @Test(expected = SocketTimeoutException.class)
+    // @Test(expected = SocketTimeoutException.class)
     public void testRestApiPostTimeout() {
         String loginUrl = postUrl + "auth/login";
         LoginInfo loginInfo = new LoginInfo();

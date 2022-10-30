@@ -105,10 +105,18 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
         }
     }
 
+    /**
+     * Fail default executor properties.
+     *
+     * @param beforeProperties old properties
+     * @param properties       new properties
+     * @return executor properties
+     */
     private ExecutorProperties failDefaultExecutorProperties(ExecutorProperties beforeProperties, ExecutorProperties properties) {
         return ExecutorProperties.builder()
                 .corePoolSize(Optional.ofNullable(properties.getCorePoolSize()).orElse(beforeProperties.getCorePoolSize()))
                 .maximumPoolSize(Optional.ofNullable(properties.getMaximumPoolSize()).orElse(beforeProperties.getMaximumPoolSize()))
+                .blockingQueue(properties.getBlockingQueue())
                 .queueCapacity(Optional.ofNullable(properties.getQueueCapacity()).orElse(beforeProperties.getQueueCapacity()))
                 .keepAliveTime(Optional.ofNullable(properties.getKeepAliveTime()).orElse(beforeProperties.getKeepAliveTime()))
                 .executeTimeOut(Optional.ofNullable(properties.getExecuteTimeOut()).orElse(beforeProperties.getExecuteTimeOut()))
@@ -127,7 +135,6 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
      */
     private ChangeParameterNotifyRequest buildChangeRequest(ExecutorProperties beforeProperties, ExecutorProperties properties) {
         ChangeParameterNotifyRequest changeParameterNotifyRequest = ChangeParameterNotifyRequest.builder()
-                .blockingQueueName(beforeProperties.getBlockingQueue())
                 .beforeCorePoolSize(beforeProperties.getCorePoolSize())
                 .beforeMaximumPoolSize(beforeProperties.getMaximumPoolSize())
                 .beforeAllowsCoreThreadTimeOut(beforeProperties.getAllowCoreThreadTimeOut())
@@ -135,6 +142,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
                 .beforeQueueCapacity(beforeProperties.getQueueCapacity())
                 .beforeRejectedName(beforeProperties.getRejectedHandler())
                 .beforeExecuteTimeOut(beforeProperties.getExecuteTimeOut())
+                .blockingQueueName(properties.getBlockingQueue())
                 .nowCorePoolSize(Optional.ofNullable(properties.getCorePoolSize()).orElse(beforeProperties.getCorePoolSize()))
                 .nowMaximumPoolSize(Optional.ofNullable(properties.getMaximumPoolSize()).orElse(beforeProperties.getMaximumPoolSize()))
                 .nowAllowsCoreThreadTimeOut(Optional.ofNullable(properties.getAllowCoreThreadTimeOut()).orElse(beforeProperties.getAllowCoreThreadTimeOut()))
