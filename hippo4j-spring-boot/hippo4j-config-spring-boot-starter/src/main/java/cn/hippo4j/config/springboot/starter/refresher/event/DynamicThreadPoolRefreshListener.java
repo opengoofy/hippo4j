@@ -29,8 +29,6 @@ import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
-import cn.hippo4j.core.proxy.RejectedProxyUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
@@ -43,7 +41,6 @@ import java.util.*;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
@@ -190,6 +187,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
             Boolean isAlarm = executorProperties.getAlarm();
             Integer activeAlarm = executorProperties.getActiveAlarm();
             Integer capacityAlarm = executorProperties.getCapacityAlarm();
+            // FIXME Compare using Objects.equals
             if ((isAlarm != null && isAlarm != threadPoolNotifyAlarm.getAlarm())
                     || (activeAlarm != null && activeAlarm != threadPoolNotifyAlarm.getActiveAlarm())
                     || (capacityAlarm != null && capacityAlarm != threadPoolNotifyAlarm.getCapacityAlarm())) {
@@ -257,18 +255,12 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
             executor.allowCoreThreadTimeOut(properties.getAllowCoreThreadTimeOut());
         }
         if (properties.getExecuteTimeOut() != null && !Objects.equals(beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut())) {
-            if (executor instanceof AbstractDynamicExecutorSupport) {
+            if (executor instanceof DynamicThreadPoolExecutor) {
                 ((DynamicThreadPoolExecutor) executor).setExecuteTimeOut(properties.getExecuteTimeOut());
             }
         }
         if (properties.getRejectedHandler() != null && !Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler())) {
             RejectedExecutionHandler rejectedExecutionHandler = RejectedPolicyTypeEnum.createPolicy(properties.getRejectedHandler());
-            if (executor instanceof AbstractDynamicExecutorSupport) {
-                DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) executor;
-                dynamicExecutor.setRedundancyHandler(rejectedExecutionHandler);
-                AtomicLong rejectCount = dynamicExecutor.getRejectCount();
-                rejectedExecutionHandler = RejectedProxyUtil.createProxy(rejectedExecutionHandler, threadPoolId, rejectCount);
-            }
             executor.setRejectedExecutionHandler(rejectedExecutionHandler);
         }
         if (properties.getKeepAliveTime() != null && !Objects.equals(beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime())) {

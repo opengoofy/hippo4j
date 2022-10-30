@@ -17,7 +17,6 @@
 
 package cn.hippo4j.core.executor;
 
-import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.core.executor.support.CommonDynamicThreadPool;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,8 +67,8 @@ public class DynamicThreadPoolWrapper implements DisposableBean {
 
     @Override
     public void destroy() throws Exception {
-        if (executor instanceof AbstractDynamicExecutorSupport) {
-            ((AbstractDynamicExecutorSupport) executor).destroy();
+        if (executor instanceof DynamicThreadPoolExecutor) {
+            ((DynamicThreadPoolExecutor) executor).destroy();
         }
     }
 }

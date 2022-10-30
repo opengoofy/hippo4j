@@ -106,6 +106,11 @@ const config = {
                         label: '🥇代码实战课',
                         position: 'left',
                     },
+                    {
+                        type: 'docsVersionDropdown',
+                        position: 'right',
+                        dropdownActiveClassDisabled: true,
+                    },
                     {type: 'localeDropdown', position: 'right'},
 
                     /*{
