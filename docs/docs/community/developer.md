@@ -13,10 +13,10 @@ sidebar_position: 2
     <td align="center" width="26%">联系方式</td>
   </tr>
   <tr>
-    <td align="center" ><a href="https://github.com/itmachen"><img src="https://avatars.githubusercontent.com/u/77398366?v=4?s=64" width="64px;"/></a></td>
+    <td align="center" ><a href="https://github.com/magegoofy"><img src="https://avatars.githubusercontent.com/u/77398366?v=4?s=64" width="64px;"/></a></td>
     <td align="center" >马称</td>
-    <td align="center" ><a href="https://github.com/itmachen">itmachen</a></td>
-    <td align="center" ><a href="http://www.xiaomage.info/">小马哥的技术专栏</a></td>
+    <td align="center" ><a href="https://github.com/magegoofy">magegoofy</a></td>
+    <td align="center" ><a href="https://www.xiaomage.info/">小马哥的技术专栏</a></td>
     <td align="center" >machen@apache.org</td>
   </tr>
   <tr>
@@ -62,3 +62,21 @@ sidebar_position: 2
     <td align="center" >17855368071@163.com</td>
   </tr>
 </table>
+
+## 成为核心开发者
+
+持续对 Hippo-4J 进行贡献， 粗略评估，完成 10 次 PR 贡献即可成为核心开发者。 其中包括完成 2 个 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 或以上，以及 6 个 [good first issue]((https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)) 或以上。
+
+:::note
+会根据 PR 质量提供个性化评估，有可能一个或两个质量较高 PR 即可成为核心开发者。参考：[重构 DynamicThreadPoolExecutor 功能扩展逻辑](https://github.com/opengoofy/hippo4j/pull/854)
+:::
+
+成为核心开发者后，会为该 GitHub 账号获取 Jetbrains 全家桶 Licenses，有效期为 1 年。不用再为破解而烦恼，感受随时升级的快乐。
+
+:::note
+距离到期两周前，会再次申请 Jetbrains Licenses。有点类似于无限续约的感觉，在此感谢 Jetbrains 公司对开源的支持。
+:::
+
+截至 `2022-10-30` 当天，已为登记的 7 位核心开发者成功申请 Licenses。
+
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20221030134303060.png)

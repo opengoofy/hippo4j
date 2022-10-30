@@ -16,6 +16,7 @@ docker run -d -p 6691:6691 --name hippo4j-server hippo4j/hippo4j-server
 
 ```shell
 docker run -d -p 6691:6691 --name hippo4j-server \
+-e DATASOURCE_MODE=mysql \
 -e DATASOURCE_HOST=xxx.xxx.xxx.xxx \
 -e DATASOURCE_PORT=3306 \
 -e DATASOURCE_DB=hippo4j_manager \

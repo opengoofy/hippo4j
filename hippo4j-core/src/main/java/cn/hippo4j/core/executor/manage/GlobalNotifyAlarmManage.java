@@ -27,12 +27,27 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class GlobalNotifyAlarmManage {
 
+    /**
+     * Notify alarm map.
+     */
     private static final Map<String, ThreadPoolNotifyAlarm> NOTIFY_ALARM_MAP = new ConcurrentHashMap();
 
+    /**
+     * Get thread-pool notify alarm.
+     *
+     * @param key thread-pool key
+     * @return thread-pool notify alarm
+     */
     public static ThreadPoolNotifyAlarm get(String key) {
         return NOTIFY_ALARM_MAP.get(key);
     }
 
+    /**
+     * Put thread-pool notify alarm.
+     *
+     * @param key thread-pool key
+     * @param val thread-pool notify alarm
+     */
     public static void put(String key, ThreadPoolNotifyAlarm val) {
         NOTIFY_ALARM_MAP.put(key, val);
     }
