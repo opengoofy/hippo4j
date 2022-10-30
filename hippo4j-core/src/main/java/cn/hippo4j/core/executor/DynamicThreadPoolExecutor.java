@@ -24,7 +24,9 @@ import cn.hippo4j.core.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
 import cn.hippo4j.core.plugin.impl.ThreadPoolExecutorShutdownPlugin;
 import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
 import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginRegistrar;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.task.TaskDecorator;
@@ -41,6 +43,13 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Slf4j
 public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor implements DisposableBean {
+
+    /**
+     * wait for tasks to complete on shutdown
+     */
+    @Getter
+    @Setter
+    public boolean waitForTasksToCompleteOnShutdown;
 
     /**
      * Creates a new {@code DynamicThreadPoolExecutor} with the given initial parameters.
@@ -82,10 +91,10 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
                 threadPoolId, new DefaultThreadPoolPluginManager(),
                 corePoolSize, maximumPoolSize, keepAliveTime, unit,
                 blockingQueue, threadFactory, rejectedExecutionHandler);
-        log.info("Initializing ExecutorService" + threadPoolId);
-
+        log.info("Initializing ExecutorService {}", threadPoolId);
+        this.waitForTasksToCompleteOnShutdown = waitForTasksToCompleteOnShutdown;
         // init default plugins
-        new DefaultThreadPoolPluginRegistrar(executeTimeOut, awaitTerminationMillis, waitForTasksToCompleteOnShutdown)
+        new DefaultThreadPoolPluginRegistrar(executeTimeOut, awaitTerminationMillis)
                 .doRegister(this);
     }
 
@@ -117,19 +126,6 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
     }
 
     /**
-     * Is wait for tasks to complete on shutdown.
-     *
-     * @return true if instance wait for tasks to complete on shutdown, false other otherwise.
-     * @deprecated use {@link ThreadPoolExecutorShutdownPlugin}
-     */
-    @Deprecated
-    public boolean isWaitForTasksToCompleteOnShutdown() {
-        return getPluginOfType(ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME, ThreadPoolExecutorShutdownPlugin.class)
-                .map(ThreadPoolExecutorShutdownPlugin::isWaitForTasksToCompleteOnShutdown)
-                .orElse(false);
-    }
-
-    /**
      * Set support param.
      *
      * @param awaitTerminationMillis await termination millis
@@ -138,10 +134,9 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
      */
     @Deprecated
     public void setSupportParam(long awaitTerminationMillis, boolean waitForTasksToCompleteOnShutdown) {
+        setWaitForTasksToCompleteOnShutdown(waitForTasksToCompleteOnShutdown);
         getPluginOfType(ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME, ThreadPoolExecutorShutdownPlugin.class)
-                .ifPresent(processor -> processor
-                        .setAwaitTerminationMillis(awaitTerminationMillis)
-                        .setWaitForTasksToCompleteOnShutdown(waitForTasksToCompleteOnShutdown));
+                .ifPresent(processor -> processor.setAwaitTerminationMillis(awaitTerminationMillis));
     }
 
     /**

@@ -31,9 +31,8 @@ import java.util.List;
 import java.util.concurrent.*;
 
 /**
- * After the thread pool calls {@link ThreadPoolExecutor#shutdown()} or {@link ThreadPoolExecutor#shutdownNow()},
- * if necessary, cancel the remaining tasks in the pool,
- * and wait for the thread pool to terminate until
+ * <p>After the thread pool calls {@link ThreadPoolExecutor#shutdown()} or {@link ThreadPoolExecutor#shutdownNow()}. <br />
+ * Cancel the remaining tasks in the pool, then wait for the thread pool to terminate until
  * the blocked main thread has timed out or the thread pool has completely terminated.
  */
 @Accessors(chain = true)
@@ -61,12 +60,6 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
     public long awaitTerminationMillis;
 
     /**
-     * wait for tasks to complete on shutdown
-     */
-    @Setter
-    public boolean waitForTasksToCompleteOnShutdown;
-
-    /**
      * Callback before pool shutdown.
      *
      * @param executor executor
@@ -77,14 +70,13 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
             ExtensibleThreadPoolExecutor dynamicThreadPoolExecutor = (ExtensibleThreadPoolExecutor) executor;
             String threadPoolId = dynamicThreadPoolExecutor.getThreadPoolId();
             if (log.isInfoEnabled()) {
-                log.info("Before shutting down ExecutorService" + " '" + threadPoolId + "'");
+                log.info("Before shutting down ExecutorService {}", threadPoolId);
             }
         }
     }
 
     /**
-     * Callback after pool shutdown.
-     * if {@link #waitForTasksToCompleteOnShutdown} return {@code true}，
+     * Callback after pool shutdown. <br />
      * cancel the remaining tasks,
      * then wait for pool to terminate according {@link #awaitTerminationMillis} if necessary.
      *
@@ -95,7 +87,7 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
     public void afterShutdown(ThreadPoolExecutor executor, List<Runnable> remainingTasks) {
         if (executor instanceof ExtensibleThreadPoolExecutor) {
             ExtensibleThreadPoolExecutor pool = (ExtensibleThreadPoolExecutor) executor;
-            if (!waitForTasksToCompleteOnShutdown && CollectionUtil.isNotEmpty(remainingTasks)) {
+            if (CollectionUtil.isNotEmpty(remainingTasks)) {
                 remainingTasks.forEach(this::cancelRemainingTask);
             }
             awaitTerminationIfNecessary(pool);
@@ -110,8 +102,7 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
     @Override
     public PluginRuntime getPluginRuntime() {
         return new PluginRuntime(getId())
-                .addInfo("awaitTerminationMillis", awaitTerminationMillis)
-                .addInfo("waitForTasksToCompleteOnShutdown", waitForTasksToCompleteOnShutdown);
+                .addInfo("awaitTerminationMillis", awaitTerminationMillis);
     }
 
     /**
@@ -139,11 +130,13 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
         try {
             boolean isTerminated = executor.awaitTermination(this.awaitTerminationMillis, TimeUnit.MILLISECONDS);
             if (!isTerminated && log.isWarnEnabled()) {
-                log.warn("Timed out while waiting for executor" + " '" + threadPoolId + "'" + " to terminate.");
+                log.warn("Timed out while waiting for executor {} to terminate.", threadPoolId);
+            } else {
+                log.info("ExecutorService {} has been shutdowned.", threadPoolId);
             }
         } catch (InterruptedException ex) {
             if (log.isWarnEnabled()) {
-                log.warn("Interrupted while waiting for executor" + " '" + threadPoolId + "'" + " to terminate.");
+                log.warn("Interrupted while waiting for executor {} to terminate.", threadPoolId);
             }
             Thread.currentThread().interrupt();
         }

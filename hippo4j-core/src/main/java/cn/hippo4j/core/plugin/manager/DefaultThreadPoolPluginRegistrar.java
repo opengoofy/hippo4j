@@ -48,11 +48,6 @@ public class DefaultThreadPoolPluginRegistrar implements ThreadPoolPluginRegistr
     private long awaitTerminationMillis;
 
     /**
-     * wait for tasks to complete on shutdown
-     */
-    private boolean waitForTasksToCompleteOnShutdown;
-
-    /**
      * Get id.
      *
      * @return id
@@ -76,7 +71,7 @@ public class DefaultThreadPoolPluginRegistrar implements ThreadPoolPluginRegistr
         support.register(new TaskRejectCountRecordPlugin());
         support.register(new TaskRejectNotifyAlarmPlugin());
         // callback when pool shutdown
-        support.register(new ThreadPoolExecutorShutdownPlugin(awaitTerminationMillis, waitForTasksToCompleteOnShutdown));
+        support.register(new ThreadPoolExecutorShutdownPlugin(awaitTerminationMillis));
     }
 
 }
