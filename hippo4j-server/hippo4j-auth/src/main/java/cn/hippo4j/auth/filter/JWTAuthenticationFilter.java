@@ -17,16 +17,6 @@
 
 package cn.hippo4j.auth.filter;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import cn.hippo4j.auth.model.biz.user.JwtUser;
 import cn.hippo4j.auth.model.biz.user.LoginUser;
 import cn.hippo4j.auth.toolkit.JwtTokenUtil;
@@ -35,7 +25,6 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Results;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +32,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static cn.hippo4j.auth.constant.Constants.SPLIT_COMMA;
 import static cn.hippo4j.common.constant.Constants.BASE_PATH;
@@ -75,9 +73,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList()));
         } catch (BadCredentialsException e) {
-            log.warn("BadCredentialsException:{}", e.getMessage());
+            log.warn("Bad credentials exception: {}", e.getMessage());
         } catch (Exception e) {
-            log.error("attemptAuthentication error:", e);
+            log.error("Attempt authentication error", e);
         }
         return authenticate;
     }
