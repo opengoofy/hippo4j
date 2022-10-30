@@ -17,6 +17,12 @@
 
 package cn.hippo4j.config.controller;
 
+import java.net.URLDecoder;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
@@ -35,13 +41,14 @@ import cn.hippo4j.config.toolkit.Md5ConfigUtil;
 import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.net.URLDecoder;
-import java.util.Map;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Server configuration controller.
@@ -76,7 +83,7 @@ public class ConfigController {
             modifySaveReqDTO.setCorePoolSize(config.getCoreSize());
             modifySaveReqDTO.setMaximumPoolSize(config.getMaxSize());
             modifySaveReqDTO.setModifyUser(UserContext.getUserName());
-            modifySaveReqDTO.setModifyAll(StringUtil.isEmpty(identify) ? true : false);
+            modifySaveReqDTO.setModifyAll(StringUtil.isEmpty(identify));
             modifySaveReqDTO.setIdentify(identify);
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_INSTANCE);
             configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
