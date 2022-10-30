@@ -50,6 +50,7 @@ public class DynamicThreadPoolWrapper implements DisposableBean {
     public DynamicThreadPoolWrapper(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
         this.threadPoolId = threadPoolId;
         this.executor = threadPoolExecutor;
+        this.subscribeFlag = true;
     }
 
     public void execute(Runnable command) {
@@ -66,7 +67,7 @@ public class DynamicThreadPoolWrapper implements DisposableBean {
 
     @Override
     public void destroy() throws Exception {
-        if (executor != null && executor instanceof DynamicThreadPoolExecutor) {
+        if (executor instanceof DynamicThreadPoolExecutor) {
             ((DynamicThreadPoolExecutor) executor).destroy();
         }
     }
