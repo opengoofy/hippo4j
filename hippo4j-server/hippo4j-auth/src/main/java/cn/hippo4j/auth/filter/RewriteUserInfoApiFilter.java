@@ -34,7 +34,7 @@ public class RewriteUserInfoApiFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        boolean enableAuthentication = AuthUtil.enableAuthentication;
+        boolean enableAuthentication = AuthUtil.ENABLE_AUTHENTICATION;
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         String path = httpRequest.getRequestURI();
         if (!enableAuthentication && path.contains("users/info")) {

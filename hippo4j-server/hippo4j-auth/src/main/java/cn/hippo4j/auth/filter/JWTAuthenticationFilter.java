@@ -73,12 +73,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList()));
         } catch (BadCredentialsException e) {
-            log.warn("BadCredentialsException:{}", e.getMessage());
+            log.warn("Bad credentials exception: {}", e.getMessage());
         } catch (Exception e) {
-            log.error("attemptauthentication error:", e);
-        } finally {
-            return authenticate;
+            log.error("Attempt authentication error", e);
         }
+        return authenticate;
     }
 
     @Override
