@@ -17,22 +17,22 @@
 
 package cn.hippo4j.auth.toolkit;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import cn.hippo4j.common.toolkit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * Auth util.
- */
-@Component
-public class AuthUtil {
+public final class AuthUtilTest {
 
-    /**
-     * Enable authentication
-     */
-    public static boolean ENABLE_AUTHENTICATION;
+    private AuthUtil authUtil;
 
-    @Value("${hippo4j.core.auth.enabled:true}")
-    public void setEnableAuthentication(boolean enabled) {
-        AuthUtil.ENABLE_AUTHENTICATION = enabled;
+    @Before
+    public void beforeInit() {
+        authUtil = new AuthUtil();
+        authUtil.setEnableAuthentication(true);
+    }
+
+    @Test
+    public void assertGetEnableAuthentication() {
+        Assert.isTrue(AuthUtil.ENABLE_AUTHENTICATION);
     }
 }

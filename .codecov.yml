@@ -19,7 +19,7 @@ coverage:
   status:
     patch:
       default:
-        threshold: 0.1%
+        threshold: 0.01%
 ignore:
   - "hippo4j-example/.*"
   - "docs/.*"
