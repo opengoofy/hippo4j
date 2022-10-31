@@ -1,4 +1,4 @@
-### <font color='#FF0000'>[警报] </font>%s - 动态线程池运行告警（%s） 
+### <font color='#FF0000'>[告警] </font>%s - 动态线程池运行告警（%s）
 
 > 线程池ID：<font color='warning'>%s</font> 
 > 应用名称：<font color='warning'>%s</font> 
