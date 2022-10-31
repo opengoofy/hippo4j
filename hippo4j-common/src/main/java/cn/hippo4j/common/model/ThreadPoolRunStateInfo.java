@@ -109,6 +109,21 @@ public class ThreadPoolRunStateInfo extends ThreadPoolBaseInfo implements Serial
      */
     private Long timestamp;
 
+    /**
+     * minTaskTime
+     */
+    private String minTaskTime;
+
+    /**
+     * maxTaskTime
+     */
+    private String maxTaskTime;
+
+    /**
+     * avgTaskTime
+     */
+    private String avgTaskTime;
+
     public Integer getSimpleCurrentLoad() {
         return Integer.parseInt(getCurrentLoad().replace("%", ""));
     }

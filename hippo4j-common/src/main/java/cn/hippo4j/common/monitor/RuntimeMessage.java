@@ -73,6 +73,21 @@ public class RuntimeMessage extends AbstractMessage {
     private Long completedTaskCount;
 
     /**
+     * minTaskTime
+     */
+    private String minTaskTime;
+
+    /**
+     * maxTaskTime
+     */
+    private String maxTaskTime;
+
+    /**
+     * avgTaskTime
+     */
+    private String avgTaskTime;
+
+    /**
      * rejectCount
      */
     private Integer rejectCount;
