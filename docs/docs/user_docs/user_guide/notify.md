@@ -41,7 +41,6 @@ WECHART：填写user_id会以@的消息发给用户，填写姓名则是普通�
 LARK：填写ou_开头用户唯一标识会以@的消息发给用户，填写手机号则是普通的@
 ```
 
-
 ## 钉钉平台
 
 [钉钉创建群机器人](https://www.dingtalk.com/qidian/help-detail-20781541.html)
@@ -53,6 +52,10 @@ LARK：填写ou_开头用户唯一标识会以@的消息发给用户，填写手
 添加钉钉机器人后，需在机器人配置自定义关键字，才可发送成功。如下所示：
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220530200133377.png?x-oss-process=image/resize,h_500,w_800)
+
+:::tip
+如果使用 1.4.3 及以上版本，`警报` 替换为 `告警`。
+:::
 
 ## 企业微信
 
