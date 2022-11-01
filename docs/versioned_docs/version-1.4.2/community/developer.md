@@ -65,7 +65,7 @@ sidebar_position: 2
 
 ## 成为核心开发者
 
-持续对 Hippo-4J 进行贡献， 粗略评估，完成 10 次 PR 贡献即可成为核心开发者。 其中包括完成 2 个 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 或以上，以及 6 个 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 或以上。
+持续对 Hippo-4J 进行贡献， 粗略评估，完成 10 次 PR 贡献即可成为核心开发者。 其中包括完成 2 个 [good pro issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+pro+issue%22) 或以上，以及 若干个 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)。
 
 :::note
 会根据 PR 质量提供个性化评估，有可能一个或两个质量较高 PR 即可成为核心开发者。参考：[重构 DynamicThreadPoolExecutor 功能扩展逻辑](https://github.com/opengoofy/hippo4j/pull/854)
