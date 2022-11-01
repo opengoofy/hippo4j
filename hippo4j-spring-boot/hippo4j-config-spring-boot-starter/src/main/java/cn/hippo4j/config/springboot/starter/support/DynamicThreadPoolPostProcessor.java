@@ -29,9 +29,9 @@ import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.CommonDynamicThreadPool;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
+import cn.hippo4j.core.provider.CommonDynamicThreadPoolProviderFactory;
 import cn.hippo4j.core.toolkit.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import lombok.AllArgsConstructor;
@@ -114,7 +114,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 log.error("Failed to initialize thread pool configuration. error: {}", ex);
             } finally {
                 if (Objects.isNull(dynamicThreadPoolWrapper.getExecutor())) {
-                    dynamicThreadPoolWrapper.setExecutor(CommonDynamicThreadPool.getInstance(threadPoolId));
+                    dynamicThreadPoolWrapper.setExecutor(CommonDynamicThreadPoolProviderFactory.getInstance(threadPoolId));
                 }
                 dynamicThreadPoolWrapper.setInitFlag(Boolean.TRUE);
             }
