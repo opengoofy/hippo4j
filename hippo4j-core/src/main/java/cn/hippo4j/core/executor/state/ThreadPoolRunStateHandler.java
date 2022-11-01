@@ -23,10 +23,8 @@ import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.ByteConvertUtil;
 import cn.hippo4j.common.toolkit.MemoryUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,11 +64,7 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
         DynamicThreadPoolWrapper executorService = GlobalThreadPoolManage.getExecutorService(threadPoolId);
         ThreadPoolExecutor pool = executorService.getExecutor();
         String rejectedName;
-        if (pool instanceof AbstractDynamicExecutorSupport) {
-            rejectedName = ((DynamicThreadPoolExecutor) pool).getRedundancyHandler().getClass().getSimpleName();
-        } else {
-            rejectedName = pool.getRejectedExecutionHandler().getClass().getSimpleName();
-        }
+        rejectedName = pool.getRejectedExecutionHandler().getClass().getSimpleName();
         poolRunStateInfo.setRejectedName(rejectedName);
         ManyThreadPoolRunStateInfo manyThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, ManyThreadPoolRunStateInfo.class);
         manyThreadPoolRunStateInfo.setIdentify(CLIENT_IDENTIFICATION_VALUE);

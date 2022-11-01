@@ -123,8 +123,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             DynamicThreadPoolExecutor actualDynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) dynamicThreadPoolWrapper.getExecutor();
             TaskDecorator taskDecorator = actualDynamicThreadPoolExecutor.getTaskDecorator();
             ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setTaskDecorator(taskDecorator);
-            long awaitTerminationMillis = actualDynamicThreadPoolExecutor.awaitTerminationMillis;
-            boolean waitForTasksToCompleteOnShutdown = actualDynamicThreadPoolExecutor.waitForTasksToCompleteOnShutdown;
+            long awaitTerminationMillis = actualDynamicThreadPoolExecutor.getAwaitTerminationMillis();
+            boolean waitForTasksToCompleteOnShutdown = actualDynamicThreadPoolExecutor.isWaitForTasksToCompleteOnShutdown();
             ((DynamicThreadPoolExecutor) newDynamicPoolExecutor).setSupportParam(awaitTerminationMillis, waitForTasksToCompleteOnShutdown);
             dynamicThreadPoolWrapper.setExecutor(newDynamicPoolExecutor);
         }
@@ -155,7 +155,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 .setBlockingQueue(queueType)
                 .setExecuteTimeOut(10000L)
                 .setQueueCapacity(queueCapacity)
-                .setRejectedHandler(((DynamicThreadPoolExecutor) executor).getRedundancyHandler().getClass().getSimpleName())
+                .setRejectedHandler(executor.getRejectedExecutionHandler().getClass().getSimpleName())
                 .setThreadPoolId(threadPoolId);
         return executorProperties;
     }
