@@ -17,25 +17,19 @@
 
 package cn.hippo4j.core.plugin.impl;
 
-import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
 import cn.hippo4j.core.plugin.PluginRuntime;
-import cn.hippo4j.core.toolkit.SystemClock;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Record task execution time indicator.
- *
- * @see TaskTimeoutNotifyAlarmPlugin
  */
 @RequiredArgsConstructor
-public class TaskTimeRecordPlugin implements ExecuteAwarePlugin {
+public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
 
     public static final String PLUGIN_NAME = "task-time-record-plugin";
 
@@ -75,23 +69,6 @@ public class TaskTimeRecordPlugin implements ExecuteAwarePlugin {
     }
 
     /**
-     * start times of executed tasks
-     */
-    private final ThreadLocal<Long> startTimes = new ThreadLocal<>();
-
-    /**
-     * Record the time when the worker thread starts executing the task.
-     *
-     * @param thread   thread of executing task
-     * @param runnable task
-     * @see ExtensibleThreadPoolExecutor#beforeExecute
-     */
-    @Override
-    public void beforeExecute(Thread thread, Runnable runnable) {
-        startTimes.set(SystemClock.now());
-    }
-
-    /**
      * Get plugin runtime info.
      *
      * @return plugin runtime info
@@ -108,43 +85,24 @@ public class TaskTimeRecordPlugin implements ExecuteAwarePlugin {
     }
 
     /**
-     * Record the total time for the worker thread to complete the task, and update the time record.
-     *
-     * @param runnable runnable
-     * @param throwable exception thrown during execution
-     */
-    @Override
-    public void afterExecute(Runnable runnable, Throwable throwable) {
-        try {
-            Long startTime = startTimes.get();
-            if (Objects.isNull(startTime)) {
-                return;
-            }
-            long executeTime = SystemClock.now() - startTime;
-            recordTaskTime(executeTime);
-        } finally {
-            startTimes.remove();
-        }
-    }
-
-    /**
      * Refresh time indicators of the current instance.
      *
-     * @param taskExecutionTime millisecond
+     * @param taskExecuteTime execute time of task
      */
-    protected void recordTaskTime(long taskExecutionTime) {
+    @Override
+    protected void processTaskTime(long taskExecuteTime) {
         Lock writeLock = lock.writeLock();
         writeLock.lock();
         try {
             if (taskCount == 0) {
-                maxTaskTimeMillis = taskExecutionTime;
-                minTaskTimeMillis = taskExecutionTime;
+                maxTaskTimeMillis = taskExecuteTime;
+                minTaskTimeMillis = taskExecuteTime;
             } else {
-                maxTaskTimeMillis = Math.max(taskExecutionTime, maxTaskTimeMillis);
-                minTaskTimeMillis = Math.min(taskExecutionTime, minTaskTimeMillis);
+                maxTaskTimeMillis = Math.max(taskExecuteTime, maxTaskTimeMillis);
+                minTaskTimeMillis = Math.min(taskExecuteTime, minTaskTimeMillis);
             }
             taskCount = taskCount + 1;
-            totalTaskTimeMillis += taskExecutionTime;
+            totalTaskTimeMillis += taskExecuteTime;
         } finally {
             writeLock.unlock();
         }
