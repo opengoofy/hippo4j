@@ -69,7 +69,7 @@ public abstract class AbstractThreadPoolRuntime {
         long rejectCount = actualExecutor instanceof DynamicThreadPoolExecutor ? ((DynamicThreadPoolExecutor) actualExecutor).getRejectCountNum() : -1L;
         ThreadPoolRunStateInfo stateInfo = ThreadPoolRunStateInfo.builder()
                 .tpId(threadPoolId)
-                .activeCount(activeCount)
+                .activeSize(activeCount)
                 .poolSize(actualExecutor.getPoolSize())
                 .completedTaskCount(actualExecutor.getCompletedTaskCount())
                 .largestPoolSize(largestPoolSize)
