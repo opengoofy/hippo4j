@@ -27,11 +27,10 @@ import java.util.Optional;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Record task execution time indicator,
- * and send alarm notification when the execution time exceeds the threshold.
+ * Send alarm notification when the execution time exceeds the threshold.
  */
 @AllArgsConstructor
-public class TaskTimeoutNotifyAlarmPlugin extends TaskTimeRecordPlugin {
+public class TaskTimeoutNotifyAlarmPlugin extends AbstractTaskTimerPlugin {
 
     public static final String PLUGIN_NAME = "task-timeout-notify-alarm-plugin";
 
@@ -39,16 +38,6 @@ public class TaskTimeoutNotifyAlarmPlugin extends TaskTimeRecordPlugin {
      * threadPoolId
      */
     private final String threadPoolId;
-
-    /**
-     * Get id.
-     *
-     * @return id
-     */
-    @Override
-    public String getId() {
-        return PLUGIN_NAME;
-    }
 
     @Getter
     @Setter
@@ -60,20 +49,30 @@ public class TaskTimeoutNotifyAlarmPlugin extends TaskTimeRecordPlugin {
     private final ThreadPoolExecutor threadPoolExecutor;
 
     /**
+     * Get id.
+     *
+     * @return id
+     */
+    @Override
+    public String getId() {
+        return PLUGIN_NAME;
+    }
+
+    /**
      * Check whether the task execution time exceeds {@link #executeTimeOut},
      * if it exceeds this time, send an alarm notification.
      *
-     * @param executeTime executeTime in nanosecond
+     * @param taskExecuteTime execute time of task
      */
     @Override
-    protected void recordTaskTime(long executeTime) {
-        super.recordTaskTime(executeTime);
-        if (executeTime <= executeTimeOut) {
+    protected void processTaskTime(long taskExecuteTime) {
+        if (taskExecuteTime <= executeTimeOut) {
             return;
         }
         Optional.ofNullable(ApplicationContextHolder.getInstance())
                 .map(context -> context.getBean(ThreadPoolNotifyAlarmHandler.class))
                 .ifPresent(handler -> handler.asyncSendExecuteTimeOutAlarm(
-                        threadPoolId, executeTime, executeTimeOut, threadPoolExecutor));
+                        threadPoolId, taskExecuteTime, executeTimeOut, threadPoolExecutor));
     }
+
 }
