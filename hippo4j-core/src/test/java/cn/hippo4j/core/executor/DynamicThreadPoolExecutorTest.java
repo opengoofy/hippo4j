@@ -80,9 +80,9 @@ public class DynamicThreadPoolExecutorTest {
     @Test
     public void testDestroyWhenWaitForTask() {
         DynamicThreadPoolExecutor executor = new DynamicThreadPoolExecutor(
-            1, 1, 1000L, TimeUnit.MILLISECONDS,
-            1000L, true, 1000L,
-            new ArrayBlockingQueue<>(1), "test", Thread::new, new ThreadPoolExecutor.DiscardOldestPolicy());
+                1, 1, 1000L, TimeUnit.MILLISECONDS,
+                1000L, true, 1000L,
+                new ArrayBlockingQueue<>(1), "test", Thread::new, new ThreadPoolExecutor.DiscardOldestPolicy());
         AtomicInteger count = new AtomicInteger(0);
 
         executor.execute(() -> {
@@ -96,16 +96,17 @@ public class DynamicThreadPoolExecutorTest {
         executor.destroy();
 
         // waitting for terminated
-        while (!executor.isTerminated()){};
+        while (!executor.isTerminated()) {
+        } ;
         Assert.assertEquals(2, count.get());
     }
 
     @Test
     public void testDestroyWhenNotWaitForTask() {
         DynamicThreadPoolExecutor executor = new DynamicThreadPoolExecutor(
-            1, 1, 1000L, TimeUnit.MILLISECONDS,
-            1000L, false, 1000L,
-            new ArrayBlockingQueue<>(1), "test", Thread::new, new ThreadPoolExecutor.DiscardOldestPolicy());
+                1, 1, 1000L, TimeUnit.MILLISECONDS,
+                1000L, false, 1000L,
+                new ArrayBlockingQueue<>(1), "test", Thread::new, new ThreadPoolExecutor.DiscardOldestPolicy());
         AtomicInteger count = new AtomicInteger(0);
 
         executor.execute(() -> {
@@ -119,7 +120,8 @@ public class DynamicThreadPoolExecutorTest {
         executor.destroy();
 
         // waitting for terminated
-        while (!executor.isTerminated()){};
+        while (!executor.isTerminated()) {
+        } ;
         Assert.assertEquals(1, count.get());
     }
 

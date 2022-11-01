@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.example.core;
 
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
@@ -34,15 +51,16 @@ public class TaskTimeRecordPluginBenchmarkTest {
     public void origin_200(Blackhole blackhole) {
         int threadCount = 200;
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
-            threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
+                threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
         executor.prestartAllCoreThreads();
 
         List<Runnable> tasks = getTask(threadCount, blackhole);
         tasks.forEach(executor::execute);
 
         executor.shutdown();
-        while (!executor.isTerminated()) {}
+        while (!executor.isTerminated()) {
+        }
     }
 
     @SneakyThrows
@@ -50,15 +68,16 @@ public class TaskTimeRecordPluginBenchmarkTest {
     public void origin_50(Blackhole blackhole) {
         int threadCount = 50;
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
-            threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
+                threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
         executor.prestartAllCoreThreads();
 
         List<Runnable> tasks = getTask(threadCount, blackhole);
         tasks.forEach(executor::execute);
 
         executor.shutdown();
-        while (!executor.isTerminated()) {}
+        while (!executor.isTerminated()) {
+        }
     }
 
     @SneakyThrows
@@ -66,16 +85,17 @@ public class TaskTimeRecordPluginBenchmarkTest {
     public void not_plugin_50(Blackhole blackhole) {
         int threadCount = 50;
         ExtensibleThreadPoolExecutor executor = new ExtensibleThreadPoolExecutor(
-            "test", new DefaultThreadPoolPluginManager(),
-            threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
+                "test", new DefaultThreadPoolPluginManager(),
+                threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
         executor.prestartAllCoreThreads();
 
         List<Runnable> tasks = getTask(threadCount, blackhole);
         tasks.forEach(executor::execute);
 
         executor.shutdown();
-        while (!executor.isTerminated()) {}
+        while (!executor.isTerminated()) {
+        }
     }
 
     @SneakyThrows
@@ -83,16 +103,17 @@ public class TaskTimeRecordPluginBenchmarkTest {
     public void not_plugin_200(Blackhole blackhole) {
         int threadCount = 200;
         ExtensibleThreadPoolExecutor executor = new ExtensibleThreadPoolExecutor(
-            "test", new DefaultThreadPoolPluginManager(),
-            threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
+                "test", new DefaultThreadPoolPluginManager(),
+                threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
         executor.prestartAllCoreThreads();
 
         List<Runnable> tasks = getTask(threadCount, blackhole);
         tasks.forEach(executor::execute);
 
         executor.shutdown();
-        while (!executor.isTerminated()) {}
+        while (!executor.isTerminated()) {
+        }
     }
 
     @SneakyThrows
@@ -100,9 +121,9 @@ public class TaskTimeRecordPluginBenchmarkTest {
     public void plugin_50(Blackhole blackhole) {
         int threadCount = 50;
         ExtensibleThreadPoolExecutor executor = new ExtensibleThreadPoolExecutor(
-            "test", new DefaultThreadPoolPluginManager(),
-            threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
+                "test", new DefaultThreadPoolPluginManager(),
+                threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
         executor.prestartAllCoreThreads();
         executor.register(new TaskTimeRecordPlugin());
 
@@ -110,7 +131,8 @@ public class TaskTimeRecordPluginBenchmarkTest {
         tasks.forEach(executor::execute);
 
         executor.shutdown();
-        while (!executor.isTerminated()) {}
+        while (!executor.isTerminated()) {
+        }
     }
 
     @SneakyThrows
@@ -118,9 +140,9 @@ public class TaskTimeRecordPluginBenchmarkTest {
     public void plugin_200(Blackhole blackhole) {
         int threadCount = 200;
         ExtensibleThreadPoolExecutor executor = new ExtensibleThreadPoolExecutor(
-            "test", new DefaultThreadPoolPluginManager(),
-            threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
+                "test", new DefaultThreadPoolPluginManager(),
+                threadCount, threadCount, 1000L, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(threadCount), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
         executor.prestartAllCoreThreads();
         executor.register(new TaskTimeRecordPlugin());
 
@@ -128,7 +150,8 @@ public class TaskTimeRecordPluginBenchmarkTest {
         tasks.forEach(executor::execute);
 
         executor.shutdown();
-        while (!executor.isTerminated()) {}
+        while (!executor.isTerminated()) {
+        }
     }
 
     private List<Runnable> getTask(int count, Blackhole blackhole) {
@@ -142,9 +165,9 @@ public class TaskTimeRecordPluginBenchmarkTest {
 
     public static void main(String[] args) throws Exception {
         Options opts = new OptionsBuilder()
-            .include(TaskTimeRecordPluginBenchmarkTest.class.getSimpleName())
-            .resultFormat(ResultFormatType.JSON)
-            .build();
+                .include(TaskTimeRecordPluginBenchmarkTest.class.getSimpleName())
+                .resultFormat(ResultFormatType.JSON)
+                .build();
         new Runner(opts).run();
     }
 
