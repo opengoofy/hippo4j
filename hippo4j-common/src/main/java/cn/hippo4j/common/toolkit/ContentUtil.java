@@ -21,12 +21,16 @@ import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 
+import java.util.Objects;
+
 /**
  * Content util.
  */
 public class ContentUtil {
 
     public static String getPoolContent(ThreadPoolParameter parameter) {
+        if (Objects.isNull(parameter))
+            return null;
         ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
         threadPoolParameterInfo.setTenantId(parameter.getTenantId())
                 .setItemId(parameter.getItemId())
