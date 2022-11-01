@@ -54,6 +54,10 @@ LARK：填写ou_开头用户唯一标识会以@的消息发给用户，填写手
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220530200133377.png?x-oss-process=image/resize,h_500,w_800)
 
+:::tip
+如果使用 1.4.3 及以上版本，`警报` 替换为 `告警`。
+:::
+
 ## 企业微信
 
 [企业微信创建群机器人](https://open.work.weixin.qq.com/help2/pc/14931?person_id=1&from=homesearch)

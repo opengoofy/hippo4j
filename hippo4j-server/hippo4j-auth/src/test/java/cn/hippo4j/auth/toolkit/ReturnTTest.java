@@ -17,22 +17,33 @@
 
 package cn.hippo4j.auth.toolkit;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import cn.hippo4j.common.toolkit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * Auth util.
- */
-@Component
-public class AuthUtil {
+import java.util.Objects;
 
-    /**
-     * Enable authentication
-     */
-    public static boolean ENABLE_AUTHENTICATION;
+public final class ReturnTTest {
 
-    @Value("${hippo4j.core.auth.enabled:true}")
-    public void setEnableAuthentication(boolean enabled) {
-        AuthUtil.ENABLE_AUTHENTICATION = enabled;
+    private ReturnT returnT;
+
+    @Before
+    public void beforeInit() {
+        returnT = new ReturnT("success");
+    }
+
+    @Test
+    public void assertGetCode() {
+        Assert.isTrue(Objects.equals(returnT.getCode(), 200));
+    }
+
+    @Test
+    public void assertGetMessage() {
+        Assert.isNull(returnT.getMsg());
+    }
+
+    @Test
+    public void assertGetContent() {
+        Assert.isTrue(Objects.equals(returnT.getContent(), "success"));
     }
 }
