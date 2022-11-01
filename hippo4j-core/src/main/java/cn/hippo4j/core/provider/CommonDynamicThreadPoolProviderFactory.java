@@ -15,18 +15,25 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support;
+package cn.hippo4j.core.provider;
 
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Common dynamic thread-pool.
+ * Common dynamic thread-pool provider factory.
  */
-public class CommonDynamicThreadPool {
+public class CommonDynamicThreadPoolProviderFactory {
 
+    /**
+     * Get the public dynamic thread pool instance.
+     *
+     * @param threadPoolId thread-pool id
+     * @return dynamic thread-pool executor
+     */
     public static DynamicThreadPoolExecutor getInstance(String threadPoolId) {
         DynamicThreadPoolExecutor dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) ThreadPoolBuilder.builder()
                 .dynamicPool()

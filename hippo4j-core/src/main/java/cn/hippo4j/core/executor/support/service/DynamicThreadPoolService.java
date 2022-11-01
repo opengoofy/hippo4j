@@ -29,8 +29,8 @@ public interface DynamicThreadPoolService {
     /**
      * Registering dynamic thread pools at runtime.
      *
-     * @param registerWrapper
-     * @return
+     * @param registerWrapper register wrapper
+     * @return dynamic thread-pool executor
      */
     ThreadPoolExecutor registerDynamicThreadPool(DynamicThreadPoolRegisterWrapper registerWrapper);
 }
