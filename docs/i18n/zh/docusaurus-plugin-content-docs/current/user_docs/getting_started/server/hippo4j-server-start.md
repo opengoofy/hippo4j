@@ -63,7 +63,7 @@ spring:
 
 ## ThreadPoolExecutor 适配
 
-添加线程池配置类，通过 `@DynamicThreadPool` 注解修饰。`threadPoolId` 为服务端创建的线程池 ID。
+添加线程池配置类，通过 `@SpringDynamicThreadPool` 注解修饰。`threadPoolId` 为服务端创建的线程池 ID。
 
 ```java
 package cn.hippo4j.example;
@@ -78,29 +78,17 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 public class ThreadPoolConfig {
 
-    @Bean
-    @DynamicThreadPool
+    @SpringDynamicThreadPool
     public ThreadPoolExecutor messageConsumeDynamicExecutor() {
         String threadPoolId = "message-consume";
-        ThreadPoolExecutor messageConsumeDynamicExecutor = ThreadPoolBuilder.builder()
-                .threadFactory(threadPoolId)
-                .threadPoolId(threadPoolId)
-                .dynamicPool()
-                .build();
-        return messageConsumeDynamicExecutor;
+        return ThreadPoolBuilder.buildDynamicPoolById(threadPoolId);
     }
 
-    @Bean
-    @DynamicThreadPool
+	@SpringDynamicThreadPool
     public ThreadPoolExecutor messageProduceDynamicExecutor() {
         String threadPoolId = "message-produce";
-        ThreadPoolExecutor messageProduceDynamicExecutor = ThreadPoolBuilder.builder()
-                .threadFactory(threadPoolId)
-                .threadPoolId(threadPoolId)
-                .dynamicPool()
-                .build();
-        return messageProduceDynamicExecutor;
-    }
+		return ThreadPoolBuilder.buildDynamicPoolById(threadPoolId);
+	}
 
 }
 ```
