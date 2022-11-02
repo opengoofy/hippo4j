@@ -18,7 +18,6 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.IdUtil;
@@ -103,21 +102,21 @@ public class ClientWorker {
 
     class LongPollingRunnable implements Runnable {
 
-        private boolean flag;
+        private boolean cacheMapInitEmptyFlag;
 
         private final CountDownLatch cacheCondition;
 
-        public LongPollingRunnable(boolean flag, CountDownLatch cacheCondition) {
-            this.flag = flag;
+        public LongPollingRunnable(boolean cacheMapInitEmptyFlag, CountDownLatch cacheCondition) {
+            this.cacheMapInitEmptyFlag = cacheMapInitEmptyFlag;
             this.cacheCondition = cacheCondition;
         }
 
         @Override
         @SneakyThrows
         public void run() {
-            if (flag) {
+            if (cacheMapInitEmptyFlag) {
                 cacheCondition.await();
-                flag = false;
+                cacheMapInitEmptyFlag = false;
             }
             serverHealthCheck.isHealthStatus();
             List<CacheData> cacheDataList = new ArrayList();

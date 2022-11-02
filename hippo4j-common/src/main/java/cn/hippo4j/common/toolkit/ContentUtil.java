@@ -29,8 +29,6 @@ import java.util.Objects;
 public class ContentUtil {
 
     public static String getPoolContent(ThreadPoolParameter parameter) {
-        if (Objects.isNull(parameter))
-            return null;
         ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
         threadPoolParameterInfo.setTenantId(parameter.getTenantId())
                 .setItemId(parameter.getItemId())
