@@ -61,6 +61,13 @@ sidebar_position: 2
     <td align="center" >-</td>
     <td align="center" >17855368071@163.com</td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/Createsequence"><img src="https://avatars.githubusercontent.com/u/49221670?v=4" width="64px;"/></a></td>
+    <td align="center">黄成兴</td>
+    <td align="center" ><a href="https://github.com/Createsequence">Createsequence</a></td>
+    <td align="center" ><a href="https://blog.xiajibagao.top">Createsequence's Blog</a></td>
+    <td align="center" >841396397@qq.com</td>
+  </tr>
 </table>
 
 ## 成为核心开发者
