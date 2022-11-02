@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.remote;
 
 import cn.hippo4j.common.toolkit.ThreadUtil;
-import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
+import cn.hippo4j.springboot.starter.event.ApplicationRefreshedEvent;
 import cn.hippo4j.springboot.starter.core.ShutdownExecuteException;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import lombok.SneakyThrows;
@@ -38,7 +38,7 @@ import static cn.hippo4j.common.constant.Constants.HEALTH_CHECK_INTERVAL;
  * Abstract health check.
  */
 @Slf4j
-public abstract class AbstractHealthCheck implements ServerHealthCheck, InitializingBean, ApplicationListener<ApplicationCompleteEvent> {
+public abstract class AbstractHealthCheck implements ServerHealthCheck, InitializingBean, ApplicationListener<ApplicationRefreshedEvent> {
 
     /**
      * Health status
@@ -157,11 +157,11 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
             clientShutdownHook = true;
             signalAllBizThread();
         }));
-        healthCheckExecutor.scheduleWithFixedDelay(() -> healthCheck(), 0, HEALTH_CHECK_INTERVAL, TimeUnit.SECONDS);
+        healthCheckExecutor.scheduleWithFixedDelay(this::healthCheck, 0, HEALTH_CHECK_INTERVAL, TimeUnit.SECONDS);
     }
 
     @Override
-    public void onApplicationEvent(ApplicationCompleteEvent event) {
+    public void onApplicationEvent(ApplicationRefreshedEvent event) {
         contextInitComplete = true;
     }
 }

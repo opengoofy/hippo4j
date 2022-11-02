@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationEvent;
 /**
  * Execute after the spring application context is successfully started.
  */
-public class ApplicationCompleteEvent extends ApplicationEvent {
+public class ApplicationRefreshedEvent extends ApplicationEvent {
 
     /**
      * Create a new {@code ApplicationEvent}.
@@ -30,7 +30,7 @@ public class ApplicationCompleteEvent extends ApplicationEvent {
      * @param source the object on which the event initially occurred or with
      *               which the event is associated (never {@code null})
      */
-    public ApplicationCompleteEvent(Object source) {
+    public ApplicationRefreshedEvent(Object source) {
         super(source);
     }
 }
