@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * the registration center for Client and Server
- *
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClassRegistry {

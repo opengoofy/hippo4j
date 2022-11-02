@@ -21,7 +21,6 @@ import java.io.IOException;
 
 /**
  * Server Implementation
- *
  */
 public class RPCServer implements Server {
 

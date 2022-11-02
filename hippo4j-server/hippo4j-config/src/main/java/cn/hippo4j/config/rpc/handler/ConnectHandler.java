@@ -24,7 +24,6 @@ import cn.hippo4j.config.rpc.response.Response;
  * The handler in each connection, where the specific behavior of the connection
  * must be specified, such as serialization and parsing, requesting and receiving
  * requests, and so on
- *
  */
 public interface ConnectHandler {
 

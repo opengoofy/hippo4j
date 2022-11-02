@@ -28,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Processing by the client connection pool handler to clean the buffer and define new connection properties
- *
  */
 @Slf4j
 public class NettyClientPoolHandler implements ChannelPoolHandler {

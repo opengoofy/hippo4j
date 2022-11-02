@@ -24,7 +24,6 @@ import java.io.IOException;
 
 /**
  * The client, which provides a closing mechanism, maintains a persistent connection if not closed
- *
  */
 public class RPCClient implements Client {
 

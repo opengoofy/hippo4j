@@ -42,10 +42,9 @@ import java.util.concurrent.locks.LockSupport;
 @Slf4j
 public class NettyClientConnection implements ClientConnection {
 
-    // TODO InetAddress
     String host;
     Integer port;
-    // Obtain the connection timeout period. The default value is 3s
+    // Obtain the connection timeout period. The default value is 30s
     long timeout = 30000L;
     Channel channel;
     EventLoopGroup worker = new NioEventLoopGroup();
@@ -95,6 +94,11 @@ public class NettyClientConnection implements ClientConnection {
     @Override
     public long timeout() {
         return timeout;
+    }
+
+    @Override
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
     }
 
     @Override

@@ -26,7 +26,6 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 /**
  * According to the decoder for java objects implemented by ObjectDecoder,
  * it is necessary to ensure that the transmitted objects can be serialized
- *
  */
 public class NettyDecoder extends ObjectDecoder {
 

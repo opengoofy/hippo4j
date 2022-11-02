@@ -23,7 +23,6 @@ import cn.hippo4j.config.rpc.response.Response;
 
 /**
  * Applicable to client connections
- *
  */
 public interface ClientConnection extends Connection {
 
@@ -38,4 +37,9 @@ public interface ClientConnection extends Connection {
      * Get timeout, ms
      */
     long timeout();
+
+    /**
+     * SET timeout, ms
+     */
+    void setTimeout(long timeout);
 }

@@ -23,7 +23,6 @@ import cn.hippo4j.common.web.exception.IllegalException;
 /**
  * Simply creating an instance of a class by its name and its specific type,
  * and then throwing an exception if it is an interface, is not elegant
- *
  */
 public class DefaultInstance implements Instance {
 

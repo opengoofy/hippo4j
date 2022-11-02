@@ -18,7 +18,9 @@
 package cn.hippo4j.config.rpc.exception;
 
 /**
- *
+ * If an exception occurs during the connection between the server and the client, an exception of type
+ * {@link ConnectionException} is thrown, which is not different from {@link RuntimeException}, but is more explicit
+ * about the type of exception
  */
 public class ConnectionException extends RuntimeException {
 

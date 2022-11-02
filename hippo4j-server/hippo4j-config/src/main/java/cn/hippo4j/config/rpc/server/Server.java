@@ -21,7 +21,6 @@ import java.io.Closeable;
 
 /**
  * the service for RPC, Explain the role of the service in the request
- *
  */
 public interface Server extends Closeable {
 

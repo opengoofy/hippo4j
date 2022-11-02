@@ -21,7 +21,6 @@ import cn.hippo4j.config.rpc.handler.Connection;
 
 /**
  * This applies to server-side connections
- *
  */
 public interface ServerConnection extends Connection {
 

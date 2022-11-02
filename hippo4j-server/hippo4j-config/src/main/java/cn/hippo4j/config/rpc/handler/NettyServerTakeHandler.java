@@ -36,7 +36,6 @@ import java.util.List;
 
 /**
  * netty adaptation layer
- *
  */
 public class NettyServerTakeHandler extends ChannelInboundHandlerAdapter implements ConnectHandler {
 

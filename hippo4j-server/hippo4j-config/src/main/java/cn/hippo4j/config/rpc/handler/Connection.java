@@ -21,7 +21,6 @@ import java.io.Closeable;
 
 /**
  * Represents a network request connection and provides IO layer support
- *
  */
 public interface Connection extends Closeable {
 

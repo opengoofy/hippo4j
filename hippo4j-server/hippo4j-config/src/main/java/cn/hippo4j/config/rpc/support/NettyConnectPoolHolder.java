@@ -29,15 +29,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * To avoid creating multiple connection pools for the same host:port, save all connection pools of the client
- *
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NettyConnectPoolHolder {
 
     static int maxConnect = 64;
 
-    // TODO InetSocketAddress
-    static Map<String, NettyConnectPool> map = new ConcurrentHashMap<>();
+    static Map<String, NettyConnectPool> connectPoolMap = new ConcurrentHashMap<>();
 
     private static NettyConnectPool initPool(String host, int port,
                                              long timeout, EventLoopGroup worker) {
@@ -52,30 +50,30 @@ public class NettyConnectPoolHolder {
     }
 
     /**
-     * The connection pool mapping may already exist before the connection pool
-     * mapping is established. In this case, the connection pool is directly overwritten
+     * The connection pool connectPoolMapping may already exist before the connection pool
+     * connectPoolMapping is established. In this case, the connection pool is directly overwritten
      *
      * @param host the host
      * @param port the port
      * @param pool This parameter applies only to the connection pool of netty
      */
     public static void createPool(String host, int port, NettyConnectPool pool) {
-        map.put(getKey(host, port), pool);
+        connectPoolMap.put(getKey(host, port), pool);
     }
 
     /**
-     * Gets a connection pool, or null if there is no corresponding mapping
+     * Gets a connection pool, or null if there is no corresponding connectPoolMapping
      *
      * @param host the host
      * @param port the port
      * @return Map to the connection pool
      */
     public static NettyConnectPool getPool(String host, int port) {
-        return map.get(getKey(host, port));
+        return connectPoolMap.get(getKey(host, port));
     }
 
     /**
-     * Gets a connection pool, and if there is no mapping, creates one with the values provided and joins the mapping
+     * Gets a connection pool, and if there is no connectPoolMapping, creates one with the values provided and joins the connectPoolMapping
      *
      * @param host    the host
      * @param port    the port
@@ -95,19 +93,19 @@ public class NettyConnectPoolHolder {
     }
 
     /**
-     * Disconnect a connection mapping. This must take effect at the same time as the connection pool is closed
+     * Disconnect a connection connectPoolMapping. This must take effect at the same time as the connection pool is closed
      *
      * @param host host
      * @param port port
      */
     public static void remove(String host, int port) {
-        map.remove(getKey(host, port));
+        connectPoolMap.remove(getKey(host, port));
     }
 
     /**
      * clear
      */
     public static void clear() {
-        map.clear();
+        connectPoolMap.clear();
     }
 }

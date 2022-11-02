@@ -22,7 +22,6 @@ import cn.hippo4j.config.rpc.response.Response;
 
 /**
  * Callback while the connection is in progress
- *
  */
 public interface ActivePostProcess {
 

@@ -27,8 +27,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- * this is a encoder
- *
+ * this is a encoder, For custom gluing and unpacking<br>
+ * {@link io.netty.handler.codec.serialization.ObjectEncoder}
  */
 public class NettyEncoder extends MessageToByteEncoder<Serializable> {
 

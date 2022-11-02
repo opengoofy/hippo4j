@@ -33,11 +33,11 @@ import java.util.Map;
 
 /**
  * Add a proxy for the request, {@link Proxy} and {@link InvocationHandler}
- *
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NettyProxyCenter {
 
+    // cache
     static Map<Class<?>, Object> map = new HashMap<>();
 
     /**

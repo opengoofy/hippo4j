@@ -18,7 +18,8 @@
 package cn.hippo4j.config.rpc.exception;
 
 /**
- *
+ * If there is a timeout between the server and the client, you will get a {@link TimeOutException},
+ * which is not different from {@link RuntimeException}, but it will be more explicit about the type of exception, right
  */
 public class TimeOutException extends RuntimeException {
 

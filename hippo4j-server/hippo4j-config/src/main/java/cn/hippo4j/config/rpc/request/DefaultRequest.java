@@ -25,7 +25,6 @@ import java.util.Objects;
 /**
  * default request<br>
  * Use the fully qualified name key of the interface and override equals and hashCode
- *
  */
 public final class DefaultRequest implements Request {
 

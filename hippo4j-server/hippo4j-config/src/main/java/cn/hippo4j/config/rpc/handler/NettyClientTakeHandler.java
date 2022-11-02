@@ -27,7 +27,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
  * Interconnect with the netty mediation layer
- *
  */
 public class NettyClientTakeHandler extends ChannelInboundHandlerAdapter implements ConnectHandler {
 

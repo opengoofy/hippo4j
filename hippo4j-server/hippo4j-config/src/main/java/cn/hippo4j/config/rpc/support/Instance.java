@@ -19,7 +19,6 @@ package cn.hippo4j.config.rpc.support;
 
 /**
  * Instance interface to get an instance
- *
  */
 public interface Instance {
 
