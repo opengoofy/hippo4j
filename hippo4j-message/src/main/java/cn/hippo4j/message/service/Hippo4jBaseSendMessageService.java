@@ -17,9 +17,9 @@
 
 package cn.hippo4j.message.service;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.message.dto.AlarmControlDTO;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
@@ -28,7 +28,7 @@ import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.CommandLineRunner;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +39,7 @@ import java.util.Map;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService, InitializingBean {
+public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService, CommandLineRunner {
 
     private final NotifyConfigBuilder notifyConfigBuilder;
 
@@ -133,7 +133,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void run(String... args) throws Exception {
         Map<String, SendMessageHandler> sendMessageHandlerMap =
                 ApplicationContextHolder.getBeansOfType(SendMessageHandler.class);
         sendMessageHandlerMap.values().forEach(each -> sendMessageHandlers.put(each.getType(), each));
