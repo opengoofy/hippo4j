@@ -17,33 +17,24 @@
 
 package cn.hippo4j.core.plugin;
 
-import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Callback during task execution.
+ * test for {@link PluginRuntime}
  */
-public interface ExecuteAwarePlugin extends ThreadPoolPlugin {
+public class PluginRuntimeTest {
 
-    /**
-     * Callback before task execution.
-     *
-     * @param thread thread of executing task
-     * @param runnable task
-     * @see ExtensibleThreadPoolExecutor#beforeExecute
-     */
-    default void beforeExecute(Thread thread, Runnable runnable) {
-        // do noting
-    }
+    @Test
+    public void test() {
+        PluginRuntime runtime = new PluginRuntime("test");
+        Assert.assertEquals("test", runtime.getPluginId());
+        Assert.assertTrue(runtime.getInfoList().isEmpty());
 
-    /**
-     * Callback after task execution.
-     *
-     * @param runnable runnable
-     * @param throwable exception thrown during execution
-     * @see ExtensibleThreadPoolExecutor#afterExecute
-     */
-    default void afterExecute(Runnable runnable, Throwable throwable) {
-        // do nothing
+        runtime.addInfo("item", "item");
+        PluginRuntime.Info info = runtime.getInfoList().get(0);
+        Assert.assertEquals("item", info.getName());
+        Assert.assertEquals("item", info.getValue());
     }
 
 }
