@@ -94,7 +94,7 @@ public interface ThreadPoolPluginSupport extends ThreadPoolPluginManager {
     }
 
     /**
-     * Unregister {@link ThreadPoolPlugin}
+     * Unregister {@link ThreadPoolPlugin}.
      *
      * @param pluginId name
      */
@@ -114,7 +114,7 @@ public interface ThreadPoolPluginSupport extends ThreadPoolPluginManager {
     }
 
     /**
-     * Get {@link ThreadPoolPlugin}
+     * Get {@link ThreadPoolPlugin}.
      *
      * @param pluginId target name
      * @return {@link ThreadPoolPlugin}, null if unregister
@@ -164,5 +164,4 @@ public interface ThreadPoolPluginSupport extends ThreadPoolPluginManager {
     default Collection<TaskAwarePlugin> getTaskAwarePluginList() {
         return getThreadPoolPluginManager().getTaskAwarePluginList();
     }
-
 }

@@ -34,27 +34,27 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
     public static final String PLUGIN_NAME = "task-time-record-plugin";
 
     /**
-     * Lock instance.
+     * Lock instance
      */
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
-     * Total execution milli time of all tasks.
+     * Total execution milli time of all tasks
      */
     private long totalTaskTimeMillis = 0L;
 
     /**
-     * Maximum task milli execution time, default -1.
+     * Maximum task milli execution time, default -1
      */
     private long maxTaskTimeMillis = -1L;
 
     /**
-     * Minimal task milli execution time, default -1.
+     * Minimal task milli execution time, default -1
      */
     private long minTaskTimeMillis = -1L;
 
     /**
-     * Count of completed task.
+     * Count of completed task
      */
     private long taskCount = 0L;
 
@@ -137,27 +137,27 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
     public static class Summary {
 
         /**
-         * Total execution nano time of all tasks.
+         * Total execution nano time of all tasks
          */
         private final long totalTaskTimeMillis;
 
         /**
-         * Maximum task nano execution time.
+         * Maximum task nano execution time
          */
         private final long maxTaskTimeMillis;
 
         /**
-         * Minimal task nano execution time.
+         * Minimal task nano execution time
          */
         private final long minTaskTimeMillis;
 
         /**
-         * Count of completed task.
+         * Count of completed task
          */
         private final long taskCount;
 
         /**
-         * Get the avg task time in milliseconds.
+         * Get the avg task time in milliseconds
          *
          * @return avg task time
          */
@@ -165,7 +165,5 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
             long totalTaskCount = getTaskCount();
             return totalTaskCount > 0L ? getTotalTaskTimeMillis() / totalTaskCount : -1;
         }
-
     }
-
 }

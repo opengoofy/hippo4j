@@ -54,7 +54,7 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
     }
 
     /**
-     * await termination millis
+     * Await termination millis
      */
     @Setter
     public long awaitTerminationMillis;
@@ -80,7 +80,7 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
      * cancel the remaining tasks,
      * then wait for pool to terminate according {@link #awaitTerminationMillis} if necessary.
      *
-     * @param executor executor
+     * @param executor       executor
      * @param remainingTasks remainingTasks
      */
     @Override
@@ -141,5 +141,4 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
             Thread.currentThread().interrupt();
         }
     }
-
 }

@@ -35,16 +35,19 @@ public class TaskTimeoutNotifyAlarmPlugin extends AbstractTaskTimerPlugin {
     public static final String PLUGIN_NAME = "task-timeout-notify-alarm-plugin";
 
     /**
-     * threadPoolId
+     * Thread-pool id
      */
     private final String threadPoolId;
 
+    /**
+     * Execute time-out
+     */
     @Getter
     @Setter
     private Long executeTimeOut;
 
     /**
-     * thread-pool
+     * Thread-pool executor
      */
     private final ThreadPoolExecutor threadPoolExecutor;
 
@@ -74,5 +77,4 @@ public class TaskTimeoutNotifyAlarmPlugin extends AbstractTaskTimerPlugin {
                 .ifPresent(handler -> handler.asyncSendExecuteTimeOutAlarm(
                         threadPoolId, taskExecuteTime, executeTimeOut, threadPoolExecutor));
     }
-
 }

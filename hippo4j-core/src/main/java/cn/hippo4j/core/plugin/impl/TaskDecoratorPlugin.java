@@ -45,7 +45,7 @@ public class TaskDecoratorPlugin implements TaskAwarePlugin {
     }
 
     /**
-     * decorators
+     * Decorators
      */
     @Getter
     private final List<TaskDecorator> decorators = new ArrayList<>();
@@ -77,7 +77,7 @@ public class TaskDecoratorPlugin implements TaskAwarePlugin {
     }
 
     /**
-     * Add a decorator
+     * Add a decorator.
      *
      * @param decorator decorator
      */
@@ -87,19 +87,16 @@ public class TaskDecoratorPlugin implements TaskAwarePlugin {
     }
 
     /**
-     * Clear all decorators
-     *
+     * Clear all decorators.
      */
     public void clearDecorators() {
         decorators.clear();
     }
 
     /**
-     * Remove decorators
-     *
+     * Remove decorators.
      */
     public void removeDecorator(TaskDecorator decorator) {
         decorators.remove(decorator);
     }
-
 }

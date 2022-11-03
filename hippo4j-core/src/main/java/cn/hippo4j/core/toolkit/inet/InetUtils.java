@@ -75,7 +75,7 @@ public class InetUtils implements Closeable {
         try {
             int lowest = Integer.MAX_VALUE;
             for (Enumeration<NetworkInterface> nics = NetworkInterface
-                    .getNetworkInterfaces(); nics.hasMoreElements();) {
+                    .getNetworkInterfaces(); nics.hasMoreElements(); ) {
                 NetworkInterface ifc = nics.nextElement();
                 if (ifc.isUp()) {
                     this.log.trace("Testing interface: " + ifc.getDisplayName());
@@ -84,7 +84,6 @@ public class InetUtils implements Closeable {
                     } else {
                         continue;
                     }
-                    // @formatter:off
                     if (!ignoreInterface(ifc.getDisplayName())) {
                         for (Enumeration<InetAddress> addrs = ifc
                                 .getInetAddresses(); addrs.hasMoreElements(); ) {
@@ -98,7 +97,6 @@ public class InetUtils implements Closeable {
                             }
                         }
                     }
-                    // @formatter:on
                 }
             }
         } catch (IOException ex) {
@@ -150,7 +148,6 @@ public class InetUtils implements Closeable {
     public HostInfo convertAddress(final InetAddress address) {
         HostInfo hostInfo = new HostInfo();
         Future<String> result = this.executorService.submit(address::getHostName);
-
         String hostname;
         try {
             hostname = result.get(this.properties.getTimeoutSeconds(), TimeUnit.SECONDS);

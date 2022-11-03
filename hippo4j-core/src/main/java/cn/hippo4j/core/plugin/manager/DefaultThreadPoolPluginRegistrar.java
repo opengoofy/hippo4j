@@ -38,12 +38,12 @@ public class DefaultThreadPoolPluginRegistrar implements ThreadPoolPluginRegistr
     public static final String REGISTRAR_NAME = "DefaultThreadPoolPluginRegistrar";
 
     /**
-     * execute time out
+     * Execute time out
      */
     private long executeTimeOut;
 
     /**
-     * await termination millis
+     * Await termination millis
      */
     private long awaitTerminationMillis;
 
@@ -64,14 +64,10 @@ public class DefaultThreadPoolPluginRegistrar implements ThreadPoolPluginRegistr
      */
     @Override
     public void doRegister(ThreadPoolPluginSupport support) {
-        // callback when task execute
         support.register(new TaskDecoratorPlugin());
         support.register(new TaskTimeoutNotifyAlarmPlugin(support.getThreadPoolId(), executeTimeOut, support.getThreadPoolExecutor()));
-        // callback when task rejected
         support.register(new TaskRejectCountRecordPlugin());
         support.register(new TaskRejectNotifyAlarmPlugin());
-        // callback when pool shutdown
         support.register(new ThreadPoolExecutorShutdownPlugin(awaitTerminationMillis));
     }
-
 }
