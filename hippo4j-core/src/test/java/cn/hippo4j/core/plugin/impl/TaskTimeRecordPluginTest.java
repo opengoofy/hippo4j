@@ -51,18 +51,18 @@ public class TaskTimeRecordPluginTest {
 
         TaskTimeRecordPlugin plugin = new TaskTimeRecordPlugin();
         executor.register(plugin);
-        executor.submit(() -> ThreadUtil.sleep(100L));
-        executor.submit(() -> ThreadUtil.sleep(300L));
-        executor.submit(() -> ThreadUtil.sleep(200L));
+        executor.submit(() -> ThreadUtil.sleep(1000L));
+        executor.submit(() -> ThreadUtil.sleep(3000L));
+        executor.submit(() -> ThreadUtil.sleep(2000L));
 
         // waiting for shutdown
         executor.shutdown();
         while (!executor.isTerminated()) {
         }
         TaskTimeRecordPlugin.Summary summary = plugin.summarize();
-        Assert.assertEquals(1, summary.getMinTaskTimeMillis() / 100L);
-        Assert.assertEquals(3, summary.getMaxTaskTimeMillis() / 100L);
-        Assert.assertEquals(2, summary.getAvgTaskTimeMillis() / 100L);
-        Assert.assertEquals(6, summary.getTotalTaskTimeMillis() / 100L);
+        Assert.assertEquals(1, summary.getMinTaskTimeMillis() / 1000L);
+        Assert.assertEquals(3, summary.getMaxTaskTimeMillis() / 1000L);
+        Assert.assertEquals(2, summary.getAvgTaskTimeMillis() / 1000L);
+        Assert.assertEquals(6, summary.getTotalTaskTimeMillis() / 1000L);
     }
 }
