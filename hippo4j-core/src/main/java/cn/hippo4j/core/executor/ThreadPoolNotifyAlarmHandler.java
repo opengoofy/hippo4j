@@ -124,7 +124,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      */
     public void checkPoolActivityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
         ThreadPoolNotifyAlarm alarmConfig = GlobalNotifyAlarmManage.get(threadPoolId);
-        if (Objects.isNull(alarmConfig) || !alarmConfig.getAlarm() || alarmConfig.getCapacityAlarm() <= 0) {
+        if (Objects.isNull(alarmConfig) || !alarmConfig.getAlarm() || alarmConfig.getActiveAlarm() <= 0) {
             return;
         }
         int activeCount = threadPoolExecutor.getActiveCount();
