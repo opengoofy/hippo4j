@@ -15,30 +15,20 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.message.enums;
+package cn.hippo4j.message.platform.constant;
 
 /**
- * Notify platform enum.
+ * Email alarm constants.
  */
-public enum NotifyPlatformEnum {
+public class EmailAlarmConstants {
 
     /**
-     * DING
+     * Thread Pool Alert Notification Title
      */
-    DING,
+    public static final String Email_ALARM_TITLE = "动态线程池告警";
 
     /**
-     * LARK
+     * Thread pool parameter change notification title
      */
-    LARK,
-
-    /**
-     * WECHAT
-     */
-    WECHAT,
-
-    /**
-     * Email
-     */
-    Email
+    public static final String Email_NOTICE_TITLE = "动态线程池通知";
 }

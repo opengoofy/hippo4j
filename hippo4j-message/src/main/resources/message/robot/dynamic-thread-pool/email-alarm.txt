@@ -1,0 +1,20 @@
+<font color='#FF0000'>[警报] </font>%s - 动态线程池运行告警（%s） <br/>
+    线程池ID：<font color='warning'>%s</font> <br/>
+    应用名称：<font color='warning'>%s</font> <br/>
+    应用实例：%s <br/>
+    核心线程数：%s <br/>
+    最大线程数：%s <br/>
+    当前线程数：%s <br/>
+    活跃线程数：%s <br/>
+    同存最大线程数：%s <br/>
+    线程池任务总量：%s <br/>
+    队列类型：%s <br/>
+    队列容量：%s <br/>
+    队列元素个数：%s <br/>
+    队列剩余个数：%s <br/>
+    拒绝策略：%s <br/>
+    拒绝策略执行次数：<font color='#FF0000'>%s</font> ${timout-content} <br/>
+    OWNER：<@%s> <br/>
+    提示：%d 分钟内此线程池不会重复告警（可配置）<br/>
+
+<b> 播报时间：%s </b>
