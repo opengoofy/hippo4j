@@ -88,7 +88,7 @@ public class EmailSendMessageHandler extends AbstractRobotSendMessageHandler {
 
         UserPassAuthenticator authenticator = new UserPassAuthenticator(mailAccount.getUser(), mailAccount.getPass());
         Properties properties = new Properties();
-        properties.put("mail.transport.protocol", "smtp");
+        properties.put("mail.transport.protocol", mailAccount.getHost().split("\\.")[0]);
         properties.put("mail.smtp.host", mailAccount.getHost());
         properties.put("mail.smtp.port", mailAccount.getPort());
         properties.put("mail.smtp.auth", "true");
