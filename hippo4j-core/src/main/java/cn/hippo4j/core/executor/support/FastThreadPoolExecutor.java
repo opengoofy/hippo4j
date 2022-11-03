@@ -41,8 +41,16 @@ public class FastThreadPoolExecutor extends ThreadPoolExecutorTemplate {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
     }
 
+    /**
+     * Statistics on the number of tasks submitted by the fast consumption thread pool
+     */
     private final AtomicInteger submittedTaskCount = new AtomicInteger(0);
 
+    /**
+     * Get submitted task count.
+     *
+     * @return submitted task count
+     */
     public int getSubmittedTaskCount() {
         return submittedTaskCount.get();
     }

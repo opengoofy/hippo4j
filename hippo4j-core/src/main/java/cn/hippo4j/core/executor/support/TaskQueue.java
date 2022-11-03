@@ -17,6 +17,8 @@
 
 package cn.hippo4j.core.executor.support;
 
+import lombok.Setter;
+
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -28,14 +30,11 @@ public class TaskQueue<R extends Runnable> extends LinkedBlockingQueue<Runnable>
 
     private static final long serialVersionUID = -2635853580887179627L;
 
+    @Setter
     private FastThreadPoolExecutor executor;
 
     public TaskQueue(int capacity) {
         super(capacity);
-    }
-
-    public void setExecutor(FastThreadPoolExecutor exec) {
-        executor = exec;
     }
 
     @Override
@@ -54,10 +53,21 @@ public class TaskQueue<R extends Runnable> extends LinkedBlockingQueue<Runnable>
         return super.offer(runnable);
     }
 
-    public boolean retryOffer(Runnable o, long timeout, TimeUnit unit) throws InterruptedException {
+    /**
+     * Retry offer.
+     *
+     * @param runnable submit thread pool task
+     * @param timeout  how long to wait before giving up, in units of
+     *                 {@code unit}
+     * @param unit     a {@code TimeUnit} determining how to interpret the
+     *                 {@code timeout} parameter
+     * @return
+     * @throws InterruptedException
+     */
+    public boolean retryOffer(Runnable runnable, long timeout, TimeUnit unit) throws InterruptedException {
         if (executor.isShutdown()) {
             throw new RejectedExecutionException("Actuator closed!");
         }
-        return super.offer(o, timeout, unit);
+        return super.offer(runnable, timeout, unit);
     }
 }
