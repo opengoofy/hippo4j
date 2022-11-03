@@ -54,7 +54,7 @@ public interface ThreadPoolPluginManager {
     Collection<ThreadPoolPlugin> getAllPlugins();
 
     /**
-     * Register a {@link ThreadPoolPlugin}
+     * Register a {@link ThreadPoolPlugin}.
      *
      * @param plugin plugin
      * @throws IllegalArgumentException thrown when a plugin with the same {@link ThreadPoolPlugin#getId()}
@@ -80,17 +80,17 @@ public interface ThreadPoolPluginManager {
     boolean isRegistered(String pluginId);
 
     /**
-     * Unregister {@link ThreadPoolPlugin}
+     * Unregister {@link ThreadPoolPlugin}.
      *
      * @param pluginId plugin id
      */
     void unregister(String pluginId);
 
     /**
-     * Get {@link ThreadPoolPlugin}
+     * Get {@link ThreadPoolPlugin}.
      *
-     * @param pluginId  plugin id
-     * @param <A> target aware type
+     * @param pluginId plugin id
+     * @param <A>      target aware type
      * @return {@link ThreadPoolPlugin}
      * @throws ClassCastException thrown when the object obtained by name cannot be converted to target type
      */
@@ -129,7 +129,7 @@ public interface ThreadPoolPluginManager {
     /**
      * Get plugin of type.
      *
-     * @param pluginId plugin id
+     * @param pluginId   plugin id
      * @param pluginType plugin type
      * @return target plugin
      */
@@ -172,5 +172,4 @@ public interface ThreadPoolPluginManager {
         return getPlugin(pluginId)
                 .map(ThreadPoolPlugin::getPluginRuntime);
     }
-
 }

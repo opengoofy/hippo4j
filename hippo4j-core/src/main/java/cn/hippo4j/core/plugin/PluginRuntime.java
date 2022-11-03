@@ -31,19 +31,19 @@ import java.util.List;
 public class PluginRuntime {
 
     /**
-     * plugin id
+     * Plugin id
      */
     private final String pluginId;
 
     /**
-     * runtime info
+     * Runtime info
      */
     private final List<Info> infoList = new ArrayList<>();
 
     /**
      * Add a runtime info item.
      *
-     * @param name name
+     * @param name  name
      * @param value value
      * @return runtime info item
      */
@@ -52,12 +52,21 @@ public class PluginRuntime {
         return this;
     }
 
+    /**
+     * Plugin runtime info.
+     */
     @Getter
     @RequiredArgsConstructor
     public static class Info {
 
+        /**
+         * Name
+         */
         private final String name;
+
+        /**
+         * Value
+         */
         private final Object value;
     }
-
 }

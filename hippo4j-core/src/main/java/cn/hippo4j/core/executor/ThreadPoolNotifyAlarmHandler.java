@@ -29,7 +29,6 @@ import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +36,14 @@ import org.springframework.boot.CommandLineRunner;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Thread-pool notify alarm handler.
@@ -46,7 +52,6 @@ import java.util.concurrent.*;
 @RequiredArgsConstructor
 public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner {
 
-    @NonNull
     private final Hippo4jSendMessageService hippo4jSendMessageService;
 
     @Value("${spring.profiles.active:UNKNOWN}")
@@ -96,8 +101,8 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
     /**
      * Check thread pool capacity alarm.
      *
-     * @param threadPoolId
-     * @param threadPoolExecutor
+     * @param threadPoolId       thread-pool id
+     * @param threadPoolExecutor thread-pool executor
      */
     public void checkPoolCapacityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
         ThreadPoolNotifyAlarm alarmConfig = GlobalNotifyAlarmManage.get(threadPoolId);
@@ -119,8 +124,8 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
     /**
      * Check thread pool activity alarm.
      *
-     * @param threadPoolId
-     * @param threadPoolExecutor
+     * @param threadPoolId       thread-pool id
+     * @param threadPoolExecutor thread-pool executor
      */
     public void checkPoolActivityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
         ThreadPoolNotifyAlarm alarmConfig = GlobalNotifyAlarmManage.get(threadPoolId);
@@ -141,7 +146,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
     /**
      * Async send rejected alarm.
      *
-     * @param threadPoolId
+     * @param threadPoolId thread-pool id
      */
     public void asyncSendRejectedAlarm(String threadPoolId) {
         Runnable checkPoolRejectedAlarmTask = () -> {
@@ -162,10 +167,10 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
     /**
      * Async send execute time out alarm.
      *
-     * @param threadPoolId
-     * @param executeTime
-     * @param executeTimeOut
-     * @param threadPoolExecutor
+     * @param threadPoolId       thread-pool id
+     * @param executeTime        execute time
+     * @param executeTimeOut     execute time-out
+     * @param threadPoolExecutor thread-pool executor
      */
     public void asyncSendExecuteTimeOutAlarm(String threadPoolId, long executeTime, long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
         ThreadPoolNotifyAlarm alarmConfig = GlobalNotifyAlarmManage.get(threadPoolId);
@@ -193,7 +198,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
     /**
      * Send pool config change.
      *
-     * @param request
+     * @param request change parameter notify request
      */
     public void sendPoolConfigChange(ChangeParameterNotifyRequest request) {
         request.setActive(active.toUpperCase());
@@ -206,7 +211,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
     /**
      * Build alarm notify request.
      *
-     * @param threadPoolExecutor
+     * @param threadPoolExecutor thread-pool executor
      * @return
      */
     public AlarmNotifyRequest buildAlarmNotifyRequest(ThreadPoolExecutor threadPoolExecutor) {

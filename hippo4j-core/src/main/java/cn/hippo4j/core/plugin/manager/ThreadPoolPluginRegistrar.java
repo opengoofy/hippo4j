@@ -38,5 +38,4 @@ public interface ThreadPoolPluginRegistrar {
      * @param support thread pool plugin manager delegate
      */
     void doRegister(ThreadPoolPluginSupport support);
-
 }
