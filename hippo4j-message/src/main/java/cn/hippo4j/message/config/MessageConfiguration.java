@@ -19,6 +19,7 @@ package cn.hippo4j.message.config;
 
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.platform.DingSendMessageHandler;
+import cn.hippo4j.message.platform.EmailSendMessageHandler;
 import cn.hippo4j.message.platform.LarkSendMessageHandler;
 import cn.hippo4j.message.platform.WeChatSendMessageHandler;
 import cn.hippo4j.message.service.AlarmControlHandler;
@@ -56,5 +57,10 @@ public class MessageConfiguration {
     @Bean
     public SendMessageHandler weChatSendMessageHandler() {
         return new WeChatSendMessageHandler();
+    }
+
+    @Bean
+    public EmailSendMessageHandler emailSendMessageHandler() {
+        return new EmailSendMessageHandler();
     }
 }
