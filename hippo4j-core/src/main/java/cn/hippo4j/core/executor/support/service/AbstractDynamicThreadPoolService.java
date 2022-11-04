@@ -33,8 +33,8 @@ public abstract class AbstractDynamicThreadPoolService implements DynamicThreadP
     /**
      * Build dynamic thread-pool executor.
      *
-     * @param registerParameter
-     * @return
+     * @param registerParameter register parameter
+     * @return dynamic thread-pool executor
      */
     public ThreadPoolExecutor buildDynamicThreadPoolExecutor(DynamicThreadPoolRegisterParameter registerParameter) {
         ThreadPoolExecutor dynamicThreadPoolExecutor = ThreadPoolBuilder.builder()

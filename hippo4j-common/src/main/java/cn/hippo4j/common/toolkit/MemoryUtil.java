@@ -26,7 +26,7 @@ import java.lang.management.MemoryUsage;
 
 /**
  * memory util<br>
- * the obtained information is not invalid, after a long wait, obtain it again
+ * the obtained information is not real time effective, after a long wait, please get it again
  *
  * @author liuwenhao
  */

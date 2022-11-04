@@ -27,7 +27,7 @@ public interface ExecuteAwarePlugin extends ThreadPoolPlugin {
     /**
      * Callback before task execution.
      *
-     * @param thread thread of executing task
+     * @param thread   thread of executing task
      * @param runnable task
      * @see ExtensibleThreadPoolExecutor#beforeExecute
      */
@@ -37,12 +37,10 @@ public interface ExecuteAwarePlugin extends ThreadPoolPlugin {
     /**
      * Callback after task execution.
      *
-     * @param runnable runnable
+     * @param runnable  runnable
      * @param throwable exception thrown during execution
      * @see ExtensibleThreadPoolExecutor#afterExecute
      */
     default void afterExecute(Runnable runnable, Throwable throwable) {
-        // do nothing
     }
-
 }

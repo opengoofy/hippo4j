@@ -15,26 +15,18 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support;
+package cn.hippo4j.config.rpc.server;
 
-import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-
-import java.util.concurrent.TimeUnit;
+import cn.hippo4j.config.rpc.handler.Connection;
 
 /**
- * Common dynamic thread-pool.
+ * This applies to server-side connections
  */
-public class CommonDynamicThreadPool {
+public interface ServerConnection extends Connection {
 
-    public static DynamicThreadPoolExecutor getInstance(String threadPoolId) {
-        DynamicThreadPoolExecutor dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) ThreadPoolBuilder.builder()
-                .dynamicPool()
-                .threadFactory(threadPoolId)
-                .poolThreadSize(2, 4)
-                .keepAliveTime(60L, TimeUnit.SECONDS)
-                .workQueue(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, 1024)
-                .build();
-        return dynamicThreadPoolExecutor;
-    }
+    /**
+     * Bind ports and process them
+     */
+    void bind(int port);
+
 }

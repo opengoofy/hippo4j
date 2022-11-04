@@ -33,9 +33,9 @@ import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.CommonDynamicThreadPool;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
+import cn.hippo4j.core.provider.CommonDynamicThreadPoolProviderFactory;
 import cn.hippo4j.core.toolkit.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
@@ -55,7 +55,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static cn.hippo4j.common.constant.Constants.*;
+import static cn.hippo4j.common.constant.Constants.ITEM_ID;
+import static cn.hippo4j.common.constant.Constants.NAMESPACE;
+import static cn.hippo4j.common.constant.Constants.TP_ID;
 
 /**
  * Dynamic thread-pool post processor.
@@ -189,12 +191,12 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 GlobalThreadPoolManage.dynamicRegister(registerWrapper);
             }
         } catch (Exception ex) {
-            newDynamicThreadPoolExecutor = executor != null ? executor : CommonDynamicThreadPool.getInstance(threadPoolId);
+            newDynamicThreadPoolExecutor = executor != null ? executor : CommonDynamicThreadPoolProviderFactory.getInstance(threadPoolId);
             dynamicThreadPoolWrapper.setExecutor(newDynamicThreadPoolExecutor);
             log.error("Failed to initialize thread pool configuration. error message: {}", ex.getMessage());
         } finally {
             if (Objects.isNull(executor)) {
-                dynamicThreadPoolWrapper.setExecutor(CommonDynamicThreadPool.getInstance(threadPoolId));
+                dynamicThreadPoolWrapper.setExecutor(CommonDynamicThreadPoolProviderFactory.getInstance(threadPoolId));
             }
         }
         GlobalThreadPoolManage.register(dynamicThreadPoolWrapper.getThreadPoolId(), threadPoolParameterInfo, dynamicThreadPoolWrapper);

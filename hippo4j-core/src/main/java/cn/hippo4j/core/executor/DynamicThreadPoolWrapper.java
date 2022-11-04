@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor;
 
-import cn.hippo4j.core.executor.support.CommonDynamicThreadPool;
+import cn.hippo4j.core.provider.CommonDynamicThreadPoolProviderFactory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -63,7 +63,7 @@ public class DynamicThreadPoolWrapper implements DisposableBean {
     private ThreadPoolExecutor executor;
 
     public DynamicThreadPoolWrapper(String threadPoolId) {
-        this(threadPoolId, CommonDynamicThreadPool.getInstance(threadPoolId));
+        this(threadPoolId, CommonDynamicThreadPoolProviderFactory.getInstance(threadPoolId));
     }
 
     public DynamicThreadPoolWrapper(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {

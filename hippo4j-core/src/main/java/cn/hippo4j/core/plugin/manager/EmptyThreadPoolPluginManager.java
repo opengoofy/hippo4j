@@ -32,7 +32,7 @@ import java.util.Optional;
 public class EmptyThreadPoolPluginManager implements ThreadPoolPluginManager {
 
     /**
-     * default instance
+     * Default instance
      */
     public static final EmptyThreadPoolPluginManager INSTANCE = new EmptyThreadPoolPluginManager();
 
@@ -41,7 +41,6 @@ public class EmptyThreadPoolPluginManager implements ThreadPoolPluginManager {
      */
     @Override
     public void clear() {
-        // do nothing
     }
 
     /**
@@ -64,7 +63,6 @@ public class EmptyThreadPoolPluginManager implements ThreadPoolPluginManager {
      */
     @Override
     public void register(ThreadPoolPlugin plugin) {
-        // do nothing
     }
 
     /**
@@ -90,17 +88,16 @@ public class EmptyThreadPoolPluginManager implements ThreadPoolPluginManager {
     }
 
     /**
-     * Unregister {@link ThreadPoolPlugin}
+     * Unregister {@link ThreadPoolPlugin}.
      *
      * @param pluginId plugin id
      */
     @Override
     public void unregister(String pluginId) {
-        // do nothing
     }
 
     /**
-     * Get {@link ThreadPoolPlugin}
+     * Get {@link ThreadPoolPlugin}.
      *
      * @param pluginId plugin id
      * @return {@link ThreadPoolPlugin}
@@ -150,5 +147,4 @@ public class EmptyThreadPoolPluginManager implements ThreadPoolPluginManager {
     public Collection<TaskAwarePlugin> getTaskAwarePluginList() {
         return Collections.emptyList();
     }
-
 }

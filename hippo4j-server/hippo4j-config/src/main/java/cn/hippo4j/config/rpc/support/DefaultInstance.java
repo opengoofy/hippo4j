@@ -15,22 +15,29 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.springboot.starter.event;
+package cn.hippo4j.config.rpc.support;
 
-import org.springframework.context.ApplicationEvent;
+import cn.hippo4j.common.toolkit.ReflectUtil;
+import cn.hippo4j.common.web.exception.IllegalException;
 
 /**
- * Execute after the spring application context is successfully started.
+ * Simply creating an instance of a class by its name and its specific type,
+ * and then throwing an exception if it is an interface, is not elegant
  */
-public class ApplicationCompleteEvent extends ApplicationEvent {
+public class DefaultInstance implements Instance {
 
-    /**
-     * Create a new {@code ApplicationEvent}.
-     *
-     * @param source the object on which the event initially occurred or with
-     *               which the event is associated (never {@code null})
-     */
-    public ApplicationCompleteEvent(Object source) {
-        super(source);
+    @Override
+    public Object getInstance(Class<?> cls) {
+        return ReflectUtil.createInstance(cls);
+    }
+
+    @Override
+    public Object getInstance(String name) {
+        try {
+            Class<?> cls = Class.forName(name);
+            return getInstance(cls);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalException(e);
+        }
     }
 }

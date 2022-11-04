@@ -36,7 +36,7 @@ import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.core.ClientWorker;
 import cn.hippo4j.springboot.starter.core.DynamicThreadPoolSubscribeConfig;
-import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
+import cn.hippo4j.springboot.starter.event.ApplicationRefreshedEvent;
 import cn.hippo4j.springboot.starter.notify.ServerNotifyConfigBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import lombok.RequiredArgsConstructor;
@@ -55,11 +55,9 @@ import static cn.hippo4j.common.constant.Constants.REGISTER_DYNAMIC_THREAD_POOL_
  */
 @Slf4j
 @RequiredArgsConstructor
-public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolService implements ApplicationListener<ApplicationCompleteEvent> {
+public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolService {
 
     private final HttpAgent httpAgent;
-
-    private final ClientWorker clientWorker;
 
     private final BootstrapProperties properties;
 
@@ -75,11 +73,6 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
         subscribeConfig(registerWrapper);
         putNotifyAlarmConfig(registerWrapper);
         return dynamicThreadPoolExecutor;
-    }
-
-    @Override
-    public void onApplicationEvent(ApplicationCompleteEvent event) {
-        clientWorker.notifyApplicationComplete();
     }
 
     private ThreadPoolExecutor registerExecutor(DynamicThreadPoolRegisterWrapper registerWrapper) {

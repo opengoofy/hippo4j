@@ -38,20 +38,22 @@ public class DynamicThreadPoolAdapterChoose {
     }
 
     /**
-     * Match.
+     * Check if the object contains thread pool information.
      *
-     * @param executor
-     * @return
+     * @param executor objects where there may be instances
+     *                 of dynamic thread pools
+     * @return matching results
      */
     public static boolean match(Object executor) {
         return DYNAMIC_THREAD_POOL_ADAPTERS.stream().anyMatch(each -> each.match(executor));
     }
 
     /**
-     * Unwrap.
+     * Get the dynamic thread pool reference in the object.
      *
-     * @param executor
-     * @return
+     * @param executor objects where there may be instances
+     *                 of dynamic thread pools
+     * @return get the real dynamic thread pool instance
      */
     public static DynamicThreadPoolExecutor unwrap(Object executor) {
         Optional<DynamicThreadPoolAdapter> dynamicThreadPoolAdapterOptional = DYNAMIC_THREAD_POOL_ADAPTERS.stream().filter(each -> each.match(executor)).findFirst();
@@ -59,9 +61,12 @@ public class DynamicThreadPoolAdapterChoose {
     }
 
     /**
-     * Replace.
+     * If the {@link DynamicThreadPoolAdapter#match(Object)} conditions are met,
+     * the thread pool is replaced with a dynamic thread pool.
      *
-     * @param executor
+     * @param executor                  objects where there may be instances
+     *                                  of dynamic thread pools
+     * @param dynamicThreadPoolExecutor dynamic thread-pool executor
      */
     public static void replace(Object executor, Executor dynamicThreadPoolExecutor) {
         Optional<DynamicThreadPoolAdapter> dynamicThreadPoolAdapterOptional = DYNAMIC_THREAD_POOL_ADAPTERS.stream().filter(each -> each.match(executor)).findFirst();

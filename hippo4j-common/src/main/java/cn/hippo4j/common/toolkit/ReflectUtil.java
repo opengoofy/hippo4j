@@ -250,4 +250,18 @@ public class ReflectUtil {
             throw new IllegalException(e);
         }
     }
+
+    /**
+     * get instance
+     *
+     * @param cls the class
+     * @return new Instance
+     */
+    public static Object createInstance(Class<?> cls) {
+        try {
+            return cls.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new IllegalException(e);
+        }
+    }
 }

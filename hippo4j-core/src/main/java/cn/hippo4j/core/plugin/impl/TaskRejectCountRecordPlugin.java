@@ -43,7 +43,7 @@ public class TaskRejectCountRecordPlugin implements RejectedAwarePlugin {
     }
 
     /**
-     * rejection count
+     * Rejection count
      */
     @Setter
     @Getter
@@ -72,12 +72,11 @@ public class TaskRejectCountRecordPlugin implements RejectedAwarePlugin {
     }
 
     /**
-     * Get reject count num
+     * Get reject count num.
      *
      * @return reject count num
      */
     public Long getRejectCountNum() {
         return rejectCount.get();
     }
-
 }

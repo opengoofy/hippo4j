@@ -57,7 +57,6 @@ public interface ThreadPoolPlugin {
      * @see ThreadPoolPluginManager#register
      */
     default void start() {
-        // do nothing
     }
 
     /**
@@ -67,7 +66,6 @@ public interface ThreadPoolPlugin {
      * @see ThreadPoolPluginManager#clear
      */
     default void stop() {
-        // do nothing
     }
 
     /**
@@ -78,5 +76,4 @@ public interface ThreadPoolPlugin {
     default PluginRuntime getPluginRuntime() {
         return new PluginRuntime(getId());
     }
-
 }

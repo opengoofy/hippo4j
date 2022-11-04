@@ -106,12 +106,11 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @SuppressWarnings("all")
     public DynamicThreadPoolService dynamicThreadPoolConfigService(HttpAgent httpAgent,
-                                                                   ClientWorker clientWorker,
                                                                    ServerHealthCheck serverHealthCheck,
                                                                    ServerNotifyConfigBuilder notifyConfigBuilder,
                                                                    Hippo4jBaseSendMessageService hippo4jBaseSendMessageService,
                                                                    DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig) {
-        return new DynamicThreadPoolConfigService(httpAgent, clientWorker, properties, notifyConfigBuilder, hippo4jBaseSendMessageService, dynamicThreadPoolSubscribeConfig);
+        return new DynamicThreadPoolConfigService(httpAgent, properties, notifyConfigBuilder, hippo4jBaseSendMessageService, dynamicThreadPoolSubscribeConfig);
     }
 
     @Bean

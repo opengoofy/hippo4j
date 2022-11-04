@@ -69,7 +69,7 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
         List<ThreadPoolAdapterState> threadPoolAdapterStates = new ArrayList<>();
-        DUBBO_PROTOCOL_EXECUTOR.forEach((kel, val) -> threadPoolAdapterStates.add(getThreadPoolState(String.valueOf(val))));
+        DUBBO_PROTOCOL_EXECUTOR.forEach((key, val) -> threadPoolAdapterStates.add(getThreadPoolState(String.valueOf(key))));
         return threadPoolAdapterStates;
     }
 

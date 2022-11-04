@@ -17,6 +17,11 @@
 
 package cn.hippo4j.core.executor.support;
 
+import cn.hippo4j.common.design.builder.Builder;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.toolkit.Assert;
+import org.springframework.core.task.TaskDecorator;
+
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
@@ -24,12 +29,6 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import cn.hippo4j.common.design.builder.Builder;
-import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
-import cn.hippo4j.common.toolkit.Assert;
-
-import org.springframework.core.task.TaskDecorator;
 
 /**
  * Thread-pool builder.
@@ -74,42 +73,89 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     private Boolean allowCoreThreadTimeOut = false;
 
+    /**
+     * Calculate core num.
+     *
+     * @return core num
+     */
     private Integer calculateCoreNum() {
         int cpuCoreNum = Runtime.getRuntime().availableProcessors();
         return new BigDecimal(cpuCoreNum).divide(new BigDecimal("0.2")).intValue();
     }
 
+    /**
+     * Is fast pool.
+     *
+     * @param isFastPool is fast pool
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder isFastPool(Boolean isFastPool) {
         this.isFastPool = isFastPool;
         return this;
     }
 
+    /**
+     * Dynamic pool.
+     *
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder dynamicPool() {
         this.isDynamicPool = true;
         return this;
     }
 
+    /**
+     * Thread factory.
+     *
+     * @param threadNamePrefix thread name prefix
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder threadFactory(String threadNamePrefix) {
         this.threadNamePrefix = threadNamePrefix;
         return this;
     }
 
+    /**
+     * Thread factory.
+     *
+     * @param threadFactory thread factory
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder threadFactory(ThreadFactory threadFactory) {
         this.threadFactory = threadFactory;
         return this;
     }
 
+    /**
+     * Thread factory.
+     *
+     * @param threadNamePrefix thread name prefix
+     * @param isDaemon         is daemon
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder threadFactory(String threadNamePrefix, Boolean isDaemon) {
         this.threadNamePrefix = threadNamePrefix;
         this.isDaemon = isDaemon;
         return this;
     }
 
+    /**
+     * Core pool size.
+     *
+     * @param corePoolSize core pool size
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder corePoolSize(int corePoolSize) {
         this.corePoolSize = corePoolSize;
         return this;
     }
 
+    /**
+     * Max pool num.
+     *
+     * @param maxPoolSize max pool num
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder maxPoolNum(int maxPoolSize) {
         this.maxPoolSize = maxPoolSize;
         if (maxPoolSize < this.corePoolSize) {
@@ -118,6 +164,11 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
+    /**
+     * Single pool.
+     *
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder singlePool() {
         int singleNum = 1;
         this.corePoolSize = singleNum;
@@ -125,6 +176,12 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
+    /**
+     * Single pool.
+     *
+     * @param threadNamePrefix thread name prefix
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder singlePool(String threadNamePrefix) {
         int singleNum = 1;
         this.corePoolSize = singleNum;
@@ -133,128 +190,245 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
         return this;
     }
 
+    /**
+     * Pool thread size.
+     *
+     * @param corePoolSize core pool size
+     * @param maxPoolSize  max pool size
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder poolThreadSize(int corePoolSize, int maxPoolSize) {
         this.corePoolSize = corePoolSize;
         this.maxPoolSize = maxPoolSize;
         return this;
     }
 
+    /**
+     * Keep alive time.
+     *
+     * @param keepAliveTime keep alive time
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder keepAliveTime(long keepAliveTime) {
         this.keepAliveTime = keepAliveTime;
         return this;
     }
 
+    /**
+     * Time unit.
+     *
+     * @param timeUnit time unit
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder timeUnit(TimeUnit timeUnit) {
         this.timeUnit = timeUnit;
         return this;
     }
 
+    /**
+     * Execute time-out.
+     *
+     * @param executeTimeOut execute time-out
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder executeTimeOut(long executeTimeOut) {
         this.executeTimeOut = executeTimeOut;
         return this;
     }
 
+    /**
+     * Keep alive time.
+     *
+     * @param keepAliveTime keep alive time
+     * @param timeUnit      time unit
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder keepAliveTime(long keepAliveTime, TimeUnit timeUnit) {
         this.keepAliveTime = keepAliveTime;
         this.timeUnit = timeUnit;
         return this;
     }
 
+    /**
+     * Capacity.
+     *
+     * @param capacity capacity
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder capacity(int capacity) {
         this.capacity = capacity;
         return this;
     }
 
+    /**
+     * Work queue.
+     *
+     * @param queueType queue type
+     * @param capacity  capacity
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder workQueue(BlockingQueueTypeEnum queueType, int capacity) {
         this.blockingQueueType = queueType;
         this.capacity = capacity;
         return this;
     }
 
+    /**
+     * Rejected.
+     *
+     * @param rejectedExecutionHandler rejected execution handler
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder rejected(RejectedExecutionHandler rejectedExecutionHandler) {
         this.rejectedExecutionHandler = rejectedExecutionHandler;
         return this;
     }
 
+    /**
+     * Work queue.
+     *
+     * @param blockingQueueType blocking queue type
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder workQueue(BlockingQueueTypeEnum blockingQueueType) {
         this.blockingQueueType = blockingQueueType;
         return this;
     }
 
+    /**
+     * Work queue.
+     *
+     * @param workQueue work queue
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder workQueue(BlockingQueue workQueue) {
         this.workQueue = workQueue;
         return this;
     }
 
+    /**
+     * Thread-pool id.
+     *
+     * @param threadPoolId thread-pool id
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder threadPoolId(String threadPoolId) {
         this.threadPoolId = threadPoolId;
         return this;
     }
 
+    /**
+     * Task decorator.
+     *
+     * @param taskDecorator task decorator
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder taskDecorator(TaskDecorator taskDecorator) {
         this.taskDecorator = taskDecorator;
         return this;
     }
 
+    /**
+     * Await termination millis.
+     *
+     * @param awaitTerminationMillis await termination millis
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder awaitTerminationMillis(long awaitTerminationMillis) {
         this.awaitTerminationMillis = awaitTerminationMillis;
         return this;
     }
 
+    /**
+     * Wait for tasks to complete on shutdown.
+     *
+     * @param waitForTasksToCompleteOnShutdown wait for tasks to complete on shutdown
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder waitForTasksToCompleteOnShutdown(boolean waitForTasksToCompleteOnShutdown) {
         this.waitForTasksToCompleteOnShutdown = waitForTasksToCompleteOnShutdown;
         return this;
     }
 
+    /**
+     * Dynamic support.
+     *
+     * @param waitForTasksToCompleteOnShutdown wait for tasks to complete on shutdown
+     * @param awaitTerminationMillis           await termination millis
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder dynamicSupport(boolean waitForTasksToCompleteOnShutdown, long awaitTerminationMillis) {
         this.awaitTerminationMillis = awaitTerminationMillis;
         this.waitForTasksToCompleteOnShutdown = waitForTasksToCompleteOnShutdown;
         return this;
     }
 
+    /**
+     * Allow core thread time-out.
+     *
+     * @param allowCoreThreadTimeOut core thread time-out
+     * @return thread-pool builder
+     */
     public ThreadPoolBuilder allowCoreThreadTimeOut(boolean allowCoreThreadTimeOut) {
         this.allowCoreThreadTimeOut = allowCoreThreadTimeOut;
         return this;
     }
 
-    @Override
-    public ThreadPoolExecutor build() {
-        if (isDynamicPool) {
-            return buildDynamicPool(this);
-        }
-        return isFastPool ? buildFastPool(this) : buildPool(this);
-    }
-
+    /**
+     * Builder design pattern implementation.
+     *
+     * @return thread-pool builder
+     */
     public static ThreadPoolBuilder builder() {
         return new ThreadPoolBuilder();
     }
 
     /**
-     * Create dynamic thread pool by thread pool id
+     * Create dynamic thread pool by thread pool id.
      *
-     * @param threadPoolId threadPoolId
-     * @return ThreadPoolExecutor
+     * @param threadPoolId thread-pool id
+     * @return dynamic thread-pool executor
      */
     public static ThreadPoolExecutor buildDynamicPoolById(String threadPoolId) {
-        return ThreadPoolBuilder.builder()
-                .threadFactory(threadPoolId)
-                .threadPoolId(threadPoolId)
-                .dynamicPool()
-                .build();
+        return ThreadPoolBuilder.builder().threadFactory(threadPoolId).threadPoolId(threadPoolId).dynamicPool().build();
     }
 
+    /**
+     * Build a normal thread-pool with {@code builder}.
+     *
+     * @param builder thread-pool builder
+     * @return normal thread-pool
+     */
     private static ThreadPoolExecutor buildPool(ThreadPoolBuilder builder) {
         return AbstractBuildThreadPoolTemplate.buildPool(buildInitParam(builder));
     }
 
+    /**
+     * Build a fast thread-pool with {@code builder}.
+     *
+     * @param builder thread-pool builder
+     * @return fast thread-pool executor
+     */
     private static ThreadPoolExecutor buildFastPool(ThreadPoolBuilder builder) {
         return AbstractBuildThreadPoolTemplate.buildFastPool(buildInitParam(builder));
     }
 
+    /**
+     * Build a dynamic thread-pool with {@code builder}.
+     *
+     * @param builder thread-pool builder
+     * @return dynamic thread-pool executor
+     */
     private static ThreadPoolExecutor buildDynamicPool(ThreadPoolBuilder builder) {
         return AbstractBuildThreadPoolTemplate.buildDynamicPool(buildInitParam(builder));
     }
 
+    /**
+     * Build thread-pool initialization parameters via {@code builder}.
+     *
+     * @param builder thread-pool builder
+     * @return thread-pool init param
+     */
     private static AbstractBuildThreadPoolTemplate.ThreadPoolInitParam buildInitParam(ThreadPoolBuilder builder) {
         AbstractBuildThreadPoolTemplate.ThreadPoolInitParam initParam;
         if (builder.threadFactory == null) {
@@ -288,5 +462,13 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
             initParam.setWorkQueue(builder.workQueue);
         }
         return initParam;
+    }
+
+    @Override
+    public ThreadPoolExecutor build() {
+        if (isDynamicPool) {
+            return buildDynamicPool(this);
+        }
+        return isFastPool ? buildFastPool(this) : buildPool(this);
     }
 }

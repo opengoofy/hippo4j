@@ -34,10 +34,19 @@ import java.util.concurrent.atomic.AtomicLong;
 @AllArgsConstructor
 public class RejectedProxyInvocationHandler implements InvocationHandler {
 
+    /**
+     * Target object
+     */
     private final Object target;
 
+    /**
+     * Thread-pool id
+     */
     private final String threadPoolId;
 
+    /**
+     * Reject count
+     */
     private final AtomicLong rejectCount;
 
     @Override
