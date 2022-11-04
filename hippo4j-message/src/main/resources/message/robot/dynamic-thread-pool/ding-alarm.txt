@@ -34,7 +34,7 @@
 
  ---
 
- ${timout-content} 
+ ${timeout-content} 
 
 <font color=#708090 size=2>拒绝策略：%s</font> 
 

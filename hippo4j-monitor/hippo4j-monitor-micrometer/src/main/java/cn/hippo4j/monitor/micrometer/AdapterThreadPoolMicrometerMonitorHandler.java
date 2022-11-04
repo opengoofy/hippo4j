@@ -46,10 +46,10 @@ public class AdapterThreadPoolMicrometerMonitorHandler extends AbstractAdapterTh
     @Override
     protected void execute(ThreadPoolAdapterState threadPoolAdapterState) {
         ThreadPoolAdapterState stateInfo = RUN_STATE_CACHE.get(threadPoolAdapterState.getThreadPoolKey());
-        if (stateInfo == null) {
-            RUN_STATE_CACHE.put(threadPoolAdapterState.getThreadPoolKey(), threadPoolAdapterState);
-        } else {
+        if (stateInfo != null) {
             BeanUtil.convert(threadPoolAdapterState, stateInfo);
+        } else {
+            RUN_STATE_CACHE.put(threadPoolAdapterState.getThreadPoolKey(), threadPoolAdapterState);
         }
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String applicationName = environment.getProperty("spring.application.name", "application");

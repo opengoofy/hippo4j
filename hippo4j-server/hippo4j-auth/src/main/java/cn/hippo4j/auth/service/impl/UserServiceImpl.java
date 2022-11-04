@@ -22,7 +22,6 @@ import cn.hippo4j.auth.model.UserInfo;
 import cn.hippo4j.auth.model.biz.user.UserQueryPageReqDTO;
 import cn.hippo4j.auth.model.biz.user.UserReqDTO;
 import cn.hippo4j.auth.model.biz.user.UserRespDTO;
-import cn.hippo4j.auth.service.RoleService;
 import cn.hippo4j.auth.service.UserService;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
@@ -48,8 +47,6 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
-
-    private final RoleService roleService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
