@@ -75,7 +75,7 @@ public class InetUtils implements Closeable {
         try {
             int lowest = Integer.MAX_VALUE;
             for (Enumeration<NetworkInterface> nics = NetworkInterface
-                    .getNetworkInterfaces(); nics.hasMoreElements(); ) {
+                    .getNetworkInterfaces(); nics.hasMoreElements();) {
                 NetworkInterface ifc = nics.nextElement();
                 if (ifc.isUp()) {
                     this.log.trace("Testing interface: " + ifc.getDisplayName());
@@ -86,7 +86,7 @@ public class InetUtils implements Closeable {
                     }
                     if (!ignoreInterface(ifc.getDisplayName())) {
                         for (Enumeration<InetAddress> addrs = ifc
-                                .getInetAddresses(); addrs.hasMoreElements(); ) {
+                                .getInetAddresses(); addrs.hasMoreElements();) {
                             InetAddress address = addrs.nextElement();
                             if (address instanceof Inet4Address
                                     && !address.isLoopbackAddress()
