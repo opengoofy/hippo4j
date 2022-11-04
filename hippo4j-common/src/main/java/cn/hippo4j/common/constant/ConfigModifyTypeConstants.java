@@ -17,6 +17,9 @@
 
 package cn.hippo4j.common.constant;
 
+/**
+ * Config modify type constants.
+ */
 public class ConfigModifyTypeConstants {
 
     /**
