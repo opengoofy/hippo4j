@@ -84,10 +84,8 @@ public class NettyConnectPoolHolder {
      */
     public static synchronized NettyConnectPool getPool(String host, int port,
                                                         long timeout, EventLoopGroup worker) {
-        /*
-         * this cannot use the computeIfAbsent method directly here because put is already used in init.
-         * Details refer to https://bugs.openjdk.java.net/browse/JDK-8062841
-         */
+        // This cannot use the computeIfAbsent method directly here because put is already used in init.
+        // Details refer to https://bugs.openjdk.java.net/browse/JDK-8062841
         NettyConnectPool pool = getPool(host, port);
         return pool == null ? initPool(host, port, timeout, worker) : pool;
     }
