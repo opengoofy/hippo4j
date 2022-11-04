@@ -18,7 +18,7 @@
         <!--        </el-tooltip>-->
 
       </template>
-
+      <langChange />
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img src="../../../public/hippo4j.gif" class="user-avatar">
@@ -45,12 +45,14 @@
   import Breadcrumb from '@/components/Breadcrumb'
   import Hamburger from '@/components/Hamburger'
   import ErrorLog from '@/components/ErrorLog'
+  import langChange from '@/locale/langChange'
 
   export default {
     components: {
       Breadcrumb,
       Hamburger,
-      ErrorLog
+      ErrorLog,
+      langChange
     },
     computed: {
       ...mapGetters([
@@ -106,7 +108,7 @@
       float: right;
       height: 100%;
       line-height: 50px;
-
+      display: flex;
       &:focus {
         outline: none;
       }
