@@ -18,7 +18,11 @@
 package cn.hippo4j.core.plugin.manager;
 
 import cn.hippo4j.core.plugin.ThreadPoolPlugin;
-import cn.hippo4j.core.plugin.impl.*;
+import cn.hippo4j.core.plugin.impl.TaskDecoratorPlugin;
+import cn.hippo4j.core.plugin.impl.TaskRejectCountRecordPlugin;
+import cn.hippo4j.core.plugin.impl.TaskRejectNotifyAlarmPlugin;
+import cn.hippo4j.core.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
+import cn.hippo4j.core.plugin.impl.ThreadPoolExecutorShutdownPlugin;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -35,8 +39,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DefaultThreadPoolPluginRegistrar implements ThreadPoolPluginRegistrar {
 
-    public static final String REGISTRAR_NAME = "DefaultThreadPoolPluginRegistrar";
-
     /**
      * Execute time out
      */
@@ -46,16 +48,6 @@ public class DefaultThreadPoolPluginRegistrar implements ThreadPoolPluginRegistr
      * Await termination millis
      */
     private long awaitTerminationMillis;
-
-    /**
-     * Get id.
-     *
-     * @return id
-     */
-    @Override
-    public String getId() {
-        return REGISTRAR_NAME;
-    }
 
     /**
      * Create and register plugin for the specified thread-pool instance.

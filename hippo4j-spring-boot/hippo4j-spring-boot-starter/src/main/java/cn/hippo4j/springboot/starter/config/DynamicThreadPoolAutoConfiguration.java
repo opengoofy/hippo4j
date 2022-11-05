@@ -59,6 +59,7 @@ import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHttpAgent;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolPostProcessor;
+import cn.hippo4j.springboot.starter.support.ThreadPoolPluginRegisterPostProcessor;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -224,4 +225,10 @@ public class DynamicThreadPoolAutoConfiguration {
     public HttpAgent httpAgent(BootstrapProperties properties) {
         return new ServerHttpAgent(properties);
     }
+
+    @Bean
+    public ThreadPoolPluginRegisterPostProcessor threadPoolPluginRegisterPostProcessor() {
+        return new ThreadPoolPluginRegisterPostProcessor();
+    }
+
 }
