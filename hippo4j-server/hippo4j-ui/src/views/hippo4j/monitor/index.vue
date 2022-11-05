@@ -84,7 +84,7 @@
     </div>
     <el-empty v-if="!temp.coreSize" description="暂无结果" />
     <section v-else>
-      <el-card shadow="hover">
+      <!-- <el-card shadow="hover">
         <el-descriptions :column="3" border>
           <el-descriptions-item label="实例 ID">{{ listQuery.identify }}</el-descriptions-item>
 
@@ -107,7 +107,7 @@
             {{ rejectCount }}
           </el-descriptions-item>
         </el-descriptions>
-      </el-card>
+      </el-card> -->
 
       <el-row :gutter="10" style="margin-top: 16px">
         <el-col :span="12">
@@ -288,10 +288,10 @@ export default {
         this.temp = res;
       });
 
-      monitorApi.lastTaskCountFun(this.listQuery).then((res) => {
-        this.rejectCount = res.rejectCount;
-        this.lastTaskCount = res.completedTaskCount;
-      });
+      // monitorApi.lastTaskCountFun(this.listQuery).then((res) => {
+      //   this.rejectCount = res.rejectCount;
+      //   this.lastTaskCount = res.completedTaskCount;
+      // });
 
       this.initChart();
     },
