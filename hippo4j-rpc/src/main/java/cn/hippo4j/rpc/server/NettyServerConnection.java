@@ -20,9 +20,7 @@ package cn.hippo4j.rpc.server;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.rpc.coder.NettyDecoder;
 import cn.hippo4j.rpc.coder.NettyEncoder;
-import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
-import cn.hippo4j.rpc.process.ActivePostProcess;
-import cn.hippo4j.rpc.support.Instance;
+import cn.hippo4j.rpc.handler.NettyHandlerManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -31,45 +29,42 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.LinkedList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * adapter to the netty server
  */
 @Slf4j
-public class NettyServerConnection implements ServerConnection {
+public class NettyServerConnection extends NettyHandlerManager implements ServerConnection {
 
     Integer port;
     EventLoopGroup leader;
     EventLoopGroup worker;
     Class<? extends ServerChannel> socketChannelCls = NioServerSocketChannel.class;
-    List<ActivePostProcess> processes;
-    Instance instance;
     ChannelFuture future;
     Channel channel;
 
-    public NettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, List<ActivePostProcess> processes, Instance instance) {
-        Assert.notNull(processes);
-        Assert.notNull(instance);
+    public NettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, List<ChannelHandler> handlers) {
+        super(handlers);
+        Assert.notNull(handlers);
         Assert.notNull(leader);
         Assert.notNull(worker);
         this.leader = leader;
         this.worker = worker;
-        this.processes = processes;
-        this.instance = instance;
     }
 
-    public NettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, Instance instance) {
-        this(leader, worker, new LinkedList<>(), instance);
+    public NettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, ChannelHandler... handlers) {
+        this(leader, worker, (handlers != null ? Arrays.asList(handlers) : Collections.emptyList()));
     }
 
-    public NettyServerConnection(List<ActivePostProcess> processes, Instance instance) {
-        this(new NioEventLoopGroup(), new NioEventLoopGroup(), processes, instance);
+    public NettyServerConnection(ChannelHandler... handlers) {
+        this(handlers != null ? Arrays.asList(handlers) : Collections.emptyList());
     }
 
-    public NettyServerConnection(Instance instance) {
-        this(new NioEventLoopGroup(), new NioEventLoopGroup(), new LinkedList<>(), instance);
+    public NettyServerConnection(List<ChannelHandler> handlers) {
+        this(new NioEventLoopGroup(), new NioEventLoopGroup(), handlers);
     }
 
     @Override
@@ -84,7 +79,15 @@ public class NettyServerConnection implements ServerConnection {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
                         ch.pipeline().addLast(new NettyEncoder());
-                        ch.pipeline().addLast(new NettyServerTakeHandler(processes, instance));
+                        handlers.stream()
+                                .sorted()
+                                .forEach(h -> {
+                                    if (h.getName() == null) {
+                                        ch.pipeline().addLast(h.getHandler());
+                                    } else {
+                                        ch.pipeline().addLast(h.getName(), h.getHandler());
+                                    }
+                                });
                     }
                 });
         try {
@@ -112,5 +115,25 @@ public class NettyServerConnection implements ServerConnection {
     @Override
     public boolean isActive() {
         return channel.isActive();
+    }
+
+    public NettyServerConnection addLast(String name, ChannelHandler handler) {
+        super.addLast(name, handler);
+        return this;
+    }
+
+    public NettyServerConnection addFirst(String name, ChannelHandler handler) {
+        super.addFirst(name, handler);
+        return this;
+    }
+
+    public NettyServerConnection addLast(ChannelHandler handler) {
+        super.addLast(handler);
+        return this;
+    }
+
+    public NettyServerConnection addFirst(ChannelHandler handler) {
+        super.addFirst(handler);
+        return this;
     }
 }

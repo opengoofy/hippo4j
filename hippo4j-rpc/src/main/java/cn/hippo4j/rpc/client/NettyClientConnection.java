@@ -31,6 +31,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.pool.ChannelPoolHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;
@@ -54,16 +55,17 @@ public class NettyClientConnection implements ClientConnection {
     Channel channel;
 
     public NettyClientConnection(String host, int port,
-                                 List<ActivePostProcess> activeProcesses) {
+                                 List<ActivePostProcess> activeProcesses,
+                                 ChannelPoolHandler handler) {
         Assert.notNull(worker);
         this.host = host;
         this.port = port;
         this.activeProcessChain = new ActiveProcessChain(activeProcesses);
-        this.connectionPool = NettyConnectPoolHolder.getPool(host, port, timeout, worker);
+        this.connectionPool = NettyConnectPoolHolder.getPool(host, port, timeout, worker, handler);
     }
 
-    public NettyClientConnection(String host, int port) {
-        this(host, port, new LinkedList<>());
+    public NettyClientConnection(String host, int port, ChannelPoolHandler handler) {
+        this(host, port, new LinkedList<>(), handler);
     }
 
     @Override

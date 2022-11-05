@@ -15,11 +15,14 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.rpc.support;
+package cn.hippo4j.rpc.support;
 
-import cn.hippo4j.config.rpc.server.NettyServerConnection;
-import cn.hippo4j.config.rpc.server.RPCServer;
-import cn.hippo4j.config.rpc.server.ServerConnection;
+import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
+import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
+import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
+import cn.hippo4j.rpc.server.NettyServerConnection;
+import cn.hippo4j.rpc.server.RPCServer;
+import cn.hippo4j.rpc.server.ServerConnection;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -45,7 +48,8 @@ public class NettyConnectPoolTest {
     public void acquire() throws IOException {
         // The mode connection was denied when the server was started on the specified port
         Instance instance = new DefaultInstance();
-        ServerConnection connection = new NettyServerConnection(instance);
+        NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
+        ServerConnection connection = new NettyServerConnection(handler);
         RPCServer rpcServer = new RPCServer(port, connection);
         CompletableFuture.runAsync(rpcServer::bind);
         // Given the delay in starting the server, wait here
@@ -54,8 +58,8 @@ public class NettyConnectPoolTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls);
+        NettyClientPoolHandler poolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls, poolHandler);
         Channel acquire = pool.acquire(timeout);
         Assert.assertNotNull(acquire);
         pool.release(acquire);
@@ -66,7 +70,8 @@ public class NettyConnectPoolTest {
     public void testAcquire() throws IOException {
         // The mode connection was denied when the server was started on the specified port
         Instance instance = new DefaultInstance();
-        ServerConnection connection = new NettyServerConnection(instance);
+        NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
+        ServerConnection connection = new NettyServerConnection(handler);
         RPCServer rpcServer = new RPCServer(port, connection);
         CompletableFuture.runAsync(rpcServer::bind);
         // Given the delay in starting the server, wait here
@@ -75,8 +80,8 @@ public class NettyConnectPoolTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls);
+        NettyClientPoolHandler poolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls, poolHandler);
         Future<Channel> acquire = pool.acquire();
         Assert.assertNotNull(acquire);
         rpcServer.close();
@@ -86,7 +91,8 @@ public class NettyConnectPoolTest {
     public void close() throws IOException {
         // The mode connection was denied when the server was started on the specified port
         Instance instance = new DefaultInstance();
-        ServerConnection connection = new NettyServerConnection(instance);
+        NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
+        ServerConnection connection = new NettyServerConnection(handler);
         RPCServer rpcServer = new RPCServer(port, connection);
         CompletableFuture.runAsync(rpcServer::bind);
         // Given the delay in starting the server, wait here
@@ -96,7 +102,8 @@ public class NettyConnectPoolTest {
             throw new RuntimeException(e);
         }
 
-        NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls);
+        NettyClientPoolHandler poolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls, poolHandler);
         Channel acquire = pool.acquire(timeout);
         Assert.assertNotNull(acquire);
         pool.release(acquire);

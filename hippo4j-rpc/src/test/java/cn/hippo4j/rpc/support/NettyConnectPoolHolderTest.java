@@ -15,8 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.rpc.support;
+package cn.hippo4j.rpc.support;
 
+import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
+import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -35,7 +37,8 @@ public class NettyConnectPoolHolderTest {
 
     @Test
     public void createPool() {
-        NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls);
+        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls, handler);
         NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertEquals(pool, connectPool);
         NettyConnectPoolHolder.clear();
@@ -45,7 +48,8 @@ public class NettyConnectPoolHolderTest {
 
     @Test
     public void testGetPool() {
-        NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port, timeout, group);
+        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port, timeout, group, handler);
         NettyConnectPool connectPool1 = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertEquals(connectPool1, connectPool);
         NettyConnectPoolHolder.clear();
@@ -55,7 +59,8 @@ public class NettyConnectPoolHolderTest {
 
     @Test
     public void remove() {
-        NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port, timeout, group);
+        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port, timeout, group, handler);
         NettyConnectPool connectPool1 = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertEquals(connectPool1, connectPool);
         NettyConnectPoolHolder.remove(host, port);

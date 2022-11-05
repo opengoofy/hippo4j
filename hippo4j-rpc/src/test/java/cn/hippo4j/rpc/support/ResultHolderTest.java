@@ -15,11 +15,16 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.rpc.support;
+package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.common.toolkit.IdUtil;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.LockSupport;
 
 public class ResultHolderTest {
 
@@ -38,5 +43,22 @@ public class ResultHolderTest {
 
         Assert.assertEquals(r1, o1);
         Assert.assertEquals(r2, o2);
+    }
+
+    @Test
+    public void testThread() throws InterruptedException {
+        AtomicInteger a = new AtomicInteger();
+        String s1 = IdUtil.simpleUUID();
+        String o1 = s1 + "1";
+        CompletableFuture.runAsync(() -> {
+            ResultHolder.putThread(o1, Thread.currentThread());
+            LockSupport.park();
+            a.set(1);
+        });
+        Assert.assertEquals(0, a.get());
+        TimeUnit.SECONDS.sleep(1);
+        ResultHolder.wake(o1);
+        TimeUnit.SECONDS.sleep(1);
+        Assert.assertEquals(1, a.get());
     }
 }

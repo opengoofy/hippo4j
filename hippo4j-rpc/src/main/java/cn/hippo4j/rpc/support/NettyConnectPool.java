@@ -18,7 +18,6 @@
 package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.rpc.exception.ConnectionException;
-import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -41,14 +40,15 @@ public class NettyConnectPool {
     ChannelHealthChecker healthCheck = ChannelHealthChecker.ACTIVE;
     FixedChannelPool.AcquireTimeoutAction acquireTimeoutAction = FixedChannelPool.AcquireTimeoutAction.NEW;
     int maxPendingAcquires = Integer.MAX_VALUE;
-    ChannelPoolHandler handler = new NettyClientPoolHandler();
+    ChannelPoolHandler handler;
     ChannelPool pool;
     String host;
     int port;
 
     public NettyConnectPool(String host, int port, int maxConnect,
                             long timeout, EventLoopGroup worker,
-                            Class<? extends Channel> socketChannelCls) {
+                            Class<? extends Channel> socketChannelCls,
+                            ChannelPoolHandler handler) {
         InetSocketAddress socketAddress = InetSocketAddress.createUnresolved(host, port);
         Bootstrap bootstrap = new Bootstrap()
                 .group(worker)
@@ -56,6 +56,7 @@ public class NettyConnectPool {
                 .remoteAddress(socketAddress);
         this.host = host;
         this.port = port;
+        this.handler = handler;
         this.pool = new FixedChannelPool(bootstrap, handler, healthCheck, acquireTimeoutAction,
                 timeout, maxConnect, maxPendingAcquires, true, true);
         log.info("The connection pool is established with the connection target {}:{}", host, port);

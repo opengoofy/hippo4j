@@ -23,6 +23,7 @@ import cn.hippo4j.rpc.client.NettyClientConnection;
 import cn.hippo4j.rpc.request.DefaultRequest;
 import cn.hippo4j.rpc.request.Request;
 import cn.hippo4j.rpc.response.Response;
+import io.netty.channel.pool.ChannelPoolHandler;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -41,16 +42,17 @@ public class NettyProxyCenter {
     static Map<Class<?>, Object> map = new HashMap<>();
 
     /**
-     * 通过一个接口得到一个适用于PRC的代理对象
+     * A proxy object for PRC is obtained through an interface
      *
-     * @param cls  接口类型
-     * @param host 请求地址
-     * @param port 端口
-     * @param <T>  对象类型
-     * @return 代理对象
+     * @param cls     The interface type
+     * @param host    Request the address
+     * @param port    port
+     * @param <T>     Object type
+     * @param handler the pool handler  for netty
+     * @return Proxy objects
      */
-    public static <T> T getProxy(Class<T> cls, String host, int port) {
-        NettyClientConnection connection = new NettyClientConnection(host, port);
+    public static <T> T getProxy(Class<T> cls, String host, int port, ChannelPoolHandler handler) {
+        NettyClientConnection connection = new NettyClientConnection(host, port, handler);
         return getProxy(connection, cls, host, port);
     }
 

@@ -15,12 +15,16 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.rpc.client;
+package cn.hippo4j.rpc.client;
 
 public class CallManager {
 
     public int call() {
         return 1;
+    }
+
+    public int callTest(Integer a, Integer b) {
+        return a + b;
     }
 
 }

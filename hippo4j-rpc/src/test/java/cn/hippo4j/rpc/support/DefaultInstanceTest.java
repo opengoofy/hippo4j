@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.rpc.support;
+package cn.hippo4j.rpc.support;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class DefaultInstanceTest {
 
     @Test
     public void testGetInstance() {
-        String className = "cn.hippo4j.config.rpc.support.DefaultInstanceTest$InstanceModel";
+        String className = "cn.hippo4j.rpc.support.DefaultInstanceTest$InstanceModel";
         Object instanceInstance = instance.getInstance(className);
         Assert.assertNotNull(instanceInstance);
         Assert.assertEquals(className, instanceInstance.getClass().getName());

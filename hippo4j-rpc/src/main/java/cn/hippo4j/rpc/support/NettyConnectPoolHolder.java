@@ -19,6 +19,7 @@ package cn.hippo4j.rpc.support;
 
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.EventExecutorGroup;
 import lombok.AccessLevel;
@@ -38,11 +39,13 @@ public class NettyConnectPoolHolder {
     static Map<String, NettyConnectPool> connectPoolMap = new ConcurrentHashMap<>();
 
     private static NettyConnectPool initPool(String host, int port,
-                                             long timeout, EventLoopGroup worker) {
+                                             long timeout, EventLoopGroup worker,
+                                             ChannelPoolHandler handler) {
         return new NettyConnectPool(
                 host, port, maxConnect,
                 timeout, worker,
-                NioSocketChannel.class);
+                NioSocketChannel.class,
+                handler);
     }
 
     private static String getKey(String host, int port) {
@@ -75,20 +78,22 @@ public class NettyConnectPoolHolder {
     /**
      * Gets a connection pool, and if there is no connectPoolMapping, creates one with the values provided and joins the connectPoolMapping
      *
-     * @param host    the host
-     * @param port    the port
-     * @param timeout timeout
-     * @param worker  Special {@link EventExecutorGroup} which allows registering {@link Channel}s
-     *                that get processed for later selection during the event loop.
+     * @param host     the host
+     * @param port     the port
+     * @param timeout  timeout
+     * @param worker   Special {@link EventExecutorGroup} which allows registering {@link Channel}s
+     *                 that get processed for later selection during the event loop.
+     * @param handler the chandler for netty
      * @return Map to the connection pool
      */
     public static synchronized NettyConnectPool getPool(String host, int port,
-                                                        long timeout, EventLoopGroup worker) {
+                                                        long timeout, EventLoopGroup worker,
+                                                        ChannelPoolHandler handler) {
         /*
          * this cannot use the computeIfAbsent method directly here because put is already used in init. Details refer to https://bugs.openjdk.java.net/browse/JDK-8062841
          */
         NettyConnectPool pool = getPool(host, port);
-        return pool == null ? initPool(host, port, timeout, worker) : pool;
+        return pool == null ? initPool(host, port, timeout, worker, handler) : pool;
     }
 
     /**

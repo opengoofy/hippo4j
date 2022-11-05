@@ -26,6 +26,7 @@ import cn.hippo4j.rpc.response.DefaultResponse;
 import cn.hippo4j.rpc.response.Response;
 import cn.hippo4j.rpc.support.ClassRegistry;
 import cn.hippo4j.rpc.support.Instance;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.lang.reflect.Method;
@@ -35,6 +36,7 @@ import java.util.List;
 /**
  * netty adaptation layer
  */
+@ChannelHandler.Sharable
 public class NettyServerTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {
 
     ActiveProcessChain activeProcessChain;

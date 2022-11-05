@@ -21,16 +21,51 @@ import cn.hippo4j.rpc.coder.NettyDecoder;
 import cn.hippo4j.rpc.coder.NettyEncoder;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 /**
  * Processing by the client connection pool handler to clean the buffer and define new connection properties
  */
 @Slf4j
-public class NettyClientPoolHandler implements ChannelPoolHandler {
+public class NettyClientPoolHandler extends NettyHandlerManager implements ChannelPoolHandler {
+
+    public NettyClientPoolHandler(List<ChannelHandler> handlers) {
+        super(handlers);
+    }
+
+    public NettyClientPoolHandler(ChannelHandler... handlers) {
+        super(handlers);
+    }
+
+    public NettyClientPoolHandler() {
+        super();
+    }
+
+    public NettyClientPoolHandler addLast(String name, ChannelHandler handler) {
+        super.addLast(name, handler);
+        return this;
+    }
+
+    public NettyClientPoolHandler addFirst(String name, ChannelHandler handler) {
+        super.addFirst(name, handler);
+        return this;
+    }
+
+    public NettyClientPoolHandler addLast(ChannelHandler handler) {
+        super.addLast(handler);
+        return this;
+    }
+
+    public NettyClientPoolHandler addFirst(ChannelHandler handler) {
+        super.addFirst(handler);
+        return this;
+    }
 
     @Override
     public void channelReleased(Channel ch) {
@@ -50,6 +85,15 @@ public class NettyClientPoolHandler implements ChannelPoolHandler {
                 .setTcpNoDelay(false);
         ch.pipeline().addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
         ch.pipeline().addLast(new NettyEncoder());
-        ch.pipeline().addLast(new NettyClientTakeHandler());
+        this.handlers.stream()
+                .sorted()
+                .forEach(h -> {
+                    if (h.getName() == null) {
+                        ch.pipeline().addLast(h.getHandler());
+                    } else {
+                        ch.pipeline().addLast(h.getName(), h.getHandler());
+                    }
+                });
     }
+
 }

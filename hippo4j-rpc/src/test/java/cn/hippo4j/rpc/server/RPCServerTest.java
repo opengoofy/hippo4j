@@ -15,12 +15,14 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.rpc.server;
+package cn.hippo4j.rpc.server;
 
-import cn.hippo4j.config.rpc.support.DefaultInstance;
-import cn.hippo4j.config.rpc.support.Instance;
+import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
+import cn.hippo4j.rpc.support.DefaultInstance;
+import cn.hippo4j.rpc.support.Instance;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -34,7 +36,8 @@ public class RPCServerTest {
     @Test
     public void bind() throws IOException {
         Instance instance = new DefaultInstance();
-        ServerConnection connection = new NettyServerConnection(instance);
+        NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
+        ServerConnection connection = new NettyServerConnection(handler);
         RPCServer rpcServer = new RPCServer(port, connection);
         CompletableFuture.runAsync(rpcServer::bind);
         try {
@@ -42,7 +45,11 @@ public class RPCServerTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        boolean active = rpcServer.isActive();
+        Assert.assertTrue(active);
         rpcServer.close();
+        boolean serverActive = rpcServer.isActive();
+        Assert.assertFalse(serverActive);
     }
 
     @Test
@@ -50,7 +57,8 @@ public class RPCServerTest {
         Instance instance = new DefaultInstance();
         EventLoopGroup leader = new NioEventLoopGroup();
         EventLoopGroup worker = new NioEventLoopGroup();
-        ServerConnection connection = new NettyServerConnection(leader, worker, instance);
+        NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
+        ServerConnection connection = new NettyServerConnection(leader, worker, handler);
         RPCServer rpcServer = new RPCServer(port, connection);
         CompletableFuture.runAsync(rpcServer::bind);
         try {
