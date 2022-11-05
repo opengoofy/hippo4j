@@ -21,7 +21,6 @@
         <module>hippo4j-config-nacos-spring-boot-starter-example</module>
         <module>hippo4j-config-apollo-spring-boot-starter-example</module>
         <module>hippo4j-config-zookeeper-spring-boot-starter-example</module>
-        <module>hippo4j-spring-boot-starter-adapter-kafka-example</module>
         <module>hippo4j-spring-boot-starter-adapter-rabbitmq-example</module>
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rabbitmq-example</module>
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq-example</module>
