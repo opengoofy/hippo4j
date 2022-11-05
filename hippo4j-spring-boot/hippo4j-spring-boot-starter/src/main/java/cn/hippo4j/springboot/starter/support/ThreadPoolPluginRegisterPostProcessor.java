@@ -101,7 +101,7 @@ public class ThreadPoolPluginRegisterPostProcessor extends DefaultGlobalThreadPo
 
     private void registerThreadPoolPluginSupportIfNecessary(Object bean, Class<?> beanType) {
         if (ThreadPoolPluginSupport.class.isAssignableFrom(beanType)) {
-            ThreadPoolPluginSupport support = (ThreadPoolPluginSupport)bean;
+            ThreadPoolPluginSupport support = (ThreadPoolPluginSupport) bean;
             if (registerThreadPoolPluginSupport(support) && log.isDebugEnabled()) {
                 log.info("register ThreadPoolPluginSupport [{}]", support.getThreadPoolId());
             }
@@ -110,7 +110,7 @@ public class ThreadPoolPluginRegisterPostProcessor extends DefaultGlobalThreadPo
 
     private void registerThreadPoolPluginIfNecessary(Object bean, Class<?> beanType) {
         if (ThreadPoolPlugin.class.isAssignableFrom(beanType)) {
-            ThreadPoolPlugin plugin = (ThreadPoolPlugin)bean;
+            ThreadPoolPlugin plugin = (ThreadPoolPlugin) bean;
             if (enableThreadPoolPlugin(plugin) && log.isDebugEnabled()) {
                 log.info("register ThreadPoolPlugin [{}]", plugin.getId());
             }
@@ -119,7 +119,7 @@ public class ThreadPoolPluginRegisterPostProcessor extends DefaultGlobalThreadPo
 
     private void registerThreadPoolPluginRegistrarIfNecessary(Object bean, Class<?> beanType) {
         if (ThreadPoolPluginRegistrar.class.isAssignableFrom(beanType)) {
-            ThreadPoolPluginRegistrar registrar = (ThreadPoolPluginRegistrar)bean;
+            ThreadPoolPluginRegistrar registrar = (ThreadPoolPluginRegistrar) bean;
             if (enableThreadPoolPluginRegistrar(registrar) && log.isDebugEnabled()) {
                 log.info("register ThreadPoolPluginRegistrar [{}]", registrar.getId());
             }

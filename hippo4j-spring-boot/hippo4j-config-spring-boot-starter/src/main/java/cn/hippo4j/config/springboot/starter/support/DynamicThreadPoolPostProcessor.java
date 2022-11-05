@@ -29,7 +29,6 @@ import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import cn.hippo4j.core.toolkit.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
@@ -163,29 +162,6 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     }
 
     /**
-     * Build new dynamic thread-pool.
-     *
-     * @param executorProperties executor properties
-     * @return thread-pool executor
-     */
-    private ThreadPoolExecutor buildNewDynamicThreadPool(ExecutorProperties executorProperties) {
-        String threadNamePrefix = executorProperties.getThreadNamePrefix();
-        ExecutorProperties newExecutorProperties = buildExecutorProperties(executorProperties);
-        ThreadPoolExecutor newDynamicPoolExecutor = ThreadPoolBuilder.builder()
-                .threadPoolId(executorProperties.getThreadPoolId())
-                .threadFactory(StringUtil.isNotBlank(threadNamePrefix) ? threadNamePrefix : executorProperties.getThreadPoolId())
-                .poolThreadSize(newExecutorProperties.getCorePoolSize(), newExecutorProperties.getMaximumPoolSize())
-                .workQueue(BlockingQueueTypeEnum.createBlockingQueue(newExecutorProperties.getBlockingQueue(), newExecutorProperties.getQueueCapacity()))
-                .executeTimeOut(newExecutorProperties.getExecuteTimeOut())
-                .keepAliveTime(newExecutorProperties.getKeepAliveTime(), TimeUnit.SECONDS)
-                .rejected(RejectedPolicyTypeEnum.createPolicy(newExecutorProperties.getRejectedHandler()))
-                .allowCoreThreadTimeOut(newExecutorProperties.getAllowCoreThreadTimeOut())
-                .dynamicPool()
-                .build();
-        return newDynamicPoolExecutor;
-    }
-
-    /**
      * Thread-pool param replace.
      *
      * @param executor           dynamic thread-pool executor
@@ -199,6 +175,10 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         executor.setKeepAliveTime(executorProperties.getKeepAliveTime(), TimeUnit.SECONDS);
         executor.allowCoreThreadTimeOut(executorProperties.getAllowCoreThreadTimeOut());
         executor.setRejectedExecutionHandler(RejectedPolicyTypeEnum.createPolicy(executorProperties.getRejectedHandler()));
+        if (executor instanceof DynamicThreadPoolExecutor) {
+            Optional.ofNullable(executorProperties.getExecuteTimeOut())
+                    .ifPresent(executeTimeOut -> ((DynamicThreadPoolExecutor) executor).setExecuteTimeOut(executeTimeOut));
+        }
     }
 
     /**
