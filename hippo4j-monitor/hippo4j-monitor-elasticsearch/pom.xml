@@ -9,10 +9,6 @@
     </parent>
     <artifactId>hippo4j-monitor-elasticsearch</artifactId>
 
-    <properties>
-        <elasticsearch.version>6.8.17</elasticsearch.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>

@@ -17,6 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.refresher.event;
 
+import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
@@ -26,18 +27,21 @@ import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.notify.CoreNotifyConfigBuilder;
 import cn.hippo4j.config.springboot.starter.support.GlobalCoreThreadPoolManage;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
-import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -54,7 +58,7 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
 @Order(EXECUTORS_LISTENER)
 public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<ExecutorProperties> {
 
-    private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
+    private final ThreadPoolConfigChange threadPoolConfigChange;
 
     private final CoreNotifyConfigBuilder coreNotifyConfigBuilder;
 
@@ -95,7 +99,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
                     String.format(CHANGE_DELIMITER, beforeProperties.getRejectedHandler(), changeRequest.getNowRejectedName()),
                     String.format(CHANGE_DELIMITER, beforeProperties.getAllowCoreThreadTimeOut(), changeRequest.getNowAllowsCoreThreadTimeOut()));
             try {
-                threadPoolNotifyAlarmHandler.sendPoolConfigChange(changeRequest);
+                threadPoolConfigChange.sendPoolConfigChange(changeRequest);
             } catch (Throwable ex) {
                 log.error("Failed to send Chang smart application listener notice. Message: {}", ex.getMessage());
             }

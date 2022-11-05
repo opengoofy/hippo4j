@@ -15,44 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.message.request.base;
-
-import cn.hippo4j.common.api.NotifyRequest;
-import lombok.Data;
+package cn.hippo4j.common.api;
 
 /**
- * Base notify request.
+ * Notify request.
  */
-@Data
-public class BaseNotifyRequest implements NotifyRequest {
-
-    /**
-     * Tenant id
-     */
-    private String tenantId;
-
-    /**
-     * Item id
-     */
-    private String itemId;
-
-    /**
-     * Thread pool id
-     */
-    private String threadPoolId;
-
-    /**
-     * Platform
-     */
-    private String platform;
-
-    /**
-     * Type
-     */
-    private String type;
-
-    /**
-     * Receives
-     */
-    private String receives;
+public interface NotifyRequest {
 }

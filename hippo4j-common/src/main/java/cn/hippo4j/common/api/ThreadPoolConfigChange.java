@@ -15,10 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.message.request.base;
+package cn.hippo4j.common.api;
 
 /**
- * Notify request.
+ * Thread-pool config change.
  */
-public interface NotifyRequest {
+public interface ThreadPoolConfigChange<T extends NotifyRequest> {
+
+    /**
+     * Send pool config change.
+     *
+     * @param requestParam request param
+     */
+    void sendPoolConfigChange(T requestParam);
 }

@@ -20,11 +20,12 @@ package cn.hippo4j.springboot.starter.config;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer;
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.common.api.ThreadDetailState;
+import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
+import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.core.executor.support.service.DynamicThreadPoolService;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
@@ -33,6 +34,8 @@ import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.message.service.DefaultThreadPoolCheckAlarmHandler;
+import cn.hippo4j.message.service.DefaultThreadPoolConfigChangeHandler;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import cn.hippo4j.springboot.starter.adapter.web.WebAdapterConfiguration;
@@ -195,19 +198,26 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ThreadPoolDynamicRefresh threadPoolDynamicRefresh(ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler) {
-        return new ServerThreadPoolDynamicRefresh(threadPoolNotifyAlarmHandler);
+    @ConditionalOnMissingBean
+    public ThreadPoolCheckAlarm defaultThreadPoolCheckAlarmHandler(Hippo4jSendMessageService hippo4jSendMessageService) {
+        return new DefaultThreadPoolCheckAlarmHandler(hippo4jSendMessageService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ThreadPoolConfigChange defaultThreadPoolConfigChangeHandler(Hippo4jSendMessageService hippo4jSendMessageService) {
+        return new DefaultThreadPoolConfigChangeHandler(hippo4jSendMessageService);
+    }
+
+    @Bean
+    public ThreadPoolDynamicRefresh threadPoolDynamicRefresh(ThreadPoolConfigChange threadPoolConfigChange) {
+        return new ServerThreadPoolDynamicRefresh(threadPoolConfigChange);
     }
 
     @Bean
     public DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig(ThreadPoolDynamicRefresh threadPoolDynamicRefresh,
                                                                              ClientWorker clientWorker) {
         return new DynamicThreadPoolSubscribeConfig(threadPoolDynamicRefresh, clientWorker, properties);
-    }
-
-    @Bean
-    public ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler(Hippo4jSendMessageService hippo4jSendMessageService) {
-        return new ThreadPoolNotifyAlarmHandler(hippo4jSendMessageService);
     }
 
     @Bean
