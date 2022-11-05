@@ -105,7 +105,6 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
                     log.warn("Custom thread pools only support ThreadPoolExecutor");
                 }
             }
-
         });
     }
 }

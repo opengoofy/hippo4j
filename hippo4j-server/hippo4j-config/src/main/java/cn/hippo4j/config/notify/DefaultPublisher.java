@@ -63,7 +63,6 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     @Override
     public synchronized void start() {
         if (!initialized) {
-            // start just called once
             super.start();
             if (queueMaxSize == -1) {
                 queueMaxSize = NotifyCenter.ringBufferSize;
@@ -100,7 +99,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
                 UPDATER.compareAndSet(this, lastEventSequence, Math.max(lastEventSequence, event.sequence()));
             }
         } catch (Throwable ex) {
-            log.error("Event listener exception: {}", ex);
+            log.error("Event listener exception.", ex);
         }
     }
 
@@ -123,9 +122,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     @Override
     public void notifySubscriber(AbstractSubscriber subscriber, AbstractEvent event) {
         final Runnable job = () -> subscriber.onEvent(event);
-
         final Executor executor = subscriber.executor();
-
         if (executor != null) {
             executor.execute(job);
         } else {

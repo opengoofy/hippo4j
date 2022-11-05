@@ -18,6 +18,7 @@
 package cn.hippo4j.adapter.hystrix;
 
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -31,6 +32,7 @@ public class ThreadPoolAdapterScheduler {
 
     private static final int TASK_INTERVAL_SECONDS = 10;
 
+    @Getter
     private final ScheduledExecutorService scheduler;
 
     public ThreadPoolAdapterScheduler() {
@@ -41,10 +43,11 @@ public class ThreadPoolAdapterScheduler {
                         .build());
     }
 
-    public ScheduledExecutorService getScheduler() {
-        return scheduler;
-    }
-
+    /**
+     * Gt task interval seconds.
+     *
+     * @return task interval seconds
+     */
     public int getTaskIntervalSeconds() {
         return TASK_INTERVAL_SECONDS;
     }

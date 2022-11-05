@@ -28,7 +28,7 @@ public class ConfigChangePublisher {
     /**
      * Notify configChange.
      *
-     * @param event
+     * @param event event
      */
     public static void notifyConfigChange(LocalDataChangeEvent event) {
         NotifyCenter.publishEvent(event);
