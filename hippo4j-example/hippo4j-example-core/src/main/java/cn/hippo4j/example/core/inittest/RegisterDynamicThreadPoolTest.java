@@ -68,9 +68,9 @@ public class RegisterDynamicThreadPoolTest {
         DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()
                 .updateIfExists(true)
                 .notifyUpdateIfExists(true)
-                .dynamicThreadPoolRegisterParameter(parameterInfo)
-                .dynamicThreadPoolRegisterCoreNotifyParameter(coreNotifyParameter)
-                .dynamicThreadPoolRegisterServerNotifyParameter(serverNotifyParameter)
+                .parameter(parameterInfo)
+                .configNotify(coreNotifyParameter)
+                .serverNotify(serverNotifyParameter)
                 .build();
         ThreadPoolExecutor dynamicThreadPool = GlobalThreadPoolManage.dynamicRegister(registerWrapper);
         log.info("Dynamic registration thread pool parameter details: {}", JSONUtil.toJSONString(dynamicThreadPool));

@@ -39,29 +39,26 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
 
     @Override
     public ThreadPoolExecutor registerDynamicThreadPool(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getParameter();
         String threadPoolId = registerParameter.getThreadPoolId();
         ThreadPoolExecutor dynamicThreadPoolExecutor = buildDynamicThreadPoolExecutor(registerParameter);
         DynamicThreadPoolWrapper dynamicThreadPoolWrapper = DynamicThreadPoolWrapper.builder()
                 .threadPoolId(threadPoolId)
                 .executor(dynamicThreadPoolExecutor)
                 .build();
-        // Register pool.
         GlobalThreadPoolManage.registerPool(threadPoolId, dynamicThreadPoolWrapper);
         ExecutorProperties executorProperties = buildExecutorProperties(registerWrapper);
-        // Register properties.
         GlobalCoreThreadPoolManage.register(threadPoolId, executorProperties);
-        DynamicThreadPoolRegisterCoreNotifyParameter notifyParameter = registerWrapper.getDynamicThreadPoolRegisterCoreNotifyParameter();
+        DynamicThreadPoolRegisterCoreNotifyParameter notifyParameter = registerWrapper.getConfigNotify();
         ThreadPoolNotifyAlarm notifyAlarm = new ThreadPoolNotifyAlarm(true, registerParameter.getActiveAlarm(), registerParameter.getCapacityAlarm());
         notifyAlarm.setReceives(notifyParameter.getReceives());
         notifyAlarm.setInterval(notifyParameter.getInterval());
-        // Register notify.
         GlobalNotifyAlarmManage.put(threadPoolId, notifyAlarm);
         return dynamicThreadPoolExecutor;
     }
 
     private ExecutorProperties buildExecutorProperties(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getParameter();
         ExecutorProperties executorProperties = ExecutorProperties.builder()
                 .corePoolSize(registerParameter.getCorePoolSize())
                 .maximumPoolSize(registerParameter.getMaximumPoolSize())

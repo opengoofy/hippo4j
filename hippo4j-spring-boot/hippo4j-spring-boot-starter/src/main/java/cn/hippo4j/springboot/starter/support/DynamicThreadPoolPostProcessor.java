@@ -156,7 +156,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .rejectedPolicyType(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()))
                         .build();
                 DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()
-                        .dynamicThreadPoolRegisterParameter(parameterInfo)
+                        .parameter(parameterInfo)
                         .build();
                 GlobalThreadPoolManage.dynamicRegister(registerWrapper);
             }

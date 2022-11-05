@@ -73,7 +73,7 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
     }
 
     private ThreadPoolExecutor registerExecutor(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getParameter();
         checkThreadPoolParameter(registerParameter);
         String threadPoolId = registerParameter.getThreadPoolId();
         try {
@@ -98,11 +98,11 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
     }
 
     private void subscribeConfig(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        dynamicThreadPoolSubscribeConfig.subscribeConfig(registerWrapper.getDynamicThreadPoolRegisterParameter().getThreadPoolId());
+        dynamicThreadPoolSubscribeConfig.subscribeConfig(registerWrapper.getParameter().getThreadPoolId());
     }
 
     private void putNotifyAlarmConfig(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getParameter();
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
                 BooleanUtil.toBoolean(String.valueOf(registerParameter.getIsAlarm())),
                 registerParameter.getActiveAlarm(),
