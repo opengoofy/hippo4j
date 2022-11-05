@@ -8,7 +8,6 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-rpc</artifactId>
-    <packaging>pom</packaging>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
@@ -34,5 +33,4 @@
             <artifactId>netty-all</artifactId>
         </dependency>
     </dependencies>
-
 </project>
