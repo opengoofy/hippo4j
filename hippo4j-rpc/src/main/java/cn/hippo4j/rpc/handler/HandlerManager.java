@@ -70,7 +70,7 @@ public interface HandlerManager<T> {
 
     @Data
     @AllArgsConstructor
-    class HandlerEntity<T> implements Comparable<HandlerEntity<T>>{
+    class HandlerEntity<T> implements Comparable<HandlerEntity<T>> {
 
         /**
          * order, The Handler with a larger value is executed after the Handler with a smaller value
