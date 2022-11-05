@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.manage;
-
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
+package cn.hippo4j.message.service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

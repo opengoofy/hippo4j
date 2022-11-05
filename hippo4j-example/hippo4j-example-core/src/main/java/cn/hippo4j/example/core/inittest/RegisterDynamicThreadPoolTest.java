@@ -17,14 +17,14 @@
 
 package cn.hippo4j.example.core.inittest;
 
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterCoreNotifyParameter;
 import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterServerNotifyParameter;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import lombok.extern.slf4j.Slf4j;
 

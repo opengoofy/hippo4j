@@ -18,7 +18,7 @@
 package cn.hippo4j.message.service;
 
 import cn.hippo4j.message.dto.NotifyConfigDTO;
-import cn.hippo4j.message.request.base.NotifyRequest;
+import cn.hippo4j.common.api.NotifyRequest;
 
 /**
  * Send message handler.

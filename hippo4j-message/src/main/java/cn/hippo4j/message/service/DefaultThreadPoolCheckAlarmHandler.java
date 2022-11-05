@@ -15,24 +15,22 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor;
+package cn.hippo4j.message.service;
 
+import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.core.toolkit.ExecutorTraceContextUtil;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
-import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
-import cn.hippo4j.message.service.Hippo4jSendMessageService;
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,11 +44,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Thread-pool notify alarm handler.
+ * Default thread-pool check alarm handler.
  */
 @Slf4j
 @RequiredArgsConstructor
-public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner {
+public class DefaultThreadPoolCheckAlarmHandler implements Runnable, ThreadPoolCheckAlarm {
 
     private final Hippo4jSendMessageService hippo4jSendMessageService;
 
@@ -104,6 +102,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      * @param threadPoolId       thread-pool id
      * @param threadPoolExecutor thread-pool executor
      */
+    @Override
     public void checkPoolCapacityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
         ThreadPoolNotifyAlarm alarmConfig = GlobalNotifyAlarmManage.get(threadPoolId);
         if (Objects.isNull(alarmConfig) || !alarmConfig.getAlarm() || alarmConfig.getCapacityAlarm() <= 0) {
@@ -127,6 +126,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      * @param threadPoolId       thread-pool id
      * @param threadPoolExecutor thread-pool executor
      */
+    @Override
     public void checkPoolActivityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
         ThreadPoolNotifyAlarm alarmConfig = GlobalNotifyAlarmManage.get(threadPoolId);
         if (Objects.isNull(alarmConfig) || !alarmConfig.getAlarm() || alarmConfig.getActiveAlarm() <= 0) {
@@ -148,6 +148,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      *
      * @param threadPoolId thread-pool id
      */
+    @Override
     public void asyncSendRejectedAlarm(String threadPoolId) {
         Runnable checkPoolRejectedAlarmTask = () -> {
             ThreadPoolNotifyAlarm alarmConfig = GlobalNotifyAlarmManage.get(threadPoolId);
@@ -172,6 +173,7 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
      * @param executeTimeOut     execute time-out
      * @param threadPoolExecutor thread-pool executor
      */
+    @Override
     public void asyncSendExecuteTimeOutAlarm(String threadPoolId, long executeTime, long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
         ThreadPoolNotifyAlarm alarmConfig = GlobalNotifyAlarmManage.get(threadPoolId);
         if (Objects.isNull(alarmConfig) || !alarmConfig.getAlarm()) {
@@ -193,19 +195,6 @@ public class ThreadPoolNotifyAlarmHandler implements Runnable, CommandLineRunner
                 log.error("Send thread pool execution timeout alarm error.", ex);
             }
         }
-    }
-
-    /**
-     * Send pool config change.
-     *
-     * @param request change parameter notify request
-     */
-    public void sendPoolConfigChange(ChangeParameterNotifyRequest request) {
-        request.setActive(active.toUpperCase());
-        String appName = StringUtil.isBlank(itemId) ? applicationName : itemId;
-        request.setAppName(appName);
-        request.setIdentify(IdentifyUtil.getIdentify());
-        hippo4jSendMessageService.sendChangeMessage(request);
     }
 
     /**
