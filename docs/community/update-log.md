@@ -1,8 +1,53 @@
 ---
+title: 更新日志
 sidebar_position: 5
 ---
 
-# 更新日志
+## 1.4.3 (Nov 06, 2022)
+
+这是一个功能增强版本，修复了少量 BUG。建议按照当前版本升级。具体信息可查看 Release 标签地址：[1.4.3](https://github.com/opengoofy/hippo4j/milestone/13?closed=1)
+
+**Use Change**
+
+- 重构线程池监控，配置层级和命名改变
+- 如果使用钉钉报警，关键字【警报】修改为【告警】
+
+**Feature**
+
+- 重构 Spring 后置处理器创建动态线程池逻辑
+- 官网开启多版本化功能
+- 官网支持国际化，en-US
+- 适配线程池延迟初始化 @wulangcode
+- 添加 Codecov 相关代码覆盖率指标
+- 项目优雅关闭时停止运行状态采集
+
+**Refactor**
+
+- DynamicThreadPoolExecutor 重构，增加插件扩展逻辑 @Createsequence
+- 重构线程池监控，新增容器和三方框架线程池监控
+- 重构服务端包目录，聚合 hippo4j-server 相关 module
+
+**Bug**
+
+- dubbo 线程池无法获取运行信息 @iwangjie
+- 线程池检查活跃度报警取值错误 @maxisvest
+- 动态线程池修改多次后队列提示信息丢失
+- docker部署 mysql启动报错H2驱动
+- docker-startup.sh的mysql配置多个“-” @Malcolmli
+- 动态注册线程池队列容量赋值错误
+- 飞书超时类型告警不存在 Trace 信息时发送错误 @mageeric
+
+**Optimize**
+
+- 修改报警文案，【警报】修改为【告警】 @wulangcode
+- 自动选择H2数据库的存储路径 @iwangjie
+- 服务端在客户端后面启动，依旧支持长轮训 @wulangcode
+- 配置未发生变更时，长轮询返回 304 @wulangcode
+- discovery服务Lease类中判断过期时间需要多等一个duration @w-jirong
+- 优化 ThreadPoolBuilder#maxPoolNum 核心线程不得大于最大线程 @wulangcode
+- hippo4j console ui 迁移至本项目
+- 查询 Web 线程池列表添加框架标识
+- 优化 H2 初始化逻辑
 
 ## 1.4.2 (Oct 18, 2022)
 

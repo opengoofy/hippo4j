@@ -1,8 +1,7 @@
 ---
 sidebar_position: 1
+title: 文档规约
 ---
-
-# 文档规约
 
 文档引用自：[中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines)
 
