@@ -39,7 +39,12 @@ management:
 spring:
   dynamic:
     thread-pool:
-      collect-type: micrometer
+      monitor:
+        enable: true # 是否开启采集线程池运行时数据
+        collect-interval: 5000 # 采集线程池运行数据频率
+        collect-types: micrometer # 采集线程池运行数据的类型。eg：log、micrometer。多个可以同时使用，默认 micrometer
+        initial-delay: 10000 # 项目启动后延迟多久进行采集
+        thread-pool-types: dynamic # 采集线程池的类型。eg：dynamic、web、adapter。可任意配置，默认 dynamic
 ```
 
 项目启动，访问 `http://localhost:29999/actuator/prometheus` 出现 `dynamic_thread_pool_` 前缀的指标，即为成功。

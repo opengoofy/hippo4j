@@ -1,12 +1,12 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 # 线程池监控
 
-## 线程池监控配置
+Server 模式默认内置线程池运行时采集和监控功能，如果想要使用 Prometheus + Grafana 的方式可以查看以下内容。
 
-监控前置条件：需要先完成 hippo4j-config 的 [接入工作](/docs/user_docs/getting_started/config/hippo4j-config-start)。
+## 线程池监控配置
 
 接下来引入 SpringBoot Actuator。Spring 2.x 一般都有版本指定，所以这里不用写版本号。
 
@@ -42,7 +42,7 @@ spring:
       monitor:
         enable: true # 是否开启采集线程池运行时数据
         collect-interval: 5000 # 采集线程池运行数据频率
-        collect-types: micrometer # 采集线程池运行数据的类型。eg：log、micrometer。多个可以同时使用，默认 micrometer
+        collect-types: server,micrometer # 采集线程池运行数据的类型。eg：server、micrometer。多个可以同时使用，默认 server
         initial-delay: 10000 # 项目启动后延迟多久进行采集
         thread-pool-types: dynamic # 采集线程池的类型。eg：dynamic、web、adapter。可任意配置，默认 dynamic
 ```
