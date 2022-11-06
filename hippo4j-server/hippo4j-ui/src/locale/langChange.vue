@@ -26,6 +26,10 @@ export default {
       currentLang: ''
     }
   },
+  mounted() {
+    const lang = this.$i18n.locale
+    this.currentLang = lang || null
+  },
   computed: {
     currentLangName() {
       const langItem = this.langSelectList.find(item => item.lang === this.currentLang)
@@ -36,6 +40,8 @@ export default {
     // 选择语言
     selectedLang(value) {
       this.currentLang = value
+      this.$i18n.locale = value
+      localStorage.setItem('locale_lang', value)
     }
   }
 }
@@ -44,10 +50,13 @@ export default {
   .lang-drop-wrap{
     height: 100%;
     margin-right: 15px;
-    .dropdown-item-text{
-      &[data-active=true] {
-        color: var(--jjext-color-dropdown-text) !important;
-      }
+    .el-dropdown-link{
+      cursor: pointer;
+    }
+  }
+  .dropdown-item-text{
+    &[data-active=true] {
+      color: var(--jjext-color-dropdown-text) !important;
     }
   }
 </style>

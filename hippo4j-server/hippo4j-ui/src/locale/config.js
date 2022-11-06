@@ -5,8 +5,10 @@ import elEn from 'element-ui/lib/locale/lang/en'
 import zh from './lang/zh'
 import en from './lang/en'
 
+const lang = localStorage.getItem('locale_lang')
+
 export const i18nConfig = {
-  locale: 'en', // 默认语种
+  locale: lang || 'en', // 默认语种
   messages: {
     zh: { ...zh, ...elZh }, // 中文包
     en: { ...en, ...elEn } // 英文包

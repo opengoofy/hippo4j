@@ -32,7 +32,7 @@
             <el-dropdown-item>Dashboard</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">Log Out</span>
+            <span style="display:block;" @click="logout">{{ $t('system.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
