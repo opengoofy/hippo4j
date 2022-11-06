@@ -34,7 +34,6 @@ import org.springframework.cloud.stream.binding.InputBindingLifecycle;
 import org.springframework.context.ApplicationListener;
 import org.springframework.integration.amqp.inbound.AmqpInboundChannelAdapter;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
