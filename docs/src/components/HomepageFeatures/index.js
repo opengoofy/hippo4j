@@ -8,7 +8,7 @@ const FeatureList = [
         Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
         description: (
             <>
-                应用运行时动态变更线程池参数，包括不限于核心、最大线程、阻塞队列大小和拒绝策略等；支持应用集群线程池配置差异化
+                应用运行时动态变更线程池参数，包括不限于核心、最大线程、阻塞队列大小和拒绝策略等，支持应用集群下不同节点线程池配置差异化
             </>
         ),
     },
@@ -26,7 +26,7 @@ const FeatureList = [
         Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
         description: (
             <>
-                支持自定义时长的线程池运行数据采集存储，并提供可视化大屏监控运行指标；同时也支持 Prometheus 采集监控，帮助排查以及确定线程池问题
+                支持自定义时长线程池运行数据采集存储，同时也支持 Prometheus、InfluxDB 等采集监控，通过 Grafana 或内置监控页面提供可视化大屏监控运行指标
             </>
         ),
     },

@@ -17,6 +17,7 @@
 
 package cn.hippo4j.core.executor.support;
 
+import cn.hippo4j.core.plugin.impl.ThreadPoolExecutorShutdownPlugin;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -25,7 +26,10 @@ import java.util.concurrent.*;
 
 /**
  * Dynamic executor configuration support.
+ *
+ * @deprecated use {@link ThreadPoolExecutorShutdownPlugin} to get thread-pool shutdown support
  */
+@Deprecated
 @Slf4j
 public abstract class AbstractDynamicExecutorSupport extends ThreadPoolExecutor implements InitializingBean, DisposableBean {
 

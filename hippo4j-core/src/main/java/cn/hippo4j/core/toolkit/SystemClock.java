@@ -22,18 +22,34 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * System clock.
+ * System clock.<br>
+ * Refer to cn.hutool.core.date.SystemClock<br>
  */
 public class SystemClock {
 
+    /**
+     * Period
+     */
     private final int period;
 
+    /**
+     * Now
+     */
     private final AtomicLong now;
 
+    /**
+     * Thread name
+     */
     private static final String THREAD_NAME = "system.clock";
 
+    /**
+     * Instance holder.
+     */
     private static class InstanceHolder {
 
+        /**
+         * System clock instance
+         */
         private static final SystemClock INSTANCE = new SystemClock(1);
     }
 
@@ -43,10 +59,18 @@ public class SystemClock {
         scheduleClockUpdating();
     }
 
+    /**
+     * Instance.
+     *
+     * @return System clock instance
+     */
     private static SystemClock instance() {
         return InstanceHolder.INSTANCE;
     }
 
+    /**
+     * Schedule clock updating.
+     */
     private void scheduleClockUpdating() {
         ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1, runnable -> {
             Thread thread = new Thread(runnable, THREAD_NAME);
@@ -56,10 +80,20 @@ public class SystemClock {
         scheduler.scheduleAtFixedRate(() -> now.set(System.currentTimeMillis()), period, period, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * Current time millis.
+     *
+     * @return current time millis
+     */
     private long currentTimeMillis() {
         return now.get();
     }
 
+    /**
+     * Now.
+     *
+     * @return current time millis
+     */
     public static long now() {
         return instance().currentTimeMillis();
     }

@@ -29,10 +29,13 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Reflect util.
+ * Reflect util.<br>
+ * Refer to cn.hutool.core.util.ReflectUtil:<br>
+ * {@link this#getFieldsDirectly(Class, boolean)} <br>
+ * {@link this#setFieldValue(Object, Field, Object)} <br>
+ * {@link this#getDefaultValue(Class)} <br>
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReflectUtil {
@@ -244,6 +247,20 @@ public class ReflectUtil {
         try {
             return (T) method.invoke(obj, arguments);
         } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalException(e);
+        }
+    }
+
+    /**
+     * get instance
+     *
+     * @param cls the class
+     * @return new Instance
+     */
+    public static Object createInstance(Class<?> cls) {
+        try {
+            return cls.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new IllegalException(e);
         }
     }

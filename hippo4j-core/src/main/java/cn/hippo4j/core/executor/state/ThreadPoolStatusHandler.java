@@ -40,10 +40,10 @@ public class ThreadPoolStatusHandler {
     private static final AtomicBoolean EXCEPTION_FLAG = new AtomicBoolean(Boolean.TRUE);
 
     /**
-     * Get thread pool state.
+     * Get thread-pool state.
      *
-     * @param executor
-     * @return
+     * @param executor executor
+     * @return thread-pool state
      */
     public static String getThreadPoolState(ThreadPoolExecutor executor) {
         if (EXCEPTION_FLAG.get()) {

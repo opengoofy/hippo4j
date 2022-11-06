@@ -47,6 +47,9 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
         printBanner();
     }
 
+    /**
+     * Print banner.
+     */
     private void printBanner() {
         String banner = "  __     __                       ___ ___   __ \n" +
                 " |  |--.|__|.-----..-----..-----.|   |   | |__|\n" +
@@ -67,6 +70,11 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
         }
     }
 
+    /**
+     * Get version.
+     *
+     * @return hippo4j version
+     */
     public static String getVersion() {
         final Package pkg = DynamicThreadPoolBannerHandler.class.getPackage();
         return pkg != null ? pkg.getImplementationVersion() : "";

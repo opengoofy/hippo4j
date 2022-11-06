@@ -36,10 +36,6 @@ public class ThreadPoolExecutorTemplate extends ThreadPoolExecutor {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
     }
 
-    private Exception clientTrace() {
-        return new Exception("Tread task root stack trace.");
-    }
-
     @Override
     public void execute(final Runnable command) {
         super.execute(wrap(command, clientTrace()));
@@ -55,6 +51,22 @@ public class ThreadPoolExecutorTemplate extends ThreadPoolExecutor {
         return super.submit(wrap(task, clientTrace()));
     }
 
+    /**
+     * Client trace.
+     *
+     * @return exception
+     */
+    private Exception clientTrace() {
+        return new Exception("Tread task root stack trace.");
+    }
+
+    /**
+     * Wrapping thread pool tasks.
+     *
+     * @param task        task
+     * @param clientStack client stack
+     * @return wrapped runnable
+     */
     private Runnable wrap(final Runnable task, final Exception clientStack) {
         return () -> {
             try {
@@ -66,6 +78,14 @@ public class ThreadPoolExecutorTemplate extends ThreadPoolExecutor {
         };
     }
 
+    /**
+     * Wrapping thread pool tasks.
+     *
+     * @param task        task
+     * @param clientStack client stack
+     * @param <T>         computed result
+     * @return wrapped runnable
+     */
     private <T> Callable<T> wrap(final Callable<T> task, final Exception clientStack) {
         return () -> {
             try {

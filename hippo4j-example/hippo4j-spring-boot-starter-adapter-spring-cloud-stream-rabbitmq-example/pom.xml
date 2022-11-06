@@ -18,38 +18,33 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-json</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rabbitmq</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-example-core</artifactId>
             <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+            <version>${spring-cloud-starter-stream-rabbitmq.version}</version>
         </dependency>
     </dependencies>
 

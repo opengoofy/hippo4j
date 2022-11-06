@@ -34,12 +34,12 @@ import java.util.concurrent.Executor;
 public abstract class AbstractWebThreadPoolService implements WebThreadPoolService, ApplicationRunner {
 
     /**
-     * Thread pool executor.
+     * Thread pool executor
      */
     protected volatile Executor executor;
 
     /**
-     * Get web thread pool by server.
+     * Get web thread pool by server
      *
      * @param webServer
      * @return

@@ -9,14 +9,11 @@
     </parent>
     <artifactId>hippo4j-adapter-dubbo</artifactId>
 
-    <properties>
-        <dubbo.version>3.0.5</dubbo.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-base</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.dubbo</groupId>

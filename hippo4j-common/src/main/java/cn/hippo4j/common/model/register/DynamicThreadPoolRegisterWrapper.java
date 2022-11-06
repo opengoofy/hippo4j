@@ -38,7 +38,7 @@ public class DynamicThreadPoolRegisterWrapper {
     /**
      * Dynamic thread-pool register parameter
      */
-    private DynamicThreadPoolRegisterParameter dynamicThreadPoolRegisterParameter;
+    private DynamicThreadPoolRegisterParameter parameter;
 
     // Hippo4j server ----------------------------------------------------------------------
 
@@ -65,12 +65,12 @@ public class DynamicThreadPoolRegisterWrapper {
     /**
      * Dynamic thread-pool server notify parameter
      */
-    private DynamicThreadPoolRegisterServerNotifyParameter dynamicThreadPoolRegisterServerNotifyParameter;
+    private DynamicThreadPoolRegisterServerNotifyParameter serverNotify;
 
     // Hippo4j core ----------------------------------------------------------------------
 
     /**
-     * Dynamic thread-pool core notify parameter
+     * Dynamic thread-pool config notify parameter
      */
-    private DynamicThreadPoolRegisterCoreNotifyParameter dynamicThreadPoolRegisterCoreNotifyParameter;
+    private DynamicThreadPoolRegisterCoreNotifyParameter configNotify;
 }

@@ -34,19 +34,30 @@ import java.util.concurrent.*;
 public class AbstractBuildThreadPoolTemplate {
 
     /**
-     * Thread pool construction initialization parameters.
+     * Thread-pool construction initialization parameters.
      *
-     * @return
+     * @return thread-pool init param
      */
     protected static ThreadPoolInitParam initParam() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Build pool.
+     *
+     * @return thread-pool executor
+     */
     public static ThreadPoolExecutor buildPool() {
         ThreadPoolInitParam initParam = initParam();
         return buildPool(initParam);
     }
 
+    /**
+     * Build pool.
+     *
+     * @param initParam init param
+     * @return thread-pool executor
+     */
     public static ThreadPoolExecutor buildPool(ThreadPoolInitParam initParam) {
         Assert.notNull(initParam);
         ThreadPoolExecutor executorService;
@@ -65,11 +76,22 @@ public class AbstractBuildThreadPoolTemplate {
         return executorService;
     }
 
+    /**
+     * Build a fast-consuming task thread pool.
+     *
+     * @return fast thread-pool executor
+     */
     public static ThreadPoolExecutor buildFastPool() {
         ThreadPoolInitParam initParam = initParam();
         return buildFastPool(initParam);
     }
 
+    /**
+     * Build a fast-consuming task thread pool.
+     *
+     * @param initParam init param
+     * @return fast thread-pool executor
+     */
     public static ThreadPoolExecutor buildFastPool(ThreadPoolInitParam initParam) {
         TaskQueue<Runnable> taskQueue = new TaskQueue(initParam.getCapacity());
         FastThreadPoolExecutor fastThreadPoolExecutor;
@@ -89,6 +111,12 @@ public class AbstractBuildThreadPoolTemplate {
         return fastThreadPoolExecutor;
     }
 
+    /**
+     * Build a dynamic monitor thread-pool.
+     *
+     * @param initParam init param
+     * @return dynamic monitor thread-pool
+     */
     public static DynamicThreadPoolExecutor buildDynamicPool(ThreadPoolInitParam initParam) {
         Assert.notNull(initParam);
         DynamicThreadPoolExecutor dynamicThreadPoolExecutor;
@@ -113,6 +141,9 @@ public class AbstractBuildThreadPoolTemplate {
         return dynamicThreadPoolExecutor;
     }
 
+    /**
+     * Thread-pool init param.
+     */
     @Data
     @Accessors(chain = true)
     public static class ThreadPoolInitParam {

@@ -21,5 +21,4 @@ package cn.hippo4j.monitor.base;
  * Dynamic thread-pool monitor.
  */
 public interface DynamicThreadPoolMonitor extends ThreadPoolMonitor {
-
 }

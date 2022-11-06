@@ -53,7 +53,7 @@ public class DynamicThreadPoolSubscribeConfig {
             .build();
 
     public void subscribeConfig(String threadPoolId) {
-        subscribeConfig(threadPoolId, config -> threadPoolDynamicRefresh.dynamicRefresh(config));
+        subscribeConfig(threadPoolId, threadPoolDynamicRefresh::dynamicRefresh);
     }
 
     public void subscribeConfig(String threadPoolId, ThreadPoolSubscribeCallback threadPoolSubscribeCallback) {

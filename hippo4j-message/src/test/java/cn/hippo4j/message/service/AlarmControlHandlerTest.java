@@ -22,7 +22,7 @@ import cn.hippo4j.message.enums.NotifyTypeEnum;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AlarmControlHandlerTest {
+public final class AlarmControlHandlerTest {
 
     @Test
     public void assertIsNotSendAlarm() {

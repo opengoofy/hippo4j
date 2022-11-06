@@ -47,7 +47,6 @@ public class RunStateHandlerTest {
     /*
      * @Resource private ThreadPoolTaskExecutor testSpringThreadPoolTaskExecutor;
      */
-
     private final ThreadPoolExecutor runStateHandlerTestExecutor = new ThreadPoolExecutor(
             4,
             4,

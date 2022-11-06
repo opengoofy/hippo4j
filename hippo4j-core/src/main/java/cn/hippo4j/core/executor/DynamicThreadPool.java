@@ -24,7 +24,29 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Dynamic thread pool.
+ * An annotation that enhances the functionality of the jdk acoustic thread pool,
+ * with the following list of enhancements.
+ * <ul>
+ *      <li>Dynamic change at runtime</li>
+ *      <li>Determine whether an alarm is required at runtime</li>
+ *      <li>Provide observable monitoring indicators</li>
+ *      <li>......</li>
+ * </ur>
+ *
+ * <p>If you use Server mode, you can view the thread pool operation in the built-in console.
+ * <p>If you use Config mode, you can observe with Prometheus and Grafana.
+ *
+ * <p>The annotation is normally marked on the
+ * spring bean defined by {@link java.util.concurrent.ThreadPoolExecutor}.
+ *
+ * <p>Can also be marked on the following types:
+ *
+ * @see java.util.concurrent.Executor
+ * @see java.util.concurrent.ExecutorService
+ * @see org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+ * @see com.alibaba.ttl.threadpool.ExecutorTtlWrapper
+ * @see com.alibaba.ttl.threadpool.ExecutorServiceTtlWrapper
+ * @since 1.0
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

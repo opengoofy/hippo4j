@@ -39,7 +39,7 @@ import java.util.*;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 
 /**
- * Spring cloud stream rabbimq thread-pool adapter.
+ * Spring cloud stream rabbit-mq thread-pool adapter.
  */
 @Slf4j
 public class SpringCloudStreamRabbitMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {

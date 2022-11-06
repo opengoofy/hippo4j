@@ -109,9 +109,9 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     /**
      * Is send alarm.
      *
-     * @param threadPoolId
-     * @param platform
-     * @param typeEnum
+     * @param threadPoolId thread-pool id
+     * @param platform     platform
+     * @param typeEnum     type enum
      * @return
      */
     private boolean isSendAlarm(String threadPoolId, String platform, NotifyTypeEnum typeEnum) {
@@ -123,6 +123,15 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
         return alarmControlHandler.isSendAlarm(alarmControl);
     }
 
+    /**
+     * Put platform.
+     *
+     * @param notifyConfigs notify configs
+     */
+    public synchronized void putPlatform(Map<String, List<NotifyConfigDTO>> notifyConfigs) {
+        this.notifyConfigs.putAll(notifyConfigs);
+    }
+
     @Override
     public void run(String... args) throws Exception {
         Map<String, SendMessageHandler> sendMessageHandlerMap =
@@ -130,14 +139,5 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
         sendMessageHandlerMap.values().forEach(each -> sendMessageHandlers.put(each.getType(), each));
         Map<String, List<NotifyConfigDTO>> buildNotify = notifyConfigBuilder.buildNotify();
         notifyConfigs.putAll(buildNotify);
-    }
-
-    /**
-     * Put platform.
-     *
-     * @param notifyConfigs
-     */
-    public synchronized void putPlatform(Map<String, List<NotifyConfigDTO>> notifyConfigs) {
-        this.notifyConfigs.putAll(notifyConfigs);
     }
 }

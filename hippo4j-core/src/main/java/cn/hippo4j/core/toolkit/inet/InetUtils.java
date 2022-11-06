@@ -35,7 +35,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Inet utils.
+ * Inet utils.<br>
+ * Refer to org.springframework.cloud.commons.util.InetUtils<br>
  */
 public class InetUtils implements Closeable {
 
@@ -80,13 +81,12 @@ public class InetUtils implements Closeable {
                     this.log.trace("Testing interface: " + ifc.getDisplayName());
                     if (ifc.getIndex() < lowest || result == null) {
                         lowest = ifc.getIndex();
-                    } else if (result != null) {
+                    } else {
                         continue;
                     }
-                    // @formatter:off
                     if (!ignoreInterface(ifc.getDisplayName())) {
                         for (Enumeration<InetAddress> addrs = ifc
-                                .getInetAddresses(); addrs.hasMoreElements(); ) {
+                                .getInetAddresses(); addrs.hasMoreElements();) {
                             InetAddress address = addrs.nextElement();
                             if (address instanceof Inet4Address
                                     && !address.isLoopbackAddress()
@@ -97,7 +97,6 @@ public class InetUtils implements Closeable {
                             }
                         }
                     }
-                    // @formatter:on
                 }
             }
         } catch (IOException ex) {
@@ -149,7 +148,6 @@ public class InetUtils implements Closeable {
     public HostInfo convertAddress(final InetAddress address) {
         HostInfo hostInfo = new HostInfo();
         Future<String> result = this.executorService.submit(address::getHostName);
-
         String hostname;
         try {
             hostname = result.get(this.properties.getTimeoutSeconds(), TimeUnit.SECONDS);

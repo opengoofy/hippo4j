@@ -34,7 +34,7 @@ public final class TaskTraceBuilderHandler implements TaskDecorator {
         String executeTimeoutTrace = MDC.get(EXECUTE_TIMEOUT_TRACE);
         Runnable taskRun = () -> {
             if (StringUtil.isNotBlank(executeTimeoutTrace)) {
-                ExecutorTraceContextUtil.putExecuteTimeoutTrace(executeTimeoutTrace);
+                ExecutorTraceContextUtil.putTimeoutTrace(executeTimeoutTrace);
             }
             runnable.run();
             // There is no need to clean up here, and it will be cleaned up after the thread task is executed.

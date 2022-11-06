@@ -22,10 +22,20 @@ const config = {
     // Even if you don't use internalization, you can use this field to set useful
     // metadata like html lang. For example, if your site is Chinese, you may want
     // to replace "en" with "zh-Hans".
-    i18n: {
-        defaultLocale: 'zh-CN',
-        locales: ['zh-CN'],
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "zh"],
+    localeConfigs: {
+      en: {
+        label: "English",
+        direction: "ltr",
+      },
+      zh: {
+        label: "简体中文",
+        direction: "ltr",
+      },
     },
+  },
 
     presets: [
         [
@@ -52,6 +62,18 @@ const config = {
             }),
         ],
     ],
+    
+    plugins: [
+        [
+          "@docusaurus/plugin-content-docs",
+          {
+            id: "community",
+            path: "community",
+            routeBasePath: "community",
+            sidebarPath: require.resolve("./sidebarsCommunity.js"),
+          },
+        ],
+    ],
 
     themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -60,14 +82,15 @@ const config = {
             announcementBar: {
                 id: 'announcementBar-1', // Increment on change
                 // content: `⭐️ If you like hippo4j, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://gitee.com/mabaiwancn/hippo4j">Gitee</a>, thanks.`,
-                content: `⭐️ 如果您喜欢 hippo4j，请在 <a target="_blank" rel="noopener noreferrer" href="https://gitee.com/mabaiwancn/hippo4j">Gitee</a> 和 <a target="_blank" rel="noopener noreferrer" href="https://github.com/opengoofy/hippo4j">GitHub</a> 上给它一个 star，谢谢！`,
+                // content: `⭐️ 如果您喜欢 hippo4j，请在 <a target="_blank" rel="noopener noreferrer" href="https://gitee.com/mabaiwancn/hippo4j">Gitee</a> 和 <a target="_blank" rel="noopener noreferrer" href="https://github.com/opengoofy/hippo4j">GitHub</a> 上给它一个 star，谢谢！`,
+                content: `⭐️ 开源不易，hippo4j 如果对您工作有帮助，请在 <a target="_blank" rel="noopener noreferrer" href="https://github.com/opengoofy/hippo4j">GitHub</a> 上给它一个 🌟`,
                 // content: `<a target="_blank" rel="noopener noreferrer" href="https://xiaomage.info/knowledge-planet/">👉 《小马哥的代码实战课》官方知识星球来啦！！！</a>`,
             },
             navbar: {
-                title: 'HIPPO-4J',
+                title: '',
                 logo: {
                     alt: 'HIPPO-4J 动态可观测线程池框架',
-                    src: 'img/web.png',
+                    src: 'img/hippo4j.png',
                 },
                 items: [
                     {
@@ -78,12 +101,13 @@ const config = {
                         label: '文档',
                     },
                     {
-                        type: 'docSidebar',
-                        docId: 'contributor',
-                        position: 'left',
-                        sidebarId: 'community',
-                        label: '社区',
+                      to: "/community/contributor-guide",
+                      label: "社区",
+                      position: "left",
+                      activeBaseRegex: `/community/`,
                     },
+                    { to: "/team", label: "团队", position: "left" },
+                    { to: "/users", label: "用户", position: "left" },
                     /*{to: '/blog', label: '博客', position: 'left'},*/
                     {
                         href: 'http://console.hippo4j.cn/index.html',
@@ -94,6 +118,11 @@ const config = {
                         href: 'https://xiaomage.info/knowledge-planet',
                         label: '🥇代码实战课',
                         position: 'left',
+                    },
+                    {
+                        type: 'docsVersionDropdown',
+                        position: 'right',
+                        dropdownActiveClassDisabled: true,
                     },
                     {type: 'localeDropdown', position: 'right'},
 

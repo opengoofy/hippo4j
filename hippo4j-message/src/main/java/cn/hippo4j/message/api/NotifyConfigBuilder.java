@@ -30,7 +30,7 @@ public interface NotifyConfigBuilder {
     /**
      * Build notify.
      *
-     * @return
+     * @return notify info
      */
     Map<String, List<NotifyConfigDTO>> buildNotify();
 }
