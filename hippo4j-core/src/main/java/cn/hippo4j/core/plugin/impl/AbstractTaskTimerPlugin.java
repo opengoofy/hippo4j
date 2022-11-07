@@ -36,7 +36,7 @@ import java.util.Optional;
 public abstract class AbstractTaskTimerPlugin implements ExecuteAwarePlugin {
 
     /**
-     * start times of executed tasks
+     * Start times of executed tasks
      */
     private final ThreadLocal<Long> startTimes = new ThreadLocal<>();
 
@@ -55,7 +55,7 @@ public abstract class AbstractTaskTimerPlugin implements ExecuteAwarePlugin {
     /**
      * Record the total time for the worker thread to complete the task, and update the time record.
      *
-     * @param runnable runnable
+     * @param runnable  runnable
      * @param throwable exception thrown during execution
      */
     @Override
@@ -84,5 +84,4 @@ public abstract class AbstractTaskTimerPlugin implements ExecuteAwarePlugin {
      * @param taskExecuteTime execute time of task
      */
     protected abstract void processTaskTime(long taskExecuteTime);
-
 }

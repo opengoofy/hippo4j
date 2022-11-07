@@ -17,29 +17,33 @@
 
 package cn.hippo4j.springboot.starter.event;
 
-import org.springframework.boot.context.event.ApplicationReadyEvent;
+import cn.hippo4j.springboot.starter.core.ClientWorker;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 import javax.annotation.Resource;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Application content post processor.
  */
-public class ApplicationContentPostProcessor implements ApplicationListener<ApplicationReadyEvent> {
+public class ApplicationContentPostProcessor implements ApplicationListener<ContextRefreshedEvent> {
 
     @Resource
     private ApplicationContext applicationContext;
 
-    private boolean executeOnlyOnce = true;
+    @Resource
+    private ClientWorker clientWorker;
+
+    private final AtomicBoolean executeOnlyOnce = new AtomicBoolean(false);
 
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-        synchronized (ApplicationContentPostProcessor.class) {
-            if (executeOnlyOnce) {
-                applicationContext.publishEvent(new ApplicationCompleteEvent(this));
-                executeOnlyOnce = false;
-            }
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        if (!executeOnlyOnce.compareAndSet(false, true)) {
+            return;
         }
+        applicationContext.publishEvent(new ApplicationRefreshedEvent(this));
+        clientWorker.notifyApplicationComplete();
     }
 }

@@ -27,21 +27,18 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.service.AbstractDynamicThreadPoolService;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
+import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
-import cn.hippo4j.springboot.starter.core.ClientWorker;
 import cn.hippo4j.springboot.starter.core.DynamicThreadPoolSubscribeConfig;
-import cn.hippo4j.springboot.starter.event.ApplicationCompleteEvent;
 import cn.hippo4j.springboot.starter.notify.ServerNotifyConfigBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
 
 import java.util.List;
 import java.util.Map;
@@ -55,11 +52,9 @@ import static cn.hippo4j.common.constant.Constants.REGISTER_DYNAMIC_THREAD_POOL_
  */
 @Slf4j
 @RequiredArgsConstructor
-public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolService implements ApplicationListener<ApplicationCompleteEvent> {
+public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolService {
 
     private final HttpAgent httpAgent;
-
-    private final ClientWorker clientWorker;
 
     private final BootstrapProperties properties;
 
@@ -77,13 +72,8 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
         return dynamicThreadPoolExecutor;
     }
 
-    @Override
-    public void onApplicationEvent(ApplicationCompleteEvent event) {
-        clientWorker.notifyApplicationComplete();
-    }
-
     private ThreadPoolExecutor registerExecutor(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getParameter();
         checkThreadPoolParameter(registerParameter);
         String threadPoolId = registerParameter.getThreadPoolId();
         try {
@@ -108,11 +98,11 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
     }
 
     private void subscribeConfig(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        dynamicThreadPoolSubscribeConfig.subscribeConfig(registerWrapper.getDynamicThreadPoolRegisterParameter().getThreadPoolId());
+        dynamicThreadPoolSubscribeConfig.subscribeConfig(registerWrapper.getParameter().getThreadPoolId());
     }
 
     private void putNotifyAlarmConfig(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getParameter();
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(
                 BooleanUtil.toBoolean(String.valueOf(registerParameter.getIsAlarm())),
                 registerParameter.getActiveAlarm(),

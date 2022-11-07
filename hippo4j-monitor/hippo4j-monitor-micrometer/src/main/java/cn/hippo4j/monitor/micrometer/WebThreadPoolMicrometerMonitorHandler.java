@@ -46,10 +46,10 @@ public class WebThreadPoolMicrometerMonitorHandler extends AbstractWebThreadPool
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String applicationName = environment.getProperty("spring.application.name", "application");
         ThreadPoolRunStateInfo stateInfo = RUN_STATE_CACHE.get(applicationName);
-        if (stateInfo == null) {
-            RUN_STATE_CACHE.put(applicationName, webThreadPoolRunStateInfo);
-        } else {
+        if (stateInfo != null) {
             BeanUtil.convert(webThreadPoolRunStateInfo, stateInfo);
+        } else {
+            RUN_STATE_CACHE.put(applicationName, webThreadPoolRunStateInfo);
         }
         Iterable<Tag> tags = CollectionUtil.newArrayList(Tag.of(APPLICATION_NAME_TAG, applicationName));
         Metrics.gauge(metricName("current.load"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getSimpleCurrentLoad);

@@ -17,11 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-
-import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
+import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
@@ -34,6 +30,10 @@ import org.apache.curator.framework.state.ConnectionStateListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.utils.ZKPaths;
 import org.apache.zookeeper.WatchedEvent;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Zookeeper refresher handler.

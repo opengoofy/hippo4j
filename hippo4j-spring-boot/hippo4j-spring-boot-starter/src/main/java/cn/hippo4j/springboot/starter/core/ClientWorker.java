@@ -18,7 +18,6 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.IdUtil;
@@ -72,6 +71,8 @@ public class ClientWorker {
 
     private final CountDownLatch awaitApplicationComplete = new CountDownLatch(1);
 
+    private final CountDownLatch cacheCondition = new CountDownLatch(1);
+
     private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap(16);
 
     @SuppressWarnings("all")
@@ -92,9 +93,7 @@ public class ClientWorker {
         this.executor.schedule(() -> {
             try {
                 awaitApplicationComplete.await();
-                if (CollectionUtil.isNotEmpty(cacheMap)) {
-                    executorService.execute(new LongPollingRunnable());
-                }
+                executorService.execute(new LongPollingRunnable(cacheMap.isEmpty(), cacheCondition));
             } catch (Throwable ex) {
                 log.error("Sub check rotate check error.", ex);
             }
@@ -103,9 +102,22 @@ public class ClientWorker {
 
     class LongPollingRunnable implements Runnable {
 
+        private boolean cacheMapInitEmptyFlag;
+
+        private final CountDownLatch cacheCondition;
+
+        public LongPollingRunnable(boolean cacheMapInitEmptyFlag, CountDownLatch cacheCondition) {
+            this.cacheMapInitEmptyFlag = cacheMapInitEmptyFlag;
+            this.cacheCondition = cacheCondition;
+        }
+
         @Override
         @SneakyThrows
         public void run() {
+            if (cacheMapInitEmptyFlag) {
+                cacheCondition.await();
+                cacheMapInitEmptyFlag = false;
+            }
             serverHealthCheck.isHealthStatus();
             List<CacheData> cacheDataList = new ArrayList();
             List<String> inInitializingCacheList = new ArrayList();
@@ -226,6 +238,10 @@ public class ClientWorker {
         CacheData cacheData = addCacheDataIfAbsent(namespace, itemId, threadPoolId);
         for (Listener listener : listeners) {
             cacheData.addListener(listener);
+        }
+        // Lazy loading
+        if (awaitApplicationComplete.getCount() == 0L) {
+            cacheCondition.countDown();
         }
     }
 

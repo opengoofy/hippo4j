@@ -26,6 +26,12 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
  */
 public class ContentUtil {
 
+    /**
+     * Get pool content.
+     *
+     * @param parameter thread-pool parameter
+     * @return dynamic thread-pool content str
+     */
     public static String getPoolContent(ThreadPoolParameter parameter) {
         ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
         threadPoolParameterInfo.setTenantId(parameter.getTenantId())
@@ -45,6 +51,12 @@ public class ContentUtil {
         return JSONUtil.toJSONString(threadPoolParameterInfo);
     }
 
+    /**
+     * Get group key.
+     *
+     * @param parameter thread-pool parameter
+     * @return group key
+     */
     public static String getGroupKey(ThreadPoolParameter parameter) {
         return StringUtil.createBuilder()
                 .append(parameter.getTpId())
@@ -55,6 +67,12 @@ public class ContentUtil {
                 .toString();
     }
 
+    /**
+     * Get group key.
+     *
+     * @param parameters thread-pool parameters
+     * @return group key
+     */
     public static String getGroupKey(String... parameters) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < parameters.length; i++) {

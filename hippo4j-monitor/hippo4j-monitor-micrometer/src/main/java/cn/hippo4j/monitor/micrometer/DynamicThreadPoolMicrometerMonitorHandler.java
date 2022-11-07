@@ -46,10 +46,10 @@ public class DynamicThreadPoolMicrometerMonitorHandler extends AbstractDynamicTh
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
         ThreadPoolRunStateInfo stateInfo = RUN_STATE_CACHE.get(poolRunStateInfo.getTpId());
-        if (stateInfo == null) {
-            RUN_STATE_CACHE.put(poolRunStateInfo.getTpId(), poolRunStateInfo);
-        } else {
+        if (stateInfo != null) {
             BeanUtil.convert(poolRunStateInfo, stateInfo);
+        } else {
+            RUN_STATE_CACHE.put(poolRunStateInfo.getTpId(), poolRunStateInfo);
         }
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String applicationName = environment.getProperty("spring.application.name", "application");

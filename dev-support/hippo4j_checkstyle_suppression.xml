@@ -25,4 +25,6 @@
     <suppress checks="StaticVariableName" files="ApplicationContextHolder.java"/>
     <suppress checks="StaticVariableName" files="JacksonHandler.java"/>
     <suppress checks="MagicNumber" files="ByteConvertUtil.java"/>
+    <suppress checks="MagicNumber" files="DubboThreadPoolAdapter.java"/>
+    <suppress checks="MagicNumber" files="UndertowWebThreadPoolHandler.java"/>
 </suppressions>

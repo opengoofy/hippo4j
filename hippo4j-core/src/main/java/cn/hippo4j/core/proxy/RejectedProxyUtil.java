@@ -33,9 +33,9 @@ public class RejectedProxyUtil {
     /**
      * Proxy rejected execution.
      *
-     * @param rejectedExecutionHandler
-     * @param threadPoolId
-     * @param rejectedNum
+     * @param rejectedExecutionHandler rejected execution handler
+     * @param threadPoolId             thread-pool id
+     * @param rejectedNum              rejected num
      * @return
      */
     public static RejectedExecutionHandler createProxy(RejectedExecutionHandler rejectedExecutionHandler, String threadPoolId, AtomicLong rejectedNum) {

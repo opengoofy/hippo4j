@@ -17,17 +17,17 @@
 
 package cn.hippo4j.config.springboot.starter.support;
 
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterCoreNotifyParameter;
 import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalNotifyAlarmManage;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.core.executor.support.service.AbstractDynamicThreadPoolService;
+import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -39,29 +39,26 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
 
     @Override
     public ThreadPoolExecutor registerDynamicThreadPool(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getParameter();
         String threadPoolId = registerParameter.getThreadPoolId();
         ThreadPoolExecutor dynamicThreadPoolExecutor = buildDynamicThreadPoolExecutor(registerParameter);
         DynamicThreadPoolWrapper dynamicThreadPoolWrapper = DynamicThreadPoolWrapper.builder()
                 .threadPoolId(threadPoolId)
                 .executor(dynamicThreadPoolExecutor)
                 .build();
-        // Register pool.
         GlobalThreadPoolManage.registerPool(threadPoolId, dynamicThreadPoolWrapper);
         ExecutorProperties executorProperties = buildExecutorProperties(registerWrapper);
-        // Register properties.
         GlobalCoreThreadPoolManage.register(threadPoolId, executorProperties);
-        DynamicThreadPoolRegisterCoreNotifyParameter notifyParameter = registerWrapper.getDynamicThreadPoolRegisterCoreNotifyParameter();
+        DynamicThreadPoolRegisterCoreNotifyParameter notifyParameter = registerWrapper.getConfigNotify();
         ThreadPoolNotifyAlarm notifyAlarm = new ThreadPoolNotifyAlarm(true, registerParameter.getActiveAlarm(), registerParameter.getCapacityAlarm());
         notifyAlarm.setReceives(notifyParameter.getReceives());
         notifyAlarm.setInterval(notifyParameter.getInterval());
-        // Register notify.
         GlobalNotifyAlarmManage.put(threadPoolId, notifyAlarm);
         return dynamicThreadPoolExecutor;
     }
 
     private ExecutorProperties buildExecutorProperties(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getParameter();
         ExecutorProperties executorProperties = ExecutorProperties.builder()
                 .corePoolSize(registerParameter.getCorePoolSize())
                 .maximumPoolSize(registerParameter.getMaximumPoolSize())

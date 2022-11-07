@@ -27,14 +27,14 @@ public abstract class AbstractMonitorDataExecuteStrategy<T extends Message> {
     /**
      * Mark.
      *
-     * @return
+     * @return mark
      */
     public abstract String mark();
 
     /**
      * Execute.
      *
-     * @param message
+     * @param message message
      */
     public abstract void execute(T message);
 }

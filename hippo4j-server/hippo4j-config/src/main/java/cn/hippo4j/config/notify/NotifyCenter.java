@@ -43,11 +43,9 @@ public class NotifyCenter {
 
     private DefaultSharePublisher sharePublisher;
 
-    private static Class<? extends EventPublisher> clazz = null;
-
     private static EventPublisher eventPublisher = new DefaultPublisher();
 
-    private static BiFunction<Class<? extends AbstractEvent>, Integer, EventPublisher> publisherFactory = null;
+    private static BiFunction<Class<? extends AbstractEvent>, Integer, EventPublisher> publisherFactory;
 
     private final Map<String, EventPublisher> publisherMap = new ConcurrentHashMap(16);
 

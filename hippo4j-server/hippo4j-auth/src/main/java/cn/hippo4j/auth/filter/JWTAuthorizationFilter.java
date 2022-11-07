@@ -68,14 +68,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-
         // If there is no Authorization information in the request header, it will be released directly.
         String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
         if (tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
-
         // If there is a Token in the request header, it is parsed and the authentication information is set.
         try {
             SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader));

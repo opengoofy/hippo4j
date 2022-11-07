@@ -52,32 +52,32 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
 
     /**
-     * lock of this instance
+     * Lock of this instance
      */
     private final ReadWriteLock instanceLock = new ReentrantReadWriteLock();
 
     /**
-     * Registered {@link ThreadPoolPlugin}.
+     * Registered {@link ThreadPoolPlugin}
      */
     private final Map<String, ThreadPoolPlugin> registeredPlugins = new ConcurrentHashMap<>(16);
 
     /**
-     * Registered {@link TaskAwarePlugin}.
+     * Registered {@link TaskAwarePlugin}
      */
     private final List<TaskAwarePlugin> taskAwarePluginList = new CopyOnWriteArrayList<>();
 
     /**
-     * Registered {@link ExecuteAwarePlugin}.
+     * Registered {@link ExecuteAwarePlugin}
      */
     private final List<ExecuteAwarePlugin> executeAwarePluginList = new CopyOnWriteArrayList<>();
 
     /**
-     * Registered {@link RejectedAwarePlugin}.
+     * Registered {@link RejectedAwarePlugin}
      */
     private final List<RejectedAwarePlugin> rejectedAwarePluginList = new CopyOnWriteArrayList<>();
 
     /**
-     * Registered {@link ShutdownAwarePlugin}.
+     * Registered {@link ShutdownAwarePlugin}
      */
     private final List<ShutdownAwarePlugin> shutdownAwarePluginList = new CopyOnWriteArrayList<>();
 
@@ -115,10 +115,7 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
         try {
             String id = plugin.getId();
             Assert.isTrue(!isRegistered(id), "The plugin with id [" + id + "] has been registered");
-
-            // register plugin
             registeredPlugins.put(id, plugin);
-            // quick index
             if (plugin instanceof TaskAwarePlugin) {
                 taskAwarePluginList.add((TaskAwarePlugin) plugin);
             }
@@ -171,7 +168,6 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
             Optional.ofNullable(pluginId)
                     .map(registeredPlugins::remove)
                     .ifPresent(plugin -> {
-                        // remove quick index if necessary
                         if (plugin instanceof TaskAwarePlugin) {
                             taskAwarePluginList.remove(plugin);
                         }
@@ -227,10 +223,10 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
     }
 
     /**
-     * Get {@link ThreadPoolPlugin}
+     * Get {@link ThreadPoolPlugin}.
      *
      * @param pluginId plugin id
-     * @param <A> plugin type
+     * @param <A>      plugin type
      * @return {@link ThreadPoolPlugin}, null if unregister
      */
     @Override
@@ -314,5 +310,4 @@ public class DefaultThreadPoolPluginManager implements ThreadPoolPluginManager {
             readLock.unlock();
         }
     }
-
 }

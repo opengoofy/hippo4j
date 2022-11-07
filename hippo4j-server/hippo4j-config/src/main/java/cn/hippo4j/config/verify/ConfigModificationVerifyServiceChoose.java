@@ -33,7 +33,7 @@ import java.util.Map;
 public class ConfigModificationVerifyServiceChoose implements CommandLineRunner {
 
     /**
-     * Storage config change verify service container.
+     * Storage config change verify service container
      */
     private Map<Integer, ConfigModificationVerifyService> configChangeVerifyServiceChooseMap = new HashMap<>();
 
@@ -44,8 +44,7 @@ public class ConfigModificationVerifyServiceChoose implements CommandLineRunner 
      * @return
      */
     public ConfigModificationVerifyService choose(Integer type) {
-        ConfigModificationVerifyService verifyService = configChangeVerifyServiceChooseMap.get(type);
-        return verifyService;
+        return configChangeVerifyServiceChooseMap.get(type);
     }
 
     @Override

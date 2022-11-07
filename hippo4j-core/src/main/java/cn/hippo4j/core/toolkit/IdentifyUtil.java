@@ -38,13 +38,19 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
  */
 public class IdentifyUtil {
 
-    private static String IDENTIFY;
-
-    public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
-
     static {
         DynamicThreadPoolServiceLoader.register(ClientNetworkService.class);
     }
+
+    /**
+     * Identify
+     */
+    private static String IDENTIFY;
+
+    /**
+     * Client identification value
+     */
+    public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
 
     /**
      * Generate identify.

@@ -12,17 +12,13 @@
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-common</artifactId>
+            <artifactId>hippo4j-core</artifactId>
             <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>alibaba-dingtalk-service-sdk</artifactId>
-            <optional>true</optional>
+            <version>${dingtalk-sdk.version}</version>
             <!-- User feedback that javax.jms cannot be downloaded, log4j is not found useful, so it is excluded for the time being. -->
             <exclusions>
                 <exclusion>

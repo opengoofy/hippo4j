@@ -215,8 +215,6 @@ export default {
       runTimeTemp: {},
       typeOptions: [
         { key: 'Dubbo', display_name: 'Dubbo' },
-        { key: 'Kafka', display_name: 'Kafka' },
-        { key: 'KafkaSpringCloudStream', display_name: 'KafkaSpringCloudStream' },
         { key: 'RocketMQ', display_name: 'RocketMQ' },
         { key: 'RocketMQSpringCloudStream', display_name: 'RocketMQSpringCloudStream' },
         { key: 'RabbitMQ', display_name: 'RabbitMQ' },
