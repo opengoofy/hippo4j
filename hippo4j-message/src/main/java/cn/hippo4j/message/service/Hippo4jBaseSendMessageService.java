@@ -46,7 +46,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     private final AlarmControlHandler alarmControlHandler;
 
     @Getter
-    public final Map<String, List<NotifyConfigDTO>> notifyConfigs = new HashMap<>();
+    private final Map<String, List<NotifyConfigDTO>> notifyConfigs = new HashMap<>();
 
     private final Map<String, SendMessageHandler> sendMessageHandlers = new HashMap<>();
 

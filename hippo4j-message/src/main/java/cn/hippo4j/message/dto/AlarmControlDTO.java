@@ -18,7 +18,9 @@
 package cn.hippo4j.message.dto;
 
 import cn.hippo4j.message.enums.NotifyTypeEnum;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * Alarm control DTO.
