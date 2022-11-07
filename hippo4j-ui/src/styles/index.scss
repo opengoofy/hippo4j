@@ -1,9 +1,9 @@
-@import './variables.scss';
-@import './mixin.scss';
-@import './transition.scss';
-@import './element-ui.scss';
-@import './sidebar.scss';
-@import './btn.scss';
+@import 'variables';
+@import 'mixin';
+@import 'transition';
+@import 'element-ui';
+@import 'sidebar';
+@import 'btn';
 
 * {
     padding: 0;
