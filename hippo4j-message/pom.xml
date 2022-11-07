@@ -37,8 +37,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
         </dependency>
     </dependencies>
 
@@ -49,6 +53,7 @@
                 <includes>
                     <include>**/*.txt</include>
                     <include>**/*.json</include>
+                    <include>**/*.ftl</include>
                 </includes>
             </resource>
         </resources>
