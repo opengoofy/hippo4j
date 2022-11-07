@@ -21,11 +21,13 @@ import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.InstanceInfo.InstanceStatus;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
@@ -48,26 +50,21 @@ import static cn.hippo4j.common.constant.Constants.SCHEDULED_THREAD_CORE_NUM;
 @Service
 public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
 
-    private final int containerSize = 1024;
+    private static final int CONTAINER_SIZE = 1024;
 
-    private final ConcurrentHashMap<String, Map<String, Lease<InstanceInfo>>> registry = new ConcurrentHashMap(containerSize);
+    private final ConcurrentHashMap<String, Map<String, Lease<InstanceInfo>>> registry = new ConcurrentHashMap<>(CONTAINER_SIZE);
 
     @Override
     public List<Lease<InstanceInfo>> listInstance(String appName) {
         Map<String, Lease<InstanceInfo>> appNameLeaseMap = registry.get(appName);
-        if (CollectionUtils.isEmpty(appNameLeaseMap)) {
-            return new ArrayList<>();
-        }
-        List<Lease<InstanceInfo>> appNameLeaseList = new ArrayList<>();
-        appNameLeaseMap.values().forEach(each -> appNameLeaseList.add(each));
-        return appNameLeaseList;
+        return CollectionUtils.isEmpty(appNameLeaseMap) ? Collections.emptyList() : new ArrayList<>(appNameLeaseMap.values());
     }
 
     @Override
     public void register(InstanceInfo registrant) {
         Map<String, Lease<InstanceInfo>> registerMap = registry.get(registrant.getAppName());
         if (registerMap == null) {
-            ConcurrentHashMap<String, Lease<InstanceInfo>> registerNewMap = new ConcurrentHashMap(12);
+            ConcurrentHashMap<String, Lease<InstanceInfo>> registerNewMap = new ConcurrentHashMap<>();
             registerMap = registry.putIfAbsent(registrant.getAppName(), registerNewMap);
             if (registerMap == null) {
                 registerMap = registerNewMap;
@@ -98,8 +95,11 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         String appName = instanceRenew.getAppName();
         String instanceId = instanceRenew.getInstanceId();
         Map<String, Lease<InstanceInfo>> registryMap = registry.get(appName);
-        Lease<InstanceInfo> leaseToRenew;
-        if (registryMap == null || (leaseToRenew = registryMap.get(instanceId)) == null) {
+        if (registryMap == null) {
+            return false;
+        }
+        Lease<InstanceInfo> leaseToRenew = registryMap.get(instanceId);
+        if (leaseToRenew == null) {
             return false;
         }
         leaseToRenew.renew();
@@ -111,20 +111,20 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         String appName = info.getAppName();
         String instanceId = info.getInstanceId();
         Map<String, Lease<InstanceInfo>> leaseMap = registry.get(appName);
-        if (CollectionUtils.isEmpty(leaseMap)) {
+        if (CollectionUtil.isNotEmpty(leaseMap)) {
+            Lease<InstanceInfo> remove = leaseMap.remove(instanceId);
+            if (remove != null) {
+                log.info("Remove unhealthy node, node ID: {}", instanceId);
+            } else {
+                log.warn("Failed to remove unhealthy node, no instance found: {}", instanceId);
+            }
+        } else {
             log.warn("Failed to remove unhealthy node, no application found: {}", appName);
-            return;
         }
-        Lease<InstanceInfo> remove = leaseMap.remove(instanceId);
-        if (remove == null) {
-            log.warn("Failed to remove unhealthy node, no instance found: {}", instanceId);
-            return;
-        }
-        log.info("Remove unhealthy node, node ID: {}", instanceId);
     }
 
     public void evict(long additionalLeaseMs) {
-        List<Lease<InstanceInfo>> expiredLeases = new ArrayList();
+        List<Lease<InstanceInfo>> expiredLeases = new ArrayList<>();
         for (Map.Entry<String, Map<String, Lease<InstanceInfo>>> groupEntry : registry.entrySet()) {
             Map<String, Lease<InstanceInfo>> leaseMap = groupEntry.getValue();
             if (leaseMap != null) {
@@ -146,7 +146,7 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
 
     protected boolean internalCancel(String appName, String id, String identify) {
         Map<String, Lease<InstanceInfo>> registerMap = registry.get(appName);
-        if (!CollectionUtils.isEmpty(registerMap)) {
+        if (CollectionUtil.isNotEmpty(registerMap)) {
             registerMap.remove(id);
             AbstractSubjectCenter.notify(AbstractSubjectCenter.SubjectType.CLEAR_CONFIG_CACHE, () -> identify);
             log.info("Clean up unhealthy nodes. Node id: {}", id);
@@ -154,6 +154,9 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
         return true;
     }
 
+    /**
+     * EvictionTask
+     */
     public class EvictionTask extends TimerTask {
 
         private final AtomicLong lastExecutionNanosRef = new AtomicLong(0L);
@@ -177,7 +180,7 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
             }
             long elapsedMs = TimeUnit.NANOSECONDS.toMillis(currNanos - lastNanos);
             long compensationTime = elapsedMs - EVICTION_INTERVAL_TIMER_IN_MS;
-            return compensationTime <= 0L ? 0L : compensationTime;
+            return Math.max(compensationTime, 0L);
         }
 
         long getCurrentTimeNano() {
@@ -193,7 +196,7 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
                             .daemon(true)
                             .build());
 
-    private final AtomicReference<EvictionTask> evictionTaskRef = new AtomicReference();
+    private final AtomicReference<EvictionTask> evictionTaskRef = new AtomicReference<>();
 
     public void postInit() {
         evictionTaskRef.set(new BaseInstanceRegistry.EvictionTask());

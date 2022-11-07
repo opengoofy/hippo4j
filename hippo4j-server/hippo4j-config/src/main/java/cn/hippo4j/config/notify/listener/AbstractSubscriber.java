@@ -40,6 +40,11 @@ public abstract class AbstractSubscriber<T extends AbstractEvent> {
      */
     public abstract Class<? extends AbstractEvent> subscribeType();
 
+    /**
+     * Executor.
+     *
+     * @return executor
+     */
     public Executor executor() {
         return null;
     }

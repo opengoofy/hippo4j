@@ -68,13 +68,9 @@ public class LongPollingService {
 
             @Override
             public void onEvent(AbstractEvent event) {
-                if (isFixedPolling()) {
-                    // Ignore.
-                } else {
-                    if (event instanceof LocalDataChangeEvent) {
-                        LocalDataChangeEvent evt = (LocalDataChangeEvent) event;
-                        ConfigExecutor.executeLongPolling(new DataChangeTask(evt.identify, evt.groupKey));
-                    }
+                if (!isFixedPolling() && event instanceof LocalDataChangeEvent) {
+                    LocalDataChangeEvent evt = (LocalDataChangeEvent) event;
+                    ConfigExecutor.executeLongPolling(new DataChangeTask(evt.identify, evt.groupKey));
                 }
             }
 
@@ -300,11 +296,11 @@ public class LongPollingService {
     /**
      * Is support long polling.
      *
-     * @param req
+     * @param request
      * @return
      */
-    public static boolean isSupportLongPolling(HttpServletRequest req) {
-        return null != req.getHeader(LONG_POLLING_HEADER);
+    public static boolean isSupportLongPolling(HttpServletRequest request) {
+        return request.getHeader(LONG_POLLING_HEADER) != null;
     }
 
     /**

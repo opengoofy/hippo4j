@@ -14,7 +14,7 @@
 > 队列元素个数：%s 
 > 队列剩余个数：%s 
 > 拒绝策略：%s 
-> 拒绝策略执行次数：<font color='#FF0000'>%s</font> ${timout-content}
+> 拒绝策略执行次数：<font color='#FF0000'>%s</font> ${timeout-content}
 > OWNER：<@%s> 
 > 提示：%d 分钟内此线程池不会重复告警（可配置）
 

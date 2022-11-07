@@ -14,12 +14,10 @@
         <module>hippo4j-adapter-base</module>
         <module>hippo4j-adapter-dubbo</module>
         <module>hippo4j-adapter-alibaba-dubbo</module>
-        <module>hippo4j-adapter-kafka</module>
         <module>hippo4j-adapter-rabbitmq</module>
         <module>hippo4j-adapter-rocketmq</module>
         <module>hippo4j-adapter-hystrix</module>
         <module>hippo4j-adapter-spring-cloud-stream-rocketmq</module>
-        <module>hippo4j-adapter-spring-cloud-stream-kafka</module>
         <module>hippo4j-adapter-spring-cloud-stream-rabbitmq</module>
         <module>hippo4j-adapter-web</module>
     </modules>

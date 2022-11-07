@@ -14,11 +14,9 @@
         <module>hippo4j-spring-boot-starter-adapter-all</module>
         <module>hippo4j-spring-boot-starter-adapter-dubbo</module>
         <module>hippo4j-spring-boot-starter-adapter-alibaba-dubbo</module>
-        <module>hippo4j-spring-boot-starter-adapter-kafka</module>
         <module>hippo4j-spring-boot-starter-adapter-rabbitmq</module>
         <module>hippo4j-spring-boot-starter-adapter-rocketmq</module>
         <module>hippo4j-spring-boot-starter-adapter-hystrix</module>
-        <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-kafka</module>
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</module>
         <module>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rabbitmq</module>
         <module>hippo4j-spring-boot-starter-adapter-web</module>

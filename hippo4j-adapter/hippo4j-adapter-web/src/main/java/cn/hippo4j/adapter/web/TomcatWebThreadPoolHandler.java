@@ -31,7 +31,6 @@ import org.springframework.boot.web.server.WebServer;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -47,14 +46,14 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
 
     private final AtomicBoolean cacheFlag = new AtomicBoolean(Boolean.FALSE);
 
-    private static String EXCEPTION_MESSAGE;
+    private static String exceptionMessage;
 
     private final AbstractThreadPoolRuntime webThreadPoolRunStateHandler;
 
     @Override
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
         if (cacheFlag.get()) {
-            log.warn("Exception getting Tomcat thread pool. Exception message: {}", EXCEPTION_MESSAGE);
+            log.warn("Exception getting Tomcat thread pool. Exception message: {}", exceptionMessage);
             return null;
         }
         Executor tomcatExecutor = null;
@@ -62,8 +61,8 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
             tomcatExecutor = ((TomcatWebServer) webServer).getTomcat().getConnector().getProtocolHandler().getExecutor();
         } catch (Exception ex) {
             cacheFlag.set(Boolean.TRUE);
-            EXCEPTION_MESSAGE = ex.getMessage();
-            log.error("Failed to get Tomcat thread pool. Message: {}", EXCEPTION_MESSAGE);
+            exceptionMessage = ex.getMessage();
+            log.error("Failed to get Tomcat thread pool. Message: {}", exceptionMessage);
         }
         return tomcatExecutor;
     }

@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ThreadPoolAdapterBeanContainer implements InitializingBean {
 
     /**
-     * Store three-party thread pool framework bean instances.
+     * Store three-party thread pool framework bean instances
      */
     public static final Map<String, ThreadPoolAdapter> THREAD_POOL_ADAPTER_BEAN_CONTAINER = new ConcurrentHashMap<>();
 

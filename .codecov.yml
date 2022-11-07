@@ -20,10 +20,11 @@ coverage:
     project:
       default:
         target: auto
-        threshold: 10%
+        threshold: 0%
+        informational: true
     patch:
-      target: auto
-      threshold: 10%
+      default:
+        informational: true
 ignore:
   - "hippo4j-example/.*"
   - "docs/.*"

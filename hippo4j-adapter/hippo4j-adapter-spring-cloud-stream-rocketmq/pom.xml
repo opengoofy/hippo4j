@@ -13,11 +13,13 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-base</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
             <version>${spring-cloud-starter-stream-rocketmq.version}</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

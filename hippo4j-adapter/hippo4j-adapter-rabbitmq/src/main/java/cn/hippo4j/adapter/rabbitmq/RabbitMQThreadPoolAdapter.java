@@ -27,7 +27,11 @@ import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -42,11 +46,11 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
 
     private static final String RABBITMQ = "RabbitMQ";
 
-    private static final String FiledName = "executorService";
+    private static final String FILED_NAME = "executorService";
 
     private final Map<String, AbstractConnectionFactory> abstractConnectionFactoryMap;
 
-    private final Map<String, ThreadPoolExecutor> RABBITMQ_THREAD_POOL_TASK_EXECUTOR = new HashMap<>();
+    private final Map<String, ThreadPoolExecutor> rabbitmqThreadPoolTaskExecutor = new HashMap<>();
 
     @Override
     public String mark() {
@@ -56,7 +60,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     @Override
     public ThreadPoolAdapterState getThreadPoolState(String identify) {
         ThreadPoolAdapterState threadPoolAdapterState = new ThreadPoolAdapterState();
-        ThreadPoolExecutor threadPoolTaskExecutor = RABBITMQ_THREAD_POOL_TASK_EXECUTOR.get(identify);
+        ThreadPoolExecutor threadPoolTaskExecutor = rabbitmqThreadPoolTaskExecutor.get(identify);
         threadPoolAdapterState.setThreadPoolKey(identify);
         if (Objects.nonNull(threadPoolTaskExecutor)) {
             threadPoolAdapterState.setCoreSize(threadPoolTaskExecutor.getCorePoolSize());
@@ -68,7 +72,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
         List<ThreadPoolAdapterState> adapterStateList = new ArrayList<>();
-        RABBITMQ_THREAD_POOL_TASK_EXECUTOR.forEach(
+        rabbitmqThreadPoolTaskExecutor.forEach(
                 (key, val) -> adapterStateList.add(getThreadPoolState(key)));
         return adapterStateList;
     }
@@ -76,7 +80,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     @Override
     public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
         String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
-        ThreadPoolExecutor threadPoolTaskExecutor = RABBITMQ_THREAD_POOL_TASK_EXECUTOR.get(threadPoolKey);
+        ThreadPoolExecutor threadPoolTaskExecutor = rabbitmqThreadPoolTaskExecutor.get(threadPoolKey);
         if (Objects.nonNull(threadPoolTaskExecutor)) {
             int originalCoreSize = threadPoolTaskExecutor.getCorePoolSize();
             int originalMaximumPoolSize = threadPoolTaskExecutor.getMaximumPoolSize();
@@ -95,17 +99,16 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
         abstractConnectionFactoryMap.forEach((beanName, abstractConnectionFactor) -> {
-            ExecutorService executor = (ExecutorService) ReflectUtil.getFieldValue(abstractConnectionFactor, FiledName);
+            ExecutorService executor = (ExecutorService) ReflectUtil.getFieldValue(abstractConnectionFactor, FILED_NAME);
             if (Objects.nonNull(executor)) {
                 if (executor instanceof ThreadPoolExecutor) {
                     ThreadPoolExecutor threadPoolTaskExecutor = (ThreadPoolExecutor) executor;
-                    RABBITMQ_THREAD_POOL_TASK_EXECUTOR.put(beanName, threadPoolTaskExecutor);
+                    rabbitmqThreadPoolTaskExecutor.put(beanName, threadPoolTaskExecutor);
                     log.info("Rabbitmq executor name {}", beanName);
                 } else {
                     log.warn("Custom thread pools only support ThreadPoolExecutor");
                 }
             }
-
         });
     }
 }

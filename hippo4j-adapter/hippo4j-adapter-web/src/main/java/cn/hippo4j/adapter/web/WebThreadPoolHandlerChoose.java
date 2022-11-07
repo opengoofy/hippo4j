@@ -30,7 +30,7 @@ public class WebThreadPoolHandlerChoose {
     /**
      * Choose the web thread pool service bean.
      *
-     * @return
+     * @return web thread pool service bean
      */
     public WebThreadPoolService choose() {
         WebThreadPoolService webThreadPoolService;

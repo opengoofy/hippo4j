@@ -17,8 +17,8 @@
 
 package cn.hippo4j.core.proxy;
 
+import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,7 +54,7 @@ public class RejectedProxyInvocationHandler implements InvocationHandler {
         rejectCount.incrementAndGet();
         if (ApplicationContextHolder.getInstance() != null) {
             try {
-                ThreadPoolNotifyAlarmHandler alarmHandler = ApplicationContextHolder.getBean(ThreadPoolNotifyAlarmHandler.class);
+                ThreadPoolCheckAlarm alarmHandler = ApplicationContextHolder.getBean(ThreadPoolCheckAlarm.class);
                 alarmHandler.asyncSendRejectedAlarm(threadPoolId);
             } catch (Throwable ex) {
                 log.error("Failed to send rejection policy alert.", ex);

@@ -17,32 +17,19 @@
 
 package cn.hippo4j.discovery.core;
 
+import lombok.Getter;
+
 /**
  * Lease.
  */
 public class Lease<T> {
 
-    enum Action {
-        /**
-         * REGISTER
-         */
-        REGISTER,
-
-        /**
-         * CANCEL
-         */
-        CANCEL,
-
-        /**
-         * RENEW
-         */
-        RENEW
-    }
-
     private T holder;
 
+    @Getter
     private long evictionTimestamp;
 
+    @Getter
     private long registrationTimestamp;
 
     private long serviceUpTimestamp;
@@ -50,17 +37,18 @@ public class Lease<T> {
     /**
      * Make it volatile so that the expiration task would see this quicker
      */
+    @Getter
     private volatile long lastUpdateTimestamp;
 
     private long duration;
 
-    public static final int DEFAULT_DURATION_IN_SECS = 90;
+    public static final long DEFAULT_DURATION_IN_SECS = 90 * 1000L;
 
     public Lease(T r) {
         holder = r;
         registrationTimestamp = System.currentTimeMillis();
         lastUpdateTimestamp = registrationTimestamp;
-        duration = DEFAULT_DURATION_IN_SECS * 1000;
+        duration = DEFAULT_DURATION_IN_SECS;
     }
 
     public void renew() {
@@ -89,18 +77,6 @@ public class Lease<T> {
 
     public boolean isExpired(long additionalLeaseMs) {
         return (evictionTimestamp > 0 || System.currentTimeMillis() > (lastUpdateTimestamp + additionalLeaseMs));
-    }
-
-    public long getRegistrationTimestamp() {
-        return registrationTimestamp;
-    }
-
-    public long getLastRenewalTimestamp() {
-        return lastUpdateTimestamp;
-    }
-
-    public long getEvictionTimestamp() {
-        return evictionTimestamp;
     }
 
     public long getServiceUpTimestamp() {

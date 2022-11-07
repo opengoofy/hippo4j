@@ -46,8 +46,8 @@ public class DingAlarmConstants {
      * Replace task timeout template
      */
     public static final String DING_ALARM_TIMEOUT_REPLACE_TXT =
-            "<font color=#708090 size=2>任务执行时间：%d / ms </font> \n\n " +
-                    "<font color=#708090 size=2>超时时间：%d / ms</font> \n\n " +
-                    DING_ALARM_TIMEOUT_TRACE_REPLACE_TXT +
-                    " --- \n\n ";
+            "<font color=#708090 size=2>任务执行时间：%d / ms </font> \n\n "
+                    + "<font color=#708090 size=2>超时时间：%d / ms</font> \n\n "
+                    + DING_ALARM_TIMEOUT_TRACE_REPLACE_TXT
+                    + " --- \n\n ";
 }

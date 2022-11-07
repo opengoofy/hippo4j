@@ -35,12 +35,12 @@ import java.util.concurrent.atomic.AtomicReference;
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class WebIpAndPortHolder {
 
-    private static boolean SUPPORT_VERSION = false;
+    private static boolean supportVersion = false;
 
     static {
         try {
             Class.forName("org.springframework.boot.web.server.WebServer");
-            SUPPORT_VERSION = true;
+            supportVersion = true;
         } catch (Exception ignored) {
         }
     }
@@ -48,17 +48,17 @@ public class WebIpAndPortHolder {
     /**
      * Application ip and  application post
      */
-    protected static AtomicReference<WebIpAndPortInfo> WEB_IP_AND_PORT = new AtomicReference<>();
+    protected static AtomicReference<WebIpAndPortInfo> webIpAndPort = new AtomicReference<>();
 
     public static final String ALL = "*";
 
     protected static final String SEPARATOR = ",";
 
     protected static void initIpAndPort() {
-        if (!SUPPORT_VERSION) {
+        if (!supportVersion) {
             return;
         }
-        WEB_IP_AND_PORT.compareAndSet(null, getWebIpAndPortInfo());
+        webIpAndPort.compareAndSet(null, getWebIpAndPortInfo());
     }
 
     private static WebIpAndPortInfo getWebIpAndPortInfo() {
@@ -80,10 +80,10 @@ public class WebIpAndPortHolder {
      * @return Web ip and port info
      */
     public static WebIpAndPortInfo getWebIpAndPort() {
-        if (WEB_IP_AND_PORT.get() == null) {
+        if (webIpAndPort.get() == null) {
             initIpAndPort();
         }
-        return WebIpAndPortHolder.WEB_IP_AND_PORT.get();
+        return WebIpAndPortHolder.webIpAndPort.get();
     }
 
     /**

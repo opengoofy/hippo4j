@@ -26,7 +26,7 @@ import java.util.Objects;
  * reference google guava<br>
  * com.google.common.base.Joiner
  */
-public class Joiner {
+public final class Joiner {
 
     private final String separator;
 
@@ -45,11 +45,11 @@ public class Joiner {
      * Returns a string containing the string representation of each of {@code parts}, using the
      * previously configured separator between each.
      */
-    public final String join(Object[] parts) {
+    public String join(Object[] parts) {
         return join(Arrays.asList(parts));
     }
 
-    public final String join(Iterable<?> parts) {
+    public String join(Iterable<?> parts) {
         return join(parts.iterator());
     }
 
@@ -57,11 +57,11 @@ public class Joiner {
      * Returns a string containing the string representation of each of {@code parts}, using the
      * previously configured separator between each.
      */
-    public final String join(Iterator<?> parts) {
+    public String join(Iterator<?> parts) {
         return appendTo(new StringBuilder(), parts).toString();
     }
 
-    public final StringBuilder appendTo(StringBuilder builder, Iterator<?> parts) {
+    public StringBuilder appendTo(StringBuilder builder, Iterator<?> parts) {
         try {
             appendTo((Appendable) builder, parts);
         } catch (IOException impossible) {

@@ -22,12 +22,7 @@
         <developer>
             <name>chen.ma</name>
             <email>machen@apache.org</email>
-            <url>https://github.com/itmachen</url>
-            <organization>OpenGoofy</organization>
-            <organizationUrl>https://github.com/opengoofy</organizationUrl>
-            <roles>
-                <role>Project lead</role>
-            </roles>
+            <url>https://github.com/mageeric</url>
         </developer>
         <developer>
             <name>shining-stars-lk</name>
@@ -43,23 +38,25 @@
         <module>hippo4j-example</module>
         <module>hippo4j-message</module>
         <module>hippo4j-monitor</module>
+        <module>hippo4j-rpc</module>
         <module>hippo4j-server</module>
         <module>hippo4j-spring-boot</module>
     </modules>
 
     <properties>
-        <revision>1.4.3-SNAPSHOT</revision>
+        <revision>1.5.0-SNAPSHOT</revision>
         <!-- Tool -->
         <dozer.version>6.5.0</dozer.version>
         <caffeine.version>2.9.3</caffeine.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
-        <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
         <jjwt.version>0.9.0</jjwt.version>
         <jackson-bom.version>2.11.1</jackson-bom.version>
         <dingtalk-sdk.version>2.0.0</dingtalk-sdk.version>
+        <h2.version>2.1.214</h2.version>
         <!-- Framework -->
+        <dubbo.version>3.0.5</dubbo.version>
+        <alibaba-dubbo.version>2.6.12</alibaba-dubbo.version>
         <slf4j-api.version>1.7.7</slf4j-api.version>
-        <logback.version>1.2.9</logback.version>
         <micrometer-core.version>1.8.4</micrometer-core.version>
         <nacos-client.version>2.0.4</nacos-client.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
@@ -69,6 +66,7 @@
         <polaris.version>1.7.2</polaris.version>
         <rocketmq.version>2.2.2</rocketmq.version>
         <netty.version>4.1.56.Final</netty.version>
+        <elasticsearch.version>6.8.17</elasticsearch.version>
         <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
         <curator-framework.version>5.1.0</curator-framework.version>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
@@ -109,21 +107,6 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-message</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-core</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.hippo4j</groupId>
-                <artifactId>hippo4j-adapter-base</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
@@ -134,45 +117,9 @@
                 <version>${dozer.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.ben-manes.caffeine</groupId>
-                <artifactId>caffeine</artifactId>
-                <version>${caffeine.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>alibaba-dingtalk-service-sdk</artifactId>
-                <version>${dingtalk-sdk.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>transmittable-thread-local</artifactId>
-                <version>${transmittable-thread-local.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate.validator</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate-validator.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-json</artifactId>
-                <version>${spring-boot.version}</version>
-                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>

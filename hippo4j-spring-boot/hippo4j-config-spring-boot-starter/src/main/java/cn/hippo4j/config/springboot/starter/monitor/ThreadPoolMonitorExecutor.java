@@ -28,6 +28,7 @@ import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.ThreadPoolMonitor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -45,11 +47,11 @@ import static cn.hippo4j.core.executor.manage.GlobalThreadPoolManage.getThreadPo
  */
 @Slf4j
 @RequiredArgsConstructor
-public class ThreadPoolMonitorExecutor implements ApplicationRunner {
+public class ThreadPoolMonitorExecutor implements ApplicationRunner, DisposableBean {
 
     private final BootstrapConfigProperties properties;
 
-    private ScheduledThreadPoolExecutor collectExecutor;
+    private ScheduledThreadPoolExecutor collectScheduledExecutor;
 
     private List<ThreadPoolMonitor> threadPoolMonitors;
 
@@ -64,7 +66,7 @@ public class ThreadPoolMonitorExecutor implements ApplicationRunner {
         }
         log.info("Start monitoring the running status of dynamic thread pool.");
         threadPoolMonitors = new ArrayList<>();
-        collectExecutor = new ScheduledThreadPoolExecutor(
+        collectScheduledExecutor = new ScheduledThreadPoolExecutor(
                 new Integer(1),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());
         // Get dynamic thread pool monitoring component.
@@ -74,7 +76,7 @@ public class ThreadPoolMonitorExecutor implements ApplicationRunner {
                 DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
         dynamicThreadPoolMonitors.stream().filter(each -> collectTypes.contains(each.getType())).forEach(each -> threadPoolMonitors.add(each));
         // Execute dynamic thread pool monitoring component.
-        collectExecutor.scheduleWithFixedDelay(
+        collectScheduledExecutor.scheduleWithFixedDelay(
                 () -> scheduleRunnable(),
                 properties.getInitialDelay(),
                 properties.getCollectInterval(),
@@ -92,5 +94,10 @@ public class ThreadPoolMonitorExecutor implements ApplicationRunner {
                 log.error("Error monitoring the running status of dynamic thread pool. Type: {}", each.getType(), ex);
             }
         }
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        Optional.ofNullable(collectScheduledExecutor).ifPresent(each -> each.shutdown());
     }
 }
