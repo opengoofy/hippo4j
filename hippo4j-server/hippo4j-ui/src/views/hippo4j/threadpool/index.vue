@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-select
         v-model="listQuery.tenantId"
-        placeholder="租户"
+        :placeholder="$t('threadPool.tenant')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -18,7 +18,7 @@
       </el-select>
       <el-select
         v-model="listQuery.itemId"
-        placeholder="项目"
+        :placeholder="$t('threadPool.project')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -33,7 +33,7 @@
       </el-select>
       <el-select
         v-model="listQuery.tpId"
-        placeholder="线程池"
+        :placeholder="$t('threadPool.threadPool')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -53,7 +53,7 @@
         icon="el-icon-search"
         @click="fetchData"
       >
-        搜索
+        {{ $t('common.search') }}
       </el-button>
       <el-button
         class="filter-item"
@@ -63,7 +63,7 @@
         @click="handleCreate"
         :disabled="isEditDisabled"
       >
-        添加
+        {{ $t('common.addition') }}
       </el-button>
     </div>
     <el-table
@@ -74,7 +74,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column fixed label="序号" width="80">
+      <el-table-column fixed :label="$t('common.serialNumber')" width="80">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
       <el-table-column label="租户" width="150">
@@ -129,16 +129,16 @@
         <template slot-scope="scope">{{ scope.row.gmtModified }}</template>
       </el-table-column>
       <el-table-column
-        label="操作"
+        :label="$t('common.operation')"
         fixed="right"
         width="90"
         align="center"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="handleUpdate(row)"> 编辑 </el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)"> {{ $t('common.edit') }} </el-button>
           <el-button size="small" :disabled="isEditDisabled" type="text" @click="handleDelete(row)">
-            删除
+            {{ $t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -327,9 +327,9 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> 取消 </el-button>
+        <el-button @click="dialogFormVisible = false"> {{ $t('common.cancel') }} </el-button>
         <el-button type="primary" @click="dialogStatus === 'create' ? createData() : updateData()">
-          确认
+          {{ $t('common.confirm') }}
         </el-button>
       </div>
     </el-dialog>
