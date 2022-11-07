@@ -17,6 +17,9 @@
 
 package cn.hippo4j.rpc.support;
 
+import cn.hippo4j.rpc.discovery.DefaultInstance;
+import cn.hippo4j.rpc.discovery.Instance;
+import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
 import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
 import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
@@ -38,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 public class NettyConnectPoolTest {
 
     String host = "127.0.0.1";
-    int port = 8888;
+    ServerPort port = new TestServerPort();
     int maxCount = 64;
     int timeout = 5000;
     EventLoopGroup group = new NioEventLoopGroup();
@@ -109,5 +112,13 @@ public class NettyConnectPoolTest {
         pool.release(acquire);
         pool.close();
         rpcServer.close();
+    }
+
+    static class TestServerPort implements ServerPort {
+
+        @Override
+        public int getPort() {
+            return 8888;
+        }
     }
 }

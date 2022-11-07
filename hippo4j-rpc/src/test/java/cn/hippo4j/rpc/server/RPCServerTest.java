@@ -17,9 +17,10 @@
 
 package cn.hippo4j.rpc.server;
 
+import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
-import cn.hippo4j.rpc.support.DefaultInstance;
-import cn.hippo4j.rpc.support.Instance;
+import cn.hippo4j.rpc.discovery.DefaultInstance;
+import cn.hippo4j.rpc.discovery.Instance;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import org.junit.Assert;
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RPCServerTest {
 
-    public static int port = 8888;
+    public static ServerPort port = new TestServerPort();
 
     @Test
     public void bind() throws IOException {
@@ -69,4 +70,11 @@ public class RPCServerTest {
         rpcServer.close();
     }
 
+    static class TestServerPort implements ServerPort {
+
+        @Override
+        public int getPort() {
+            return 8888;
+        }
+    }
 }

@@ -17,18 +17,19 @@
 
 package cn.hippo4j.rpc.client;
 
+import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
 import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
 import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
-import cn.hippo4j.rpc.request.DefaultRequest;
-import cn.hippo4j.rpc.request.Request;
-import cn.hippo4j.rpc.response.Response;
+import cn.hippo4j.rpc.model.DefaultRequest;
+import cn.hippo4j.rpc.model.Request;
+import cn.hippo4j.rpc.model.Response;
 import cn.hippo4j.rpc.server.NettyServerConnection;
 import cn.hippo4j.rpc.server.RPCServer;
 import cn.hippo4j.rpc.server.ServerConnection;
-import cn.hippo4j.rpc.support.ClassRegistry;
-import cn.hippo4j.rpc.support.DefaultInstance;
-import cn.hippo4j.rpc.support.Instance;
+import cn.hippo4j.rpc.discovery.ClassRegistry;
+import cn.hippo4j.rpc.discovery.DefaultInstance;
+import cn.hippo4j.rpc.discovery.Instance;
 import io.netty.channel.pool.ChannelPoolHandler;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,8 +41,8 @@ import java.util.concurrent.TimeUnit;
 public class RPCClientTest {
 
     String host = "localhost";
-    int port = 8888;
-    int portTest = 8889;
+    ServerPort port = new TestServerPort();
+    ServerPort portTest = new TestPortServerPort();
 
     @Test
     public void connection() throws IOException {
@@ -108,5 +109,21 @@ public class RPCClientTest {
         Assert.assertEquals(response.getObj(), 3);
         rpcClient.close();
         rpcServer.close();
+    }
+
+    static class TestServerPort implements ServerPort {
+
+        @Override
+        public int getPort() {
+            return 8888;
+        }
+    }
+
+    static class TestPortServerPort implements ServerPort {
+
+        @Override
+        public int getPort() {
+            return 8889;
+        }
     }
 }
