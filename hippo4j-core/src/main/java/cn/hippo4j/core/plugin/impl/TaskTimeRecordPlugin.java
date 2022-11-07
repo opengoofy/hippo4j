@@ -22,7 +22,8 @@ import cn.hippo4j.core.plugin.PluginRuntime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -38,7 +39,7 @@ import java.util.stream.Collectors;
  */
 public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
 
-    static final int MAXIMUM_CAPACITY = 1 << 30;
+    private static final int MAXIMUM_CAPACITY = 1 << 30;
     public static final String PLUGIN_NAME = "task-time-record-plugin";
 
     /**
@@ -49,7 +50,7 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
     /**
      * timers
      */
-    public final List<Timer> timerTable;
+    public final Timer[] timerTable;
 
     /**
      * Create a {@link TaskTimeRecordPlugin}
@@ -59,9 +60,9 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
     public TaskTimeRecordPlugin(int initialCapacity) {
         Assert.isTrue(initialCapacity >= 1, "count must great then 0");
         initialCapacity = tableSizeFor(initialCapacity);
-        timerTable = new ArrayList<>(initialCapacity);
-        for (int i = 0; i < initialCapacity; i++) {
-            timerTable.add(new Timer());
+        timerTable = (Timer[]) Array.newInstance(Timer.class, initialCapacity);
+        for (int i = 0; i < timerTable.length; i++) {
+            timerTable[i] = new Timer();
         }
         modulo = initialCapacity - 1;
     }
@@ -117,7 +118,7 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
      */
     public Summary summarize() {
         // ignore unused timers
-        List<Summary> summaries = timerTable.stream()
+        List<Summary> summaries = Arrays.stream(timerTable)
                 .map(Timer::summarize)
                 .filter(s -> s.getTaskCount() > 0)
                 .collect(Collectors.toList());
@@ -143,12 +144,12 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
 
     private Timer getTimerForCurrentThread() {
         /*
-         * use table tableSize - 1 to take modulus for tid, and the remainder obtained is the subscript of the timer corresponding to the thread in the table. eg: tid = 10086, tableSize = 8, 10086 &
-         * (8 - 1) = 4
+         * use table tableSize - 1 to take modulus for tid, and the remainder obtained is the subscript of the timer corresponding to the thread in the table. eg: tid = 10086, tableSize = 8, then we
+         * get 10086 & (8 - 1) = 4
          */
         long threadId = Thread.currentThread().getId();
         int index = (int) (threadId & modulo);
-        return timerTable.get(index);
+        return timerTable[index];
     }
 
     /**
@@ -161,9 +162,6 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
         n |= n >>> 4;
         n |= n >>> 8;
         n |= n >>> 16;
-        if (n < 0) {
-            return 1;
-        }
         return n >= MAXIMUM_CAPACITY ? MAXIMUM_CAPACITY : n + 1;
     }
 
@@ -207,12 +205,12 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
             Lock writeLock = lock.writeLock();
             writeLock.lock();
             try {
-                if (taskCount == 0) {
-                    maxTaskTimeMillis = taskExecuteTime;
-                    minTaskTimeMillis = taskExecuteTime;
-                } else {
+                if (taskCount > 0) {
                     maxTaskTimeMillis = Math.max(taskExecuteTime, maxTaskTimeMillis);
                     minTaskTimeMillis = Math.min(taskExecuteTime, minTaskTimeMillis);
+                } else {
+                    maxTaskTimeMillis = taskExecuteTime;
+                    minTaskTimeMillis = taskExecuteTime;
                 }
                 taskCount = taskCount + 1;
                 totalTaskTimeMillis += taskExecuteTime;

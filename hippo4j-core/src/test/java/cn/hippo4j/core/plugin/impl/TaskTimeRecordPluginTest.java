@@ -54,6 +54,7 @@ public class TaskTimeRecordPluginTest {
         executor.submit(() -> ThreadUtil.sleep(1000L));
         executor.submit(() -> ThreadUtil.sleep(3000L));
         executor.submit(() -> ThreadUtil.sleep(2000L));
+        executor.submit(() -> ThreadUtil.sleep(2000L));
 
         // waiting for shutdown
         executor.shutdown();
@@ -63,6 +64,6 @@ public class TaskTimeRecordPluginTest {
         Assert.assertEquals(1, summary.getMinTaskTimeMillis() / 1000L);
         Assert.assertEquals(3, summary.getMaxTaskTimeMillis() / 1000L);
         Assert.assertEquals(2, summary.getAvgTaskTimeMillis() / 1000L);
-        Assert.assertEquals(6, summary.getTotalTaskTimeMillis() / 1000L);
+        Assert.assertEquals(8, summary.getTotalTaskTimeMillis() / 1000L);
     }
 }
