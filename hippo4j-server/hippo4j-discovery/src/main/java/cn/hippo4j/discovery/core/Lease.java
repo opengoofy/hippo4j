@@ -42,13 +42,13 @@ public class Lease<T> {
 
     private long duration;
 
-    public static final int DEFAULT_DURATION_IN_SECS = 90;
+    public static final long DEFAULT_DURATION_IN_SECS = 90 * 1000L;
 
     public Lease(T r) {
         holder = r;
         registrationTimestamp = System.currentTimeMillis();
         lastUpdateTimestamp = registrationTimestamp;
-        duration = DEFAULT_DURATION_IN_SECS * 1000;
+        duration = DEFAULT_DURATION_IN_SECS;
     }
 
     public void renew() {
