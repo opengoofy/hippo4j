@@ -162,6 +162,32 @@ CREATE TABLE IF NOT EXISTS `his_config_verify` (
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS  `consumer` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增Id',
+    `app_id` varchar(500) NOT NULL DEFAULT 'default' COMMENT 'AppID',
+    `name` varchar(500) NOT NULL DEFAULT 'default' COMMENT '应用名',
+    `is_deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '1: deleted, 0: normal',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `UK_AppId_DeletedAt` (`app_id`))
+    ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='开放API消费者';
+
+CREATE TABLE IF NOT EXISTS `consumer_token` (
+    `Id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增Id',
+    `consumer_id` int(11) unsigned DEFAULT NULL COMMENT '消费者id',
+    `token` varchar(256) NOT NULL DEFAULT '' COMMENT 'token',
+    `expires` datetime NOT NULL DEFAULT '2099-01-01 00:00:00' COMMENT 'token失效时间',
+    `is_deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '1: deleted, 0: normal',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    PRIMARY KEY (`Id`),
+    UNIQUE KEY `UK_Token_DeletedAt` (`Token`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='consumer token表';
+
+
+
+
 INSERT IGNORE INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
 
 INSERT IGNORE INTO `item` (`id`, `tenant_id`, `item_id`, `item_name`, `item_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', '动态线程池示例项目', '动态线程池示例项目，对应 Hippo 项目的 example 模块', '马称', '2021-10-24 16:11:00', '2021-10-24 16:11:00', '0');

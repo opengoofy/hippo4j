@@ -17,19 +17,20 @@
 
 package cn.hippo4j.auth.security;
 
+import java.util.Date;
+import java.util.List;
+
 import cn.hippo4j.common.toolkit.StringUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.List;
 
 import static cn.hippo4j.auth.constant.Constants.TOKEN_VALIDITY_IN_SECONDS;
 import static cn.hippo4j.auth.toolkit.JwtTokenUtil.SECRET;
@@ -51,6 +52,10 @@ public class JwtTokenManager {
         long now = System.currentTimeMillis();
         Date validity;
         validity = new Date(now + TOKEN_VALIDITY_IN_SECONDS * 1000L);
+        return createToken(userName, validity);
+    }
+
+    public String createToken(String userName, Date validity) {
         Claims claims = Jwts.claims().setSubject(userName);
         String token = Jwts.builder()
                 .setClaims(claims)
