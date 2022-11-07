@@ -49,7 +49,7 @@ public class TaskTimeRecordPluginTest {
                 3, 3, 1000L, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<>(1), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
 
-        TaskTimeRecordPlugin plugin = new TaskTimeRecordPlugin();
+        TaskTimeRecordPlugin plugin = new TaskTimeRecordPlugin(3);
         executor.register(plugin);
         executor.submit(() -> ThreadUtil.sleep(1000L));
         executor.submit(() -> ThreadUtil.sleep(3000L));
