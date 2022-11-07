@@ -25,6 +25,8 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
 import cn.hippo4j.monitor.elasticsearch.model.ElasticSearchThreadPoolRunStateInfo;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
@@ -63,7 +65,7 @@ public class DynamicThreadPoolElasticSearchMonitorHandler extends AbstractDynami
             List<String> rawMapping = FileUtil.readLines(Thread.currentThread().getContextClassLoader().getResource("mapping.json").getPath(), StandardCharsets.UTF_8);
             String mapping = String.join(" ", rawMapping);
             // if index doesn't exsit, this function may try to create one, but recommend to create index manually.
-            this.createIndex(indexName, "_doc", mapping, null, null, null);
+            this.createIndex(EsIndex.builder().index(indexName).type("_doc").mapping(mapping).build());
         }
         esThreadPoolRunStateInfo.setApplicationName(applicationName);
         esThreadPoolRunStateInfo.setId(indexName + "-" + System.currentTimeMillis());
@@ -104,20 +106,20 @@ public class DynamicThreadPoolElasticSearchMonitorHandler extends AbstractDynami
         return isIndexExist.get();
     }
 
-    public void createIndex(String index, String type, String mapping, Integer shards, Integer replicas, String alias) {
+    public void createIndex(EsIndex esIndex) {
         RestHighLevelClient client = ElasticSearchClientHolder.getClient();
         boolean acknowledged = false;
-        CreateIndexRequest request = new CreateIndexRequest(index);
-        if (StringUtils.hasText(mapping)) {
-            request.mapping(type, mapping, XContentType.JSON);
+        CreateIndexRequest request = new CreateIndexRequest(esIndex.getIndex());
+        if (StringUtils.hasText(esIndex.getMapping())) {
+            request.mapping(esIndex.getType(), esIndex.getMapping(), XContentType.JSON);
         }
-        if (!Objects.isNull(shards) && !Objects.isNull(replicas)) {
+        if (!Objects.isNull(esIndex.getShards()) && !Objects.isNull(esIndex.getReplicas())) {
             request.settings(Settings.builder()
-                    .put("index.number_of_shards", shards) // 5
-                    .put("index.number_of_replicas", replicas));// 1
+                    .put("index.number_of_shards", esIndex.getShards())
+                    .put("index.number_of_replicas", esIndex.getReplicas()));
         }
-        if (StringUtils.hasText(alias)) {
-            request.alias(new Alias(alias));
+        if (StringUtils.hasText(esIndex.getAlias())) {
+            request.alias(new Alias(esIndex.getAlias()));
         }
         try {
             CreateIndexResponse createIndexResponse = client.indices().create(request, RequestOptions.DEFAULT);
@@ -137,5 +139,19 @@ public class DynamicThreadPoolElasticSearchMonitorHandler extends AbstractDynami
     @Override
     public String getType() {
         return MonitorTypeEnum.ELASTICSEARCH.name().toLowerCase();
+    }
+
+    /**
+     * Es Index
+     */
+    @Getter
+    @Builder
+    private static class EsIndex {
+        String index;
+        String type;
+        String mapping;
+        Integer shards;
+        Integer replicas;
+        String alias;
     }
 }
