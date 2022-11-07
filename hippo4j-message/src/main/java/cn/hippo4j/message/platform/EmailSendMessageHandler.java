@@ -17,158 +17,109 @@
 
 package cn.hippo4j.message.platform;
 
-import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.FileUtil;
-import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
-import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
-import cn.hippo4j.message.platform.base.RobotMessageActualContent;
-import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
-import lombok.Data;
+import cn.hippo4j.message.platform.constant.EmailAlarmConstants;
+import cn.hippo4j.message.request.AlarmNotifyRequest;
+import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.service.SendMessageHandler;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
+import javax.annotation.Resource;
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import java.nio.charset.Charset;
-import java.util.*;
-
-import static cn.hippo4j.message.platform.constant.EmailAlarmConstants.Email_ALARM_TITLE;
-import static cn.hippo4j.message.platform.constant.EmailAlarmConstants.Email_NOTICE_TITLE;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 /**
  * Send Email notification message.
  */
 @Slf4j
-public class EmailSendMessageHandler extends AbstractRobotSendMessageHandler {
+public class EmailSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
+
+    @Resource
+    private JavaMailSender emailSender;
+
+    @Resource
+    MailProperties mailProperties;
 
     @Override
     public String getType() {
-        return NotifyPlatformEnum.Email.name();
+        return NotifyPlatformEnum.EMAIL.name();
     }
 
     @Override
-    protected RobotMessageActualContent buildMessageActualContent() {
-        String emailAlarmTxtKey = "message/robot/dynamic-thread-pool/email-alarm.txt";
-        String emailConfigTxtKey = "message/robot/dynamic-thread-pool/email-config.txt";
-        return RobotMessageActualContent.builder()
-                .receiveSeparator(", @")
-                .changeSeparator(" -> ")
-                .alarmMessageContent(Singleton.get(emailAlarmTxtKey, () -> FileUtil.readUtf8String(emailAlarmTxtKey)))
-                .configMessageContent(Singleton.get(emailConfigTxtKey, () -> FileUtil.readUtf8String(emailConfigTxtKey)))
-                .build();
-    }
-
-    @Override
-    protected void execute(RobotMessageExecuteDTO robotMessageExecuteDTO) {
-
-        NotifyConfigDTO notifyConfig = robotMessageExecuteDTO.getNotifyConfig();
-        String content = robotMessageExecuteDTO.getText();
-        String receives = notifyConfig.getReceives();
-        String secretKey = notifyConfig.getSecretKey();
-        String[] recipients = receives.split(",");
-
-        MailAccount mailAccount = JSONUtil.parseObject(secretKey, MailAccount.class);
-        Assert.isTrue(mailAccount != null, "mailAccount is null");
-        mailAccount.setUser(mailAccount.getFrom());
-        String subject = Objects.equals(notifyConfig.getType(), "CONFIG") ? Email_NOTICE_TITLE : Email_ALARM_TITLE;
+    public void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest) {
         try {
-            MimeMessage mimeMessage = buildMsg(mailAccount, recipients, subject, content);
-            Transport.send(mimeMessage);
-        } catch (Exception ex) {
-            log.error("Email failed to send message", ex);
+            String emailAlarmTxtKey = "message/robot/dynamic-thread-pool/email-alarm.ftl";
+            Map<String, String> dataModel = getDataModel(alarmNotifyRequest);
+            dataModel.put("interval", notifyConfig.getInterval().toString());
+            String emailAlarmTxt = Singleton.get(emailAlarmTxtKey, () -> FileUtil.readUtf8String(emailAlarmTxtKey));
+            String renderedEmailAlarmTxt = render(dataModel, emailAlarmTxt);
+            String[] recipients = notifyConfig.getReceives().split(",");
+            execute(recipients, EmailAlarmConstants.Email_ALARM_TITLE, renderedEmailAlarmTxt);
+        } catch (Exception e) {
+            log.error("Email failed to send message", e);
         }
     }
 
-    private MimeMessage buildMsg(MailAccount mailAccount, String[] recipients, String subject, String content) throws MessagingException {
-
-        UserPassAuthenticator authenticator = new UserPassAuthenticator(mailAccount.getUser(), mailAccount.getPass());
-        Properties properties = new Properties();
-        properties.put("mail.transport.protocol", mailAccount.getHost().split("\\.")[0]);
-        properties.put("mail.smtp.host", mailAccount.getHost());
-        properties.put("mail.smtp.port", mailAccount.getPort());
-        properties.put("mail.smtp.auth", "true");
-        Session session = Session.getInstance(properties, authenticator);
-
-        MimeMessage msg = new MimeMessage(session);
-        // 发件人
-        String from = mailAccount.getFrom();
-        msg.setFrom(from);
-        // 标题
-        msg.setSubject(subject);
-        // 发送时间
-        msg.setSentDate(new Date());
-        // 内容和附件
-        MimeMultipart mimeMultipart = new MimeMultipart();
-        MimeBodyPart body = new MimeBodyPart();
-        body.setContent(content, "text/html; charset=" + Charset.defaultCharset());
-        mimeMultipart.addBodyPart(body);
-        msg.setContent(mimeMultipart);
-
-        // 收件人
-        List<Address> addressList = new ArrayList<>(recipients.length);
-        for (String recipient : recipients) {
-            Address to = new InternetAddress(recipient);
-            addressList.add(to);
+    @Override
+    public void sendChangeMessage(NotifyConfigDTO notifyConfig, ChangeParameterNotifyRequest changeParameterNotifyRequest) {
+        try {
+            String emailConfigTxtKey = "message/robot/dynamic-thread-pool/email-config.ftl";
+            Map<String, String> dataModel = getDataModel(changeParameterNotifyRequest);
+            String emailAlarmTxt = Singleton.get(emailConfigTxtKey, () -> FileUtil.readUtf8String(emailConfigTxtKey));
+            String renderedEmailAlarmTxt = render(dataModel, emailAlarmTxt);
+            String[] recipients = notifyConfig.getReceives().split(",");
+            execute(recipients, EmailAlarmConstants.Email_NOTICE_TITLE, renderedEmailAlarmTxt);
+        } catch (Exception e) {
+            log.error("Email failed to send message", e);
         }
-        Address[] addresses = addressList.toArray(new Address[0]);
-        msg.setRecipients(MimeMessage.RecipientType.TO, addresses);
-        return msg;
     }
 
-    @Data
-    private static class MailAccount {
-
-        /**
-         * SMTP服务器域名
-         */
-        private String host;
-        /**
-         * SMTP服务端口
-         */
-        private Integer port;
-        /**
-         * 是否需要用户名密码验证
-         */
-        private Boolean auth;
-        /**
-         * 用户名
-         */
-        private String user;
-        /**
-         * 密码
-         */
-        private String pass;
-
-        /**
-         * 发送方
-         */
-        private String from;
+    private String render(Map<String, String> dataModel, String stringTemplate) {
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_31);
+        StringTemplateLoader stringLoader = new StringTemplateLoader();
+        stringLoader.putTemplate("renderTemplate", stringTemplate);
+        cfg.setTemplateLoader(stringLoader);
+        Writer out = new StringWriter(2048);
+        try {
+            Template tpl = cfg.getTemplate("renderTemplate", "UTF-8");
+            tpl.process(dataModel, out);
+        } catch (Exception e) {
+            log.error("failed to render template,dataModel:{},stringTemplate:{}", dataModel, stringTemplate);
+        }
+        return out.toString();
     }
 
-    private static class UserPassAuthenticator extends Authenticator {
+    @SneakyThrows
+    private Map<String, String> getDataModel(Object bean) {
+        Map<String, String> dataModel = BeanUtils.describe(bean);
+        dataModel.put("from", mailProperties.getUsername());
+        dataModel.put("date", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        return dataModel;
+    }
 
-        private final String user;
-        private final String pass;
-
-        /**
-         * 构造
-         *
-         * @param user 用户名
-         * @param pass 密码
-         */
-        public UserPassAuthenticator(String user, String pass) {
-            this.user = user;
-            this.pass = pass;
-        }
-
-        @Override
-        protected PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(this.user, this.pass);
-        }
+    private void execute(String[] to, String subject, String htmlBody) throws MessagingException {
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+        helper.setFrom(mailProperties.getUsername());
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlBody, true);
+        emailSender.send(message);
     }
 }

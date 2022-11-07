@@ -38,7 +38,7 @@ public enum NotifyPlatformEnum {
     WECHAT,
 
     /**
-     * Email
+     * EMAIL
      */
-    Email
+    EMAIL
 }
