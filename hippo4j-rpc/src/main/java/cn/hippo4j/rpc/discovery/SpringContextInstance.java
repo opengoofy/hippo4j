@@ -15,29 +15,23 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.support;
+package cn.hippo4j.rpc.discovery;
 
-import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.common.web.exception.IllegalException;
+import cn.hippo4j.common.config.ApplicationContextHolder;
 
 /**
- * Simply creating an instance of a class by its name and its specific type,
- * and then throwing an exception if it is an interface, is not elegant
+ * Adapter Spring, The requested object is managed by spring
  */
-public class DefaultInstance implements Instance {
+public class SpringContextInstance implements Instance {
 
     @Override
     public Object getInstance(Class<?> cls) {
-        return ReflectUtil.createInstance(cls);
+        return ApplicationContextHolder.getBean(cls);
     }
 
     @Override
     public Object getInstance(String name) {
-        try {
-            Class<?> cls = Class.forName(name);
-            return getInstance(cls);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalException(e);
-        }
+        return ApplicationContextHolder.getInstance().getBean(name);
     }
+
 }

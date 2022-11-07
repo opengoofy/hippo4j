@@ -15,43 +15,28 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.response;
-
-import java.io.Serializable;
+package cn.hippo4j.rpc.discovery;
 
 /**
- * Response
+ * Instance interface to get an instance
  */
-public interface Response extends Serializable {
+public interface Instance {
 
     /**
-     * The unique identity of the current Response
+     * get a instance
+     *
+     * @param cls Class object
+     * @return Information about instances created or found
      */
-    String getKey();
+    Object getInstance(Class<?> cls);
 
     /**
-     * The class of the current Response, The target of deserialization
+     * Gets an instance of a class with a recognizable identity,
+     * which can be the fully qualified name of class. It can also be a unique name in a container
+     *
+     * @param name Identifying name
+     * @return Information about instances created or found
      */
-    Class<?> getCls();
-
-    /**
-     * The results of this request can be obtained, The source of deserialization
-     */
-    Object getObj();
-
-    /**
-     * The Throwable of the current Response
-     */
-    Throwable getThrowable();
-
-    /**
-     * the error message
-     */
-    String getErrMsg();
-
-    /**
-     * Whether the current request has an error
-     */
-    boolean isErr();
+    Object getInstance(String name);
 
 }

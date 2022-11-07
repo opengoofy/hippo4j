@@ -20,6 +20,7 @@ package cn.hippo4j.rpc.server;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.rpc.coder.NettyDecoder;
 import cn.hippo4j.rpc.coder.NettyEncoder;
+import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.handler.NettyHandlerManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -39,7 +40,7 @@ import java.util.List;
 @Slf4j
 public class NettyServerConnection extends NettyHandlerManager implements ServerConnection {
 
-    Integer port;
+    ServerPort port;
     EventLoopGroup leader;
     EventLoopGroup worker;
     Class<? extends ServerChannel> socketChannelCls = NioServerSocketChannel.class;
@@ -48,7 +49,6 @@ public class NettyServerConnection extends NettyHandlerManager implements Server
 
     public NettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, List<ChannelHandler> handlers) {
         super(handlers);
-        Assert.notNull(handlers);
         Assert.notNull(leader);
         Assert.notNull(worker);
         this.leader = leader;
@@ -68,7 +68,7 @@ public class NettyServerConnection extends NettyHandlerManager implements Server
     }
 
     @Override
-    public void bind(int port) {
+    public void bind(ServerPort port) {
         ServerBootstrap server = new ServerBootstrap();
         server.group(leader, worker)
                 .channel(socketChannelCls)
@@ -79,7 +79,7 @@ public class NettyServerConnection extends NettyHandlerManager implements Server
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
                         ch.pipeline().addLast(new NettyEncoder());
-                        handlers.stream()
+                        handlerEntities.stream()
                                 .sorted()
                                 .forEach(h -> {
                                     if (h.getName() == null) {
@@ -91,7 +91,7 @@ public class NettyServerConnection extends NettyHandlerManager implements Server
                     }
                 });
         try {
-            this.future = server.bind(port);
+            this.future = server.bind(port.getPort());
             this.channel = this.future.channel();
             log.info("The server is started and can receive requests. The listening port is {}", port);
             this.port = port;
@@ -117,21 +117,25 @@ public class NettyServerConnection extends NettyHandlerManager implements Server
         return channel.isActive();
     }
 
+    @Override
     public NettyServerConnection addLast(String name, ChannelHandler handler) {
         super.addLast(name, handler);
         return this;
     }
 
+    @Override
     public NettyServerConnection addFirst(String name, ChannelHandler handler) {
         super.addFirst(name, handler);
         return this;
     }
 
+    @Override
     public NettyServerConnection addLast(ChannelHandler handler) {
         super.addLast(handler);
         return this;
     }
 
+    @Override
     public NettyServerConnection addFirst(ChannelHandler handler) {
         super.addFirst(handler);
         return this;

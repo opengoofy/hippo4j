@@ -47,21 +47,25 @@ public class NettyClientPoolHandler extends NettyHandlerManager implements Chann
         super();
     }
 
+    @Override
     public NettyClientPoolHandler addLast(String name, ChannelHandler handler) {
         super.addLast(name, handler);
         return this;
     }
 
+    @Override
     public NettyClientPoolHandler addFirst(String name, ChannelHandler handler) {
         super.addFirst(name, handler);
         return this;
     }
 
+    @Override
     public NettyClientPoolHandler addLast(ChannelHandler handler) {
         super.addLast(handler);
         return this;
     }
 
+    @Override
     public NettyClientPoolHandler addFirst(ChannelHandler handler) {
         super.addFirst(handler);
         return this;
@@ -85,7 +89,7 @@ public class NettyClientPoolHandler extends NettyHandlerManager implements Chann
                 .setTcpNoDelay(false);
         ch.pipeline().addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
         ch.pipeline().addLast(new NettyEncoder());
-        this.handlers.stream()
+        this.handlerEntities.stream()
                 .sorted()
                 .forEach(h -> {
                     if (h.getName() == null) {

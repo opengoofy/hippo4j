@@ -15,38 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.request;
-
-import java.io.Serializable;
+package cn.hippo4j.rpc.discovery;
 
 /**
- * request
+ *
  */
-public interface Request extends Serializable {
+public interface ServerPort {
 
     /**
-     * The unique identity of the current request
+     *
+     * @return
      */
-    String getKey();
-
-    /**
-     * The Class name of the current request
-     */
-    String getClassName();
-
-    /**
-     * The Method name of the current request
-     */
-    String getMethodName();
-
-    /**
-     * The parameter type of the current request
-     */
-    Class<?>[] getParameterTypes();
-
-    /**
-     * The parameters of the current request
-     */
-    Object[] getParameters();
+    int getPort();
 
 }

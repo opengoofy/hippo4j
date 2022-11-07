@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.request;
+package cn.hippo4j.rpc.model;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
