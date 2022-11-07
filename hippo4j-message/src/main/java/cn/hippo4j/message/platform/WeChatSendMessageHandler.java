@@ -70,6 +70,9 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
         }
     }
 
+    /**
+     * WeChat
+     */
     @Data
     @Accessors(chain = true)
     public static class WeChatReqDTO {
@@ -79,6 +82,9 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
         private Markdown markdown;
     }
 
+    /**
+     * Markdown
+     */
     @Data
     public static class Markdown {
 

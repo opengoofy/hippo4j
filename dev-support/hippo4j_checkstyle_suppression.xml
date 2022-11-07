@@ -27,4 +27,5 @@
     <suppress checks="MagicNumber" files="ByteConvertUtil.java"/>
     <suppress checks="MagicNumber" files="DubboThreadPoolAdapter.java"/>
     <suppress checks="MagicNumber" files="UndertowWebThreadPoolHandler.java"/>
+    <suppress checks="MagicNumber" files="DefaultThreadPoolCheckAlarmHandler.java"/>
 </suppressions>
