@@ -18,13 +18,15 @@
 package cn.hippo4j.core.executor.state;
 
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.common.toolkit.CalculateUtil;
+import cn.hippo4j.core.plugin.manager.ThreadPoolPluginSupport;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -80,6 +82,7 @@ public abstract class AbstractThreadPoolRuntime {
                 .queueRemainingCapacity(blockingQueue.remainingCapacity())
                 .rejectCount(rejectCount)
                 .timestamp(System.currentTimeMillis())
+                .pluginRuntimeInfos(actualExecutor instanceof ThreadPoolPluginSupport ? ((ThreadPoolPluginSupport) actualExecutor).getAllPluginRuntimes() : Collections.emptyList())
                 .build();
         stateInfo.setCoreSize(actualExecutor.getCorePoolSize());
         stateInfo.setMaximumSize(actualExecutor.getMaximumPoolSize());

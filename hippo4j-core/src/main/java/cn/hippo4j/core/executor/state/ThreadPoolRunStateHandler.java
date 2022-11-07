@@ -25,14 +25,13 @@ import cn.hippo4j.common.toolkit.MemoryUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.concurrent.ThreadPoolExecutor;
-
-import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 
 /**
  * Thread pool run state service.
@@ -67,6 +66,7 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
         rejectedName = pool.getRejectedExecutionHandler().getClass().getSimpleName();
         poolRunStateInfo.setRejectedName(rejectedName);
         ManyThreadPoolRunStateInfo manyThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, ManyThreadPoolRunStateInfo.class);
+        manyThreadPoolRunStateInfo.setPluginRuntimeInfos(poolRunStateInfo.getPluginRuntimeInfos());
         manyThreadPoolRunStateInfo.setIdentify(CLIENT_IDENTIFICATION_VALUE);
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
         manyThreadPoolRunStateInfo.setActive(active.toUpperCase());

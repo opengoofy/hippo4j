@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Pool run state info.
@@ -114,6 +115,11 @@ public class ThreadPoolRunStateInfo extends ThreadPoolBaseInfo implements Serial
      * timestamp
      */
     private Long timestamp;
+
+    /**
+     * plugin runtime info
+     */
+    private Collection<PluginRuntimeInfo> pluginRuntimeInfos;
 
     public Integer getSimpleCurrentLoad() {
         return Integer.parseInt(getCurrentLoad().replace("%", ""));
