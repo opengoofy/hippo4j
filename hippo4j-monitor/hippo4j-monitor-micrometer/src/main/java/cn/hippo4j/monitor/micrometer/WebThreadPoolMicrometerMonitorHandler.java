@@ -35,21 +35,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class WebThreadPoolMicrometerMonitorHandler extends AbstractWebThreadPoolMonitor {
 
-    private final static String METRIC_NAME_PREFIX = "web.thread-pool";
+    private static final String METRIC_NAME_PREFIX = "web.thread-pool";
 
-    private final static String APPLICATION_NAME_TAG = "application.name";
+    private static final String APPLICATION_NAME_TAG = "application.name";
 
-    private final Map<String, ThreadPoolRunStateInfo> RUN_STATE_CACHE = new ConcurrentHashMap<>();
+    private final Map<String, ThreadPoolRunStateInfo> runStateCache = new ConcurrentHashMap<>();
 
     @Override
     protected void execute(ThreadPoolRunStateInfo webThreadPoolRunStateInfo) {
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String applicationName = environment.getProperty("spring.application.name", "application");
-        ThreadPoolRunStateInfo stateInfo = RUN_STATE_CACHE.get(applicationName);
+        ThreadPoolRunStateInfo stateInfo = runStateCache.get(applicationName);
         if (stateInfo != null) {
             BeanUtil.convert(webThreadPoolRunStateInfo, stateInfo);
         } else {
-            RUN_STATE_CACHE.put(applicationName, webThreadPoolRunStateInfo);
+            runStateCache.put(applicationName, webThreadPoolRunStateInfo);
         }
         Iterable<Tag> tags = CollectionUtil.newArrayList(Tag.of(APPLICATION_NAME_TAG, applicationName));
         Metrics.gauge(metricName("current.load"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getSimpleCurrentLoad);
