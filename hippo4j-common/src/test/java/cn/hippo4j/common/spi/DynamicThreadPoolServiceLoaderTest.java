@@ -17,5 +17,54 @@
 
 package cn.hippo4j.common.spi;
 
+import java.util.Collection;
+
+import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertTrue;
+
 public final class DynamicThreadPoolServiceLoaderTest {
+
+    @Test
+    public void assertRegister() {
+        DynamicThreadPoolServiceLoader.register(Collection.class);
+        Collection<?> collections = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(Collection.class);
+        assertTrue(collections.isEmpty());
+    }
+
+    @Test
+    public void assertGetSingletonServiceInstances() {
+        DynamicThreadPoolServiceLoader.register(TestSingletonInterfaceSpi.class);
+        Collection<TestSingletonInterfaceSpi> instances = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(TestSingletonInterfaceSpi.class);
+        assertThat(instances.size(), equalTo(1));
+        assertThat(instances.iterator().next(), is(DynamicThreadPoolServiceLoader.getSingletonServiceInstances(TestSingletonInterfaceSpi.class).iterator().next()));
+    }
+
+    @Test
+    public void assertNewServiceInstances() {
+        DynamicThreadPoolServiceLoader.register(TestSingletonInterfaceSpi.class);
+        Collection<TestSingletonInterfaceSpi> instances = DynamicThreadPoolServiceLoader.newServiceInstances(TestSingletonInterfaceSpi.class);
+        assertThat(instances.size(), equalTo(1));
+        assertThat(instances.iterator().next(), not(DynamicThreadPoolServiceLoader.getSingletonServiceInstances(TestSingletonInterfaceSpi.class).iterator().next()));
+    }
+
+    @Test
+    public void assertGetServiceInstancesWhenIsSingleton() {
+        DynamicThreadPoolServiceLoader.register(TestSingletonInterfaceSpi.class);
+        Collection<TestSingletonInterfaceSpi> instances = DynamicThreadPoolServiceLoader.getServiceInstances(TestSingletonInterfaceSpi.class);
+        assertThat(instances.iterator().next(), is(DynamicThreadPoolServiceLoader.getSingletonServiceInstances(TestSingletonInterfaceSpi.class).iterator().next()));
+
+    }
+
+    @Test
+    public void assertGetServiceInstancesWhenNotSingleton() {
+        DynamicThreadPoolServiceLoader.register(TestInterfaceSpi.class);
+        Collection<TestInterfaceSpi> instances = DynamicThreadPoolServiceLoader.getServiceInstances(TestInterfaceSpi.class);
+        assertThat(instances.iterator().next(), not(DynamicThreadPoolServiceLoader.getSingletonServiceInstances(TestInterfaceSpi.class).iterator().next()));
+
+    }
 }
