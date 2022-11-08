@@ -35,6 +35,8 @@ public class ReturnT<T> implements Serializable {
 
     public static final int FAIL_CODE = 500;
 
+    public static final int JWT_FAIL_CODE = -1;
+
     public static final ReturnT<String> SUCCESS = new ReturnT<>(null);
 
     public static final ReturnT<String> FAIL = new ReturnT<>(FAIL_CODE, null);
