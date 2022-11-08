@@ -20,6 +20,7 @@ package cn.hippo4j.core.plugin.impl;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * test for {@link TaskTimeRecordPlugin}
  */
+@Slf4j
 public class TaskTimeRecordPluginTest {
 
     @Test
@@ -61,9 +63,17 @@ public class TaskTimeRecordPluginTest {
         while (!executor.isTerminated()) {
         }
         TaskTimeRecordPlugin.Summary summary = plugin.summarize();
-        Assert.assertEquals(1, summary.getMinTaskTimeMillis() / 1000L);
-        Assert.assertEquals(3, summary.getMaxTaskTimeMillis() / 1000L);
-        Assert.assertEquals(2, summary.getAvgTaskTimeMillis() / 1000L);
-        Assert.assertEquals(8, summary.getTotalTaskTimeMillis() / 1000L);
+        Assert.assertTrue(testInDeviation(summary.getMinTaskTimeMillis(), 1000L, 300L));
+        Assert.assertTrue(testInDeviation(summary.getMaxTaskTimeMillis(), 3000L, 300L));
+        Assert.assertTrue(testInDeviation(summary.getAvgTaskTimeMillis(), 2000L, 300L));
+        Assert.assertTrue(testInDeviation(summary.getTotalTaskTimeMillis(), 8000L, 300L));
     }
+
+    private boolean testInDeviation(long except, long actual, long offer) {
+        long exceptLower = except - offer;
+        long exceptUpper = except + offer;
+        log.info("test {} < [{}] < {}", exceptLower, actual, exceptUpper);
+        return exceptLower < actual && actual < exceptUpper;
+    }
+
 }
