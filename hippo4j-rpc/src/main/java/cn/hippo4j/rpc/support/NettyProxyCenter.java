@@ -19,10 +19,13 @@ package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.web.exception.IllegalException;
+import cn.hippo4j.rpc.client.Client;
 import cn.hippo4j.rpc.client.NettyClientConnection;
-import cn.hippo4j.rpc.request.DefaultRequest;
-import cn.hippo4j.rpc.request.Request;
-import cn.hippo4j.rpc.response.Response;
+import cn.hippo4j.rpc.client.RPCClient;
+import cn.hippo4j.rpc.discovery.ServerPort;
+import cn.hippo4j.rpc.model.DefaultRequest;
+import cn.hippo4j.rpc.model.Request;
+import cn.hippo4j.rpc.model.Response;
 import io.netty.channel.pool.ChannelPoolHandler;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -51,13 +54,14 @@ public class NettyProxyCenter {
      * @param handler the pool handler  for netty
      * @return Proxy objects
      */
-    public static <T> T getProxy(Class<T> cls, String host, int port, ChannelPoolHandler handler) {
+    public static <T> T getProxy(Class<T> cls, String host, ServerPort port, ChannelPoolHandler handler) {
         NettyClientConnection connection = new NettyClientConnection(host, port, handler);
-        return getProxy(connection, cls, host, port);
+        Client rpcClient = new RPCClient(connection);
+        return getProxy(rpcClient, cls, host, port);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getProxy(NettyClientConnection connection, Class<T> cls, String host, int port) {
+    public static <T> T getProxy(Client client, Class<T> cls, String host, ServerPort port) {
         boolean b = cls.isInterface();
         if (!b) {
             throw new IllegalException(cls.getName() + "is not a Interface");
@@ -75,7 +79,7 @@ public class NettyProxyCenter {
                     String key = host + port + clsName + methodName + IdUtil.simpleUUID();
                     Class<?>[] parameterTypes = method.getParameterTypes();
                     Request request = new DefaultRequest(key, clsName, methodName, parameterTypes, args);
-                    Response response = connection.connect(request);
+                    Response response = client.connection(request);
                     if (response == null) {
                         return null;
                     }

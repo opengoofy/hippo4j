@@ -17,6 +17,7 @@
 
 package cn.hippo4j.rpc.support;
 
+import cn.hippo4j.rpc.discovery.ServerPort;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.pool.ChannelPoolHandler;
@@ -38,7 +39,7 @@ public class NettyConnectPoolHolder {
 
     static Map<String, NettyConnectPool> connectPoolMap = new ConcurrentHashMap<>();
 
-    private static NettyConnectPool initPool(String host, int port,
+    private static NettyConnectPool initPool(String host, ServerPort port,
                                              long timeout, EventLoopGroup worker,
                                              ChannelPoolHandler handler) {
         return new NettyConnectPool(
@@ -48,8 +49,8 @@ public class NettyConnectPoolHolder {
                 handler);
     }
 
-    private static String getKey(String host, int port) {
-        return host + ":" + port;
+    private static String getKey(String host, ServerPort port) {
+        return host + ":" + port.getPort();
     }
 
     /**
@@ -60,7 +61,7 @@ public class NettyConnectPoolHolder {
      * @param port the port
      * @param pool This parameter applies only to the connection pool of netty
      */
-    public static void createPool(String host, int port, NettyConnectPool pool) {
+    public static void createPool(String host, ServerPort port, NettyConnectPool pool) {
         connectPoolMap.put(getKey(host, port), pool);
     }
 
@@ -71,7 +72,7 @@ public class NettyConnectPoolHolder {
      * @param port the port
      * @return Map to the connection pool
      */
-    public static NettyConnectPool getPool(String host, int port) {
+    public static NettyConnectPool getPool(String host, ServerPort port) {
         return connectPoolMap.get(getKey(host, port));
     }
 
@@ -86,7 +87,7 @@ public class NettyConnectPoolHolder {
      * @param handler the chandler for netty
      * @return Map to the connection pool
      */
-    public static synchronized NettyConnectPool getPool(String host, int port,
+    public static synchronized NettyConnectPool getPool(String host, ServerPort port,
                                                         long timeout, EventLoopGroup worker,
                                                         ChannelPoolHandler handler) {
         /*
@@ -102,7 +103,7 @@ public class NettyConnectPoolHolder {
      * @param host host
      * @param port port
      */
-    public static void remove(String host, int port) {
+    public static void remove(String host, ServerPort port) {
         connectPoolMap.remove(getKey(host, port));
     }
 

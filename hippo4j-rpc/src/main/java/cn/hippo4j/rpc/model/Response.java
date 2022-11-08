@@ -15,38 +15,44 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.request;
+package cn.hippo4j.rpc.model;
 
 import java.io.Serializable;
 
 /**
- * request
+ * Response
  */
-public interface Request extends Serializable {
+public interface Response extends Serializable {
 
     /**
-     * The unique identity of the current request
+     * The unique identity of the current Response
      */
     String getKey();
 
     /**
-     * The Class name of the current request
+     * The class of the current Response, The target of deserialization
      */
-    String getClassName();
+    Class<?> getCls();
 
     /**
-     * The Method name of the current request
+     * The results of this request can be obtained, The source of deserialization
      */
-    String getMethodName();
+    Object getObj();
 
     /**
-     * The parameter type of the current request
+     * The Throwable of the current Response
      */
-    Class<?>[] getParameterTypes();
+    Throwable getThrowable();
 
     /**
-     * The parameters of the current request
+     * the error message
      */
-    Object[] getParameters();
+    String getErrMsg();
+
+    /**
+     * Whether the current request has an error, <br>
+     * If it is true then it cannot be retrieved from obj
+     */
+    boolean isErr();
 
 }

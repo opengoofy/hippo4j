@@ -15,28 +15,38 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.support;
+package cn.hippo4j.rpc.model;
+
+import java.io.Serializable;
 
 /**
- * Instance interface to get an instance
+ * request
  */
-public interface Instance {
+public interface Request extends Serializable {
 
     /**
-     * get a instance
-     *
-     * @param cls Class object
-     * @return Information about instances created or found
+     * The unique identity of the current request
      */
-    Object getInstance(Class<?> cls);
+    String getKey();
 
     /**
-     * Gets an instance of a class with a recognizable identity,
-     * which can be the fully qualified name of class. It can also be a unique name in a container
-     *
-     * @param name Identifying name
-     * @return Information about instances created or found
+     * The Class name of the current request
      */
-    Object getInstance(String name);
+    String getClassName();
+
+    /**
+     * The Method name of the current request
+     */
+    String getMethodName();
+
+    /**
+     * The parameter type of the current request
+     */
+    Class<?>[] getParameterTypes();
+
+    /**
+     * The parameters of the current request
+     */
+    Object[] getParameters();
 
 }

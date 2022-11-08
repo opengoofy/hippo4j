@@ -18,7 +18,7 @@
 package cn.hippo4j.rpc.handler;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
 /**
  * Manage the Handler used in the processing.<br>
@@ -57,6 +57,13 @@ public interface HandlerManager<T> {
     HandlerManager<T> addFirst(T handler);
 
     /**
+     * Whether handler exists
+     *
+     * @return Whether handler exists
+     */
+    boolean isEmpty();
+
+    /**
      * Create a handler
      *
      * @param order   order
@@ -68,7 +75,7 @@ public interface HandlerManager<T> {
         return new HandlerEntity<>(order, handler, name);
     }
 
-    @Data
+    @Getter
     @AllArgsConstructor
     class HandlerEntity<T> implements Comparable<HandlerEntity<T>> {
 

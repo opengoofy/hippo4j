@@ -19,11 +19,12 @@ package cn.hippo4j.rpc.client;
 
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.web.exception.IllegalException;
+import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.exception.TimeOutException;
+import cn.hippo4j.rpc.model.Request;
+import cn.hippo4j.rpc.model.Response;
 import cn.hippo4j.rpc.process.ActivePostProcess;
 import cn.hippo4j.rpc.process.ActiveProcessChain;
-import cn.hippo4j.rpc.request.Request;
-import cn.hippo4j.rpc.response.Response;
 import cn.hippo4j.rpc.support.NettyConnectPool;
 import cn.hippo4j.rpc.support.NettyConnectPoolHolder;
 import cn.hippo4j.rpc.support.ResultHolder;
@@ -45,7 +46,7 @@ import java.util.concurrent.locks.LockSupport;
 public class NettyClientConnection implements ClientConnection {
 
     String host;
-    Integer port;
+    ServerPort port;
     // Obtain the connection timeout period. The default value is 30s
     long timeout = 30000L;
     EventLoopGroup worker = new NioEventLoopGroup();
@@ -54,7 +55,7 @@ public class NettyClientConnection implements ClientConnection {
     ChannelFuture future;
     Channel channel;
 
-    public NettyClientConnection(String host, int port,
+    public NettyClientConnection(String host, ServerPort port,
                                  List<ActivePostProcess> activeProcesses,
                                  ChannelPoolHandler handler) {
         Assert.notNull(worker);
@@ -64,7 +65,7 @@ public class NettyClientConnection implements ClientConnection {
         this.connectionPool = NettyConnectPoolHolder.getPool(host, port, timeout, worker, handler);
     }
 
-    public NettyClientConnection(String host, int port, ChannelPoolHandler handler) {
+    public NettyClientConnection(String host, ServerPort port, ChannelPoolHandler handler) {
         this(host, port, new LinkedList<>(), handler);
     }
 
@@ -76,7 +77,7 @@ public class NettyClientConnection implements ClientConnection {
         try {
             String key = request.getKey();
             this.future = channel.writeAndFlush(request);
-            log.info("Call successful, target address is {}:{}, request key is {}", host, port, key);
+            log.info("Call successful, target address is {}:{}, request key is {}", host, port.getPort(), key);
             // Wait for execution to complete
             ResultHolder.putThread(key, Thread.currentThread());
             LockSupport.parkNanos(timeout() * 1000000);
@@ -85,7 +86,7 @@ public class NettyClientConnection implements ClientConnection {
                 throw new TimeOutException("Timeout waiting for server-side response");
             }
             activeProcessChain.applyPostHandle(request, response);
-            log.info("The response from {}:{} was received successfully with the response key {}.", host, port, key);
+            log.info("The response from {}:{} was received successfully with the response key {}.", host, port.getPort(), key);
             return response;
         } catch (Exception ex) {
             activeProcessChain.afterCompletion(request, response, ex);

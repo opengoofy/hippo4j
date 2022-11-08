@@ -17,8 +17,8 @@
 
 package cn.hippo4j.rpc.handler;
 
-import cn.hippo4j.rpc.request.Request;
-import cn.hippo4j.rpc.response.Response;
+import cn.hippo4j.rpc.model.Request;
+import cn.hippo4j.rpc.model.Response;
 
 /**
  * The handler in each connection, where the specific behavior of the connection

@@ -17,6 +17,7 @@
 
 package cn.hippo4j.rpc.server;
 
+import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.handler.Connection;
 
 /**
@@ -27,6 +28,6 @@ public interface ServerConnection extends Connection {
     /**
      * Bind ports and process them
      */
-    void bind(int port);
+    void bind(ServerPort port);
 
 }

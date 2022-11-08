@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.response;
+package cn.hippo4j.rpc.model;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -117,6 +117,8 @@ public class DefaultResponse implements Response {
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
         s.defaultReadObject();
         // Deserialization obj
-        this.obj = s.readObject();
+        if (!isErr()) {
+            this.obj = s.readObject();
+        }
     }
 }

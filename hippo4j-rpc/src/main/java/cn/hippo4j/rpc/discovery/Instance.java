@@ -15,29 +15,28 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.handler;
-
-import cn.hippo4j.common.web.exception.IllegalException;
-import cn.hippo4j.rpc.model.Response;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
+package cn.hippo4j.rpc.discovery;
 
 /**
- * Interconnect with the netty mediation layer
+ * Instance interface to get an instance
  */
-@ChannelHandler.Sharable
-public class NettyClientTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {
+public interface Instance {
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        try {
-            Response response = (Response) msg;
-            handler(response);
-            ctx.flush();
-        } catch (Exception e) {
-            ctx.close();
-            throw new IllegalException(e);
-        }
-    }
+    /**
+     * get a instance
+     *
+     * @param cls Class object
+     * @return Information about instances created or found
+     */
+    Object getInstance(Class<?> cls);
+
+    /**
+     * Gets an instance of a class with a recognizable identity,
+     * which can be the fully qualified name of class. It can also be a unique name in a container
+     *
+     * @param name Identifying name
+     * @return Information about instances created or found
+     */
+    Object getInstance(String name);
 
 }
