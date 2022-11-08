@@ -33,7 +33,7 @@
       </el-select>
       <el-select
         v-model="listQuery.tpId"
-        :placeholder="$t('threadPool.threadPool')"
+        :placeholder="$t('common.threadPool')"
         style="width: 220px"
         filterable
         class="filter-item"

@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Tenant
+            {{ $t('report.tenant') }}
           </div>
           <count-to :start-val="0" :end-val="successCount" :duration="2600" class="card-panel-num" />
         </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Item
+            {{ $t('report.item') }}
           </div>
           <count-to :start-val="0" :end-val="failCount" :duration="3000" class="card-panel-num" />
         </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Thread Pool
+            {{ $t('common.threadPool') }}
           </div>
           <count-to :start-val="0" :end-val="runningCount" :duration="3200" class="card-panel-num" />
         </div>
@@ -46,7 +46,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Pool Instance
+            {{ $t('report.poolInstance') }}
           </div>
           <count-to :start-val="0" :end-val="runningCountInstance" :duration="3200" class="card-panel-num" />
         </div>

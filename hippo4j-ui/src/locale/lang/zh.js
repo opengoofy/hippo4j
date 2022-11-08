@@ -16,13 +16,25 @@ export default {
     edit: '编辑',
     delete: '删除',
     cancel: '取消',
-    confirm: '确认'
+    confirm: '确认',
+    threadPool: '线程池',
   },
 
+  // 运行报表
+  report: {
+    tenant: '租户',
+    item: '项目',
+    poolInstance: '线程池实例',
+    user: '登录用户',
+    role: '用户角色',
+    tenants: '所属租户',
+    createTime: '创建时间',
+    updateTime: '修改时间'
+  },
+  
   // 线程池
   threadPool: {
     tenant: '租户',
     project: '项目',
-    threadPool: '线程池',
   }
 }
