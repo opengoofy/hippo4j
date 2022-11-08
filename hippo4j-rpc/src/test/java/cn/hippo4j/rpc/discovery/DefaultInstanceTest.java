@@ -15,12 +15,9 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.support;
+package cn.hippo4j.rpc.discovery;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import cn.hippo4j.common.web.exception.IllegalException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,18 +35,26 @@ public class DefaultInstanceTest {
 
     @Test
     public void testGetInstance() {
-        String className = "cn.hippo4j.rpc.support.DefaultInstanceTest$InstanceModel";
+        String className = "cn.hippo4j.rpc.discovery.InstanceModel";
         Object instanceInstance = instance.getInstance(className);
         Assert.assertNotNull(instanceInstance);
         Assert.assertEquals(className, instanceInstance.getClass().getName());
     }
 
-    @Setter
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class InstanceModel {
-
-        String name;
+    @Test(expected = IllegalException.class)
+    public void testGetInstanceTest() {
+        String className = "cn.hippo4j.rpc.discovery.InstanceModelTest";
+        Object instanceInstance = instance.getInstance(className);
+        Assert.assertNotNull(instanceInstance);
+        Assert.assertEquals(className, instanceInstance.getClass().getName());
     }
+
+    @Test
+    public void getInstanceTest() {
+        Class<InstanceServerLoader> cls = InstanceServerLoader.class;
+        Object instanceInstance = instance.getInstance(cls);
+        Assert.assertNotNull(instanceInstance);
+        Assert.assertEquals(InstanceServerLoaderImpl.class, instanceInstance.getClass());
+    }
+
 }
