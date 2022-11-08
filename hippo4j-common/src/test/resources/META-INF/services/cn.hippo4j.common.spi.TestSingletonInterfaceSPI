@@ -15,4 +15,4 @@
 # limitations under the License.
 #
  
-cn.hippo4j.common.spi.TestSingletonInterfaceSpiImpl
+cn.hippo4j.common.spi.TestSingletonInterfaceSPIImpl

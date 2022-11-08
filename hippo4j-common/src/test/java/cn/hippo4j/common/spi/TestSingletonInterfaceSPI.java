@@ -23,5 +23,5 @@ import cn.hippo4j.common.spi.annotation.SingletonSPI;
  * test {@link DynamicThreadPoolServiceLoader}
  */
 @SingletonSPI
-public interface TestSingletonInterfaceSpi {
+public interface TestSingletonInterfaceSPI {
 }

@@ -20,5 +20,5 @@ package cn.hippo4j.common.spi;
 /**
  * test {@link DynamicThreadPoolServiceLoader}
  */
-public class TestInterfaceSpiImpl implements TestInterfaceSpi {
+public class TestInterfaceSPIImpl implements TestInterfaceSPI {
 }
