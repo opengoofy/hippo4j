@@ -27,6 +27,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * test {@link DynamicThreadPoolServiceLoader}
+ */
 public final class DynamicThreadPoolServiceLoaderTest {
 
     @Test

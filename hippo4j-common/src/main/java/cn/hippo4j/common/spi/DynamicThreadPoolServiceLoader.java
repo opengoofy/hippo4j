@@ -62,7 +62,8 @@ public class DynamicThreadPoolServiceLoader {
     }
 
     /**
-     * getServiceInstances
+     * Get Service instances
+     * 
      * @param serviceClass serviceClass
      * @param <T>
      * @return

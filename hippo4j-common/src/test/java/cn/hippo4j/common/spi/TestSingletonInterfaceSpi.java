@@ -20,9 +20,7 @@ package cn.hippo4j.common.spi;
 import cn.hippo4j.common.spi.annotation.SingletonSPI;
 
 /**
- *@author : wh
- *@date : 2022/11/8 21:02
- *@description:
+ * test {@link DynamicThreadPoolServiceLoader}
  */
 @SingletonSPI
 public interface TestSingletonInterfaceSpi {

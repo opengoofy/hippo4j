@@ -18,9 +18,7 @@
 package cn.hippo4j.common.spi;
 
 /**
- *@author : wh
- *@date : 2022/11/8 22:01
- *@description:
+ * test {@link DynamicThreadPoolServiceLoader}
  */
 public interface TestInterfaceSpi {
 }
