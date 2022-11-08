@@ -18,19 +18,19 @@
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <el-form label-position="left">
-            <el-form-item label="登录用户" label-width="120px">
+            <el-form-item :label="$t('report.user')" label-width="120px">
               <span>{{ temp.userName }}</span>
             </el-form-item>
-            <el-form-item label="用户角色" label-width="120px">
+            <el-form-item :label="$t('report.role')" label-width="120px">
               <span>{{ temp.role }}</span>
             </el-form-item>
-            <el-form-item label="所属租户" label-width="120px">
+            <el-form-item :label="$t('report.tenants')" label-width="120px">
               <span></span>
             </el-form-item>
-            <el-form-item label="创建时间" label-width="120px">
+            <el-form-item :label="$t('report.createTime')" label-width="120px">
               <span> {{ temp.gmtCreate }}</span>
             </el-form-item>
-            <el-form-item label="修改时间" label-width="120px">
+            <el-form-item :label="$t('report.updateTime')" label-width="120px">
               <span>{{ temp.gmtModified }}</span>
             </el-form-item>
           </el-form>
