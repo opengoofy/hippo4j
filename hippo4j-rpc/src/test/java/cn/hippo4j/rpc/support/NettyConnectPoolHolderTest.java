@@ -18,7 +18,7 @@
 package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.rpc.discovery.ServerPort;
-import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
+import cn.hippo4j.rpc.handler.AbstractNettyClientPoolHandler;
 import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -38,7 +38,7 @@ public class NettyConnectPoolHolderTest {
 
     @Test
     public void createPool() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
         NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls, handler);
         NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertEquals(pool, connectPool);
@@ -49,7 +49,7 @@ public class NettyConnectPoolHolderTest {
 
     @Test
     public void testGetPool() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
         NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port, timeout, group, handler);
         NettyConnectPool connectPool1 = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertEquals(connectPool1, connectPool);
@@ -60,7 +60,7 @@ public class NettyConnectPoolHolderTest {
 
     @Test
     public void remove() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
         NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port, timeout, group, handler);
         NettyConnectPool connectPool1 = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertEquals(connectPool1, connectPool);

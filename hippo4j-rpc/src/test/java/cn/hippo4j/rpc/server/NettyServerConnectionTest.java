@@ -8,7 +8,7 @@ public class NettyServerConnectionTest {
 
     @Test
     public void addLast() {
-        NettyServerConnection connection = new NettyServerConnection();
+        AbstractNettyServerConnection connection = new AbstractNettyServerConnection();
         Assert.assertTrue(connection.isEmpty());
         connection.addLast(new TestHandler());
         Assert.assertFalse(connection.isEmpty());
@@ -16,7 +16,7 @@ public class NettyServerConnectionTest {
 
     @Test
     public void addFirst() {
-        NettyServerConnection connection = new NettyServerConnection();
+        AbstractNettyServerConnection connection = new AbstractNettyServerConnection();
         Assert.assertTrue(connection.isEmpty());
         connection.addFirst(new TestHandler());
         Assert.assertFalse(connection.isEmpty());
@@ -24,7 +24,7 @@ public class NettyServerConnectionTest {
 
     @Test
     public void testAddLast() {
-        NettyServerConnection connection = new NettyServerConnection();
+        AbstractNettyServerConnection connection = new AbstractNettyServerConnection();
         Assert.assertTrue(connection.isEmpty());
         connection.addLast("Test", new TestHandler());
         Assert.assertFalse(connection.isEmpty());
@@ -32,7 +32,7 @@ public class NettyServerConnectionTest {
 
     @Test
     public void testAddFirst() {
-        NettyServerConnection connection = new NettyServerConnection();
+        AbstractNettyServerConnection connection = new AbstractNettyServerConnection();
         Assert.assertTrue(connection.isEmpty());
         connection.addFirst("Test", new TestHandler());
         Assert.assertFalse(connection.isEmpty());

@@ -38,8 +38,8 @@ public class RPCServerTest {
     public void bind() throws IOException {
         Instance instance = new DefaultInstance();
         NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
-        ServerConnection connection = new NettyServerConnection(handler);
-        RPCServer rpcServer = new RPCServer(port, connection);
+        ServerConnection connection = new AbstractNettyServerConnection(handler);
+        RPCServer rpcServer = new RPCServer(connection, port);
         CompletableFuture.runAsync(rpcServer::bind);
         try {
             TimeUnit.SECONDS.sleep(3);
@@ -59,8 +59,8 @@ public class RPCServerTest {
         EventLoopGroup leader = new NioEventLoopGroup();
         EventLoopGroup worker = new NioEventLoopGroup();
         NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
-        ServerConnection connection = new NettyServerConnection(leader, worker, handler);
-        RPCServer rpcServer = new RPCServer(port, connection);
+        ServerConnection connection = new AbstractNettyServerConnection(leader, worker, handler);
+        RPCServer rpcServer = new RPCServer(connection, port);
         CompletableFuture.runAsync(rpcServer::bind);
         try {
             TimeUnit.SECONDS.sleep(3);

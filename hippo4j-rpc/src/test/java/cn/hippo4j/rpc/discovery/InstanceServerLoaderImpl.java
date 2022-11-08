@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.test.context.TestComponent;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class InstanceServerLoaderImpl implements InstanceServerLoader {
 
-    String name;
+    String name = "name";
 
 }

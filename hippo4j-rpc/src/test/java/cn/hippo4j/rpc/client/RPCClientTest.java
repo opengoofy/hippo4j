@@ -18,13 +18,13 @@
 package cn.hippo4j.rpc.client;
 
 import cn.hippo4j.rpc.discovery.ServerPort;
-import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
+import cn.hippo4j.rpc.handler.AbstractNettyClientPoolHandler;
 import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
 import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
 import cn.hippo4j.rpc.model.DefaultRequest;
 import cn.hippo4j.rpc.model.Request;
 import cn.hippo4j.rpc.model.Response;
-import cn.hippo4j.rpc.server.NettyServerConnection;
+import cn.hippo4j.rpc.server.AbstractNettyServerConnection;
 import cn.hippo4j.rpc.server.RPCServer;
 import cn.hippo4j.rpc.server.ServerConnection;
 import cn.hippo4j.rpc.discovery.ClassRegistry;
@@ -52,15 +52,15 @@ public class RPCClientTest {
         // The mode connection was denied when the server was started on the specified port
         Instance instance = new DefaultInstance();
         NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
-        ServerConnection connection = new NettyServerConnection(handler);
-        RPCServer rpcServer = new RPCServer(port, connection);
+        ServerConnection connection = new AbstractNettyServerConnection(handler);
+        RPCServer rpcServer = new RPCServer(connection, port);
         CompletableFuture.runAsync(rpcServer::bind);
         try {
             TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        ChannelPoolHandler channelPoolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        ChannelPoolHandler channelPoolHandler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
         NettyClientConnection clientConnection = new NettyClientConnection(host, port, channelPoolHandler);
         RPCClient rpcClient = new RPCClient(clientConnection);
         Request request = new DefaultRequest("127.0.0.18888", className, "call", null, null);
@@ -85,15 +85,15 @@ public class RPCClientTest {
         // The mode connection was denied when the server was started on the specified port
         Instance instance = new DefaultInstance();
         NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
-        ServerConnection connection = new NettyServerConnection(handler);
-        RPCServer rpcServer = new RPCServer(portTest, connection);
+        ServerConnection connection = new AbstractNettyServerConnection(handler);
+        RPCServer rpcServer = new RPCServer(connection, portTest);
         CompletableFuture.runAsync(rpcServer::bind);
         try {
             TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        ChannelPoolHandler channelPoolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        ChannelPoolHandler channelPoolHandler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
         NettyClientConnection clientConnection = new NettyClientConnection(host, portTest, channelPoolHandler);
         RPCClient rpcClient = new RPCClient(clientConnection);
         Class<?>[] classes = new Class<?>[2];
