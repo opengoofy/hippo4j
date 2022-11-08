@@ -50,7 +50,8 @@ public interface Response extends Serializable {
     String getErrMsg();
 
     /**
-     * Whether the current request has an error
+     * Whether the current request has an error, <br>
+     * If it is true then it cannot be retrieved from obj
      */
     boolean isErr();
 

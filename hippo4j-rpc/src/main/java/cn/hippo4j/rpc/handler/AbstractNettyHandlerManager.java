@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * Processor manager for ChannelHandler in netty
  */
-public abstract class NettyHandlerManager implements HandlerManager<ChannelHandler> {
+public abstract class AbstractNettyHandlerManager implements HandlerManager<ChannelHandler> {
 
     protected final List<HandlerEntity<ChannelHandler>> handlerEntities;
 
@@ -35,7 +35,7 @@ public abstract class NettyHandlerManager implements HandlerManager<ChannelHandl
 
     AtomicLong lastIndex = new AtomicLong(0);
 
-    protected NettyHandlerManager(List<ChannelHandler> handlerEntities) {
+    protected AbstractNettyHandlerManager(List<ChannelHandler> handlerEntities) {
         Assert.notNull(handlerEntities);
         this.handlerEntities = handlerEntities.stream()
                 .filter(Objects::nonNull)
@@ -43,11 +43,11 @@ public abstract class NettyHandlerManager implements HandlerManager<ChannelHandl
                 .collect(Collectors.toList());
     }
 
-    protected NettyHandlerManager(ChannelHandler... handlerEntities) {
+    protected AbstractNettyHandlerManager(ChannelHandler... handlerEntities) {
         this(handlerEntities != null ? Arrays.asList(handlerEntities) : Collections.emptyList());
     }
 
-    protected NettyHandlerManager() {
+    protected AbstractNettyHandlerManager() {
         this.handlerEntities = new LinkedList<>();
     }
 
@@ -63,7 +63,7 @@ public abstract class NettyHandlerManager implements HandlerManager<ChannelHandl
      * @param handler handler
      * @return NettyHandlerManager
      */
-    public NettyHandlerManager addLast(String name, ChannelHandler handler) {
+    public AbstractNettyHandlerManager addLast(String name, ChannelHandler handler) {
         Assert.notNull(handler);
         this.handlerEntities.add(getHandlerEntity(lastIndex.getAndIncrement(), handler, name));
         return this;
@@ -76,7 +76,7 @@ public abstract class NettyHandlerManager implements HandlerManager<ChannelHandl
      * @param handler handler
      * @return NettyHandlerManager
      */
-    public NettyHandlerManager addFirst(String name, ChannelHandler handler) {
+    public AbstractNettyHandlerManager addFirst(String name, ChannelHandler handler) {
         Assert.notNull(handler);
         this.handlerEntities.add(getHandlerEntity(firstIndex.getAndIncrement(), handler, name));
         return this;
@@ -88,7 +88,7 @@ public abstract class NettyHandlerManager implements HandlerManager<ChannelHandl
      * @param handler handler
      * @return NettyHandlerManager
      */
-    public NettyHandlerManager addLast(ChannelHandler handler) {
+    public AbstractNettyHandlerManager addLast(ChannelHandler handler) {
         Assert.notNull(handler);
         this.handlerEntities.add(getHandlerEntity(lastIndex.getAndIncrement(), handler, null));
         return this;
@@ -100,7 +100,7 @@ public abstract class NettyHandlerManager implements HandlerManager<ChannelHandl
      * @param handler handler
      * @return NettyHandlerManager
      */
-    public NettyHandlerManager addFirst(ChannelHandler handler) {
+    public AbstractNettyHandlerManager addFirst(ChannelHandler handler) {
         Assert.notNull(handler);
         this.handlerEntities.add(getHandlerEntity(firstIndex.getAndDecrement(), handler, null));
         return this;

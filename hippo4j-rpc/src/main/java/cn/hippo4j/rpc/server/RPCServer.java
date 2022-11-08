@@ -29,7 +29,7 @@ public class RPCServer implements Server {
     ServerPort port;
     ServerConnection serverConnection;
 
-    public RPCServer(ServerPort port, ServerConnection serverConnection) {
+    public RPCServer(ServerConnection serverConnection, ServerPort port) {
         this.port = port;
         this.serverConnection = serverConnection;
     }

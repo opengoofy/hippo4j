@@ -33,40 +33,40 @@ import java.util.List;
  * Processing by the client connection pool handler to clean the buffer and define new connection properties
  */
 @Slf4j
-public class NettyClientPoolHandler extends NettyHandlerManager implements ChannelPoolHandler {
+public class AbstractNettyClientPoolHandler extends AbstractNettyHandlerManager implements ChannelPoolHandler {
 
-    public NettyClientPoolHandler(List<ChannelHandler> handlers) {
+    public AbstractNettyClientPoolHandler(List<ChannelHandler> handlers) {
         super(handlers);
     }
 
-    public NettyClientPoolHandler(ChannelHandler... handlers) {
+    public AbstractNettyClientPoolHandler(ChannelHandler... handlers) {
         super(handlers);
     }
 
-    public NettyClientPoolHandler() {
+    public AbstractNettyClientPoolHandler() {
         super();
     }
 
     @Override
-    public NettyClientPoolHandler addLast(String name, ChannelHandler handler) {
+    public AbstractNettyClientPoolHandler addLast(String name, ChannelHandler handler) {
         super.addLast(name, handler);
         return this;
     }
 
     @Override
-    public NettyClientPoolHandler addFirst(String name, ChannelHandler handler) {
+    public AbstractNettyClientPoolHandler addFirst(String name, ChannelHandler handler) {
         super.addFirst(name, handler);
         return this;
     }
 
     @Override
-    public NettyClientPoolHandler addLast(ChannelHandler handler) {
+    public AbstractNettyClientPoolHandler addLast(ChannelHandler handler) {
         super.addLast(handler);
         return this;
     }
 
     @Override
-    public NettyClientPoolHandler addFirst(ChannelHandler handler) {
+    public AbstractNettyClientPoolHandler addFirst(ChannelHandler handler) {
         super.addFirst(handler);
         return this;
     }

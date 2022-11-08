@@ -22,7 +22,7 @@ import cn.hippo4j.rpc.discovery.DefaultInstance;
 import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.handler.HandlerManager;
 import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
-import cn.hippo4j.rpc.server.NettyServerConnection;
+import cn.hippo4j.rpc.server.AbstractNettyServerConnection;
 import cn.hippo4j.rpc.server.RPCServer;
 import cn.hippo4j.rpc.server.Server;
 import io.netty.channel.ChannelHandler;
@@ -59,11 +59,11 @@ public class NettyServerSupport implements Server {
     Server server;
 
     public NettyServerSupport(ServerPort serverPort, Class<?>... classes) {
-        this(serverPort, new NettyServerConnection(), classes);
+        this(serverPort, new AbstractNettyServerConnection(), classes);
     }
 
     public NettyServerSupport(ServerPort serverPort, List<Class<?>> classes) {
-        this(serverPort, new NettyServerConnection(), classes);
+        this(serverPort, new AbstractNettyServerConnection(), classes);
     }
 
     public NettyServerSupport(ServerPort serverPort, HandlerManager<ChannelHandler> handlerManager, Class<?>... classes) {
@@ -86,14 +86,14 @@ public class NettyServerSupport implements Server {
         // Register the interface that can be invoked
         classes.stream().filter(Class::isInterface)
                 .forEach(cls -> ClassRegistry.put(cls.getName(), cls));
-        NettyServerConnection connection = (handlerManager instanceof NettyServerConnection)
-                ? (NettyServerConnection) handlerManager
-                : new NettyServerConnection();
+        AbstractNettyServerConnection connection = (handlerManager instanceof AbstractNettyServerConnection)
+                ? (AbstractNettyServerConnection) handlerManager
+                : new AbstractNettyServerConnection();
         // Assign a default handler if no handler exists
         if (connection.isEmpty()) {
             connection.addLast(new NettyServerTakeHandler(new DefaultInstance()));
         }
-        server = new RPCServer(serverPort, connection);
+        server = new RPCServer(connection, serverPort);
     }
 
     @Override

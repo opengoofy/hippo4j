@@ -117,6 +117,8 @@ public class DefaultResponse implements Response {
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
         s.defaultReadObject();
         // Deserialization obj
-        this.obj = s.readObject();
+        if (!isErr()){
+            this.obj = s.readObject();
+        }
     }
 }

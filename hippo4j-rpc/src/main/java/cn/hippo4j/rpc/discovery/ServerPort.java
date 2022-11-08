@@ -18,13 +18,15 @@
 package cn.hippo4j.rpc.discovery;
 
 /**
- *
+ * Gets the top-level interface of the instance port
  */
+@FunctionalInterface
 public interface ServerPort {
 
     /**
+     * Gets the listening or exposed port
      *
-     * @return
+     * @return port
      */
     int getPort();
 
