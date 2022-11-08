@@ -35,7 +35,7 @@ module.exports = {
     },
     proxy: {
       '/hippo4j/v1/cs': {
-        target: `http://console.hippo4j.cn:80/hippo4j/v1/cs`,
+        target: `http://127.0.0.1:6691/hippo4j/v1/cs`,
         changOrigin: true,
         secure: false,
         pathRewrite: {
