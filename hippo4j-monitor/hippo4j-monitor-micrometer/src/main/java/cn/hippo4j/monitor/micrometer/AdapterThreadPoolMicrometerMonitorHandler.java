@@ -35,21 +35,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AdapterThreadPoolMicrometerMonitorHandler extends AbstractAdapterThreadPoolMonitor {
 
-    private final static String METRIC_NAME_PREFIX = "adapter.thread-pool";
+    private static final String METRIC_NAME_PREFIX = "adapter.thread-pool";
 
-    private final static String ADAPTER_THREAD_POOL_ID_TAG = METRIC_NAME_PREFIX + ".id";
+    private static final String ADAPTER_THREAD_POOL_ID_TAG = METRIC_NAME_PREFIX + ".id";
 
-    private final static String APPLICATION_NAME_TAG = "application.name";
+    private static final String APPLICATION_NAME_TAG = "application.name";
 
-    private final Map<String, ThreadPoolAdapterState> RUN_STATE_CACHE = new ConcurrentHashMap<>();
+    private final Map<String, ThreadPoolAdapterState> runStateCache = new ConcurrentHashMap<>();
 
     @Override
     protected void execute(ThreadPoolAdapterState threadPoolAdapterState) {
-        ThreadPoolAdapterState stateInfo = RUN_STATE_CACHE.get(threadPoolAdapterState.getThreadPoolKey());
+        ThreadPoolAdapterState stateInfo = runStateCache.get(threadPoolAdapterState.getThreadPoolKey());
         if (stateInfo != null) {
             BeanUtil.convert(threadPoolAdapterState, stateInfo);
         } else {
-            RUN_STATE_CACHE.put(threadPoolAdapterState.getThreadPoolKey(), threadPoolAdapterState);
+            runStateCache.put(threadPoolAdapterState.getThreadPoolKey(), threadPoolAdapterState);
         }
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String applicationName = environment.getProperty("spring.application.name", "application");

@@ -72,6 +72,13 @@ sidebar_position: 1
     <td align="center" ><a href="https://blog.xiajibagao.top">Createsequence's Blog</a></td>
     <td align="center" >841396397@qq.com</td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/wulangcode"><img src="https://avatars.githubusercontent.com/u/48200100?v=4" width="64px;"/></a></td>
+    <td align="center">吴浪</td>
+    <td align="center" ><a href="https://github.com/wulangcode">wulangcode</a></td>
+    <td align="center" >-</td>
+    <td align="center" >sanliangitch@foxmail.com</td>
+  </tr>
 </table>
 
 ## 贡献者

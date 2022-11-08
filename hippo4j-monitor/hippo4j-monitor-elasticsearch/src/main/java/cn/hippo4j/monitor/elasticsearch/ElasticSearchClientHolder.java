@@ -28,8 +28,6 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.core.env.Environment;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,9 +64,7 @@ public class ElasticSearchClientHolder {
             log.info("[ES RestHighLevelClient] success to connect es！host:{},scheme:{}", host, scheme);
             return client;
         } catch (Exception ex) {
-            StringWriter stackTrace = new StringWriter();
-            ex.printStackTrace(new PrintWriter(stackTrace));
-            log.error("[ES RestHighLevelClient] fail to connect es! cause:{}", stackTrace);
+            log.error("[ES RestHighLevelClient] fail to connect es! cause:", ex);
         }
         return null;
     }

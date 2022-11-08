@@ -64,11 +64,11 @@ public class DefaultThreadPoolCheckAlarmHandler implements Runnable, ThreadPoolC
     @Value("${spring.dynamic.thread-pool.check-state-interval:5}")
     private Integer checkStateInterval;
 
-    private final ScheduledExecutorService ALARM_NOTIFY_EXECUTOR = new ScheduledThreadPoolExecutor(
+    private final ScheduledExecutorService alarmNotifyExecutor = new ScheduledThreadPoolExecutor(
             1,
             r -> new Thread(r, "client.alarm.notify"));
 
-    private final ExecutorService ASYNC_ALARM_NOTIFY_EXECUTOR = ThreadPoolBuilder.builder()
+    private final ExecutorService asyncAlarmNotifyExecutor = ThreadPoolBuilder.builder()
             .poolThreadSize(2, 4)
             .threadFactory("client.execute.timeout.alarm")
             .allowCoreThreadTimeOut(true)
@@ -79,7 +79,7 @@ public class DefaultThreadPoolCheckAlarmHandler implements Runnable, ThreadPoolC
 
     @Override
     public void run(String... args) throws Exception {
-        ALARM_NOTIFY_EXECUTOR.scheduleWithFixedDelay(this, 0, checkStateInterval, TimeUnit.SECONDS);
+        alarmNotifyExecutor.scheduleWithFixedDelay(this, 0, checkStateInterval, TimeUnit.SECONDS);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class DefaultThreadPoolCheckAlarmHandler implements Runnable, ThreadPoolC
                 hippo4jSendMessageService.sendAlarmMessage(NotifyTypeEnum.REJECT, alarmNotifyRequest);
             }
         };
-        ASYNC_ALARM_NOTIFY_EXECUTOR.execute(checkPoolRejectedAlarmTask);
+        asyncAlarmNotifyExecutor.execute(checkPoolRejectedAlarmTask);
     }
 
     /**
@@ -190,7 +190,7 @@ public class DefaultThreadPoolCheckAlarmHandler implements Runnable, ThreadPoolC
                     alarmNotifyRequest.setExecuteTimeoutTrace(executeTimeoutTrace);
                 }
                 Runnable task = () -> hippo4jSendMessageService.sendAlarmMessage(NotifyTypeEnum.TIMEOUT, alarmNotifyRequest);
-                ASYNC_ALARM_NOTIFY_EXECUTOR.execute(task);
+                asyncAlarmNotifyExecutor.execute(task);
             } catch (Throwable ex) {
                 log.error("Send thread pool execution timeout alarm error.", ex);
             }

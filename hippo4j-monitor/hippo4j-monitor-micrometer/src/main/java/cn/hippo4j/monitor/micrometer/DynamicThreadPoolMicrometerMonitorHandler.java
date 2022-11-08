@@ -35,21 +35,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DynamicThreadPoolMicrometerMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
-    private final static String METRIC_NAME_PREFIX = "dynamic.thread-pool";
+    private static final String METRIC_NAME_PREFIX = "dynamic.thread-pool";
 
-    private final static String DYNAMIC_THREAD_POOL_ID_TAG = METRIC_NAME_PREFIX + ".id";
+    private static final String DYNAMIC_THREAD_POOL_ID_TAG = METRIC_NAME_PREFIX + ".id";
 
-    private final static String APPLICATION_NAME_TAG = "application.name";
+    private static final String APPLICATION_NAME_TAG = "application.name";
 
-    private final Map<String, ThreadPoolRunStateInfo> RUN_STATE_CACHE = new ConcurrentHashMap<>();
+    private final Map<String, ThreadPoolRunStateInfo> runStateCache = new ConcurrentHashMap<>();
 
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
-        ThreadPoolRunStateInfo stateInfo = RUN_STATE_CACHE.get(poolRunStateInfo.getTpId());
+        ThreadPoolRunStateInfo stateInfo = runStateCache.get(poolRunStateInfo.getTpId());
         if (stateInfo != null) {
             BeanUtil.convert(poolRunStateInfo, stateInfo);
         } else {
-            RUN_STATE_CACHE.put(poolRunStateInfo.getTpId(), poolRunStateInfo);
+            runStateCache.put(poolRunStateInfo.getTpId(), poolRunStateInfo);
         }
         Environment environment = ApplicationContextHolder.getInstance().getEnvironment();
         String applicationName = environment.getProperty("spring.application.name", "application");
