@@ -29,6 +29,7 @@ import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,7 +75,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public Result<Void> addUser(@RequestBody UserReqDTO reqDTO) {
+    public Result<Void> addUser(@Validated @RequestBody UserReqDTO reqDTO) {
         userService.addUser(reqDTO);
         return Results.success();
     }
