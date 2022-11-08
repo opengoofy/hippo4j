@@ -33,36 +33,40 @@ import java.util.List;
  * Processing by the client connection pool handler to clean the buffer and define new connection properties
  */
 @Slf4j
-public class NettyClientPoolHandler extends NettyHandlerManager implements ChannelPoolHandler {
+public class AbstractNettyClientPoolHandler extends AbstractNettyHandlerManager implements ChannelPoolHandler {
 
-    public NettyClientPoolHandler(List<ChannelHandler> handlers) {
+    public AbstractNettyClientPoolHandler(List<ChannelHandler> handlers) {
         super(handlers);
     }
 
-    public NettyClientPoolHandler(ChannelHandler... handlers) {
+    public AbstractNettyClientPoolHandler(ChannelHandler... handlers) {
         super(handlers);
     }
 
-    public NettyClientPoolHandler() {
+    public AbstractNettyClientPoolHandler() {
         super();
     }
 
-    public NettyClientPoolHandler addLast(String name, ChannelHandler handler) {
+    @Override
+    public AbstractNettyClientPoolHandler addLast(String name, ChannelHandler handler) {
         super.addLast(name, handler);
         return this;
     }
 
-    public NettyClientPoolHandler addFirst(String name, ChannelHandler handler) {
+    @Override
+    public AbstractNettyClientPoolHandler addFirst(String name, ChannelHandler handler) {
         super.addFirst(name, handler);
         return this;
     }
 
-    public NettyClientPoolHandler addLast(ChannelHandler handler) {
+    @Override
+    public AbstractNettyClientPoolHandler addLast(ChannelHandler handler) {
         super.addLast(handler);
         return this;
     }
 
-    public NettyClientPoolHandler addFirst(ChannelHandler handler) {
+    @Override
+    public AbstractNettyClientPoolHandler addFirst(ChannelHandler handler) {
         super.addFirst(handler);
         return this;
     }
@@ -85,7 +89,7 @@ public class NettyClientPoolHandler extends NettyHandlerManager implements Chann
                 .setTcpNoDelay(false);
         ch.pipeline().addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
         ch.pipeline().addLast(new NettyEncoder());
-        this.handlers.stream()
+        this.handlerEntities.stream()
                 .sorted()
                 .forEach(h -> {
                     if (h.getName() == null) {

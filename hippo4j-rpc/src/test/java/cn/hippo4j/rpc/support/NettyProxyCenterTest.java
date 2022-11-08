@@ -18,33 +18,27 @@
 package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.common.web.exception.IllegalException;
-import cn.hippo4j.rpc.exception.ConnectionException;
-import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
+import cn.hippo4j.rpc.discovery.ServerPort;
+import cn.hippo4j.rpc.handler.AbstractNettyClientPoolHandler;
 import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class NettyProxyCenterTest {
 
+    ServerPort port = new TestServerPort();
+
     @Test
     public void getProxy() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
-        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, "localhost", 8888, handler);
+        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
+        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, "localhost", port, handler);
         Assert.assertNotNull(localhost);
     }
 
     @Test(expected = IllegalException.class)
     public void getProxyTest() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
-        ProxyClass localhost = NettyProxyCenter.getProxy(ProxyClass.class, "localhost", 8888, handler);
-        Assert.assertNotNull(localhost);
-    }
-
-    @Test(expected = ConnectionException.class)
-    public void getProxyTestCall() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
-        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, "localhost", 8888, handler);
-        localhost.hello();
+        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
+        ProxyClass localhost = NettyProxyCenter.getProxy(ProxyClass.class, "localhost", port, handler);
         Assert.assertNotNull(localhost);
     }
 
@@ -55,5 +49,13 @@ public class NettyProxyCenterTest {
 
     static class ProxyClass {
 
+    }
+
+    static class TestServerPort implements ServerPort {
+
+        @Override
+        public int getPort() {
+            return 8888;
+        }
     }
 }

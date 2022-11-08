@@ -15,38 +15,19 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.request;
+package cn.hippo4j.rpc.discovery;
 
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-/**
- * request
- */
-public interface Request extends Serializable {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class InstanceServerLoaderImpl implements InstanceServerLoader {
 
-    /**
-     * The unique identity of the current request
-     */
-    String getKey();
-
-    /**
-     * The Class name of the current request
-     */
-    String getClassName();
-
-    /**
-     * The Method name of the current request
-     */
-    String getMethodName();
-
-    /**
-     * The parameter type of the current request
-     */
-    Class<?>[] getParameterTypes();
-
-    /**
-     * The parameters of the current request
-     */
-    Object[] getParameters();
+    String name = "name";
 
 }

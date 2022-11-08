@@ -15,29 +15,19 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.support;
-
-import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.common.web.exception.IllegalException;
+package cn.hippo4j.rpc.discovery;
 
 /**
- * Simply creating an instance of a class by its name and its specific type,
- * and then throwing an exception if it is an interface, is not elegant
+ * Gets the top-level interface of the instance port
  */
-public class DefaultInstance implements Instance {
+@FunctionalInterface
+public interface ServerPort {
 
-    @Override
-    public Object getInstance(Class<?> cls) {
-        return ReflectUtil.createInstance(cls);
-    }
+    /**
+     * Gets the listening or exposed port
+     *
+     * @return port
+     */
+    int getPort();
 
-    @Override
-    public Object getInstance(String name) {
-        try {
-            Class<?> cls = Class.forName(name);
-            return getInstance(cls);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalException(e);
-        }
-    }
 }

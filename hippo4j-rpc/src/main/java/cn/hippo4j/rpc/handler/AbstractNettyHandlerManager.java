@@ -27,40 +27,33 @@ import java.util.stream.Collectors;
 /**
  * Processor manager for ChannelHandler in netty
  */
-public abstract class NettyHandlerManager implements HandlerManager<ChannelHandler> {
+public abstract class AbstractNettyHandlerManager implements HandlerManager<ChannelHandler> {
 
-    protected final List<HandlerEntity<ChannelHandler>> handlers;
+    protected final List<HandlerEntity<ChannelHandler>> handlerEntities;
 
     AtomicLong firstIndex = new AtomicLong(-1);
 
     AtomicLong lastIndex = new AtomicLong(0);
 
-    protected NettyHandlerManager(List<ChannelHandler> handlers) {
-        this.handlers = handlers.stream()
+    protected AbstractNettyHandlerManager(List<ChannelHandler> handlerEntities) {
+        Assert.notNull(handlerEntities);
+        this.handlerEntities = handlerEntities.stream()
                 .filter(Objects::nonNull)
                 .map(c -> getHandlerEntity(lastIndex.getAndIncrement(), c, null))
                 .collect(Collectors.toList());
     }
 
-    protected NettyHandlerManager(ChannelHandler... handlers) {
-        this(handlers != null ? Arrays.asList(handlers) : Collections.emptyList());
+    protected AbstractNettyHandlerManager(ChannelHandler... handlerEntities) {
+        this(handlerEntities != null ? Arrays.asList(handlerEntities) : Collections.emptyList());
     }
 
-    protected NettyHandlerManager() {
-        this.handlers = new LinkedList<>();
+    protected AbstractNettyHandlerManager() {
+        this.handlerEntities = new LinkedList<>();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param name    name
-     * @param handler handler
-     * @return NettyHandlerManager
-     */
-    public NettyHandlerManager addLast(String name, ChannelHandler handler) {
-        Assert.notNull(handler);
-        this.handlers.add(getHandlerEntity(lastIndex.getAndIncrement(), handler, name));
-        return this;
+    @Override
+    public boolean isEmpty() {
+        return handlerEntities.isEmpty();
     }
 
     /**
@@ -70,9 +63,22 @@ public abstract class NettyHandlerManager implements HandlerManager<ChannelHandl
      * @param handler handler
      * @return NettyHandlerManager
      */
-    public NettyHandlerManager addFirst(String name, ChannelHandler handler) {
+    public AbstractNettyHandlerManager addLast(String name, ChannelHandler handler) {
         Assert.notNull(handler);
-        this.handlers.add(getHandlerEntity(firstIndex.getAndIncrement(), handler, name));
+        this.handlerEntities.add(getHandlerEntity(lastIndex.getAndIncrement(), handler, name));
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param name    name
+     * @param handler handler
+     * @return NettyHandlerManager
+     */
+    public AbstractNettyHandlerManager addFirst(String name, ChannelHandler handler) {
+        Assert.notNull(handler);
+        this.handlerEntities.add(getHandlerEntity(firstIndex.getAndIncrement(), handler, name));
         return this;
     }
 
@@ -82,9 +88,9 @@ public abstract class NettyHandlerManager implements HandlerManager<ChannelHandl
      * @param handler handler
      * @return NettyHandlerManager
      */
-    public NettyHandlerManager addLast(ChannelHandler handler) {
+    public AbstractNettyHandlerManager addLast(ChannelHandler handler) {
         Assert.notNull(handler);
-        this.handlers.add(getHandlerEntity(lastIndex.getAndIncrement(), handler, null));
+        this.handlerEntities.add(getHandlerEntity(lastIndex.getAndIncrement(), handler, null));
         return this;
     }
 
@@ -94,9 +100,9 @@ public abstract class NettyHandlerManager implements HandlerManager<ChannelHandl
      * @param handler handler
      * @return NettyHandlerManager
      */
-    public NettyHandlerManager addFirst(ChannelHandler handler) {
+    public AbstractNettyHandlerManager addFirst(ChannelHandler handler) {
         Assert.notNull(handler);
-        this.handlers.add(getHandlerEntity(firstIndex.getAndDecrement(), handler, null));
+        this.handlerEntities.add(getHandlerEntity(firstIndex.getAndDecrement(), handler, null));
         return this;
     }
 }

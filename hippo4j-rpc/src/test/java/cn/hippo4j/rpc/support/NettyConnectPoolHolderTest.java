@@ -17,7 +17,8 @@
 
 package cn.hippo4j.rpc.support;
 
-import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
+import cn.hippo4j.rpc.discovery.ServerPort;
+import cn.hippo4j.rpc.handler.AbstractNettyClientPoolHandler;
 import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -29,7 +30,7 @@ import org.junit.Test;
 public class NettyConnectPoolHolderTest {
 
     String host = "127.0.0.1";
-    int port = 8888;
+    ServerPort port = new TestServerPort();
     int maxCount = 8;
     int timeout = 5000;
     EventLoopGroup group = new NioEventLoopGroup();
@@ -37,7 +38,7 @@ public class NettyConnectPoolHolderTest {
 
     @Test
     public void createPool() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
         NettyConnectPool pool = new NettyConnectPool(host, port, maxCount, timeout, group, cls, handler);
         NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertEquals(pool, connectPool);
@@ -48,7 +49,7 @@ public class NettyConnectPoolHolderTest {
 
     @Test
     public void testGetPool() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
         NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port, timeout, group, handler);
         NettyConnectPool connectPool1 = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertEquals(connectPool1, connectPool);
@@ -59,12 +60,20 @@ public class NettyConnectPoolHolderTest {
 
     @Test
     public void remove() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
         NettyConnectPool connectPool = NettyConnectPoolHolder.getPool(host, port, timeout, group, handler);
         NettyConnectPool connectPool1 = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertEquals(connectPool1, connectPool);
         NettyConnectPoolHolder.remove(host, port);
         NettyConnectPool connectPool2 = NettyConnectPoolHolder.getPool(host, port);
         Assert.assertNull(connectPool2);
+    }
+
+    static class TestServerPort implements ServerPort {
+
+        @Override
+        public int getPort() {
+            return 8888;
+        }
     }
 }

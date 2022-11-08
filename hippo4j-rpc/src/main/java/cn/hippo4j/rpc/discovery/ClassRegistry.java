@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.support;
+package cn.hippo4j.rpc.discovery;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

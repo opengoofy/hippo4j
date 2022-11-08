@@ -17,8 +17,8 @@
 
 package cn.hippo4j.rpc.process;
 
-import cn.hippo4j.rpc.request.Request;
-import cn.hippo4j.rpc.response.Response;
+import cn.hippo4j.rpc.model.Request;
+import cn.hippo4j.rpc.model.Response;
 
 /**
  * Callback while the connection is in progress

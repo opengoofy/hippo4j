@@ -17,27 +17,23 @@
 
 package cn.hippo4j.rpc.handler;
 
-import cn.hippo4j.common.web.exception.IllegalException;
-import cn.hippo4j.rpc.model.Response;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 
-/**
- * Interconnect with the netty mediation layer
- */
-@ChannelHandler.Sharable
-public class NettyClientTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {
+public class TestHandler implements ChannelHandler {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        try {
-            Response response = (Response) msg;
-            handler(response);
-            ctx.flush();
-        } catch (Exception e) {
-            ctx.close();
-            throw new IllegalException(e);
-        }
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+
     }
 
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+
+    }
 }

@@ -15,29 +15,44 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.handler;
+package cn.hippo4j.rpc.model;
 
-import cn.hippo4j.common.web.exception.IllegalException;
-import cn.hippo4j.rpc.model.Response;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
+import java.io.Serializable;
 
 /**
- * Interconnect with the netty mediation layer
+ * Response
  */
-@ChannelHandler.Sharable
-public class NettyClientTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {
+public interface Response extends Serializable {
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        try {
-            Response response = (Response) msg;
-            handler(response);
-            ctx.flush();
-        } catch (Exception e) {
-            ctx.close();
-            throw new IllegalException(e);
-        }
-    }
+    /**
+     * The unique identity of the current Response
+     */
+    String getKey();
+
+    /**
+     * The class of the current Response, The target of deserialization
+     */
+    Class<?> getCls();
+
+    /**
+     * The results of this request can be obtained, The source of deserialization
+     */
+    Object getObj();
+
+    /**
+     * The Throwable of the current Response
+     */
+    Throwable getThrowable();
+
+    /**
+     * the error message
+     */
+    String getErrMsg();
+
+    /**
+     * Whether the current request has an error, <br>
+     * If it is true then it cannot be retrieved from obj
+     */
+    boolean isErr();
 
 }

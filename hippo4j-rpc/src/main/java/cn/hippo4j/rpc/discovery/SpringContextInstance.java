@@ -15,43 +15,23 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.response;
+package cn.hippo4j.rpc.discovery;
 
-import java.io.Serializable;
+import cn.hippo4j.common.config.ApplicationContextHolder;
 
 /**
- * Response
+ * Adapter Spring, The requested object is managed by spring
  */
-public interface Response extends Serializable {
+public class SpringContextInstance implements Instance {
 
-    /**
-     * The unique identity of the current Response
-     */
-    String getKey();
+    @Override
+    public Object getInstance(Class<?> cls) {
+        return ApplicationContextHolder.getBean(cls);
+    }
 
-    /**
-     * The class of the current Response, The target of deserialization
-     */
-    Class<?> getCls();
-
-    /**
-     * The results of this request can be obtained, The source of deserialization
-     */
-    Object getObj();
-
-    /**
-     * The Throwable of the current Response
-     */
-    Throwable getThrowable();
-
-    /**
-     * the error message
-     */
-    String getErrMsg();
-
-    /**
-     * Whether the current request has an error
-     */
-    boolean isErr();
+    @Override
+    public Object getInstance(String name) {
+        return ApplicationContextHolder.getInstance().getBean(name);
+    }
 
 }

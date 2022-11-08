@@ -15,29 +15,20 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.handler;
+package cn.hippo4j.rpc.discovery;
 
-import cn.hippo4j.common.web.exception.IllegalException;
-import cn.hippo4j.rpc.model.Response;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.boot.test.context.TestComponent;
 
-/**
- * Interconnect with the netty mediation layer
- */
-@ChannelHandler.Sharable
-public class NettyClientTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@TestComponent
+public class InstanceModel {
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        try {
-            Response response = (Response) msg;
-            handler(response);
-            ctx.flush();
-        } catch (Exception e) {
-            ctx.close();
-            throw new IllegalException(e);
-        }
-    }
-
+    String name;
 }

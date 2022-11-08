@@ -18,7 +18,7 @@
 package cn.hippo4j.rpc.handler;
 
 import cn.hippo4j.rpc.exception.ConnectionException;
-import cn.hippo4j.rpc.response.Response;
+import cn.hippo4j.rpc.model.Response;
 import cn.hippo4j.rpc.support.ResultHolder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
