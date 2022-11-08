@@ -17,9 +17,9 @@
 
 package cn.hippo4j.core.plugin.impl;
 
+import cn.hippo4j.common.model.PluginRuntimeInfo;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.plugin.PluginRuntime;
 import cn.hippo4j.core.plugin.ThreadPoolPlugin;
 import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
 import org.junit.Assert;
@@ -46,7 +46,7 @@ public class TaskDecoratorPluginTest {
     @Test
     public void testGetRuntime() {
         ThreadPoolPlugin plugin = new TaskDecoratorPlugin();
-        PluginRuntime runtime = new TaskDecoratorPlugin().getPluginRuntime();
+        PluginRuntimeInfo runtime = new TaskDecoratorPlugin().getPluginRuntime();
         Assert.assertNotNull(runtime);
         Assert.assertEquals(plugin.getId(), runtime.getPluginId());
     }

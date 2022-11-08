@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.plugin.impl;
 
-import cn.hippo4j.core.plugin.PluginRuntime;
+import cn.hippo4j.common.model.PluginRuntimeInfo;
 import cn.hippo4j.core.plugin.RejectedAwarePlugin;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,17 +30,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class TaskRejectCountRecordPlugin implements RejectedAwarePlugin {
 
-    public static final String PLUGIN_NAME = "task-reject-count-record-plugin";
-
-    /**
-     * Get id.
-     *
-     * @return id
-     */
-    @Override
-    public String getId() {
-        return PLUGIN_NAME;
-    }
+    public static final String PLUGIN_NAME = TaskRejectCountRecordPlugin.class.getSimpleName();
 
     /**
      * Rejection count
@@ -55,8 +45,9 @@ public class TaskRejectCountRecordPlugin implements RejectedAwarePlugin {
      * @return plugin runtime info
      */
     @Override
-    public PluginRuntime getPluginRuntime() {
-        return new PluginRuntime(getId())
+    public PluginRuntimeInfo getPluginRuntime() {
+        return new PluginRuntimeInfo(getId())
+                .setDescription("Record the number of tasks rejected by the thread-pool")
                 .addInfo("rejectCount", getRejectCountNum());
     }
 

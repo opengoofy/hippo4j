@@ -17,7 +17,12 @@
 
 package cn.hippo4j.core.plugin.manager;
 
-import cn.hippo4j.core.plugin.*;
+import cn.hippo4j.common.model.PluginRuntimeInfo;
+import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
+import cn.hippo4j.core.plugin.RejectedAwarePlugin;
+import cn.hippo4j.core.plugin.ShutdownAwarePlugin;
+import cn.hippo4j.core.plugin.TaskAwarePlugin;
+import cn.hippo4j.core.plugin.ThreadPoolPlugin;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -153,22 +158,22 @@ public interface ThreadPoolPluginManager {
     }
 
     /**
-     * Get {@link PluginRuntime} of all registered plugins.
+     * Get {@link PluginRuntimeInfo} of all registered plugins.
      *
-     * @return {@link PluginRuntime} of all registered plugins
+     * @return {@link PluginRuntimeInfo} of all registered plugins
      */
-    default Collection<PluginRuntime> getAllPluginRuntimes() {
+    default Collection<PluginRuntimeInfo> getAllPluginRuntimes() {
         return getAllPlugins().stream()
                 .map(ThreadPoolPlugin::getPluginRuntime)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Get {@link PluginRuntime} of registered plugin.
+     * Get {@link PluginRuntimeInfo} of registered plugin.
      *
-     * @return {@link PluginRuntime} of registered plugin
+     * @return {@link PluginRuntimeInfo} of registered plugin
      */
-    default Optional<PluginRuntime> getRuntime(String pluginId) {
+    default Optional<PluginRuntimeInfo> getRuntime(String pluginId) {
         return getPlugin(pluginId)
                 .map(ThreadPoolPlugin::getPluginRuntime);
     }

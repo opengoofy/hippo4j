@@ -17,8 +17,8 @@
 
 package cn.hippo4j.core.plugin.impl;
 
+import cn.hippo4j.common.model.PluginRuntimeInfo;
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.core.plugin.PluginRuntime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -39,8 +39,8 @@ import java.util.stream.Collectors;
  */
 public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
 
+    public static final String PLUGIN_NAME = TaskTimeRecordPlugin.class.getSimpleName();
     private static final int MAXIMUM_CAPACITY = 1 << 30;
-    public static final String PLUGIN_NAME = "task-time-record-plugin";
 
     /**
      * modulo
@@ -75,24 +75,15 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
     }
 
     /**
-     * Get id.
-     *
-     * @return id
-     */
-    @Override
-    public String getId() {
-        return PLUGIN_NAME;
-    }
-
-    /**
      * Get plugin runtime info.
      *
      * @return plugin runtime info
      */
     @Override
-    public PluginRuntime getPluginRuntime() {
+    public PluginRuntimeInfo getPluginRuntime() {
         Summary summary = summarize();
-        return new PluginRuntime(getId())
+        return new PluginRuntimeInfo(getId())
+                .setDescription("Record task execution time indicator")
                 .addInfo("taskCount", summary.getTaskCount())
                 .addInfo("minTaskTime", summary.getMinTaskTimeMillis() + "ms")
                 .addInfo("maxTaskTime", summary.getMaxTaskTimeMillis() + "ms")

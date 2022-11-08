@@ -19,6 +19,7 @@ package cn.hippo4j.core.plugin.impl;
 
 import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.model.PluginRuntimeInfo;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.RejectedAwarePlugin;
 
@@ -30,16 +31,17 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public class TaskRejectNotifyAlarmPlugin implements RejectedAwarePlugin {
 
-    public static final String PLUGIN_NAME = "task-reject-notify-alarm-plugin";
+    public static final String PLUGIN_NAME = TaskRejectNotifyAlarmPlugin.class.getSimpleName();
 
     /**
-     * Get id.
+     * Get plugin runtime info.
      *
-     * @return id
+     * @return plugin runtime info
      */
     @Override
-    public String getId() {
-        return PLUGIN_NAME;
+    public PluginRuntimeInfo getPluginRuntime() {
+        return new PluginRuntimeInfo(getId())
+                .setDescription("Send alert notification when a task is rejected");
     }
 
     /**

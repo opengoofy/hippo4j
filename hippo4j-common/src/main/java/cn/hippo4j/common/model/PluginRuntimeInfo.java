@@ -15,30 +15,55 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.plugin;
+package cn.hippo4j.common.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Plug in runtime information.
  */
-@RequiredArgsConstructor
+@Accessors(chain = true)
 @Getter
-public class PluginRuntime {
+@Setter
+public class PluginRuntimeInfo {
 
     /**
      * Plugin id
      */
-    private final String pluginId;
+    private String pluginId;
+
+    /**
+     * Description of this plugin
+     */
+    private String description;
 
     /**
      * Runtime info
      */
     private final List<Info> infoList = new ArrayList<>();
+
+    /**
+     * Create a {@link PluginRuntimeInfo}
+     */
+    public PluginRuntimeInfo() {
+        this(null);
+    }
+
+    /**
+     * Create a {@link PluginRuntimeInfo}
+     *
+     * @param pluginId plugin id
+     */
+    public PluginRuntimeInfo(String pluginId) {
+        this.pluginId = Objects.isNull(pluginId) ? this.getClass().getSimpleName() : pluginId;
+    }
 
     /**
      * Add a runtime info item.
@@ -47,7 +72,7 @@ public class PluginRuntime {
      * @param value value
      * @return runtime info item
      */
-    public PluginRuntime addInfo(String name, Object value) {
+    public PluginRuntimeInfo addInfo(String name, Object value) {
         infoList.add(new Info(name, value));
         return this;
     }
@@ -55,18 +80,20 @@ public class PluginRuntime {
     /**
      * Plugin runtime info.
      */
+    @AllArgsConstructor
+    @Setter
     @Getter
-    @RequiredArgsConstructor
     public static class Info {
 
         /**
          * Name
          */
-        private final String name;
+        private String name;
 
         /**
          * Value
          */
-        private final Object value;
+        private Object value;
+
     }
 }

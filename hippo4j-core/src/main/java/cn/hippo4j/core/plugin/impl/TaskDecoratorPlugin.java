@@ -17,8 +17,8 @@
 
 package cn.hippo4j.core.plugin.impl;
 
+import cn.hippo4j.common.model.PluginRuntimeInfo;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.plugin.PluginRuntime;
 import cn.hippo4j.core.plugin.TaskAwarePlugin;
 import lombok.Getter;
 import lombok.NonNull;
@@ -32,17 +32,7 @@ import java.util.List;
  */
 public class TaskDecoratorPlugin implements TaskAwarePlugin {
 
-    public static final String PLUGIN_NAME = "task-decorator-plugin";
-
-    /**
-     * Get id.
-     *
-     * @return id
-     */
-    @Override
-    public String getId() {
-        return PLUGIN_NAME;
-    }
+    public static final String PLUGIN_NAME = TaskDecoratorPlugin.class.getSimpleName();
 
     /**
      * Decorators
@@ -71,9 +61,14 @@ public class TaskDecoratorPlugin implements TaskAwarePlugin {
      * @return plugin runtime info
      */
     @Override
-    public PluginRuntime getPluginRuntime() {
-        return new PluginRuntime(getId())
-                .addInfo("decorators", decorators);
+    public PluginRuntimeInfo getPluginRuntime() {
+        PluginRuntimeInfo runtime = new PluginRuntimeInfo(getId())
+                .setDescription("Decorate tasks when they are submitted to thread-pool.");
+        for (int i = 0; i < decorators.size(); i++) {
+            TaskDecorator decorator = decorators.get(i);
+            runtime.addInfo("decorator" + i, decorator.getClass().getName());
+        }
+        return runtime;
     }
 
     /**

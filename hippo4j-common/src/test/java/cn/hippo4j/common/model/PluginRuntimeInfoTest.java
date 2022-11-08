@@ -15,24 +15,26 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.plugin;
+package cn.hippo4j.common.model;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * test for {@link PluginRuntime}
+ * test for {@link PluginRuntimeInfo}
  */
-public class PluginRuntimeTest {
+public class PluginRuntimeInfoTest {
 
     @Test
     public void test() {
-        PluginRuntime runtime = new PluginRuntime("test");
+        PluginRuntimeInfo runtime = new PluginRuntimeInfo("test")
+                .setDescription("test");
         Assert.assertEquals("test", runtime.getPluginId());
         Assert.assertTrue(runtime.getInfoList().isEmpty());
+        Assert.assertEquals("test", runtime.getDescription());
 
         runtime.addInfo("item", "item");
-        PluginRuntime.Info info = runtime.getInfoList().get(0);
+        PluginRuntimeInfo.Info info = runtime.getInfoList().get(0);
         Assert.assertEquals("item", info.getName());
         Assert.assertEquals("item", info.getValue());
     }
