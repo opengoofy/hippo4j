@@ -29,7 +29,7 @@ public class NettyServerSupportTest {
 
     @Test
     public void bind() throws IOException {
-        NettyServerSupport support = new NettyServerSupport(() -> 8888, InstanceServerLoader.class);
+        NettyServerSupport support = new NettyServerSupport(() -> 8890, InstanceServerLoader.class);
         CompletableFuture.runAsync(support::bind);
         try {
             TimeUnit.SECONDS.sleep(3);

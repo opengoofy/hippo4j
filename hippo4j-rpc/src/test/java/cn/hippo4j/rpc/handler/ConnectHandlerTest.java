@@ -27,17 +27,18 @@ import io.netty.channel.pool.ChannelPoolHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class ConnectHandlerTest {
 
     @Test
-    public void handlerTest() {
+    public void handlerTest() throws IOException {
         // server
         Class<InstanceServerLoader> cls = InstanceServerLoader.class;
         ClassRegistry.put(cls.getName(), cls);
-        ServerPort port = () -> 8888;
+        ServerPort port = () -> 8891;
         Instance instance = new DefaultInstance();
         NettyServerTakeHandler serverHandler = new NettyServerTakeHandler(instance);
         AbstractNettyServerConnection connection = new AbstractNettyServerConnection(serverHandler);
@@ -54,6 +55,8 @@ public class ConnectHandlerTest {
         InstanceServerLoader loader = NettyProxyCenter.getProxy(rpcClient, cls, "localhost", port);
         String name = loader.getName();
         Assert.assertEquals("name", name);
+        rpcClient.close();
+        rpcServer.close();
     }
 
 }
