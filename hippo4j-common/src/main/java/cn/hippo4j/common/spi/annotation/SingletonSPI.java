@@ -23,9 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *@author : wh
- *@date : 2022/11/8 21:54
- *@description:
+ * Annotation of singleton SPI.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
