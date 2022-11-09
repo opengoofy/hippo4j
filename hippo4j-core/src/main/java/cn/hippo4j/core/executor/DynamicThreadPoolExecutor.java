@@ -88,7 +88,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
                                      @NonNull ThreadFactory threadFactory,
                                      @NonNull RejectedExecutionHandler rejectedExecutionHandler) {
         super(
-                threadPoolId, new DefaultThreadPoolPluginManager(),
+                threadPoolId, new DefaultThreadPoolPluginManager().setEnableSort(true),
                 corePoolSize, maximumPoolSize, keepAliveTime, unit,
                 blockingQueue, threadFactory, rejectedExecutionHandler);
         log.info("Initializing ExecutorService {}", threadPoolId);
