@@ -88,7 +88,9 @@ public class ThreadPoolPluginRegisterPostProcessor extends DefaultGlobalThreadPo
             }
         }
         if (Objects.isNull(beanType)) {
-            log.warn("cannot resolve type for bean [{}]", beanName);
+            if (log.isDebugEnabled()) {
+                log.debug("Cannot resolve type for bean [{}]", beanName);
+            }
             return bean;
         }
 
@@ -103,7 +105,7 @@ public class ThreadPoolPluginRegisterPostProcessor extends DefaultGlobalThreadPo
         if (ThreadPoolPluginSupport.class.isAssignableFrom(beanType)) {
             ThreadPoolPluginSupport support = (ThreadPoolPluginSupport) bean;
             if (registerThreadPoolPluginSupport(support) && log.isDebugEnabled()) {
-                log.info("register ThreadPoolPluginSupport [{}]", support.getThreadPoolId());
+                log.debug("Register ThreadPoolPluginSupport [{}]", support.getThreadPoolId());
             }
         }
     }
@@ -112,7 +114,7 @@ public class ThreadPoolPluginRegisterPostProcessor extends DefaultGlobalThreadPo
         if (ThreadPoolPlugin.class.isAssignableFrom(beanType)) {
             ThreadPoolPlugin plugin = (ThreadPoolPlugin) bean;
             if (enableThreadPoolPlugin(plugin) && log.isDebugEnabled()) {
-                log.info("register ThreadPoolPlugin [{}]", plugin.getId());
+                log.debug("Register ThreadPoolPlugin [{}]", plugin.getId());
             }
         }
     }
@@ -121,7 +123,7 @@ public class ThreadPoolPluginRegisterPostProcessor extends DefaultGlobalThreadPo
         if (ThreadPoolPluginRegistrar.class.isAssignableFrom(beanType)) {
             ThreadPoolPluginRegistrar registrar = (ThreadPoolPluginRegistrar) bean;
             if (enableThreadPoolPluginRegistrar(registrar) && log.isDebugEnabled()) {
-                log.info("register ThreadPoolPluginRegistrar [{}]", registrar.getId());
+                log.debug("Register ThreadPoolPluginRegistrar [{}]", registrar.getId());
             }
         }
     }
@@ -145,8 +147,26 @@ public class ThreadPoolPluginRegisterPostProcessor extends DefaultGlobalThreadPo
         AutowireCapableBeanFactory factory = applicationContext.getAutowireCapableBeanFactory();
         Assert.isTrue(
                 factory instanceof ConfigurableListableBeanFactory,
-                "factory cannot cast to ConfigurableListableBeanFactory");
+                "Factory cannot cast to ConfigurableListableBeanFactory");
         this.beanFactory = (ConfigurableListableBeanFactory) factory;
     }
 
+    /**
+     * Apply this {@code BeanPostProcessor} to the given new bean instance <i>before</i> any bean
+     * initialization callbacks (like InitializingBean's {@code afterPropertiesSet}
+     * or a custom init-method). The bean will already be populated with property values.
+     * The returned bean instance may be a wrapper around the original.
+     * <p>The default implementation returns the given {@code bean} as-is.
+     *
+     * @param bean     the new bean instance
+     * @param beanName the name of the bean
+     * @return the bean instance to use, either the original or a wrapped one;
+     * if {@code null}, no subsequent BeanPostProcessors will be invoked
+     * @throws BeansException in case of errors
+     * @see InitializingBean#afterPropertiesSet
+     */
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        return bean;
+    }
 }
