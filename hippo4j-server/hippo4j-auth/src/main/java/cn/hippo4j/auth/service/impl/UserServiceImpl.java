@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRespDTO getUser(UserReqDTO reqDTO) {
-        Wrapper queryWrapper = Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, reqDTO.getUserName());
+        Wrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, reqDTO.getUserName());
         UserInfo userInfo = userMapper.selectOne(queryWrapper);
         return Optional.ofNullable(userInfo)
                 .map(each -> BeanUtil.convert(each, UserRespDTO.class))
