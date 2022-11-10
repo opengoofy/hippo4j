@@ -19,12 +19,12 @@ export const i18nConfig = {
 export const langSelectList = () => {
   return [
     {
-      lang: 'zh',
-      name: '中文'
-    },
-    {
       lang: 'en',
       name: 'English'
-    }
+    },
+    {
+      lang: 'zh',
+      name: '简体中文'
+    },
   ]
 }
