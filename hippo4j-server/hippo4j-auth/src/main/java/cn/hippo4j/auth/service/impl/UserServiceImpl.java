@@ -46,6 +46,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private static final int MINI_PASSWORD_LENGTH = 6;
+
     private final UserMapper userMapper;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -74,6 +76,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(UserReqDTO reqDTO) {
         if (StringUtil.isNotBlank(reqDTO.getPassword())) {
+            if (reqDTO.getPassword().length() < MINI_PASSWORD_LENGTH) {
+                throw new RuntimeException("密码最少为6个字符");
+            }
             reqDTO.setPassword(bCryptPasswordEncoder.encode(reqDTO.getPassword()));
         }
         UserInfo updateUser = BeanUtil.convert(reqDTO, UserInfo.class);
@@ -95,17 +100,15 @@ public class UserServiceImpl implements UserService {
                 .like(UserInfo::getUserName, userName)
                 .select(UserInfo::getUserName);
         List<UserInfo> userInfos = userMapper.selectList(queryWrapper);
-        List<String> userNames = userInfos.stream().map(UserInfo::getUserName).collect(Collectors.toList());
-        return userNames;
+        return userInfos.stream().map(UserInfo::getUserName).collect(Collectors.toList());
     }
 
     @Override
     public UserRespDTO getUser(UserReqDTO reqDTO) {
-        Wrapper queryWrapper = Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, reqDTO.getUserName());
+        Wrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, reqDTO.getUserName());
         UserInfo userInfo = userMapper.selectOne(queryWrapper);
-        UserRespDTO respUser = Optional.ofNullable(userInfo)
+        return Optional.ofNullable(userInfo)
                 .map(each -> BeanUtil.convert(each, UserRespDTO.class))
                 .orElseThrow(() -> new ServiceException("查询无此用户, 可以尝试清空缓存或退出登录."));
-        return respUser;
     }
 }
