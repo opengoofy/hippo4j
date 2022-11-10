@@ -17,19 +17,19 @@
 
 package cn.hippo4j.core.handler;
 
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.config.BootstrapPropertiesInterface;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
+import org.springframework.boot.info.BuildProperties;
 
 /**
  * Dynamic thread-pool print banner.
  */
 @Slf4j
-@RequiredArgsConstructor
 public class DynamicThreadPoolBannerHandler implements InitializingBean {
 
     private final BootstrapPropertiesInterface properties;
@@ -41,6 +41,13 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
     private final String HIPPO4J_SITE = "Site:    https://www.hippo4j.cn";
 
     private final int STRAP_LINE_SIZE = 50;
+
+    private final String version;
+
+    public DynamicThreadPoolBannerHandler(BootstrapPropertiesInterface properties, BuildProperties buildProperties) {
+        this.properties = properties;
+        this.version = buildProperties != null ? buildProperties.getVersion() : "";
+    }
 
     @Override
     public void afterPropertiesSet() {
@@ -57,15 +64,14 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
                 " |__|__||__||   __||   __||_____||____   | |  |\n" +
                 "            |__|   |__|              |:  ||___|\n" +
                 "                                     `---'     \n";
-        if (properties.getBanner()) {
-            String version = getVersion();
-            version = (version != null) ? " (v" + version + ")" : "no version.";
+        if (Boolean.TRUE.equals(properties.getBanner())) {
+            String bannerVersion = StringUtil.isNotEmpty(version) ? " (v" + version + ")" : "no version.";
             StringBuilder padding = new StringBuilder();
             while (padding.length() < STRAP_LINE_SIZE - (version.length() + DYNAMIC_THREAD_POOL.length())) {
                 padding.append(" ");
             }
             System.out.println(AnsiOutput.toString(banner, AnsiColor.GREEN, DYNAMIC_THREAD_POOL, AnsiColor.DEFAULT,
-                    padding.toString(), AnsiStyle.FAINT, version, "\n\n", HIPPO4J_GITHUB, "\n", HIPPO4J_SITE, "\n"));
+                    padding.toString(), AnsiStyle.FAINT, bannerVersion, "\n\n", HIPPO4J_GITHUB, "\n", HIPPO4J_SITE, "\n"));
 
         }
     }
@@ -75,8 +81,7 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
      *
      * @return hippo4j version
      */
-    public static String getVersion() {
-        final Package pkg = DynamicThreadPoolBannerHandler.class.getPackage();
-        return pkg != null ? pkg.getImplementationVersion() : "";
+    public String getVersion() {
+        return version;
     }
 }

@@ -61,11 +61,13 @@ import cn.hippo4j.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.springboot.starter.support.ThreadPoolPluginRegisterPostProcessor;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -88,8 +90,8 @@ public class DynamicThreadPoolAutoConfiguration {
     private final ConfigurableEnvironment environment;
 
     @Bean
-    public DynamicThreadPoolBannerHandler threadPoolBannerHandler() {
-        return new DynamicThreadPoolBannerHandler(properties);
+    public DynamicThreadPoolBannerHandler threadPoolBannerHandler(ObjectProvider<BuildProperties> buildProperties) {
+        return new DynamicThreadPoolBannerHandler(properties, buildProperties.getIfAvailable());
     }
 
     @Bean
@@ -102,9 +104,10 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     public ClientWorker hippo4jClientWorker(HttpAgent httpAgent,
                                             InetUtils hippo4JInetUtils,
-                                            ServerHealthCheck serverHealthCheck) {
+                                            ServerHealthCheck serverHealthCheck,
+                                            DynamicThreadPoolBannerHandler dynamicThreadPoolBannerHandlers) {
         String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);
-        return new ClientWorker(httpAgent, identify, serverHealthCheck);
+        return new ClientWorker(httpAgent, identify, serverHealthCheck, dynamicThreadPoolBannerHandlers.getVersion());
     }
 
     @Bean
