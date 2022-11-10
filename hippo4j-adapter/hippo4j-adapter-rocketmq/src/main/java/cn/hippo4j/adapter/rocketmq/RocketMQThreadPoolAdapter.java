@@ -43,7 +43,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
 @Slf4j
 public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
-    private final Map<String, ThreadPoolExecutor> ROCKET_MQ_CONSUME_EXECUTOR = new HashMap<>();
+    private final Map<String, ThreadPoolExecutor> rocketmqConsumeExecutor = new HashMap<>();
 
     @Override
     public String mark() {
@@ -53,7 +53,7 @@ public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     @Override
     public ThreadPoolAdapterState getThreadPoolState(String identify) {
         ThreadPoolAdapterState result = new ThreadPoolAdapterState();
-        ThreadPoolExecutor rocketMQConsumeExecutor = ROCKET_MQ_CONSUME_EXECUTOR.get(identify);
+        ThreadPoolExecutor rocketMQConsumeExecutor = rocketmqConsumeExecutor.get(identify);
         if (rocketMQConsumeExecutor != null) {
             result.setThreadPoolKey(identify);
             result.setCoreSize(rocketMQConsumeExecutor.getCorePoolSize());
@@ -67,7 +67,7 @@ public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
         List<ThreadPoolAdapterState> adapterStateList = new ArrayList<>();
-        ROCKET_MQ_CONSUME_EXECUTOR.forEach(
+        rocketmqConsumeExecutor.forEach(
                 (key, val) -> adapterStateList.add(getThreadPoolState(key)));
         return adapterStateList;
     }
@@ -75,7 +75,7 @@ public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, Application
     @Override
     public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
         String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
-        ThreadPoolExecutor rocketMQConsumeExecutor = ROCKET_MQ_CONSUME_EXECUTOR.get(threadPoolKey);
+        ThreadPoolExecutor rocketMQConsumeExecutor = rocketmqConsumeExecutor.get(threadPoolKey);
         if (rocketMQConsumeExecutor != null) {
             int originalCoreSize = rocketMQConsumeExecutor.getCorePoolSize();
             int originalMaximumPoolSize = rocketMQConsumeExecutor.getMaximumPoolSize();
@@ -101,7 +101,7 @@ public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, Application
                 if (defaultMQPushConsumer != null) {
                     ConsumeMessageService consumeMessageService = defaultMQPushConsumer.getDefaultMQPushConsumerImpl().getConsumeMessageService();
                     ThreadPoolExecutor consumeExecutor = (ThreadPoolExecutor) ReflectUtil.getFieldValue(consumeMessageService, "consumeExecutor");
-                    ROCKET_MQ_CONSUME_EXECUTOR.put(container.getConsumerGroup(), consumeExecutor);
+                    rocketmqConsumeExecutor.put(container.getConsumerGroup(), consumeExecutor);
                 }
             }
         } catch (Exception ex) {

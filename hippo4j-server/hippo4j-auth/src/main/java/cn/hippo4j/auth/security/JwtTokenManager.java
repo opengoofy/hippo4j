@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 
+import static cn.hippo4j.auth.constant.Constants.STEP;
 import static cn.hippo4j.auth.constant.Constants.TOKEN_VALIDITY_IN_SECONDS;
 import static cn.hippo4j.auth.toolkit.JwtTokenUtil.SECRET;
 import static cn.hippo4j.common.constant.Constants.AUTHORITIES_KEY;
@@ -41,15 +42,29 @@ import static cn.hippo4j.common.constant.Constants.AUTHORITIES_KEY;
 @Component
 public class JwtTokenManager {
 
+    /**
+     * Create token.
+     *
+     * @param userName user-name
+     * @return new token
+     */
     public String createToken(String userName) {
         long now = System.currentTimeMillis();
         Date validity;
-        validity = new Date(now + TOKEN_VALIDITY_IN_SECONDS * 1000L);
+        validity = new Date(now + TOKEN_VALIDITY_IN_SECONDS * STEP);
         Claims claims = Jwts.claims().setSubject(userName);
-        return Jwts.builder().setClaims(claims).setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS512, SECRET).compact();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .compact();
     }
 
+    /**
+     * Validate token.
+     *
+     * @param token token
+     */
     public void validateToken(String token) {
         Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
     }

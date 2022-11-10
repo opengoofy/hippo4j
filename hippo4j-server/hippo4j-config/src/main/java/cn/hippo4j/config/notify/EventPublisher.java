@@ -28,31 +28,31 @@ public interface EventPublisher {
     /**
      * Init.
      *
-     * @param type
-     * @param bufferSize
+     * @param type       type
+     * @param bufferSize buffer size
      */
     void init(Class<? extends AbstractEvent> type, int bufferSize);
 
     /**
      * Add subscriber.
      *
-     * @param subscriber
+     * @param subscriber subscriber
      */
     void addSubscriber(AbstractSubscriber subscriber);
 
     /**
      * Publish.
      *
-     * @param event
-     * @return
+     * @param event event
+     * @return publish result
      */
     boolean publish(AbstractEvent event);
 
     /**
      * Notify subscriber.
      *
-     * @param subscriber
-     * @param event
+     * @param subscriber subscriber
+     * @param event      event
      */
     void notifySubscriber(AbstractSubscriber subscriber, AbstractEvent event);
 }

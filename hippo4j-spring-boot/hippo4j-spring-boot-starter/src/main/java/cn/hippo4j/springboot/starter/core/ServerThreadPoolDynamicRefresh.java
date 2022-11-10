@@ -17,6 +17,7 @@
 
 package cn.hippo4j.springboot.starter.core;
 
+import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.enums.EnableEnum;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
@@ -26,7 +27,6 @@ import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD
 @AllArgsConstructor
 public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh {
 
-    private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
+    private final ThreadPoolConfigChange threadPoolConfigChange;
 
     @Override
     public void dynamicRefresh(String content) {
@@ -95,7 +95,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 .nowExecuteTimeOut(executeTimeOut)
                 .build();
         changeNotifyRequest.setThreadPoolId(threadPoolId);
-        threadPoolNotifyAlarmHandler.sendPoolConfigChange(changeNotifyRequest);
+        threadPoolConfigChange.sendPoolConfigChange(changeNotifyRequest);
         log.info(CHANGE_THREAD_POOL_TEXT,
                 threadPoolId,
                 String.format(CHANGE_DELIMITER, originalCoreSize, afterExecutor.getCorePoolSize()),

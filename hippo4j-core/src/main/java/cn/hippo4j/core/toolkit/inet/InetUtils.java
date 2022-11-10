@@ -84,10 +84,9 @@ public class InetUtils implements Closeable {
                     } else {
                         continue;
                     }
-                    // @formatter:off
                     if (!ignoreInterface(ifc.getDisplayName())) {
                         for (Enumeration<InetAddress> addrs = ifc
-                                .getInetAddresses(); addrs.hasMoreElements(); ) {
+                                .getInetAddresses(); addrs.hasMoreElements();) {
                             InetAddress address = addrs.nextElement();
                             if (address instanceof Inet4Address
                                     && !address.isLoopbackAddress()
@@ -98,7 +97,6 @@ public class InetUtils implements Closeable {
                             }
                         }
                     }
-                    // @formatter:on
                 }
             }
         } catch (IOException ex) {
@@ -150,7 +148,6 @@ public class InetUtils implements Closeable {
     public HostInfo convertAddress(final InetAddress address) {
         HostInfo hostInfo = new HostInfo();
         Future<String> result = this.executorService.submit(address::getHostName);
-
         String hostname;
         try {
             hostname = result.get(this.properties.getTimeoutSeconds(), TimeUnit.SECONDS);

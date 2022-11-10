@@ -43,7 +43,7 @@ public interface TaskAwarePlugin extends ThreadPoolPlugin {
      * Callback during the {@link java.util.concurrent.RunnableFuture} task create in thread-pool.
      *
      * @param executor executor
-     * @param future original task
+     * @param future   original task
      * @return Tasks that really need to be performed
      * @see ThreadPoolExecutor#newTaskFor(Callable)
      */
@@ -61,5 +61,4 @@ public interface TaskAwarePlugin extends ThreadPoolPlugin {
     default Runnable beforeTaskExecute(Runnable runnable) {
         return runnable;
     }
-
 }

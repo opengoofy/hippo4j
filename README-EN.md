@@ -54,3 +54,7 @@ More companies with access are welcome to register at [registration address](htt
 
 ## Contributors
 Thanks to all the developers who contributed to the project. If interested in contributing, refer to [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
+
+<a href="https://github.com/opengoofy/hippo4j/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=opengoofy/hippo4j" />
+</a>

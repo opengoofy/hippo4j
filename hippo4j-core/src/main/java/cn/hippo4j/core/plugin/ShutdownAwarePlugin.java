@@ -35,19 +35,17 @@ public interface ShutdownAwarePlugin extends ThreadPoolPlugin {
      * @see ThreadPoolExecutor#shutdownNow()
      */
     default void beforeShutdown(ThreadPoolExecutor executor) {
-        // do nothing
     }
 
     /**
      * Callback after pool shutdown.
      *
-     * @param executor executor
+     * @param executor       executor
      * @param remainingTasks remainingTasks, or empty if no tasks left or {@link ThreadPoolExecutor#shutdown()} called
      * @see ThreadPoolExecutor#shutdown()
      * @see ThreadPoolExecutor#shutdownNow()
      */
     default void afterShutdown(ThreadPoolExecutor executor, List<Runnable> remainingTasks) {
-        // do nothing
     }
 
     /**
@@ -57,7 +55,5 @@ public interface ShutdownAwarePlugin extends ThreadPoolPlugin {
      * @see ThreadPoolExecutor#terminated()
      */
     default void afterTerminated(ExtensibleThreadPoolExecutor executor) {
-        // do nothing
     }
-
 }

@@ -17,6 +17,7 @@
 
 package cn.hippo4j.message.request.base;
 
+import cn.hippo4j.common.api.NotifyRequest;
 import lombok.Data;
 
 /**

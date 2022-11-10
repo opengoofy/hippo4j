@@ -28,7 +28,7 @@ public interface ThreadPoolAdapterRegisterAction {
     /**
      * Get thread pool adapter cache configs.
      *
-     * @param threadPoolAdapterMap
+     * @param threadPoolAdapterMap thread-pool adapter map
      * @return List<ThreadPoolAdapterCacheConfig>
      */
     List<ThreadPoolAdapterCacheConfig> getThreadPoolAdapterCacheConfigs(Map<String, ThreadPoolAdapter> threadPoolAdapterMap);
@@ -36,8 +36,7 @@ public interface ThreadPoolAdapterRegisterAction {
     /**
      * Do register.
      *
-     * @param cacheConfigList
-     * @return
+     * @param cacheConfigList cache config list
      */
     void doRegister(List<ThreadPoolAdapterCacheConfig> cacheConfigList);
 }

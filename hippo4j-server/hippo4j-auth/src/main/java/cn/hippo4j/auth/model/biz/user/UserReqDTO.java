@@ -19,23 +19,28 @@ package cn.hippo4j.auth.model.biz.user;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * User req dto.
  */
 @Data
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class UserReqDTO extends Page {
 
     /**
      * userName
      */
+    @Length(max = 64, message = "用户名最长为64个字符")
     private String userName;
 
     /**
      * password
      */
+    @Length(min = 6, message = "密码最少为6个字符")
     private String password;
 
     /**

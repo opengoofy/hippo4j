@@ -33,6 +33,6 @@ public final class AuthUtilTest {
 
     @Test
     public void assertGetEnableAuthentication() {
-        Assert.isTrue(AuthUtil.ENABLE_AUTHENTICATION);
+        Assert.isTrue(AuthUtil.isEnableAuthentication());
     }
 }

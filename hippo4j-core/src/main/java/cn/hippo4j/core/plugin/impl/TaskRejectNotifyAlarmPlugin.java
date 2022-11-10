@@ -17,9 +17,9 @@
 
 package cn.hippo4j.core.plugin.impl;
 
+import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
 import cn.hippo4j.core.plugin.RejectedAwarePlugin;
 
 import java.util.Optional;
@@ -55,7 +55,7 @@ public class TaskRejectNotifyAlarmPlugin implements RejectedAwarePlugin {
         }
         String threadPoolId = ((ExtensibleThreadPoolExecutor) executor).getThreadPoolId();
         Optional.ofNullable(ApplicationContextHolder.getInstance())
-                .map(context -> context.getBean(ThreadPoolNotifyAlarmHandler.class))
+                .map(context -> context.getBean(ThreadPoolCheckAlarm.class))
                 .ifPresent(handler -> handler.asyncSendRejectedAlarm(threadPoolId));
     }
 }

@@ -31,7 +31,5 @@ public interface RejectedAwarePlugin extends ThreadPoolPlugin {
      * @param executor executor
      */
     default void beforeRejectedExecution(Runnable runnable, ThreadPoolExecutor executor) {
-        // do nothing
     }
-
 }

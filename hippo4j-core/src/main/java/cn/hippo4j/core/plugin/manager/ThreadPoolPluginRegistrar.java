@@ -25,12 +25,13 @@ import cn.hippo4j.core.plugin.ThreadPoolPlugin;
 public interface ThreadPoolPluginRegistrar {
 
     /**
-     * Get id.
-     * In spring container, the obtained id will be used as the alias of the bean name.
+     * Get id
      *
      * @return id
      */
-    String getId();
+    default String getId() {
+        return this.getClass().getSimpleName();
+    }
 
     /**
      * Create and register plugin for the specified thread-pool instance.
@@ -38,5 +39,4 @@ public interface ThreadPoolPluginRegistrar {
      * @param support thread pool plugin manager delegate
      */
     void doRegister(ThreadPoolPluginSupport support);
-
 }

@@ -62,6 +62,18 @@ const config = {
             }),
         ],
     ],
+    
+    plugins: [
+        [
+          "@docusaurus/plugin-content-docs",
+          {
+            id: "community",
+            path: "community",
+            routeBasePath: "community",
+            sidebarPath: require.resolve("./sidebarsCommunity.js"),
+          },
+        ],
+    ],
 
     themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -89,12 +101,13 @@ const config = {
                         label: '文档',
                     },
                     {
-                        type: 'docSidebar',
-                        docId: 'contributor',
-                        position: 'left',
-                        sidebarId: 'community',
-                        label: '社区',
+                      to: "/community/contributor-guide",
+                      label: "社区",
+                      position: "left",
+                      activeBaseRegex: `/community/`,
                     },
+                    { to: "/team", label: "团队", position: "left" },
+                    { to: "/users", label: "用户", position: "left" },
                     /*{to: '/blog', label: '博客', position: 'left'},*/
                     {
                         href: 'http://console.hippo4j.cn/index.html',

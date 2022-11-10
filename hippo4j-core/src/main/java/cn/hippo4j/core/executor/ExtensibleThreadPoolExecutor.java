@@ -43,43 +43,42 @@ import java.util.concurrent.*;
 public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements ThreadPoolPluginSupport {
 
     /**
-     * thread pool id
+     * Thread pool id
      */
     @Getter
-    @NonNull
     private final String threadPoolId;
 
     /**
-     * action aware registry
+     * Action aware registry
      */
     @Getter
     private final ThreadPoolPluginManager threadPoolPluginManager;
 
     /**
-     * handler wrapper, any changes to the current instance {@link RejectedExecutionHandler} should be made through this wrapper
+     * Handler wrapper, any changes to the current instance {@link RejectedExecutionHandler} should be made through this wrapper
      */
     private final RejectedAwareHandlerWrapper handlerWrapper;
 
     /**
      * Creates a new {@code ExtensibleThreadPoolExecutor} with the given initial parameters.
      *
-     * @param threadPoolId    thread-pool id
-     * @param threadPoolPluginManager  action aware registry
-     * @param corePoolSize    the number of threads to keep in the pool, even
-     *                        if they are idle, unless {@code allowCoreThreadTimeOut} is set
-     * @param maximumPoolSize the maximum number of threads to allow in the
-     *                        pool
-     * @param keepAliveTime   when the number of threads is greater than
-     *                        the core, this is the maximum time that excess idle threads
-     *                        will wait for new tasks before terminating.
-     * @param unit            the time unit for the {@code keepAliveTime} argument
-     * @param workQueue       the queue to use for holding tasks before they are
-     *                        executed.  This queue will hold only the {@code Runnable}
-     *                        tasks submitted by the {@code execute} method.
-     * @param threadFactory   the factory to use when the executor
-     *                        creates a new thread
-     * @param handler         the handler to use when execution is blocked
-     *                        because the thread bounds and queue capacities are reached
+     * @param threadPoolId            thread-pool id
+     * @param threadPoolPluginManager action aware registry
+     * @param corePoolSize            the number of threads to keep in the pool, even
+     *                                if they are idle, unless {@code allowCoreThreadTimeOut} is set
+     * @param maximumPoolSize         the maximum number of threads to allow in the
+     *                                pool
+     * @param keepAliveTime           when the number of threads is greater than
+     *                                the core, this is the maximum time that excess idle threads
+     *                                will wait for new tasks before terminating.
+     * @param unit                    the time unit for the {@code keepAliveTime} argument
+     * @param workQueue               the queue to use for holding tasks before they are
+     *                                executed.  This queue will hold only the {@code Runnable}
+     *                                tasks submitted by the {@code execute} method.
+     * @param threadFactory           the factory to use when the executor
+     *                                creates a new thread
+     * @param handler                 the handler to use when execution is blocked
+     *                                because the thread bounds and queue capacities are reached
      * @throws IllegalArgumentException if one of the following holds:<br>
      *                                  {@code corePoolSize < 0}<br>
      *                                  {@code keepAliveTime < 0}<br>
@@ -97,12 +96,10 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
                                         @NonNull ThreadFactory threadFactory,
                                         @NonNull RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
-
-        // pool extended info
+        // Pool extended info.
         this.threadPoolId = threadPoolId;
         this.threadPoolPluginManager = threadPoolPluginManager;
-
-        // proxy handler to support Aware callback
+        // Proxy handler to support Aware callback.
         while (handler instanceof RejectedAwareHandlerWrapper) {
             handler = ((RejectedAwareHandlerWrapper) handler).getHandler();
         }
@@ -115,7 +112,7 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
      *
      * <p><b>Before calling the parent class method, {@link ExecuteAwarePlugin#beforeExecute} will be called first.
      *
-     * @param thread the thread that will run task {@code r}
+     * @param thread   the thread that will run task {@code r}
      * @param runnable the task that will be executed
      */
     @Override
@@ -145,9 +142,9 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
      *
      * <p><b>After calling the superclass method, {@link ExecuteAwarePlugin#afterExecute} will be called last.
      *
-     * @param runnable the runnable that has completed
+     * @param runnable  the runnable that has completed
      * @param throwable the exception that caused termination, or null if
-     *          execution completed normally
+     *                  execution completed normally
      */
     @Override
     protected void afterExecute(Runnable runnable, Throwable throwable) {
@@ -191,7 +188,7 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
     }
 
     /**
-     * {@inheritDoc}.
+     * {@inheritDoc}
      *
      * <p><b>Before calling the superclass method, {@link ShutdownAwarePlugin#afterTerminated} will be called first.
      */
@@ -291,22 +288,21 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
     private static class RejectedAwareHandlerWrapper implements RejectedExecutionHandler {
 
         /**
-         * thread-pool action aware registry
+         * Thread-pool action aware registry
          */
         private final ThreadPoolPluginManager registry;
 
         /**
-         * original target
+         * Original target
          */
-        @NonNull
         @Setter
         @Getter
         private RejectedExecutionHandler handler;
 
         /**
-         * Call {@link RejectedAwarePlugin#beforeRejectedExecution}, then reject the task
+         * Call {@link RejectedAwarePlugin#beforeRejectedExecution}, then reject the task.
          *
-         * @param r the runnable task requested to be executed
+         * @param r        the runnable task requested to be executed
          * @param executor the executor attempting to execute this task
          */
         @Override
@@ -315,6 +311,5 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
             rejectedAwarePluginList.forEach(aware -> aware.beforeRejectedExecution(r, executor));
             handler.rejectedExecution(r, executor);
         }
-
     }
 }

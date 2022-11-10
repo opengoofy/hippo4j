@@ -151,7 +151,7 @@ public class ConfigServiceImpl implements ConfigService {
             ConfigServiceImpl configService = ApplicationContextHolder.getBean(this.getClass());
             configService.updateConfigInfo(null, false, configAllInfo);
         }
-        DynamicThreadPoolRegisterServerNotifyParameter serverNotifyParameter = registerWrapper.getDynamicThreadPoolRegisterServerNotifyParameter();
+        DynamicThreadPoolRegisterServerNotifyParameter serverNotifyParameter = registerWrapper.getServerNotify();
         if (serverNotifyParameter != null) {
             ArrayList<String> notifyTypes = new ArrayList<>();
             Collections.addAll(notifyTypes, "CONFIG", "ALARM");
@@ -177,7 +177,7 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     private ConfigAllInfo parseConfigAllInfo(DynamicThreadPoolRegisterWrapper registerWrapper) {
-        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getDynamicThreadPoolRegisterParameter();
+        DynamicThreadPoolRegisterParameter registerParameter = registerWrapper.getParameter();
         ConfigAllInfo configAllInfo = JSONUtil.parseObject(JSONUtil.toJSONString(registerParameter), ConfigAllInfo.class);
         configAllInfo.setTenantId(registerWrapper.getTenantId());
         configAllInfo.setItemId(registerWrapper.getItemId());

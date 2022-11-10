@@ -26,7 +26,6 @@ import java.lang.annotation.Target;
 /**
  * An annotation that enhances the functionality of the jdk acoustic thread pool,
  * with the following list of enhancements.
- *
  * <ul>
  *      <li>Dynamic change at runtime</li>
  *      <li>Determine whether an alarm is required at runtime</li>

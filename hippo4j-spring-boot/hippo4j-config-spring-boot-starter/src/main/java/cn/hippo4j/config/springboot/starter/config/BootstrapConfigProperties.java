@@ -49,7 +49,7 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
     /**
      * Thread pool monitoring related configuration.
      */
-    private MonitorProperties monitor;
+    private MonitorProperties monitor = new MonitorProperties();
 
     /***
      * Latest use {@link MonitorProperties#getEnable()}

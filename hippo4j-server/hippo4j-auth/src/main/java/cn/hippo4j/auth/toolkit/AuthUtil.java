@@ -29,10 +29,14 @@ public class AuthUtil {
     /**
      * Enable authentication
      */
-    public static boolean ENABLE_AUTHENTICATION;
+    private static boolean enableAuthentication;
 
     @Value("${hippo4j.core.auth.enabled:true}")
     public void setEnableAuthentication(boolean enabled) {
-        AuthUtil.ENABLE_AUTHENTICATION = enabled;
+        AuthUtil.enableAuthentication = enabled;
+    }
+
+    public static boolean isEnableAuthentication() {
+        return enableAuthentication;
     }
 }
