@@ -17,8 +17,6 @@
 
 package cn.hippo4j.core.plugin;
 
-import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -56,7 +54,7 @@ public interface TaskAwarePlugin extends ThreadPoolPlugin {
      *
      * @param runnable runnable
      * @return tasks to be execute
-     * @see ExtensibleThreadPoolExecutor#execute
+     * @see ThreadPoolExecutor#execute
      */
     default Runnable beforeTaskExecute(Runnable runnable) {
         return runnable;
