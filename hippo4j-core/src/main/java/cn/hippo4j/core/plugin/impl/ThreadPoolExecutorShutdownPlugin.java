@@ -28,7 +28,11 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.RunnableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>After the thread pool calls {@link ThreadPoolExecutor#shutdown()} or {@link ThreadPoolExecutor#shutdownNow()}. <br />
@@ -41,17 +45,7 @@ import java.util.concurrent.*;
 @AllArgsConstructor
 public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
 
-    public static final String PLUGIN_NAME = "thread-pool-executor-shutdown-plugin";
-
-    /**
-     * Get id.
-     *
-     * @return id
-     */
-    @Override
-    public String getId() {
-        return PLUGIN_NAME;
-    }
+    public static final String PLUGIN_NAME = ThreadPoolExecutorShutdownPlugin.class.getSimpleName();
 
     /**
      * Await termination millis
@@ -102,7 +96,7 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
     @Override
     public PluginRuntime getPluginRuntime() {
         return new PluginRuntime(getId())
-                .addInfo("awaitTerminationMillis", awaitTerminationMillis);
+                .addInfo("awaitTerminationMillis", awaitTerminationMillis + "ms");
     }
 
     /**
@@ -132,7 +126,7 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
             if (!isTerminated && log.isWarnEnabled()) {
                 log.warn("Timed out while waiting for executor {} to terminate.", threadPoolId);
             } else {
-                log.info("ExecutorService {} has been shutdowned.", threadPoolId);
+                log.info("ExecutorService {} has been shutdown.", threadPoolId);
             }
         } catch (InterruptedException ex) {
             if (log.isWarnEnabled()) {

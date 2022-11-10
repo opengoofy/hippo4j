@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.plugin;
 
-import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Callback during task execution.
@@ -29,7 +29,7 @@ public interface ExecuteAwarePlugin extends ThreadPoolPlugin {
      *
      * @param thread   thread of executing task
      * @param runnable task
-     * @see ExtensibleThreadPoolExecutor#beforeExecute
+     * @see ThreadPoolExecutor#beforeExecute
      */
     default void beforeExecute(Thread thread, Runnable runnable) {
     }
@@ -39,7 +39,7 @@ public interface ExecuteAwarePlugin extends ThreadPoolPlugin {
      *
      * @param runnable  runnable
      * @param throwable exception thrown during execution
-     * @see ExtensibleThreadPoolExecutor#afterExecute
+     * @see ThreadPoolExecutor#afterExecute
      */
     default void afterExecute(Runnable runnable, Throwable throwable) {
     }

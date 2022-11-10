@@ -30,7 +30,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -210,7 +214,7 @@ public class ExtensibleThreadPoolExecutorTest {
             ShutdownAwarePlugin.super.afterShutdown(executor, remainingTasks);
         }
         @Override
-        public void afterTerminated(ExtensibleThreadPoolExecutor executor) {
+        public void afterTerminated(ThreadPoolExecutor executor) {
             invokeCount.incrementAndGet();
             ShutdownAwarePlugin.super.afterTerminated(executor);
         }

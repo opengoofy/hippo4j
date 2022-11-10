@@ -30,17 +30,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public class TaskRejectNotifyAlarmPlugin implements RejectedAwarePlugin {
 
-    public static final String PLUGIN_NAME = "task-reject-notify-alarm-plugin";
-
-    /**
-     * Get id.
-     *
-     * @return id
-     */
-    @Override
-    public String getId() {
-        return PLUGIN_NAME;
-    }
+    public static final String PLUGIN_NAME = TaskRejectNotifyAlarmPlugin.class.getSimpleName();
 
     /**
      * Callback before task is rejected.
