@@ -41,7 +41,8 @@ public abstract class AbstractNettyTakeHandler extends ChannelInboundHandlerAdap
         Channel channel = ctx.channel();
         if (channel.isActive()) {
             ctx.close();
-        } else {
+        }
+        if (cause != null) {
             throw new ConnectionException(cause);
         }
     }

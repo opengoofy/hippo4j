@@ -21,6 +21,7 @@ import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.rpc.coder.NettyDecoder;
 import cn.hippo4j.rpc.coder.NettyEncoder;
 import cn.hippo4j.rpc.discovery.ServerPort;
+import cn.hippo4j.rpc.exception.ConnectionException;
 import cn.hippo4j.rpc.handler.AbstractNettyHandlerManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -38,7 +39,7 @@ import java.util.List;
  * adapter to the netty server
  */
 @Slf4j
-public class AbstractNettyServerConnection extends AbstractNettyHandlerManager implements ServerConnection {
+public class NettyServerConnection extends AbstractNettyHandlerManager implements ServerConnection {
 
     ServerPort port;
     EventLoopGroup leader;
@@ -47,7 +48,7 @@ public class AbstractNettyServerConnection extends AbstractNettyHandlerManager i
     ChannelFuture future;
     Channel channel;
 
-    public AbstractNettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, List<ChannelHandler> handlers) {
+    public NettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, List<ChannelHandler> handlers) {
         super(handlers);
         Assert.notNull(leader);
         Assert.notNull(worker);
@@ -55,15 +56,15 @@ public class AbstractNettyServerConnection extends AbstractNettyHandlerManager i
         this.worker = worker;
     }
 
-    public AbstractNettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, ChannelHandler... handlers) {
+    public NettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, ChannelHandler... handlers) {
         this(leader, worker, (handlers != null ? Arrays.asList(handlers) : Collections.emptyList()));
     }
 
-    public AbstractNettyServerConnection(ChannelHandler... handlers) {
+    public NettyServerConnection(ChannelHandler... handlers) {
         this(handlers != null ? Arrays.asList(handlers) : Collections.emptyList());
     }
 
-    public AbstractNettyServerConnection(List<ChannelHandler> handlers) {
+    public NettyServerConnection(List<ChannelHandler> handlers) {
         this(new NioEventLoopGroup(), new NioEventLoopGroup(), handlers);
     }
 
@@ -77,27 +78,29 @@ public class AbstractNettyServerConnection extends AbstractNettyHandlerManager i
 
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
-                        ch.pipeline().addLast(new NettyEncoder());
+                        ChannelPipeline pipeline = ch.pipeline();
+                        pipeline.addLast(new NettyEncoder());
+                        pipeline.addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
                         handlerEntities.stream()
                                 .sorted()
                                 .forEach(h -> {
                                     if (h.getName() == null) {
-                                        ch.pipeline().addLast(h.getHandler());
+                                        pipeline.addLast(h.getHandler());
                                     } else {
-                                        ch.pipeline().addLast(h.getName(), h.getHandler());
+                                        pipeline.addLast(h.getName(), h.getHandler());
                                     }
                                 });
                     }
                 });
         try {
-            this.future = server.bind(port.getPort());
+            this.future = server.bind(port.getPort()).sync();
             this.channel = this.future.channel();
-            log.info("The server is started and can receive requests. The listening port is {}", port);
+            log.info("The server is started and can receive requests. The listening port is {}", port.getPort());
             this.port = port;
             this.future.channel().closeFuture().sync();
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
+            throw new ConnectionException("Listening port failed, Please check whether the port is occupied", ex);
         }
     }
 
@@ -109,34 +112,37 @@ public class AbstractNettyServerConnection extends AbstractNettyHandlerManager i
         leader.shutdownGracefully();
         worker.shutdownGracefully();
         this.future.channel().close();
-        log.info("The server is shut down and no more requests are received. The release port is {}", port);
+        log.info("The server is shut down and no more requests are received. The release port is {}", port.getPort());
     }
 
     @Override
     public boolean isActive() {
+        if (channel == null) {
+            return false;
+        }
         return channel.isActive();
     }
 
     @Override
-    public AbstractNettyServerConnection addLast(String name, ChannelHandler handler) {
+    public NettyServerConnection addLast(String name, ChannelHandler handler) {
         super.addLast(name, handler);
         return this;
     }
 
     @Override
-    public AbstractNettyServerConnection addFirst(String name, ChannelHandler handler) {
+    public NettyServerConnection addFirst(String name, ChannelHandler handler) {
         super.addFirst(name, handler);
         return this;
     }
 
     @Override
-    public AbstractNettyServerConnection addLast(ChannelHandler handler) {
+    public NettyServerConnection addLast(ChannelHandler handler) {
         super.addLast(handler);
         return this;
     }
 
     @Override
-    public AbstractNettyServerConnection addFirst(ChannelHandler handler) {
+    public NettyServerConnection addFirst(ChannelHandler handler) {
         super.addFirst(handler);
         return this;
     }

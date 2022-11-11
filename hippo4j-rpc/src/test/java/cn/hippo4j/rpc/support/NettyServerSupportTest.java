@@ -22,15 +22,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class NettyServerSupportTest {
 
     @Test
     public void bind() throws IOException {
-        NettyServerSupport support = new NettyServerSupport(() -> 8890, InstanceServerLoader.class);
-        CompletableFuture.runAsync(support::bind);
+        NettyServerSupport support = new NettyServerSupport(() -> 8891, InstanceServerLoader.class);
+        support.bind();
         try {
             TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {

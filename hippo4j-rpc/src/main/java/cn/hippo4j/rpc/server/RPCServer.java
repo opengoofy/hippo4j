@@ -18,8 +18,10 @@
 package cn.hippo4j.rpc.server;
 
 import cn.hippo4j.rpc.discovery.ServerPort;
+import cn.hippo4j.rpc.exception.ConnectionException;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Server Implementation
@@ -34,9 +36,17 @@ public class RPCServer implements Server {
         this.serverConnection = serverConnection;
     }
 
+    /**
+     * Reference from{@link cn.hippo4j.config.netty.MonitorNettyServer}<br>
+     * Start the server side asynchronously
+     */
     @Override
     public void bind() {
-        serverConnection.bind(port);
+        CompletableFuture
+                .runAsync(() -> serverConnection.bind(port))
+                .exceptionally(throwable -> {
+                    throw new ConnectionException(throwable);
+                });
     }
 
     @Override

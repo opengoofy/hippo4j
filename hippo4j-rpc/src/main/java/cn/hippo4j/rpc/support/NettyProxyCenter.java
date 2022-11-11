@@ -20,20 +20,19 @@ package cn.hippo4j.rpc.support;
 import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.web.exception.IllegalException;
 import cn.hippo4j.rpc.client.Client;
-import cn.hippo4j.rpc.client.NettyClientConnection;
-import cn.hippo4j.rpc.client.RPCClient;
-import cn.hippo4j.rpc.discovery.ServerPort;
+import cn.hippo4j.rpc.exception.ConnectionException;
+import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
 import cn.hippo4j.rpc.model.DefaultRequest;
 import cn.hippo4j.rpc.model.Request;
 import cn.hippo4j.rpc.model.Response;
-import io.netty.channel.pool.ChannelPoolHandler;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
-import java.util.HashMap;
+import java.net.InetSocketAddress;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Add a proxy for the request, {@link Proxy} and {@link InvocationHandler}
@@ -42,31 +41,77 @@ import java.util.Map;
 public class NettyProxyCenter {
 
     // cache
-    static Map<Class<?>, Object> map = new HashMap<>();
+    static Map<String, Object> map = new ConcurrentHashMap<>();
 
     /**
      * A proxy object for PRC is obtained through an interface
      *
      * @param cls     The interface type
-     * @param host    Request the address
-     * @param port    port
+     * @param address address
      * @param <T>     Object type
      * @param handler the pool handler  for netty
      * @return Proxy objects
      */
-    public static <T> T getProxy(Class<T> cls, String host, ServerPort port, ChannelPoolHandler handler) {
-        NettyClientConnection connection = new NettyClientConnection(host, port, handler);
-        Client rpcClient = new RPCClient(connection);
-        return getProxy(rpcClient, cls, host, port);
+    @SuppressWarnings("unchecked")
+    public static <T> T getProxy(Class<T> cls, InetSocketAddress address, NettyClientPoolHandler handler) {
+        Client client = NettyClientSupport.getClient(address, handler);
+        String s = address + cls.getName();
+        Object o = map.get(s);
+        if (o != null) {
+            return (T) o;
+        }
+        return createProxy(client, cls, address);
+    }
+
+    /**
+     * A proxy object for PRC is obtained through an interface
+     *
+     * @param cls     The interface type
+     * @param address address String
+     * @param <T>     Object type
+     * @return Proxy objects
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T getProxy(Class<T> cls, String address) {
+        String[] addressStr = address.split(":");
+        if (addressStr.length < 2) {
+            throw new ConnectionException("Failed to connect to the server because the IP address is invalid. Procedure");
+        }
+        InetSocketAddress socketAddress = InetSocketAddress.createUnresolved(addressStr[0], Integer.parseInt(addressStr[1]));
+        String s = socketAddress + cls.getName();
+        Object o = map.get(s);
+        if (o != null) {
+            return (T) o;
+        }
+        Client client = NettyClientSupport.getClient(socketAddress);
+        return createProxy(client, cls, socketAddress);
+    }
+
+    /**
+     * remove proxy object
+     *
+     * @param cls     the class
+     * @param address address String
+     */
+    public static void removeProxy(Class<?> cls, String address) {
+        String[] addressStr = address.split(":");
+        if (addressStr.length < 2) {
+            throw new ConnectionException("Failed to connect to the server because the IP address is invalid. Procedure");
+        }
+        InetSocketAddress socketAddress = InetSocketAddress.createUnresolved(addressStr[0], Integer.parseInt(addressStr[1]));
+        String s = socketAddress + cls.getName();
+        NettyClientSupport.closeClient(socketAddress);
+        map.remove(s);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getProxy(Client client, Class<T> cls, String host, ServerPort port) {
+    public static <T> T createProxy(Client client, Class<T> cls, InetSocketAddress address) {
         boolean b = cls.isInterface();
         if (!b) {
             throw new IllegalException(cls.getName() + "is not a Interface");
         }
-        Object o = map.get(cls);
+        String s = address.toString() + cls.getName();
+        Object o = map.get(s);
         if (o != null) {
             return (T) o;
         }
@@ -76,7 +121,7 @@ public class NettyProxyCenter {
                 (proxy, method, args) -> {
                     String clsName = cls.getName();
                     String methodName = method.getName();
-                    String key = host + port + clsName + methodName + IdUtil.simpleUUID();
+                    String key = address + clsName + methodName + IdUtil.simpleUUID();
                     Class<?>[] parameterTypes = method.getParameterTypes();
                     Request request = new DefaultRequest(key, clsName, methodName, parameterTypes, args);
                     Response response = client.connection(request);
@@ -88,7 +133,7 @@ public class NettyProxyCenter {
                     }
                     return response.getObj();
                 });
-        map.put(cls, obj);
+        map.put(s, obj);
         return obj;
     }
 }
