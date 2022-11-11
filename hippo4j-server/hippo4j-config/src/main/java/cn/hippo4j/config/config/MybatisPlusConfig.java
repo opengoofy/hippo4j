@@ -32,12 +32,12 @@ import org.springframework.context.annotation.Configuration;
 public class MybatisPlusConfig {
 
     @Value("${hippo4j.database.dialect:mysql}")
-    private String profilesActive;
+    private String databaseDialect;
 
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.getDbType(profilesActive)));
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.getDbType(databaseDialect)));
         return interceptor;
     }
 }
