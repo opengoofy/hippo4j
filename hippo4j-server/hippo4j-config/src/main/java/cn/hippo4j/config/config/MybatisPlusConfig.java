@@ -31,13 +31,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MybatisPlusConfig {
 
-    @Value("${spring.profiles.active:mysql}")
-    private String profilesActive;
+    @Value("${hippo4j.database.dialect:mysql}")
+    private String databaseDialect;
 
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.getDbType(profilesActive)));
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.getDbType(databaseDialect)));
         return interceptor;
     }
 }
