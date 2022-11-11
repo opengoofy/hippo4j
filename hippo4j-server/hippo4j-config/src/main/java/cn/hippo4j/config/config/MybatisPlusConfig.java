@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MybatisPlusConfig {
 
-    @Value("${spring.profiles.active:mysql}")
+    @Value("${hippo4j.database.dialect:mysql}")
     private String profilesActive;
 
     @Bean
