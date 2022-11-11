@@ -98,7 +98,7 @@ public final class NettyClientSupport {
     public static void closeClient(InetSocketAddress address) {
         Client client = clientMap.remove(address);
         try {
-            if (client != null){
+            if (client != null) {
                 client.close();
             }
         } catch (IOException e) {

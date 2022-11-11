@@ -17,6 +17,7 @@
 
 package cn.hippo4j.rpc.support;
 
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.rpc.discovery.DefaultInstance;
 import cn.hippo4j.rpc.discovery.Instance;
 import cn.hippo4j.rpc.discovery.ServerPort;
@@ -36,7 +37,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.concurrent.TimeUnit;
 
 public class NettyConnectPoolTest {
 
@@ -56,10 +56,8 @@ public class NettyConnectPoolTest {
         RPCServer rpcServer = new RPCServer(connection, port);
         rpcServer.bind();
         // Given the delay in starting the server, wait here
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
         InetSocketAddress address = InetSocketAddress.createUnresolved(host, port.getPort());
         NettyClientPoolHandler poolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
@@ -79,10 +77,8 @@ public class NettyConnectPoolTest {
         RPCServer rpcServer = new RPCServer(connection, port);
         rpcServer.bind();
         // Given the delay in starting the server, wait here
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
         InetSocketAddress address = InetSocketAddress.createUnresolved(host, port.getPort());
         NettyClientPoolHandler poolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
@@ -101,10 +97,8 @@ public class NettyConnectPoolTest {
         RPCServer rpcServer = new RPCServer(connection, port);
         rpcServer.bind();
         // Given the delay in starting the server, wait here
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
         InetSocketAddress address = InetSocketAddress.createUnresolved(host, port.getPort());
         NettyClientPoolHandler poolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());

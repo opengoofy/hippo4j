@@ -17,6 +17,7 @@
 
 package cn.hippo4j.rpc.server;
 
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.rpc.discovery.DefaultInstance;
 import cn.hippo4j.rpc.discovery.Instance;
 import cn.hippo4j.rpc.discovery.ServerPort;
@@ -27,7 +28,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class RPCServerTest {
 
@@ -41,10 +41,8 @@ public class RPCServerTest {
         ServerConnection connection = new NettyServerConnection(handler);
         RPCServer rpcServer = new RPCServer(connection, port);
         rpcServer.bind();
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
         boolean active = rpcServer.isActive();
         Assert.assertTrue(active);
@@ -62,10 +60,8 @@ public class RPCServerTest {
         ServerConnection connection = new NettyServerConnection(leader, worker, handler);
         RPCServer rpcServer = new RPCServer(connection, portTest);
         rpcServer.bind();
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
         boolean active = rpcServer.isActive();
         Assert.assertTrue(active);

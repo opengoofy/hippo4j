@@ -17,6 +17,7 @@
 
 package cn.hippo4j.rpc.client;
 
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.rpc.discovery.ClassRegistry;
 import cn.hippo4j.rpc.discovery.DefaultInstance;
 import cn.hippo4j.rpc.discovery.Instance;
@@ -36,7 +37,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.concurrent.TimeUnit;
 
 public class RPCClientTest {
 
@@ -58,10 +58,8 @@ public class RPCClientTest {
         ServerConnection connection = new NettyServerConnection(handler);
         RPCServer rpcServer = new RPCServer(connection, portTest);
         rpcServer.bind();
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
         InetSocketAddress address = InetSocketAddress.createUnresolved(host, portTest.getPort());
         ChannelPoolHandler channelPoolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
@@ -93,10 +91,8 @@ public class RPCClientTest {
         ServerConnection connection = new NettyServerConnection(handler);
         RPCServer rpcServer = new RPCServer(connection, port);
         rpcServer.bind();
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
         InetSocketAddress address = InetSocketAddress.createUnresolved(host, port.getPort());
         ChannelPoolHandler channelPoolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
