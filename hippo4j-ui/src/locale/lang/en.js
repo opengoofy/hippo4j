@@ -33,7 +33,11 @@ export default {
     updateTime: 'Update Time'
   },
 
+  // 租户管理
+  tenantManage: {
 
+  },
+  
   // 线程池
   threadPool: {
     tenant: 'Tenant',
