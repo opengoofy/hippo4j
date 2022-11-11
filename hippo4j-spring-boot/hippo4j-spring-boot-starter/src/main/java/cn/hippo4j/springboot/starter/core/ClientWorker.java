@@ -22,7 +22,6 @@ import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
@@ -39,7 +38,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static cn.hippo4j.common.constant.Constants.*;
+import static cn.hippo4j.common.constant.Constants.CLIENT_VERSION;
+import static cn.hippo4j.common.constant.Constants.CONFIG_CONTROLLER_PATH;
+import static cn.hippo4j.common.constant.Constants.CONFIG_LONG_POLL_TIMEOUT;
+import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER_TRANSLATION;
+import static cn.hippo4j.common.constant.Constants.LINE_SEPARATOR;
+import static cn.hippo4j.common.constant.Constants.LISTENER_PATH;
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_CLIENT_IDENTIFICATION;
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_TIMEOUT;
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_TIMEOUT_NO_HANGUP;
+import static cn.hippo4j.common.constant.Constants.NULL;
+import static cn.hippo4j.common.constant.Constants.PROBE_MODIFY_REQUEST;
+import static cn.hippo4j.common.constant.Constants.WEIGHT_CONFIGS;
+import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
 
 /**
  * Client worker.
@@ -70,7 +81,7 @@ public class ClientWorker {
         this.agent = httpAgent;
         this.identify = identify;
         this.timeout = CONFIG_LONG_POLL_TIMEOUT;
-        this.version = StringUtil.isNotEmpty(version) ? version.replace("-SNAPSHOT", "") : "";
+        this.version = version;
         this.serverHealthCheck = serverHealthCheck;
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1, runnable -> {
             Thread thread = new Thread(runnable);

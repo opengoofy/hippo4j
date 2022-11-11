@@ -62,8 +62,6 @@ public class LongPollingService {
 
     private final Map<String, Long> retainIps = new ConcurrentHashMap<>();
 
-    private static final int LOW_VERSION = 143;
-
     public LongPollingService() {
         allSubs = new ConcurrentLinkedQueue<>();
         ConfigExecutor.scheduleLongPolling(new StatTask(), 0L, 30L, TimeUnit.SECONDS);
@@ -195,7 +193,7 @@ public class LongPollingService {
             this.probeRequestSize = probeRequestSize;
             this.timeoutTime = timeout;
             this.appName = appInfo.getLeft();
-            this.appVersion = StringUtil.isNotBlank(appInfo.getRight()) ? appInfo.getRight().replace(".", "") : "";
+            this.appVersion = appInfo.getRight();
             this.createTime = System.currentTimeMillis();
         }
 
@@ -243,14 +241,10 @@ public class LongPollingService {
         private void generateResponse(List<String> changedGroups) {
             HttpServletResponse response = (HttpServletResponse) asyncContext.getResponse();
             if (CollectionUtil.isEmpty(changedGroups)) {
-                if (StringUtil.isBlank(appVersion) || !NumberUtil.isNumber(appVersion)) {
+                if (StringUtil.isBlank(appVersion)) {
                     response.setStatus(HttpServletResponse.SC_OK);
                 } else {
-                    if (Integer.parseInt(appVersion) < LOW_VERSION) {
-                        response.setStatus(HttpServletResponse.SC_OK);
-                    } else {
-                        response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                    }
+                    response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                 }
                 // Tell web container to send http response.
                 asyncContext.complete();
