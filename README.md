@@ -34,11 +34,15 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 - 动态变更 - 应用运行时动态变更线程池参数，包括但不限于：核心、最大线程数、阻塞队列容量、拒绝策略等。
 - 通知报警 - 内置四种报警通知策略，线程池活跃度、容量水位、拒绝策略以及任务执行时间超长。
-- 运行监控 - 实时查看线程池运行时数据，最近半小时线程池运行数据图表展示。
+- 数据采集 - 采集线程池运行时数据，采集方式有：日志打印、内置采集、Prometheus、ElasticSearch、InfluxDB 等。
+- 运行监控 - 实时查看线程池运行时数据，自定义时间内线程池运行数据图表展示。
 - 功能扩展 - 支持线程池任务传递上下文；项目关闭时，支持等待线程池在指定时间内完成任务。
 - 多种模式 - 内置两种使用模式：[依赖配置中心](https://hippo4j.cn/docs/user_docs/getting_started/config/hippo4j-config-start) 和 [无中间件依赖](https://hippo4j.cn/docs/user_docs/getting_started/server/hippo4j-server-start)。
 - 容器管理 - Tomcat、Jetty、Undertow 容器线程池运行时查看和线程数变更。
 - 框架适配 - Dubbo、Hystrix、RabbitMQ、RocketMQ 等消费线程池运行时数据查看和线程数变更。
+- 变更审核 - 提供多种用户角色，普通用户变更线程池参数需要 Admin 用户审核方可生效。
+- 动态化插件 - 内置多种线程池插件，支持用户自定义插件以及运行时扩展。
+
 
 ## 快速开始
 
