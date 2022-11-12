@@ -1,4 +1,4 @@
-<img align="center" width="300" alt="image" src="https://user-images.githubusercontent.com/77398366/181906454-b46f6a14-7c2c-4b8f-8b0a-40432521bed8.png">
+<img align="center" width="260" alt="image" src="https://user-images.githubusercontent.com/77398366/181906454-b46f6a14-7c2c-4b8f-8b0a-40432521bed8.png">
 
 中文 | [English](https://github.com/opengoofy/hippo4j/blob/develop/README-EN.md)
 
@@ -24,9 +24,9 @@
 - 无法执行优雅关闭，当项目关闭时，大量正在运行的线程池任务被丢弃。
 - 线程池运行中，任务执行停止，怀疑发生死锁或执行耗时操作，但是无从下手。
 
-## 什么是 Hippo-4J
+## 什么是 Hippo4j
 
-Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
+Hippo4j 通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
 
 提供以下功能支持：
 
