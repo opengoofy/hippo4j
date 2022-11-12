@@ -19,10 +19,12 @@ package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.common.web.exception.IllegalException;
 import cn.hippo4j.rpc.discovery.ServerPort;
-import cn.hippo4j.rpc.handler.AbstractNettyClientPoolHandler;
+import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
 import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.net.InetSocketAddress;
 
 public class NettyProxyCenterTest {
 
@@ -30,15 +32,23 @@ public class NettyProxyCenterTest {
 
     @Test
     public void getProxy() {
-        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
-        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, "localhost", port, handler);
+        InetSocketAddress address = InetSocketAddress.createUnresolved("localhost", port.getPort());
+        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, address, handler);
+        Assert.assertNotNull(localhost);
+    }
+
+    @Test
+    public void createProxy() {
+        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, "localhost:8894");
         Assert.assertNotNull(localhost);
     }
 
     @Test(expected = IllegalException.class)
     public void getProxyTest() {
-        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
-        ProxyClass localhost = NettyProxyCenter.getProxy(ProxyClass.class, "localhost", port, handler);
+        InetSocketAddress address = InetSocketAddress.createUnresolved("localhost", port.getPort());
+        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        ProxyClass localhost = NettyProxyCenter.getProxy(ProxyClass.class, address, handler);
         Assert.assertNotNull(localhost);
     }
 
@@ -55,7 +65,7 @@ public class NettyProxyCenterTest {
 
         @Override
         public int getPort() {
-            return 8888;
+            return 8894;
         }
     }
 }

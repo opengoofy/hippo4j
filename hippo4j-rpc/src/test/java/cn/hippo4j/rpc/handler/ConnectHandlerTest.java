@@ -17,10 +17,11 @@
 
 package cn.hippo4j.rpc.handler;
 
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.rpc.client.NettyClientConnection;
 import cn.hippo4j.rpc.client.RPCClient;
 import cn.hippo4j.rpc.discovery.*;
-import cn.hippo4j.rpc.server.AbstractNettyServerConnection;
+import cn.hippo4j.rpc.server.NettyServerConnection;
 import cn.hippo4j.rpc.server.RPCServer;
 import cn.hippo4j.rpc.support.NettyProxyCenter;
 import io.netty.channel.pool.ChannelPoolHandler;
@@ -28,8 +29,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
+import java.net.InetSocketAddress;
 
 public class ConnectHandlerTest {
 
@@ -38,21 +38,21 @@ public class ConnectHandlerTest {
         // server
         Class<InstanceServerLoader> cls = InstanceServerLoader.class;
         ClassRegistry.put(cls.getName(), cls);
-        ServerPort port = () -> 8891;
+        ServerPort port = () -> 8892;
         Instance instance = new DefaultInstance();
         NettyServerTakeHandler serverHandler = new NettyServerTakeHandler(instance);
-        AbstractNettyServerConnection connection = new AbstractNettyServerConnection(serverHandler);
+        NettyServerConnection connection = new NettyServerConnection(serverHandler);
         RPCServer rpcServer = new RPCServer(connection, port);
-        CompletableFuture.runAsync(rpcServer::bind);
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        rpcServer.bind();
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
-        ChannelPoolHandler channelPoolHandler = new AbstractNettyClientPoolHandler(new NettyClientTakeHandler());
-        NettyClientConnection clientConnection = new NettyClientConnection("localhost", port, channelPoolHandler);
+        InetSocketAddress address = InetSocketAddress.createUnresolved("localhost", port.getPort());
+        ChannelPoolHandler channelPoolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        NettyClientConnection clientConnection = new NettyClientConnection(address, channelPoolHandler);
         RPCClient rpcClient = new RPCClient(clientConnection);
-        InstanceServerLoader loader = NettyProxyCenter.getProxy(rpcClient, cls, "localhost", port);
+
+        InstanceServerLoader loader = NettyProxyCenter.createProxy(rpcClient, cls, address);
         String name = loader.getName();
         Assert.assertEquals("name", name);
         rpcClient.close();

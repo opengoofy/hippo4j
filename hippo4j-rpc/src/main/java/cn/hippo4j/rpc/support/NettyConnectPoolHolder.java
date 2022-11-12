@@ -17,7 +17,6 @@
 
 package cn.hippo4j.rpc.support;
 
-import cn.hippo4j.rpc.discovery.ServerPort;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.pool.ChannelPoolHandler;
@@ -26,6 +25,7 @@ import io.netty.util.concurrent.EventExecutorGroup;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,76 +35,68 @@ import java.util.concurrent.ConcurrentHashMap;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NettyConnectPoolHolder {
 
-    static int maxConnect = 64;
+    static int maxConnect = 256;
 
     static Map<String, NettyConnectPool> connectPoolMap = new ConcurrentHashMap<>();
 
-    private static NettyConnectPool initPool(String host, ServerPort port,
+    private static NettyConnectPool initPool(InetSocketAddress address,
                                              long timeout, EventLoopGroup worker,
                                              ChannelPoolHandler handler) {
-        return new NettyConnectPool(
-                host, port, maxConnect,
-                timeout, worker,
-                NioSocketChannel.class,
-                handler);
+        return new NettyConnectPool(address, maxConnect, timeout, worker, NioSocketChannel.class, handler);
     }
 
-    private static String getKey(String host, ServerPort port) {
-        return host + ":" + port.getPort();
+    private static String getKey(InetSocketAddress address) {
+        return address.getHostName() + ":" + address.getPort();
     }
 
     /**
      * The connection pool connectPoolMapping may already exist before the connection pool
      * connectPoolMapping is established. In this case, the connection pool is directly overwritten
      *
-     * @param host the host
-     * @param port the port
-     * @param pool This parameter applies only to the connection pool of netty
+     * @param address the InetSocketAddress
+     * @param pool    This parameter applies only to the connection pool of netty
      */
-    public static void createPool(String host, ServerPort port, NettyConnectPool pool) {
-        connectPoolMap.put(getKey(host, port), pool);
+    public static void createPool(InetSocketAddress address, NettyConnectPool pool) {
+        connectPoolMap.put(getKey(address), pool);
     }
 
     /**
      * Gets a connection pool, or null if there is no corresponding connectPoolMapping
      *
-     * @param host the host
-     * @param port the port
+     * @param address the InetSocketAddress
      * @return Map to the connection pool
      */
-    public static NettyConnectPool getPool(String host, ServerPort port) {
-        return connectPoolMap.get(getKey(host, port));
+    public static NettyConnectPool getPool(InetSocketAddress address) {
+        return connectPoolMap.get(getKey(address));
     }
 
     /**
      * Gets a connection pool, and if there is no connectPoolMapping, creates one with the values provided and joins the connectPoolMapping
      *
-     * @param host     the host
-     * @param port     the port
-     * @param timeout  timeout
-     * @param worker   Special {@link EventExecutorGroup} which allows registering {@link Channel}s
-     *                 that get processed for later selection during the event loop.
+     * @param address the InetSocketAddress
+     * @param timeout timeout
+     * @param worker  Special {@link EventExecutorGroup} which allows registering {@link Channel}s
+     *                that get processed for later selection during the event loop.
      * @param handler the chandler for netty
      * @return Map to the connection pool
      */
-    public static synchronized NettyConnectPool getPool(String host, ServerPort port,
+    public static synchronized NettyConnectPool getPool(InetSocketAddress address,
                                                         long timeout, EventLoopGroup worker,
                                                         ChannelPoolHandler handler) {
         /*
          * this cannot use the computeIfAbsent method directly here because put is already used in init. Details refer to https://bugs.openjdk.java.net/browse/JDK-8062841
          */
-        NettyConnectPool pool = getPool(host, port);
-        return pool == null ? initPool(host, port, timeout, worker, handler) : pool;
+        NettyConnectPool pool = getPool(address);
+        return pool == null ? initPool(address, timeout, worker, handler) : pool;
     }
 
     /**
      * Disconnect a connection connectPoolMapping. This must take effect at the same time as the connection pool is closed
      *
-     * @param host host
-     * @param port port
+     * @param address the InetSocketAddress
      */
-    public static void remove(String host, ServerPort port) {
-        connectPoolMap.remove(getKey(host, port));
+    public static void remove(InetSocketAddress address) {
+        connectPoolMap.remove(getKey(address));
     }
 
     /**

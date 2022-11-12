@@ -17,34 +17,32 @@
 
 package cn.hippo4j.rpc.server;
 
-import cn.hippo4j.rpc.discovery.ServerPort;
-import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.rpc.discovery.DefaultInstance;
 import cn.hippo4j.rpc.discovery.Instance;
+import cn.hippo4j.rpc.discovery.ServerPort;
+import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 public class RPCServerTest {
 
     public static ServerPort port = new TestServerPort();
+    public static ServerPort portTest = new ServerPortTest();
 
     @Test
     public void bind() throws IOException {
         Instance instance = new DefaultInstance();
         NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
-        ServerConnection connection = new AbstractNettyServerConnection(handler);
+        ServerConnection connection = new NettyServerConnection(handler);
         RPCServer rpcServer = new RPCServer(connection, port);
-        CompletableFuture.runAsync(rpcServer::bind);
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        rpcServer.bind();
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
         boolean active = rpcServer.isActive();
         Assert.assertTrue(active);
@@ -59,22 +57,32 @@ public class RPCServerTest {
         EventLoopGroup leader = new NioEventLoopGroup();
         EventLoopGroup worker = new NioEventLoopGroup();
         NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
-        ServerConnection connection = new AbstractNettyServerConnection(leader, worker, handler);
-        RPCServer rpcServer = new RPCServer(connection, port);
-        CompletableFuture.runAsync(rpcServer::bind);
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        ServerConnection connection = new NettyServerConnection(leader, worker, handler);
+        RPCServer rpcServer = new RPCServer(connection, portTest);
+        rpcServer.bind();
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
         }
+        boolean active = rpcServer.isActive();
+        Assert.assertTrue(active);
         rpcServer.close();
+        boolean serverActive = rpcServer.isActive();
+        Assert.assertFalse(serverActive);
     }
 
     static class TestServerPort implements ServerPort {
 
         @Override
         public int getPort() {
-            return 8888;
+            return 8893;
+        }
+    }
+
+    static class ServerPortTest implements ServerPort {
+
+        @Override
+        public int getPort() {
+            return 8894;
         }
     }
 }

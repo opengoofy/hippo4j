@@ -28,7 +28,7 @@ public class NettyClientPoolHandlerTest {
         TestHandler handler = new TestHandler();
         long order = 0;
         String name = "Test";
-        AbstractNettyClientPoolHandler poolHandler = new AbstractNettyClientPoolHandler();
+        NettyClientPoolHandler poolHandler = new NettyClientPoolHandler();
         HandlerManager.HandlerEntity<ChannelHandler> entity = poolHandler.getHandlerEntity(order, handler, name);
         Assert.assertEquals(entity.getName(), name);
         Assert.assertEquals(entity.getOrder(), order);
@@ -43,7 +43,7 @@ public class NettyClientPoolHandlerTest {
         TestHandler handler1 = new TestHandler();
         long order1 = 1;
         String name1 = "Test1";
-        AbstractNettyClientPoolHandler poolHandler = new AbstractNettyClientPoolHandler();
+        NettyClientPoolHandler poolHandler = new NettyClientPoolHandler();
         HandlerManager.HandlerEntity<ChannelHandler> entity = poolHandler.getHandlerEntity(order, handler, name);
         HandlerManager.HandlerEntity<ChannelHandler> entity1 = poolHandler.getHandlerEntity(order1, handler1, name1);
         int compare = entity.compareTo(entity1);
@@ -52,7 +52,7 @@ public class NettyClientPoolHandlerTest {
 
     @Test
     public void addLast() {
-        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler();
+        NettyClientPoolHandler handler = new NettyClientPoolHandler();
         Assert.assertTrue(handler.isEmpty());
         handler.addLast(new TestHandler());
         Assert.assertFalse(handler.isEmpty());
@@ -60,7 +60,7 @@ public class NettyClientPoolHandlerTest {
 
     @Test
     public void addFirst() {
-        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler();
+        NettyClientPoolHandler handler = new NettyClientPoolHandler();
         Assert.assertTrue(handler.isEmpty());
         handler.addFirst(new TestHandler());
         Assert.assertFalse(handler.isEmpty());
@@ -68,7 +68,7 @@ public class NettyClientPoolHandlerTest {
 
     @Test
     public void testAddLast() {
-        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler();
+        NettyClientPoolHandler handler = new NettyClientPoolHandler();
         Assert.assertTrue(handler.isEmpty());
         handler.addLast("Test", new TestHandler());
         Assert.assertFalse(handler.isEmpty());
@@ -76,7 +76,7 @@ public class NettyClientPoolHandlerTest {
 
     @Test
     public void testAddFirst() {
-        AbstractNettyClientPoolHandler handler = new AbstractNettyClientPoolHandler();
+        NettyClientPoolHandler handler = new NettyClientPoolHandler();
         Assert.assertTrue(handler.isEmpty());
         handler.addFirst("Test", new TestHandler());
         Assert.assertFalse(handler.isEmpty());

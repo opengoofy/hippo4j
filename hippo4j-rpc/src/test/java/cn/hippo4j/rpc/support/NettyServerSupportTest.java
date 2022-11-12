@@ -17,24 +17,21 @@
 
 package cn.hippo4j.rpc.support;
 
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.rpc.discovery.InstanceServerLoader;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 public class NettyServerSupportTest {
 
     @Test
     public void bind() throws IOException {
-        NettyServerSupport support = new NettyServerSupport(() -> 8890, InstanceServerLoader.class);
-        CompletableFuture.runAsync(support::bind);
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        NettyServerSupport support = new NettyServerSupport(() -> 8891, InstanceServerLoader.class);
+        support.bind();
+        while (!support.isActive()) {
+            ThreadUtil.sleep(100L);
         }
         Assert.assertTrue(support.isActive());
         support.close();

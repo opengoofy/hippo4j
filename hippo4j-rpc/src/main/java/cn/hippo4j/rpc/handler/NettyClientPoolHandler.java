@@ -22,6 +22,7 @@ import cn.hippo4j.rpc.coder.NettyEncoder;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
@@ -33,40 +34,40 @@ import java.util.List;
  * Processing by the client connection pool handler to clean the buffer and define new connection properties
  */
 @Slf4j
-public class AbstractNettyClientPoolHandler extends AbstractNettyHandlerManager implements ChannelPoolHandler {
+public class NettyClientPoolHandler extends AbstractNettyHandlerManager implements ChannelPoolHandler {
 
-    public AbstractNettyClientPoolHandler(List<ChannelHandler> handlers) {
+    public NettyClientPoolHandler(List<ChannelHandler> handlers) {
         super(handlers);
     }
 
-    public AbstractNettyClientPoolHandler(ChannelHandler... handlers) {
+    public NettyClientPoolHandler(ChannelHandler... handlers) {
         super(handlers);
     }
 
-    public AbstractNettyClientPoolHandler() {
+    public NettyClientPoolHandler() {
         super();
     }
 
     @Override
-    public AbstractNettyClientPoolHandler addLast(String name, ChannelHandler handler) {
+    public NettyClientPoolHandler addLast(String name, ChannelHandler handler) {
         super.addLast(name, handler);
         return this;
     }
 
     @Override
-    public AbstractNettyClientPoolHandler addFirst(String name, ChannelHandler handler) {
+    public NettyClientPoolHandler addFirst(String name, ChannelHandler handler) {
         super.addFirst(name, handler);
         return this;
     }
 
     @Override
-    public AbstractNettyClientPoolHandler addLast(ChannelHandler handler) {
+    public NettyClientPoolHandler addLast(ChannelHandler handler) {
         super.addLast(handler);
         return this;
     }
 
     @Override
-    public AbstractNettyClientPoolHandler addFirst(ChannelHandler handler) {
+    public NettyClientPoolHandler addFirst(ChannelHandler handler) {
         super.addFirst(handler);
         return this;
     }
@@ -87,15 +88,16 @@ public class AbstractNettyClientPoolHandler extends AbstractNettyHandlerManager 
         NioSocketChannel channel = (NioSocketChannel) ch;
         channel.config()
                 .setTcpNoDelay(false);
-        ch.pipeline().addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
-        ch.pipeline().addLast(new NettyEncoder());
+        ChannelPipeline pipeline = ch.pipeline();
+        pipeline.addLast(new NettyEncoder());
+        pipeline.addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
         this.handlerEntities.stream()
                 .sorted()
                 .forEach(h -> {
                     if (h.getName() == null) {
-                        ch.pipeline().addLast(h.getHandler());
+                        pipeline.addLast(h.getHandler());
                     } else {
-                        ch.pipeline().addLast(h.getName(), h.getHandler());
+                        pipeline.addLast(h.getName(), h.getHandler());
                     }
                 });
     }
