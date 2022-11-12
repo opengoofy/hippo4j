@@ -97,6 +97,49 @@ public class EmptyThreadPoolPluginManagerTest {
         Assert.assertEquals(Collections.emptyList(), manager.getExecuteAwarePluginList());
     }
 
+    @Test
+    public void testEnable() {
+        ThreadPoolPlugin plugin = new TestPlugin();
+        Assert.assertFalse(manager.enable(plugin.getId()));
+        manager.register(plugin);
+        Assert.assertFalse(manager.enable(plugin.getId()));
+        manager.disable(plugin.getId());
+        Assert.assertFalse(manager.enable(plugin.getId()));
+    }
+
+    @Test
+    public void testDisable() {
+        ThreadPoolPlugin plugin = new TestPlugin();
+        Assert.assertFalse(manager.disable(plugin.getId()));
+
+        manager.register(plugin);
+        Assert.assertFalse(manager.disable(plugin.getId()));
+        Assert.assertFalse(manager.disable(plugin.getId()));
+
+        Assert.assertTrue(manager.getExecuteAwarePluginList().isEmpty());
+        Assert.assertTrue(manager.getAllPlugins().isEmpty());
+    }
+
+    @Test
+    public void testIsDisable() {
+        ThreadPoolPlugin plugin = new TestPlugin();
+        Assert.assertTrue(manager.isDisabled(plugin.getId()));
+
+        manager.register(plugin);
+        Assert.assertFalse(manager.disable(plugin.getId()));
+        Assert.assertTrue(manager.isDisabled(plugin.getId()));
+    }
+
+    @Test
+    public void testGetDisabledPluginIds() {
+        ThreadPoolPlugin plugin = new TestPlugin();
+        Assert.assertTrue(manager.getAllDisabledPluginIds().isEmpty());
+
+        manager.register(plugin);
+        Assert.assertFalse(manager.disable(plugin.getId()));
+        Assert.assertTrue(manager.getAllDisabledPluginIds().isEmpty());
+    }
+
     private static boolean isEmpty(ThreadPoolPluginManager manager) {
         return manager.getAllPlugins().isEmpty();
     }

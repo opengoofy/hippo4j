@@ -17,11 +17,16 @@
 
 package cn.hippo4j.core.plugin.manager;
 
-import cn.hippo4j.core.plugin.*;
+import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
+import cn.hippo4j.core.plugin.RejectedAwarePlugin;
+import cn.hippo4j.core.plugin.ShutdownAwarePlugin;
+import cn.hippo4j.core.plugin.TaskAwarePlugin;
+import cn.hippo4j.core.plugin.ThreadPoolPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -126,9 +131,54 @@ public interface ThreadPoolPluginSupport extends ThreadPoolPluginManager {
     }
 
     /**
-     * Get execute aware list.
+     * Get id of disabled plugins.
+     *
+     * @return id of disabled plugins
+     */
+    @Override
+    default Set<String> getAllDisabledPluginIds() {
+        return getThreadPoolPluginManager().getAllDisabledPluginIds();
+    }
+
+    /**
+     * Whether the plugin has been disabled.
+     *
+     * @param pluginId plugin id
+     * @return true if plugin has been disabled, false otherwise
+     */
+    @Override
+    default boolean isDisabled(String pluginId) {
+        return getThreadPoolPluginManager().isDisabled(pluginId);
+    }
+
+    /**
+     * Enable plugin, make plugins will allow access through quick indexes.
+     *
+     * @param pluginId plugin id
+     * @return true if plugin already registered or enabled, false otherwise
+     */
+    @Override
+    default boolean enable(String pluginId) {
+        return getThreadPoolPluginManager().enable(pluginId);
+    }
+
+    /**
+     * Disable plugin, make plugins will not allow access through quick indexes.
+     *
+     * @param pluginId plugin id
+     * @return true if plugin already registered or disabled, false otherwise
+     */
+    @Override
+    default boolean disable(String pluginId) {
+        return getThreadPoolPluginManager().disable(pluginId);
+    }
+
+    /**
+     * Get all enabled {@link ExecuteAwarePlugin}.
      *
      * @return {@link ExecuteAwarePlugin}
+     * @see #enable
+     * @see #disable
      */
     @Override
     default Collection<ExecuteAwarePlugin> getExecuteAwarePluginList() {
@@ -136,9 +186,11 @@ public interface ThreadPoolPluginSupport extends ThreadPoolPluginManager {
     }
 
     /**
-     * Get rejected aware list.
+     * Get all enabled {@link RejectedAwarePlugin}.
      *
      * @return {@link RejectedAwarePlugin}
+     * @see #enable
+     * @see #disable
      */
     @Override
     default Collection<RejectedAwarePlugin> getRejectedAwarePluginList() {
@@ -146,9 +198,11 @@ public interface ThreadPoolPluginSupport extends ThreadPoolPluginManager {
     }
 
     /**
-     * Get shutdown aware list.
+     * Get all enabled {@link ShutdownAwarePlugin}.
      *
      * @return {@link ShutdownAwarePlugin}
+     * @see #enable
+     * @see #disable
      */
     @Override
     default Collection<ShutdownAwarePlugin> getShutdownAwarePluginList() {
@@ -156,9 +210,11 @@ public interface ThreadPoolPluginSupport extends ThreadPoolPluginManager {
     }
 
     /**
-     * Get shutdown aware list.
+     * Get all enabled {@link TaskAwarePlugin}.
      *
-     * @return {@link ShutdownAwarePlugin}
+     * @return {@link TaskAwarePlugin}
+     * @see #enable
+     * @see #disable
      */
     @Override
     default Collection<TaskAwarePlugin> getTaskAwarePluginList() {

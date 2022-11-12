@@ -18,7 +18,11 @@
 package cn.hippo4j.core.plugin.manager;
 
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.plugin.*;
+import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
+import cn.hippo4j.core.plugin.RejectedAwarePlugin;
+import cn.hippo4j.core.plugin.ShutdownAwarePlugin;
+import cn.hippo4j.core.plugin.TaskAwarePlugin;
+import cn.hippo4j.core.plugin.ThreadPoolPlugin;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.junit.Assert;
@@ -160,6 +164,49 @@ public class ThreadPoolPluginSupportTest {
         Assert.assertTrue(support.getPluginOfType(TestExecuteAwarePlugin.class.getSimpleName(), TestExecuteAwarePlugin.class).isPresent());
         Assert.assertTrue(support.getPluginOfType(TestExecuteAwarePlugin.class.getSimpleName(), ThreadPoolPlugin.class).isPresent());
         Assert.assertFalse(support.getPluginOfType(TestExecuteAwarePlugin.class.getSimpleName(), RejectedAwarePlugin.class).isPresent());
+    }
+
+    @Test
+    public void testEnable() {
+        ThreadPoolPlugin plugin = new TestExecuteAwarePlugin();
+        Assert.assertFalse(support.enable(plugin.getId()));
+        support.register(plugin);
+        Assert.assertFalse(support.enable(plugin.getId()));
+        support.disable(plugin.getId());
+        Assert.assertTrue(support.enable(plugin.getId()));
+    }
+
+    @Test
+    public void testDisable() {
+        ThreadPoolPlugin plugin = new TestExecuteAwarePlugin();
+        Assert.assertFalse(support.disable(plugin.getId()));
+
+        support.register(plugin);
+        Assert.assertTrue(support.disable(plugin.getId()));
+        Assert.assertFalse(support.disable(plugin.getId()));
+
+        Assert.assertTrue(support.getExecuteAwarePluginList().isEmpty());
+        Assert.assertEquals(1, support.getAllPlugins().size());
+    }
+
+    @Test
+    public void testIsDisable() {
+        ThreadPoolPlugin plugin = new TestExecuteAwarePlugin();
+        Assert.assertFalse(support.isDisabled(plugin.getId()));
+
+        support.register(plugin);
+        Assert.assertTrue(support.disable(plugin.getId()));
+        Assert.assertTrue(support.isDisabled(plugin.getId()));
+    }
+
+    @Test
+    public void testGetDisabledPluginIds() {
+        ThreadPoolPlugin plugin = new TestExecuteAwarePlugin();
+        Assert.assertTrue(support.getAllDisabledPluginIds().isEmpty());
+
+        support.register(plugin);
+        Assert.assertTrue(support.disable(plugin.getId()));
+        Assert.assertEquals(1, support.getAllDisabledPluginIds().size());
     }
 
     @Getter
