@@ -77,6 +77,6 @@ Hippo4j 通过对 JDK 线程池增强，以及扩展三方框架底层线程池�
 
 ## 鸣谢
 
-Hippo4j 社区已收到 Jetbrains 多份免费 Licenses，并已分配到项目活跃开发者，非常感谢 Jetbrains 对开源社区的支持。
+Hippo4j 社区已收到 Jetbrains 多份免费 Licenses，并已分配到项目 [活跃开发者](https://hippo4j.cn/team)，非常感谢 Jetbrains 对开源社区的支持。
 
 ![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
