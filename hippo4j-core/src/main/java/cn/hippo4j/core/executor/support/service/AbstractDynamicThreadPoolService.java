@@ -43,6 +43,7 @@ public abstract class AbstractDynamicThreadPoolService implements DynamicThreadP
                 .maxPoolNum(registerParameter.getMaximumPoolSize())
                 .workQueue(BlockingQueueTypeEnum.createBlockingQueue(registerParameter.getBlockingQueueType().getType(), registerParameter.getCapacity()))
                 .threadFactory(registerParameter.getThreadNamePrefix())
+                .threadFactory(registerParameter.getThreadFactory())
                 .keepAliveTime(registerParameter.getKeepAliveTime(), TimeUnit.SECONDS)
                 .executeTimeOut(registerParameter.getExecuteTimeOut())
                 .rejected(RejectedPolicyTypeEnum.createPolicy(registerParameter.getRejectedPolicyType().getType()))

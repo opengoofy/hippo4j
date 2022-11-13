@@ -25,6 +25,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.concurrent.ThreadFactory;
+
 /**
  * Dynamic thread-pool register parameter.
  */
@@ -100,6 +102,11 @@ public class DynamicThreadPoolRegisterParameter {
      * Thread name prefix
      */
     private String threadNamePrefix;
+
+    /**
+     * Thread factory
+     */
+    private ThreadFactory threadFactory;
 
     /**
      * Execute timeout

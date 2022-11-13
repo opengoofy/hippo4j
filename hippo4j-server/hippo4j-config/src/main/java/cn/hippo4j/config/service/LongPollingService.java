@@ -83,6 +83,9 @@ public class LongPollingService {
         });
     }
 
+    /**
+     * Stat task.
+     */
     class StatTask implements Runnable {
 
         @Override
@@ -93,6 +96,9 @@ public class LongPollingService {
 
     final Queue<ClientLongPolling> allSubs;
 
+    /**
+     * Data change task.
+     */
     class DataChangeTask implements Runnable {
 
         final String identify;
@@ -107,8 +113,8 @@ public class LongPollingService {
         @Override
         public void run() {
             try {
-                for (Iterator<ClientLongPolling> iter = allSubs.iterator(); iter.hasNext(); ) {
-                    ClientLongPolling clientSub = iter.next();
+                for (Iterator<ClientLongPolling> iterator = allSubs.iterator(); iterator.hasNext();) {
+                    ClientLongPolling clientSub = iterator.next();
                     String identity = groupKey + GROUP_KEY_DELIMITER + identify;
                     List<String> parseMapForFilter = CollectionUtil.newArrayList(identity);
                     if (StringUtil.isBlank(identify)) {
@@ -118,7 +124,7 @@ public class LongPollingService {
                         if (clientSub.clientMd5Map.containsKey(each)) {
                             getRetainIps().put(clientSub.clientIdentify, System.currentTimeMillis());
                             ConfigCacheService.updateMd5(each, clientSub.clientIdentify, ConfigCacheService.getContentMd5(each));
-                            iter.remove();
+                            iterator.remove();
                             clientSub.sendResponse(Collections.singletonList(groupKey));
                         }
                     });
@@ -132,10 +138,10 @@ public class LongPollingService {
     /**
      * Add long polling client.
      *
-     * @param req
-     * @param rsp
-     * @param clientMd5Map
-     * @param probeRequestSize
+     * @param req              http servlet request
+     * @param rsp              http servlet response
+     * @param clientMd5Map     client md5 map
+     * @param probeRequestSize probe request size
      */
     public void addLongPollingClient(HttpServletRequest req, HttpServletResponse rsp, Map<String, String> clientMd5Map,
                                      int probeRequestSize) {
@@ -236,7 +242,7 @@ public class LongPollingService {
         /**
          * Generate async response.
          *
-         * @param changedGroups Changed thread pool group key
+         * @param changedGroups changed thread pool group key
          */
         private void generateResponse(List<String> changedGroups) {
             HttpServletResponse response = (HttpServletResponse) asyncContext.getResponse();
@@ -265,6 +271,11 @@ public class LongPollingService {
         }
     }
 
+    /**
+     * Get retain ips.
+     *
+     * @return retain ips
+     */
     public Map<String, Long> getRetainIps() {
         return retainIps;
     }
@@ -294,7 +305,7 @@ public class LongPollingService {
      * Build resp str.
      *
      * @param changedGroups Changed thread pool group key
-     * @return
+     * @return resp str
      */
     @SneakyThrows
     private String buildRespStr(List<String> changedGroups) {
@@ -305,8 +316,8 @@ public class LongPollingService {
     /**
      * Is support long polling.
      *
-     * @param request
-     * @return
+     * @param request http servlet request
+     * @return is support long polling
      */
     public static boolean isSupportLongPolling(HttpServletRequest request) {
         return request.getHeader(LONG_POLLING_HEADER) != null;
@@ -315,7 +326,7 @@ public class LongPollingService {
     /**
      * Is fixed polling.
      *
-     * @return
+     * @return is fixed polling
      */
     private static boolean isFixedPolling() {
         return SwitchService.getSwitchBoolean(SwitchService.FIXED_POLLING, false);
@@ -324,7 +335,7 @@ public class LongPollingService {
     /**
      * Get fixed polling interval.
      *
-     * @return
+     * @return fixed polling interval
      */
     private static int getFixedPollingInterval() {
         return SwitchService.getSwitchInteger(SwitchService.FIXED_POLLING_INTERVAL, FIXED_POLLING_INTERVAL_MS);
