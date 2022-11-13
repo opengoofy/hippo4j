@@ -119,6 +119,7 @@ export default {
     statusFilter(status) {
       const statusMap = {
         ROLE_ADMIN: 'danger',
+        ROLE_MANAGE: 'warning',
         ROLE_USER: '',
       };
       return statusMap[status];
@@ -134,7 +135,7 @@ export default {
         size: 10,
         userName: undefined,
       },
-      roles: ['ROLE_USER', 'ROLE_ADMIN'],
+      roles: ['ROLE_USER', 'ROLE_MANAGE', 'ROLE_ADMIN'],
       dialogPluginVisible: false,
       pluginData: [],
       dialogFormVisible: false,

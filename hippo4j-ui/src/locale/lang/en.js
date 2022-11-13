@@ -4,14 +4,14 @@ export default {
     login: 'Login Form',
     username: 'Username',
     password: 'Password',
-    logOut: 'Log Out'
+    logOut: 'Log Out',
   },
 
   // 公共
   common: {
     search: 'Search',
     addition: 'Addition',
-    serialNumber: 'Serial Number',
+    serialNumber: 'No.',
     operation: 'Operation',
     edit: 'Edit',
     delete: 'Delete',
@@ -20,7 +20,6 @@ export default {
     threadPool: 'Thread Pool',
   },
 
-  
   // 运行报表
   report: {
     tenant: 'Tenant',
@@ -30,14 +29,12 @@ export default {
     role: 'Role',
     tenants: 'Tenants',
     createTime: 'Create Time',
-    updateTime: 'Update Time'
+    updateTime: 'Update Time',
   },
-
 
   // 线程池
   threadPool: {
     tenant: 'Tenant',
     project: 'Project',
-  }
-  
-}
+  },
+};

@@ -136,7 +136,9 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="handleUpdate(row)"> {{ $t('common.edit') }} </el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)">
+            {{ $t('common.edit') }}
+          </el-button>
           <el-button size="small" :disabled="isEditDisabled" type="text" @click="handleDelete(row)">
             {{ $t('common.delete') }}
           </el-button>
@@ -507,7 +509,9 @@ export default {
     this.initSelect();
   },
   mounted() {
-    this.isEditDisabled = localStorage.getItem('USER_ROLE') !== 'ROLE_ADMIN';
+    this.isEditDisabled =
+      localStorage.getItem('USER_ROLE') !== 'ROLE_ADMIN' &&
+      localStorage.getItem('USER_ROLE') !== 'ROLE_MANAGE';
   },
   methods: {
     onInput() {
