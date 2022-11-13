@@ -29,6 +29,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.task.TaskDecorator;
 
 import java.util.Objects;
@@ -88,7 +89,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
                                      @NonNull ThreadFactory threadFactory,
                                      @NonNull RejectedExecutionHandler rejectedExecutionHandler) {
         super(
-                threadPoolId, new DefaultThreadPoolPluginManager().setEnableSort(true),
+                threadPoolId, new DefaultThreadPoolPluginManager().setPluginComparator(AnnotationAwareOrderComparator.INSTANCE),
                 corePoolSize, maximumPoolSize, keepAliveTime, unit,
                 blockingQueue, threadFactory, rejectedExecutionHandler);
         log.info("Initializing ExecutorService {}", threadPoolId);
