@@ -18,6 +18,7 @@
 package cn.hippo4j.springboot.starter.controller;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterApi;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.api.ClientNetworkService;
@@ -31,10 +32,7 @@ import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
@@ -44,15 +42,16 @@ import static cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer.THREAD_POOL
  * Thread-pool adapter controller.
  */
 @Slf4j
-@RestController
+// @RestController
 @AllArgsConstructor
-public class ThreadPoolAdapterController {
+public class ThreadPoolAdapterController implements ThreadPoolAdapterApi {
 
     private final ConfigurableEnvironment environment;
 
     private final InetUtils hippo4JInetUtils;
 
-    @GetMapping("/adapter/thread-pool/info")
+    @Override
+    // @GetMapping("/adapter/thread-pool/info")
     public Result<ThreadPoolAdapterState> getAdapterThreadPool(ThreadPoolAdapterParameter requestParameter) {
         ThreadPoolAdapter threadPoolAdapter = THREAD_POOL_ADAPTER_BEAN_CONTAINER.get(requestParameter.getMark());
         ThreadPoolAdapterState result = Optional.ofNullable(threadPoolAdapter).map(each -> {
@@ -74,7 +73,8 @@ public class ThreadPoolAdapterController {
         return Results.success(result);
     }
 
-    @PostMapping("/adapter/thread-pool/update")
+    @Override
+    // @PostMapping("/adapter/thread-pool/update")
     public Result<Void> updateAdapterThreadPool(@RequestBody ThreadPoolAdapterParameter requestParameter) {
         log.info("[{}] Change third-party thread pool data. key: {}, coreSize: {}, maximumSize: {}",
                 requestParameter.getMark(), requestParameter.getThreadPoolKey(), requestParameter.getCorePoolSize(), requestParameter.getMaximumPoolSize());

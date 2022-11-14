@@ -13,6 +13,12 @@
       "description": "dynamic thread-pool server netty port."
     },
     {
+      "name": "spring.dynamic.thread-pool.local-server-port",
+      "type": "java.lang.String",
+      "defaultValue": "19961",
+      "description": "dynamic thread-pool local server port."
+    },
+    {
       "name": "spring.dynamic.thread-pool.report-type",
       "type": "java.lang.String",
       "defaultValue": "http",

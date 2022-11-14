@@ -19,11 +19,13 @@ package cn.hippo4j.adapter.base;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * Thread pool adapter parameter info.
  */
 @Data
-public class ThreadPoolAdapterParameter {
+public class ThreadPoolAdapterParameter implements Serializable {
 
     /**
      * Mark
