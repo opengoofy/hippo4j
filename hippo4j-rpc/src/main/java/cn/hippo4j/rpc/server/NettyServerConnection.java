@@ -18,7 +18,6 @@
 package cn.hippo4j.rpc.server;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.rpc.coder.NettyDecoder;
 import cn.hippo4j.rpc.coder.NettyEncoder;
 import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.exception.ConnectionException;
@@ -29,6 +28,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
@@ -80,7 +80,7 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new NettyEncoder());
-                        pipeline.addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
+                        pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)));
                         handlerEntities.stream()
                                 .sorted()
                                 .forEach(h -> {
@@ -95,7 +95,9 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
         try {
             this.future = server.bind(port.getPort()).sync();
             this.channel = this.future.channel();
-            log.info("The server is started and can receive requests. The listening port is {}", port.getPort());
+            if (log.isDebugEnabled()) {
+                log.debug("The server is started and can receive requests. The listening port is {}", port.getPort());
+            }
             this.port = port;
             this.future.channel().closeFuture().sync();
         } catch (InterruptedException ex) {
@@ -112,7 +114,9 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
         leader.shutdownGracefully();
         worker.shutdownGracefully();
         this.future.channel().close();
-        log.info("The server is shut down and no more requests are received. The release port is {}", port.getPort());
+        if (log.isDebugEnabled()) {
+            log.debug("The server is shut down and no more requests are received. The release port is {}", port.getPort());
+        }
     }
 
     @Override

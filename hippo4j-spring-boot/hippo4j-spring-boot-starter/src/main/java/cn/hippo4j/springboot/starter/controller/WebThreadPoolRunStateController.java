@@ -18,16 +18,15 @@
 package cn.hippo4j.springboot.starter.controller;
 
 import cn.hippo4j.common.api.ThreadDetailState;
-import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.api.WebThreadPoolRunStateApi;
 import cn.hippo4j.common.model.ThreadDetailStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -35,21 +34,23 @@ import java.util.List;
  * Web thread-pool run state controller.
  */
 @CrossOrigin
-@RestController
+// @RestController
 @AllArgsConstructor
-public class WebThreadPoolRunStateController {
+public class WebThreadPoolRunStateController implements WebThreadPoolRunStateApi {
 
     private final ThreadPoolRunStateHandler threadPoolRunStateHandler;
 
     private final ThreadDetailState threadDetailState;
 
-    @GetMapping("/run/state/{threadPoolId}")
+    @Override
+    // @GetMapping("/run/state/{threadPoolId}")
     public Result<ThreadPoolRunStateInfo> getPoolRunState(@PathVariable("threadPoolId") String threadPoolId) {
         ThreadPoolRunStateInfo result = threadPoolRunStateHandler.getPoolRunState(threadPoolId);
         return Results.success(result);
     }
 
-    @GetMapping("/run/thread/state/{threadPoolId}")
+    @Override
+    // @GetMapping("/run/thread/state/{threadPoolId}")
     public Result<List<ThreadDetailStateInfo>> getThreadStateDetail(@PathVariable("threadPoolId") String threadPoolId) {
         List<ThreadDetailStateInfo> result = threadDetailState.getThreadDetailStateInfo(threadPoolId);
         return Results.success(result);

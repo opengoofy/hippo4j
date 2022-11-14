@@ -19,11 +19,13 @@ package cn.hippo4j.adapter.base;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * Thread pool adapter state info.
  */
 @Data
-public class ThreadPoolAdapterState {
+public class ThreadPoolAdapterState implements Serializable {
 
     /**
      * Thread-pool keu
@@ -44,6 +46,11 @@ public class ThreadPoolAdapterState {
      * Client address
      */
     private String clientAddress;
+
+    /**
+     * Open server address
+     */
+    private String localServerAddress;
 
     /**
      * Core size

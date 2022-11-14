@@ -94,7 +94,9 @@ public final class ActiveProcessChain {
             try {
                 handle.afterCompletion(request, response, ex);
             } catch (Throwable e) {
-                log.error("HandlerInterceptor.afterCompletion threw exception", e);
+                if (log.isErrorEnabled()) {
+                    log.error("HandlerInterceptor.afterCompletion threw exception", e);
+                }
             }
         }
     }
