@@ -17,7 +17,6 @@
 
 package cn.hippo4j.rpc.handler;
 
-import cn.hippo4j.rpc.coder.NettyDecoder;
 import cn.hippo4j.rpc.coder.NettyEncoder;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -26,6 +25,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -75,7 +75,9 @@ public class NettyClientPoolHandler extends AbstractNettyHandlerManager implemen
     @Override
     public void channelReleased(Channel ch) {
         ch.writeAndFlush(Unpooled.EMPTY_BUFFER);
-        log.info("The connection buffer has been emptied of data");
+        if (log.isDebugEnabled()) {
+            log.debug("The connection buffer has been emptied of data");
+        }
     }
 
     @Override
@@ -90,7 +92,7 @@ public class NettyClientPoolHandler extends AbstractNettyHandlerManager implemen
                 .setTcpNoDelay(false);
         ChannelPipeline pipeline = ch.pipeline();
         pipeline.addLast(new NettyEncoder());
-        pipeline.addLast(new NettyDecoder(ClassResolvers.cacheDisabled(null)));
+        pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)));
         this.handlerEntities.stream()
                 .sorted()
                 .forEach(h -> {

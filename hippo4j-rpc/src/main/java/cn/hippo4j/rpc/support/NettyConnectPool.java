@@ -58,7 +58,9 @@ public class NettyConnectPool {
         this.handler = handler;
         this.pool = new FixedChannelPool(bootstrap, handler, healthCheck, acquireTimeoutAction,
                 timeout, maxConnect, maxPendingAcquires, true, true);
-        log.info("The connection pool is established with the connection target {}:{}", address.getHostName(), address.getPort());
+        if (log.isDebugEnabled()) {
+            log.info("The connection pool is established with the connection target {}:{}", address.getHostName(), address.getPort());
+        }
         NettyConnectPoolHolder.createPool(address, this);
     }
 

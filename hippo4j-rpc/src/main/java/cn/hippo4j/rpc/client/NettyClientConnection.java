@@ -73,11 +73,14 @@ public class NettyClientConnection implements ClientConnection {
     public Response connect(Request request) {
         activeProcessChain.applyPreHandle(request);
         this.channel = connectionPool.acquire(timeout);
+        boolean debugEnabled = log.isDebugEnabled();
         Response response = null;
         try {
             String key = request.getKey();
             this.future = channel.writeAndFlush(request);
-            log.info("Call successful, target address is {}:{}, request key is {}", address.getHostName(), address.getPort(), key);
+            if (debugEnabled) {
+                log.debug("Call successful, target address is {}:{}, request key is {}", address.getHostName(), address.getPort(), key);
+            }
             // Wait for execution to complete
             ResultHolder.putThread(key, Thread.currentThread());
             LockSupport.parkNanos(timeout() * 1000000);
@@ -86,7 +89,9 @@ public class NettyClientConnection implements ClientConnection {
                 throw new TimeOutException("Timeout waiting for server-side response");
             }
             activeProcessChain.applyPostHandle(request, response);
-            log.info("The response from {}:{} was received successfully with the response key {}.", address.getHostName(), address.getPort(), key);
+            if (debugEnabled) {
+                log.debug("The response from {}:{} was received successfully with the response key {}.", address.getHostName(), address.getPort(), key);
+            }
             return response;
         } catch (Exception ex) {
             activeProcessChain.afterCompletion(request, response, ex);
