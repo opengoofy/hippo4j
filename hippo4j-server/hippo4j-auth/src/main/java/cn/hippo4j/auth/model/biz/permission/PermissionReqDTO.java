@@ -15,15 +15,23 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.auth.mapper;
+package cn.hippo4j.auth.model.biz.permission;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import cn.hippo4j.auth.model.RoleInfo;
-import org.apache.ibatis.annotations.Mapper;
+import lombok.Data;
 
 /**
- * Role mapper.
+ * Permission req dto.
  */
-@Mapper
-public interface RoleMapper extends BaseMapper<RoleInfo> {
+@Data
+public class PermissionReqDTO {
+
+    /**
+     * Resource
+     */
+    private String resource;
+
+    /**
+     * Action
+     */
+    private String action;
 }

@@ -24,7 +24,8 @@ export default {
   },
   data() {
     return {
-      title: 'hippo4j 1.4.3',
+      title: 'hippo4j 1.5.0',
+      logo: '',
     };
   },
 };

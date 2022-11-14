@@ -41,6 +41,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Tenant service impl.
@@ -123,5 +124,11 @@ public class TenantServiceImpl implements TenantService {
         if (!retBool) {
             throw new RuntimeException("Delete error.");
         }
+    }
+
+    @Override
+    public List<String> listAllTenant() {
+        List<TenantInfo> tenantInfoList = tenantInfoMapper.selectList(Wrappers.emptyWrapper());
+        return tenantInfoList.stream().map(TenantInfo::getTenantId).collect(Collectors.toList());
     }
 }

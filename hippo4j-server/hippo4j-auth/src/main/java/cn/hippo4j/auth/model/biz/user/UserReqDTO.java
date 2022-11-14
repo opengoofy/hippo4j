@@ -17,11 +17,14 @@
 
 package cn.hippo4j.auth.model.biz.user;
 
+import cn.hippo4j.auth.model.biz.permission.PermissionReqDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
+
+import java.util.List;
 
 /**
  * User req dto.
@@ -32,19 +35,24 @@ import org.hibernate.validator.constraints.Length;
 public class UserReqDTO extends Page {
 
     /**
-     * userName
+     * User name
      */
     @Length(max = 64, message = "用户名最长为64个字符")
     private String userName;
 
     /**
-     * password
+     * Password
      */
     @Length(min = 6, message = "密码最少为6个字符")
     private String password;
 
     /**
-     * role
+     * Role
      */
     private String role;
+
+    /**
+     * Resources
+     */
+    private List<PermissionReqDTO> resources;
 }

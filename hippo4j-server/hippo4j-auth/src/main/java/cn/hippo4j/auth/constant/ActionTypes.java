@@ -15,48 +15,31 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.auth.service;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import cn.hippo4j.auth.model.biz.role.RoleRespDTO;
-
-import java.util.List;
+package cn.hippo4j.auth.constant;
 
 /**
- * Role service.
+ * Resource action type definitions.
  */
-public interface RoleService {
+public enum ActionTypes {
 
     /**
-     * Paging query role list.
-     *
-     * @param pageNo
-     * @param pageSize
-     * @return
+     * Read.
      */
-    IPage<RoleRespDTO> listRole(int pageNo, int pageSize);
+    READ("r"),
 
     /**
-     * Add role.
-     *
-     * @param role
-     * @param userName
+     * Write.
      */
-    void addRole(String role, String userName);
+    WRITE("w");
 
-    /**
-     * Delete role.
-     *
-     * @param role
-     * @param userName
-     */
-    void deleteRole(String role, String userName);
+    private String action;
 
-    /**
-     * Fuzzy search by role.
-     *
-     * @param role
-     * @return
-     */
-    List<String> getRoleLike(String role);
+    ActionTypes(String action) {
+        this.action = action;
+    }
+
+    @Override
+    public String toString() {
+        return action;
+    }
 }

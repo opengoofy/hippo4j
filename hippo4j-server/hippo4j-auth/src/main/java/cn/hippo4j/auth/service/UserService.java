@@ -32,45 +32,45 @@ public interface UserService {
     /**
      * Paging query user list.
      *
-     * @param reqDTO
-     * @return
+     * @param requestParam request param
+     * @return user response page
      */
-    IPage<UserRespDTO> listUser(UserQueryPageReqDTO reqDTO);
+    IPage<UserRespDTO> listUser(UserQueryPageReqDTO requestParam);
 
     /**
      * New users.
      *
-     * @param reqDTO
+     * @param requestParam request param
      */
-    void addUser(UserReqDTO reqDTO);
+    void addUser(UserReqDTO requestParam);
 
     /**
      * Modify user.
      *
-     * @param reqDTO
+     * @param requestParam request param
      */
-    void updateUser(UserReqDTO reqDTO);
+    void updateUser(UserReqDTO requestParam);
 
     /**
      * Delete users.
      *
-     * @param userName
+     * @param username username
      */
-    void deleteUser(String userName);
+    void deleteUser(String username);
 
     /**
      * Fuzzy search by username.
      *
-     * @param userName
-     * @return
+     * @param userName userName
+     * @return like username
      */
     List<String> getUserLikeUsername(String userName);
 
     /**
      * Get user details.
      *
-     * @param reqDTO
-     * @return
+     * @param requestParam request param
+     * @return user response
      */
-    UserRespDTO getUser(UserReqDTO reqDTO);
+    UserRespDTO getUser(UserReqDTO requestParam);
 }

@@ -19,9 +19,11 @@ package cn.hippo4j.auth.service.impl;
 
 import cn.hippo4j.auth.mapper.UserMapper;
 import cn.hippo4j.auth.model.UserInfo;
+import cn.hippo4j.auth.model.biz.permission.PermissionRespDTO;
 import cn.hippo4j.auth.model.biz.user.UserQueryPageReqDTO;
 import cn.hippo4j.auth.model.biz.user.UserReqDTO;
 import cn.hippo4j.auth.model.biz.user.UserRespDTO;
+import cn.hippo4j.auth.service.PermissionService;
 import cn.hippo4j.auth.service.UserService;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
@@ -34,6 +36,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,39 +55,45 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final PermissionService permissionService;
+
     @Override
-    public IPage<UserRespDTO> listUser(UserQueryPageReqDTO reqDTO) {
+    public IPage<UserRespDTO> listUser(UserQueryPageReqDTO requestParam) {
         LambdaQueryWrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class)
-                .eq(StringUtil.isNotBlank(reqDTO.getUserName()), UserInfo::getUserName, reqDTO.getUserName());
-        IPage<UserInfo> selectPage = userMapper.selectPage(reqDTO, queryWrapper);
-        return selectPage.convert(each -> BeanUtil.convert(each, UserRespDTO.class));
+                .eq(StringUtil.isNotBlank(requestParam.getUserName()), UserInfo::getUserName, requestParam.getUserName());
+        IPage<UserInfo> selectPage = userMapper.selectPage(requestParam, queryWrapper);
+        return selectPage.convert(this::buildUserInfo);
     }
 
     @Override
-    public void addUser(UserReqDTO reqDTO) {
+    @Transactional(rollbackFor = Exception.class)
+    public void addUser(UserReqDTO requestParam) {
         LambdaQueryWrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class)
-                .eq(UserInfo::getUserName, reqDTO.getUserName());
+                .eq(UserInfo::getUserName, requestParam.getUserName());
         UserInfo existUserInfo = userMapper.selectOne(queryWrapper);
         if (existUserInfo != null) {
             throw new RuntimeException("用户名重复");
         }
-        reqDTO.setPassword(bCryptPasswordEncoder.encode(reqDTO.getPassword()));
-        UserInfo insertUser = BeanUtil.convert(reqDTO, UserInfo.class);
+        requestParam.setPassword(bCryptPasswordEncoder.encode(requestParam.getPassword()));
+        UserInfo insertUser = BeanUtil.convert(requestParam, UserInfo.class);
         userMapper.insert(insertUser);
+        permissionService.bindingPermissionByUsername(requestParam.getUserName(), requestParam.getResources());
     }
 
     @Override
-    public void updateUser(UserReqDTO reqDTO) {
-        if (StringUtil.isNotBlank(reqDTO.getPassword())) {
-            if (reqDTO.getPassword().length() < MINI_PASSWORD_LENGTH) {
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUser(UserReqDTO requestParam) {
+        if (StringUtil.isNotBlank(requestParam.getPassword())) {
+            if (requestParam.getPassword().length() < MINI_PASSWORD_LENGTH) {
                 throw new RuntimeException("密码最少为6个字符");
             }
-            reqDTO.setPassword(bCryptPasswordEncoder.encode(reqDTO.getPassword()));
+            requestParam.setPassword(bCryptPasswordEncoder.encode(requestParam.getPassword()));
         }
-        UserInfo updateUser = BeanUtil.convert(reqDTO, UserInfo.class);
+        UserInfo updateUser = BeanUtil.convert(requestParam, UserInfo.class);
         LambdaUpdateWrapper<UserInfo> updateWrapper = Wrappers.lambdaUpdate(UserInfo.class)
-                .eq(UserInfo::getUserName, reqDTO.getUserName());
+                .eq(UserInfo::getUserName, requestParam.getUserName());
         userMapper.update(updateUser, updateWrapper);
+        permissionService.bindingPermissionByUsername(requestParam.getUserName(), requestParam.getResources());
     }
 
     @Override
@@ -92,6 +101,7 @@ public class UserServiceImpl implements UserService {
         LambdaUpdateWrapper<UserInfo> updateWrapper = Wrappers.lambdaUpdate(UserInfo.class)
                 .eq(UserInfo::getUserName, userName);
         userMapper.delete(updateWrapper);
+        permissionService.deletePermission(userName);
     }
 
     @Override
@@ -104,11 +114,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRespDTO getUser(UserReqDTO reqDTO) {
-        Wrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, reqDTO.getUserName());
+    public UserRespDTO getUser(UserReqDTO requestParam) {
+        Wrapper<UserInfo> queryWrapper = Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, requestParam.getUserName());
         UserInfo userInfo = userMapper.selectOne(queryWrapper);
         return Optional.ofNullable(userInfo)
-                .map(each -> BeanUtil.convert(each, UserRespDTO.class))
-                .orElseThrow(() -> new ServiceException("查询无此用户, 可以尝试清空缓存或退出登录."));
+                .map(this::buildUserInfo)
+                .orElseThrow(() -> new ServiceException("查询无此用户, 可以尝试清空缓存或退出登录"));
+    }
+
+    private UserRespDTO buildUserInfo(UserInfo userInfo) {
+        UserRespDTO result = BeanUtil.convert(userInfo, UserRespDTO.class);
+        List<PermissionRespDTO> permissionRespList = permissionService.listPermissionByUserName(result.getUserName());
+        result.setResources(permissionRespList);
+        result.setTempResources(permissionRespList.stream().map(PermissionRespDTO::getResource).collect(Collectors.toList()));
+        return result;
     }
 }
