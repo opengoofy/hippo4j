@@ -1,6 +1,3 @@
-<style>
-    li{list-style-type:none;}
-</style>
 <span style="color: rgb(0, 240, 0); ">[通知] </span>${active} - 动态线程池参数变更
 <ul>
     <li>线程池ID：<span style="color: rgb(160, 0, 0);">${threadPoolId}</span></li>
@@ -19,3 +16,9 @@
 </ul>
 
 <b> 播报时间：${date} </b>
+
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>

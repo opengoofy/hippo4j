@@ -1,8 +1,3 @@
-<style>
-    li {
-        list-style-type: none;
-    }
-</style>
 <span style="color: rgb(255, 0, 0);">[警报] </span>${active} - 动态线程池运行告警（${notifyTypeEnum}）
 <ul>
     <li>线程池ID：<span style="color: rgb(160, 0, 0);">${threadPoolId}</span></li>
@@ -25,3 +20,9 @@
 </ul>
 
 <b> 播报时间：${date} </b>
+
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>

@@ -25,10 +25,10 @@ public class EmailAlarmConstants {
     /**
      * Thread Pool Alert Notification Title
      */
-    public static final String Email_ALARM_TITLE = "动态线程池告警";
+    public static String Email_ALARM_TITLE = "【Hippo4J】${active}-${threadPoolId} 线程池 ${notifyTypeEnum} 预警";
 
     /**
      * Thread pool parameter change notification title
      */
-    public static final String Email_NOTICE_TITLE = "动态线程池通知";
+    public static String Email_NOTICE_TITLE = "【Hippo4J】${active}-${threadPoolId} 线程池参数变更通知";
 }

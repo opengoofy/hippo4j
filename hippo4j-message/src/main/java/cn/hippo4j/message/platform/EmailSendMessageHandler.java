@@ -69,8 +69,9 @@ public class EmailSendMessageHandler implements SendMessageHandler<AlarmNotifyRe
             dataModel.put("interval", notifyConfig.getInterval().toString());
             String emailAlarmTxt = Singleton.get(emailAlarmTxtKey, () -> FileUtil.readUtf8String(emailAlarmTxtKey));
             String renderedEmailAlarmTxt = render(dataModel, emailAlarmTxt);
+            String alarmSubject = render(dataModel, EmailAlarmConstants.Email_ALARM_TITLE);
             String[] recipients = notifyConfig.getReceives().split(",");
-            execute(recipients, EmailAlarmConstants.Email_ALARM_TITLE, renderedEmailAlarmTxt);
+            execute(recipients, alarmSubject, renderedEmailAlarmTxt);
         } catch (Exception e) {
             log.error("Email failed to send message", e);
         }
@@ -81,10 +82,11 @@ public class EmailSendMessageHandler implements SendMessageHandler<AlarmNotifyRe
         try {
             String emailConfigTxtKey = "message/robot/dynamic-thread-pool/email-config.ftl";
             Map<String, String> dataModel = getDataModel(changeParameterNotifyRequest);
-            String emailAlarmTxt = Singleton.get(emailConfigTxtKey, () -> FileUtil.readUtf8String(emailConfigTxtKey));
-            String renderedEmailAlarmTxt = render(dataModel, emailAlarmTxt);
+            String emailConfigTxt = Singleton.get(emailConfigTxtKey, () -> FileUtil.readUtf8String(emailConfigTxtKey));
+            String renderedEmailConfigTxt = render(dataModel, emailConfigTxt);
+            String configSubject = render(dataModel, EmailAlarmConstants.Email_NOTICE_TITLE);
             String[] recipients = notifyConfig.getReceives().split(",");
-            execute(recipients, EmailAlarmConstants.Email_NOTICE_TITLE, renderedEmailAlarmTxt);
+            execute(recipients, configSubject, renderedEmailConfigTxt);
         } catch (Exception e) {
             log.error("Email failed to send message", e);
         }
