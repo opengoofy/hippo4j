@@ -15,47 +15,27 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.model;
+package cn.hippo4j.adapter.base;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
+import cn.hippo4j.common.web.base.Result;
 
 /**
- * Thread-pool base info.
+ * Thread-pool adapter api.
  */
-@Data
-@Accessors(chain = true)
-public class ThreadPoolBaseInfo implements Serializable {
+public interface ThreadPoolAdapterApi {
 
     /**
-     * coreSize
+     * Get thread pool information for the third-party framework
+     *
+     * @param requestParameter Third party frame identification and other info
+     * @return thread pool info
      */
-    private Integer coreSize;
+    Result<ThreadPoolAdapterState> getAdapterThreadPool(ThreadPoolAdapterParameter requestParameter);
 
     /**
-     * maximumSize
+     * Example Modify the thread pool information
+     *
+     * @param requestParameter update info
      */
-    private Integer maximumSize;
-
-    /**
-     * queueType
-     */
-    private String queueType;
-
-    /**
-     * queueCapacity
-     */
-    private Integer queueCapacity;
-
-    /**
-     * rejectedName
-     */
-    private String rejectedName;
-
-    /**
-     * keepAliveTime
-     */
-    private Long keepAliveTime;
+    Result<Void> updateAdapterThreadPool(ThreadPoolAdapterParameter requestParameter);
 }

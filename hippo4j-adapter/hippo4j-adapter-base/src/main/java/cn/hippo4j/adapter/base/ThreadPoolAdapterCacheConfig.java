@@ -53,6 +53,11 @@ public class ThreadPoolAdapterCacheConfig {
     private String clientAddress;
 
     /**
+     * Open server address
+     */
+    private String localServerAddress;
+
+    /**
      * Thread-pool adapter states
      */
     private List<ThreadPoolAdapterState> threadPoolAdapterStates;

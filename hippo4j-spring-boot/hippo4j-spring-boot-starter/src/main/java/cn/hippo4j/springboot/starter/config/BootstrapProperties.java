@@ -55,6 +55,11 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
     private String nettyServerPort;
 
     /**
+     * The service port that is open to the outside world, The default value is 16691
+     */
+    private Integer localServerPort;
+
+    /**
      * Report type
      */
     private String reportType;
