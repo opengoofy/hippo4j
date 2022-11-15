@@ -35,6 +35,8 @@ import java.util.List;
 
 /**
  * netty adaptation layer
+ *
+ * @since 1.5.1
  */
 @ChannelHandler.Sharable
 public class NettyServerTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {

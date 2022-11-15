@@ -25,6 +25,8 @@ import lombok.Getter;
 /**
  * Manage the Handler used in the processing.<br>
  * The Handler must be able to exist multiple times and be invoked once in a single execution
+ *
+ * @since 1.5.1
  */
 public interface HandlerManager<T> {
 

@@ -26,6 +26,8 @@ import java.io.Closeable;
  * operations that should be done in the connection. It is more like integrating the
  * connection and the connection channel together, so creating {@link Connection} is
  * very resource intensive, for which caching is recommended
+ *
+ * @since 1.5.1
  */
 public interface Connection extends Closeable {
 
