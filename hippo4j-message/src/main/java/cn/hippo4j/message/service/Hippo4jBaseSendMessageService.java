@@ -66,7 +66,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
                 if (messageHandler == null) {
-                    log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
+                    log.warn("[{}] Please configure alarm notification on the server.", threadPoolId);
                     return;
                 }
                 if (isSendAlarm(each.getTpId(), each.getPlatform(), typeEnum)) {
@@ -89,14 +89,14 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
                 .toString();
         List<NotifyConfigDTO> notifyList = notifyConfigs.get(buildKey);
         if (CollectionUtil.isEmpty(notifyList)) {
-            log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
+            log.warn("[{}] Please configure alarm notification on the server.", threadPoolId);
             return;
         }
         notifyList.forEach(each -> {
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
                 if (messageHandler == null) {
-                    log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
+                    log.warn("[{}] Please configure alarm notification on the server.", threadPoolId);
                     return;
                 }
                 messageHandler.sendChangeMessage(each, changeParameterNotifyRequest);
