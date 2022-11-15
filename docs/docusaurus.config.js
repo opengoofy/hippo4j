@@ -152,8 +152,16 @@ const config = {
                         title: 'Docs',
                         items: [
                             {
-                                label: '简介',
+                                label: 'Intro',
                                 to: '/docs/user_docs/intro',
+                            },
+                            {
+                                label: 'Config Mode',
+                                to: '/docs/user_docs/getting_started/config/hippo4j-config-start',
+                            },
+                            {
+                                label: 'Server Mode',
+                                to: '/docs/user_docs/getting_started/server/hippo4j-server-start',
                             },
                         ],
                     },
@@ -161,11 +169,11 @@ const config = {
                         title: 'Community',
                         items: [
                             {
-                                label: '加群沟通',
+                                label: 'Group',
                                 href: 'https://hippo4j.cn/docs/user_docs/other/group',
                             },
                             {
-                                label: '微信公众号',
+                                label: 'WeChat',
                                 href: 'https://mp.weixin.qq.com/s/diVHYvwiuYH9aWpZDPc27g',
                             },
                         ],
@@ -175,15 +183,24 @@ const config = {
                         items: [
                             {
                                 label: 'Gitee',
-                                href: 'https://gitee.com/itmachen/hippo4j',
+                                href: 'https://gitee.com/magegoofy/hippo4j',
                             },
                             {
                                 label: 'GitHub',
                                 href: 'https://github.com/opengoofy/hippo4j',
                             },
+                        ],
+                    },
+                    {
+                        title: 'Links',
+                        items: [
                             {
-                                label: '公司登记',
-                                href: 'https://github.com/opengoofy/hippo4j/issues/13',
+                                label: '书源',
+                                href: 'https://bookyuan.cn/',
+                            },
+                            {
+                                label: '推广合作',
+                                href: 'https://hippo4j.cn/docs/user_docs/other/operation',
                             },
                         ],
                     },
