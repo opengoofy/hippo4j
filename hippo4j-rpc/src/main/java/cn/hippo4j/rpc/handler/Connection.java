@@ -20,7 +20,12 @@ package cn.hippo4j.rpc.handler;
 import java.io.Closeable;
 
 /**
- * Represents a network request connection and provides IO layer support
+ * Represents a network request connection and provides IO layer support<br>
+ * <p>
+ * This is not a strict and stateless Connection interface, it contains the necessary
+ * operations that should be done in the connection. It is more like integrating the
+ * connection and the connection channel together, so creating {@link Connection} is
+ * very resource intensive, for which caching is recommended
  */
 public interface Connection extends Closeable {
 

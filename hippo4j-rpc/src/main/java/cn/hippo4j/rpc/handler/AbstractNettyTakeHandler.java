@@ -24,6 +24,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import java.util.Optional;
+
 /**
  * the abstract base of {@link ConnectHandler} and {@link ChannelInboundHandlerAdapter}
  */
@@ -42,9 +44,10 @@ public abstract class AbstractNettyTakeHandler extends ChannelInboundHandlerAdap
         if (channel.isActive()) {
             ctx.close();
         }
-        if (cause != null) {
-            throw new ConnectionException(cause);
-        }
+        Optional.ofNullable(cause)
+                .ifPresent(t -> {
+                    throw new ConnectionException(cause);
+                });
     }
 
     /**

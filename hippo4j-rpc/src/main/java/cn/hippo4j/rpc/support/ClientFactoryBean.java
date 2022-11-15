@@ -17,6 +17,7 @@
 
 package cn.hippo4j.rpc.support;
 
+import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.rpc.client.Client;
 import cn.hippo4j.rpc.discovery.DiscoveryAdapter;
 import cn.hippo4j.rpc.exception.ConnectionException;
@@ -30,10 +31,28 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.net.InetSocketAddress;
+import java.util.Optional;
 
 /**
  * A FactoryBean that builds interfaces to invoke proxy objects
  * is responsible for managing the entire life cycle of the proxy objects<br>
+ * <h3>APPLICATION START</h3>
+ * When the application is started, the request initiator needs to complete the proxy of the calling interface,
+ * which ensures that the method can be requested to the server side when the method is called, rather than simply
+ * request an interface that cannot be instantiated. The classes involved in adding proxy to the interface are:
+ * <ul>
+ *     <li>{@link NettyClientSupport}</li>
+ *     <li>{@link NettyProxyCenter}</li>
+ *     <li>{@link NettyClientPoolHandler}</li>
+ * </ul>
+ * <h3>AND SPRING</h3>
+ * In order to fully integrate {@link ClientFactoryBean} into the life cycle of spring beans,
+ * {@link ClientFactoryBean} also needs to implement the following interfaces:
+ * <ul>
+ *     <li>{@link InitializingBean}</li>
+ *     <li>{@link ApplicationContextAware}</li>
+ *     <li>{@link DisposableBean}</li>
+ * </ul>
  *
  * @deprecated With {@link cn.hippo4j.config.service.ThreadPoolAdapterService} structure, FactoryBean is not the best choice
  */
@@ -52,10 +71,16 @@ public class ClientFactoryBean implements FactoryBean<Object>, InitializingBean,
      */
     private String discoveryAdapterName;
 
+    /**
+     * The adaptation interface for obtaining ip information in the registry is used together with
+     * {@link #discoveryAdapterName}, so that the adapter implementation can be obtained in the container
+     * during the initialization phase
+     */
     private DiscoveryAdapter discoveryAdapter;
 
     /**
-     * the channel handler
+     * the channel handler, To ensure the security and reliability of netty calls,
+     * {@link ChannelHandler} must be identified by {@link ChannelHandler.Sharable}
      */
     private ChannelHandler[] handlers;
 
@@ -70,11 +95,13 @@ public class ClientFactoryBean implements FactoryBean<Object>, InitializingBean,
     private ApplicationContext applicationContext;
 
     /**
-     * InetSocketAddress
+     * InetSocketAddress, It is usually converted from {@link #applicationName} and {@link #discoveryAdapter}
      */
     InetSocketAddress address;
 
     public ClientFactoryBean(String applicationName, String discoveryAdapterName, Class<?> cls) {
+        Assert.notNull(applicationName);
+        Assert.notNull(cls);
         this.applicationName = applicationName;
         this.discoveryAdapterName = discoveryAdapterName;
         this.cls = cls;
@@ -82,16 +109,17 @@ public class ClientFactoryBean implements FactoryBean<Object>, InitializingBean,
 
     @Override
     public Object getObject() throws Exception {
-        this.address = discoveryAdapter.getSocketAddress(applicationName);
-        if (this.address == null) {
-            String[] addressStr = applicationName.split(":");
-            if (addressStr.length < 2) {
-                throw new ConnectionException("Failed to connect to the server because the IP address is invalid. Procedure");
-            }
-            this.address = InetSocketAddress.createUnresolved(addressStr[0], Integer.parseInt(addressStr[1]));
-        }
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(handlers);
-        Client client = NettyClientSupport.getClient(this.address, handler);
+        this.address = Optional.ofNullable(applicationName)
+                .map(a -> discoveryAdapter.getSocketAddress(a))
+                .map(a -> {
+                    String[] addressStr = applicationName.split(":");
+                    if (addressStr.length < 2) {
+                        throw new ConnectionException("Failed to connect to the server because the IP address is invalid. Procedure");
+                    }
+                    return InetSocketAddress.createUnresolved(addressStr[0], Integer.parseInt(addressStr[1]));
+                })
+                .orElseThrow(() -> new ConnectionException("Failed to connect to the server because the IP address is invalid. Procedure"));
+        Client client = NettyClientSupport.getClient(this.address, new NettyClientPoolHandler(handlers));
         return NettyProxyCenter.createProxy(client, cls, this.address);
     }
 
@@ -102,15 +130,15 @@ public class ClientFactoryBean implements FactoryBean<Object>, InitializingBean,
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        this.discoveryAdapter = (DiscoveryAdapter) applicationContext.getBean(discoveryAdapterName);
+        this.discoveryAdapter = Optional.ofNullable(discoveryAdapterName)
+                .map(s -> (DiscoveryAdapter) applicationContext.getBean(discoveryAdapterName))
+                .orElse(null);
     }
 
     @Override
     public void destroy() throws Exception {
-        if (this.address == null) {
-            return;
-        }
-        NettyClientSupport.closeClient(this.address);
+        Optional.ofNullable(this.address)
+                .ifPresent(a -> NettyClientSupport.closeClient(this.address));
     }
 
     @Override

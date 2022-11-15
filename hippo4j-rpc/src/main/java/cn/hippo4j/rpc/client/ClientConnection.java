@@ -22,7 +22,7 @@ import cn.hippo4j.rpc.model.Request;
 import cn.hippo4j.rpc.model.Response;
 
 /**
- * Applicable to client connections
+ * Applicable to client connections<br>
  */
 public interface ClientConnection extends Connection {
 
