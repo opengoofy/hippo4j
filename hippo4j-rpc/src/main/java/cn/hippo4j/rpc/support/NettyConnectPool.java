@@ -30,6 +30,7 @@ import io.netty.util.concurrent.Future;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -84,14 +85,15 @@ public class NettyConnectPool {
     }
 
     public void release(Channel channel) {
-        try {
-            if (channel != null) {
-                pool.release(channel);
-            }
-        } catch (Exception e) {
-            NettyClientSupport.closeClient(address);
-            throw new ConnectionException("Failed to release the connection", e);
-        }
+        Optional.ofNullable(channel)
+                .ifPresent(c -> {
+                    try {
+                        pool.release(channel);
+                    } catch (Exception e) {
+                        NettyClientSupport.closeClient(address);
+                        throw new ConnectionException("Failed to release the connection", e);
+                    }
+                });
     }
 
     public void close() {

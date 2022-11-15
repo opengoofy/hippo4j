@@ -37,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.locks.LockSupport;
 
 /**
@@ -114,12 +115,12 @@ public class NettyClientConnection implements ClientConnection {
 
     @Override
     public void close() {
-        if (this.channel == null) {
-            return;
-        }
-        worker.shutdownGracefully();
-        this.future.channel().close();
-        this.channel.close();
+        Optional.ofNullable(this.channel)
+                .ifPresent(c -> {
+                    worker.shutdownGracefully();
+                    this.future.channel().close();
+                    this.channel.close();
+                });
     }
 
     @Override
