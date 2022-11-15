@@ -44,6 +44,8 @@ import java.io.Closeable;
  *
  * <b>The client implements Closeable and supports automatic shutdown, However, you can manually
  * disable it when you want to use it</b>
+ *
+ * @since 1.5.1
  */
 public interface Client extends Closeable {
 

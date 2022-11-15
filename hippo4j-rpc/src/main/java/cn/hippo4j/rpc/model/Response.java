@@ -21,6 +21,8 @@ import java.io.Serializable;
 
 /**
  * Response
+ *
+ * @since 1.5.1
  */
 public interface Response extends Serializable {
 

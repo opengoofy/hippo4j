@@ -35,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This parameter applies only to the connection pool of netty
+ *
+ * @since 1.5.1
  */
 @Slf4j
 public class NettyConnectPool {

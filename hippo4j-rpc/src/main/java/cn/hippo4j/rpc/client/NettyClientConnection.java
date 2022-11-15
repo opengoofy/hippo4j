@@ -42,6 +42,8 @@ import java.util.concurrent.locks.LockSupport;
 
 /**
  * Client implemented using netty
+ *
+ * @since 1.5.1
  */
 @Slf4j
 public class NettyClientConnection implements ClientConnection {

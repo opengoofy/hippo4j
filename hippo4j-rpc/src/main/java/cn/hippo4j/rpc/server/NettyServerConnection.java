@@ -37,6 +37,8 @@ import java.util.List;
 
 /**
  * adapter to the netty server
+ *
+ * @since 1.5.1
  */
 @Slf4j
 public class NettyServerConnection extends AbstractNettyHandlerManager implements ServerConnection {

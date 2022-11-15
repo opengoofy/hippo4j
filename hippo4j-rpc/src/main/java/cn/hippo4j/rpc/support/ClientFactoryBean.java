@@ -54,6 +54,7 @@ import java.util.Optional;
  *     <li>{@link DisposableBean}</li>
  * </ul>
  *
+ * @since 1.5.1
  * @deprecated With {@link cn.hippo4j.config.service.ThreadPoolAdapterService} structure, FactoryBean is not the best choice
  */
 @Deprecated
