@@ -21,6 +21,8 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 
 /**
  * Adapter Spring, The requested object is managed by spring
+ *
+ * @since 1.5.1
  */
 public class SpringContextInstance implements Instance {
 

@@ -32,6 +32,8 @@ import java.util.List;
 
 /**
  * Processing by the client connection pool handler to clean the buffer and define new connection properties
+ *
+ * @since 1.5.1
  */
 @Slf4j
 public class NettyClientPoolHandler extends AbstractNettyHandlerManager implements ChannelPoolHandler {

@@ -25,6 +25,8 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * Server Implementation
+ *
+ * @since 1.5.1
  */
 public class RPCServer implements Server {
 
