@@ -7,19 +7,13 @@
         <artifactId>hippo4j-spring-boot-starter-adapter</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>hippo4j-spring-boot-starter-adapter-dubbo</artifactId>
+    <artifactId>hippo4j-spring-boot-starter-adapter-dubboX</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-adapter-dubbo</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-dubboX</artifactId>
-            <version>1.5.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 </project>
