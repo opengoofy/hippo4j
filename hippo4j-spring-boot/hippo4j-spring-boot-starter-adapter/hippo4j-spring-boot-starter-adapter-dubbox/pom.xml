@@ -7,14 +7,9 @@
         <artifactId>hippo4j-spring-boot-starter-adapter</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>hippo4j-spring-boot-starter-adapter-dubbo</artifactId>
+    <artifactId>hippo4j-spring-boot-starter-adapter-dubbox</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-adapter-dubbo</artifactId>
-            <version>${revision}</version>
-        </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-dubbox</artifactId>
