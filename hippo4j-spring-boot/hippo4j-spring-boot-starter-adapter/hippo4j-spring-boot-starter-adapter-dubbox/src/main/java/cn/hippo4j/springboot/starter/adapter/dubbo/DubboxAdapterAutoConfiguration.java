@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.adapter.dubbo;
 
 import cn.hippo4j.adapter.dubbo.DubboThreadPoolAdapter;
-import cn.hippo4j.adapter.dubbo.DubboXThreadPoolAdapter;
+import cn.hippo4j.adapter.dubbo.DubboxThreadPoolAdapter;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -26,10 +26,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * DubboX adapter auto configuration.
+ * Dubbox adapter auto configuration.
  */
 @Configuration
-public class DubboXAdapterAutoConfiguration {
+public class DubboxAdapterAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
@@ -41,6 +41,6 @@ public class DubboXAdapterAutoConfiguration {
     @SuppressWarnings("all")
     @ConditionalOnProperty(name = "dubbo.application.name")
     public DubboThreadPoolAdapter dubboThreadPoolAdapter(ApplicationContextHolder applicationContextHolder) {
-        return new DubboXThreadPoolAdapter();
+        return new DubboxThreadPoolAdapter();
     }
 }

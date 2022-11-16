@@ -20,13 +20,13 @@ package cn.hippo4j.adapter.dubbo;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * DubboX thread-pool adapter.
+ * Dubbox thread-pool adapter.
  */
 @Slf4j
-public class DubboXThreadPoolAdapter extends  DubboThreadPoolAdapter{
+public class DubboxThreadPoolAdapter extends  DubboThreadPoolAdapter{
 
     @Override
     public String mark() {
-        return "DubboX";
+        return "Dubbox";
     }
 }
