@@ -230,6 +230,11 @@ CREATE TABLE `his_config_verify`  (
 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET=utf8mb4 COMMENT = '参数变更审核记录表';
 
+DROP TABLE IF EXISTS `hippo4j_lock`;
+CREATE TABLE `hippo4j_lock` (
+    `lock_name` varchar(50) NOT NULL COMMENT '锁名称',
+    PRIMARY KEY (`lock_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* Init SQL */
 INSERT IGNORE INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');

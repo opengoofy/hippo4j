@@ -21,6 +21,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
 
 /**
  * Database configuration.
@@ -40,5 +44,16 @@ public class DataBaseConfiguration {
         dataSourceProperties.setInitScript(initScript);
         dataSourceProperties.setInitEnable(initEnable);
         return dataSourceProperties;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(value = TransactionTemplate.class)
+    public TransactionTemplate transactionTemplate(DataSource dataSource) {
+        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
+        dataSourceTransactionManager.setDataSource(dataSource);
+        TransactionTemplate transactionTemplate = new TransactionTemplate();
+        transactionTemplate.setTransactionManager(dataSourceTransactionManager);
+        transactionTemplate.setPropagationBehaviorName("PROPAGATION_REQUIRED");
+        return transactionTemplate;
     }
 }
