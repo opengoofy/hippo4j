@@ -17,6 +17,9 @@
 
 package cn.hippo4j.core.plugin;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -30,9 +33,13 @@ public interface TaskAwarePlugin extends ThreadPoolPlugin {
      *
      * @param executor executor
      * @param runnable original task
-     * @return Tasks that really need to be performed
+     * @param value    the default value for the returned future
+     * @param <V>      value type
+     * @return Tasks that really need to be performed, if the return task is null,
+     * terminate the execution of the next plugin immediately.
      * @see ThreadPoolExecutor#newTaskFor(Runnable, Object)
      */
+    @Nullable
     default <V> Runnable beforeTaskCreate(ThreadPoolExecutor executor, Runnable runnable, V value) {
         return runnable;
     }
@@ -42,9 +49,12 @@ public interface TaskAwarePlugin extends ThreadPoolPlugin {
      *
      * @param executor executor
      * @param future   original task
-     * @return Tasks that really need to be performed
+     * @param <V>      value type
+     * @return Tasks that really need to be performed, if the return task is null,
+     * terminate the execution of the next plugin immediately.
      * @see ThreadPoolExecutor#newTaskFor(Callable)
      */
+    @Nullable
     default <V> Callable<V> beforeTaskCreate(ThreadPoolExecutor executor, Callable<V> future) {
         return future;
     }
@@ -53,10 +63,12 @@ public interface TaskAwarePlugin extends ThreadPoolPlugin {
      * Callback when task is execute.
      *
      * @param runnable runnable
-     * @return tasks to be execute
+     * @return task to be executed, if the return task is null,
+     * terminate the execution of the next plug-in immediately.
      * @see ThreadPoolExecutor#execute
      */
-    default Runnable beforeTaskExecute(Runnable runnable) {
+    @Nullable
+    default Runnable beforeTaskExecute(@NonNull Runnable runnable) {
         return runnable;
     }
 }

@@ -17,7 +17,11 @@
 
 package cn.hippo4j.core.executor;
 
-import cn.hippo4j.core.plugin.*;
+import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
+import cn.hippo4j.core.plugin.RejectedAwarePlugin;
+import cn.hippo4j.core.plugin.ShutdownAwarePlugin;
+import cn.hippo4j.core.plugin.TaskAwarePlugin;
+import cn.hippo4j.core.plugin.ThreadPoolPlugin;
 import cn.hippo4j.core.plugin.manager.ThreadPoolPluginManager;
 import cn.hippo4j.core.plugin.manager.ThreadPoolPluginSupport;
 import lombok.AllArgsConstructor;
@@ -28,7 +32,14 @@ import lombok.Setter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.Objects;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.RunnableFuture;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>Extensible thread-pool executor. <br />
@@ -96,13 +107,10 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
                                         @NonNull ThreadFactory threadFactory,
                                         @NonNull RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
-        // Pool extended info.
+        // pool extended info.
         this.threadPoolId = threadPoolId;
         this.threadPoolPluginManager = threadPoolPluginManager;
-        // Proxy handler to support Aware callback.
-        while (handler instanceof RejectedAwareHandlerWrapper) {
-            handler = ((RejectedAwareHandlerWrapper) handler).getHandler();
-        }
+        // proxy handler to support callback, repeated packaging of the same rejection policy should be avoided here.
         this.handlerWrapper = new RejectedAwareHandlerWrapper(threadPoolPluginManager, handler);
         super.setRejectedExecutionHandler(handlerWrapper);
     }
@@ -124,7 +132,9 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
     /**
      * {@inheritDoc}
      *
-     * <p><b>Before calling the superclass method, {@link TaskAwarePlugin#beforeTaskExecute} will be called first.
+     * <p>Before calling the superclass method, {@link TaskAwarePlugin#beforeTaskExecute} will be called first. <br />
+     * If the task becomes null after being processed by the {@link TaskAwarePlugin#beforeTaskExecute},
+     * the task will not be submitted.
      *
      * @param runnable the task to execute
      */
@@ -133,6 +143,9 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
         Collection<TaskAwarePlugin> taskAwarePluginList = threadPoolPluginManager.getTaskAwarePluginList();
         for (TaskAwarePlugin taskAwarePlugin : taskAwarePluginList) {
             runnable = taskAwarePlugin.beforeTaskExecute(runnable);
+            if (Objects.isNull(runnable)) {
+                return;
+            }
         }
         super.execute(runnable);
     }
@@ -251,9 +264,6 @@ public class ExtensibleThreadPoolExecutor extends ThreadPoolExecutor implements 
      */
     @Override
     public void setRejectedExecutionHandler(@NonNull RejectedExecutionHandler handler) {
-        while (handler instanceof RejectedAwareHandlerWrapper) {
-            handler = ((RejectedAwareHandlerWrapper) handler).getHandler();
-        }
         handlerWrapper.setHandler(handler);
     }
 
