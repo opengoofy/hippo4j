@@ -48,7 +48,7 @@ public class TaskDecoratorPlugin implements TaskAwarePlugin {
      * @see ExtensibleThreadPoolExecutor#execute
      */
     @Override
-    public Runnable beforeTaskExecute(Runnable runnable) {
+    public Runnable beforeTaskExecute(@NonNull Runnable runnable) {
         for (TaskDecorator decorator : decorators) {
             runnable = decorator.decorate(runnable);
         }
