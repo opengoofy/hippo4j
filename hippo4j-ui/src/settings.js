@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Hippo4J Web',
+  title: 'Hippo4j Web',
 
   /**
    * @type {boolean} true | false

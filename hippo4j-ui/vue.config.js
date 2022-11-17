@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
-const name = defaultSettings.title || 'Hippo4J-Console'; // page title
+const name = defaultSettings.title || 'Hippo4j-Console'; // page title
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run

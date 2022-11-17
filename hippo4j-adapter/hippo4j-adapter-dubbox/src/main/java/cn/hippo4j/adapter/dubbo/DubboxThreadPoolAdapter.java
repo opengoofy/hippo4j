@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
  * Dubbox thread-pool adapter.
  */
 @Slf4j
-public class DubboxThreadPoolAdapter extends  DubboThreadPoolAdapter{
+public class DubboxThreadPoolAdapter extends DubboThreadPoolAdapter {
 
     @Override
     public String mark() {
