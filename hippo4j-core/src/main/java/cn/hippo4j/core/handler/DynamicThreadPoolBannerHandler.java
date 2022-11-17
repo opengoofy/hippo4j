@@ -67,7 +67,7 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
         if (Boolean.TRUE.equals(properties.getBanner())) {
             String bannerVersion = StringUtil.isNotEmpty(version) ? " (v" + version + ")" : "no version.";
             StringBuilder padding = new StringBuilder();
-            while (padding.length() < STRAP_LINE_SIZE - (version.length() + DYNAMIC_THREAD_POOL.length())) {
+            while (padding.length() < STRAP_LINE_SIZE - (bannerVersion.length() + DYNAMIC_THREAD_POOL.length())) {
                 padding.append(" ");
             }
             System.out.println(AnsiOutput.toString(banner, AnsiColor.GREEN, DYNAMIC_THREAD_POOL, AnsiColor.DEFAULT,
