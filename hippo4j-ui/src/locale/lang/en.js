@@ -7,12 +7,19 @@ export default {
     logOut: 'Log Out'
   },
 
+  // 信息
+  message: {
+    success: 'Success',
+    createdSuccess: 'Created Successfully'
+  },
+
   // 公共
   common: {
-    search: 'Search',
+    query: 'Query',
     insert: 'Insert',
     serialNumber: 'Serial Number',
     operation: 'Operation',
+    create: 'Create',
     edit: 'Edit',
     delete: 'Delete',
     cancel: 'Cancel',
@@ -22,7 +29,7 @@ export default {
     createTime: 'Create Time',
     updateTime: 'Update Time',
     tenant: 'Tenant',
-    query: 'Query',
+    requiredError: 'this is required',
   },
 
   // 运行报表

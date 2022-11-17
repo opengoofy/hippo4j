@@ -7,22 +7,29 @@ export default {
     logOut: '注销'
   },
 
+  // 信息
+  message: {
+    success: '成功',
+    createdSuccess: '创建成功'
+  },
+
   // 公共
   common: {
-    search: '搜索',
-    addition: '添加',
+    query: '搜索',
+    insert: '添加',
     serialNumber: '序号',
     operation: '操作',
+    create: '创建',
     edit: '编辑',
     delete: '删除',
     cancel: '取消',
     confirm: '确认',
     threadPool: '线程池',
-    num: 'Num',
+    num: '序号',
     createTime: '创建时间',
     updateTime: '修改时间',
     tenant: '租户',
-    query: '查询',
+    requiredError: '这是必填项'
   },
 
   // 运行报表
@@ -38,7 +45,7 @@ export default {
   tenantManage: {
     tenantName: '租户名称',
     owner: '负责人',
-    tenantIntro: '租户简介'
+    tenantIntro: '租户简介',
   },
   
   // 线程池

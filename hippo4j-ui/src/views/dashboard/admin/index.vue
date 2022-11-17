@@ -27,10 +27,10 @@
             <el-form-item :label="$t('report.tenants')" label-width="120px">
               <span></span>
             </el-form-item>
-            <el-form-item :label="$t('report.createTime')" label-width="120px">
+            <el-form-item :label="$t('common.createTime')" label-width="120px">
               <span> {{ temp.gmtCreate }}</span>
             </el-form-item>
-            <el-form-item :label="$t('report.updateTime')" label-width="120px">
+            <el-form-item :label="$t('common.updateTime')" label-width="120px">
               <span>{{ temp.gmtModified }}</span>
             </el-form-item>
           </el-form>
