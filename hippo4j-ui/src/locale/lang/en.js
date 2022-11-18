@@ -10,7 +10,8 @@ export default {
   // 信息
   message: {
     success: 'Success',
-    createdSuccess: 'Created Successfully'
+    createdSuccess: 'Created Successfully',
+    deleteMessage: 'This action will delete {name}, Do you want to continue?'
   },
 
   // 公共
@@ -24,12 +25,14 @@ export default {
     delete: 'Delete',
     cancel: 'Cancel',
     confirm: 'Confirm',
+    ok: 'Ok',
     threadPool: 'Thread Pool',
     num: 'Num',
     createTime: 'Create Time',
     updateTime: 'Update Time',
     tenant: 'Tenant',
     requiredError: 'this is required',
+    hint: 'Warning'
   },
 
   // 运行报表

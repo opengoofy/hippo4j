@@ -10,7 +10,8 @@ export default {
   // 信息
   message: {
     success: '成功',
-    createdSuccess: '创建成功'
+    createdSuccess: '创建成功',
+    deleteMessage: '此操作将删除 {name}, 是否继续?'
   },
 
   // 公共
@@ -24,12 +25,14 @@ export default {
     delete: '删除',
     cancel: '取消',
     confirm: '确认',
+    ok: '确定',
     threadPool: '线程池',
     num: '序号',
     createTime: '创建时间',
     updateTime: '修改时间',
     tenant: '租户',
-    requiredError: '这是必填项'
+    requiredError: '这是必填项',
+    hint: '提示'
   },
 
   // 运行报表
@@ -45,7 +48,7 @@ export default {
   tenantManage: {
     tenantName: '租户名称',
     owner: '负责人',
-    tenantIntro: '租户简介',
+    tenantIntro: '租户简介'
   },
   
   // 线程池
