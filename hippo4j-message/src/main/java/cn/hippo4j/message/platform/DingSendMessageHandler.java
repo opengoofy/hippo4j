@@ -21,16 +21,13 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.FileUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
 import cn.hippo4j.message.platform.base.RobotMessageActualContent;
 import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
 import cn.hippo4j.message.platform.constant.DingAlarmConstants;
-import com.dingtalk.api.DefaultDingTalkClient;
-import com.dingtalk.api.DingTalkClient;
-import com.dingtalk.api.request.OapiRobotSendRequest;
-import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 
@@ -38,6 +35,8 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static cn.hippo4j.message.platform.constant.DingAlarmConstants.*;
@@ -86,20 +85,20 @@ public class DingSendMessageHandler extends AbstractRobotSendMessageHandler {
                 log.error("Failed to sign the message sent by nailing.", ex);
             }
         }
-        DingTalkClient dingTalkClient = new DefaultDingTalkClient(serverUrl);
-        OapiRobotSendRequest request = new OapiRobotSendRequest();
-        request.setMsgtype("markdown");
-        OapiRobotSendRequest.Markdown markdown = new OapiRobotSendRequest.Markdown();
-        markdown.setTitle(Objects.equals(notifyConfig.getType(), "CONFIG") ? DING_NOTICE_TITLE : DING_ALARM_TITLE);
-        markdown.setText(robotMessageExecuteDTO.getText());
-        OapiRobotSendRequest.At at = new OapiRobotSendRequest.At();
-        at.setAtMobiles(CollectionUtil.newArrayList(notifyConfig.getReceives().split(",")));
-        request.setAt(at);
-        request.setMarkdown(markdown);
-        try {
-            dingTalkClient.execute(request);
-        } catch (ApiException ex) {
-            log.error("Ding failed to send message", ex);
-        }
+        String title = Objects.equals(notifyConfig.getType(), "CONFIG") ? DING_NOTICE_TITLE : DING_ALARM_TITLE;
+        String text = robotMessageExecuteDTO.getText();
+        ArrayList<String> atMobiles = CollectionUtil.newArrayList(notifyConfig.getReceives().split(","));
+
+        HashMap<String, Object> markdown = new HashMap<>();
+        markdown.put("title", title);
+        markdown.put("text", text);
+        HashMap<String, Object> at = new HashMap<>();
+        at.put("atMobiles", atMobiles);
+
+        HashMap<String, Object> markdownJson = new HashMap<>();
+        markdownJson.put("msgtype", "markdown");
+        markdownJson.put("markdown", markdown);
+        markdownJson.put("at", at);
+        HttpUtil.post(serverUrl, markdownJson);
     }
 }
