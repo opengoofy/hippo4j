@@ -30,14 +30,12 @@ export default {
     num: 'Num',
     createTime: 'Create Time',
     updateTime: 'Update Time',
-    tenant: 'Tenant',
     requiredError: 'this is required',
     hint: 'Warning'
   },
 
   // 运行报表
   report: {
-    item: 'Item',
     poolInstance: 'Pool Instance',
     user: 'User',
     role: 'Role',
@@ -46,9 +44,18 @@ export default {
 
   // 租户管理
   tenantManage: {
+    tenant: 'Tenant',
     tenantName: 'Tenant Name',
     owner: 'Owner',
     tenantIntro: 'Tenant Intro'
+  },
+
+  // 项目管理
+  projectManage: {
+    item: 'Item',
+    itemName: 'Item Name',
+    owner: 'Owner',
+    itemIntro: 'Item Intro'
   },
 
   // 线程池

@@ -4,7 +4,7 @@
       <el-input
         v-model="listQuery.itemId"
         clearable
-        placeholder="项目"
+        :placeholder="$t('projectManage.item')"
         style="width: 200px"
         class="filter-item"
       />
@@ -15,7 +15,7 @@
         icon="el-icon-search"
         @click="fetchData"
       >
-        搜索
+        {{ $t('common.query') }}
       </el-button>
       <el-button
         class="filter-item"
@@ -25,7 +25,7 @@
         :disabled="isEditDisabled"
         @click="handleCreate"
       >
-        添加
+      {{ $t('common.insert') }}
       </el-button>
     </div>
     <el-table
@@ -36,34 +36,34 @@
       highlight-current-row
       element-loading-text="Loading"
     >
-      <el-table-column label="序号" width="95">
+      <el-table-column :label="$t('common.num')" width="95">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column label="租户">
+      <el-table-column :label="$t('tenantManage.tenant')">
         <template slot-scope="scope">{{ scope.row.tenantId }}</template>
       </el-table-column>
-      <el-table-column label="项目">
+      <el-table-column :label="$t('projectManage.item')">
         <template slot-scope="scope">{{ scope.row.itemId }}</template>
       </el-table-column>
-      <el-table-column label="项目名称">
+      <el-table-column :label="$t('projectManage.itemName')">
         <template slot-scope="scope">{{ scope.row.itemName }}</template>
       </el-table-column>
       <!-- <el-table-column label="项目简介">
         <template slot-scope="scope">{{ scope.row.itemDesc | ellipsis }}</template>
       </el-table-column> -->
-      <el-table-column label="负责人">
+      <el-table-column :label="$t('projectManage.owner')">
         <template slot-scope="scope">{{ scope.row.owner }} </template>
       </el-table-column>
       <!-- <el-table-column label="创建时间">
         <template slot-scope="scope">{{ scope.row.gmtCreate }}</template>
       </el-table-column> -->
-      <el-table-column label="修改时间">
+      <el-table-column :label="$t('common.updateTime')">
         <template slot-scope="scope">{{ scope.row.gmtModified }}</template>
       </el-table-column>
-      <el-table-column label="操作" width="90" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" width="90" class-name="small-padding fixed-width">
         <template slot-scope="{ row }">
           <el-button type="text" :disabled="isEditDisabled" size="small" @click="handleUpdate(row)">
-            编辑
+            {{ $t('common.edit') }}
           </el-button>
           <el-button
             v-if="row.status !== 'deleted'"
@@ -72,7 +72,7 @@
             type="text"
             @click="handleDelete(row)"
           >
-            删除
+          {{ $t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -93,10 +93,10 @@
         label-position="left"
         label-width="100px"
       >
-        <el-form-item label="租户" prop="tenantId">
+        <el-form-item :label="$t('tenantManage.tenant')" prop="tenantId">
           <el-select
             v-model="temp.tenantId"
-            placeholder="租户"
+            :placeholder="$t('tenantManage.tenant')"
             filterable
             clearable
             class="filter-item"
@@ -111,34 +111,34 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="项目" prop="itemId">
+        <el-form-item :label="$t('projectManage.item')" prop="itemId">
           <el-input
             v-model="temp.itemId"
             :disabled="dialogStatus === 'create' ? false : true"
-            placeholder="项目"
+            :placeholder="$t('projectManage.item')"
             style="width: 40%"
           />
         </el-form-item>
-        <el-form-item label="项目名称" prop="itemName">
-          <el-input v-model="temp.itemName" placeholder="项目名称" style="width: 40%" />
+        <el-form-item :label="$t('projectManage.itemName')" prop="itemName">
+          <el-input v-model="temp.itemName" :placeholder="$t('projectManage.itemName')" style="width: 40%" />
         </el-form-item>
-        <el-form-item label="负责人" prop="owner">
-          <el-input v-model="temp.owner" placeholder="负责人" style="width: 40%" />
+        <el-form-item :label="$t('projectManage.owner')" prop="owner">
+          <el-input v-model="temp.owner" :placeholder="$t('projectManage.owner')" style="width: 40%" />
         </el-form-item>
-        <el-form-item label="项目简介" prop="itemDesc">
+        <el-form-item :label="$t('projectManage.itemIntro')" prop="itemDesc">
           <el-input
             v-model="temp.itemDesc"
             :autosize="{ minRows: 3, maxRows: 6 }"
             type="textarea"
-            placeholder="项目简介"
+            :placeholder="$t('projectManage.itemIntro')"
             style="width: 40%"
           />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> 取消 </el-button>
+        <el-button @click="dialogFormVisible = false"> {{ $t('common.cancel') }} </el-button>
         <el-button type="primary" @click="dialogStatus === 'create' ? createData() : updateData()">
-          确认
+          {{ $t('common.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -148,7 +148,7 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('common.confirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -204,11 +204,11 @@ export default {
         create: 'Create',
       },
       rules: {
-        tenantId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        itemId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        itemName: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        owner: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        itemDesc: [{ required: true, message: 'this is required', trigger: 'blur' }],
+        tenantId: [{ required: true, message: this.$t('common.requiredError'), trigger: 'blur' }],
+        itemId: [{ required: true, message: this.$t('common.requiredError'), trigger: 'blur' }],
+        itemName: [{ required: true, message: this.$t('common.requiredError'), trigger: 'blur' }],
+        owner: [{ required: true, message: this.$t('common.requiredError'), trigger: 'blur' }],
+        itemDesc: [{ required: true, message: this.$t('common.requiredError'), trigger: 'blur' }],
       },
       temp: {
         id: undefined,
@@ -272,8 +272,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.createdSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -297,8 +297,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.createdSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -307,9 +307,9 @@ export default {
       });
     },
     openDelConfirm(name) {
-      return this.$confirm(`此操作将删除 ${name}, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      return this.$confirm(this.$t('message.deleteMessage', { name }), this.$t('common.hint'), {
+        confirmButtonText: this.$t('common.ok'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       });
     },
@@ -319,8 +319,8 @@ export default {
         jobProjectApi.deleted(delObj).then((response) => {
           this.fetchData();
           this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
+            title: this.$t('message.success'),
+            message: this.$t('message.createdSuccess'),
             type: 'success',
             duration: 2000,
           });
