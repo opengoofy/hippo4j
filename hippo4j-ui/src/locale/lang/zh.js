@@ -57,7 +57,7 @@ export default {
     owner: '负责人',
     itemIntro: '项目简介'
   },
-
+  
   // 线程池
   threadPool: {
     tenant: '租户',
