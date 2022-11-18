@@ -148,11 +148,13 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .maximumPoolSize(executor.getMaximumPoolSize())
                         .blockingQueueType(BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName(executor.getQueue().getClass().getSimpleName()))
                         .capacity(executor.getQueue().remainingCapacity())
+                        .threadFactory(executor.getThreadFactory())
                         .allowCoreThreadTimeOut(executor.allowsCoreThreadTimeOut())
                         .keepAliveTime(executor.getKeepAliveTime(TimeUnit.MILLISECONDS))
                         .isAlarm(false)
                         .activeAlarm(80)
                         .capacityAlarm(80)
+                        .executeTimeOut(10000L)
                         .rejectedPolicyType(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()))
                         .build();
                 DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()

@@ -13,6 +13,7 @@
     <modules>
         <module>hippo4j-spring-boot-starter-adapter-all</module>
         <module>hippo4j-spring-boot-starter-adapter-dubbo</module>
+        <module>hippo4j-spring-boot-starter-adapter-dubbox</module>
         <module>hippo4j-spring-boot-starter-adapter-alibaba-dubbo</module>
         <module>hippo4j-spring-boot-starter-adapter-rabbitmq</module>
         <module>hippo4j-spring-boot-starter-adapter-rocketmq</module>

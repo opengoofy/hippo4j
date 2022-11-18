@@ -18,6 +18,7 @@
 package cn.hippo4j.console.controller;
 
 import cn.hippo4j.auth.model.UserInfo;
+import cn.hippo4j.auth.model.biz.permission.PermissionRespDTO;
 import cn.hippo4j.auth.model.biz.user.UserQueryPageReqDTO;
 import cn.hippo4j.auth.model.biz.user.UserReqDTO;
 import cn.hippo4j.auth.model.biz.user.UserRespDTO;
@@ -27,13 +28,25 @@ import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.TokenInfo;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.config.service.biz.TenantService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static cn.hippo4j.auth.constant.Constants.TOKEN_VALIDITY_IN_SECONDS;
+import static cn.hippo4j.common.constant.Constants.ADMIN_USER;
 
 /**
  * User controller.
@@ -46,6 +59,8 @@ public class UserController {
     private final UserService userService;
 
     private final AuthManager authManager;
+
+    private final TenantService tenantService;
 
     @PostMapping("/apply/token")
     public Result<TokenInfo> applyToken(@RequestBody UserInfo userInfo) {
@@ -63,11 +78,15 @@ public class UserController {
     @GetMapping("/info/{username}")
     public Result<UserRespDTO> userInfo(@PathVariable("username") String username) {
         UserRespDTO userRespDTO = userService.getUser(new UserReqDTO().setUserName(username));
+        if (Objects.equals(username, ADMIN_USER)) {
+            userRespDTO.setResources(tenantService.listAllTenant().stream().map(each -> new PermissionRespDTO(username, each, "rw")).collect(Collectors.toList()));
+            userRespDTO.setTempResources(tenantService.listAllTenant());
+        }
         return Results.success(userRespDTO);
     }
 
     @PostMapping("/add")
-    public Result<Void> addUser(@RequestBody UserReqDTO reqDTO) {
+    public Result<Void> addUser(@Validated @RequestBody UserReqDTO reqDTO) {
         userService.addUser(reqDTO);
         return Results.success();
     }

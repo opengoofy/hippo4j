@@ -17,7 +17,11 @@
 
 package cn.hippo4j.console.service;
 
-import cn.hippo4j.console.model.*;
+import cn.hippo4j.console.model.ChartInfo;
+import cn.hippo4j.console.model.LineChartInfo;
+import cn.hippo4j.console.model.PieChartInfo;
+import cn.hippo4j.console.model.RankingChart;
+import cn.hippo4j.console.model.TenantChart;
 
 /**
  * Dashboard service.

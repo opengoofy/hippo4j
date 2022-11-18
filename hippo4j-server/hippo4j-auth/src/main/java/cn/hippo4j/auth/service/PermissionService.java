@@ -17,8 +17,10 @@
 
 package cn.hippo4j.auth.service;
 
+import cn.hippo4j.auth.model.biz.permission.PermissionReqDTO;
 import cn.hippo4j.auth.model.biz.permission.PermissionRespDTO;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import java.util.List;
 
 /**
  * Permission service.
@@ -26,29 +28,25 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 public interface PermissionService {
 
     /**
-     * Paging query permission list.
+     * list permission by username
      *
-     * @param pageNo
-     * @param pageSize
-     * @return
+     * @param username username
+     * @return permission resp list
      */
-    IPage<PermissionRespDTO> listPermission(int pageNo, int pageSize);
+    List<PermissionRespDTO> listPermissionByUserName(String username);
 
     /**
-     * Add permission.
+     * Binding permission by username.
      *
-     * @param role
-     * @param resource
-     * @param action
+     * @param username                   username
+     * @param permissionRequestParamList permission request param list
      */
-    void addPermission(String role, String resource, String action);
+    void bindingPermissionByUsername(String username, List<PermissionReqDTO> permissionRequestParamList);
 
     /**
      * Remove permission.
      *
-     * @param role
-     * @param resource
-     * @param action
+     * @param username username
      */
-    void deletePermission(String role, String resource, String action);
+    void deletePermission(String username);
 }

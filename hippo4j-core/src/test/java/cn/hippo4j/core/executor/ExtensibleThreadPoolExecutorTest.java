@@ -25,12 +25,18 @@ import cn.hippo4j.core.plugin.TaskAwarePlugin;
 import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
 import cn.hippo4j.core.plugin.manager.ThreadPoolPluginManager;
 import lombok.Getter;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -97,6 +103,13 @@ public class ExtensibleThreadPoolExecutorTest {
         });
         ThreadUtil.sleep(500L);
         Assert.assertEquals(2, plugin.getInvokeCount().get());
+
+        // no task will be executed because it has been replaced with null
+        executor.register(new TestTaskToNullAwarePlugin());
+        executor.execute(() -> {
+        });
+        ThreadUtil.sleep(500L);
+        Assert.assertEquals(2, plugin.getInvokeCount().get());
     }
 
     @Test
@@ -144,6 +157,14 @@ public class ExtensibleThreadPoolExecutorTest {
         }
     }
 
+    private final static class TestTaskToNullAwarePlugin implements TaskAwarePlugin {
+
+        @Override
+        public @Nullable Runnable beforeTaskExecute(@NonNull Runnable runnable) {
+            return null;
+        }
+    }
+
     @Getter
     private final static class TestTaskAwarePlugin implements TaskAwarePlugin {
 
@@ -160,7 +181,7 @@ public class ExtensibleThreadPoolExecutorTest {
             return TaskAwarePlugin.super.beforeTaskCreate(executor, future);
         }
         @Override
-        public Runnable beforeTaskExecute(Runnable runnable) {
+        public Runnable beforeTaskExecute(@NonNull Runnable runnable) {
             invokeCount.incrementAndGet();
             return TaskAwarePlugin.super.beforeTaskExecute(runnable);
         }
@@ -210,7 +231,7 @@ public class ExtensibleThreadPoolExecutorTest {
             ShutdownAwarePlugin.super.afterShutdown(executor, remainingTasks);
         }
         @Override
-        public void afterTerminated(ExtensibleThreadPoolExecutor executor) {
+        public void afterTerminated(ThreadPoolExecutor executor) {
             invokeCount.incrementAndGet();
             ShutdownAwarePlugin.super.afterTerminated(executor);
         }

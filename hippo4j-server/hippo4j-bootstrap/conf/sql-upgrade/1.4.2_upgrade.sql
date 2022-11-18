@@ -17,7 +17,7 @@ ALTER TABLE his_run_data Modify COLUMN tp_id varchar(256) COMMENT '线程池ID';
 ALTER TABLE notify Modify COLUMN tp_id varchar(256) COMMENT '线程池ID';
 
 CREATE TABLE `his_config_verify`  (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `type` int NULL DEFAULT NULL COMMENT '变更类型',
   `mark` varchar(128)  DEFAULT NULL COMMENT '框架线程池类型',
   `tenant_id` varchar(128)  DEFAULT NULL COMMENT '租户ID',

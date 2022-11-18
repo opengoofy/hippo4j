@@ -96,7 +96,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             String token = JwtTokenUtil.createToken(jwtUser.getId(), jwtUser.getUsername(), role, isRemember);
             response.setHeader("token", JwtTokenUtil.TOKEN_PREFIX + token);
             response.setCharacterEncoding("UTF-8");
-            Map<String, Object> maps = new HashMap(MAP_INITIAL_CAPACITY);
+            Map<String, Object> maps = new HashMap<>(MAP_INITIAL_CAPACITY);
             maps.put("data", JwtTokenUtil.TOKEN_PREFIX + token);
             maps.put("roles", role.split(SPLIT_COMMA));
             response.getWriter().write(JSONUtil.toJSONString(Results.success(maps)));
@@ -108,6 +108,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(JSONUtil.toJSONString(new ReturnT(-1, "Server Error")));
+        response.getWriter().write(JSONUtil.toJSONString(new ReturnT(ReturnT.JWT_FAIL_CODE, "Server Error")));
     }
 }

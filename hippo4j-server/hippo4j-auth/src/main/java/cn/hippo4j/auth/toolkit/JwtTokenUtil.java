@@ -77,7 +77,7 @@ public class JwtTokenUtil {
                 .setIssuer(ISS)
                 .setSubject(id + Constants.SPLIT_COMMA + username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * Constants.STEP))
                 .compact();
     }
 

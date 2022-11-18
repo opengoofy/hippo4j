@@ -147,6 +147,7 @@ public class DynamicThreadPoolElasticSearchMonitorHandler extends AbstractDynami
     @Getter
     @Builder
     private static class EsIndex {
+
         String index;
         String type;
         String mapping;

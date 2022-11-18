@@ -19,14 +19,18 @@ package cn.hippo4j.auth.filter;
 
 import cn.hippo4j.auth.toolkit.AuthUtil;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
  * When anonymous login is enabled, an error will be reported when viewing the current user information.
  * Modify the URI to query the default administrator information.
- *
+ * <p>
  * before:hippo4j/v1/cs/auth/users/info or hippo4j/v1/cs/auth/users/info/xxx
  * after:hippo4j/v1/cs/auth/users/info/admin
  */
@@ -34,7 +38,7 @@ public class RewriteUserInfoApiFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        boolean enableAuthentication = AuthUtil.ENABLE_AUTHENTICATION;
+        boolean enableAuthentication = AuthUtil.isEnableAuthentication();
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         String path = httpRequest.getRequestURI();
         if (!enableAuthentication && path.contains("users/info")) {

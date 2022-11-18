@@ -36,6 +36,9 @@ public class RankingChart {
      */
     private List<RankingChartInfo> rankingChartInfoList;
 
+    /**
+     * RankingChartInfo
+     */
     @Data
     public static class RankingChartInfo {
 

@@ -26,12 +26,14 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import cn.hippo4j.common.spi.annotation.SingletonSPI;
+
 /**
  * Dynamic thread-pool service loader.
  */
 public class DynamicThreadPoolServiceLoader {
 
-    private static final Map<Class<?>, Collection<Object>> SERVICES = new ConcurrentHashMap();
+    private static final Map<Class<?>, Collection<Object>> SERVICES = new ConcurrentHashMap<>();
 
     /**
      * Register.
@@ -60,12 +62,24 @@ public class DynamicThreadPoolServiceLoader {
     }
 
     /**
+     * Get Service instances
+     * 
+     * @param serviceClass serviceClass
+     * @param <T>
+     * @return
+     */
+    public static <T> Collection<T> getServiceInstances(final Class<T> serviceClass) {
+        return null == serviceClass.getAnnotation(SingletonSPI.class) ? newServiceInstances(serviceClass) : getSingletonServiceInstances(serviceClass);
+    }
+
+    /**
      * Get singleton service instances.
      *
      * @param service
      * @param <T>
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static <T> Collection<T> getSingletonServiceInstances(final Class<T> service) {
         return (Collection<T>) SERVICES.getOrDefault(service, Collections.emptyList());
     }

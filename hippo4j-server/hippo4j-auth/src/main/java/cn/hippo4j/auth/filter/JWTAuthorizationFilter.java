@@ -59,22 +59,28 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
+        boolean checkAccessTokenOrTokenHeader = false;
         // Token when verifying client interaction.
         String accessToken = request.getParameter(ACCESS_TOKEN);
+        String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
         if (StringUtil.isNotBlank(accessToken)) {
             tokenManager.validateToken(accessToken);
             Authentication authentication = this.tokenManager.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            chain.doFilter(request, response);
-            return;
+            checkAccessTokenOrTokenHeader = true;
+        } else if (checkTokenHeader(tokenHeader)) {
+            // If there is no Authorization information in the request header, it will be released directly.
+            checkAccessTokenOrTokenHeader = true;
         }
-        // If there is no Authorization information in the request header, it will be released directly.
-        String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
-        if (tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
+        if (checkAccessTokenOrTokenHeader) {
             chain.doFilter(request, response);
-            return;
+        } else {
+            filterInternal(request, response, chain, tokenHeader);
         }
-        // If there is a Token in the request header, it is parsed and the authentication information is set.
+    }
+
+    private void filterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+                                String tokenHeader) throws IOException, ServletException {
         try {
             SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader));
         } catch (Exception ex) {
@@ -96,11 +102,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         }
     }
 
+    private boolean checkTokenHeader(String tokenHeader) {
+        return tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX);
+    }
+
     /**
      * Obtain user information from Token and create a new Token.
      *
-     * @param tokenHeader
-     * @return
+     * @param tokenHeader tokenHeader
+     * @return UsernamePasswordAuthenticationToken
      */
     private UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader) {
         String token = tokenHeader.replace(JwtTokenUtil.TOKEN_PREFIX, "");

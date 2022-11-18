@@ -28,6 +28,7 @@ import cn.hippo4j.config.toolkit.Md5ConfigUtil;
 import cn.hippo4j.config.toolkit.RequestUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.AsyncContext;
@@ -39,6 +40,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import static cn.hippo4j.common.constant.Constants.CLIENT_VERSION;
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
 
 /**
@@ -58,10 +60,10 @@ public class LongPollingService {
 
     public static final String CLIENT_APP_NAME_HEADER = "Client-AppName";
 
-    private Map<String, Long> retainIps = new ConcurrentHashMap();
+    private final Map<String, Long> retainIps = new ConcurrentHashMap<>();
 
     public LongPollingService() {
-        allSubs = new ConcurrentLinkedQueue();
+        allSubs = new ConcurrentLinkedQueue<>();
         ConfigExecutor.scheduleLongPolling(new StatTask(), 0L, 30L, TimeUnit.SECONDS);
         NotifyCenter.registerToPublisher(LocalDataChangeEvent.class, NotifyCenter.ringBufferSize);
         NotifyCenter.registerSubscriber(new AbstractSubscriber() {
@@ -81,6 +83,9 @@ public class LongPollingService {
         });
     }
 
+    /**
+     * Stat task.
+     */
     class StatTask implements Runnable {
 
         @Override
@@ -91,6 +96,9 @@ public class LongPollingService {
 
     final Queue<ClientLongPolling> allSubs;
 
+    /**
+     * Data change task.
+     */
     class DataChangeTask implements Runnable {
 
         final String identify;
@@ -105,8 +113,8 @@ public class LongPollingService {
         @Override
         public void run() {
             try {
-                for (Iterator<ClientLongPolling> iter = allSubs.iterator(); iter.hasNext();) {
-                    ClientLongPolling clientSub = iter.next();
+                for (Iterator<ClientLongPolling> iterator = allSubs.iterator(); iterator.hasNext();) {
+                    ClientLongPolling clientSub = iterator.next();
                     String identity = groupKey + GROUP_KEY_DELIMITER + identify;
                     List<String> parseMapForFilter = CollectionUtil.newArrayList(identity);
                     if (StringUtil.isBlank(identify)) {
@@ -116,8 +124,8 @@ public class LongPollingService {
                         if (clientSub.clientMd5Map.containsKey(each)) {
                             getRetainIps().put(clientSub.clientIdentify, System.currentTimeMillis());
                             ConfigCacheService.updateMd5(each, clientSub.clientIdentify, ConfigCacheService.getContentMd5(each));
-                            iter.remove();
-                            clientSub.sendResponse(Arrays.asList(groupKey));
+                            iterator.remove();
+                            clientSub.sendResponse(Collections.singletonList(groupKey));
                         }
                     });
                 }
@@ -130,16 +138,15 @@ public class LongPollingService {
     /**
      * Add long polling client.
      *
-     * @param req
-     * @param rsp
-     * @param clientMd5Map
-     * @param probeRequestSize
+     * @param req              http servlet request
+     * @param rsp              http servlet response
+     * @param clientMd5Map     client md5 map
+     * @param probeRequestSize probe request size
      */
     public void addLongPollingClient(HttpServletRequest req, HttpServletResponse rsp, Map<String, String> clientMd5Map,
                                      int probeRequestSize) {
         String str = req.getHeader(LONG_POLLING_HEADER);
-        String appName = req.getHeader(CLIENT_APP_NAME_HEADER);
-        String noHangUpFlag = req.getHeader(LongPollingService.LONG_POLLING_NO_HANG_UP_HEADER);
+        String noHangUpFlag = req.getHeader(LONG_POLLING_NO_HANG_UP_HEADER);
         int delayTime = SwitchService.getSwitchInteger(SwitchService.FIXED_DELAY_TIME, 500);
         long timeout = Math.max(10000, Long.parseLong(str) - delayTime);
         if (isFixedPolling()) {
@@ -157,7 +164,8 @@ public class LongPollingService {
         String clientIdentify = RequestUtil.getClientIdentify(req);
         final AsyncContext asyncContext = req.startAsync();
         asyncContext.setTimeout(0L);
-        ConfigExecutor.executeLongPolling(new ClientLongPolling(asyncContext, clientMd5Map, clientIdentify, probeRequestSize, timeout - delayTime, appName));
+        ConfigExecutor.executeLongPolling(new ClientLongPolling(asyncContext, clientMd5Map, clientIdentify, probeRequestSize,
+                timeout - delayTime, Pair.of(req.getHeader(CLIENT_APP_NAME_HEADER), req.getHeader(CLIENT_VERSION))));
     }
 
     /**
@@ -175,19 +183,23 @@ public class LongPollingService {
 
         final String appName;
 
+        final String appVersion;
+
         final int probeRequestSize;
 
         final long timeoutTime;
 
         Future<?> asyncTimeoutFuture;
 
-        public ClientLongPolling(AsyncContext asyncContext, Map<String, String> clientMd5Map, String clientIdentify, int probeRequestSize, long timeout, String appName) {
+        public ClientLongPolling(AsyncContext asyncContext, Map<String, String> clientMd5Map, String clientIdentify,
+                                 int probeRequestSize, long timeout, Pair<String, String> appInfo) {
             this.asyncContext = asyncContext;
             this.clientMd5Map = clientMd5Map;
             this.clientIdentify = clientIdentify;
             this.probeRequestSize = probeRequestSize;
             this.timeoutTime = timeout;
-            this.appName = appName;
+            this.appName = appInfo.getLeft();
+            this.appVersion = appInfo.getRight();
             this.createTime = System.currentTimeMillis();
         }
 
@@ -230,12 +242,16 @@ public class LongPollingService {
         /**
          * Generate async response.
          *
-         * @param changedGroups Changed thread pool group key
+         * @param changedGroups changed thread pool group key
          */
         private void generateResponse(List<String> changedGroups) {
             HttpServletResponse response = (HttpServletResponse) asyncContext.getResponse();
-            if (null == changedGroups) {
-                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            if (CollectionUtil.isEmpty(changedGroups)) {
+                if (StringUtil.isBlank(appVersion)) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                }
                 // Tell web container to send http response.
                 asyncContext.complete();
                 return;
@@ -255,6 +271,11 @@ public class LongPollingService {
         }
     }
 
+    /**
+     * Get retain ips.
+     *
+     * @return retain ips
+     */
     public Map<String, Long> getRetainIps() {
         return retainIps;
     }
@@ -284,20 +305,19 @@ public class LongPollingService {
      * Build resp str.
      *
      * @param changedGroups Changed thread pool group key
-     * @return
+     * @return resp str
      */
     @SneakyThrows
     private String buildRespStr(List<String> changedGroups) {
         String changedGroupStr = Md5Util.compareMd5ResultString(changedGroups);
-        String respStr = JSONUtil.toJSONString(Results.success(changedGroupStr));
-        return respStr;
+        return JSONUtil.toJSONString(Results.success(changedGroupStr));
     }
 
     /**
      * Is support long polling.
      *
-     * @param request
-     * @return
+     * @param request http servlet request
+     * @return is support long polling
      */
     public static boolean isSupportLongPolling(HttpServletRequest request) {
         return request.getHeader(LONG_POLLING_HEADER) != null;
@@ -306,7 +326,7 @@ public class LongPollingService {
     /**
      * Is fixed polling.
      *
-     * @return
+     * @return is fixed polling
      */
     private static boolean isFixedPolling() {
         return SwitchService.getSwitchBoolean(SwitchService.FIXED_POLLING, false);
@@ -315,7 +335,7 @@ public class LongPollingService {
     /**
      * Get fixed polling interval.
      *
-     * @return
+     * @return fixed polling interval
      */
     private static int getFixedPollingInterval() {
         return SwitchService.getSwitchInteger(SwitchService.FIXED_POLLING_INTERVAL, FIXED_POLLING_INTERVAL_MS);

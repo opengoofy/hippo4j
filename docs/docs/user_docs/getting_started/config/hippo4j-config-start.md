@@ -12,7 +12,7 @@ Nacos、Apollo、Zookeeper、ETCD、Polaris 配置中心任选其一。
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-config-spring-boot-starter</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3-upgrade</version>
 </dependency>
 ```
 

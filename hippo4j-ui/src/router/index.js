@@ -122,13 +122,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/hippo4j/itemList',
     name: 'item',
-    meta: { title: '项目管理', icon: 'item4' },
+    meta: { title: '项目管理', icon: 'item' },
     children: [
       {
         path: 'index',
         name: 'index',
         component: () => import('@/views/hippo4j/item/index'),
-        meta: { title: '项目管理', icon: 'item4' },
+        meta: { title: '项目管理', icon: 'item' },
       },
     ],
   },
@@ -138,7 +138,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/hippo4j/dynamic/thread-pool',
     name: 'thread-pool',
-    meta: { title: '动态线程池', icon: 'pool3' },
+    meta: { title: '动态线程池', icon: 'pool' },
     children: [
       {
         path: 'index',
@@ -165,7 +165,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/hippo4j/server',
     name: 'server-thread-pool',
-    meta: { title: '容器线程池', icon: 'vessel3' },
+    meta: { title: '容器线程池', icon: 'vessel' },
     children: [
       {
         path: 'tomcat',
@@ -192,7 +192,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/hippo4j/other',
     name: 'other-thread-pool',
-    meta: { title: '框架线程池', icon: 'other4' },
+    meta: { title: '框架线程池', icon: 'other' },
     children: [
       {
         path: 'dubbo',
@@ -243,7 +243,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/hippo4j/verifyList',
     name: 'config-modification-verify',
-    meta: { title: '线程池审核', icon: 'audit', roles: ['ROLE_ADMIN'] },
+    meta: { title: '线程池审核', icon: 'audit', roles: ['ROLE_MANAGE', 'ROLE_ADMIN'] },
     children: [
       {
         path: 'index',
@@ -273,13 +273,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/hippo4j/userList',
     name: 'user',
-    meta: { title: '用户权限', icon: 'user6', roles: ['ROLE_ADMIN'] },
+    meta: { title: '用户权限', icon: 'user', roles: ['ROLE_ADMIN'] },
     children: [
       {
         path: 'index',
         name: 'index',
         component: () => import('@/views/hippo4j/user/index'),
-        meta: { title: '用户权限', icon: 'user6' },
+        meta: { title: '用户权限', icon: 'user' },
       },
     ],
   },
@@ -288,13 +288,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/hippo4j/logList',
     name: 'log',
-    meta: { title: '日志管理', icon: 'log3' },
+    meta: { title: '日志管理', icon: 'log' },
     children: [
       {
         path: 'index',
         name: 'index',
         component: () => import('@/views/hippo4j/log/index'),
-        meta: { title: '日志管理', icon: 'log3' },
+        meta: { title: '日志管理', icon: 'log' },
       },
     ],
   },
@@ -305,7 +305,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'https://hippo4j.cn',
-        meta: { title: '官网外链', icon: 'link3' },
+        meta: { title: '官网外链', icon: 'link' },
       },
     ],
   },

@@ -23,7 +23,7 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

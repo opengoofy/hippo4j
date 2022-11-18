@@ -19,6 +19,7 @@ package cn.hippo4j.core.plugin;
 
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.manager.ThreadPoolPluginManager;
+import cn.hippo4j.core.plugin.manager.ThreadPoolPluginRegistrar;
 import cn.hippo4j.core.plugin.manager.ThreadPoolPluginSupport;
 
 /**
@@ -31,11 +32,8 @@ import cn.hippo4j.core.plugin.manager.ThreadPoolPluginSupport;
  * and the plugin will provide some extension function of original
  * {@link java.util.concurrent.ThreadPoolExecutor} does not support.
  *
- * <p>During runtime, plugins can dynamically modify some configurable parameters
- * and provide some runtime information by {@link #getPluginRuntime()}.
- * When the thread-pool is destroyed, the plugin will also be destroyed.
- *
  * @see ExtensibleThreadPoolExecutor
+ * @see ThreadPoolPluginRegistrar
  * @see ThreadPoolPluginManager
  * @see TaskAwarePlugin
  * @see ExecuteAwarePlugin
@@ -45,11 +43,13 @@ import cn.hippo4j.core.plugin.manager.ThreadPoolPluginSupport;
 public interface ThreadPoolPlugin {
 
     /**
-     * Get id.
+     * Get id, {@link Class#getSimpleName()} will be returned by default.
      *
      * @return id
      */
-    String getId();
+    default String getId() {
+        return this.getClass().getSimpleName();
+    }
 
     /**
      * Callback when plugin register into manager

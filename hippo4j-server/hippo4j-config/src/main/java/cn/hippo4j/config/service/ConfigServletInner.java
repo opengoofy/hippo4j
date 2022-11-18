@@ -67,7 +67,7 @@ public class ConfigServletInner {
      * This problem belongs to an extremely individual scenario. Since it cannot be reproduced, so first solve the problem in this way.
      *
      * @param request http servlet request
-     * @return
+     * @return weight verification
      */
     private boolean weightVerification(HttpServletRequest request) {
         String clientIdentify = request.getParameter(WEIGHT_CONFIGS);

@@ -17,11 +17,20 @@
 
 package cn.hippo4j.core.plugin.manager;
 
-import cn.hippo4j.core.plugin.*;
+import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
+import cn.hippo4j.core.plugin.RejectedAwarePlugin;
+import cn.hippo4j.core.plugin.ShutdownAwarePlugin;
+import cn.hippo4j.core.plugin.TaskAwarePlugin;
+import cn.hippo4j.core.plugin.ThreadPoolPlugin;
 import lombok.Getter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
+import org.springframework.core.annotation.Order;
+
+import java.util.Iterator;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * test for {@link DefaultThreadPoolPluginManager}
@@ -32,7 +41,7 @@ public class DefaultThreadPoolPluginManagerTest {
 
     @Before
     public void initRegistry() {
-        manager = new DefaultThreadPoolPluginManager();
+        manager = new DefaultThreadPoolPluginManager(new ReentrantReadWriteLock(), null);
     }
 
     @Test
@@ -70,6 +79,18 @@ public class DefaultThreadPoolPluginManagerTest {
 
     @Test
     public void testUnregister() {
+        manager.register(new TestTaskAwarePlugin());
+        manager.unregister(TestTaskAwarePlugin.class.getSimpleName());
+        Assert.assertFalse(manager.isRegistered(TestTaskAwarePlugin.class.getSimpleName()));
+
+        manager.register(new TestRejectedAwarePlugin());
+        manager.unregister(TestRejectedAwarePlugin.class.getSimpleName());
+        Assert.assertFalse(manager.isRegistered(TestRejectedAwarePlugin.class.getSimpleName()));
+
+        manager.register(new TestShutdownAwarePlugin());
+        manager.unregister(TestShutdownAwarePlugin.class.getSimpleName());
+        Assert.assertFalse(manager.isRegistered(TestShutdownAwarePlugin.class.getSimpleName()));
+
         manager.register(new TestExecuteAwarePlugin());
         manager.unregister(TestExecuteAwarePlugin.class.getSimpleName());
         Assert.assertFalse(manager.isRegistered(TestExecuteAwarePlugin.class.getSimpleName()));
@@ -136,24 +157,89 @@ public class DefaultThreadPoolPluginManagerTest {
         Assert.assertFalse(manager.getPluginOfType(TestExecuteAwarePlugin.class.getSimpleName(), RejectedAwarePlugin.class).isPresent());
     }
 
+    @Test
+    public void testEnable() {
+        ThreadPoolPlugin plugin = new TestExecuteAwarePlugin();
+        Assert.assertFalse(manager.enable(plugin.getId()));
+        manager.register(plugin);
+        Assert.assertFalse(manager.enable(plugin.getId()));
+        manager.disable(plugin.getId());
+        Assert.assertTrue(manager.enable(plugin.getId()));
+    }
+
+    @Test
+    public void testDisable() {
+        ThreadPoolPlugin plugin = new TestExecuteAwarePlugin();
+        Assert.assertFalse(manager.disable(plugin.getId()));
+
+        manager.register(plugin);
+        Assert.assertTrue(manager.disable(plugin.getId()));
+        Assert.assertFalse(manager.disable(plugin.getId()));
+
+        Assert.assertTrue(manager.getExecuteAwarePluginList().isEmpty());
+        Assert.assertEquals(1, manager.getAllPlugins().size());
+    }
+
+    @Test
+    public void testIsDisable() {
+        ThreadPoolPlugin plugin = new TestExecuteAwarePlugin();
+        Assert.assertFalse(manager.isDisabled(plugin.getId()));
+
+        manager.register(plugin);
+        Assert.assertTrue(manager.disable(plugin.getId()));
+        Assert.assertTrue(manager.isDisabled(plugin.getId()));
+    }
+
+    @Test
+    public void testGetDisabledPluginIds() {
+        ThreadPoolPlugin plugin = new TestExecuteAwarePlugin();
+        Assert.assertTrue(manager.getAllDisabledPluginIds().isEmpty());
+
+        manager.register(plugin);
+        Assert.assertTrue(manager.disable(plugin.getId()));
+        Assert.assertEquals(1, manager.getAllDisabledPluginIds().size());
+    }
+
+    @Test
+    public void testSetPluginComparator() {
+        Assert.assertFalse(manager.isEnableSort());
+
+        manager.register(new TestExecuteAwarePlugin());
+        manager.register(new TestTaskAwarePlugin());
+        manager.setPluginComparator(AnnotationAwareOrderComparator.INSTANCE);
+        manager.register(new TestRejectedAwarePlugin());
+        manager.register(new TestShutdownAwarePlugin());
+        Assert.assertTrue(manager.isEnableSort());
+
+        Iterator<ThreadPoolPlugin> iterator = manager.getAllPlugins().iterator();
+        Assert.assertEquals(TestTaskAwarePlugin.class, iterator.next().getClass());
+        Assert.assertEquals(TestRejectedAwarePlugin.class, iterator.next().getClass());
+        Assert.assertEquals(TestExecuteAwarePlugin.class, iterator.next().getClass());
+        Assert.assertEquals(TestShutdownAwarePlugin.class, iterator.next().getClass());
+    }
+
+    @Order(0)
     @Getter
     private final static class TestTaskAwarePlugin implements TaskAwarePlugin {
 
         private final String id = this.getClass().getSimpleName();
     }
 
+    @Order(2)
     @Getter
     private final static class TestExecuteAwarePlugin implements ExecuteAwarePlugin {
 
         private final String id = this.getClass().getSimpleName();
     }
 
+    @Order(1)
     @Getter
     private final static class TestRejectedAwarePlugin implements RejectedAwarePlugin {
 
         private final String id = this.getClass().getSimpleName();
     }
 
+    @Order(3)
     @Getter
     private final static class TestShutdownAwarePlugin implements ShutdownAwarePlugin {
 

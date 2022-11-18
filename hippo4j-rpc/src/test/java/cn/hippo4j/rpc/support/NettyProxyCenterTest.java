@@ -18,33 +18,37 @@
 package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.common.web.exception.IllegalException;
-import cn.hippo4j.rpc.exception.ConnectionException;
+import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
 import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.net.InetSocketAddress;
+
 public class NettyProxyCenterTest {
+
+    ServerPort port = new TestServerPort();
 
     @Test
     public void getProxy() {
+        InetSocketAddress address = InetSocketAddress.createUnresolved("localhost", port.getPort());
         NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
-        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, "localhost", 8888, handler);
+        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, address, handler);
+        Assert.assertNotNull(localhost);
+    }
+
+    @Test
+    public void createProxy() {
+        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, "localhost:8894");
         Assert.assertNotNull(localhost);
     }
 
     @Test(expected = IllegalException.class)
     public void getProxyTest() {
+        InetSocketAddress address = InetSocketAddress.createUnresolved("localhost", port.getPort());
         NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
-        ProxyClass localhost = NettyProxyCenter.getProxy(ProxyClass.class, "localhost", 8888, handler);
-        Assert.assertNotNull(localhost);
-    }
-
-    @Test(expected = ConnectionException.class)
-    public void getProxyTestCall() {
-        NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
-        ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, "localhost", 8888, handler);
-        localhost.hello();
+        ProxyClass localhost = NettyProxyCenter.getProxy(ProxyClass.class, address, handler);
         Assert.assertNotNull(localhost);
     }
 
@@ -55,5 +59,13 @@ public class NettyProxyCenterTest {
 
     static class ProxyClass {
 
+    }
+
+    static class TestServerPort implements ServerPort {
+
+        @Override
+        public int getPort() {
+            return 8894;
+        }
     }
 }
