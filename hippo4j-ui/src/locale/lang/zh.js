@@ -4,7 +4,7 @@ export default {
     login: '登 陆',
     username: '用户名',
     password: '密码',
-    logOut: '注销'
+    logOut: '注销',
   },
 
   // 信息

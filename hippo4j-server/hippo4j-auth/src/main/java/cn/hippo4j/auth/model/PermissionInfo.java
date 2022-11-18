@@ -23,7 +23,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -31,44 +34,48 @@ import java.util.Date;
  * Permission info.
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("permission")
 public class PermissionInfo {
 
     /**
-     * id
+     * ID
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * role
+     * Username
      */
-    private String role;
+    @TableField(value = "role")
+    private String username;
 
     /**
-     * resource
+     * Resource
      */
     private String resource;
 
     /**
-     * action
+     * Action
      */
     private String action;
 
     /**
-     * gmtCreate
+     * Gmt create
      */
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
     /**
-     * gmtModified
+     * Gmt modified
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
     /**
-     * delFlag
+     * Del flag
      */
     @TableLogic
     @TableField(fill = FieldFill.INSERT)

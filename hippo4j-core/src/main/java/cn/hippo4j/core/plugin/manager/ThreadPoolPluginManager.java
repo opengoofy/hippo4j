@@ -17,14 +17,20 @@
 
 package cn.hippo4j.core.plugin.manager;
 
-import cn.hippo4j.core.plugin.*;
+import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
+import cn.hippo4j.core.plugin.PluginRuntime;
+import cn.hippo4j.core.plugin.RejectedAwarePlugin;
+import cn.hippo4j.core.plugin.ShutdownAwarePlugin;
+import cn.hippo4j.core.plugin.TaskAwarePlugin;
+import cn.hippo4j.core.plugin.ThreadPoolPlugin;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Manager of {@link ThreadPoolPlugin}.
+ * <p>Manager of {@link ThreadPoolPlugin}. <br />
  * Bind with the specified thread-pool instance to register and manage plugins.
  * when the thread pool is destroyed, please ensure that the manager will also be destroyed.
  *
@@ -87,7 +93,38 @@ public interface ThreadPoolPluginManager {
     void unregister(String pluginId);
 
     /**
-     * Get {@link ThreadPoolPlugin}.
+     * Get id of disabled plugins.
+     *
+     * @return id of disabled plugins
+     */
+    Set<String> getAllDisabledPluginIds();
+
+    /**
+     * Whether the plugin has been disabled.
+     *
+     * @param pluginId plugin id
+     * @return true if plugin has been disabled, false otherwise
+     */
+    boolean isDisabled(String pluginId);
+
+    /**
+     * Enable plugin, make plugins will allow access through quick indexes.
+     *
+     * @param pluginId plugin id
+     * @return true if plugin already registered or enabled, false otherwise
+     */
+    boolean enable(String pluginId);
+
+    /**
+     * Disable plugin, make plugins will not allow access through quick indexes.
+     *
+     * @param pluginId plugin id
+     * @return true if plugin already registered or disabled, false otherwise
+     */
+    boolean disable(String pluginId);
+
+    /**
+     * Get registered {@link ThreadPoolPlugin}.
      *
      * @param pluginId plugin id
      * @param <A>      target aware type
@@ -97,30 +134,38 @@ public interface ThreadPoolPluginManager {
     <A extends ThreadPoolPlugin> Optional<A> getPlugin(String pluginId);
 
     /**
-     * Get execute aware plugin list.
+     * Get all enabled {@link ExecuteAwarePlugin}.
      *
      * @return {@link ExecuteAwarePlugin}
+     * @see #enable
+     * @see #disable
      */
     Collection<ExecuteAwarePlugin> getExecuteAwarePluginList();
 
     /**
-     * Get rejected aware plugin list.
+     * Get all enabled {@link RejectedAwarePlugin}.
      *
      * @return {@link RejectedAwarePlugin}
+     * @see #enable
+     * @see #disable
      */
     Collection<RejectedAwarePlugin> getRejectedAwarePluginList();
 
     /**
-     * Get shutdown aware plugin list.
+     * Get all enabled {@link ShutdownAwarePlugin}.
      *
      * @return {@link ShutdownAwarePlugin}
+     * @see #enable
+     * @see #disable
      */
     Collection<ShutdownAwarePlugin> getShutdownAwarePluginList();
 
     /**
-     * Get shutdown aware plugin list.
+     * Get all enabled {@link TaskAwarePlugin}.
      *
-     * @return {@link ShutdownAwarePlugin}
+     * @return {@link TaskAwarePlugin}
+     * @see #enable
+     * @see #disable
      */
     Collection<TaskAwarePlugin> getTaskAwarePluginList();
 

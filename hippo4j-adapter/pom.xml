@@ -13,6 +13,7 @@
     <modules>
         <module>hippo4j-adapter-base</module>
         <module>hippo4j-adapter-dubbo</module>
+        <module>hippo4j-adapter-dubbox</module>
         <module>hippo4j-adapter-alibaba-dubbo</module>
         <module>hippo4j-adapter-rabbitmq</module>
         <module>hippo4j-adapter-rocketmq</module>

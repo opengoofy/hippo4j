@@ -15,5 +15,10 @@
             <artifactId>hippo4j-adapter-dubbo</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-adapter-dubbox</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -17,8 +17,6 @@
 
 package cn.hippo4j.core.plugin;
 
-import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -54,6 +52,6 @@ public interface ShutdownAwarePlugin extends ThreadPoolPlugin {
      * @param executor executor
      * @see ThreadPoolExecutor#terminated()
      */
-    default void afterTerminated(ExtensibleThreadPoolExecutor executor) {
+    default void afterTerminated(ThreadPoolExecutor executor) {
     }
 }

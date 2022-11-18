@@ -4,7 +4,7 @@ export default {
     login: 'Login Form',
     username: 'Username',
     password: 'Password',
-    logOut: 'Log Out'
+    logOut: 'Log Out',
   },
 
   // 信息

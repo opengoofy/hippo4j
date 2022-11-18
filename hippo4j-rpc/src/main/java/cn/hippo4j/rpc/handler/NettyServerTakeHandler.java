@@ -21,11 +21,11 @@ import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import cn.hippo4j.rpc.process.ActivePostProcess;
 import cn.hippo4j.rpc.process.ActiveProcessChain;
-import cn.hippo4j.rpc.request.Request;
-import cn.hippo4j.rpc.response.DefaultResponse;
-import cn.hippo4j.rpc.response.Response;
-import cn.hippo4j.rpc.support.ClassRegistry;
-import cn.hippo4j.rpc.support.Instance;
+import cn.hippo4j.rpc.model.Request;
+import cn.hippo4j.rpc.model.DefaultResponse;
+import cn.hippo4j.rpc.model.Response;
+import cn.hippo4j.rpc.discovery.ClassRegistry;
+import cn.hippo4j.rpc.discovery.Instance;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 

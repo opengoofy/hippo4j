@@ -19,6 +19,7 @@ package cn.hippo4j.core.plugin.impl;
 
 import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.plugin.PluginRuntime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +33,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @AllArgsConstructor
 public class TaskTimeoutNotifyAlarmPlugin extends AbstractTaskTimerPlugin {
 
-    public static final String PLUGIN_NAME = "task-timeout-notify-alarm-plugin";
+    public static final String PLUGIN_NAME = TaskTimeoutNotifyAlarmPlugin.class.getSimpleName();
 
     /**
      * Thread-pool id
@@ -52,13 +53,14 @@ public class TaskTimeoutNotifyAlarmPlugin extends AbstractTaskTimerPlugin {
     private final ThreadPoolExecutor threadPoolExecutor;
 
     /**
-     * Get id.
+     * Get plugin runtime info.
      *
-     * @return id
+     * @return plugin runtime info
      */
     @Override
-    public String getId() {
-        return PLUGIN_NAME;
+    public PluginRuntime getPluginRuntime() {
+        return new PluginRuntime(getId())
+                .addInfo("executeTimeOut", executeTimeOut + "ms");
     }
 
     /**

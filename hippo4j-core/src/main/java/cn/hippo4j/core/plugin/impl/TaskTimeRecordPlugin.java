@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
 
     private static final int MAXIMUM_CAPACITY = 1 << 30;
-    public static final String PLUGIN_NAME = "task-time-record-plugin";
+    public static final String PLUGIN_NAME = TaskTimeRecordPlugin.class.getSimpleName();
 
     /**
      * modulo
@@ -75,16 +75,6 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
     }
 
     /**
-     * Get id.
-     *
-     * @return id
-     */
-    @Override
-    public String getId() {
-        return PLUGIN_NAME;
-    }
-
-    /**
      * Get plugin runtime info.
      *
      * @return plugin runtime info
@@ -93,6 +83,7 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
     public PluginRuntime getPluginRuntime() {
         Summary summary = summarize();
         return new PluginRuntime(getId())
+                .addInfo("timerCount", timerTable.length)
                 .addInfo("taskCount", summary.getTaskCount())
                 .addInfo("minTaskTime", summary.getMinTaskTimeMillis() + "ms")
                 .addInfo("maxTaskTime", summary.getMaxTaskTimeMillis() + "ms")

@@ -96,7 +96,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
         try {
-            doFilterInternal(request, response, chain);
+            super.doFilterInternal(request, response, chain);
         } finally {
             UserContext.clear();
         }

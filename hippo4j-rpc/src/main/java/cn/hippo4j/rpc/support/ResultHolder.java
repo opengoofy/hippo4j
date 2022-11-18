@@ -46,7 +46,9 @@ public class ResultHolder {
      * @param o   The result
      */
     public static void put(String key, Object o) {
-        log.debug("Write the result, wake up the thread");
+        if (log.isDebugEnabled()) {
+            log.debug("Write the result, wake up the thread");
+        }
         map.put(key, o);
     }
 
@@ -57,7 +59,9 @@ public class ResultHolder {
      * @param t   The Thread
      */
     public static void putThread(String key, Thread t) {
-        log.debug("Write thread, waiting to wake up");
+        if (log.isDebugEnabled()) {
+            log.debug("Write thread, waiting to wake up");
+        }
         threadMap.put(key, t);
     }
 
@@ -67,7 +71,9 @@ public class ResultHolder {
      * @param key Request and response keys
      */
     public static synchronized void wake(String key) {
-        log.debug("The future has been fetched, wake up the thread");
+        if (log.isDebugEnabled()) {
+            log.debug("The future has been fetched, wake up the thread");
+        }
         Thread thread = threadMap.remove(key);
         LockSupport.unpark(thread);
     }
@@ -82,7 +88,9 @@ public class ResultHolder {
      */
     @SuppressWarnings("unchecked")
     public static <T> T get(String key) {
-        log.debug("Get the future");
+        if (log.isDebugEnabled()) {
+            log.debug("Get the future");
+        }
         return (T) map.remove(key);
     }
 

@@ -60,6 +60,7 @@
             v-if="row.status !== 'deleted'"
             size="small"
             type="text"
+            :disabled="row.userName !== 'admin' ? false : true"
             @click="handleDelete(row)"
           >
             删除
@@ -85,15 +86,31 @@
         style="width: 400px; margin-left: 50px"
       >
         <el-form-item label="用户名" prop="userName">
-          <el-input v-model="temp.userName" placeholder="用户名" />
+          <el-input
+            v-model="temp.userName"
+            :disabled="temp.userName !== 'admin' ? false : true"
+            placeholder="用户名"
+          />
         </el-form-item>
-        <el-form-item label="密  码" prop="password">
+        <el-form-item label="密码" prop="password">
           <el-input v-model="temp.password" placeholder="密码" minlength="6" />
         </el-form-item>
         <el-form-item label="角色" prop="role">
-          <el-select v-model="temp.role" class="filter-item" placeholder="角色类型">
+          <el-select
+            v-model="temp.role"
+            class="filter-item"
+            :disabled="temp.userName !== 'admin' ? false : true"
+            placeholder="角色类型"
+          >
             <el-option v-for="item in roles" :key="item.key" :label="item" :value="item" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="租户" prop="tenants" v-if="temp.userName !== 'admin' ? true : false">
+          <el-checkbox-group v-model="temp.tempResources">
+            <el-checkbox v-for="tenantKey in tenantList" :label="tenantKey" :key="tenantKey">{{
+              tenantKey
+            }}</el-checkbox>
+          </el-checkbox-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -110,7 +127,7 @@
 import * as user from '@/api/hippo4j-user';
 import waves from '@/directive/waves';
 import Pagination from '@/components/Pagination';
-
+import * as tenantApi from '@/api/hippo4j-tenant';
 export default {
   name: 'User',
   components: { Pagination },
@@ -119,6 +136,7 @@ export default {
     statusFilter(status) {
       const statusMap = {
         ROLE_ADMIN: 'danger',
+        ROLE_MANAGE: 'warning',
         ROLE_USER: '',
       };
       return statusMap[status];
@@ -126,6 +144,7 @@ export default {
   },
   data() {
     return {
+      isTenantsShow: true,
       list: null,
       listLoading: true,
       total: 0,
@@ -134,7 +153,12 @@ export default {
         size: 10,
         userName: undefined,
       },
-      roles: ['ROLE_USER', 'ROLE_ADMIN'],
+      roles: ['ROLE_USER', 'ROLE_MANAGE', 'ROLE_ADMIN'],
+      tenantList: [],
+      checkedCities: ['smo'],
+      checkAll: false,
+      isIndeterminate: true,
+      cities: [],
       dialogPluginVisible: false,
       pluginData: [],
       dialogFormVisible: false,
@@ -146,6 +170,7 @@ export default {
       rules: {
         role: [{ required: true, message: 'role is required', trigger: 'change' }],
         userName: [{ required: true, message: 'userName is required', trigger: 'blur' }],
+        tenants: [{ required: false, message: 'tenants is required', trigger: 'blur' }],
         password: [{ required: false, message: 'password is required', trigger: 'blur' }],
       },
       temp: {
@@ -154,6 +179,7 @@ export default {
         userName: '',
         password: '',
         permission: '',
+        resources: [],
       },
       resetTemp() {
         this.temp = this.$options.data().temp;
@@ -162,6 +188,7 @@ export default {
   },
   created() {
     this.fetchData();
+    this.initData();
   },
   methods: {
     fetchData() {
@@ -170,6 +197,14 @@ export default {
         this.total = response.total;
         this.list = response.records;
         this.listLoading = false;
+      });
+    },
+    initData() {
+      tenantApi.list({ size: this.size }).then((response) => {
+        const { records } = response;
+        for (let i = 0; i < records.length; i++) {
+          this.tenantList.push(records[i].tenantId);
+        }
       });
     },
     handleCreate() {
@@ -200,6 +235,7 @@ export default {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.dialogFormVisible = true;
+      console.log(this.temp);
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate();
       });
@@ -207,7 +243,15 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          let resources = [];
+          for (let i = 0; i < this.temp.tempResources.length; i++) {
+            resources.push({
+              resource: this.temp.tempResources[i],
+              action: 'rw',
+            });
+          }
           const tempData = Object.assign({}, this.temp);
+          tempData.resources = resources;
           user.updateUser(tempData).then(() => {
             this.fetchData();
             this.dialogFormVisible = false;
