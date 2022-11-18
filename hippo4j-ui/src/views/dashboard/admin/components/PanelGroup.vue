@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            {{ $t('common.tenant') }}
+            {{ $t('tenantManage.tenant') }}
           </div>
           <count-to :start-val="0" :end-val="successCount" :duration="2600" class="card-panel-num" />
         </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            {{ $t('report.item') }}
+            {{ $t('projectManage.item') }}
           </div>
           <count-to :start-val="0" :end-val="failCount" :duration="3000" class="card-panel-num" />
         </div>

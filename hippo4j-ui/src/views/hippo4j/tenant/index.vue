@@ -4,7 +4,7 @@
       <el-input
         v-model="listQuery.tenantId"
         clearable
-        :placeholder="$t('common.tenant')"
+        :placeholder="$t('tenantManage.tenant')"
         style="width: 200px"
         class="filter-item"
       />
@@ -38,7 +38,7 @@
       <el-table-column :label="$t('common.num')" width="95">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column :label="$t('common.tenant')">
+      <el-table-column :label="$t('tenantManage.tenant')">
         <template slot-scope="scope">{{ scope.row.tenantId }}</template>
       </el-table-column>
       <el-table-column :label="$t('tenantManage.tenantName')">
@@ -83,11 +83,11 @@
         label-position="left"
         label-width="120px"
       >
-        <el-form-item :label="$t('common.tenant')" prop="tenantId">
+        <el-form-item :label="$t('tenantManage.tenant')" prop="tenantId">
           <el-input
             v-model="temp.tenantId"
             :disabled="dialogStatus === 'create' ? false : true"
-            :placeholder="$t('common.tenant')"
+            :placeholder="$t('tenantManage.tenant')"
             style="width: 40%"
           />
         </el-form-item>

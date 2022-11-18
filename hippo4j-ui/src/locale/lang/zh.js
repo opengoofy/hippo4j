@@ -30,14 +30,12 @@ export default {
     num: '序号',
     createTime: '创建时间',
     updateTime: '修改时间',
-    tenant: '租户',
     requiredError: '这是必填项',
     hint: '提示'
   },
 
   // 运行报表
   report: {
-    item: '项目',
     poolInstance: '线程池实例',
     user: '登录用户',
     role: '用户角色',
@@ -46,9 +44,18 @@ export default {
 
   // 租户管理
   tenantManage: {
+    tenant: '租户',
     tenantName: '租户名称',
     owner: '负责人',
     tenantIntro: '租户简介'
+  },
+  
+  // 项目管理
+  projectManage: {
+    item: '项目',
+    itemName: '项目名称',
+    owner: '负责人',
+    itemIntro: '项目简介'
   },
   
   // 线程池
