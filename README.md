@@ -3,7 +3,7 @@
 
 <img align="right" width="320" alt="image" src="https://user-images.githubusercontent.com/77398366/181906454-b46f6a14-7c2c-4b8f-8b0a-40432521bed8.png">
 
-通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
+通过对 JDK 线程池的增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
 
 [![GitHub stars](https://img.shields.io/github/stars/opengoofy/hippo4j.svg?style=for-the-badge&label=Stars&logo=github)](https://github.com/opengoofy/hippo4j) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j.svg?style=for-the-badge&label=Contributors&logo=appveyor)](https://github.com/opengoofy/hippo4j) 
 
