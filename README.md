@@ -68,6 +68,10 @@
 - [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 
+## 知识星球
+
+这是一个主张代码实战的 [知识星球](https://xiaomage.info/knowledge-planet/)，以代码落地的方式帮助开拓技术视野，掌握不同场景的解决方案。
+
 ## 贡献者
 
 感谢所有为项目作出贡献的开发者。如果有意贡献，参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)。
