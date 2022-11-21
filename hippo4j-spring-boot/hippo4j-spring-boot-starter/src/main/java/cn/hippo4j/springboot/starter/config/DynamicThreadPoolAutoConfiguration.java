@@ -57,6 +57,7 @@ import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHttpAgent;
+import cn.hippo4j.springboot.starter.support.AdaptedThreadPoolDestroyPostProcessor;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.springboot.starter.support.ThreadPoolPluginRegisterPostProcessor;
@@ -118,6 +119,11 @@ public class DynamicThreadPoolAutoConfiguration {
                                                                    Hippo4jBaseSendMessageService hippo4jBaseSendMessageService,
                                                                    DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig) {
         return new DynamicThreadPoolConfigService(httpAgent, properties, notifyConfigBuilder, hippo4jBaseSendMessageService, dynamicThreadPoolSubscribeConfig);
+    }
+
+    @Bean
+    public AdaptedThreadPoolDestroyPostProcessor adaptedThreadPoolDestroyPostProcessor() {
+        return new AdaptedThreadPoolDestroyPostProcessor();
     }
 
     @Bean

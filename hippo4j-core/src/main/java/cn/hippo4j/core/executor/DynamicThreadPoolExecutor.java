@@ -46,6 +46,12 @@ import java.util.concurrent.atomic.AtomicLong;
 public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor implements DisposableBean {
 
     /**
+     * Is active, it will become false only when destroy() is called.
+     */
+    @Getter
+    private boolean isActive;
+
+    /**
      * Wait for tasks to complete on shutdown
      */
     @Getter
@@ -97,6 +103,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
         // Init default plugins.
         new DefaultThreadPoolPluginRegistrar(executeTimeOut, awaitTerminationMillis)
                 .doRegister(this);
+        this.isActive = true;
     }
 
     /**
@@ -104,12 +111,21 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
      */
     @Override
     public void destroy() {
+        // instance has been destroyed, not need to call this method again
+        if (!isActive) {
+            log.warn("Failed to destroy ExecutorService '{}' because it has already been destroyed", getThreadPoolId());
+            return;
+        }
         if (isWaitForTasksToCompleteOnShutdown()) {
             super.shutdown();
         } else {
             super.shutdownNow();
         }
         getThreadPoolPluginManager().clear();
+        log.info("ExecutorService '{}' has been destroyed", getThreadPoolId());
+
+        // modify the flag to false avoid the method being called repeatedly
+        isActive = false;
     }
 
     /**
