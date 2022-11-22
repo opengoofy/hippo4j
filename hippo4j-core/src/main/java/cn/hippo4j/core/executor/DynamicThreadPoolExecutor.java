@@ -37,6 +37,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -46,10 +47,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor implements DisposableBean {
 
     /**
-     * Is active, it will become false only when destroy() is called.
+     * A flag used to indicate whether destroy() method has been called,
+     * after the flag is set to false, calling destroy() method again will not take effect
      */
-    @Getter
-    private boolean isActive;
+    private final AtomicBoolean active;
 
     /**
      * Wait for tasks to complete on shutdown
@@ -98,12 +99,22 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
                 threadPoolId, new DefaultThreadPoolPluginManager().setPluginComparator(AnnotationAwareOrderComparator.INSTANCE),
                 corePoolSize, maximumPoolSize, keepAliveTime, unit,
                 blockingQueue, threadFactory, rejectedExecutionHandler);
-        log.info("Initializing ExecutorService {}", threadPoolId);
+        log.info("Initializing ExecutorService '{}'", threadPoolId);
         this.waitForTasksToCompleteOnShutdown = waitForTasksToCompleteOnShutdown;
         // Init default plugins.
         new DefaultThreadPoolPluginRegistrar(executeTimeOut, awaitTerminationMillis)
                 .doRegister(this);
-        this.isActive = true;
+        this.active = new AtomicBoolean(true);
+    }
+
+    /**
+     * <p>Whether the current instance is in the active state. <br />
+     * It returns false when the xx method is called at least once.
+     *
+     * @return true if current instance is in the active state, false otherwise
+     */
+    public boolean isActive() {
+        return active.get();
     }
 
     /**
@@ -112,7 +123,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
     @Override
     public void destroy() {
         // instance has been destroyed, not need to call this method again
-        if (!isActive) {
+        if (!isActive()) {
             log.warn("Failed to destroy ExecutorService '{}' because it has already been destroyed", getThreadPoolId());
             return;
         }
@@ -125,7 +136,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
         log.info("ExecutorService '{}' has been destroyed", getThreadPoolId());
 
         // modify the flag to false avoid the method being called repeatedly
-        isActive = false;
+        active.set(false);
     }
 
     /**
