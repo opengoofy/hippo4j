@@ -21,6 +21,8 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.FileUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
@@ -28,6 +30,7 @@ import cn.hippo4j.message.platform.base.AbstractRobotSendMessageHandler;
 import cn.hippo4j.message.platform.base.RobotMessageActualContent;
 import cn.hippo4j.message.platform.base.RobotMessageExecuteDTO;
 import cn.hippo4j.message.platform.constant.DingAlarmConstants;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 
@@ -42,6 +45,7 @@ import java.util.Objects;
 import static cn.hippo4j.message.platform.constant.DingAlarmConstants.*;
 
 /**
+ * doc:<a href="https://open.dingtalk.com/document/robots/custom-robot-access">自定义机器人接入</a>
  * Send ding notification message.
  */
 @Slf4j
@@ -99,6 +103,21 @@ public class DingSendMessageHandler extends AbstractRobotSendMessageHandler {
         markdownJson.put("msgtype", "markdown");
         markdownJson.put("markdown", markdown);
         markdownJson.put("at", at);
-        HttpUtil.post(serverUrl, markdownJson);
+        try {
+            String responseBody = HttpUtil.post(serverUrl, markdownJson);
+            DingRobotResponse response = JSONUtil.parseObject(responseBody, DingRobotResponse.class);
+            Assert.isTrue(response != null, "response is null");
+            if (response.getErrcode() != 0) {
+                log.error("Ding failed to send message,reason : {}", response.errmsg);
+            }
+        } catch (Exception ex) {
+            log.error("Ding failed to send message", ex);
+        }
+    }
+
+    @Data
+    static class DingRobotResponse {
+        private Long errcode;
+        private String errmsg;
     }
 }
