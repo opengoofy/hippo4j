@@ -72,4 +72,13 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
             log.error("Hippo-4J core dynamic refresh failed.", ex);
         }
     }
+
+    public void dynamicRefresh(Map<Object, Object> configInfo) {
+        try {
+            BootstrapConfigProperties binderCoreProperties = bootstrapConfigPropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
+            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, binderCoreProperties));
+        } catch (Exception ex) {
+            log.error("Hippo-4J core dynamic refresh failed.", ex);
+        }
+    }
 }
