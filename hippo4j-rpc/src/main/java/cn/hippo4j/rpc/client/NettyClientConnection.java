@@ -108,7 +108,7 @@ public class NettyClientConnection implements ClientConnection {
     }
 
     @Override
-    public void close() {
+    public synchronized void close() {
         if (this.channel == null) {
             return;
         }

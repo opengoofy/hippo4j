@@ -105,12 +105,13 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
     }
 
     @Override
-    public void close() {
+    public synchronized void close() {
         if (port == null) {
             return;
         }
-        leader.shutdownGracefully();
-        worker.shutdownGracefully();
+        this.leader.shutdownGracefully();
+        this.worker.shutdownGracefully();
+        this.channel.close();
         this.future.channel().close();
         log.info("The server is shut down and no more requests are received. The release port is {}", port.getPort());
     }
@@ -146,4 +147,5 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
         super.addFirst(handler);
         return this;
     }
+
 }
