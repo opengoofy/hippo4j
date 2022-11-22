@@ -92,13 +92,11 @@ public class DingSendMessageHandler extends AbstractRobotSendMessageHandler {
         String title = Objects.equals(notifyConfig.getType(), "CONFIG") ? DING_NOTICE_TITLE : DING_ALARM_TITLE;
         String text = robotMessageExecuteDTO.getText();
         ArrayList<String> atMobiles = CollectionUtil.newArrayList(notifyConfig.getReceives().split(","));
-
         HashMap<String, Object> markdown = new HashMap<>();
         markdown.put("title", title);
         markdown.put("text", text);
         HashMap<String, Object> at = new HashMap<>();
         at.put("atMobiles", atMobiles);
-
         HashMap<String, Object> markdownJson = new HashMap<>();
         markdownJson.put("msgtype", "markdown");
         markdownJson.put("markdown", markdown);
@@ -106,18 +104,29 @@ public class DingSendMessageHandler extends AbstractRobotSendMessageHandler {
         try {
             String responseBody = HttpUtil.post(serverUrl, markdownJson);
             DingRobotResponse response = JSONUtil.parseObject(responseBody, DingRobotResponse.class);
-            Assert.isTrue(response != null, "response is null");
+            Assert.isTrue(response != null, "Response is null.");
             if (response.getErrcode() != 0) {
-                log.error("Ding failed to send message,reason : {}", response.errmsg);
+                log.error("Ding failed to send message, reason : {}", response.errmsg);
             }
         } catch (Exception ex) {
-            log.error("Ding failed to send message", ex);
+            log.error("Ding failed to send message.", ex);
         }
     }
 
+    /**
+     * Ding robot response.
+     */
     @Data
     static class DingRobotResponse {
+
+        /**
+         * Error code
+         */
         private Long errcode;
+
+        /**
+         * Error message
+         */
         private String errmsg;
     }
 }

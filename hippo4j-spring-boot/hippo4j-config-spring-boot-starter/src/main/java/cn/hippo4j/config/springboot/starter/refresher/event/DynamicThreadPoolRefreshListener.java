@@ -24,7 +24,7 @@ import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
-import cn.hippo4j.config.springboot.starter.notify.CoreNotifyConfigBuilder;
+import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;
 import cn.hippo4j.config.springboot.starter.support.GlobalCoreThreadPoolManage;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
@@ -60,7 +60,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
 
     private final ThreadPoolConfigChange threadPoolConfigChange;
 
-    private final CoreNotifyConfigBuilder coreNotifyConfigBuilder;
+    private final ConfigModeNotifyConfigBuilder configModeNotifyConfigBuilder;
 
     private final Hippo4jBaseSendMessageService hippo4jBaseSendMessageService;
 
@@ -165,7 +165,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
         boolean checkNotifyConfig = false;
         boolean checkNotifyAlarm = false;
         List<String> changeKeys = new ArrayList<>();
-        Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap = coreNotifyConfigBuilder.buildSingleNotifyConfig(executorProperties);
+        Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap = configModeNotifyConfigBuilder.buildSingleNotifyConfig(executorProperties);
         Map<String, List<NotifyConfigDTO>> notifyConfigs = hippo4jBaseSendMessageService.getNotifyConfigs();
         if (CollectionUtil.isNotEmpty(notifyConfigs)) {
             for (Map.Entry<String, List<NotifyConfigDTO>> each : newDynamicThreadPoolNotifyMap.entrySet()) {
@@ -183,7 +183,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
             }
         }
         if (checkNotifyConfig) {
-            coreNotifyConfigBuilder.initCacheAndLock(newDynamicThreadPoolNotifyMap);
+            configModeNotifyConfigBuilder.initCacheAndLock(newDynamicThreadPoolNotifyMap);
             hippo4jBaseSendMessageService.putPlatform(newDynamicThreadPoolNotifyMap);
         }
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(executorProperties.getThreadPoolId());

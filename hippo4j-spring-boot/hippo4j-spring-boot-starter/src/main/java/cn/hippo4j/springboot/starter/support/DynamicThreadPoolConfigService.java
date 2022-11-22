@@ -35,7 +35,7 @@ import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.core.DynamicThreadPoolSubscribeConfig;
-import cn.hippo4j.springboot.starter.notify.ServerNotifyConfigBuilder;
+import cn.hippo4j.springboot.starter.notify.ServerModeNotifyConfigBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +58,7 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
 
     private final BootstrapProperties properties;
 
-    private final ServerNotifyConfigBuilder notifyConfigBuilder;
+    private final ServerModeNotifyConfigBuilder serverModeNotifyConfigBuilder;
 
     private final Hippo4jBaseSendMessageService hippo4jBaseSendMessageService;
 
@@ -108,7 +108,7 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
                 registerParameter.getActiveAlarm(),
                 registerParameter.getCapacityAlarm());
         GlobalNotifyAlarmManage.put(registerParameter.getThreadPoolId(), threadPoolNotifyAlarm);
-        Map<String, List<NotifyConfigDTO>> builderNotify = notifyConfigBuilder.getAndInitNotify(CollectionUtil.newArrayList(registerParameter.getThreadPoolId()));
+        Map<String, List<NotifyConfigDTO>> builderNotify = serverModeNotifyConfigBuilder.getAndInitNotify(CollectionUtil.newArrayList(registerParameter.getThreadPoolId()));
         hippo4jBaseSendMessageService.putPlatform(builderNotify);
     }
 

@@ -21,7 +21,7 @@ import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.config.springboot.starter.monitor.ThreadPoolMonitorExecutor;
-import cn.hippo4j.config.springboot.starter.notify.CoreNotifyConfigBuilder;
+import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;
 import cn.hippo4j.config.springboot.starter.refresher.event.AdapterExecutorsRefreshListener;
 import cn.hippo4j.config.springboot.starter.refresher.event.DynamicThreadPoolRefreshListener;
 import cn.hippo4j.config.springboot.starter.refresher.event.PlatformsRefreshListener;
@@ -77,7 +77,7 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     public NotifyConfigBuilder notifyConfigBuilder(AlarmControlHandler alarmControlHandler) {
-        return new CoreNotifyConfigBuilder(alarmControlHandler, bootstrapConfigProperties);
+        return new ConfigModeNotifyConfigBuilder(alarmControlHandler, bootstrapConfigProperties);
     }
 
     @Bean
@@ -105,9 +105,9 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @SuppressWarnings("all")
     public DynamicThreadPoolRefreshListener hippo4jExecutorsListener(ThreadPoolConfigChange threadPoolConfigChange,
-                                                                     CoreNotifyConfigBuilder coreNotifyConfigBuilder,
+                                                                     ConfigModeNotifyConfigBuilder configModeNotifyConfigBuilder,
                                                                      Hippo4jBaseSendMessageService hippoBaseSendMessageService) {
-        return new DynamicThreadPoolRefreshListener(threadPoolConfigChange, coreNotifyConfigBuilder, hippoBaseSendMessageService);
+        return new DynamicThreadPoolRefreshListener(threadPoolConfigChange, configModeNotifyConfigBuilder, hippoBaseSendMessageService);
     }
 
     @Bean

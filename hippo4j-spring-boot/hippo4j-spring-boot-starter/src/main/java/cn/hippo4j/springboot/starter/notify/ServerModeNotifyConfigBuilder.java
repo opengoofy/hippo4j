@@ -41,11 +41,11 @@ import java.util.Objects;
 import static cn.hippo4j.common.constant.Constants.BASE_PATH;
 
 /**
- * Server notify config builder.
+ * Server mode notify config builder.
  */
 @Slf4j
 @AllArgsConstructor
-public class ServerNotifyConfigBuilder implements NotifyConfigBuilder {
+public class ServerModeNotifyConfigBuilder implements NotifyConfigBuilder {
 
     private final HttpAgent httpAgent;
 

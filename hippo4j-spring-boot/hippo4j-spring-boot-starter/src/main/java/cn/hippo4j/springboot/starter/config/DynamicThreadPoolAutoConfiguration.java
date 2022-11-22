@@ -52,7 +52,7 @@ import cn.hippo4j.springboot.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.springboot.starter.monitor.collect.RunTimeInfoCollector;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.monitor.send.http.HttpConnectSender;
-import cn.hippo4j.springboot.starter.notify.ServerNotifyConfigBuilder;
+import cn.hippo4j.springboot.starter.notify.ServerModeNotifyConfigBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
@@ -116,10 +116,10 @@ public class DynamicThreadPoolAutoConfiguration {
     @SuppressWarnings("all")
     public DynamicThreadPoolService dynamicThreadPoolConfigService(HttpAgent httpAgent,
                                                                    ServerHealthCheck serverHealthCheck,
-                                                                   ServerNotifyConfigBuilder notifyConfigBuilder,
+                                                                   ServerModeNotifyConfigBuilder serverModeNotifyConfigBuilder,
                                                                    Hippo4jBaseSendMessageService hippo4jBaseSendMessageService,
                                                                    DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig) {
-        return new DynamicThreadPoolConfigService(httpAgent, properties, notifyConfigBuilder, hippo4jBaseSendMessageService, dynamicThreadPoolSubscribeConfig);
+        return new DynamicThreadPoolConfigService(httpAgent, properties, serverModeNotifyConfigBuilder, hippo4jBaseSendMessageService, dynamicThreadPoolSubscribeConfig);
     }
 
     @Bean
@@ -205,7 +205,7 @@ public class DynamicThreadPoolAutoConfiguration {
     public NotifyConfigBuilder serverNotifyConfigBuilder(HttpAgent httpAgent,
                                                          BootstrapProperties properties,
                                                          AlarmControlHandler alarmControlHandler) {
-        return new ServerNotifyConfigBuilder(httpAgent, properties, alarmControlHandler);
+        return new ServerModeNotifyConfigBuilder(httpAgent, properties, alarmControlHandler);
     }
 
     @Bean
