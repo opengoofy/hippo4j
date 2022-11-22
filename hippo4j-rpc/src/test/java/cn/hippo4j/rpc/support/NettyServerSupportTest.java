@@ -35,6 +35,7 @@ public class NettyServerSupportTest {
         }
         Assert.assertTrue(support.isActive());
         support.close();
+        ThreadUtil.sleep(1000L);
         Assert.assertFalse(support.isActive());
     }
 
