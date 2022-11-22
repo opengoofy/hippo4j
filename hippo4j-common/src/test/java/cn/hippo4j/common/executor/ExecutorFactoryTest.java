@@ -34,11 +34,17 @@ public final class ExecutorFactoryTest {
 
     ThreadFactory threadFactory = new ThreadFactoryBuilder().prefix("test").build();
 
-    // 生成数据范围最小值
+    /**
+     * 生成数据范围最小值
+     */
     Integer rangeMin = 1;
-    // 生成数据范围最大值
+    /**
+     * 生成数据范围最大值
+     */
     Integer rangeMax = 10;
-    // 默认测试索引
+    /**
+     * 默认测试索引
+     */
     Integer defaultIndex = 0;
 
     @Test
