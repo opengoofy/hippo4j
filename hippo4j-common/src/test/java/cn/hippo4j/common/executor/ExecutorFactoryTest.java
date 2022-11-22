@@ -18,11 +18,11 @@
 package cn.hippo4j.common.executor;
 
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
+import cn.hippo4j.common.toolkit.MapUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -35,49 +35,56 @@ public final class ExecutorFactoryTest {
     ThreadFactory threadFactory = new ThreadFactoryBuilder().prefix("test").build();
 
     /**
-     * 生成数据范围最小值
+     * data range min
      */
     Integer rangeMin = 1;
     /**
-     * 生成数据范围最大值
+     * data range max
      */
     Integer rangeMax = 10;
     /**
-     * 默认测试索引
+     * default test index
      */
     Integer defaultIndex = 0;
 
     @Test
     public void assertNewSingleScheduledExecutorService() {
+        // init data snapshot
+        ThreadPoolManager poolManager = (ThreadPoolManager) ReflectUtil.getFieldValue(ExecutorFactory.Managed.class, "THREAD_POOL_MANAGER");
+        String poolName = (String) ReflectUtil.getFieldValue(ExecutorFactory.Managed.class, "DEFAULT_NAMESPACE");
+        Map<String, Map<String, Set<ExecutorService>>> manager = (Map<String, Map<String, Set<ExecutorService>>>) ReflectUtil.getFieldValue(poolManager, "resourcesManager");
+        Map<String, Set<ExecutorService>> initRelationMap = manager.get(poolName);
+        int defaultManagerSize = manager.size();
+        int defaultRelationSize = MapUtil.isEmpty(initRelationMap) ? 0 : initRelationMap.size();
+
+        // test begin
         ScheduledExecutorService executorService = ExecutorFactory.Managed.newSingleScheduledExecutorService(String.format("test-group-%s", defaultIndex), threadFactory);
 
         Assert.assertNotNull(executorService);
 
-        ThreadPoolManager poolManager = (ThreadPoolManager) ReflectUtil.getFieldValue(ExecutorFactory.Managed.class, "THREAD_POOL_MANAGER");
-        String poolName = (String) ReflectUtil.getFieldValue(ExecutorFactory.Managed.class, "DEFAULT_NAMESPACE");
-        Map<String, Map<String, Set<ExecutorService>>> manager = (Map<String, Map<String, Set<ExecutorService>>>) ReflectUtil.getFieldValue(poolManager, "resourcesManager");
+        // check default init
+        Assert.assertEquals(1, manager.size() - defaultManagerSize);
 
-        // test default init
-        Assert.assertEquals(1, manager.size());
-
-        // test multiple registrations
+        // check multiple registrations and check to see if it is still an instance
         IntStream.rangeClosed(rangeMin, rangeMax).forEach(index -> ExecutorFactory.Managed.newSingleScheduledExecutorService(String.format("test-group-%s", index), threadFactory));
-        Assert.assertEquals(1, manager.size());
+        Assert.assertEquals(1, manager.size() - defaultManagerSize);
 
-        // test group size
+        // check group size
         Map<String, Set<ExecutorService>> relationMap = manager.get(poolName);
-        Assert.assertEquals(11, relationMap.size());
-        Map<String, Set<ExecutorService>> firstRelationMap = new HashMap<>(relationMap);
-        // test group relation size
-        firstRelationMap.forEach((k, v) -> Assert.assertEquals(1, v.size()));
+        Assert.assertEquals(11, relationMap.size() - defaultRelationSize);
+        // check the number of threads between the group and the thread pool
+        IntStream.rangeClosed(rangeMin, rangeMax).forEach(index -> {
+            String relationKey = String.format("test-group-%s", index);
+            Assert.assertNotNull(relationMap.get(relationKey));
+            Assert.assertEquals(1, relationMap.get(relationKey).size());
+        });
 
-        // test multiple cover registrations
+        // instantiate the same group a second time and check the corresponding quantitative relationship
         IntStream.rangeClosed(defaultIndex, rangeMax).forEach(index -> ExecutorFactory.Managed.newSingleScheduledExecutorService(String.format("test-group-%s", index), threadFactory));
-        // test group size
-        Assert.assertEquals(11, relationMap.size());
-        Map<String, Set<ExecutorService>> secondRelationMap = manager.get(poolName);
-        // test group relation size
-        secondRelationMap.forEach((k, v) -> Assert.assertEquals(2, v.size()));
+        // chek group size
+        Assert.assertEquals(11, manager.get(poolName).size() - defaultRelationSize);
+        // check the number of threads between the group and the thread pool
+        IntStream.rangeClosed(rangeMin, rangeMax).forEach(index -> Assert.assertEquals(2, relationMap.get(String.format("test-group-%s", index)).size()));
     }
 
 }
