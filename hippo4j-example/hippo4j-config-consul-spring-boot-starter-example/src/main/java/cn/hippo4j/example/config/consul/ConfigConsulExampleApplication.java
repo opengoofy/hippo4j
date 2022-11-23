@@ -22,7 +22,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @EnableDynamicThreadPool
-@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.config.consul")
+@SpringBootApplication(scanBasePackages = "cn.hippo4j.example")
 public class ConfigConsulExampleApplication {
 
     public static void main(String[] args) {

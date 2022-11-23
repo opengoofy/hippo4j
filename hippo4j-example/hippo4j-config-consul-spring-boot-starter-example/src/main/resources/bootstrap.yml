@@ -15,4 +15,4 @@ spring:
         format: yaml
         data-key: hippo4j-consul
         default-context: application
-        prefixes: config
+        prefix: config
