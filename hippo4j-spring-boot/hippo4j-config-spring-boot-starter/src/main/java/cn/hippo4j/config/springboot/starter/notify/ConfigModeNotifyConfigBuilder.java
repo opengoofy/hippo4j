@@ -32,11 +32,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Core notify config builder.
+ * Config mode notify config builder.
  */
 @AllArgsConstructor
 @Slf4j
-public class CoreNotifyConfigBuilder implements NotifyConfigBuilder {
+public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
 
     private final AlarmControlHandler alarmControlHandler;
 
