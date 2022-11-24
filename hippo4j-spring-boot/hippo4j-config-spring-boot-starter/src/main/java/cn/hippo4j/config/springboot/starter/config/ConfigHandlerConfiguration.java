@@ -42,6 +42,7 @@ public class ConfigHandlerConfiguration {
     private static final String NACOS_CONFIG_MANAGER_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";
 
     private static final String NACOS_INJECTED_BEAN_NAME = "com.alibaba.nacos.spring.beans.factory.annotation.AnnotationNacosInjectedBeanPostProcessor";
+
     private static final String NACOS_DATA_ID_KEY = "nacos.data-id";
 
     private static final String APOLLO_NAMESPACE_KEY = "apollo.namespace";
