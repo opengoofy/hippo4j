@@ -42,7 +42,6 @@ public class NacosRefresherHandler extends AbstractConfigThreadPoolDynamicRefres
     private ConfigService configService;
 
     public NacosRefresherHandler(NacosConfigProperties nacosConfigProperties) {
-        super();
         this.configService = nacosConfigProperties.configServiceInstance();
     }
 
