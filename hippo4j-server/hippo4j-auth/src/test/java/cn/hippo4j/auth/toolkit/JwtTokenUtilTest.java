@@ -35,7 +35,7 @@ public final class JwtTokenUtilTest {
     }
 
     @Test
-    void createToken() {
+    public void createToken() {
         String name = JwtTokenUtil.getUsername(token);
         Assert.isTrue(username.equals(name));
         Integer userId = JwtTokenUtil.getUserId(token);
@@ -46,25 +46,25 @@ public final class JwtTokenUtilTest {
     }
 
     @Test
-    void getUsername() {
+    public void getUsername() {
         String name = JwtTokenUtil.getUsername(token);
         Assert.isTrue(username.equals(name));
     }
 
     @Test
-    void getUserId() {
+    public void getUserId() {
         Integer id = JwtTokenUtil.getUserId(token);
         Assert.isTrue(userId.intValue() == id);
     }
 
     @Test
-    void getUserRole() {
+    public void getUserRole() {
         String userRole = JwtTokenUtil.getUserRole(token);
         Assert.isTrue(role.equals(userRole));
     }
 
     @Test
-    void isExpiration() {
+    public void isExpiration() {
         boolean isExpiration = JwtTokenUtil.isExpiration(token);
         Assert.isTrue(!isExpiration);
     }
