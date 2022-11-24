@@ -7,28 +7,28 @@ import org.junit.jupiter.api.Test;
 
 import static cn.hippo4j.common.web.exception.ErrorCodeEnum.SERVICE_ERROR;
 
-class ResultsTest {
+public class ResultsTest {
 
     @Test
-    void success() {
+    public void success() {
         Assert.isTrue(Result.SUCCESS_CODE.equals(Results.success().getCode()));
     }
 
     @Test
-    void testSuccess() {
+    public void testSuccess() {
         Object o = new Object();
         Assert.isTrue(o.equals(Results.success(o).getData()));
         Assert.isTrue(Result.SUCCESS_CODE.equals(Results.success().getCode()));
     }
 
     @Test
-    void failure() {
+    public void failure() {
         Assert.isTrue(SERVICE_ERROR.getCode().equals(Results.failure().getCode()));
         Assert.isTrue(SERVICE_ERROR.getMessage().equals(Results.failure().getMessage()));
     }
 
     @Test
-    void testFailure() {
+    public void testFailure() {
         String code = "500";
         String msg = "message";
         AbstractException abstractException = new AbstractException(msg, new Throwable(), new ErrorCode() {
@@ -47,7 +47,7 @@ class ResultsTest {
     }
 
     @Test
-    void testFailure1() {
+    public void testFailure1() {
         String msg = "throwableMsg";
         Throwable throwable = new Throwable(msg);
         Assert.isTrue(SERVICE_ERROR.getCode().equals(Results.failure(throwable).getCode()));
@@ -55,7 +55,7 @@ class ResultsTest {
     }
 
     @Test
-    void testFailure2() {
+    public void testFailure2() {
         String code = "500";
         String msg = "message";
 
@@ -75,7 +75,7 @@ class ResultsTest {
     }
 
     @Test
-    void testFailure3() {
+    public void testFailure3() {
         String code = "500";
         String msg = "message";
         Assert.isTrue(code.equals(Results.failure(code, msg).getCode()));
