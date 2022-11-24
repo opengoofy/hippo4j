@@ -61,7 +61,6 @@ public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
             for (String propertyName : propertyNames) {
                 configInfo.put(propertyName, consulPropertySource.getProperty(propertyName));
             }
-
         }
         return configInfo;
     }
