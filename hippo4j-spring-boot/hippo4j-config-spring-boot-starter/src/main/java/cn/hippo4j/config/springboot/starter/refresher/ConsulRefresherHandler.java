@@ -19,7 +19,6 @@ package cn.hippo4j.config.springboot.starter.refresher;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.env.OriginTrackedMapPropertySource;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
 import org.springframework.cloud.bootstrap.config.BootstrapPropertySource;
@@ -40,15 +39,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
-    private static final String CONSUL_PROPERTY = "${spring.dynamic.thread-pool.consul.data-key}";
-
-    @Value(CONSUL_PROPERTY)
-    private String dataKey;
-
     @EventListener(EnvironmentChangeEvent.class)
     public void refreshed(EnvironmentChangeEvent event) {
-        String[] dataKeys = this.dataKey.split(",");
-        this.dataKey = dataKeys[0];
+        Map<String, Object> configInfo = extractLatestConfigInfo(event);
+        dynamicRefresh(StringUtils.EMPTY, configInfo);
+    }
+
+    private Map<String, Object> extractLatestConfigInfo(EnvironmentChangeEvent event) {
         AbstractEnvironment environment = (AbstractEnvironment) ((AnnotationConfigServletWebServerApplicationContext) event.getSource()).getEnvironment();
         String activeProfile = Optional.ofNullable(environment.getActiveProfiles().length > 0 ? environment.getActiveProfiles()[0] : null)
                 .orElseGet(() -> String.valueOf(getApplicationConfigDefaultContext(environment)));
@@ -57,7 +54,7 @@ public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
                 .map(propertySource -> (BootstrapPropertySource<?>) propertySource).collect(Collectors.toList());
         Optional<BootstrapPropertySource<?>> bootstrapPropertySource = bootstrapPropertySourceList.stream()
                 .filter(source -> source.getName().contains(activeProfile) && source.getPropertyNames().length != 0).findFirst();
-        Map<Object, Object> configInfo = new HashMap<>(64);
+        Map<String, Object> configInfo = new HashMap<>(64);
         if (bootstrapPropertySource.isPresent()) {
             ConsulPropertySource consulPropertySource = (ConsulPropertySource) bootstrapPropertySource.get().getDelegate();
             String[] propertyNames = consulPropertySource.getPropertyNames();
@@ -66,7 +63,7 @@ public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
             }
 
         }
-        dynamicRefresh(configInfo);
+        return configInfo;
     }
 
     private CharSequence getApplicationConfigDefaultContext(AbstractEnvironment environment) {
