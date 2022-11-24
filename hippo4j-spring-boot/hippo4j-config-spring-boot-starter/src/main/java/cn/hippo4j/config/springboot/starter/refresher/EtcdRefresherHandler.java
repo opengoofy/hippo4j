@@ -23,12 +23,14 @@ import io.etcd.jetcd.*;
 import io.etcd.jetcd.kv.GetResponse;
 import io.etcd.jetcd.watch.WatchEvent;
 import io.etcd.jetcd.watch.WatchResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Etcd refresher handler.
@@ -50,19 +52,9 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
 
     private static final String KEY = "key";
 
+    @SneakyThrows(value = {InterruptedException.class, ExecutionException.class})
     @Override
-    public String getProperties() throws Exception {
-        Map<String, String> etcd = bootstrapConfigProperties.getEtcd();
-        Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));
-        initClient(etcd, charset);
-        String key = etcd.get(KEY);
-        GetResponse getResponse = client.getKVClient().get(ByteSequence.from(key, charset)).get();
-        KeyValue keyValue = getResponse.getKvs().get(0);
-        return Objects.isNull(keyValue) ? null : keyValue.getValue().toString(charset);
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    public void initRegisterListener() {
         Map<String, String> etcd = bootstrapConfigProperties.getEtcd();
         String key = etcd.get(KEY);
         Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));

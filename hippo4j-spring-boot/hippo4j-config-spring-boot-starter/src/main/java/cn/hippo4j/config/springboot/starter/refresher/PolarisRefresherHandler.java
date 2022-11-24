@@ -54,14 +54,7 @@ public class PolarisRefresherHandler extends AbstractConfigThreadPoolDynamicRefr
     private String fileName;
 
     @Override
-    public String getProperties() {
-        ConfigKVFile configFile = getConfigKVFile();
-        configFile.getContent();
-        return configFile.getContent();
-    }
-
-    @Override
-    public void afterPropertiesSet() {
+    public void initRegisterListener() {
         ConfigKVFile configFile = getConfigKVFile();
         configFile.addChangeListener((ConfigKVFileChangeListener) event -> {
             String content = configFile.getContent();

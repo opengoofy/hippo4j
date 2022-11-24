@@ -22,12 +22,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public final class JwtTokenUtilTest {
-    Long userId = 1L;
-    String username = "baymax";
-    String role = "";
-    boolean isRememberMe = true;
 
-    String token;
+    private Long userId = 1L;
+
+    private String username = "baymax";
+
+    private String role = "";
+
+    private boolean isRememberMe = true;
+
+    private String token;
 
     @BeforeEach
     public void setUp() {
