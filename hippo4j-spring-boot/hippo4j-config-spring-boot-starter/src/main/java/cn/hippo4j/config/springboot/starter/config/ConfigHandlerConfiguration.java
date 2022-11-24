@@ -30,6 +30,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.consul.config.ConsulConfigProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,6 +45,8 @@ public class ConfigHandlerConfiguration {
     private static final String NACOS_DATA_ID_KEY = "nacos.data-id";
 
     private static final String APOLLO_NAMESPACE_KEY = "apollo.namespace";
+
+    private static final String CONSUL_DATA_KEY = "consul.data-key";
 
     private static final String ZOOKEEPER_CONNECT_STR_KEY = "zookeeper.zk-connect-str";
 
@@ -86,6 +89,16 @@ public class ConfigHandlerConfiguration {
         @Bean
         public ApolloRefresherHandler apolloRefresher() {
             return new ApolloRefresherHandler();
+        }
+    }
+
+    @ConditionalOnClass(ConsulConfigProperties.class)
+    @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = CONSUL_DATA_KEY)
+    static class EmbeddedConsul {
+
+        @Bean
+        public ConsulRefresherHandler consulRefresher() {
+            return new ConsulRefresherHandler();
         }
     }
 
