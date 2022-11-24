@@ -72,15 +72,8 @@ public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
                 .findFirst().orElse(StringUtils.EMPTY);
     }
 
-    /**
-     * TODO consul已实现，暂时不重写
-     * @return
-     */
     @Override
-    public String getProperties() {
-        return null;
+    protected void initRegisterListener() {
+        // The listener has been registered by annotation.
     }
-
-    @Override
-    public void afterPropertiesSet() {}
 }
