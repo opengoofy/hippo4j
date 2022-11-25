@@ -514,7 +514,7 @@ export default {
   mounted() {
     this.isEditDisabled =
       localStorage.getItem('USER_ROLE') !== 'ROLE_ADMIN' &&
-      localStorage.getItem('USER_ROLE') !== 'ROLE_MANAGE' && false;
+      localStorage.getItem('USER_ROLE') !== 'ROLE_MANAGE';
   },
   methods: {
     onInput() {
