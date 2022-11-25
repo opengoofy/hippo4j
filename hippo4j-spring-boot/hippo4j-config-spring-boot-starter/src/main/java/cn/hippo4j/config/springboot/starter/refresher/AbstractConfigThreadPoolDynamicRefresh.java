@@ -18,7 +18,6 @@
 package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
-import cn.hippo4j.common.api.ThreadPoolInitRefresh;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
@@ -27,6 +26,8 @@ import cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamic
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 
 import java.util.Map;
 import java.util.Optional;
@@ -36,7 +37,7 @@ import java.util.concurrent.ExecutorService;
  * Abstract core thread-pool dynamic refresh.
  */
 @Slf4j
-public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, ThreadPoolInitRefresh, InitializingBean {
+public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean, ApplicationRunner {
 
     private final BootstrapConfigPropertiesBinderAdapt bootstrapConfigPropertiesBinderAdapt;
 
@@ -49,10 +50,10 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
         bootstrapConfigPropertiesBinderAdapt = ApplicationContextHolder.getBean(BootstrapConfigPropertiesBinderAdapt.class);
     }
 
-    @Override
-    public void initRefresh(String context) {
-        dynamicRefresh(context);
-    }
+    /**
+     * Init register listener.
+     */
+    protected abstract void initRegisterListener();
 
     @Override
     public void dynamicRefresh(String configContent) {
@@ -67,9 +68,31 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
                 Optional.ofNullable(configInfo).ifPresent(each -> each.putAll(newValueChangeMap));
             }
             BootstrapConfigProperties binderCoreProperties = bootstrapConfigPropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
-            ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, binderCoreProperties));
+            publishDynamicThreadPoolEvent(binderCoreProperties);
         } catch (Exception ex) {
-            log.error("Hippo-4J core dynamic refresh failed.", ex);
+            log.error("Hippo4j config mode dynamic refresh failed.", ex);
+        }
+    }
+
+    private void publishDynamicThreadPoolEvent(BootstrapConfigProperties configProperties) {
+        ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, configProperties));
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        try {
+            initRegisterListener();
+        } catch (Exception ex) {
+            log.error("Hippo4j failed to initialize register listener.", ex);
+        }
+    }
+
+    @Override
+    public void run(ApplicationArguments args) {
+        try {
+            publishDynamicThreadPoolEvent(bootstrapConfigProperties);
+        } catch (Exception ex) {
+            log.error("Hippo4j failed to initialize update configuration.", ex);
         }
     }
 }

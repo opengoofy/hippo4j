@@ -51,7 +51,6 @@
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <jjwt.version>0.9.0</jjwt.version>
         <jackson-bom.version>2.11.1</jackson-bom.version>
-        <dingtalk-sdk.version>2.0.0</dingtalk-sdk.version>
         <h2.version>2.1.214</h2.version>
         <!-- Framework -->
         <dubbo.version>3.0.5</dubbo.version>
@@ -62,6 +61,7 @@
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
+        <consul.version>2.2.4.RELEASE</consul.version>
         <jetcd.version>0.7.3</jetcd.version>
         <polaris.version>1.7.2</polaris.version>
         <rocketmq.version>2.2.2</rocketmq.version>

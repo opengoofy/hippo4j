@@ -21,6 +21,9 @@ import cn.hippo4j.common.function.Matcher;
 import org.junit.Test;
 import org.springframework.util.StringUtils;
 
+/**
+ * test {@link ArrayUtil}
+ */
 public class ArrayUtilTest {
 
     @Test

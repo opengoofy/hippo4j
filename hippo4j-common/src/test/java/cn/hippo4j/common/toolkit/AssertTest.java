@@ -17,5 +17,93 @@
 
 package cn.hippo4j.common.toolkit;
 
+import java.util.Collections;
+
+import org.junit.Test;
+
+/**
+ * test {@link Assert}
+ */
 public final class AssertTest {
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertIsTrue() {
+        Assert.isTrue(false, "test message");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertIsTrueAndMessageIsNull() {
+        Assert.isTrue(false);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertIsNullAndMessageIsNull() {
+        Assert.isNull("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertIsNull() {
+        Assert.isNull("", "object is null");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotNull() {
+        Assert.notNull(null, "object is null");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotNullAndMessageIsNull() {
+        Assert.notNull(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotEmptyByList() {
+        Assert.notEmpty(Collections.emptyList(), "object is null");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotEmptyByListAndMessageIsNull() {
+        Assert.notEmpty(Collections.emptyList());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotEmptyByMap() {
+        Assert.notEmpty(Collections.emptyMap(), "map is null");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotEmptyByMapAndMessageIsNull() {
+        Assert.notEmpty(Collections.emptyMap());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotEmptyByString() {
+        Assert.notEmpty("", "string is null");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotEmptyByStringAndMessageIsNull() {
+        Assert.notEmpty("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotBlankByString() {
+        Assert.notBlank(" ", "string is null");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertNotBlankByStringAndMessageIsNull() {
+        Assert.notBlank(" ");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertHasText() {
+        Assert.hasText(" ", "text is null");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void assertHasTextAndMessageIsNull() {
+        Assert.hasText(" ");
+    }
+
 }

@@ -3,7 +3,7 @@
 
 <img align="right" width="320" alt="image" src="https://user-images.githubusercontent.com/77398366/181906454-b46f6a14-7c2c-4b8f-8b0a-40432521bed8.png">
 
-通过对 JDK 线程池增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
+通过对 JDK 线程池的增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
 
 [![GitHub stars](https://img.shields.io/github/stars/opengoofy/hippo4j.svg?style=for-the-badge&label=Stars&logo=github)](https://github.com/opengoofy/hippo4j) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j.svg?style=for-the-badge&label=Contributors&logo=appveyor)](https://github.com/opengoofy/hippo4j) 
 
@@ -43,6 +43,7 @@
 - 框架适配 - Dubbo、Hystrix、RabbitMQ、RocketMQ 等消费线程池运行时数据查看和线程数变更。
 - 变更审核 - 提供多种用户角色，普通用户变更线程池参数需要 Admin 用户审核方可生效。
 - 动态化插件 - 内置多种线程池插件，支持用户自定义插件以及运行时扩展。
+- 多版本适配 - 经过实际测试，已支持客户端 SpringBoot 1.5.x => 2.7.5 版本（更高版本未测试）。
 
 ## 快速开始
 
@@ -60,6 +61,20 @@
 
 扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)。
 
+## 关于学习
+
+如果您公司没有使用 Hippo4j 场景的话，我也建议去阅读下项目的底层原理，主要有以下几个原因：
+
+- 为了提高代码质量以及后续的扩展行为，运用多种设计模式实现高内聚、低耦合。
+
+- 框架底层依赖 Spring 框架运行，并在源码中大量使用 Spring 相关功能。
+- 运用 JUC 并发包下多种工具保障多线程运行安全，通过实际场景理解并发编程。
+- 借鉴主流开源框架 Nacos、Eureka 实现轻量级配置中心和注册中心功能。
+- 自定义 RPC 框架实现，封装 Netty 完成客户端/服务端网络通信优化。
+- 通过 CheckStyle、Spotless 等插件规范代码编写，保障高质量代码行为和代码样式。
+
+> 还有很多优秀的代码设计就不逐一列举了，相信认真研究过底层原理的同学一定会有所收获。
+
 ## 友情链接
 
 - [[ Sa-Token ]](https://github.com/dromara/sa-token)：一个轻量级 java 权限认证框架，让鉴权变得简单、优雅！  
@@ -67,6 +82,13 @@
 - [[ HertzBeat ]](https://github.com/dromara/hertzbeat)：易用友好的云监控系统, 无需 Agent, 强大自定义监控能力。   
 - [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
+- [[ Jpom ]](https://gitee.com/dromara/Jpom)：简而轻的低侵入式在线构建、自动部署、日常运维、项目监控软件。
+
+## 知识星球
+
+专注代码实战的技术星球，从零到一完成企业级商城项目，以及开发框架底层基础组件，助力开发者技术设计能力提升。
+
+详情查看：[小马哥的代码实战课](https://xiaomage.info/knowledge-planet/)。
 
 ## 贡献者
 

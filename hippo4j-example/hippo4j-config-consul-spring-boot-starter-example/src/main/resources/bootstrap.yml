@@ -1,0 +1,18 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: hippo4j-config-consul-spring-boot-starter-example
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+        format: yaml
+        data-key: hippo4j-consul
+        default-context: application
+        prefix: config

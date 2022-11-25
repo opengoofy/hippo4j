@@ -47,6 +47,16 @@ spring:
         thread-pool-types: dynamic # 采集线程池的类型。eg：dynamic、web、adapter。可任意配置，默认 dynamic
 ```
 
+如果使用 `micrometer` 类型的监控指标，需要添加以下依赖。
+
+```xml
+<dependency>
+    <groupId>cn.hippo4j</groupId>
+    <artifactId>hippo4j-spring-boot-starter-monitor-micrometer</artifactId>
+    <version>1.4.3-upgrade</version>
+</dependency>
+```
+
 项目启动，访问 `http://localhost:29999/actuator/prometheus` 出现 `dynamic_thread_pool_` 前缀的指标，即为成功。
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220912220401016.png)
