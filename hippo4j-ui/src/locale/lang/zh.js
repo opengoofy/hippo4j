@@ -9,16 +9,20 @@ export default {
 
   // 信息
   message: {
+    requiredError: '这是必填项',
     success: '成功',
     createdSuccess: '创建成功',
-    deleteMessage: '此操作将删除 {name}, 是否继续?'
+    updateSuccess: '更新成功',
+    deleteSuccess: '删除成功',
+    deleteMessage: '此操作将删除 {name}, 是否继续?',
+    selectMessage: '请选择{target}',
+    NoDeletionPermissionTip: '请联系管理员删除'
   },
 
   // 公共
   common: {
     query: '搜索',
     insert: '添加',
-    serialNumber: '序号',
     operation: '操作',
     create: '创建',
     edit: '编辑',
@@ -26,11 +30,9 @@ export default {
     cancel: '取消',
     confirm: '确认',
     ok: '确定',
-    threadPool: '线程池',
     num: '序号',
     createTime: '创建时间',
     updateTime: '修改时间',
-    requiredError: '这是必填项',
     hint: '提示'
   },
 
@@ -58,9 +60,28 @@ export default {
     itemIntro: '项目简介'
   },
   
-  // 线程池
+  // 线程池管理
   threadPool: {
-    tenant: '租户',
-    project: '项目',
+    threadPool: '线程池',
+    coreSize: '核心线程',
+    maximumSize: '最大线程',
+    queueType: '队列类型',
+    queueCapacity: '队列容量',
+    rejectedHandler: '拒绝策略',
+    executionTimeout: '执行超时',
+    executionTimeoutUnit: '执行超时 （毫秒）',
+    keepAliveTime: '空闲回收',
+    keepAliveTimeUnit: '空闲回收（秒）',
+    isTimeout: '是否超时',
+    timeout: '超时',
+    noTimeout: '不超时',
+    isAlarm: '是否报警',
+    alarm: '报警',
+    noAlarm: '不报警',
+    activeAlarm: '活跃报警',
+    capacityAlarm: '容量报警',
+    customRejectedHandler: '自定义拒绝策略',
+    customRejectedHandlerTip: '请输入自定义 SPI 拒绝策略标识',
+    threadsNumErrorTip: '最大线程必须大于等于核心线程'
   }
 }

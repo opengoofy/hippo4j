@@ -33,7 +33,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            {{ $t('common.threadPool') }}
+            {{ $t('threadPool.threadPool') }}
           </div>
           <count-to :start-val="0" :end-val="runningCount" :duration="3200" class="card-panel-num" />
         </div>
