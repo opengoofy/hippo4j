@@ -72,6 +72,13 @@ sidebar_position: 1
     <td align="center" ><a href="https://blog.xiajibagao.top">Createsequence's Blog</a></td>
     <td align="center" >841396397@qq.com</td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/road2master"><img src="https://avatars.githubusercontent.com/u/53806703?v=4" width="64px;"/></ a></td>
+    <td align="center">黎金星</td>
+    <td align="center"><a href="https://github.com/road2master">road2master</a></td>
+    <td align="center"><a href="https://www.cnblogs.com/road2master/">road2master's Blog</a></td>
+    <td align="center">lijinxingerm@gmail.com</td>
+  </tr>
 </table>
 
 ## 贡献者
