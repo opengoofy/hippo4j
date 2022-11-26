@@ -18,6 +18,7 @@ import './permission'; // permission control
 // import './utils/error-log' // error log
 
 import i18n from '@/locale'
+import '@/utils/i18n-utils'
 import * as filters from './filters'; // global filters
 import echarts from 'echarts';
 Vue.prototype.$echarts = echarts;

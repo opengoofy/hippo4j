@@ -174,10 +174,10 @@ export default {
         create: this.$t('common.create'),
       },
       rules: {
-        tenantId: [{ required: true, message: this.$t('common.requiredError'), trigger: 'blur' }],
-        tenantName: [{ required: true, message: this.$t('common.requiredError'), trigger: 'blur' }],
-        owner: [{ required: true, message: this.$t('common.requiredError'), trigger: 'blur' }],
-        tenantDesc: [{ required: true, message: this.$t('common.requiredError'), trigger: 'blur' }],
+        tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tenantName: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        owner: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tenantDesc: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
       },
       temp: {
         id: undefined,
