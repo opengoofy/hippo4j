@@ -17,15 +17,21 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
-import cn.hippo4j.config.springboot.starter.refresher.*;
-import com.alibaba.cloud.nacos.NacosConfigManager;
+import cn.hippo4j.config.springboot.starter.refresher.ApolloRefresherHandler;
+import cn.hippo4j.config.springboot.starter.refresher.BootstrapConfigPropertiesBinderAdapt;
+import cn.hippo4j.config.springboot.starter.refresher.ConsulRefresherHandler;
+import cn.hippo4j.config.springboot.starter.refresher.DefaultBootstrapConfigPropertiesBinderAdapt;
+import cn.hippo4j.config.springboot.starter.refresher.EtcdRefresherHandler;
+import cn.hippo4j.config.springboot.starter.refresher.NacosCloudRefresherHandler;
+import cn.hippo4j.config.springboot.starter.refresher.NacosRefresherHandler;
+import cn.hippo4j.config.springboot.starter.refresher.PolarisRefresherHandler;
+import cn.hippo4j.config.springboot.starter.refresher.ZookeeperRefresherHandler;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.tencent.polaris.configuration.api.core.ConfigFileService;
 import io.etcd.jetcd.Client;
 import lombok.RequiredArgsConstructor;
 import org.apache.curator.framework.CuratorFramework;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
@@ -41,6 +47,8 @@ import org.springframework.context.annotation.Configuration;
 public class ConfigHandlerConfiguration {
 
     private static final String NACOS_CONFIG_MANAGER_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";
+
+    private static final String NACOS_INJECTED_BEAN_NAME = "com.alibaba.nacos.spring.beans.factory.annotation.AnnotationNacosInjectedBeanPostProcessor";
 
     private static final String NACOS_DATA_ID_KEY = "nacos.data-id";
 
@@ -61,18 +69,18 @@ public class ConfigHandlerConfiguration {
     }
 
     @RequiredArgsConstructor
-    @ConditionalOnClass(ConfigService.class)
+    @ConditionalOnClass(value = ConfigService.class, name = NACOS_INJECTED_BEAN_NAME)
     @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
     static class EmbeddedNacos {
 
         @Bean
-        public NacosRefresherHandler nacosRefresherHandler(NacosConfigProperties nacosConfigProperties) {
-            return new NacosRefresherHandler(nacosConfigProperties);
+        public NacosRefresherHandler nacosRefresherHandler() {
+            return new NacosRefresherHandler();
         }
     }
 
-    @ConditionalOnClass(NacosConfigManager.class)
+    @ConditionalOnClass(NacosConfigProperties.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
     static class EmbeddedNacosCloud {
 

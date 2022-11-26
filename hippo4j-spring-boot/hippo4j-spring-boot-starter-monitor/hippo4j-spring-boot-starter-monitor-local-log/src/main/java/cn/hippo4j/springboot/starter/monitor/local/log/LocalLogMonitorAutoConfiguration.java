@@ -17,9 +17,11 @@
 
 package cn.hippo4j.springboot.starter.monitor.local.log;
 
+import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.monitor.local.log.AdapterThreadPoolLocalLogMonitorHandler;
 import cn.hippo4j.monitor.local.log.DynamicThreadPoolLocalLogMonitorHandler;
 import cn.hippo4j.monitor.local.log.WebThreadPoolLocalLogMonitorHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +40,7 @@ public class LocalLogMonitorAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnBean(WebThreadPoolService.class)
     @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('web')")
     public WebThreadPoolLocalLogMonitorHandler webThreadPoolLocalLogMonitorHandler() {
         return new WebThreadPoolLocalLogMonitorHandler();
