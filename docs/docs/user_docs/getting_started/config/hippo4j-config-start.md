@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # 接入流程
 
-Nacos、Apollo、Zookeeper、ETCD、Polaris 配置中心任选其一。
+Nacos、Apollo、Zookeeper、ETCD、Polaris、Consul 配置中心任选其一。
 
 ## hippo4j 配置
 
@@ -59,7 +59,7 @@ spring:
           secret: xxx  # 加签专属
         - platform: 'LARK'
           token: xxx
-      # Nacos、Apollo、Zookeeper、ETCD、Polaris 任选其一
+      # Nacos、Apollo、Zookeeper、ETCD、Polaris、Consul 任选其一
       nacos:
         data-id: xxx
         group: xxx

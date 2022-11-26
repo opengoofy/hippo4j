@@ -61,6 +61,7 @@
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
+        <consul.version>2.2.4.RELEASE</consul.version>
         <jetcd.version>0.7.3</jetcd.version>
         <polaris.version>1.7.2</polaris.version>
         <rocketmq.version>2.2.2</rocketmq.version>

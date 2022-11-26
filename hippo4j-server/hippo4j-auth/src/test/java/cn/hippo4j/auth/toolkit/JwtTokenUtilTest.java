@@ -17,5 +17,59 @@
 
 package cn.hippo4j.auth.toolkit;
 
+import cn.hippo4j.common.toolkit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 public final class JwtTokenUtilTest {
+
+    private Long userId = 1L;
+
+    private String username = "baymax";
+
+    private String role = "";
+
+    private boolean isRememberMe = true;
+
+    private String token;
+
+    @BeforeEach
+    public void setUp() {
+        token = JwtTokenUtil.createToken(userId, username, role, isRememberMe);
+    }
+
+    @Test
+    public void createToken() {
+        String name = JwtTokenUtil.getUsername(token);
+        Assert.isTrue(username.equals(name));
+        Integer userId = JwtTokenUtil.getUserId(token);
+        String userRole = JwtTokenUtil.getUserRole(token);
+        Assert.isTrue(username.equals(name));
+        Assert.isTrue(this.userId.intValue() == userId);
+        Assert.isTrue(role.equals(userRole));
+    }
+
+    @Test
+    public void getUsername() {
+        String name = JwtTokenUtil.getUsername(token);
+        Assert.isTrue(username.equals(name));
+    }
+
+    @Test
+    public void getUserId() {
+        Integer id = JwtTokenUtil.getUserId(token);
+        Assert.isTrue(userId.intValue() == id);
+    }
+
+    @Test
+    public void getUserRole() {
+        String userRole = JwtTokenUtil.getUserRole(token);
+        Assert.isTrue(role.equals(userRole));
+    }
+
+    @Test
+    public void isExpiration() {
+        boolean isExpiration = JwtTokenUtil.isExpiration(token);
+        Assert.isTrue(!isExpiration);
+    }
 }

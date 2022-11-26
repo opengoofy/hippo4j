@@ -21,6 +21,8 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
+import com.alibaba.nacos.api.exception.NacosException;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -42,16 +44,9 @@ public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicR
         configService = ApplicationContextHolder.getBean(NacosConfigProperties.class).configServiceInstance();
     }
 
+    @SneakyThrows(NacosException.class)
     @Override
-    public String getProperties() throws Exception {
-        Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
-        String dataId = nacosConfig.get(DATA_ID);
-        String group = nacosConfig.get(GROUP);
-        return configService.getConfig(dataId, group, 5000L);
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    public void initRegisterListener() {
         Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
         configService.addListener(nacosConfig.get(DATA_ID),
                 nacosConfig.get(GROUP), new Listener() {
