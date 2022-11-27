@@ -114,7 +114,7 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
             ConcurrentMap<Integer, ExecutorService> executorServiceMap = data.get(poolKey);
             executorServiceMap.forEach((key, value) -> DUBBO_PROTOCOL_EXECUTOR.put(String.valueOf(key), (ThreadPoolExecutor) value));
         } catch (Exception ex) {
-            log.error("Failed to get Dubbo {}.X protocol thread pool", isLegacyVersion ? "2" : "3", ex);
+            log.error("Failed to get Dubbo {} protocol thread pool", Version.getVersion(), ex);
         }
     }
 }
