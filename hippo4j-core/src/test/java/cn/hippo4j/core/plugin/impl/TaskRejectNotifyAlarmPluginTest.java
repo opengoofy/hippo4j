@@ -17,10 +17,11 @@
 
 package cn.hippo4j.core.plugin.impl;
 
+import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,8 +52,8 @@ public class TaskRejectNotifyAlarmPluginTest {
                 1, 1, 1000L, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<>(1), Thread::new, new ThreadPoolExecutor.DiscardPolicy());
 
-        AtomicInteger rejectCount = new AtomicInteger(0);
-        executor.register(new TestPlugin(rejectCount, executor));
+        TestAlarm alarm = new TestAlarm();
+        executor.register(new TaskRejectNotifyAlarmPlugin(alarm));
         executor.submit(() -> ThreadUtil.sleep(200L));
         executor.submit(() -> ThreadUtil.sleep(200L));
         executor.submit(() -> ThreadUtil.sleep(200L));
@@ -61,26 +62,32 @@ public class TaskRejectNotifyAlarmPluginTest {
         executor.shutdown();
         while (!executor.isTerminated()) {
         }
-        Assert.assertEquals(1, rejectCount.get());
+        Assert.assertEquals(1, alarm.getNumberOfAlarms().get());
     }
 
-    @RequiredArgsConstructor
-    private static class TestPlugin extends TaskRejectNotifyAlarmPlugin {
+    private static class TestAlarm implements ThreadPoolCheckAlarm {
 
-        private final AtomicInteger count;
-        private final ThreadPoolExecutor targetExecutor;
-
-        /**
-         * Callback before task is rejected.
-         *
-         * @param runnable task
-         * @param executor executor
-         */
+        @Getter
+        private final AtomicInteger numberOfAlarms = new AtomicInteger(0);
         @Override
-        public void beforeRejectedExecution(Runnable runnable, ThreadPoolExecutor executor) {
-            count.incrementAndGet();
-            Assert.assertEquals(targetExecutor, executor);
-            super.beforeRejectedExecution(runnable, executor);
+        public void checkPoolCapacityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
+            // do noting
+        }
+        @Override
+        public void checkPoolActivityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
+            // do noting
+        }
+        @Override
+        public void asyncSendRejectedAlarm(String threadPoolId) {
+            numberOfAlarms.incrementAndGet();
+        }
+        @Override
+        public void asyncSendExecuteTimeOutAlarm(String threadPoolId, long executeTime, long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
+            // do noting
+        }
+        @Override
+        public void run(String... args) throws Exception {
+
         }
     }
 
