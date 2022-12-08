@@ -22,12 +22,12 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-core</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-message</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.nacos</groupId>
@@ -114,22 +114,22 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-base</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-web</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-monitor-local-log</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-monitor-micrometer</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
