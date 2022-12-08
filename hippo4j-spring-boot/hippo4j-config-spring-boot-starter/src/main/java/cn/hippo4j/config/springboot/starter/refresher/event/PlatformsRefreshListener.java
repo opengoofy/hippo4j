@@ -20,7 +20,7 @@ package cn.hippo4j.config.springboot.starter.refresher.event;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
-import cn.hippo4j.config.springboot.starter.notify.CoreNotifyConfigBuilder;
+import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
@@ -47,7 +47,7 @@ public class PlatformsRefreshListener extends AbstractRefreshListener<ExecutorPr
             DynamicThreadPoolWrapper wrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
             if (wrapper != null && !wrapper.isInitFlag()) {
                 Hippo4jBaseSendMessageService sendMessageService = ApplicationContextHolder.getBean(Hippo4jBaseSendMessageService.class);
-                CoreNotifyConfigBuilder configBuilder = ApplicationContextHolder.getBean(CoreNotifyConfigBuilder.class);
+                ConfigModeNotifyConfigBuilder configBuilder = ApplicationContextHolder.getBean(ConfigModeNotifyConfigBuilder.class);
                 Map<String, List<NotifyConfigDTO>> notifyConfig = configBuilder.buildSingleNotifyConfig(executorProperties);
                 sendMessageService.putPlatform(notifyConfig);
                 wrapper.setInitFlag(Boolean.TRUE);

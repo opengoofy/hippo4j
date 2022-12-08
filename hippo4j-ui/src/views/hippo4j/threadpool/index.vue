@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-select
         v-model="listQuery.tenantId"
-        :placeholder="$t('threadPool.tenant')"
+        :placeholder="$t('tenantManage.tenant')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -18,7 +18,7 @@
       </el-select>
       <el-select
         v-model="listQuery.itemId"
-        :placeholder="$t('threadPool.project')"
+        :placeholder="$t('projectManage.item')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -33,7 +33,7 @@
       </el-select>
       <el-select
         v-model="listQuery.tpId"
-        :placeholder="$t('common.threadPool')"
+        :placeholder="$t('threadPool.threadPool')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -53,7 +53,7 @@
         icon="el-icon-search"
         @click="fetchData"
       >
-        {{ $t('common.search') }}
+        {{ $t('common.query') }}
       </el-button>
       <el-button
         class="filter-item"
@@ -63,7 +63,7 @@
         @click="handleCreate"
         :disabled="isEditDisabled"
       >
-        {{ $t('common.addition') }}
+        {{ $t('common.insert') }}
       </el-button>
     </div>
     <el-table
@@ -74,43 +74,43 @@
       fit
       highlight-current-row
     >
-      <el-table-column fixed :label="$t('common.serialNumber')" width="80">
+      <el-table-column fixed :label="$t('common.num')" width="80">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column label="租户" width="150">
+      <el-table-column :label="$t('tenantManage.tenant')" width="150">
         <template slot-scope="scope">{{ scope.row.tenantId }}</template>
       </el-table-column>
-      <el-table-column label="项目" width="260">
+      <el-table-column :label="$t('projectManage.item')" width="260">
         <template slot-scope="scope">{{ scope.row.itemId }}</template>
       </el-table-column>
-      <el-table-column label="线程池" width="260">
+      <el-table-column :label="$t('threadPool.threadPool')" width="260">
         <template slot-scope="scope">{{ scope.row.tpId }}</template>
       </el-table-column>
-      <el-table-column label="核心线程" width="100">
+      <el-table-column :label="$t('threadPool.coreSize')" width="100">
         <template slot-scope="scope">
           <el-link type="success" :underline="false">{{ scope.row.coreSize }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="最大线程" width="100">
+      <el-table-column :label="$t('threadPool.maximumSize')" :width="$langMatch({ zh: '100', en: '120' })">
         <template slot-scope="scope">
           <el-link type="danger" :underline="false">{{ scope.row.maxSize }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="队列类型" width="260">
+      <el-table-column :label="$t('threadPool.queueType')" width="260">
         <template slot-scope="scope">{{ scope.row.queueType | queueFilter }}</template>
       </el-table-column>
-      <el-table-column label="队列容量" width="100">
+      <el-table-column :label="$t('threadPool.queueCapacity')" :width="$langMatch({ zh: '100', en: '120' })">
         <template slot-scope="scope">{{ scope.row.capacity }}</template>
       </el-table-column>
-      <el-table-column label="拒绝策略" width="200">
+      <el-table-column :label="$t('threadPool.rejectedHandler')" width="200">
         <template slot-scope="scope">{{ scope.row.rejectedType | rejectedTypeFilter }}</template>
       </el-table-column>
-      <el-table-column label="执行超时" width="100">
+      <el-table-column :label="$t('threadPool.executionTimeout')" :width="$langMatch({ zh: '100', en: '150' })">
         <template slot-scope="scope">{{
           scope.row.executeTimeOut | defaultExecuteTimeoutValue
         }}</template>
       </el-table-column>
-      <el-table-column label="是否报警" width="100">
+      <el-table-column :label="$t('threadPool.isAlarm')" width="100">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.isAlarm"
@@ -122,10 +122,10 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="200">
+      <el-table-column :label="$t('common.createTime')" width="200">
         <template slot-scope="scope">{{ scope.row.gmtCreate }}</template>
       </el-table-column>
-      <el-table-column label="修改时间" width="200">
+      <el-table-column :label="$t('common.updateTime')" width="200">
         <template slot-scope="scope">{{ scope.row.gmtModified }}</template>
       </el-table-column>
       <el-table-column
@@ -159,70 +159,73 @@
         style="width: 500px; margin-left: 50px"
         :rules="rules"
         :model="temp"
-        label-width="80px"
+        :label-width="$langMatch({ zh: '100px', en: '150px' })"
       >
-        <el-form-item v-if="isEdit" label="租户" prop="tenantId">
-          <el-select
-            v-model="temp.tenantId"
-            placeholder="请选择租户"
-            style="display: block"
-            :disabled="dialogStatus === 'create' ? false : true"
-            @change="tenantTempSelectList()"
-          >
-            <el-option
-              v-for="item in tenantOptions"
-              :key="item.key"
-              :label="item.display_name"
-              :value="item.key"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="isEdit" label="项目" prop="itemId">
-          <el-select
-            v-model="temp.itemId"
-            placeholder="请选择项目"
-            style="display: block"
-            :disabled="dialogStatus === 'create' ? false : true"
-          >
-            <el-option
-              v-for="item in itemTempOptions"
-              :key="item.key"
-              :label="item.display_name"
-              :value="item.key"
-            />
-          </el-select>
-        </el-form-item>
+        <template v-if="isEdit">
+          <el-form-item :label="$t('tenantManage.tenant')" prop="tenantId">
+            <el-select
+              v-model="temp.tenantId"
+              :placeholder="$t('message.selectMessage', { target: $t('tenantManage.tenant') })"
+              style="display: block"
+              :disabled="dialogStatus === 'create' ? false : true"
+              @change="tenantTempSelectList()"
+            >
+              <el-option
+                v-for="item in tenantOptions"
+                :key="item.key"
+                :label="item.display_name"
+                :value="item.key"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('projectManage.item')" prop="itemId">
+            <el-select
+              v-model="temp.itemId"
+              :placeholder="$t('message.selectMessage', { target: $t('projectManage.item') })"
+              style="display: block"
+              :disabled="dialogStatus === 'create' ? false : true"
+            >
+              <el-option
+                v-for="item in itemTempOptions"
+                :key="item.key"
+                :label="item.display_name"
+                :value="item.key"
+              />
+            </el-select>
+          </el-form-item>
 
-        <el-form-item v-if="isEdit" label="线程池" prop="tpId">
-          <el-input
-            v-model="temp.tpId"
-            size="medium"
-            placeholder="请输入线程池 "
-            :disabled="dialogStatus === 'create' ? false : true"
-          />
-        </el-form-item>
-        <el-form-item label="核心线程" prop="coreSize">
+          <el-form-item :label="$t('threadPool.threadPool')" prop="tpId">
+            <el-input
+              v-model="temp.tpId"
+              size="medium"
+              :placeholder="$t('message.selectMessage', { target: $t('threadPool.threadPool') }) "
+              :disabled="dialogStatus === 'create' ? false : true"
+            />
+          </el-form-item>
+        </template>
+        
+        <el-form-item :label="$t('threadPool.coreSize')" prop="coreSize">
           <el-input-number
             v-model="temp.coreSize"
-            placeholder="核心线程"
+            :placeholder="$t('threadPool.coreSize')"
             controls-position="right"
             :min="1"
             :max="9999"
           />
         </el-form-item>
-        <el-form-item label="最大线程" prop="maxSize">
+        <el-form-item :label="$t('threadPool.maximumSize')" prop="maxSize">
           <el-input-number
             v-model="temp.maxSize"
-            placeholder="最大线程"
+            :placeholder="$t('threadPool.maximumSize')"
             controls-position="right"
             :min="1"
             :max="9999"
           />
         </el-form-item>
-        <el-form-item label="队列类型" prop="queueType">
+        <el-form-item :label="$t('threadPool.queueType')" prop="queueType">
           <el-select
             v-model="temp.queueType"
-            placeholder="队列类型"
+            :placeholder="$t('threadPool.queueType')"
             style="display: block"
             @change="selectQueueType"
           >
@@ -234,57 +237,57 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="队列容量" prop="capacity">
+        <el-form-item :label="$t('threadPool.queueCapacity')" prop="capacity">
           <el-input-number
             v-model="temp.capacity"
-            placeholder="队列容量"
+            :placeholder="$t('threadPool.queueCapacity')"
             controls-position="right"
             :min="0"
             :max="2147483647"
             :disabled="temp.queueType === 4 || temp.queueType === 5 ? true : false"
           />
         </el-form-item>
-        <el-form-item label="执行超时" prop="executeTimeOut">
+        <el-form-item :label="$t('threadPool.executionTimeout')" prop="executeTimeOut">
           <el-input-number
             v-model="temp.executeTimeOut"
-            placeholder="执行超时（毫秒）"
+            :placeholder="$t('threadPool.executionTimeoutUnit')"
             controls-position="right"
           />
         </el-form-item>
-        <el-form-item label="空闲回收" prop="keepAliveTime">
+        <el-form-item :label="$t('threadPool.keepAliveTime')" prop="keepAliveTime">
           <el-input-number
             v-model="temp.keepAliveTime"
-            placeholder="空闲回收（秒）"
+            :placeholder="$t('threadPool.keepAliveTimeUnit')"
             controls-position="right"
             :min="1"
             :max="999999"
           />
         </el-form-item>
-        <el-form-item label="是否超时" prop="allowCoreThreadTimeOut">
+        <el-form-item :label="$t('threadPool.isTimeout')" prop="allowCoreThreadTimeOut">
           <template>
             <div>
               <el-radio-group v-model="temp.allowCoreThreadTimeOut">
-                <el-radio-button :label="1">超时</el-radio-button>
-                <el-radio-button :label="0">不超时</el-radio-button>
+                <el-radio-button :label="1">{{ $t('threadPool.timeout') }}</el-radio-button>
+                <el-radio-button :label="0">{{ $t('threadPool.noTimeout') }}</el-radio-button>
               </el-radio-group>
             </div>
           </template>
         </el-form-item>
-        <el-form-item label="是否报警" prop="isAlarm">
+        <el-form-item :label="$t('threadPool.isAlarm')" prop="isAlarm">
           <template>
             <div>
               <el-radio-group v-model="temp.isAlarm">
-                <el-radio-button label="1">报警</el-radio-button>
-                <el-radio-button label="0">不报警</el-radio-button>
+                <el-radio-button label="1">{{ $t('threadPool.alarm') }}</el-radio-button>
+                <el-radio-button label="0">{{ $t('threadPool.noAlarm') }}</el-radio-button>
               </el-radio-group>
             </div>
           </template>
         </el-form-item>
-        <el-form-item label="活跃报警" prop="livenessAlarm">
+        <el-form-item :label="$t('threadPool.activeAlarm')" prop="livenessAlarm">
           <template>
             <div>
               <el-radio-group v-model="temp.livenessAlarm">
-                <el-radio-button label="0">不报警</el-radio-button>
+                <el-radio-button label="0">{{ $t('threadPool.noAlarm') }}</el-radio-button>
                 <el-radio-button label="60">60%</el-radio-button>
                 <el-radio-button label="80">80%</el-radio-button>
                 <el-radio-button label="90">90%</el-radio-button>
@@ -293,11 +296,11 @@
           </template>
         </el-form-item>
 
-        <el-form-item label="容量报警" prop="capacityAlarm">
+        <el-form-item :label="$t('threadPool.capacityAlarm')" prop="capacityAlarm">
           <template>
             <div>
               <el-radio-group v-model="temp.capacityAlarm">
-                <el-radio-button label="0">不报警</el-radio-button>
+                <el-radio-button label="0">{{ $t('threadPool.noAlarm') }}</el-radio-button>
                 <el-radio-button label="60">60%</el-radio-button>
                 <el-radio-button label="80">80%</el-radio-button>
                 <el-radio-button label="90">90%</el-radio-button>
@@ -305,11 +308,11 @@
             </div>
           </template>
         </el-form-item>
-        <el-form-item label="拒绝策略" prop="rejectedType">
+        <el-form-item :label="$t('threadPool.rejectedHandler')" prop="rejectedType">
           <el-select
             v-model="temp.rejectedType"
             style="display: block"
-            placeholder="拒绝策略"
+            :placeholder="$t('threadPool.rejectedHandler')"
             @change="selectRejectedType"
           >
             <el-option
@@ -320,10 +323,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="isRejectShow" label="自定义拒绝策略" prop="customRejectedType">
+        <el-form-item v-if="isRejectShow" :label="$t('threadPool.customRejectedHandler')" prop="customRejectedType">
           <el-input
             v-model="temp.customRejectedType"
-            placeholder="请输入自定义 SPI 拒绝策略标识"
+            :placeholder="$t('threadPool.customRejectedHandlerTip')"
             @input="onInput()"
           />
         </el-form-item>
@@ -341,7 +344,7 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('common.confirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -460,16 +463,16 @@ export default {
       size: 500,
       dialogStatus: '',
       textMap: {
-        update: 'Edit',
-        create: 'Create',
+        update: this.$t('common.edit'),
+        create: this.$t('common.create'),
       },
       rules: {
-        tenantId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        itemId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        tpId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        coreSize: [{ required: true, message: 'this is required', trigger: 'blur' }],
+        tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        itemId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tpId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        coreSize: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
         maxSize: [
-          { required: true, message: 'this is required', trigger: 'blur' },
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
           // {
           //   validator: (rule, value, callback) => {
           //     if (parseInt(value) < parseInt(this.temp.coreSize)) {
@@ -481,15 +484,15 @@ export default {
           //   },
           // },
         ],
-        queueType: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        allowCoreThreadTimeOut: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        keepAliveTime: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        isAlarm: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        capacityAlarm: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        livenessAlarm: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        rejectedType: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        capacity: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        executeTimeOut: [{ required: true, message: 'this is required', trigger: 'blur' }],
+        queueType: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        allowCoreThreadTimeOut: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        keepAliveTime: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        isAlarm: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        capacityAlarm: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        livenessAlarm: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        rejectedType: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        capacity: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        executeTimeOut: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
       },
       temp: {
         id: undefined,
@@ -531,8 +534,8 @@ export default {
       threadPoolApi.alarmEnable(row).then(() => {
         this.fetchData();
         this.$notify({
-          title: 'Success',
-          message: 'Update Successfully',
+          title: this.$t('message.success'),
+          message: this.$t('message.updateSuccess'),
           type: 'success',
           duration: 2000,
         });
@@ -589,7 +592,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (parseInt(this.temp.maxSize) < parseInt(this.temp.coreSize)) {
           this.$message({
-            message: '最大线程必须大于等于核心线程',
+            message: this.$t('threadPool.threadsNumErrorTip'),
             type: 'warning',
           });
           return;
@@ -606,8 +609,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.createdSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -645,7 +648,7 @@ export default {
         if (valid) {
           if (parseInt(this.temp.maxSize) < parseInt(this.temp.coreSize)) {
             this.$message({
-              message: '最大线程必须大于等于核心线程',
+              message: this.$t('threadPool.threadsNumErrorTip'),
               type: 'warning',
             });
             return;
@@ -668,8 +671,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.updateSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -678,16 +681,16 @@ export default {
       });
     },
     openDelConfirm(name) {
-      return this.$confirm(`此操作将删除 ${name}, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      return this.$confirm(this.$t('message.deleteMessage', { name }), this.$t('common.hint'), {
+        confirmButtonText: this.$t('common.ok'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       });
     },
     handleDelete(row) {
       const role = localStorage.getItem('USER_ROLE') === 'ROLE_ADMIN' ? true : false;
       if (!role) {
-        this.$message.error('请联系管理员删除');
+        this.$message.error(this.$t('message.NoDeletionPermissionTip'));
         return;
       }
 
@@ -695,8 +698,8 @@ export default {
         threadPoolApi.deleted(row).then((response) => {
           this.fetchData();
           this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
+            title: this.$t('message.success'),
+            message: this.$t('message.deleteSuccess'),
             type: 'success',
             duration: 2000,
           });

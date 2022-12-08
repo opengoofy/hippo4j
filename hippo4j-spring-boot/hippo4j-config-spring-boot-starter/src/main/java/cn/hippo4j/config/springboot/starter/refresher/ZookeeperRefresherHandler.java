@@ -52,15 +52,7 @@ public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRe
     private CuratorFramework curatorFramework;
 
     @Override
-    public String getProperties() {
-        Map<String, String> zkConfigs = bootstrapConfigProperties.getZookeeper();
-        String nodePath = ZKPaths.makePath(ZKPaths.makePath(zkConfigs.get(ROOT_NODE),
-                zkConfigs.get(CONFIG_VERSION)), zkConfigs.get(NODE));
-        return nodePathResolver(nodePath);
-    }
-
-    @Override
-    public void afterPropertiesSet() {
+    public void initRegisterListener() {
         Map<String, String> zkConfigs = bootstrapConfigProperties.getZookeeper();
         curatorFramework = CuratorFrameworkFactory.newClient(zkConfigs.get(ZK_CONNECT_STR),
                 new ExponentialBackoffRetry(1000, 3));

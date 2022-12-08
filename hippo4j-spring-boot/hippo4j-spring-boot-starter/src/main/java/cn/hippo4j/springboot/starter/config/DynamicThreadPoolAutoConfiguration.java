@@ -52,11 +52,12 @@ import cn.hippo4j.springboot.starter.monitor.ReportingEventExecutor;
 import cn.hippo4j.springboot.starter.monitor.collect.RunTimeInfoCollector;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.monitor.send.http.HttpConnectSender;
-import cn.hippo4j.springboot.starter.notify.ServerNotifyConfigBuilder;
+import cn.hippo4j.springboot.starter.notify.ServerModeNotifyConfigBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.HttpScheduledHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import cn.hippo4j.springboot.starter.remote.ServerHttpAgent;
+import cn.hippo4j.springboot.starter.support.AdaptedThreadPoolDestroyPostProcessor;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.springboot.starter.support.ThreadPoolPluginRegisterPostProcessor;
@@ -68,6 +69,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -114,10 +116,15 @@ public class DynamicThreadPoolAutoConfiguration {
     @SuppressWarnings("all")
     public DynamicThreadPoolService dynamicThreadPoolConfigService(HttpAgent httpAgent,
                                                                    ServerHealthCheck serverHealthCheck,
-                                                                   ServerNotifyConfigBuilder notifyConfigBuilder,
+                                                                   ServerModeNotifyConfigBuilder serverModeNotifyConfigBuilder,
                                                                    Hippo4jBaseSendMessageService hippo4jBaseSendMessageService,
                                                                    DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig) {
-        return new DynamicThreadPoolConfigService(httpAgent, properties, notifyConfigBuilder, hippo4jBaseSendMessageService, dynamicThreadPoolSubscribeConfig);
+        return new DynamicThreadPoolConfigService(httpAgent, properties, serverModeNotifyConfigBuilder, hippo4jBaseSendMessageService, dynamicThreadPoolSubscribeConfig);
+    }
+
+    @Bean
+    public AdaptedThreadPoolDestroyPostProcessor adaptedThreadPoolDestroyPostProcessor(ApplicationContext applicationContext) {
+        return new AdaptedThreadPoolDestroyPostProcessor(applicationContext);
     }
 
     @Bean
@@ -198,7 +205,7 @@ public class DynamicThreadPoolAutoConfiguration {
     public NotifyConfigBuilder serverNotifyConfigBuilder(HttpAgent httpAgent,
                                                          BootstrapProperties properties,
                                                          AlarmControlHandler alarmControlHandler) {
-        return new ServerNotifyConfigBuilder(httpAgent, properties, alarmControlHandler);
+        return new ServerModeNotifyConfigBuilder(httpAgent, properties, alarmControlHandler);
     }
 
     @Bean

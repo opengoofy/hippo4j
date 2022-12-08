@@ -95,7 +95,7 @@ public class DynamicThreadPoolExecutorTest {
         });
         executor.destroy();
 
-        // waitting for terminated
+        // waiting for terminated
         while (!executor.isTerminated()) {
         } ;
         Assert.assertEquals(2, count.get());
@@ -119,9 +119,9 @@ public class DynamicThreadPoolExecutorTest {
         });
         executor.destroy();
 
-        // waitting for terminated
+        // waiting for terminated
         while (!executor.isTerminated()) {
-        } ;
+        }
         Assert.assertEquals(1, count.get());
     }
 
@@ -155,6 +155,23 @@ public class DynamicThreadPoolExecutorTest {
         executor.setSupportParam(500L, false);
         Assert.assertEquals(500L, executor.getAwaitTerminationMillis());
         Assert.assertFalse(executor.isWaitForTasksToCompleteOnShutdown());
+    }
+
+    @Test
+    public void testIsActive() {
+        DynamicThreadPoolExecutor executor = new DynamicThreadPoolExecutor(
+                1, 1, 1000L, TimeUnit.MILLISECONDS,
+                1000L, true, 1000L,
+                new ArrayBlockingQueue<>(1), "test", Thread::new, new ThreadPoolExecutor.DiscardOldestPolicy());
+        Assert.assertTrue(executor.isActive());
+
+        // waiting for terminated
+        executor.destroy();
+        while (!executor.isTerminated()) {
+        }
+        Assert.assertFalse(executor.isActive());
+        executor.destroy();
+        Assert.assertFalse(executor.isActive());
     }
 
 }
