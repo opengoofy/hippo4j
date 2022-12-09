@@ -24,6 +24,7 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.web.server.WebServer;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -54,6 +55,16 @@ public class WebIpAndPortHolder {
 
     protected static final String SEPARATOR = ",";
 
+    /**
+     * get port for Environment
+     */
+    protected static final String PORT_KEY = "server.port";
+
+    /**
+     * if port is null, use this
+     */
+    protected static final int PORT = 8080;
+
     protected static void initIpAndPort() {
         if (!supportVersion) {
             return;
@@ -66,12 +77,20 @@ public class WebIpAndPortHolder {
         InetUtils.HostInfo loopBackHostInfo = inetUtils.findFirstNonLoopBackHostInfo();
         Assert.notNull(loopBackHostInfo, "Unable to get the application IP address");
         String ip = loopBackHostInfo.getIpAddress();
-        WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
-        WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
-        // When get the port at startup, can get the message: "port xxx was already in use" or use two ports
-        WebServer webServer = webThreadPoolService.getWebServer();
-        String port = String.valueOf(webServer.getPort());
-        return new WebIpAndPortInfo(ip, port);
+
+        ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
+        Integer port = environment.getProperty(PORT_KEY, Integer.TYPE);
+        port = Objects.isNull(port) ? PORT : port;
+
+        if (port == 0) {
+            WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
+            WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
+            // When get the port at startup, can get the message: "port xxx was already in use" or use two ports
+            WebServer webServer = webThreadPoolService.getWebServer();
+            port = webServer.getPort();
+        }
+
+        return new WebIpAndPortInfo(ip, String.valueOf(port));
     }
 
     /**
