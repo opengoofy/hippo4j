@@ -22,7 +22,7 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Custom blocking-queue.
  */
-public interface CustomBlockingQueue {
+public interface CustomBlockingQueue<T> {
 
     /**
      * Gets the custom blocking queue type.
@@ -45,5 +45,5 @@ public interface CustomBlockingQueue {
      *
      * @return
      */
-    BlockingQueue generateBlockingQueue();
+    BlockingQueue<T> generateBlockingQueue();
 }
