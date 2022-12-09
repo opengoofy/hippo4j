@@ -24,7 +24,7 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.web.server.WebServer;
-import org.springframework.core.env.Environment;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -78,7 +78,7 @@ public class WebIpAndPortHolder {
         Assert.notNull(loopBackHostInfo, "Unable to get the application IP address");
         String ip = loopBackHostInfo.getIpAddress();
 
-        Environment environment = ApplicationContextHolder.getBean(Environment.class);
+        ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
         Integer port = environment.getProperty(PORT_KEY, Integer.TYPE);
         port = Objects.isNull(port) ? PORT : port;
 
