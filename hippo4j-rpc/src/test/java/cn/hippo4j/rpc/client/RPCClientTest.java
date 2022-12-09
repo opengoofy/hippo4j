@@ -99,7 +99,7 @@ public class RPCClientTest {
         ClientConnection clientConnection = new NettyClientConnection(address, channelPoolHandler);
         RPCClient rpcClient = new RPCClient(clientConnection);
         Request request = new DefaultRequest("127.0.0.18888", className, "call", null, null);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             Response response = rpcClient.connection(request);
             boolean active = rpcClient.isActive();
             Assert.assertTrue(active);

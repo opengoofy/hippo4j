@@ -20,7 +20,6 @@ package cn.hippo4j.rpc.server;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.rpc.discovery.DefaultInstance;
 import cn.hippo4j.rpc.discovery.Instance;
-import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -31,15 +30,12 @@ import java.io.IOException;
 
 public class RPCServerTest {
 
-    public static ServerPort port = new TestServerPort();
-    public static ServerPort portTest = new ServerPortTest();
-
     @Test
     public void bind() throws IOException {
         Instance instance = new DefaultInstance();
         NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
         ServerConnection connection = new NettyServerConnection(handler);
-        RPCServer rpcServer = new RPCServer(connection, port);
+        RPCServer rpcServer = new RPCServer(connection, () -> 8893);
         rpcServer.bind();
         while (!rpcServer.isActive()) {
             ThreadUtil.sleep(100L);
@@ -47,8 +43,6 @@ public class RPCServerTest {
         boolean active = rpcServer.isActive();
         Assert.assertTrue(active);
         rpcServer.close();
-        boolean serverActive = rpcServer.isActive();
-        Assert.assertFalse(serverActive);
     }
 
     @Test
@@ -58,7 +52,7 @@ public class RPCServerTest {
         EventLoopGroup worker = new NioEventLoopGroup();
         NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
         ServerConnection connection = new NettyServerConnection(leader, worker, handler);
-        RPCServer rpcServer = new RPCServer(connection, portTest);
+        RPCServer rpcServer = new RPCServer(connection, () -> 8894);
         rpcServer.bind();
         while (!rpcServer.isActive()) {
             ThreadUtil.sleep(100L);
@@ -66,23 +60,5 @@ public class RPCServerTest {
         boolean active = rpcServer.isActive();
         Assert.assertTrue(active);
         rpcServer.close();
-        boolean serverActive = rpcServer.isActive();
-        Assert.assertFalse(serverActive);
-    }
-
-    static class TestServerPort implements ServerPort {
-
-        @Override
-        public int getPort() {
-            return 8893;
-        }
-    }
-
-    static class ServerPortTest implements ServerPort {
-
-        @Override
-        public int getPort() {
-            return 8894;
-        }
     }
 }
