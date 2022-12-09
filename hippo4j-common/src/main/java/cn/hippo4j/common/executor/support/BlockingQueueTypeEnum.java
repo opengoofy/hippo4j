@@ -18,20 +18,14 @@
 package cn.hippo4j.common.executor.support;
 
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.web.exception.NotSupportedException;
 import lombok.Getter;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.LinkedTransferQueue;
-import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.Predicate;
+
+import static cn.hippo4j.common.web.exception.ErrorCodeEnum.SERVICE_ERROR;
 
 /**
  * Blocking queue type enum.
@@ -41,37 +35,72 @@ public enum BlockingQueueTypeEnum {
     /**
      * {@link java.util.concurrent.ArrayBlockingQueue}
      */
-    ARRAY_BLOCKING_QUEUE(1, "ArrayBlockingQueue"),
+    ARRAY_BLOCKING_QUEUE(1, "ArrayBlockingQueue") {
+        @Override
+        <T> BlockingQueue<T> of(Integer capacity) {
+            return new ArrayBlockingQueue<>(capacity);
+        }
+    },
 
     /**
      * {@link java.util.concurrent.LinkedBlockingQueue}
      */
-    LINKED_BLOCKING_QUEUE(2, "LinkedBlockingQueue"),
+    LINKED_BLOCKING_QUEUE(2, "LinkedBlockingQueue") {
+        @Override
+        <T> BlockingQueue<T> of(Integer capacity) {
+            return new LinkedBlockingQueue<>(capacity);
+        }
+    },
 
     /**
      * {@link java.util.concurrent.LinkedBlockingDeque}
      */
-    LINKED_BLOCKING_DEQUE(3, "LinkedBlockingDeque"),
+    LINKED_BLOCKING_DEQUE(3, "LinkedBlockingDeque") {
+        @Override
+        <T> BlockingQueue<T> of() {
+            return new LinkedBlockingDeque<>();
+        }
+    },
 
     /**
      * {@link java.util.concurrent.SynchronousQueue}
      */
-    SYNCHRONOUS_QUEUE(4, "SynchronousQueue"),
+    SYNCHRONOUS_QUEUE(4, "SynchronousQueue") {
+        @Override
+        <T> BlockingQueue<T> of() {
+            return new SynchronousQueue<>();
+        }
+    },
 
     /**
      * {@link java.util.concurrent.LinkedTransferQueue}
      */
-    LINKED_TRANSFER_QUEUE(5, "LinkedTransferQueue"),
+    LINKED_TRANSFER_QUEUE(5, "LinkedTransferQueue") {
+        @Override
+        <T> BlockingQueue<T> of() {
+            return new LinkedTransferQueue<>();
+        }
+    },
 
     /**
      * {@link java.util.concurrent.PriorityBlockingQueue}
      */
-    PRIORITY_BLOCKING_QUEUE(6, "PriorityBlockingQueue"),
+    PRIORITY_BLOCKING_QUEUE(6, "PriorityBlockingQueue") {
+        @Override
+        <T> BlockingQueue<T> of(Integer capacity) {
+            return new PriorityBlockingQueue<>(capacity);
+        }
+    },
 
     /**
      * {@link ResizableCapacityLinkedBlockingQueue}
      */
-    RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockingQueue");
+    RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockingQueue") {
+        @Override
+        <T> BlockingQueue<T> of(Integer capacity) {
+            return new ResizableCapacityLinkedBlockingQueue<>(capacity);
+        }
+    };
 
     @Getter
     private Integer type;
@@ -84,67 +113,110 @@ public enum BlockingQueueTypeEnum {
         this.name = name;
     }
 
+    private static Map<Integer, BlockingQueueTypeEnum> typeToEnumMap;
+    private static Map<String, BlockingQueueTypeEnum> nameToEnumMap;
+
+    static {
+        final BlockingQueueTypeEnum[] values = BlockingQueueTypeEnum.values();
+        typeToEnumMap = new HashMap<>(values.length);
+        nameToEnumMap = new HashMap<>(values.length);
+        for (BlockingQueueTypeEnum value : values) {
+            typeToEnumMap.put(value.type, value);
+            nameToEnumMap.put(value.name, value);
+        }
+    }
+
+    /**
+     * 子类按需实现，默认不支持该实例化方式
+     *
+     * @param capacity
+     * @return
+     */
+    <T> BlockingQueue<T> of(Integer capacity) {
+        throw new NotSupportedException("该队列必须有界", SERVICE_ERROR);
+    }
+
+    /**
+     * 子类按需实现，默认不支持该实例化方式
+     *
+     * @return
+     */
+    <T> BlockingQueue<T> of() {
+        throw new NotSupportedException("该队列不支持有界", SERVICE_ERROR);
+    }
+
+    private static <T> BlockingQueue<T> of(String blockingQueueName, Integer capacity) {
+        final BlockingQueueTypeEnum typeEnum = nameToEnumMap.get(blockingQueueName);
+        if (typeEnum == null) {
+            return null;
+        }
+        return Objects.isNull(capacity) ? typeEnum.of() : typeEnum.of(capacity);
+    }
+
+    private static <T> BlockingQueue<T> of(int type, Integer capacity) {
+        final BlockingQueueTypeEnum typeEnum = typeToEnumMap.get(type);
+        if (typeEnum == null) {
+            return null;
+        }
+        return Objects.isNull(capacity) ? typeEnum.of() : typeEnum.of(capacity);
+    }
+
+
     private static final int DEFAULT_CAPACITY = 1024;
 
     static {
         DynamicThreadPoolServiceLoader.register(CustomBlockingQueue.class);
     }
 
-    public static BlockingQueue createBlockingQueue(String blockingQueueName, Integer capacity) {
-        BlockingQueue blockingQueue = null;
-        BlockingQueueTypeEnum queueTypeEnum = Stream.of(BlockingQueueTypeEnum.values())
-                .filter(each -> Objects.equals(each.name, blockingQueueName))
-                .findFirst()
-                .orElse(null);
-        if (queueTypeEnum != null) {
-            blockingQueue = createBlockingQueue(queueTypeEnum.type, capacity);
-            if (Objects.equals(blockingQueue.getClass().getSimpleName(), blockingQueueName)) {
-                return blockingQueue;
-            }
-        }
+    private static <T> BlockingQueue<T> customOrDefaultQueue(Integer capacity, Predicate<CustomBlockingQueue> predicate) {
         Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
                 .getSingletonServiceInstances(CustomBlockingQueue.class);
-        blockingQueue = Optional.ofNullable(blockingQueue)
-                .orElseGet(
-                        () -> customBlockingQueues.stream()
-                                .filter(each -> Objects.equals(blockingQueueName, each.getName()))
-                                .map(each -> each.generateBlockingQueue())
-                                .findFirst()
-                                .orElseGet(() -> {
-                                    int temCapacity = capacity;
-                                    if (capacity == null || capacity <= 0) {
-                                        temCapacity = DEFAULT_CAPACITY;
-                                    }
-                                    return new LinkedBlockingQueue(temCapacity);
-                                }));
-        return blockingQueue;
-    }
 
-    public static BlockingQueue createBlockingQueue(int type, Integer capacity) {
-        BlockingQueue blockingQueue = null;
-        if (Objects.equals(type, ARRAY_BLOCKING_QUEUE.type)) {
-            blockingQueue = new ArrayBlockingQueue(capacity);
-        } else if (Objects.equals(type, LINKED_BLOCKING_QUEUE.type)) {
-            blockingQueue = new LinkedBlockingQueue(capacity);
-        } else if (Objects.equals(type, LINKED_BLOCKING_DEQUE.type)) {
-            blockingQueue = new LinkedBlockingDeque(capacity);
-        } else if (Objects.equals(type, SYNCHRONOUS_QUEUE.type)) {
-            blockingQueue = new SynchronousQueue();
-        } else if (Objects.equals(type, LINKED_TRANSFER_QUEUE.type)) {
-            blockingQueue = new LinkedTransferQueue();
-        } else if (Objects.equals(type, PRIORITY_BLOCKING_QUEUE.type)) {
-            blockingQueue = new PriorityBlockingQueue(capacity);
-        } else if (Objects.equals(type, RESIZABLE_LINKED_BLOCKING_QUEUE.type)) {
-            blockingQueue = new ResizableCapacityLinkedBlockingQueue(capacity);
-        }
-        Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
-                .getSingletonServiceInstances(CustomBlockingQueue.class);
-        blockingQueue = Optional.ofNullable(blockingQueue).orElseGet(() -> customBlockingQueues.stream()
-                .filter(each -> Objects.equals(type, each.getType()))
+        return customBlockingQueues.stream()
+                .filter(predicate)
                 .map(each -> each.generateBlockingQueue())
                 .findFirst()
-                .orElse(new LinkedBlockingQueue(capacity)));
-        return blockingQueue;
+                .orElseGet(() -> {
+                    int temCapacity = capacity;
+                    if (capacity == null || capacity <= 0) {
+                        temCapacity = DEFAULT_CAPACITY;
+                    }
+                    return new LinkedBlockingQueue<T>(temCapacity);
+                });
+    }
+
+    /**
+     * 根据队列名创建对应的队列
+     *
+     * @param blockingQueueName {@linkplain BlockingQueueTypeEnum#name} 队列值
+     * @param capacity          队列大小，如果不支持 队列名 对应队列. 则是默认队列 LinkedBlockingQueue 的大小
+     * @return 返回要求的队列，或者 LinkedBlockingQueue 队列
+     */
+    public static <T> BlockingQueue<T> createBlockingQueue(String blockingQueueName, Integer capacity) {
+        final BlockingQueue<T> of = of(blockingQueueName, capacity);
+        if (of != null) {
+            return of;
+        }
+
+        return customOrDefaultQueue(capacity,
+                (customeQueue) -> Objects.equals(customeQueue.getName(), blockingQueueName));
+    }
+
+    /**
+     * 根据队列名创建对应的队列
+     *
+     * @param type     {@linkplain BlockingQueueTypeEnum#type} 队列值
+     * @param capacity 队列大小，如果不支持 队列名 对应队列. 则是默认队列 LinkedBlockingQueue 的大小
+     * @return 返回要求的队列，或者 LinkedBlockingQueue 队列
+     */
+    public static <T> BlockingQueue<T> createBlockingQueue(int type, Integer capacity) {
+        final BlockingQueue<T> of = of(type, capacity);
+        if (of != null) {
+            return of;
+        }
+
+        return customOrDefaultQueue(capacity,
+                (customeQueue) -> Objects.equals(customeQueue.getType(), type));
     }
 
     public static String getBlockingQueueNameByType(int type) {
