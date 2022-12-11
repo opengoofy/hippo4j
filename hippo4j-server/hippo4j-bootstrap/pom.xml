@@ -17,7 +17,7 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-console</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <!-- Adapter start -->
         <dependency>
