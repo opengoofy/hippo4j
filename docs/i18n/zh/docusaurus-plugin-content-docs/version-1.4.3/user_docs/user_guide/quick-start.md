@@ -14,7 +14,7 @@ docker run -d -p 6691:6691 --name hippo4j-server hippo4j/hippo4j-server
 
 > 如果没有 Docker，可以使用源码编译的方式，启动 [Hippo4J-Server/Hippo4J-Bootstrap](https://github.com/longtai-cn/hippo4j/tree/develop/hippo4j-server/hippo4j-bootstrap) 模块下 ServerApplication 应用类。
 
-启动示例项目，[hippo4j-spring-boot-starter-example](https://github.com/opengoofy/hippo4j/tree/develop/hippo4j-example/hippo4j-spring-boot-starter-example) 模块下 Hippo4JServerExampleApplication 应用类。
+启动示例项目，[hippo4j-spring-boot-starter-example](https://github.com/opengoofy/hippo4j/tree/develop/hippo4j-example/hippo4j-spring-boot-starter-example) 模块下 ServerExampleApplication 应用类。
 
 访问 Server 控制台，路径 `http://localhost:6691/index.html`，默认用户名密码：admin / 123456
 
