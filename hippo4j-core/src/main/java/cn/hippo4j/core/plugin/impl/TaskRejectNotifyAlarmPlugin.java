@@ -21,6 +21,8 @@ import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.RejectedAwarePlugin;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -28,9 +30,26 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * Send alert notification when a task is rejected.
  */
+@RequiredArgsConstructor
 public class TaskRejectNotifyAlarmPlugin implements RejectedAwarePlugin {
 
     public static final String PLUGIN_NAME = TaskRejectNotifyAlarmPlugin.class.getSimpleName();
+
+    /**
+     * Thread pool check alarm
+     */
+    @NonNull
+    private final ThreadPoolCheckAlarm threadPoolCheckAlarm;
+
+    /**
+     * Create a {@link TaskRejectNotifyAlarmPlugin}
+     */
+    public TaskRejectNotifyAlarmPlugin() {
+        this(
+                Optional.ofNullable(ApplicationContextHolder.getInstance())
+                        .map(context -> context.getBean(ThreadPoolCheckAlarm.class))
+                        .orElseGet(ThreadPoolCheckAlarm::none));
+    }
 
     /**
      * Callback before task is rejected.
@@ -44,8 +63,6 @@ public class TaskRejectNotifyAlarmPlugin implements RejectedAwarePlugin {
             return;
         }
         String threadPoolId = ((ExtensibleThreadPoolExecutor) executor).getThreadPoolId();
-        Optional.ofNullable(ApplicationContextHolder.getInstance())
-                .map(context -> context.getBean(ThreadPoolCheckAlarm.class))
-                .ifPresent(handler -> handler.asyncSendRejectedAlarm(threadPoolId));
+        threadPoolCheckAlarm.asyncSendRejectedAlarm(threadPoolId);
     }
 }

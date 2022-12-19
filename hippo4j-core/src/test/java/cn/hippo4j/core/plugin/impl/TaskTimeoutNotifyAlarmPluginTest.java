@@ -17,9 +17,11 @@
 
 package cn.hippo4j.core.plugin.impl;
 
+import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
+import lombok.Getter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,8 +40,10 @@ public class TaskTimeoutNotifyAlarmPluginTest {
             5, 5, 1000L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(1), Thread::new, new ThreadPoolExecutor.AbortPolicy());
 
+    private final TestAlarm testAlarm = new TestAlarm();
+
     private final TaskTimeoutNotifyAlarmPlugin plugin = new TaskTimeoutNotifyAlarmPlugin(
-            executor.getThreadPoolId(), 100L, executor);
+            executor.getThreadPoolId(), 1L, executor, testAlarm);
 
     @Test
     public void testGetId() {
@@ -53,26 +57,23 @@ public class TaskTimeoutNotifyAlarmPluginTest {
 
     @Test
     public void testGetExecuteTimeOut() {
-        Assert.assertEquals(100L, plugin.getExecuteTimeOut().longValue());
+        Assert.assertEquals(1L, plugin.getExecuteTimeOut().longValue());
     }
 
     @Test
     public void testSetExecuteTimeOut() {
-        plugin.setExecuteTimeOut(200L);
-        Assert.assertEquals(200L, plugin.getExecuteTimeOut().longValue());
+        plugin.setExecuteTimeOut(2L);
+        Assert.assertEquals(2L, plugin.getExecuteTimeOut().longValue());
     }
 
     @Test
     public void testProcessTaskTime() {
         executor.register(plugin);
 
-        AtomicInteger count = new AtomicInteger(0);
         executor.submit(() -> {
-            count.incrementAndGet();
             ThreadUtil.sleep(100L);
         });
         executor.submit(() -> {
-            count.incrementAndGet();
             ThreadUtil.sleep(300L);
         });
 
@@ -80,7 +81,33 @@ public class TaskTimeoutNotifyAlarmPluginTest {
         executor.shutdown();
         while (!executor.isTerminated()) {
         }
-        Assert.assertEquals(2, count.get());
+        Assert.assertEquals(2, testAlarm.getNumberOfAlarms().get());
+    }
+
+    private static class TestAlarm implements ThreadPoolCheckAlarm {
+
+        @Getter
+        private final AtomicInteger numberOfAlarms = new AtomicInteger(0);
+        @Override
+        public void checkPoolCapacityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
+            // do noting
+        }
+        @Override
+        public void checkPoolActivityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
+            // do noting
+        }
+        @Override
+        public void asyncSendRejectedAlarm(String threadPoolId) {
+            // do noting
+        }
+        @Override
+        public void asyncSendExecuteTimeOutAlarm(String threadPoolId, long executeTime, long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
+            numberOfAlarms.incrementAndGet();
+        }
+        @Override
+        public void run(String... args) throws Exception {
+
+        }
     }
 
 }

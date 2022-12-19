@@ -22,6 +22,7 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.core.plugin.PluginRuntime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Optional;
@@ -53,6 +54,28 @@ public class TaskTimeoutNotifyAlarmPlugin extends AbstractTaskTimerPlugin {
     private final ThreadPoolExecutor threadPoolExecutor;
 
     /**
+     * Thread pool check alarm
+     * TODO Complete dependency injection through the thread plugin registrar
+     */
+    @NonNull
+    private final ThreadPoolCheckAlarm threadPoolCheckAlarm;
+
+    /**
+     * Create a {@link TaskTimeoutNotifyAlarmPlugin}.
+     *
+     * @param threadPoolId thread pool id
+     * @param executeTimeOut execute time out
+     * @param threadPoolExecutor thread pool executor
+     */
+    public TaskTimeoutNotifyAlarmPlugin(String threadPoolId, Long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
+        this(
+                threadPoolId, executeTimeOut, threadPoolExecutor,
+                Optional.ofNullable(ApplicationContextHolder.getInstance())
+                        .map(context -> context.getBean(ThreadPoolCheckAlarm.class))
+                        .orElseGet(ThreadPoolCheckAlarm::none));
+    }
+
+    /**
      * Get plugin runtime info.
      *
      * @return plugin runtime info
@@ -74,9 +97,6 @@ public class TaskTimeoutNotifyAlarmPlugin extends AbstractTaskTimerPlugin {
         if (taskExecuteTime <= executeTimeOut) {
             return;
         }
-        Optional.ofNullable(ApplicationContextHolder.getInstance())
-                .map(context -> context.getBean(ThreadPoolCheckAlarm.class))
-                .ifPresent(handler -> handler.asyncSendExecuteTimeOutAlarm(
-                        threadPoolId, taskExecuteTime, executeTimeOut, threadPoolExecutor));
+        threadPoolCheckAlarm.asyncSendExecuteTimeOutAlarm(threadPoolId, taskExecuteTime, executeTimeOut, threadPoolExecutor);
     }
 }
