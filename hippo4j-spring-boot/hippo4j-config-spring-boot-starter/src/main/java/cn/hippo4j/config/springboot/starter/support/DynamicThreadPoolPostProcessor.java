@@ -107,6 +107,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("The thread pool id does not exist in the configuration."));
             try {
+                executorProperties = buildActualExecutorProperties(executorProperties);
                 threadPoolParamReplace(executor, executorProperties);
             } catch (Exception ex) {
                 log.error("Failed to initialize thread pool configuration.", ex);
@@ -121,7 +122,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 threadPoolId,
                 executorProperties == null
                         ? buildDefaultExecutorProperties(threadPoolId, executor)
-                        : buildActualExecutorProperties(executorProperties));
+                        : executorProperties);
         return executor;
     }
 
@@ -188,27 +189,26 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      * @return executor properties
      */
     private ExecutorProperties buildExecutorProperties(ExecutorProperties executorProperties) {
-        ExecutorProperties newExecutorProperties = ExecutorProperties.builder()
+        return ExecutorProperties.builder()
                 .corePoolSize(Optional.ofNullable(executorProperties.getCorePoolSize())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getCorePoolSize()).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getCorePoolSize).get()))
                 .maximumPoolSize(Optional.ofNullable(executorProperties.getMaximumPoolSize())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getMaximumPoolSize()).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getMaximumPoolSize).get()))
                 .allowCoreThreadTimeOut(Optional.ofNullable(executorProperties.getAllowCoreThreadTimeOut())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getAllowCoreThreadTimeOut()).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAllowCoreThreadTimeOut).get()))
                 .keepAliveTime(Optional.ofNullable(executorProperties.getKeepAliveTime())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getKeepAliveTime()).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getKeepAliveTime).get()))
                 .blockingQueue(Optional.ofNullable(executorProperties.getBlockingQueue())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getBlockingQueue()).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getBlockingQueue).get()))
                 .executeTimeOut(Optional.ofNullable(executorProperties.getExecuteTimeOut())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getExecuteTimeOut()).orElse(0L)))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getExecuteTimeOut).orElse(0L)))
                 .queueCapacity(Optional.ofNullable(executorProperties.getQueueCapacity())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getQueueCapacity()).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getQueueCapacity).get()))
                 .rejectedHandler(Optional.ofNullable(executorProperties.getRejectedHandler())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getRejectedHandler()).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getRejectedHandler).get()))
                 .threadNamePrefix(StringUtil.isBlank(executorProperties.getThreadNamePrefix()) ? executorProperties.getThreadPoolId() : executorProperties.getThreadNamePrefix())
                 .threadPoolId(executorProperties.getThreadPoolId())
                 .build();
-        return newExecutorProperties;
     }
 
     /**

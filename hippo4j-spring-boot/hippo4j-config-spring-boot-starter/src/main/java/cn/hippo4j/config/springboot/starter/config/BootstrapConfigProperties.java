@@ -17,8 +17,6 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
-import cn.hippo4j.common.toolkit.BeanUtil;
-import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.parser.ConfigFileTypeEnum;
 import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import lombok.Getter;
@@ -27,8 +25,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Bootstrap core properties.
@@ -39,16 +35,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
 
     public static final String PREFIX = "spring.dynamic.thread-pool";
-
-    /**
-     * Fill in default values only at initialization
-     */
-    private final AtomicBoolean defaultFillBoolean;
-
-    /**
-     * Copy once only
-     */
-    private final AtomicInteger atomicInteger;
 
     /**
      * Enable dynamic thread pool.
@@ -154,76 +140,4 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
      * Tripartite framework thread pool adaptation set.
      */
     private List<AdapterExecutorProperties> adapterExecutors;
-
-    public BootstrapConfigProperties() {
-        this.defaultFillBoolean = new AtomicBoolean(false);
-        this.atomicInteger = new AtomicInteger(0);
-    }
-
-    public void setDefaultExecutor(ExecutorProperties defaultExecutor) {
-        this.defaultExecutor = defaultExecutor;
-        defaultFill();
-    }
-
-    public void setExecutors(List<ExecutorProperties> executors) {
-        this.executors = executors;
-        defaultFill();
-    }
-
-    private void defaultFill() {
-        if (defaultFillBoolean.get() && atomicInteger.get() == 1) {
-            if (CollectionUtil.isNotEmpty(executors) && defaultExecutor != null) {
-                for (ExecutorProperties executor : executors) {
-                    if (executor.getCorePoolSize() == null) {
-                        executor.setCorePoolSize(defaultExecutor.getCorePoolSize());
-                    }
-                    if (executor.getMaximumPoolSize() == null) {
-                        executor.setMaximumPoolSize(defaultExecutor.getMaximumPoolSize());
-                    }
-                    if (executor.getQueueCapacity() == null) {
-                        executor.setQueueCapacity(defaultExecutor.getQueueCapacity());
-                    }
-                    if (executor.getBlockingQueue() == null) {
-                        executor.setBlockingQueue(defaultExecutor.getBlockingQueue());
-                    }
-                    if (executor.getRejectedHandler() == null) {
-                        executor.setRejectedHandler(defaultExecutor.getRejectedHandler());
-                    }
-                    if (executor.getKeepAliveTime() == null) {
-                        executor.setKeepAliveTime(defaultExecutor.getKeepAliveTime());
-                    }
-                    if (executor.getExecuteTimeOut() == null) {
-                        executor.setExecuteTimeOut(defaultExecutor.getExecuteTimeOut());
-                    }
-                    if (executor.getAllowCoreThreadTimeOut() == null) {
-                        executor.setAllowCoreThreadTimeOut(defaultExecutor.getAllowCoreThreadTimeOut());
-                    }
-                    if (executor.getThreadNamePrefix() == null) {
-                        executor.setThreadNamePrefix(defaultExecutor.getThreadNamePrefix());
-                    }
-                    if (executor.getAlarm() == null) {
-                        executor.setAlarm(defaultExecutor.getAlarm());
-                    }
-                    if (executor.getActiveAlarm() == null) {
-                        executor.setActiveAlarm(defaultExecutor.getActiveAlarm());
-                    }
-                    if (executor.getCapacityAlarm() == null) {
-                        executor.setCapacityAlarm(defaultExecutor.getCapacityAlarm());
-                    }
-                    if (executor.getNotify() == null) {
-                        DynamicThreadPoolNotifyProperties dynamicThreadPoolNotifyProperties = new DynamicThreadPoolNotifyProperties();
-                        BeanUtil.convert(defaultExecutor.getNotify(), dynamicThreadPoolNotifyProperties);
-                        executor.setNotify(dynamicThreadPoolNotifyProperties);
-                    }
-                    if (executor.getNodes() == null) {
-                        executor.setNodes(defaultExecutor.getNodes());
-                    }
-                }
-            }
-        } else {
-            defaultFillBoolean.compareAndSet(false, true);
-            atomicInteger.getAndIncrement();
-        }
-    }
-
 }
