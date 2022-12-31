@@ -7,7 +7,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/opengoofy/hippo4j.svg?style=for-the-badge&label=Stars&logo=github)](https://github.com/opengoofy/hippo4j) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j.svg?style=for-the-badge&label=Contributors&logo=appveyor)](https://github.com/opengoofy/hippo4j) 
 
-[![Gitee](https://gitee.com/magegoofy/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/magegoofy/hippo4j) [![Docker Pulls](https://img.shields.io/docker/pulls/hippo4j/hippo4j-server.svg?label=docker%20pulls&color=fac858)](https://store.docker.com/community/images/hippo4j/hippo4j-server) [![codecov](https://codecov.io/gh/opengoofy/hippo4j/branch/develop/graph/badge.svg?token=WBUVJN107I)](https://codecov.io/gh/opengoofy/hippo4j) [![EN doc](https://img.shields.io/badge/readme-English-orange.svg)](https://github.com/opengoofy/hippo4j/blob/develop/README-EN.md)
+[![Gitee](https://gitee.com/magestack/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/magestack/hippo4j) [![Docker Pulls](https://img.shields.io/docker/pulls/hippo4j/hippo4j-server.svg?label=docker%20pulls&color=fac858)](https://store.docker.com/community/images/hippo4j/hippo4j-server) [![codecov](https://codecov.io/gh/opengoofy/hippo4j/branch/develop/graph/badge.svg?token=WBUVJN107I)](https://codecov.io/gh/opengoofy/hippo4j) [![EN doc](https://img.shields.io/badge/readme-English-orange.svg)](https://github.com/opengoofy/hippo4j/blob/develop/README-EN.md)
 
 -------
 
@@ -61,7 +61,7 @@
 
 扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)。
 
-## 关于学习
+## 深入原理
 
 如果您公司没有使用 Hippo4j 场景的话，我也建议去阅读下项目的底层原理，主要有以下几个原因：
 
@@ -72,8 +72,6 @@
 - 借鉴主流开源框架 Nacos、Eureka 实现轻量级配置中心和注册中心功能。
 - 自定义 RPC 框架实现，封装 Netty 完成客户端/服务端网络通信优化。
 - 通过 CheckStyle、Spotless 等插件规范代码编写，保障高质量代码行为和代码样式。
-
-> 还有很多优秀的代码设计就不逐一列举了，相信认真研究过底层原理的同学一定会有所收获。
 
 ## 友情链接
 
@@ -86,9 +84,7 @@
 
 ## 知识星球
 
-专注代码实战的技术星球，从零到一完成企业级商城项目，以及开发框架底层基础组件，助力开发者技术设计能力提升。
-
-详情查看：[小马哥的代码实战课](https://xiaomage.info/knowledge-planet/)。
+👉 [工作经验不满五年程序员，如何通过项目提高个人技术能力？](https://www.yuque.com/magestack/public/programmer_progress?singleDoc#《小马哥的代码实战课》)
 
 ## 贡献者
 
