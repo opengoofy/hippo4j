@@ -31,7 +31,7 @@ title: 采用公司
 - [上海天猫好房添玑网络服务有限公司](http://www.eju.com/)
 - [郑州力通水务](http://www.zzltsw.com/)
 - [北京自如信息科技有限公司](https://www.ziroom.com/)
-- [易车](https://www.yiche.com/)
+- [北京易车信息科技有限公司](https://www.yiche.com/)
 
 ## 登记
 

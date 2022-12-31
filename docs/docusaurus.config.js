@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'HIPPO-4J',
+    title: 'Hippo4j',
     tagline: '动态可观测线程池框架，为业务系统提高线上运行保障能力',
     url: 'https://hippo4j.cn',
     baseUrl: '/',
