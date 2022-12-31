@@ -115,7 +115,7 @@ const config = {
                         position: 'left',
                     },
                     {
-                        href: 'https://xiaomage.info/knowledge-planet',
+                        href: 'https://www.yuque.com/magestack/public/programmer_progress',
                         label: '知识星球',
                         position: 'left',
                     },
@@ -183,7 +183,7 @@ const config = {
                         items: [
                             {
                                 label: 'Gitee',
-                                href: 'https://gitee.com/magegoofy/hippo4j',
+                                href: 'https://gitee.com/magestack/hippo4j',
                             },
                             {
                                 label: 'GitHub',
