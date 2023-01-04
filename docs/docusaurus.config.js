@@ -116,7 +116,7 @@ const config = {
                     },
                     {
                         href: 'https://www.yuque.com/magestack/public/programmer_progress',
-                        label: '知识星球',
+                        label: '👉 刚果商城',
                         position: 'left',
                     },
                     {

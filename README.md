@@ -82,7 +82,7 @@
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 - [[ Jpom ]](https://gitee.com/dromara/Jpom)：简而轻的低侵入式在线构建、自动部署、日常运维、项目监控软件。
 
-## 知识星球
+## 刚果商城
 
 👉 [工作经验不满五年程序员，如何通过项目提高个人技术能力？](https://www.yuque.com/magestack/public/knowledge-planet)
 
