@@ -6,7 +6,7 @@ sidebar_position: 1
 
 部署服务端，参考 [部署手册](/docs/user_docs/ops/hippo4j-server-deploy)。
 
-服务端创建 [租户、项目](/docs/user_docs/other/issue#租户和项目在-hippo4j-中是什么意思) 和线程池记录。
+服务端创建 [租户、项目](/community/faq#租户和项目在-hippo4j-中是什么意思) 和线程池记录。
 
 需要注意，项目 ID 需要与配置文件 `{application.name}` 保持一致。
 
