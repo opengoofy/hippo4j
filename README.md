@@ -84,7 +84,7 @@
 
 ## 刚果商城
 
-👉 [工作经验不满五年程序员，如何通过项目提高个人技术能力？](https://www.yuque.com/magestack/public/knowledge-planet)
+👉 [工作经验不满五年程序员，如何通过项目提高个人技术能力？](https://sourl.cn/VERS4y)
 
 ## 贡献者
 
