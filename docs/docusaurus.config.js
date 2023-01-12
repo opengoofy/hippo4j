@@ -115,7 +115,7 @@ const config = {
                         position: 'left',
                     },
                     {
-                        href: 'https://www.yuque.com/magestack/public/programmer_progress',
+                        href: 'https://sourl.cn/Fyp7y4',
                         label: '👉 刚果商城',
                         position: 'left',
                     },
