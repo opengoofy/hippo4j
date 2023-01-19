@@ -35,6 +35,7 @@ public class DynamicThreadPoolAdapterChoose {
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new TransmittableThreadLocalExecutorAdapter());
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new TransmittableThreadLocalExecutorServiceAdapter());
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new ThreadPoolTaskExecutorAdapter());
+        DYNAMIC_THREAD_POOL_ADAPTERS.add(new ZipkinExecutorAdapter());
     }
 
     /**
