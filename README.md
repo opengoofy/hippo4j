@@ -86,6 +86,8 @@
 
 👉 [工作经验不满五年程序员，如何通过项目提高个人技术能力？](https://sourl.cn/VERS4y)
 
+<img width="1254" alt="image" src="https://user-images.githubusercontent.com/77398366/213593264-ebef9507-9e62-4257-900b-59856dd199f5.png">
+
 ## 贡献者
 
 感谢所有为项目作出贡献的开发者。如果有意贡献，参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)。
