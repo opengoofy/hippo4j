@@ -266,8 +266,9 @@ public class ReflectUtil {
     }
 
     /**
-     * find field by fieldName and fieldType
-     * @param obj target obj
+     * Find field by fieldName and fieldType
+     *
+     * @param obj       target obj
      * @param filedName filedName
      * @param fieldType fieldType
      * @return target field or null
