@@ -40,12 +40,11 @@ public class ZipkinExecutorAdapter implements DynamicThreadPoolAdapter {
     }
 
     public boolean matchSuper(Object executor) {
-        if (executor == null || executor.getClass().equals(Object.class)) {
-            return false;
-        } else if (Objects.equals(MATCH_CLASS_NAME, executor.getClass().getName())) {
+        if (Objects.equals(MATCH_CLASS_NAME, executor.getClass().getName())) {
             return true;
-        } else
+        } else {
             return Objects.equals(MATCH_CLASS_NAME, executor.getClass().getSuperclass().getName());
+        }
     }
 
     @Override
@@ -62,14 +61,14 @@ public class ZipkinExecutorAdapter implements DynamicThreadPoolAdapter {
 
     @Override
     public void replace(Object executor, Executor dynamicThreadPoolExecutor) {
-        Field field = findTarField(executor, FIELD_NAME, TYPE_NAME);
+        Field field = ReflectUtil.findField(executor, FIELD_NAME, TYPE_NAME);
         ReflectUtil.setFieldValue(executor, field, dynamicThreadPoolExecutor);
     }
 
     private Object doUnwrap(Object executor) {
         Object unwrap = ReflectUtil.getFieldValue(executor, FIELD_NAME);
         if (unwrap == null) {
-            Field field = findTarField(executor, FIELD_NAME, TYPE_NAME);
+            Field field = ReflectUtil.findField(executor, FIELD_NAME, TYPE_NAME);
             if (field != null) {
                 return ReflectUtil.getFieldValue(executor, field);
             }
@@ -77,14 +76,5 @@ public class ZipkinExecutorAdapter implements DynamicThreadPoolAdapter {
         return null;
     }
 
-    private Field findTarField(Object obj, String filedName, String fieldType) {
-        Field[] fields = ReflectUtil.getFields(obj.getClass());
-        for (Field field : fields) {
-            if (field.getName().contains(filedName) &&
-                    (field.getType().getName().contains(fieldType))) {
-                return field;
-            }
-        }
-        return null;
-    }
+
 }
