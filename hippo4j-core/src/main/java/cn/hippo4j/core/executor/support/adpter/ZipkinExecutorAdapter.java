@@ -75,6 +75,4 @@ public class ZipkinExecutorAdapter implements DynamicThreadPoolAdapter {
         }
         return null;
     }
-
-
 }

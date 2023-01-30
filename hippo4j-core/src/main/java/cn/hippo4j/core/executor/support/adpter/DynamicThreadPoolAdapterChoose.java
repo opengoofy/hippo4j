@@ -39,7 +39,6 @@ public class DynamicThreadPoolAdapterChoose {
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new TransmittableThreadLocalExecutorServiceAdapter());
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new ThreadPoolTaskExecutorAdapter());
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new ZipkinExecutorAdapter());
-        DynamicThreadPoolServiceLoader.register(DynamicThreadPoolAdapterSPI.class);
         loadCustomerAdapter();
     }
 
@@ -85,6 +84,7 @@ public class DynamicThreadPoolAdapterChoose {
      * load SPI customer adapter
      */
     private static void loadCustomerAdapter() {
+        DynamicThreadPoolServiceLoader.register(DynamicThreadPoolAdapterSPI.class);
         Collection<DynamicThreadPoolAdapterSPI> instances = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolAdapterSPI.class);
         for (DynamicThreadPoolAdapterSPI instance : instances) {
             DynamicThreadPoolAdapter adapter = instance.adapter();

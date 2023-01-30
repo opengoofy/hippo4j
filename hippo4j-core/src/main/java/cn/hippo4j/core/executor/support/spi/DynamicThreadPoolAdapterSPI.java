@@ -20,6 +20,7 @@ package cn.hippo4j.core.executor.support.spi;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapter;
 
 public interface DynamicThreadPoolAdapterSPI {
+
     String name();
     DynamicThreadPoolAdapter adapter();
 }
