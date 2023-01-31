@@ -18,6 +18,7 @@
 package cn.hippo4j.core.executor.support.adpter;
 
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.support.spi.DynamicThreadPoolAdapterSPI;
 
@@ -81,11 +82,14 @@ public class DynamicThreadPoolAdapterChoose {
     }
 
     /**
-     * load SPI customer adapter
+     * Load SPI customer adapter.
      */
     private static void loadCustomerAdapter() {
         DynamicThreadPoolServiceLoader.register(DynamicThreadPoolAdapterSPI.class);
         Collection<DynamicThreadPoolAdapterSPI> instances = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolAdapterSPI.class);
+        if (CollectionUtil.isEmpty(instances)) {
+            return;
+        }
         for (DynamicThreadPoolAdapterSPI instance : instances) {
             DynamicThreadPoolAdapter adapter = instance.adapter();
             if (adapter != null) {
