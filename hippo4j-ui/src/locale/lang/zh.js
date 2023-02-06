@@ -1,7 +1,7 @@
 export default {
   // 系统
   system: {
-    login: '登 陆',
+    login: '登 录',
     username: '用户名',
     password: '密码',
     logOut: '注销',
@@ -59,7 +59,7 @@ export default {
     owner: '负责人',
     tenantIntro: '租户简介'
   },
-  
+
   // 项目管理
   projectManage: {
     item: '项目',
@@ -68,7 +68,7 @@ export default {
     owner: '负责人',
     itemIntro: '项目简介'
   },
-  
+
   // 线程池管理
   threadPool: {
     threadPool: '线程池',
