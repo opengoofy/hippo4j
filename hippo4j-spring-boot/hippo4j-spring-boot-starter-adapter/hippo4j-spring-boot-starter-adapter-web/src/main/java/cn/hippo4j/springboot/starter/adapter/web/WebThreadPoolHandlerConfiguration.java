@@ -21,18 +21,21 @@ import cn.hippo4j.adapter.web.JettyWebThreadPoolHandler;
 import cn.hippo4j.adapter.web.TomcatWebThreadPoolHandler;
 import cn.hippo4j.adapter.web.UndertowWebThreadPoolHandler;
 import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
+import io.undertow.Undertow;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.coyote.UpgradeProtocol;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.SearchStrategy;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.Loader;
 import org.eclipse.jetty.webapp.WebAppContext;
-import io.undertow.Undertow;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.SearchStrategy;
+import org.springframework.boot.web.embedded.jetty.ConfigurableJettyWebServerFactory;
+import org.springframework.boot.web.embedded.tomcat.ConfigurableTomcatWebServerFactory;
+import org.springframework.boot.web.embedded.undertow.ConfigurableUndertowWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.xnio.SslClientAuthMode;
 
 import javax.servlet.Servlet;
@@ -45,7 +48,7 @@ public class WebThreadPoolHandlerConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({Servlet.class, Tomcat.class, UpgradeProtocol.class})
-    @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
+    @ConditionalOnBean(value = ConfigurableTomcatWebServerFactory.class, search = SearchStrategy.CURRENT)
     static class EmbeddedTomcat {
 
         /**
@@ -61,7 +64,7 @@ public class WebThreadPoolHandlerConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({Servlet.class, Server.class, Loader.class, WebAppContext.class})
-    @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
+    @ConditionalOnBean(value = ConfigurableJettyWebServerFactory.class, search = SearchStrategy.CURRENT)
     static class EmbeddedJetty {
 
         /**
@@ -77,7 +80,7 @@ public class WebThreadPoolHandlerConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({Servlet.class, Undertow.class, SslClientAuthMode.class})
-    @ConditionalOnBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
+    @ConditionalOnBean(value = ConfigurableUndertowWebServerFactory.class, search = SearchStrategy.CURRENT)
     static class EmbeddedUndertow {
 
         /**
