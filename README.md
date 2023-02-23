@@ -86,7 +86,7 @@
 
 👉 [工作经验不满五年程序员，如何通过项目提高个人技术能力？](https://sourl.cn/VERS4y)
 
-<img width="1254" alt="image" src="https://user-images.githubusercontent.com/77398366/213593264-ebef9507-9e62-4257-900b-59856dd199f5.png">
+<a href="https://sourl.cn/VERS4y"><img width="1254" alt="image" src="https://user-images.githubusercontent.com/77398366/213593264-ebef9507-9e62-4257-900b-59856dd199f5.png"></a>
 
 ## 贡献者
 
