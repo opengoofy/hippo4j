@@ -171,8 +171,14 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     private void threadPoolParamReplace(ThreadPoolExecutor executor, ExecutorProperties executorProperties) {
         BlockingQueue workQueue = BlockingQueueTypeEnum.createBlockingQueue(executorProperties.getBlockingQueue(), executorProperties.getQueueCapacity());
         ReflectUtil.setFieldValue(executor, "workQueue", workQueue);
-        executor.setCorePoolSize(executorProperties.getCorePoolSize());
-        executor.setMaximumPoolSize(executorProperties.getMaximumPoolSize());
+        // fix https://github.com/opengoofy/hippo4j/issues/1063
+        if (executorProperties.getCorePoolSize() > executor.getMaximumPoolSize()) {
+            executor.setMaximumPoolSize(executorProperties.getMaximumPoolSize());
+            executor.setCorePoolSize(executorProperties.getCorePoolSize());
+        } else {
+            executor.setCorePoolSize(executorProperties.getCorePoolSize());
+            executor.setMaximumPoolSize(executorProperties.getMaximumPoolSize());
+        }
         executor.setKeepAliveTime(executorProperties.getKeepAliveTime(), TimeUnit.SECONDS);
         executor.allowCoreThreadTimeOut(executorProperties.getAllowCoreThreadTimeOut());
         executor.setRejectedExecutionHandler(RejectedPolicyTypeEnum.createPolicy(executorProperties.getRejectedHandler()));
