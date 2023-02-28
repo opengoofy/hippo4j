@@ -42,7 +42,7 @@ sidebar_position: 1
     <td align="center">魏虎</td>
     <td align="center" ><a href="https://github.com/weihubeats">weihubeats</a></td>
     <td align="center" ><a href="https://weihubeats.blog.csdn.net/">weihubeats</a></td>
-    <td align="center" >weihubeats@163.com</td>
+    <td align="center" >weihu@apache.org</td>
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/BigXin0109"><img src="https://avatars.githubusercontent.com/u/24769514?v=4?s=64" width="64px;"/></a></td>
