@@ -48,9 +48,13 @@ Hippo-4J 通过对 JDK 线程池增强，以及扩展三方框架底层线程池
 
 ## 联系我
 
-![](https://user-images.githubusercontent.com/77398366/185774220-c11951f9-e130-4d60-8204-afb5c51d4401.png)
+开源不易，右上角点个 Star 鼓励一下吧！
 
-扫码添加微信，备注：hippo4j，邀您加入群聊。若图片加载不出来，访问 [官网站点](https://hippo4j.cn/docs/user_docs/other/group)。
+如果大家想要实时关注 Hippo4j 更新的文章以及分享的干货的话，可以关注我的公众号。
+
+使用过程中有任何问题，或者对项目有什么建议，添加微信备注：`hippo4j`，和 `1000+` 道友交流讨论。
+
+<img width="596" alt="image" src="https://user-images.githubusercontent.com/77398366/221864198-b6ba6bb4-b273-454b-b911-fee6b66057ef.png">
 
 ## 友情链接
 - [[ LiteFlow ]](https://liteflow.yomahub.com/)：轻量，快速，稳定可编排的组件式规则引擎。

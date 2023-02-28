@@ -19,7 +19,7 @@ sidebar_position: 1
   <tr>
     <td align="center" ><a href="https://github.com/magestacks"><img src="https://avatars.githubusercontent.com/u/77398366?v=4?s=64" width="64px;"/></a></td>
     <td align="center" >马称</td>
-    <td align="center" ><a href="https://github.com/magestacks">mageeric</a></td>
+    <td align="center" ><a href="https://github.com/magestacks">magestacks</a></td>
     <td align="center" ><a href="https://www.xiaomage.info/">小马哥的技术专栏</a></td>
     <td align="center" >machen@apache.org</td>
   </tr>
