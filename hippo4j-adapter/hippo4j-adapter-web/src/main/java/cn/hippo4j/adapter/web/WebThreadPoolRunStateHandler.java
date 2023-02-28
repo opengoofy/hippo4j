@@ -35,9 +35,9 @@ public class WebThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
         long used = MemoryUtil.heapMemoryUsed();
         long max = MemoryUtil.heapMemoryMax();
         String memoryProportion = StringUtil.newBuilder(
-                "已分配: ",
+                "Allocation: ",
                 ByteConvertUtil.getPrintSize(used),
-                " / 最大可用: ",
+                " / Maximum available: ",
                 ByteConvertUtil.getPrintSize(max));
         poolRunStateInfo.setCurrentLoad(poolRunStateInfo.getCurrentLoad() + "%");
         poolRunStateInfo.setPeakLoad(poolRunStateInfo.getPeakLoad() + "%");

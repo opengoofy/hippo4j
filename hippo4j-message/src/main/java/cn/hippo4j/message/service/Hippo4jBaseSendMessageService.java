@@ -17,9 +17,9 @@
 
 package cn.hippo4j.message.service;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
+import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.message.dto.AlarmControlDTO;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
@@ -28,7 +28,7 @@ import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.CommandLineRunner;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,14 +39,14 @@ import java.util.Map;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService, InitializingBean {
+public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService, CommandLineRunner {
 
     private final NotifyConfigBuilder notifyConfigBuilder;
 
     private final AlarmControlHandler alarmControlHandler;
 
     @Getter
-    public final Map<String, List<NotifyConfigDTO>> notifyConfigs = new HashMap<>();
+    private final Map<String, List<NotifyConfigDTO>> notifyConfigs = new HashMap<>();
 
     private final Map<String, SendMessageHandler> sendMessageHandlers = new HashMap<>();
 
@@ -66,7 +66,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
                 if (messageHandler == null) {
-                    log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
+                    log.warn("[{}] Please configure alarm notification on the server.", threadPoolId);
                     return;
                 }
                 if (isSendAlarm(each.getTpId(), each.getPlatform(), typeEnum)) {
@@ -89,14 +89,14 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
                 .toString();
         List<NotifyConfigDTO> notifyList = notifyConfigs.get(buildKey);
         if (CollectionUtil.isEmpty(notifyList)) {
-            log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
+            log.warn("[{}] Please configure alarm notification on the server.", threadPoolId);
             return;
         }
         notifyList.forEach(each -> {
             try {
                 SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
                 if (messageHandler == null) {
-                    log.warn("Please configure alarm notification on the server. key: [{}]", threadPoolId);
+                    log.warn("[{}] Please configure alarm notification on the server.", threadPoolId);
                     return;
                 }
                 messageHandler.sendChangeMessage(each, changeParameterNotifyRequest);
@@ -133,7 +133,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void run(String... args) throws Exception {
         Map<String, SendMessageHandler> sendMessageHandlerMap =
                 ApplicationContextHolder.getBeansOfType(SendMessageHandler.class);
         sendMessageHandlerMap.values().forEach(each -> sendMessageHandlers.put(each.getType(), each));

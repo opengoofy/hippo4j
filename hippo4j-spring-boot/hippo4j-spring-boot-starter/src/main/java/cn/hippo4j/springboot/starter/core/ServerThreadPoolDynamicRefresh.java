@@ -17,20 +17,18 @@
 
 package cn.hippo4j.springboot.starter.core;
 
+import cn.hippo4j.common.api.ThreadPoolConfigChange;
+import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.enums.EnableEnum;
-import cn.hippo4j.common.model.ThreadPoolParameter;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
-import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.ThreadPoolNotifyAlarmHandler;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.support.AbstractDynamicExecutorSupport;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
-import cn.hippo4j.core.proxy.RejectedProxyUtil;
-import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
+import cn.hippo4j.common.model.ThreadPoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +37,6 @@ import java.util.Optional;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
@@ -51,7 +48,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD
 @AllArgsConstructor
 public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh {
 
-    private final ThreadPoolNotifyAlarmHandler threadPoolNotifyAlarmHandler;
+    private final ThreadPoolConfigChange threadPoolConfigChange;
 
     @Override
     public void dynamicRefresh(String content) {
@@ -71,9 +68,9 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         boolean originalAllowCoreThreadTimeOut = executor.allowsCoreThreadTimeOut();
         Long originalExecuteTimeOut = null;
         RejectedExecutionHandler rejectedExecutionHandler = executor.getRejectedExecutionHandler();
-        if (executor instanceof AbstractDynamicExecutorSupport) {
+        if (executor instanceof DynamicThreadPoolExecutor) {
             DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) executor;
-            rejectedExecutionHandler = dynamicExecutor.getRedundancyHandler();
+            rejectedExecutionHandler = dynamicExecutor.getRejectedExecutionHandler();
             originalExecuteTimeOut = dynamicExecutor.getExecuteTimeOut();
         }
         changePoolInfo(executor, parameter);
@@ -98,7 +95,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
                 .nowExecuteTimeOut(executeTimeOut)
                 .build();
         changeNotifyRequest.setThreadPoolId(threadPoolId);
-        threadPoolNotifyAlarmHandler.sendPoolConfigChange(changeNotifyRequest);
+        threadPoolConfigChange.sendPoolConfigChange(changeNotifyRequest);
         log.info(CHANGE_THREAD_POOL_TEXT,
                 threadPoolId,
                 String.format(CHANGE_DELIMITER, originalCoreSize, afterExecutor.getCorePoolSize()),
@@ -140,17 +137,11 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
             executor.setKeepAliveTime(parameter.getKeepAliveTime(), TimeUnit.SECONDS);
         }
         Long executeTimeOut = Optional.ofNullable(parameter.getExecuteTimeOut()).orElse(0L);
-        if (executeTimeOut != null && executor instanceof AbstractDynamicExecutorSupport) {
+        if (executor instanceof DynamicThreadPoolExecutor) {
             ((DynamicThreadPoolExecutor) executor).setExecuteTimeOut(executeTimeOut);
         }
         if (parameter.getRejectedType() != null) {
             RejectedExecutionHandler rejectedExecutionHandler = RejectedPolicyTypeEnum.createPolicy(parameter.getRejectedType());
-            if (executor instanceof AbstractDynamicExecutorSupport) {
-                DynamicThreadPoolExecutor dynamicExecutor = (DynamicThreadPoolExecutor) executor;
-                dynamicExecutor.setRedundancyHandler(rejectedExecutionHandler);
-                AtomicLong rejectCount = dynamicExecutor.getRejectCount();
-                rejectedExecutionHandler = RejectedProxyUtil.createProxy(rejectedExecutionHandler, parameter.getTpId(), rejectCount);
-            }
             executor.setRejectedExecutionHandler(rejectedExecutionHandler);
         }
         if (parameter.getAllowCoreThreadTimeOut() != null) {

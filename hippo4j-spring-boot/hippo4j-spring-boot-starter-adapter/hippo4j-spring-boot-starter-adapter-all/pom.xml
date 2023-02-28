@@ -13,32 +13,32 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-rocketmq</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-rabbitmq</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-dubbo</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-alibaba-dubbo</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-adapter-hystrix</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

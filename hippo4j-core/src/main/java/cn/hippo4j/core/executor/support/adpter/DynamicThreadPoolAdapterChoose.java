@@ -17,9 +17,13 @@
 
 package cn.hippo4j.core.executor.support.adpter;
 
+import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.support.spi.DynamicThreadPoolAdapterSPI;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executor;
@@ -35,23 +39,27 @@ public class DynamicThreadPoolAdapterChoose {
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new TransmittableThreadLocalExecutorAdapter());
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new TransmittableThreadLocalExecutorServiceAdapter());
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new ThreadPoolTaskExecutorAdapter());
+        DYNAMIC_THREAD_POOL_ADAPTERS.add(new ZipkinExecutorAdapter());
+        loadCustomerAdapter();
     }
 
     /**
-     * Match.
+     * Check if the object contains thread pool information.
      *
-     * @param executor
-     * @return
+     * @param executor objects where there may be instances
+     *                 of dynamic thread pools
+     * @return matching results
      */
     public static boolean match(Object executor) {
         return DYNAMIC_THREAD_POOL_ADAPTERS.stream().anyMatch(each -> each.match(executor));
     }
 
     /**
-     * Unwrap.
+     * Get the dynamic thread pool reference in the object.
      *
-     * @param executor
-     * @return
+     * @param executor objects where there may be instances
+     *                 of dynamic thread pools
+     * @return get the real dynamic thread pool instance
      */
     public static DynamicThreadPoolExecutor unwrap(Object executor) {
         Optional<DynamicThreadPoolAdapter> dynamicThreadPoolAdapterOptional = DYNAMIC_THREAD_POOL_ADAPTERS.stream().filter(each -> each.match(executor)).findFirst();
@@ -59,14 +67,34 @@ public class DynamicThreadPoolAdapterChoose {
     }
 
     /**
-     * Replace.
+     * If the {@link DynamicThreadPoolAdapter#match(Object)} conditions are met,
+     * the thread pool is replaced with a dynamic thread pool.
      *
-     * @param executor
+     * @param executor                  objects where there may be instances
+     *                                  of dynamic thread pools
+     * @param dynamicThreadPoolExecutor dynamic thread-pool executor
      */
     public static void replace(Object executor, Executor dynamicThreadPoolExecutor) {
         Optional<DynamicThreadPoolAdapter> dynamicThreadPoolAdapterOptional = DYNAMIC_THREAD_POOL_ADAPTERS.stream().filter(each -> each.match(executor)).findFirst();
         if (dynamicThreadPoolAdapterOptional.isPresent()) {
             dynamicThreadPoolAdapterOptional.get().replace(executor, dynamicThreadPoolExecutor);
+        }
+    }
+
+    /**
+     * Load SPI customer adapter.
+     */
+    private static void loadCustomerAdapter() {
+        DynamicThreadPoolServiceLoader.register(DynamicThreadPoolAdapterSPI.class);
+        Collection<DynamicThreadPoolAdapterSPI> instances = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolAdapterSPI.class);
+        if (CollectionUtil.isEmpty(instances)) {
+            return;
+        }
+        for (DynamicThreadPoolAdapterSPI instance : instances) {
+            DynamicThreadPoolAdapter adapter = instance.adapter();
+            if (adapter != null) {
+                DYNAMIC_THREAD_POOL_ADAPTERS.add(adapter);
+            }
         }
     }
 }

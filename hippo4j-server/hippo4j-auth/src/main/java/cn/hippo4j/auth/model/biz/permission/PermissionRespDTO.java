@@ -17,26 +17,30 @@
 
 package cn.hippo4j.auth.model.biz.permission;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Permission resp dto.
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PermissionRespDTO {
 
     /**
-     * role
+     * Username
      */
-    private String role;
+    private String username;
 
     /**
-     * source
+     * Source
      */
     private String resource;
 
     /**
-     * action
+     * Action
      */
     private String action;
 }

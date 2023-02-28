@@ -42,9 +42,6 @@ public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadP
     @Override
     public void collect() {
         List<String> listDynamicThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
-        for (String each : listDynamicThreadPoolId) {
-            ThreadPoolRunStateInfo poolRunState = threadPoolRunStateHandler.getPoolRunState(each);
-            execute(poolRunState);
-        }
+        listDynamicThreadPoolId.forEach(each -> execute(threadPoolRunStateHandler.getPoolRunState(each)));
     }
 }

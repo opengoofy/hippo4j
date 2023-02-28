@@ -33,7 +33,7 @@ import java.util.Map;
 public class QueryMonitorExecuteChoose implements CommandLineRunner {
 
     /**
-     * Storage monitoring data execution container.
+     * Storage monitoring data execution container
      */
     private Map<String, AbstractMonitorDataExecuteStrategy> monitorDataExecuteStrategyChooseMap = new HashMap<>();
 

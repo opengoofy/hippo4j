@@ -21,7 +21,11 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
             <version>1.5.1.RELEASE</version>
         </dependency>
-
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.boot</groupId>-->
+<!--            <artifactId>nacos-config-spring-boot-starter</artifactId>-->
+<!--            <version>0.1.4</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

@@ -27,26 +27,30 @@ import java.util.concurrent.Executor;
 public interface DynamicThreadPoolAdapter {
 
     /**
-     * Match.
+     * Check if the object contains thread pool information.
      *
-     * @param executor
-     * @return
+     * @param executor objects where there may be instances
+     *                 of dynamic thread pools
+     * @return matching results
      */
     boolean match(Object executor);
 
     /**
-     * Unwrap.
+     * Get the dynamic thread pool reference in the object.
      *
-     * @param executor
-     * @return
+     * @param executor objects where there may be instances
+     *                 of dynamic thread pools
+     * @return get the real dynamic thread pool instance
      */
     DynamicThreadPoolExecutor unwrap(Object executor);
 
     /**
-     * Replace.
+     * If the {@link DynamicThreadPoolAdapter#match(Object)} conditions are met,
+     * the thread pool is replaced with a dynamic thread pool.
      *
-     * @param executor
-     * @param dynamicThreadPoolExecutor
+     * @param executor                  objects where there may be instances
+     *                                  of dynamic thread pools
+     * @param dynamicThreadPoolExecutor dynamic thread-pool executor
      */
     void replace(Object executor, Executor dynamicThreadPoolExecutor);
 }

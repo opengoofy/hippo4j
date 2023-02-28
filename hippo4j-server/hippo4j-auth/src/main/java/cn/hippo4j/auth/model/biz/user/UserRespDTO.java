@@ -17,10 +17,12 @@
 
 package cn.hippo4j.auth.model.biz.user;
 
+import cn.hippo4j.auth.model.biz.permission.PermissionRespDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * User resp dto.
@@ -29,23 +31,33 @@ import java.util.Date;
 public class UserRespDTO {
 
     /**
-     * userName
+     * User name
      */
     private String userName;
 
     /**
-     * role
+     * Role
      */
     private String role;
 
     /**
-     * gmtCreate
+     * Resource list
+     */
+    private List<PermissionRespDTO> resources;
+
+    /**
+     * Temp resource list
+     */
+    private List<String> tempResources;
+
+    /**
+     * Gmt create
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
-     * gmtModified
+     * Gmt modified
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModified;

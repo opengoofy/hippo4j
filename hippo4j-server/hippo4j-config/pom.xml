@@ -11,14 +11,13 @@
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <h2.version>2.1.214</h2.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-common</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,6 +49,7 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-adapter-base</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
@@ -63,6 +63,7 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

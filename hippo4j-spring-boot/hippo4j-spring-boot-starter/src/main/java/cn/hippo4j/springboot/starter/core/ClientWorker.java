@@ -18,7 +18,6 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.IdUtil;
@@ -39,6 +38,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static cn.hippo4j.common.constant.Constants.CLIENT_VERSION;
 import static cn.hippo4j.common.constant.Constants.CONFIG_CONTROLLER_PATH;
 import static cn.hippo4j.common.constant.Constants.CONFIG_LONG_POLL_TIMEOUT;
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER_TRANSLATION;
@@ -58,29 +58,32 @@ import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
 @Slf4j
 public class ClientWorker {
 
-    private long timeout;
+    private final long timeout;
 
     private final HttpAgent agent;
 
     private final String identify;
 
-    private final ServerHealthCheck serverHealthCheck;
+    private final String version;
 
-    private final ScheduledExecutorService executor;
+    private final ServerHealthCheck serverHealthCheck;
 
     private final ScheduledExecutorService executorService;
 
     private final CountDownLatch awaitApplicationComplete = new CountDownLatch(1);
 
-    private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap(16);
+    private final CountDownLatch cacheCondition = new CountDownLatch(1);
+
+    private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap<>(16);
 
     @SuppressWarnings("all")
-    public ClientWorker(HttpAgent httpAgent, String identify, ServerHealthCheck serverHealthCheck) {
+    public ClientWorker(HttpAgent httpAgent, String identify, ServerHealthCheck serverHealthCheck, String version) {
         this.agent = httpAgent;
         this.identify = identify;
         this.timeout = CONFIG_LONG_POLL_TIMEOUT;
+        this.version = version;
         this.serverHealthCheck = serverHealthCheck;
-        this.executor = Executors.newScheduledThreadPool(1, runnable -> {
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1, runnable -> {
             Thread thread = new Thread(runnable);
             thread.setName("client.worker.executor");
             thread.setDaemon(true);
@@ -89,12 +92,10 @@ public class ClientWorker {
         this.executorService = Executors.newSingleThreadScheduledExecutor(
                 ThreadFactoryBuilder.builder().prefix("client.long.polling.executor").daemon(true).build());
         log.info("Client identify: {}", identify);
-        this.executor.schedule(() -> {
+        executor.schedule(() -> {
             try {
                 awaitApplicationComplete.await();
-                if (CollectionUtil.isNotEmpty(cacheMap)) {
-                    executorService.execute(new LongPollingRunnable());
-                }
+                executorService.execute(new LongPollingRunnable(cacheMap.isEmpty(), cacheCondition));
             } catch (Throwable ex) {
                 log.error("Sub check rotate check error.", ex);
             }
@@ -103,12 +104,25 @@ public class ClientWorker {
 
     class LongPollingRunnable implements Runnable {
 
+        private boolean cacheMapInitEmptyFlag;
+
+        private final CountDownLatch cacheCondition;
+
+        public LongPollingRunnable(boolean cacheMapInitEmptyFlag, CountDownLatch cacheCondition) {
+            this.cacheMapInitEmptyFlag = cacheMapInitEmptyFlag;
+            this.cacheCondition = cacheCondition;
+        }
+
         @Override
         @SneakyThrows
         public void run() {
+            if (cacheMapInitEmptyFlag) {
+                cacheCondition.await();
+                cacheMapInitEmptyFlag = false;
+            }
             serverHealthCheck.isHealthStatus();
-            List<CacheData> cacheDataList = new ArrayList();
-            List<String> inInitializingCacheList = new ArrayList();
+            List<CacheData> cacheDataList = new ArrayList<>();
+            List<String> inInitializingCacheList = new ArrayList<>();
             cacheMap.forEach((key, val) -> cacheDataList.add(val));
             List<String> changedTpIds = checkUpdateDataIds(cacheDataList, inInitializingCacheList);
             for (String groupKey : changedTpIds) {
@@ -157,10 +171,10 @@ public class ClientWorker {
         if (StringUtils.isEmpty(probeUpdateString)) {
             return Collections.emptyList();
         }
-        Map<String, String> params = new HashMap(2);
+        Map<String, String> params = new HashMap<>(2);
         params.put(PROBE_MODIFY_REQUEST, probeUpdateString);
         params.put(WEIGHT_CONFIGS, IdUtil.simpleUUID());
-        Map<String, String> headers = new HashMap(2);
+        Map<String, String> headers = new HashMap<>(2);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
         // Confirm the identity of the client, and can be modified separately when modifying the thread pool configuration.
         headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, identify);
@@ -168,8 +182,9 @@ public class ClientWorker {
         if (isInitializingCacheList) {
             headers.put(LONG_PULLING_TIMEOUT_NO_HANGUP, "true");
         }
+        headers.put(CLIENT_VERSION, version);
         try {
-            long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
+            long readTimeoutMs = timeout + Math.round(timeout >> 1);
             Result result = agent.httpPostByConfig(LISTENER_PATH, headers, params, readTimeoutMs);
             if (result != null && result.isSuccess()) {
                 return parseUpdateDataIdResponse(result.getData().toString());
@@ -182,7 +197,7 @@ public class ClientWorker {
     }
 
     public String getServerConfig(String namespace, String itemId, String threadPoolId, long readTimeout) {
-        Map<String, String> params = new HashMap(3);
+        Map<String, String> params = new HashMap<>(3);
         params.put("namespace", namespace);
         params.put("itemId", itemId);
         params.put("tpId", threadPoolId);
@@ -204,7 +219,7 @@ public class ClientWorker {
         } catch (Exception e) {
             log.error("Polling resp decode modifiedDataIdsString error.", e);
         }
-        List<String> updateList = new LinkedList();
+        List<String> updateList = new LinkedList<>();
         for (String dataIdAndGroup : response.split(LINE_SEPARATOR)) {
             if (!StringUtils.isEmpty(dataIdAndGroup)) {
                 String[] keyArr = dataIdAndGroup.split(WORD_SEPARATOR);
@@ -227,6 +242,10 @@ public class ClientWorker {
         for (Listener listener : listeners) {
             cacheData.addListener(listener);
         }
+        // Lazy loading
+        if (awaitApplicationComplete.getCount() == 0L) {
+            cacheCondition.countDown();
+        }
     }
 
     public CacheData addCacheDataIfAbsent(String namespace, String itemId, String threadPoolId) {
@@ -245,8 +264,6 @@ public class ClientWorker {
             } catch (Exception ex) {
                 log.error("Cache Data Error. Service Unavailable: {}", ex.getMessage());
             }
-            int taskId = cacheMap.size() / CONFIG_LONG_POLL_TIMEOUT;
-            cacheData.setTaskId(taskId);
             lastCacheData = cacheData;
         }
         return lastCacheData;

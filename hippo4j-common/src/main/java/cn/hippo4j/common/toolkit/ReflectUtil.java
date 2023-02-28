@@ -147,8 +147,8 @@ public class ReflectUtil {
     }
 
     /**
-     * find the method associated with the method name<br>
-     * if find multiple, return the first, parameter is equivocal
+     * Find the method associated with the method name<br>
+     * if find multiple, return the first, parameter is equivocal.
      *
      * @param clazz      the class
      * @param methodName retrieves the method name
@@ -170,7 +170,7 @@ public class ReflectUtil {
     }
 
     /**
-     * find the method associated with the method name
+     * Find the method associated with the method name.
      *
      * @param clazz      the class
      * @param methodName retrieves the method name
@@ -190,7 +190,7 @@ public class ReflectUtil {
 
     /**
      * Cast the value to the type <br>
-     * If a ClassCastException occurs, return null
+     * If a ClassCastException occurs, return null.
      *
      * @param clazz Cast class
      * @param value The cast value
@@ -205,7 +205,7 @@ public class ReflectUtil {
     }
 
     /**
-     * the default value is obtained if it is a primitive type, and NULL if it is not
+     * The default value is obtained if it is a primitive type, and NULL if it is not.
      *
      * @param clazz clazz
      * @return default value
@@ -235,7 +235,7 @@ public class ReflectUtil {
     }
 
     /**
-     * invoke
+     * Invoke.
      *
      * @param obj       the obj
      * @param method    the method
@@ -249,5 +249,38 @@ public class ReflectUtil {
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new IllegalException(e);
         }
+    }
+
+    /**
+     * Get instance.
+     *
+     * @param cls the class
+     * @return new Instance
+     */
+    public static Object createInstance(Class<?> cls) {
+        try {
+            return cls.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new IllegalException(e);
+        }
+    }
+
+    /**
+     * Find field by fieldName and field-type.
+     *
+     * @param obj       target obj
+     * @param filedName filedName
+     * @param fieldType fieldType
+     * @return target field or null
+     */
+    public static Field findField(Object obj, String filedName, String fieldType) {
+        Field[] fields = ReflectUtil.getFields(obj.getClass());
+        for (Field field : fields) {
+            if (field.getName().contains(filedName) &&
+                    (field.getType().getName().contains(fieldType))) {
+                return field;
+            }
+        }
+        return null;
     }
 }

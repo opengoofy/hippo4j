@@ -23,6 +23,8 @@ import cn.hippo4j.config.model.biz.tenant.TenantSaveReqDTO;
 import cn.hippo4j.config.model.biz.tenant.TenantUpdateReqDTO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import java.util.List;
+
 /**
  * Tenant service.
  */
@@ -72,4 +74,11 @@ public interface TenantService {
      * @param tenantId
      */
     void deleteTenantById(String tenantId);
+
+    /**
+     * List all tenant.
+     *
+     * @return
+     */
+    List<String> listAllTenant();
 }

@@ -69,7 +69,7 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
         List<ThreadPoolAdapterState> threadPoolAdapterStates = new ArrayList<>();
-        DUBBO_PROTOCOL_EXECUTOR.forEach((kel, val) -> threadPoolAdapterStates.add(getThreadPoolState(String.valueOf(val))));
+        DUBBO_PROTOCOL_EXECUTOR.forEach((key, val) -> threadPoolAdapterStates.add(getThreadPoolState(String.valueOf(key))));
         return threadPoolAdapterStates;
     }
 
@@ -114,7 +114,7 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
             ConcurrentMap<Integer, ExecutorService> executorServiceMap = data.get(poolKey);
             executorServiceMap.forEach((key, value) -> DUBBO_PROTOCOL_EXECUTOR.put(String.valueOf(key), (ThreadPoolExecutor) value));
         } catch (Exception ex) {
-            log.error("Failed to get Dubbo {}.X protocol thread pool", isLegacyVersion ? "2" : "3", ex);
+            log.error("Failed to get Dubbo {} protocol thread pool", Version.getVersion(), ex);
         }
     }
 }

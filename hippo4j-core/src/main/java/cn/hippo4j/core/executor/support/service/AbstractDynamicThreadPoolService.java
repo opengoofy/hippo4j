@@ -33,8 +33,8 @@ public abstract class AbstractDynamicThreadPoolService implements DynamicThreadP
     /**
      * Build dynamic thread-pool executor.
      *
-     * @param registerParameter
-     * @return
+     * @param registerParameter register parameter
+     * @return dynamic thread-pool executor
      */
     public ThreadPoolExecutor buildDynamicThreadPoolExecutor(DynamicThreadPoolRegisterParameter registerParameter) {
         ThreadPoolExecutor dynamicThreadPoolExecutor = ThreadPoolBuilder.builder()
@@ -43,6 +43,7 @@ public abstract class AbstractDynamicThreadPoolService implements DynamicThreadP
                 .maxPoolNum(registerParameter.getMaximumPoolSize())
                 .workQueue(BlockingQueueTypeEnum.createBlockingQueue(registerParameter.getBlockingQueueType().getType(), registerParameter.getCapacity()))
                 .threadFactory(registerParameter.getThreadNamePrefix())
+                .threadFactory(registerParameter.getThreadFactory())
                 .keepAliveTime(registerParameter.getKeepAliveTime(), TimeUnit.SECONDS)
                 .executeTimeOut(registerParameter.getExecuteTimeOut())
                 .rejected(RejectedPolicyTypeEnum.createPolicy(registerParameter.getRejectedPolicyType().getType()))

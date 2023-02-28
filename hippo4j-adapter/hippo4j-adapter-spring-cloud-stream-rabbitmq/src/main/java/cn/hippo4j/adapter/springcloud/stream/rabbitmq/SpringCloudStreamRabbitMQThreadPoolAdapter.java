@@ -34,17 +34,22 @@ import org.springframework.cloud.stream.binding.InputBindingLifecycle;
 import org.springframework.context.ApplicationListener;
 import org.springframework.integration.amqp.inbound.AmqpInboundChannelAdapter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 
 /**
- * Spring cloud stream rabbimq thread-pool adapter.
+ * Spring cloud stream rabbit-mq thread-pool adapter.
  */
 @Slf4j
 public class SpringCloudStreamRabbitMQThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
-    private final Map<String, AbstractMessageListenerContainer> ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR = new HashMap<>();
+    private final Map<String, AbstractMessageListenerContainer> rocketMqSpringCloudStreamConsumeExecutor = new HashMap<>();
 
     @Override
     public String mark() {
@@ -54,7 +59,7 @@ public class SpringCloudStreamRabbitMQThreadPoolAdapter implements ThreadPoolAda
     @Override
     public ThreadPoolAdapterState getThreadPoolState(String identify) {
         ThreadPoolAdapterState result = new ThreadPoolAdapterState();
-        AbstractMessageListenerContainer messageListenerContainer = ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.get(identify);
+        AbstractMessageListenerContainer messageListenerContainer = rocketMqSpringCloudStreamConsumeExecutor.get(identify);
         if (messageListenerContainer != null) {
             result.setThreadPoolKey(identify);
             if (messageListenerContainer instanceof SimpleMessageListenerContainer) {
@@ -80,7 +85,7 @@ public class SpringCloudStreamRabbitMQThreadPoolAdapter implements ThreadPoolAda
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
         List<ThreadPoolAdapterState> adapterStateList = new ArrayList<>();
-        ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.forEach(
+        rocketMqSpringCloudStreamConsumeExecutor.forEach(
                 (key, val) -> adapterStateList.add(getThreadPoolState(key)));
         return adapterStateList;
     }
@@ -88,9 +93,9 @@ public class SpringCloudStreamRabbitMQThreadPoolAdapter implements ThreadPoolAda
     @Override
     public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
         String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
-        AbstractMessageListenerContainer messageListenerContainer = ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.get(threadPoolKey);
+        AbstractMessageListenerContainer messageListenerContainer = rocketMqSpringCloudStreamConsumeExecutor.get(threadPoolKey);
         if (messageListenerContainer != null) {
-            synchronized (ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR) {
+            synchronized (rocketMqSpringCloudStreamConsumeExecutor) {
                 Integer corePoolSize = threadPoolAdapterParameter.getCorePoolSize();
                 Integer maximumPoolSize = threadPoolAdapterParameter.getMaximumPoolSize();
                 if (messageListenerContainer instanceof SimpleMessageListenerContainer) {
@@ -148,7 +153,7 @@ public class SpringCloudStreamRabbitMQThreadPoolAdapter implements ThreadPoolAda
                 Object lifecycle = ReflectUtil.getFieldValue(defaultBinding, "lifecycle");
                 if (lifecycle instanceof AmqpInboundChannelAdapter) {
                     AbstractMessageListenerContainer rabbitMQListenerContainer = (AbstractMessageListenerContainer) ReflectUtil.getFieldValue(lifecycle, "messageListenerContainer");
-                    ROCKET_MQ_SPRING_CLOUD_STREAM_CONSUME_EXECUTOR.put(bindingName, rabbitMQListenerContainer);
+                    rocketMqSpringCloudStreamConsumeExecutor.put(bindingName, rabbitMQListenerContainer);
                 }
             }
         } catch (Exception ex) {

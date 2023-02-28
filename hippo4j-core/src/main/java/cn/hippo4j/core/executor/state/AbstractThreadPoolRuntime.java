@@ -35,18 +35,18 @@ import java.util.concurrent.ThreadPoolExecutor;
 public abstract class AbstractThreadPoolRuntime {
 
     /**
-     * Supplement.
+     * Supplemental thread pool runtime information.
      *
-     * @param threadPoolRunStateInfo
-     * @return
+     * @param threadPoolRunStateInfo thread-pool run state info
+     * @return thread-pool run state info
      */
     public abstract ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo threadPoolRunStateInfo);
 
     /**
      * Get pool run state.
      *
-     * @param threadPoolId
-     * @return
+     * @param threadPoolId thread-pool id
+     * @return thread-pool run state info
      */
     public ThreadPoolRunStateInfo getPoolRunState(String threadPoolId) {
         DynamicThreadPoolWrapper executorService = GlobalThreadPoolManage.getExecutorService(threadPoolId);
@@ -57,56 +57,34 @@ public abstract class AbstractThreadPoolRuntime {
     /**
      * Get pool run state.
      *
-     * @param threadPoolId
-     * @param executor
-     * @return
+     * @param threadPoolId thread-pool id
+     * @param executor     executor
+     * @return thread-pool run state info
      */
     public ThreadPoolRunStateInfo getPoolRunState(String threadPoolId, Executor executor) {
-        ThreadPoolRunStateInfo stateInfo = new ThreadPoolRunStateInfo();
-        ThreadPoolExecutor pool = (ThreadPoolExecutor) executor;
-        // 核心线程数
-        int corePoolSize = pool.getCorePoolSize();
-        // 最大线程数
-        int maximumPoolSize = pool.getMaximumPoolSize();
-        // 线程池当前线程数 (有锁)
-        int poolSize = pool.getPoolSize();
-        // 活跃线程数 (有锁)
-        int activeCount = pool.getActiveCount();
-        // 同时进入池中的最大线程数 (有锁)
-        int largestPoolSize = pool.getLargestPoolSize();
-        // 线程池中执行任务总数量 (有锁)
-        long completedTaskCount = pool.getCompletedTaskCount();
-        // 当前负载
-        String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
-        // 峰值负载
-        String peakLoad = CalculateUtil.divide(largestPoolSize, maximumPoolSize) + "";
-        BlockingQueue<Runnable> queue = pool.getQueue();
-        // 队列元素个数
-        int queueSize = queue.size();
-        // 队列类型
-        String queueType = queue.getClass().getSimpleName();
-        // 队列剩余容量
-        int remainingCapacity = queue.remainingCapacity();
-        // 队列容量
-        int queueCapacity = queueSize + remainingCapacity;
-        stateInfo.setCoreSize(corePoolSize);
-        stateInfo.setTpId(threadPoolId);
-        stateInfo.setPoolSize(poolSize);
-        stateInfo.setMaximumSize(maximumPoolSize);
-        stateInfo.setActiveSize(activeCount);
-        stateInfo.setCurrentLoad(currentLoad);
-        stateInfo.setPeakLoad(peakLoad);
-        stateInfo.setQueueType(queueType);
-        stateInfo.setQueueSize(queueSize);
-        stateInfo.setQueueCapacity(queueCapacity);
-        stateInfo.setQueueRemainingCapacity(remainingCapacity);
-        stateInfo.setLargestPoolSize(largestPoolSize);
-        stateInfo.setCompletedTaskCount(completedTaskCount);
-        long rejectCount =
-                pool instanceof DynamicThreadPoolExecutor ? ((DynamicThreadPoolExecutor) pool).getRejectCountNum() : -1L;
-        stateInfo.setRejectCount(rejectCount);
-        stateInfo.setClientLastRefreshTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        stateInfo.setTimestamp(System.currentTimeMillis());
+        ThreadPoolExecutor actualExecutor = (ThreadPoolExecutor) executor;
+        int activeCount = actualExecutor.getActiveCount();
+        int largestPoolSize = actualExecutor.getLargestPoolSize();
+        BlockingQueue<Runnable> blockingQueue = actualExecutor.getQueue();
+        long rejectCount = actualExecutor instanceof DynamicThreadPoolExecutor ? ((DynamicThreadPoolExecutor) actualExecutor).getRejectCountNum() : -1L;
+        ThreadPoolRunStateInfo stateInfo = ThreadPoolRunStateInfo.builder()
+                .tpId(threadPoolId)
+                .activeSize(activeCount)
+                .poolSize(actualExecutor.getPoolSize())
+                .completedTaskCount(actualExecutor.getCompletedTaskCount())
+                .largestPoolSize(largestPoolSize)
+                .currentLoad(CalculateUtil.divide(activeCount, actualExecutor.getMaximumPoolSize()) + "")
+                .clientLastRefreshTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .peakLoad(CalculateUtil.divide(largestPoolSize, actualExecutor.getMaximumPoolSize()) + "")
+                .queueSize(blockingQueue.size())
+                .queueRemainingCapacity(blockingQueue.remainingCapacity())
+                .rejectCount(rejectCount)
+                .timestamp(System.currentTimeMillis())
+                .build();
+        stateInfo.setCoreSize(actualExecutor.getCorePoolSize());
+        stateInfo.setMaximumSize(actualExecutor.getMaximumPoolSize());
+        stateInfo.setQueueType(blockingQueue.getClass().getSimpleName());
+        stateInfo.setQueueCapacity(blockingQueue.size() + blockingQueue.remainingCapacity());
         return supplement(stateInfo);
     }
 }

@@ -28,7 +28,7 @@ import lombok.Setter;
 @Setter
 public class ElasticSearchThreadPoolRunStateInfo extends ThreadPoolRunStateInfo {
 
-    private String Id;
+    private String id;
 
     private String applicationName;
 }

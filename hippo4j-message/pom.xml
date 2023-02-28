@@ -12,24 +12,8 @@
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-common</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>alibaba-dingtalk-service-sdk</artifactId>
-            <optional>true</optional>
-            <!-- User feedback that javax.jms cannot be downloaded, log4j is not found useful, so it is excluded for the time being. -->
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>hippo4j-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>

@@ -36,7 +36,7 @@ public class WeChatAlarmConstants {
      * Replace task timeout template
      */
     public static final String WE_CHAT_ALARM_TIMOUT_REPLACE_TXT =
-            "\n> 任务执行时间：%s / ms \n" +
-                    "> 超时时间：%s / ms " +
-                    WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT;
+            "\n> 任务执行时间：%s / ms \n"
+                    + "> 超时时间：%s / ms "
+                    + WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT;
 }

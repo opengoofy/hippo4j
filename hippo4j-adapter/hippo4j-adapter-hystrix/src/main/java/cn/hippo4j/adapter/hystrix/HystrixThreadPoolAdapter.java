@@ -17,7 +17,11 @@
 
 package cn.hippo4j.adapter.hystrix;
 
-import cn.hippo4j.adapter.base.*;
+import cn.hippo4j.adapter.base.ThreadPoolAdapter;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterRegisterAction;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import com.netflix.hystrix.HystrixThreadPool;
@@ -48,9 +52,9 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
     private static final String THREAD_POOLS_FIELD = "threadPools";
 
-    private final Map<String, ThreadPoolExecutor> HYSTRIX_CONSUME_EXECUTOR = new HashMap<>();
+    private final Map<String, ThreadPoolExecutor> hystrixConsumeExecutor = new HashMap<>();
 
-    private ThreadPoolAdapterScheduler threadPoolAdapterScheduler;
+    private final ThreadPoolAdapterScheduler threadPoolAdapterScheduler;
 
     public HystrixThreadPoolAdapter(ThreadPoolAdapterScheduler threadPoolAdapterScheduler) {
         this.threadPoolAdapterScheduler = threadPoolAdapterScheduler;
@@ -64,7 +68,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
     @Override
     public ThreadPoolAdapterState getThreadPoolState(String identify) {
         ThreadPoolAdapterState result = new ThreadPoolAdapterState();
-        ThreadPoolExecutor threadPoolExecutor = HYSTRIX_CONSUME_EXECUTOR.get(identify);
+        ThreadPoolExecutor threadPoolExecutor = hystrixConsumeExecutor.get(identify);
         if (threadPoolExecutor != null) {
             result.setThreadPoolKey(identify);
             result.setCoreSize(threadPoolExecutor.getCorePoolSize());
@@ -78,14 +82,14 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
         List<ThreadPoolAdapterState> threadPoolAdapterStates = new ArrayList<>();
-        HYSTRIX_CONSUME_EXECUTOR.forEach((kel, val) -> threadPoolAdapterStates.add(getThreadPoolState(kel)));
+        hystrixConsumeExecutor.forEach((kel, val) -> threadPoolAdapterStates.add(getThreadPoolState(kel)));
         return threadPoolAdapterStates;
     }
 
     @Override
     public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
         String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
-        ThreadPoolExecutor threadPoolExecutor = HYSTRIX_CONSUME_EXECUTOR.get(threadPoolKey);
+        ThreadPoolExecutor threadPoolExecutor = hystrixConsumeExecutor.get(threadPoolKey);
         if (threadPoolExecutor == null) {
             log.warn("[{}] Hystrix thread pool not found.", threadPoolKey);
             return false;
@@ -135,7 +139,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
                         threadPoolField.setAccessible(true);
                         ThreadPoolExecutor threadPoolExecutor =
                                 (ThreadPoolExecutor) threadPoolField.get(hystrixThreadPoolDefault);
-                        HYSTRIX_CONSUME_EXECUTOR.put(key, threadPoolExecutor);
+                        hystrixConsumeExecutor.put(key, threadPoolExecutor);
                     }
                 }
             }
@@ -179,7 +183,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
         private int taskIntervalSeconds;
 
-        public HystrixThreadPoolRefreshTask(ScheduledExecutorService scheduler, int taskIntervalSeconds) {
+        HystrixThreadPoolRefreshTask(ScheduledExecutorService scheduler, int taskIntervalSeconds) {
             this.scheduler = scheduler;
             this.taskIntervalSeconds = taskIntervalSeconds;
         }
@@ -196,6 +200,9 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
         }
     }
 
+    /**
+     * Thread Pool Adapter Register Task
+     */
     class ThreadPoolAdapterRegisterTask implements Runnable {
 
         private ScheduledExecutorService scheduler;
@@ -208,9 +215,9 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
 
         private List<ThreadPoolAdapterCacheConfig> cacheConfigList = new ArrayList<>();
 
-        public ThreadPoolAdapterRegisterTask(ScheduledExecutorService scheduler, int taskIntervalSeconds,
-                                             Map<String, ThreadPoolAdapter> threadPoolAdapterMap,
-                                             ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction) {
+        ThreadPoolAdapterRegisterTask(ScheduledExecutorService scheduler, int taskIntervalSeconds,
+                                      Map<String, ThreadPoolAdapter> threadPoolAdapterMap,
+                                      ThreadPoolAdapterRegisterAction threadPoolAdapterRegisterAction) {
             this.scheduler = scheduler;
             this.taskIntervalSeconds = taskIntervalSeconds;
             this.threadPoolAdapterMap = threadPoolAdapterMap;

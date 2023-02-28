@@ -72,7 +72,7 @@ public abstract class AbstractRobotSendMessageHandler implements SendMessageHand
         } else {
             replaceTxt = "";
         }
-        alarmContentTxt = StringUtil.replace(alarmContentTxt, "${timout-content}", replaceTxt);
+        alarmContentTxt = StringUtil.replace(alarmContentTxt, "${timeout-content}", replaceTxt);
         String text = String.format(
                 alarmContentTxt,
                 alarmNotifyRequest.getActive(),
