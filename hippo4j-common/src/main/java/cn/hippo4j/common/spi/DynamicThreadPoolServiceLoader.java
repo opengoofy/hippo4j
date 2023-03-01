@@ -17,6 +17,8 @@
 
 package cn.hippo4j.common.spi;
 
+import cn.hippo4j.common.spi.annotation.SingletonSPI;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,14 +28,20 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import cn.hippo4j.common.spi.annotation.SingletonSPI;
-
 /**
  * Dynamic thread-pool service loader.
  */
 public class DynamicThreadPoolServiceLoader {
 
-    private static final Map<Class<?>, Collection<Object>> SERVICES = new ConcurrentHashMap<>();
+    /**
+     * safe container。
+     * key : SPI interface class type.
+     * value : collection whose elements are object of key's class type.
+     */
+    private static final Map<Class<?>, Collection<?>> SERVICES = new ConcurrentHashMap<>();
+
+    private DynamicThreadPoolServiceLoader() {
+    }
 
     /**
      * Register.
@@ -53,8 +61,8 @@ public class DynamicThreadPoolServiceLoader {
      * @param <T>
      * @return
      */
-    private static <T> Collection<Object> load(final Class<T> serviceInterface) {
-        Collection<Object> result = new LinkedList<>();
+    private static <T> Collection<T> load(final Class<T> serviceInterface) {
+        Collection<T> result = new LinkedList<>();
         for (T each : ServiceLoader.load(serviceInterface)) {
             result.add(each);
         }
@@ -63,7 +71,7 @@ public class DynamicThreadPoolServiceLoader {
 
     /**
      * Get Service instances
-     * 
+     *
      * @param serviceClass serviceClass
      * @param <T>
      * @return

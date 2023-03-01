@@ -1,17 +1,34 @@
 
-# 动态可观测线程池
+## 动态可观测线程池，通过对 JDK 线程池的增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力
 
-<img align="right" width="320" alt="image" src="https://user-images.githubusercontent.com/77398366/181906454-b46f6a14-7c2c-4b8f-8b0a-40432521bed8.png">
 
-通过对 JDK 线程池的增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力。
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Build Status](https://github.com/opengoofy/hippo4j/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/opengoofy.hippo4j)
 
-[![GitHub stars](https://img.shields.io/github/stars/opengoofy/hippo4j.svg?style=for-the-badge&label=Stars&logo=github)](https://github.com/opengoofy/hippo4j) [![Contributors](https://img.shields.io/github/contributors/opengoofy/hippo4j.svg?style=for-the-badge&label=Contributors&logo=appveyor)](https://github.com/opengoofy/hippo4j) 
+![](https://img.shields.io/github/stars/opengoofy/hippo4j?color=5470c6)
+![](https://img.shields.io/github/forks/opengoofy/hippo4j?color=3ba272)
+![](https://img.shields.io/github/contributors/opengoofy/hippo4j)
+[![Docker Pulls](https://img.shields.io/docker/pulls/hippo4j/hippo4j-server.svg?label=docker%20pulls&color=fac858)](https://store.docker.com/community/images/hippo4j/hippo4j-server)
+[![codecov](https://codecov.io/gh/opengoofy/hippo4j/branch/develop/graph/badge.svg?token=WBUVJN107I)](https://codecov.io/gh/opengoofy/hippo4j)
+[![EN doc](https://img.shields.io/badge/readme-English-orange.svg)](https://github.com/opengoofy/hippo4j/blob/develop/README-EN.md)
 
-[![Gitee](https://gitee.com/magestack/hippo4j/badge/star.svg?theme=gvp)](https://gitee.com/magestack/hippo4j) [![Docker Pulls](https://img.shields.io/docker/pulls/hippo4j/hippo4j-server.svg?label=docker%20pulls&color=fac858)](https://store.docker.com/community/images/hippo4j/hippo4j-server) [![codecov](https://codecov.io/gh/opengoofy/hippo4j/branch/develop/graph/badge.svg?token=WBUVJN107I)](https://codecov.io/gh/opengoofy/hippo4j) [![EN doc](https://img.shields.io/badge/readme-English-orange.svg)](https://github.com/opengoofy/hippo4j/blob/develop/README-EN.md)
+| **Stargazers Over Time**                                                                                              | **Contributors Over Time**                                                                                                                                                                                                                       |
+|:---------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| [![Stargazers over time](https://api.star-history.com/svg?repos=opengoofy/hippo4j&type=Date)](https://api.star-history.com/svg?repos=opengoofy/hippo4j&type=Date) | [![Contributor over time](https://contributor-graph-api.apiseven.com/contributors-svg?chart=contributorOverTime&repo=opengoofy/hippo4j)](https://www.apiseven.com/en/contributor-graph?chart=contributorOverTime&repo=opengoofy/hippo4j) |
 
--------
+### 开源地址
 
-## 线程池痛点
+---
+
+GitHub：[opengoofy/hippo4j](https://github.com/opengoofy/hippo4j)
+
+Gitee：[opengoofy/hippo4j](https://gitee.com/magestack/hippo4j)
+
+For full documentation & more details, visit: [Docs](https://www.hippo4j.cn)
+
+### 线程池痛点
+
+---
 
 线程池是一种基于池化思想管理线程的工具，使用线程池可以减少创建销毁线程的开销，避免线程过多导致系统资源耗尽。在高并发以及大批量的任务处理场景，线程池的使用是必不可少的。
 
@@ -27,7 +44,9 @@
 - 无法执行优雅关闭，当项目关闭时，大量正在运行的线程池任务被丢弃。
 - 线程池运行中，任务执行停止，怀疑发生死锁或执行耗时操作，但是无从下手。
 
-## 什么是 Hippo4j
+### 什么是 Hippo4j
+
+---
 
 提供以下功能支持：
 
@@ -45,17 +64,23 @@
 - 动态化插件 - 内置多种线程池插件，支持用户自定义插件以及运行时扩展。
 - 多版本适配 - 经过实际测试，已支持客户端 SpringBoot 1.5.x => 2.7.5 版本（更高版本未测试）。
 
-## 快速开始
+### 快速开始
+
+---
 
 对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/user_docs/user_guide/quick-start)
 
 演示环境： [http://console.hippo4j.cn/index.html](http://console.hippo4j.cn/index.html)
 
-## 接入登记
+### 接入登记
+
+---
 
 更多接入的公司，欢迎在 [登记地址](https://github.com/opengoofy/hippo4j/issues/13) 登记，登记仅仅为了产品推广。
 
-## 联系我
+### 联系我
+
+---
 
 开源不易，右上角点个 Star 鼓励一下吧！
 
@@ -63,9 +88,11 @@
 
 使用过程中有任何问题，或者对项目有什么建议，添加微信备注：`hippo4j`，和 `1000+` 道友交流讨论。
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/hippo4j-official-accounts.png)
+<img width="596" alt="image" src="https://user-images.githubusercontent.com/77398366/221864198-b6ba6bb4-b273-454b-b911-fee6b66057ef.png">
 
-## 深入原理
+### 深入原理
+
+---
 
 如果您公司没有使用 Hippo4j 场景的话，我也建议去阅读下项目的底层原理，主要有以下几个原因：
 
@@ -77,7 +104,9 @@
 - 自定义 RPC 框架实现，封装 Netty 完成客户端/服务端网络通信优化。
 - 通过 CheckStyle、Spotless 等插件规范代码编写，保障高质量代码行为和代码样式。
 
-## 友情链接
+### 友情链接
+
+---
 
 - [[ Sa-Token ]](https://github.com/dromara/sa-token)：一个轻量级 java 权限认证框架，让鉴权变得简单、优雅！  
 
@@ -86,13 +115,17 @@
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 - [[ Jpom ]](https://gitee.com/dromara/Jpom)：简而轻的低侵入式在线构建、自动部署、日常运维、项目监控软件。
 
-## 刚果商城
+### 刚果商城
+
+---
 
 👉 [工作经验不满五年程序员，如何通过项目提高个人技术能力？](https://sourl.cn/VERS4y)
 
 <a href="https://sourl.cn/VERS4y"><img width="1254" alt="image" src="https://user-images.githubusercontent.com/77398366/213593264-ebef9507-9e62-4257-900b-59856dd199f5.png"></a>
 
-## 贡献者
+### 贡献者
+
+---
 
 感谢所有为项目作出贡献的开发者。如果有意贡献，参考 [good first issue](https://github.com/opengoofy/hippo4j/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)。
 
@@ -100,7 +133,9 @@
 
 <!-- readme: contributors -end -->
 
-## 鸣谢
+### 鸣谢
+
+---
 
 Hippo4j 社区收到 Jetbrains 多份 Licenses，并已分配项目 [活跃开发者](https://hippo4j.cn/team)，非常感谢 Jetbrains 对开源社区的支持。
 
