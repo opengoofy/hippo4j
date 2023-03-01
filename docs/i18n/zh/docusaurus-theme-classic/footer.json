@@ -17,7 +17,7 @@
   },
   "link.item.label.加群沟通": {
     "message": "加群沟通",
-    "description": "The label of footer link with label=加群沟通 linking to https://hippo4j.cn/docs/user_docs/other/group"
+    "description": "The label of footer link with label=加群沟通 linking to https://hippo4j.cn/group"
   },
   "link.item.label.微信公众号": {
     "message": "微信公众号",

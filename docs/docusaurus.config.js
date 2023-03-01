@@ -106,8 +106,9 @@ const config = {
                       position: "left",
                       activeBaseRegex: `/community/`,
                     },
-                    { to: "/team", label: "团队", position: "left" },
-                    { to: "/users", label: "用户", position: "left" },
+                    /*{ to: "/team", label: "团队", position: "left" },*/
+                    { to: "/users", label: "采用公司", position: "left" },
+                    { to: "/group", label: "加群沟通", position: "left" },
                     /*{to: '/blog', label: '博客', position: 'left'},*/
                     {
                         href: 'http://console.hippo4j.cn/index.html',
@@ -124,8 +125,8 @@ const config = {
                         position: 'right',
                         dropdownActiveClassDisabled: true,
                     },
-                    {type: 'localeDropdown', position: 'right'},
 
+                    {type: 'localeDropdown', position: 'right'},
                     /*{
                         href: 'https://gitee.com/mabaiwancn/hippo4j',
                         label: 'Gitee',
@@ -170,7 +171,7 @@ const config = {
                         items: [
                             {
                                 label: 'Group',
-                                href: 'https://hippo4j.cn/docs/user_docs/other/group',
+                                href: 'https://hippo4j.cn/group',
                             },
                             {
                                 label: 'WeChat',

@@ -1,5 +1,6 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
+title: 团队成员
 ---
 
 ## Hippo4j 团队
