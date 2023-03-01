@@ -7,4 +7,4 @@ title: 加群沟通
 
 使用过程中有任何问题，或者对项目有什么建议，添加微信备注：`hippo4j`，和 `1000+` 志同道合的朋友交流讨论。
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/hippo4j-official-accounts.png)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20230301233346811.png)
