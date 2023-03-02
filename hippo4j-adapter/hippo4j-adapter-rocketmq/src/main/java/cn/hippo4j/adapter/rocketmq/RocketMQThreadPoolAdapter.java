@@ -22,6 +22,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.ReflectUtil;
+import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.impl.consumer.ConsumeMessageService;
@@ -79,8 +80,7 @@ public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, Application
         if (rocketMQConsumeExecutor != null) {
             int originalCoreSize = rocketMQConsumeExecutor.getCorePoolSize();
             int originalMaximumPoolSize = rocketMQConsumeExecutor.getMaximumPoolSize();
-            rocketMQConsumeExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
-            rocketMQConsumeExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
+            ThreadPoolExecutorUtil.safeSetPoolSize(rocketMQConsumeExecutor, threadPoolAdapterParameter.getCorePoolSize(), threadPoolAdapterParameter.getMaximumPoolSize());
             log.info("[{}] RocketMQ consumption thread pool parameter change. coreSize: {}, maximumSize: {}",
                     threadPoolKey,
                     String.format(CHANGE_DELIMITER, originalCoreSize, rocketMQConsumeExecutor.getCorePoolSize()),

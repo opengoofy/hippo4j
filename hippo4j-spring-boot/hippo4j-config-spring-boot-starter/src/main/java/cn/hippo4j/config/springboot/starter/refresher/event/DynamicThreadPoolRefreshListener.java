@@ -22,6 +22,7 @@ import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;
@@ -240,13 +241,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
         ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
         if (properties.getMaximumPoolSize() != null && properties.getCorePoolSize() != null) {
-            if (properties.getMaximumPoolSize() < executor.getMaximumPoolSize()) {
-                executor.setCorePoolSize(properties.getCorePoolSize());
-                executor.setMaximumPoolSize(properties.getMaximumPoolSize());
-            } else {
-                executor.setMaximumPoolSize(properties.getMaximumPoolSize());
-                executor.setCorePoolSize(properties.getCorePoolSize());
-            }
+            ThreadPoolExecutorUtil.safeSetPoolSize(executor, properties.getCorePoolSize(), properties.getMaximumPoolSize());
         } else {
             if (properties.getMaximumPoolSize() != null) {
                 executor.setMaximumPoolSize(properties.getMaximumPoolSize());
