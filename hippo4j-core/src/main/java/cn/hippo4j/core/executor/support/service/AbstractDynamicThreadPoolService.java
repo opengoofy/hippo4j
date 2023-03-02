@@ -40,7 +40,7 @@ public abstract class AbstractDynamicThreadPoolService implements DynamicThreadP
         ThreadPoolExecutor dynamicThreadPoolExecutor = ThreadPoolBuilder.builder()
                 .threadPoolId(registerParameter.getThreadPoolId())
                 .corePoolSize(registerParameter.getCorePoolSize())
-                .maxPoolNum(registerParameter.getMaximumPoolSize())
+                .maximumPoolSize(registerParameter.getMaximumPoolSize())
                 .workQueue(BlockingQueueTypeEnum.createBlockingQueue(registerParameter.getBlockingQueueType().getType(), registerParameter.getCapacity()))
                 .threadFactory(registerParameter.getThreadNamePrefix())
                 .threadFactory(registerParameter.getThreadFactory())
