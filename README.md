@@ -88,7 +88,7 @@ For full documentation & more details, visit: [Docs](https://www.hippo4j.cn)
 
 使用过程中有任何问题，或者对项目有什么建议，添加微信备注：`hippo4j`，和 `1000+` 志同道合的朋友交流讨论。
 
-<img width="570" alt="image" src="https://user-images.githubusercontent.com/77398366/222429948-ae39467e-a5fd-4f78-bae0-9b5365bb8cd5.png">
+<img width="558" alt="image" src="https://user-images.githubusercontent.com/77398366/222431518-1879472e-291f-403f-90da-b6cc4dc78f1a.png">
 
 ### 深入原理
 
