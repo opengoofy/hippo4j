@@ -88,8 +88,7 @@ For full documentation & more details, visit: [Docs](https://www.hippo4j.cn)
 
 使用过程中有任何问题，或者对项目有什么建议，添加微信备注：`hippo4j`，和 `1000+` 志同道合的朋友交流讨论。
 
-<img width="579" alt="image" src="https://user-images.githubusercontent.com/77398366/222187031-1c473efa-99e1-4515-85f0-e85f2e5b00d6.png">
-
+<img width="558" alt="image" src="https://user-images.githubusercontent.com/77398366/222431518-1879472e-291f-403f-90da-b6cc4dc78f1a.png">
 
 ### 深入原理
 
@@ -115,14 +114,7 @@ For full documentation & more details, visit: [Docs](https://www.hippo4j.cn)
 - [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 - [[ Jpom ]](https://gitee.com/dromara/Jpom)：简而轻的低侵入式在线构建、自动部署、日常运维、项目监控软件。
-
-### 刚果商城
-
----
-
-👉 [工作经验不满五年程序员，如何通过项目提高个人技术能力？](https://sourl.cn/VERS4y)
-
-<a href="https://sourl.cn/VERS4y"><img width="1254" alt="image" src="https://user-images.githubusercontent.com/77398366/213593264-ebef9507-9e62-4257-900b-59856dd199f5.png"></a>
+- [[ CongoMall ]](https://sourl.cn/VERS4y)：基于 DDD 开发的商城系统，内置分布式锁、分布式事务、分库分表、消息队列、数据搜索、服务监控等功能。
 
 ### 贡献者
 
