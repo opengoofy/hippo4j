@@ -4,7 +4,7 @@ sidebar_position: 6
 
 # 三方框架线程池适配
 
-Hippo4J 目前已支持的三方框架线程池列表：
+Hippo4j 目前已支持的三方框架线程池列表：
 
 - Dubbo
 - Hystrix
@@ -14,7 +14,7 @@ Hippo4J 目前已支持的三方框架线程池列表：
 - RocketMQSpringCloudStream
 - RabbitMQSpringCloudStream
 
-引入 Hippo4J Server 或 Core 的 Maven Jar 坐标后，还需要引入对应的框架适配 Jar：
+引入 Hippo4j Server 或 Core 的 Maven Jar 坐标后，还需要引入对应的框架适配 Jar：
 
 ```xml
 <dependency>
@@ -47,15 +47,15 @@ Hippo4J 目前已支持的三方框架线程池列表：
 </dependency>
 ```
 
-## Hippo4J Server
+## Hippo4j Server
 
-Hippo4J Server 仅需要引入上述 Jar 包，即可在 Hippo4J Server 的控制台进行查看及修改三方框架线程池。
+Hippo4j Server 仅需要引入上述 Jar 包，即可在 Hippo4j Server 的控制台进行查看及修改三方框架线程池。
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220531194810047.png)
 
-## Hippo4J Config
+## Hippo4j Config
 
-Hippo4J Config 除了依赖上述适配 Jar 包外，还需要在配置中心添加以下配置项。
+Hippo4j Config 除了依赖上述适配 Jar 包外，还需要在配置中心添加以下配置项。
 
 ```yaml
 spring:
