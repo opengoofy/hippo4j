@@ -43,7 +43,7 @@ public class DynamicThreadPoolSubscribeConfig {
 
     private final ExecutorService configRefreshExecutorService = ThreadPoolBuilder.builder()
             .corePoolSize(1)
-            .maxPoolNum(2)
+            .maximumPoolSize(2)
             .keepAliveTime(2000)
             .timeUnit(TimeUnit.MILLISECONDS)
             .workQueue(BlockingQueueTypeEnum.SYNCHRONOUS_QUEUE)

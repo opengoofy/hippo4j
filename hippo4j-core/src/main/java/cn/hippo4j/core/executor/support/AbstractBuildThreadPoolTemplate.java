@@ -63,7 +63,7 @@ public class AbstractBuildThreadPoolTemplate {
         ThreadPoolExecutor executorService;
         try {
             executorService = new ThreadPoolExecutorTemplate(initParam.getCorePoolNum(),
-                    initParam.getMaxPoolNum(),
+                    initParam.getMaximumPoolSize(),
                     initParam.getKeepAliveTime(),
                     initParam.getTimeUnit(),
                     initParam.getWorkQueue(),
@@ -97,7 +97,7 @@ public class AbstractBuildThreadPoolTemplate {
         FastThreadPoolExecutor fastThreadPoolExecutor;
         try {
             fastThreadPoolExecutor = new FastThreadPoolExecutor(initParam.getCorePoolNum(),
-                    initParam.getMaxPoolNum(),
+                    initParam.getMaximumPoolSize(),
                     initParam.getKeepAliveTime(),
                     initParam.getTimeUnit(),
                     taskQueue,
@@ -123,7 +123,7 @@ public class AbstractBuildThreadPoolTemplate {
         try {
             dynamicThreadPoolExecutor = new DynamicThreadPoolExecutor(
                     initParam.getCorePoolNum(),
-                    initParam.getMaxPoolNum(),
+                    initParam.getMaximumPoolSize(),
                     initParam.getKeepAliveTime(),
                     initParam.getTimeUnit(),
                     initParam.getExecuteTimeOut(),
@@ -150,7 +150,7 @@ public class AbstractBuildThreadPoolTemplate {
 
         private Integer corePoolNum;
 
-        private Integer maxPoolNum;
+        private Integer maximumPoolSize;
 
         private Long keepAliveTime;
 

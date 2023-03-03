@@ -41,7 +41,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     private int corePoolSize = calculateCoreNum();
 
-    private int maxPoolSize = corePoolSize + (corePoolSize >> 1);
+    private int maximumPoolSize = corePoolSize + (corePoolSize >> 1);
 
     private long keepAliveTime = 30000L;
 
@@ -151,15 +151,23 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     /**
+     * @deprecated Use {@link #maximumPoolSize}
+     */
+    @Deprecated
+    public ThreadPoolBuilder maxPoolNum(int maximumPoolSize) {
+        return this.maximumPoolSize(maximumPoolSize);
+    }
+
+    /**
      * Max pool num.
      *
-     * @param maxPoolSize max pool num
+     * @param maximumPoolSize max pool num
      * @return thread-pool builder
      */
-    public ThreadPoolBuilder maxPoolNum(int maxPoolSize) {
-        this.maxPoolSize = maxPoolSize;
-        if (maxPoolSize < this.corePoolSize) {
-            this.corePoolSize = maxPoolSize;
+    public ThreadPoolBuilder maximumPoolSize(int maximumPoolSize) {
+        this.maximumPoolSize = maximumPoolSize;
+        if (maximumPoolSize < this.corePoolSize) {
+            this.corePoolSize = maximumPoolSize;
         }
         return this;
     }
@@ -172,7 +180,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     public ThreadPoolBuilder singlePool() {
         int singleNum = 1;
         this.corePoolSize = singleNum;
-        this.maxPoolSize = singleNum;
+        this.maximumPoolSize = singleNum;
         return this;
     }
 
@@ -185,7 +193,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     public ThreadPoolBuilder singlePool(String threadNamePrefix) {
         int singleNum = 1;
         this.corePoolSize = singleNum;
-        this.maxPoolSize = singleNum;
+        this.maximumPoolSize = singleNum;
         this.threadNamePrefix = threadNamePrefix;
         return this;
     }
@@ -193,13 +201,13 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     /**
      * Pool thread size.
      *
-     * @param corePoolSize core pool size
-     * @param maxPoolSize  max pool size
+     * @param corePoolSize    core pool size
+     * @param maximumPoolSize max pool size
      * @return thread-pool builder
      */
-    public ThreadPoolBuilder poolThreadSize(int corePoolSize, int maxPoolSize) {
+    public ThreadPoolBuilder poolThreadSize(int corePoolSize, int maximumPoolSize) {
         this.corePoolSize = corePoolSize;
-        this.maxPoolSize = maxPoolSize;
+        this.maximumPoolSize = maximumPoolSize;
         return this;
     }
 
@@ -438,7 +446,7 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
             initParam = new AbstractBuildThreadPoolTemplate.ThreadPoolInitParam(builder.threadFactory);
         }
         initParam.setCorePoolNum(builder.corePoolSize)
-                .setMaxPoolNum(builder.maxPoolSize)
+                .setMaximumPoolSize(builder.maximumPoolSize)
                 .setKeepAliveTime(builder.keepAliveTime)
                 .setCapacity(builder.capacity)
                 .setExecuteTimeOut(builder.executeTimeOut)

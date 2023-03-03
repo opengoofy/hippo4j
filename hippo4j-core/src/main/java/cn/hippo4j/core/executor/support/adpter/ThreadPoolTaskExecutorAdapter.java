@@ -79,7 +79,7 @@ public class ThreadPoolTaskExecutorAdapter implements DynamicThreadPoolAdapter {
         ThreadPoolBuilder threadPoolBuilder = ThreadPoolBuilder.builder()
                 .dynamicPool()
                 .corePoolSize(threadPoolTaskExecutor.getCorePoolSize())
-                .maxPoolNum(threadPoolTaskExecutor.getMaxPoolSize())
+                .maximumPoolSize(threadPoolTaskExecutor.getMaxPoolSize())
                 .keepAliveTime(threadPoolTaskExecutor.getKeepAliveSeconds())
                 .timeUnit(TimeUnit.SECONDS)
                 .allowCoreThreadTimeOut(threadPoolExecutor.allowsCoreThreadTimeOut())
