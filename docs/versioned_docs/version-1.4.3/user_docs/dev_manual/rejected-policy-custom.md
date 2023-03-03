@@ -4,9 +4,9 @@ sidebar_position: 1
 
 # 拒绝策略自定义
 
-Hippo4J 通过 SPI 的方式对拒绝策略进行扩展，可以让用户在 Hippo4J 中完成自定义拒绝策略实现。
+Hippo4j 通过 SPI 的方式对拒绝策略进行扩展，可以让用户在 Hippo4j 中完成自定义拒绝策略实现。
 
-## Hippo4J Server 拒绝策略扩展
+## Hippo4j Server 拒绝策略扩展
 
 自定义拒绝策略，实现 `CustomRejectedExecutionHandler` 接口，示例如下：
 

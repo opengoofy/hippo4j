@@ -29,7 +29,7 @@ hippo4j/hippo4j-server
 
 ## 镜像构建
 
-如果想要自定义镜像，可以通过以下命令快速构建 Hippo4J Server：
+如果想要自定义镜像，可以通过以下命令快速构建 Hippo4j Server：
 
 方式一：
 

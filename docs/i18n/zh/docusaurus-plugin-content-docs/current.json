@@ -20,7 +20,7 @@
     "description": "The label for category 用户指南 in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.用户指南.link.generated-index.description": {
-    "message": "帮助想要了解 Hippo4J 的用户快速掌握核心开发理念。",
+    "message": "帮助想要了解 Hippo4j 的用户快速掌握核心开发理念。",
     "description": "The generated-index page description for category 用户指南 in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.快速开始": {
@@ -44,7 +44,7 @@
     "description": "The label for category 开发者手册 in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.开发者手册.link.generated-index.description": {
-    "message": "Hippo4J 留给使用者能够扩展的知识点。",
+    "message": "Hippo4j 留给使用者能够扩展的知识点。",
     "description": "The generated-index page description for category 开发者手册 in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.其它": {
@@ -56,7 +56,7 @@
     "description": "The label for category 用户指南 in sidebar user_docs"
   },
   "sidebar.user_docs.category.用户指南.link.generated-index.description": {
-    "message": "帮助想要了解 Hippo4J 的用户快速掌握核心开发理念。",
+    "message": "帮助想要了解 Hippo4j 的用户快速掌握核心开发理念。",
     "description": "The generated-index page description for category 用户指南 in sidebar user_docs"
   },
   "sidebar.user_docs.category.快速开始": {
@@ -80,7 +80,7 @@
     "description": "The label for category 开发者手册 in sidebar user_docs"
   },
   "sidebar.user_docs.category.开发者手册.link.generated-index.description": {
-    "message": "Hippo4J 留给使用者能够扩展的知识点。",
+    "message": "Hippo4j 留给使用者能够扩展的知识点。",
     "description": "The generated-index page description for category 开发者手册 in sidebar user_docs"
   },
   "sidebar.user_docs.category.其它": {
