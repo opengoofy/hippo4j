@@ -275,7 +275,7 @@ sidebar_position: 5
 
 **Optimize**
 
-- 适配非 Web SpringBoot 项目使用 Hippo4J
+- 适配非 Web SpringBoot 项目使用 Hippo4j
 - 优化报警通知
 - 修复在 JDK 小版本中的兼容性问题
 
@@ -288,7 +288,7 @@ sidebar_position: 5
 
 ## 1.1.0 (Mar 13, 2022)
 
-Hippo4J 线程池框架 1.1.0 RELEASE 版本，添加了 Hippo4J-Core（依赖配置中心的动态线程池）.
+Hippo4j 线程池框架 1.1.0 RELEASE 版本，添加了 Hippo4j-Core（依赖配置中心的动态线程池）.
 
 **Feature**
 
@@ -329,7 +329,7 @@ Hippo4J 线程池框架 1.1.0 RELEASE 版本，添加了 Hippo4J-Core（依赖�
 - ListableBeanFactory#findAnnotationOnBean SpringBoot 低版本适配
 - 优化客户端关闭时调用服务端钩子函数
 - 线程池实例参数弹框添加实例 ID 和线程池状态
-- 补充线程池替换 Hippo4J 文档
+- 补充线程池替换 Hippo4j 文档
 - 1.5.x springboot 引入hippo4j-spring-boot-starter配置项，bean初始化失败
 - 优化线程池参数编辑合理性校验
 - BaseInstanceRegistry 读写锁重构

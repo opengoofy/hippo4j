@@ -4,7 +4,7 @@ sidebar_position: 0
 
 # 运行模式介绍
 
-1.1.0 版本发布后，Hippo-4J 分为两种使用模式：轻量级依赖配置中心以及无中间件依赖版本。
+1.1.0 版本发布后，Hippo4j 分为两种使用模式：轻量级依赖配置中心以及无中间件依赖版本。
 
 ![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20220319154626314.png)
 
@@ -28,8 +28,8 @@ sidebar_position: 0
 
 |      | hippo4j-config                                 | hippo4j-server                                              |
 | ---- | ---------------------------------------------------- | ------------------------------------------------------------ |
-| 依赖 | Nacos、Apollo、Zookeeper、ETCD、Polaris 配置中心（任选其一） | 部署 Hippo-4J Server（内部无依赖中间件） |
-| 使用 | 配置中心补充线程池相关参数                 | Hippo-4J Server Web 控制台添加线程池记录                                                         |
+| 依赖 | Nacos、Apollo、Zookeeper、ETCD、Polaris 配置中心（任选其一） | 部署 Hippo4j Server（内部无依赖中间件） |
+| 使用 | 配置中心补充线程池相关参数                 | Hippo4j Server Web 控制台添加线程池记录                                                         |
 | 功能 | 包含基础功能：参数动态化、运行时监控、报警等         | 基础功能之外扩展控制台界面、线程池堆栈查看、线程池运行信息实时查看、历史运行信息查看、线程池配置集群个性化等 |
 
 使用建议：根据公司情况选择，如果基本功能可以满足使用，选择 hippo4j-config 使用即可；如果希望更多的功能，可以选择 hippo4j-server。
