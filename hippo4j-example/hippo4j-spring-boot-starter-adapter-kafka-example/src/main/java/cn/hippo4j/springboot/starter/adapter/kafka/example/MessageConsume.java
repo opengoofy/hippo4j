@@ -15,30 +15,21 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.spi;
+package cn.hippo4j.springboot.starter.adapter.kafka.example;
 
-import cn.hippo4j.common.executor.support.CustomBlockingQueue;
-
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
 
 /**
- * SPI whit generic type test.
+ * Message consume.
  */
-public class MyArrayBlockingQueue implements CustomBlockingQueue<Runnable> {
+@Slf4j
+@Service
+public class MessageConsume {
 
-    @Override
-    public Integer getType() {
-        return null;
-    }
-
-    @Override
-    public String getName() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
-    public BlockingQueue<Runnable> generateBlockingQueue() {
-        return new LinkedBlockingQueue<>(20);
+    @KafkaListener(id = "testId1", topics = MessageProduce.TOPIC, groupId = "testGroup")
+    public void onMessage(String message) {
+        log.info("Message: {}", message);
     }
 }

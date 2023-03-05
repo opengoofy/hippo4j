@@ -15,30 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.spi;
+package cn.hippo4j.springboot.starter.adapter.kafka.example;
 
-import cn.hippo4j.common.executor.support.CustomBlockingQueue;
+import cn.hippo4j.core.enable.EnableDynamicThreadPool;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+@EnableDynamicThreadPool
+@SpringBootApplication(scanBasePackages = {"cn.hippo4j.example.core", "cn.hippo4j.springboot.starter.adapter.kafka.example"})
+public class ServerAdapterKafkaExampleApplication {
 
-/**
- * SPI whit generic type test.
- */
-public class MyArrayBlockingQueue implements CustomBlockingQueue<Runnable> {
-
-    @Override
-    public Integer getType() {
-        return null;
-    }
-
-    @Override
-    public String getName() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
-    public BlockingQueue<Runnable> generateBlockingQueue() {
-        return new LinkedBlockingQueue<>(20);
+    public static void main(String[] args) {
+        SpringApplication.run(ServerAdapterKafkaExampleApplication.class, args);
     }
 }
