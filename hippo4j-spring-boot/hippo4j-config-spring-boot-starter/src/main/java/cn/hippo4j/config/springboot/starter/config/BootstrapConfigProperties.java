@@ -101,20 +101,9 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
     private Map<String, String> etcd;
 
     /**
-     * Tomcat thread pool config.
+     * web config
      */
-    private WebThreadPoolProperties tomcat;
-
-    /**
-     * Undertow thread pool config.
-     */
-    private WebThreadPoolProperties undertow;
-
-    /**
-     * Jetty thread pool config.
-     * KeepAliveTime is not supported temporarily.
-     */
-    private WebThreadPoolProperties jetty;
+    private WebThreadPoolProperties web;
 
     /**
      * Notify platforms.
