@@ -214,6 +214,16 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getRejectedHandler).get()))
                 .threadNamePrefix(StringUtil.isBlank(executorProperties.getThreadNamePrefix()) ? executorProperties.getThreadPoolId() : executorProperties.getThreadNamePrefix())
                 .threadPoolId(executorProperties.getThreadPoolId())
+                .alarm(Optional.ofNullable(executorProperties.getAlarm())
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).get()))
+                .activeAlarm(Optional.ofNullable(executorProperties.getActiveAlarm())
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getActiveAlarm).get()))
+                .capacityAlarm(Optional.ofNullable(executorProperties.getCapacityAlarm())
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getCapacityAlarm).get()))
+                .notify(Optional.ofNullable(executorProperties.getNotify())
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).get()))
+                .nodes(Optional.ofNullable(executorProperties.getNodes())
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNodes).get()))
                 .build();
     }
 
