@@ -18,6 +18,7 @@
 package cn.hippo4j.adapter.web;
 
 import cn.hippo4j.common.constant.ChangeThreadPoolConstants;
+import cn.hippo4j.common.enums.WebContainerEnum;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
@@ -95,5 +96,10 @@ public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
         } catch (Exception ex) {
             log.error("Failed to modify the jetty thread pool parameter.", ex);
         }
+    }
+
+    @Override
+    public WebContainerEnum getWebContainerType() {
+        return WebContainerEnum.JETTY;
     }
 }

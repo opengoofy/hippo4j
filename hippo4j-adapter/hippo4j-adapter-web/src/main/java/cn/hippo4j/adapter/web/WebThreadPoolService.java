@@ -17,6 +17,7 @@
 
 package cn.hippo4j.adapter.web;
 
+import cn.hippo4j.common.enums.WebContainerEnum;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
@@ -73,4 +74,11 @@ public interface WebThreadPoolService {
     default WebServer getWebServer() {
         return null;
     }
+
+    /**
+     * resolve current web container type.
+     *
+     * <p>e.g: tomcat, jetty, undertow, etc.</p>
+     */
+    WebContainerEnum getWebContainerType();
 }

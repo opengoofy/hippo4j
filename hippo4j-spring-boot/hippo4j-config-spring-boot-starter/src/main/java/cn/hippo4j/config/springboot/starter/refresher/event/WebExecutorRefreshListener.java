@@ -46,10 +46,7 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
     @Override
     public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
         BootstrapConfigProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapConfigProperties();
-        boolean isNullFlag = bindableCoreProperties.getJetty() == null
-                && bindableCoreProperties.getUndertow() == null
-                && bindableCoreProperties.getTomcat() == null;
-        if (isNullFlag) {
+        if (bindableCoreProperties.getWeb() == null) {
             return;
         }
         try {
@@ -71,14 +68,8 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
 
     private ThreadPoolParameterInfo buildWebPoolParameter(BootstrapConfigProperties bindableCoreProperties) {
         ThreadPoolParameterInfo threadPoolParameterInfo = null;
-        WebThreadPoolProperties webThreadPoolProperties = null;
-        if (bindableCoreProperties.getTomcat() != null) {
-            webThreadPoolProperties = bindableCoreProperties.getTomcat();
-        } else if (bindableCoreProperties.getUndertow() != null) {
-            webThreadPoolProperties = bindableCoreProperties.getUndertow();
-        } else if (bindableCoreProperties.getJetty() != null) {
-            webThreadPoolProperties = bindableCoreProperties.getJetty();
-        }
+        WebThreadPoolProperties webThreadPoolProperties = bindableCoreProperties.getWeb();
+
         if (webThreadPoolProperties != null && webThreadPoolProperties.getEnable() && match(webThreadPoolProperties)) {
             threadPoolParameterInfo = ThreadPoolParameterInfo.builder()
                     .coreSize(webThreadPoolProperties.getCorePoolSize())
