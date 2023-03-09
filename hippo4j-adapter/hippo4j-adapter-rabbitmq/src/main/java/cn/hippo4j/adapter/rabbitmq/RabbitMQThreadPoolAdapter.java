@@ -21,6 +21,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.toolkit.ReflectUtil;
+import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
@@ -84,8 +85,7 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
         if (Objects.nonNull(threadPoolTaskExecutor)) {
             int originalCoreSize = threadPoolTaskExecutor.getCorePoolSize();
             int originalMaximumPoolSize = threadPoolTaskExecutor.getMaximumPoolSize();
-            threadPoolTaskExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
-            threadPoolTaskExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
+            ThreadPoolExecutorUtil.safeSetPoolSize(threadPoolTaskExecutor, threadPoolAdapterParameter.getCorePoolSize(), threadPoolAdapterParameter.getMaximumPoolSize());
             log.info("[{}] Rabbitmq consumption thread pool parameter change. coreSize: {}, maximumSize: {}",
                     threadPoolKey,
                     String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolAdapterParameter.getCorePoolSize()),

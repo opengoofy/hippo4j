@@ -24,6 +24,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapterRegisterAction;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import com.netflix.hystrix.HystrixThreadPool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -96,8 +97,7 @@ public class HystrixThreadPoolAdapter implements ThreadPoolAdapter, ApplicationL
         }
         int originalCoreSize = threadPoolExecutor.getCorePoolSize();
         int originalMaximumPoolSize = threadPoolExecutor.getMaximumPoolSize();
-        threadPoolExecutor.setCorePoolSize(threadPoolAdapterParameter.getCorePoolSize());
-        threadPoolExecutor.setMaximumPoolSize(threadPoolAdapterParameter.getMaximumPoolSize());
+        ThreadPoolExecutorUtil.safeSetPoolSize(threadPoolExecutor, threadPoolAdapterParameter.getCorePoolSize(), threadPoolAdapterParameter.getMaximumPoolSize());
         log.info("[{}] Hystrix thread pool parameter change. coreSize: {}, maximumSize: {}",
                 threadPoolKey,
                 String.format(CHANGE_DELIMITER, originalCoreSize, threadPoolExecutor.getCorePoolSize()),

@@ -35,6 +35,7 @@ import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import cn.hippo4j.core.toolkit.DynamicThreadPoolAnnotationUtil;
+import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
@@ -179,13 +180,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         BlockingQueue workQueue = BlockingQueueTypeEnum.createBlockingQueue(threadPoolParameterInfo.getQueueType(), threadPoolParameterInfo.getCapacity());
         ReflectUtil.setFieldValue(executor, "workQueue", workQueue);
         // fix https://github.com/opengoofy/hippo4j/issues/1063
-        if (threadPoolParameterInfo.getCorePoolSize() > executor.getMaximumPoolSize()) {
-            executor.setMaximumPoolSize(threadPoolParameterInfo.maximumPoolSizeAdapt());
-            executor.setCorePoolSize(threadPoolParameterInfo.corePoolSizeAdapt());
-        } else {
-            executor.setCorePoolSize(threadPoolParameterInfo.corePoolSizeAdapt());
-            executor.setMaximumPoolSize(threadPoolParameterInfo.maximumPoolSizeAdapt());
-        }
+        ThreadPoolExecutorUtil.safeSetPoolSize(executor, threadPoolParameterInfo.corePoolSizeAdapt(), threadPoolParameterInfo.maximumPoolSizeAdapt());
         executor.setKeepAliveTime(threadPoolParameterInfo.getKeepAliveTime(), TimeUnit.SECONDS);
         executor.allowCoreThreadTimeOut(EnableEnum.getBool(threadPoolParameterInfo.getAllowCoreThreadTimeOut()));
         executor.setRejectedExecutionHandler(RejectedPolicyTypeEnum.createPolicy(threadPoolParameterInfo.getRejectedType()));

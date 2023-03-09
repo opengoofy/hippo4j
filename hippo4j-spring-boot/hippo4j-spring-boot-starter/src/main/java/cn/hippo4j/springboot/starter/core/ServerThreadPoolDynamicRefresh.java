@@ -26,6 +26,7 @@ import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
@@ -109,13 +110,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
 
     private void changePoolInfo(ThreadPoolExecutor executor, ThreadPoolParameter parameter) {
         if (parameter.getCoreSize() != null && parameter.getMaxSize() != null) {
-            if (parameter.getMaxSize() < executor.getMaximumPoolSize()) {
-                executor.setCorePoolSize(parameter.getCoreSize());
-                executor.setMaximumPoolSize(parameter.getMaxSize());
-            } else {
-                executor.setMaximumPoolSize(parameter.getMaxSize());
-                executor.setCorePoolSize(parameter.getCoreSize());
-            }
+            ThreadPoolExecutorUtil.safeSetPoolSize(executor, parameter.getCoreSize(), parameter.getMaxSize());
         } else {
             if (parameter.getMaxSize() != null) {
                 executor.setMaximumPoolSize(parameter.getMaxSize());
