@@ -17,10 +17,11 @@
 
 package cn.hippo4j.springboot.starter.adapter.hystrix;
 
-import cn.hippo4j.adapter.hystrix.HystrixThreadPoolAdapter;
+import cn.hippo4j.adapter.hystrix.HystrixThreadPoolAdapter4Config;
+import cn.hippo4j.adapter.hystrix.HystrixThreadPoolAdapter4Server;
 import cn.hippo4j.adapter.hystrix.ThreadPoolAdapterScheduler;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +47,14 @@ public class HystrixAdapterAutoConfiguration {
     }
 
     @Bean
-    public HystrixThreadPoolAdapter hystrixThreadPoolAdapter(ThreadPoolAdapterScheduler threadPoolAdapterScheduler) {
-        return new HystrixThreadPoolAdapter(threadPoolAdapterScheduler);
+    @ConditionalOnClass(name = "cn.hippo4j.springboot.starter.config.DynamicThreadPoolAutoConfiguration")
+    public HystrixThreadPoolAdapter4Server hystrixThreadPoolAdapter4Server(ThreadPoolAdapterScheduler threadPoolAdapterScheduler) {
+        return new HystrixThreadPoolAdapter4Server(threadPoolAdapterScheduler);
+    }
+
+    @Bean
+    @ConditionalOnClass(name = "cn.hippo4j.config.springboot.starter.config.DynamicThreadPoolAutoConfiguration")
+    public HystrixThreadPoolAdapter4Config hystrixThreadPoolAdapter4Config(ThreadPoolAdapterScheduler threadPoolAdapterScheduler) {
+        return new HystrixThreadPoolAdapter4Config(threadPoolAdapterScheduler);
     }
 }
