@@ -210,15 +210,15 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 .threadNamePrefix(StringUtil.isBlank(executorProperties.getThreadNamePrefix()) ? executorProperties.getThreadPoolId() : executorProperties.getThreadNamePrefix())
                 .threadPoolId(executorProperties.getThreadPoolId())
                 .alarm(Optional.ofNullable(executorProperties.getAlarm())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).orElse(null)))
                 .activeAlarm(Optional.ofNullable(executorProperties.getActiveAlarm())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getActiveAlarm).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getActiveAlarm).orElse(null)))
                 .capacityAlarm(Optional.ofNullable(executorProperties.getCapacityAlarm())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getCapacityAlarm).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getCapacityAlarm).orElse(null)))
                 .notify(Optional.ofNullable(executorProperties.getNotify())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).orElse(null)))
                 .nodes(Optional.ofNullable(executorProperties.getNodes())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNodes).get()))
+                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNodes).orElse(null)))
                 .build();
     }
 
