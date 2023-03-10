@@ -56,6 +56,12 @@ import org.springframework.core.annotation.Order;
 
 /**
  * Dynamic thread-pool auto-configuration.
+ *
+ * <p><b>NOTE:</b>
+ * {@code cn.hippo4j.config.springboot.starter.config.DynamicThreadPoolAutoConfiguration} is used in the
+ * hippo4j-spring-boot-starter-adapter-hystrix module to determine the condition, see
+ * {@code cn.hippo4j.springboot.starter.adapter.hystrix.HystrixAdapterAutoConfiguration}, please
+ * note the subsequent modification.
  */
 @Configuration
 @AllArgsConstructor
