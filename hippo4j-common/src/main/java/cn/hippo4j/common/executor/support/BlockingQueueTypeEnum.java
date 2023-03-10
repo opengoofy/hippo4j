@@ -18,7 +18,6 @@
 package cn.hippo4j.common.executor.support;
 
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
-import cn.hippo4j.common.web.exception.NotSupportedException;
 import lombok.Getter;
 
 import java.util.Collection;
@@ -34,8 +33,6 @@ import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.function.Predicate;
-
-import static cn.hippo4j.common.web.exception.ErrorCodeEnum.SERVICE_ERROR;
 
 /**
  * Blocking queue type enum.
@@ -145,7 +142,7 @@ public enum BlockingQueueTypeEnum {
      * @return a BlockingQueue view of the specified T
      */
     <T> BlockingQueue<T> of(Integer capacity) {
-        throw new NotSupportedException("该队列必须有界", SERVICE_ERROR);
+        throw new NotSupportedException("该队列必须有界");
     }
 
     /**
@@ -157,7 +154,7 @@ public enum BlockingQueueTypeEnum {
      * @throws NotSupportedException
      */
     <T> BlockingQueue<T> of() {
-        throw new NotSupportedException("该队列不支持有界", SERVICE_ERROR);
+        throw new NotSupportedException("该队列不支持有界");
     }
 
     /**
