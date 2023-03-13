@@ -27,13 +27,10 @@ import cn.hippo4j.common.extension.reducer.Reducers;
 import cn.hippo4j.common.extension.spi.IOldSpi;
 import cn.hippo4j.common.extension.support.ExtensionInvoker;
 import cn.hippo4j.common.extension.support.ExtensionRegistry;
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +46,7 @@ public class ExtensionInvokerTest {
         ExtensionRegistry.getInstance().register(new AnyMatchExtImplA());
         ExtensionRegistry.getInstance().register(new AnyMatchExtImplB());
 
-        DynamicThreadPoolServiceLoader.register(IOldSpi.class);
+        ServiceLoaderRegistry.register(IOldSpi.class);
     }
     @Test
     public void test() {

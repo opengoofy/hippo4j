@@ -19,7 +19,7 @@ package cn.hippo4j.core.toolkit;
 
 import cn.hippo4j.common.api.ClientNetworkService;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.Joiner;
@@ -39,7 +39,7 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 public class IdentifyUtil {
 
     static {
-        DynamicThreadPoolServiceLoader.register(ClientNetworkService.class);
+        ServiceLoaderRegistry.register(ClientNetworkService.class);
     }
 
     /**
@@ -63,7 +63,7 @@ public class IdentifyUtil {
         if (StringUtil.isNotBlank(IDENTIFY)) {
             return IDENTIFY;
         }
-        String[] customerNetwork = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(ClientNetworkService.class)
+        String[] customerNetwork = ServiceLoaderRegistry.getSingletonServiceInstances(ClientNetworkService.class)
                 .stream().findFirst().map(each -> each.getNetworkIpPort(environment)).orElse(null);
         String ip;
         String port;

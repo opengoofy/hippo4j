@@ -20,7 +20,6 @@ package cn.hippo4j.common.extension.support;
 import cn.hippo4j.common.extension.IExtension;
 import cn.hippo4j.common.extension.reducer.Reducer;
 import cn.hippo4j.common.extension.reducer.Reducers;
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 
@@ -50,7 +49,7 @@ public class ExtensionInvoker {
 
         List<IExtension> implementations = registry.find(targetClz);
         if (CollectionUtil.isEmpty(implementations)) {
-            implementations = new ArrayList<>(DynamicThreadPoolServiceLoader.getSingletonServiceInstances(targetClz));
+            implementations = new ArrayList<>(ServiceLoaderRegistry.getSingletonServiceInstances(targetClz));
         }
         Assert.notEmpty(implementations, "can not find any extension realizations with interface: " + targetClz.getName());
 

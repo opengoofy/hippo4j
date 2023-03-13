@@ -17,7 +17,7 @@
 
 package cn.hippo4j.common.executor.support;
 
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import lombok.Getter;
 
 import java.util.Collection;
@@ -194,12 +194,12 @@ public enum BlockingQueueTypeEnum {
     private static final int DEFAULT_CAPACITY = 1024;
 
     static {
-        DynamicThreadPoolServiceLoader.register(CustomBlockingQueue.class);
+        ServiceLoaderRegistry.register(CustomBlockingQueue.class);
     }
 
 
     private static <T> BlockingQueue<T> customOrDefaultQueue(Integer capacity, Predicate<CustomBlockingQueue> predicate) {
-        Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
+        Collection<CustomBlockingQueue> customBlockingQueues = ServiceLoaderRegistry
                 .getSingletonServiceInstances(CustomBlockingQueue.class);
 
         return customBlockingQueues.stream()

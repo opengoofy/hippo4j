@@ -17,10 +17,11 @@
 
 package cn.hippo4j.common.spi;
 
-import cn.hippo4j.common.spi.annotation.SingletonSPI;
+import cn.hippo4j.common.extension.annotation.SingletonSPI;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 
 /**
- * test {@link DynamicThreadPoolServiceLoader}
+ * test {@link ServiceLoaderRegistry}
  */
 @SingletonSPI
 public interface TestSingletonInterfaceSPI {

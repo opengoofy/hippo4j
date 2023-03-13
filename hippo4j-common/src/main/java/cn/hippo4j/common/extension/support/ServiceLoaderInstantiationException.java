@@ -15,17 +15,14 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.spi.annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package cn.hippo4j.common.extension.support;
 
 /**
- * Annotation of singleton SPI.
+ * Service loader instantiation exception.
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SingletonSPI {
+public class ServiceLoaderInstantiationException extends RuntimeException {
+
+    public ServiceLoaderInstantiationException(final Class<?> clazz, final Exception cause) {
+        super(String.format("Can not find public default constructor for SPI class `%s`", clazz.getName()), cause);
+    }
 }

@@ -17,7 +17,7 @@
 
 package cn.hippo4j.common.executor.support;
 
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import lombok.Getter;
 
 import java.util.Collection;
@@ -59,7 +59,7 @@ public enum RejectedPolicyTypeEnum {
     }
 
     static {
-        DynamicThreadPoolServiceLoader.register(CustomRejectedExecutionHandler.class);
+        ServiceLoaderRegistry.register(CustomRejectedExecutionHandler.class);
     }
 
     public static RejectedExecutionHandler createPolicy(String name) {
@@ -70,7 +70,7 @@ public enum RejectedPolicyTypeEnum {
         if (rejectedTypeEnum != null) {
             return rejectedTypeEnum.rejectedHandler;
         }
-        Collection<CustomRejectedExecutionHandler> customRejectedExecutionHandlers = DynamicThreadPoolServiceLoader
+        Collection<CustomRejectedExecutionHandler> customRejectedExecutionHandlers = ServiceLoaderRegistry
                 .getSingletonServiceInstances(CustomRejectedExecutionHandler.class);
         Optional<RejectedExecutionHandler> customRejected = customRejectedExecutionHandlers.stream()
                 .filter(each -> Objects.equals(name, each.getName()))
@@ -85,7 +85,7 @@ public enum RejectedPolicyTypeEnum {
                 .map(each -> each.rejectedHandler)
                 .findFirst();
         RejectedExecutionHandler resultRejected = rejectedTypeEnum.orElseGet(() -> {
-            Collection<CustomRejectedExecutionHandler> customRejectedExecutionHandlers = DynamicThreadPoolServiceLoader
+            Collection<CustomRejectedExecutionHandler> customRejectedExecutionHandlers = ServiceLoaderRegistry
                     .getSingletonServiceInstances(CustomRejectedExecutionHandler.class);
             Optional<RejectedExecutionHandler> customRejected = customRejectedExecutionHandlers.stream()
                     .filter(each -> Objects.equals(type, each.getType()))
