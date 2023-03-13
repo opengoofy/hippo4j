@@ -47,6 +47,11 @@ public enum BlockingQueueTypeEnum {
         <T> BlockingQueue<T> of(Integer capacity) {
             return new ArrayBlockingQueue<>(capacity);
         }
+
+        @Override
+        <T> BlockingQueue<T> of() {
+            return new ArrayBlockingQueue<>(DEFAULT_CAPACITY);
+        }
     },
 
     /**
@@ -57,12 +62,22 @@ public enum BlockingQueueTypeEnum {
         <T> BlockingQueue<T> of(Integer capacity) {
             return new LinkedBlockingQueue<>(capacity);
         }
+
+        @Override
+        <T> BlockingQueue<T> of() {
+            return new LinkedBlockingQueue<>();
+        }
     },
 
     /**
      * {@link java.util.concurrent.LinkedBlockingDeque}
      */
     LINKED_BLOCKING_DEQUE(3, "LinkedBlockingDeque") {
+        @Override
+        <T> BlockingQueue<T> of(Integer capacity) {
+            return new LinkedBlockingDeque<>(capacity);
+        }
+
         @Override
         <T> BlockingQueue<T> of() {
             return new LinkedBlockingDeque<>();
@@ -74,6 +89,11 @@ public enum BlockingQueueTypeEnum {
      */
     SYNCHRONOUS_QUEUE(4, "SynchronousQueue") {
         @Override
+        <T> BlockingQueue<T> of(Integer capacity) {
+            return new SynchronousQueue<>();
+        }
+
+        @Override
         <T> BlockingQueue<T> of() {
             return new SynchronousQueue<>();
         }
@@ -83,6 +103,11 @@ public enum BlockingQueueTypeEnum {
      * {@link java.util.concurrent.LinkedTransferQueue}
      */
     LINKED_TRANSFER_QUEUE(5, "LinkedTransferQueue") {
+        @Override
+        <T> BlockingQueue<T> of(Integer capacity) {
+            return new LinkedTransferQueue<>();
+        }
+
         @Override
         <T> BlockingQueue<T> of() {
             return new LinkedTransferQueue<>();
@@ -97,6 +122,11 @@ public enum BlockingQueueTypeEnum {
         <T> BlockingQueue<T> of(Integer capacity) {
             return new PriorityBlockingQueue<>(capacity);
         }
+
+        @Override
+        <T> BlockingQueue<T> of() {
+            return new PriorityBlockingQueue<>();
+        }
     },
 
     /**
@@ -107,6 +137,11 @@ public enum BlockingQueueTypeEnum {
         <T> BlockingQueue<T> of(Integer capacity) {
             return new ResizableCapacityLinkedBlockingQueue<>(capacity);
         }
+
+        @Override
+        <T> BlockingQueue<T> of() {
+            return new ResizableCapacityLinkedBlockingQueue<>();
+        }
     };
 
     @Getter
@@ -114,6 +149,26 @@ public enum BlockingQueueTypeEnum {
 
     @Getter
     private String name;
+
+    /**
+     * Create the specified implement of BlockingQueue with init capacity.
+     * Abstract method, depends on sub override
+     *
+     * @param capacity the capacity of the queue
+     * @param <T>      the class of the objects in the BlockingQueue
+     * @return a BlockingQueue view of the specified T
+     */
+    abstract <T> BlockingQueue<T> of(Integer capacity);
+
+    /**
+     * Create the specified implement of BlockingQueue,has no capacity limit.
+     * Abstract method, depends on sub override
+     *
+     * @param <T> the class of the objects in the BlockingQueue
+     * @return a BlockingQueue view of the specified T
+     * @throws NotSupportedException
+     */
+    abstract <T> BlockingQueue<T> of();
 
     BlockingQueueTypeEnum(int type, String name) {
         this.type = type;
@@ -131,30 +186,6 @@ public enum BlockingQueueTypeEnum {
             typeToEnumMap.put(value.type, value);
             nameToEnumMap.put(value.name, value);
         }
-    }
-
-    /**
-     * Create the specified implement of BlockingQueue with init capacity.
-     * Abstract method, depends on sub override
-     *
-     * @param capacity the capacity of the queue
-     * @param <T>      the class of the objects in the BlockingQueue
-     * @return a BlockingQueue view of the specified T
-     */
-    <T> BlockingQueue<T> of(Integer capacity) {
-        throw new NotSupportedException("该队列必须有界");
-    }
-
-    /**
-     * Create the specified implement of BlockingQueue,has no capacity limit.
-     * Abstract method, depends on sub override
-     *
-     * @param <T> the class of the objects in the BlockingQueue
-     * @return a BlockingQueue view of the specified T
-     * @throws NotSupportedException
-     */
-    <T> BlockingQueue<T> of() {
-        throw new NotSupportedException("该队列不支持有界");
     }
 
     /**
@@ -188,7 +219,7 @@ public enum BlockingQueueTypeEnum {
         if (typeEnum == null) {
             return null;
         }
-        return Objects.isNull(capacity) ? typeEnum.of() : typeEnum.of(capacity);
+        return typeEnum.of();
     }
 
     private static final int DEFAULT_CAPACITY = 1024;
@@ -196,7 +227,6 @@ public enum BlockingQueueTypeEnum {
     static {
         DynamicThreadPoolServiceLoader.register(CustomBlockingQueue.class);
     }
-
 
     private static <T> BlockingQueue<T> customOrDefaultQueue(Integer capacity, Predicate<CustomBlockingQueue> predicate) {
         Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
