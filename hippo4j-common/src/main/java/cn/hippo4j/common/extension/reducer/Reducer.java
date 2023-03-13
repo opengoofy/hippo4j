@@ -30,9 +30,6 @@ import java.util.List;
 public abstract class Reducer<Element, Result> {
 
     @Getter
-    private boolean hasBreak = false;
-
-    @Getter
     private Result result;
 
     @Setter
@@ -46,19 +43,5 @@ public abstract class Reducer<Element, Result> {
     private ExtensionCallback<IExtension, Element> callback;
 
     public abstract Result reduce();
-
-    public boolean willBreak() {
-        return false;
-    }
-
-    public void setResult(Result result) {
-        this.result = result;
-    }
-
-    public abstract ReduceType reducerType();
-
-    public String reduceName() {
-        return this.getClass().getSimpleName();
-    }
 
 }
