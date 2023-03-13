@@ -44,4 +44,10 @@ public abstract class Reducer<Element, Result> {
 
     public abstract Result reduce();
 
+    public abstract ReduceType reducerType();
+
+    public String reduceName() {
+        return this.getClass().getSimpleName();
+    }
+
 }

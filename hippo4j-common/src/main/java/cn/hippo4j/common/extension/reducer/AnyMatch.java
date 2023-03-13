@@ -37,7 +37,6 @@ public class AnyMatch<Element> extends Reducer<Element, Boolean> {
     public AnyMatch(@NonNull Predicate<Element> predicate) {
         Objects.requireNonNull(predicate);
         this.predicate = predicate;
-        this.setResult(false);
     }
 
     @Override
