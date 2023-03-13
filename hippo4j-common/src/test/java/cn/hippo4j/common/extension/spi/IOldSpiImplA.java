@@ -15,26 +15,13 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.constant;
+package cn.hippo4j.common.extension.spi;
 
-/**
- * Http method constants.
- */
-public class HttpMethod {
+public class IOldSpiImplA implements IOldSpi {
 
-    public static final String GET = "GET";
-
-    public static final String HEAD = "HEAD";
-
-    public static final String POST = "POST";
-
-    public static final String PUT = "PUT";
-
-    public static final String PATCH = "PATCH";
-
-    public static final String DELETE = "DELETE";
-
-    public static final String OPTIONS = "OPTIONS";
-
-    public static final String TRACE = "TRACE";
+    @Override
+    public Boolean foo() {
+        System.out.println(this.getClass().getName());
+        return true;
+    }
 }

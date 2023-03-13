@@ -15,26 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.constant;
+package cn.hippo4j.common.extension.support;
+
+import java.util.function.Function;
 
 /**
- * Http method constants.
+ * Callback function of extension invocation.
+ * @param <T>
+ * @param <R>
  */
-public class HttpMethod {
+@FunctionalInterface
+public interface ExtensionCallback<T, R> extends Function<T, R> {
 
-    public static final String GET = "GET";
-
-    public static final String HEAD = "HEAD";
-
-    public static final String POST = "POST";
-
-    public static final String PUT = "PUT";
-
-    public static final String PATCH = "PATCH";
-
-    public static final String DELETE = "DELETE";
-
-    public static final String OPTIONS = "OPTIONS";
-
-    public static final String TRACE = "TRACE";
+    R apply(T extension);
 }
