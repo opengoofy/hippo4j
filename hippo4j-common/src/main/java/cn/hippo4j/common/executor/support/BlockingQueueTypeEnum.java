@@ -219,7 +219,7 @@ public enum BlockingQueueTypeEnum {
         if (typeEnum == null) {
             return null;
         }
-        return typeEnum.of();
+        return Objects.isNull(capacity) ? typeEnum.of() : typeEnum.of(capacity);
     }
 
     private static final int DEFAULT_CAPACITY = 1024;
