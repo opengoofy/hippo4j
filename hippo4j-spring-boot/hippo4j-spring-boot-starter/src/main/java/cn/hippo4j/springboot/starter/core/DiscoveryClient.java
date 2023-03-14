@@ -92,6 +92,8 @@ public class DiscoveryClient implements DisposableBean {
         String clientCloseUrlPath = Constants.BASE_PATH + "/client/close";
         Result clientCloseResult;
         try {
+            // close scheduledExecutor
+            this.scheduler.shutdown();
             String groupKeyIp = new StringBuilder()
                     .append(instanceInfo.getGroupKey())
                     .append(Constants.GROUP_KEY_DELIMITER)
@@ -126,6 +128,9 @@ public class DiscoveryClient implements DisposableBean {
     private boolean renew() {
         Result renewResult;
         try {
+            if (this.scheduler.isShutdown()) {
+                return false;
+            }
             InstanceInfo.InstanceRenew instanceRenew = new InstanceInfo.InstanceRenew()
                     .setAppName(instanceInfo.getAppName())
                     .setInstanceId(instanceInfo.getInstanceId())
