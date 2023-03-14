@@ -74,13 +74,11 @@ public class IdentifyUtil {
             ip = inetUtil.findFirstNonLoopBackHostInfo().getIpAddress();
             port = environment.getProperty("server.port", "8080");
         }
-        String identify = new StringBuilder()
-                .append(ip)
-                .append(":")
-                .append(port)
-                .append(IDENTIFY_SLICER_SYMBOL)
-                .append(CLIENT_IDENTIFICATION_VALUE)
-                .toString();
+        String identify = ip
+                + ":"
+                + port
+                + IDENTIFY_SLICER_SYMBOL
+                + CLIENT_IDENTIFICATION_VALUE;
         IDENTIFY = identify;
         return identify;
     }
