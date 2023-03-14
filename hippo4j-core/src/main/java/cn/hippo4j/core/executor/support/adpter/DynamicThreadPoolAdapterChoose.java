@@ -76,9 +76,7 @@ public class DynamicThreadPoolAdapterChoose {
      */
     public static void replace(Object executor, Executor dynamicThreadPoolExecutor) {
         Optional<DynamicThreadPoolAdapter> dynamicThreadPoolAdapterOptional = DYNAMIC_THREAD_POOL_ADAPTERS.stream().filter(each -> each.match(executor)).findFirst();
-        if (dynamicThreadPoolAdapterOptional.isPresent()) {
-            dynamicThreadPoolAdapterOptional.get().replace(executor, dynamicThreadPoolExecutor);
-        }
+        dynamicThreadPoolAdapterOptional.ifPresent(dynamicThreadPoolAdapter -> dynamicThreadPoolAdapter.replace(executor, dynamicThreadPoolExecutor));
     }
 
     /**
