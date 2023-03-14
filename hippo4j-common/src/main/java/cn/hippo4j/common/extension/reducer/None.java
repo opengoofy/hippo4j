@@ -31,6 +31,6 @@ public class None<Element> extends Reducer<Element, List<Element>> {
 
     @Override
     public List<Element> reduce() {
-        return extensionImplementations.stream().map(getCallback()).collect(Collectors.toList());
+        return realizations.stream().map(getCallback()).collect(Collectors.toList());
     }
 }

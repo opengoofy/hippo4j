@@ -41,11 +41,11 @@ public class AllMatch<Element> extends Reducer<Element, Boolean> {
 
     @Override
     public Boolean reduce() {
-        if (CollectionUtil.isEmpty(extensionImplementations)) {
+        if (CollectionUtil.isEmpty(realizations)) {
             return false;
         } else {
-            for (IExtension extensionImpl : extensionImplementations) {
-                if (!predicate.test(getCallback().apply(extensionImpl))) {
+            for (IExtension realization : realizations) {
+                if (!predicate.test(getCallback().apply(realization))) {
                     return false;
                 }
             }

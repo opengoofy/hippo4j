@@ -43,7 +43,7 @@ public class FirstOf<Element> extends Reducer<Element, Element> {
 
     @Override
     public Element reduce() {
-        for (IExtension extension : extensionImplementations) {
+        for (IExtension extension : realizations) {
             Element element = getCallback().apply(extension);
             if (null == predicate || predicate.test(element)) {
                 return element;

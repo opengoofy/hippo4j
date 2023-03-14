@@ -21,6 +21,7 @@ import cn.hippo4j.common.extension.IExtension;
 import cn.hippo4j.common.extension.annotation.Realization;
 import cn.hippo4j.common.extension.support.ExtensionRegistry;
 import cn.hippo4j.common.toolkit.ClassUtil;
+import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -28,6 +29,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Extension register bootstrap
@@ -45,20 +47,15 @@ public class ExtensionRegisterBootstrap implements ApplicationContextAware, Appl
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
-        Map<String, Object> realizationBeanMap = applicationContext.getBeansWithAnnotation(Realization.class);
-        realizationBeanMap.values().forEach(
-                realization -> {
-                    if (isInfrastructureClass(realization)) {
-                        return;
-                    }
-                    if (realization instanceof IExtension) {
-                        registry.register((IExtension) realization);
-                    }
-                });
+        applicationContext.getBeansWithAnnotation(Realization.class)
+                .entrySet().stream()
+                .filter(entry -> !filterClass(entry.getKey(), entry.getValue()))
+                .forEach(entry -> registry.register((IExtension) entry.getValue()));
     }
 
-    private boolean isInfrastructureClass(Object obj) {
-        return obj.getClass().isAssignableFrom(IExtension.class);
+    private boolean filterClass(String beanName, Object bean) {
+        return bean.getClass().isAssignableFrom(IExtension.class) ||
+                ScopedProxyUtils.isScopedTarget(beanName) ||
+                !(bean instanceof IExtension);
     }
 }

@@ -56,9 +56,9 @@ public class ExtensionRegistry implements IExtensionRegistry {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void register(IExtension implementation) {
+    public void register(IExtension realization) {
 
-        Class<?> implClass = implementation.getClass();
+        Class<?> implClass = realization.getClass();
         if (AopUtils.isAopProxy(implClass)) {
             implClass = ClassUtils.getUserClass(implClass);
         }
@@ -68,25 +68,25 @@ public class ExtensionRegistry implements IExtensionRegistry {
 
         for (Class<?> intf : interfaces) {
             if (IExtension.class.isAssignableFrom(intf)) {
-                this.register((Class<IExtension>) intf, implementation);
+                this.register((Class<IExtension>) intf, realization);
             }
         }
     }
 
     private void register(Class<? extends IExtension> extension, IExtension realization) {
         if (!registry.containsKey(extension) || CollectionUtil.isEmpty(registry.get(extension))) {
-            List<IExtension> implementations = new ArrayList<>();
-            implementations.add(realization);
-            registry.put(extension, implementations);
+            List<IExtension> realizations = new ArrayList<>();
+            realizations.add(realization);
+            registry.put(extension, realizations);
         } else {
             if (registry.get(extension).contains(realization)) {
                 log.warn(LogMessage.getInstance()
                         .kv("realizationClassName", realization.getClass().getName())
                         .msg("Extension realization already registered, skip."));
             }
-            List<IExtension> implementations = registry.get(extension);
-            implementations.add(realization);
-            registry.put(extension, implementations);
+            List<IExtension> realizations = registry.get(extension);
+            realizations.add(realization);
+            registry.put(extension, realizations);
         }
     }
 

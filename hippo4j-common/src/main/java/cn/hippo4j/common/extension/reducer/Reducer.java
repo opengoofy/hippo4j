@@ -36,7 +36,7 @@ public abstract class Reducer<Element, Result> {
     protected IExtensionRequest request;
 
     @Setter
-    protected List<IExtension> extensionImplementations;
+    protected List<IExtension> realizations;
 
     @Setter
     @Getter

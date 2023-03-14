@@ -47,13 +47,13 @@ public class ExtensionInvoker {
         Assert.isTrue(IExtension.class.isAssignableFrom(targetClz),
                 "can not execute extension point. please implement base extension interface(" + IExtension.class.getName() + ") first.");
 
-        List<IExtension> implementations = registry.find(targetClz);
-        if (CollectionUtil.isEmpty(implementations)) {
-            implementations = new ArrayList<>(ServiceLoaderRegistry.getSingletonServiceInstances(targetClz));
+        List<IExtension> realizations = registry.find(targetClz);
+        if (CollectionUtil.isEmpty(realizations)) {
+            realizations = new ArrayList<>(ServiceLoaderRegistry.getSingletonServiceInstances(targetClz));
         }
-        Assert.notEmpty(implementations, "can not find any extension realizations with interface: " + targetClz.getName());
+        Assert.notEmpty(realizations, "can not find any extension realizations with interface: " + targetClz.getName());
 
-        reducer.setExtensionImplementations(implementations);
+        reducer.setRealizations(realizations);
         reducer.setCallback((ExtensionCallback<IExtension, E>) callback);
         return reducer.reduce();
     }
