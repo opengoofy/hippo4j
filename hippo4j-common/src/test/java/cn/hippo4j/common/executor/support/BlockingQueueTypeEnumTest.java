@@ -69,7 +69,16 @@ class BlockingQueueTypeEnumTest {
 
     @Test
     void assertCreateBlockingQueueWithType() {
-
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(1, null));
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(2, null));
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(3, null));
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(4, null));
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(5, null));
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(6, null));
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(9, null));
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(100, null));
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(-1, null));
+        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(0, null));
     }
 
     @Test
