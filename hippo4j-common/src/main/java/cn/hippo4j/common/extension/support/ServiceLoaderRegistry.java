@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.spi;
+package cn.hippo4j.common.extension.support;
 
-import cn.hippo4j.common.spi.annotation.SingletonSPI;
+import cn.hippo4j.common.extension.annotation.SingletonSPI;
+import cn.hippo4j.common.extension.support.ServiceLoaderInstantiationException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -29,9 +30,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * Dynamic thread-pool service loader.
+ * Dynamic thread-pool SPI service loader.
  */
-public class DynamicThreadPoolServiceLoader {
+@Deprecated
+public class ServiceLoaderRegistry {
 
     /**
      * safe container。
@@ -40,7 +42,7 @@ public class DynamicThreadPoolServiceLoader {
      */
     private static final Map<Class<?>, Collection<?>> SERVICES = new ConcurrentHashMap<>();
 
-    private DynamicThreadPoolServiceLoader() {
+    private ServiceLoaderRegistry() {
     }
 
     /**

@@ -19,8 +19,6 @@ package cn.hippo4j.common.constant;
 
 /**
  * Http response code.
- *
- * @author Rongzhen Yan
  */
 public class HttpResponseCode {
 

@@ -30,8 +30,6 @@ import java.util.Map;
 
 /**
  * Represents a client-side HTTP response with JDK implementation
- *
- * @author Rongzhen Yan
  */
 public class JdkHttpClientResponse implements HttpClientResponse {
 
