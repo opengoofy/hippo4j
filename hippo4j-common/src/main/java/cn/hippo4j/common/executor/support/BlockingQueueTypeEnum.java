@@ -72,11 +72,6 @@ public enum BlockingQueueTypeEnum {
         }
 
         @Override
-        <T> BlockingQueue<T> of(Integer capacity) {
-            return new LinkedBlockingDeque<>(capacity);
-        }
-
-        @Override
         <T> BlockingQueue<T> of() {
             return new LinkedBlockingDeque<>();
         }
@@ -93,11 +88,6 @@ public enum BlockingQueueTypeEnum {
         }
 
         @Override
-        <T> BlockingQueue<T> of(Integer capacity) {
-            return new SynchronousQueue<>();
-        }
-
-        @Override
         <T> BlockingQueue<T> of() {
             return new SynchronousQueue<>();
         }
@@ -107,11 +97,6 @@ public enum BlockingQueueTypeEnum {
      * {@link java.util.concurrent.LinkedTransferQueue}
      */
     LINKED_TRANSFER_QUEUE(5, "LinkedTransferQueue") {
-
-        @Override
-        <T> BlockingQueue<T> of(Integer capacity) {
-            return new LinkedTransferQueue<>();
-        }
 
         @Override
         <T> BlockingQueue<T> of(Integer capacity) {
