@@ -79,8 +79,8 @@ public class ThreadPoolMonitorExecutor implements ApplicationRunner, DisposableB
         // Execute dynamic thread pool monitoring component.
         collectScheduledExecutor.scheduleWithFixedDelay(
                 this::scheduleRunnable,
-                properties.getInitialDelay(),
-                properties.getCollectInterval(),
+                monitor.getInitialDelay(),
+                monitor.getCollectInterval(),
                 TimeUnit.MILLISECONDS);
         if (GlobalThreadPoolManage.getThreadPoolNum() > 0) {
             log.info("Dynamic thread pool: [{}]. The dynamic thread pool starts data collection and reporting.", getThreadPoolNum());
