@@ -227,11 +227,11 @@ public enum BlockingQueueTypeEnum {
                 .map(each -> each.generateBlockingQueue())
                 .findFirst()
                 .orElseGet(() -> {
-                    Integer temCapacity = capacity;
+                    Integer tempCapacity = capacity;
                     if (capacity == null || capacity <= 0) {
-                        temCapacity = DEFAULT_CAPACITY;
+                        tempCapacity = DEFAULT_CAPACITY;
                     }
-                    return new LinkedBlockingQueue<T>(temCapacity);
+                    return new LinkedBlockingQueue<T>(tempCapacity);
                 });
     }
 
