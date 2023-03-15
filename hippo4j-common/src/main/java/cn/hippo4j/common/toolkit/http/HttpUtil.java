@@ -43,8 +43,6 @@ import static cn.hippo4j.common.constant.HttpHeaderConstants.CONTENT_LENGTH;
 
 /**
  * Http request utilities.
- *
- * @author Rongzhen Yan
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

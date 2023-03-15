@@ -19,7 +19,7 @@ package cn.hippo4j.springboot.starter.provider;
 
 import cn.hippo4j.common.api.ClientNetworkService;
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
@@ -40,7 +40,7 @@ import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 public final class InstanceInfoProviderFactory {
 
     static {
-        DynamicThreadPoolServiceLoader.register(ClientNetworkService.class);
+        ServiceLoaderRegistry.register(ClientNetworkService.class);
     }
 
     /**
@@ -69,7 +69,7 @@ public final class InstanceInfoProviderFactory {
                 .setIpApplicationName(CloudCommonIdUtil.getIpApplicationName(environment, inetUtils))
                 .setHostName(InetAddress.getLocalHost().getHostAddress()).setAppName(applicationName)
                 .setPort(port).setClientBasePath(contextPath).setGroupKey(ContentUtil.getGroupKey(itemId, namespace));
-        String[] customerNetwork = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(ClientNetworkService.class)
+        String[] customerNetwork = ServiceLoaderRegistry.getSingletonServiceInstances(ClientNetworkService.class)
                 .stream().findFirst().map(each -> each.getNetworkIpPort(environment)).orElse(null);
         String callBackUrl = new StringBuilder().append(Optional.ofNullable(customerNetwork).map(each -> each[0]).orElse(instanceInfo.getHostName())).append(":")
                 .append(Optional.ofNullable(customerNetwork).map(each -> each[1]).orElse(port)).append(instanceInfo.getClientBasePath())

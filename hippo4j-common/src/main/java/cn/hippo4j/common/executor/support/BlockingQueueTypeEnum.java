@@ -17,7 +17,7 @@
 
 package cn.hippo4j.common.executor.support;
 
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import lombok.Getter;
 
 import java.util.*;
@@ -33,6 +33,7 @@ public enum BlockingQueueTypeEnum {
      * {@link java.util.concurrent.ArrayBlockingQueue}
      */
     ARRAY_BLOCKING_QUEUE(1, "ArrayBlockingQueue") {
+
         @Override
         <T> BlockingQueue<T> of(Integer capacity) {
             return new ArrayBlockingQueue<>(capacity);
@@ -48,6 +49,7 @@ public enum BlockingQueueTypeEnum {
      * {@link java.util.concurrent.LinkedBlockingQueue}
      */
     LINKED_BLOCKING_QUEUE(2, "LinkedBlockingQueue") {
+
         @Override
         <T> BlockingQueue<T> of(Integer capacity) {
             return new LinkedBlockingQueue<>(capacity);
@@ -63,6 +65,7 @@ public enum BlockingQueueTypeEnum {
      * {@link java.util.concurrent.LinkedBlockingDeque}
      */
     LINKED_BLOCKING_DEQUE(3, "LinkedBlockingDeque") {
+
         @Override
         <T> BlockingQueue<T> of(Integer capacity) {
             return new LinkedBlockingDeque<>(capacity);
@@ -78,6 +81,7 @@ public enum BlockingQueueTypeEnum {
      * {@link java.util.concurrent.SynchronousQueue}
      */
     SYNCHRONOUS_QUEUE(4, "SynchronousQueue") {
+
         @Override
         <T> BlockingQueue<T> of(Integer capacity) {
             return new SynchronousQueue<>();
@@ -93,6 +97,7 @@ public enum BlockingQueueTypeEnum {
      * {@link java.util.concurrent.LinkedTransferQueue}
      */
     LINKED_TRANSFER_QUEUE(5, "LinkedTransferQueue") {
+
         @Override
         <T> BlockingQueue<T> of(Integer capacity) {
             return new LinkedTransferQueue<>();
@@ -108,6 +113,7 @@ public enum BlockingQueueTypeEnum {
      * {@link java.util.concurrent.PriorityBlockingQueue}
      */
     PRIORITY_BLOCKING_QUEUE(6, "PriorityBlockingQueue") {
+
         @Override
         <T> BlockingQueue<T> of(Integer capacity) {
             return new PriorityBlockingQueue<>(capacity);
@@ -123,6 +129,7 @@ public enum BlockingQueueTypeEnum {
      * {@link ResizableCapacityLinkedBlockingQueue}
      */
     RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockingQueue") {
+
         @Override
         <T> BlockingQueue<T> of(Integer capacity) {
             return new ResizableCapacityLinkedBlockingQueue<>(capacity);
@@ -215,11 +222,11 @@ public enum BlockingQueueTypeEnum {
     private static final int DEFAULT_CAPACITY = 1024;
 
     static {
-        DynamicThreadPoolServiceLoader.register(CustomBlockingQueue.class);
+        ServiceLoaderRegistry.register(CustomBlockingQueue.class);
     }
 
     private static <T> BlockingQueue<T> customOrDefaultQueue(Integer capacity, Predicate<CustomBlockingQueue> predicate) {
-        Collection<CustomBlockingQueue> customBlockingQueues = DynamicThreadPoolServiceLoader
+        Collection<CustomBlockingQueue> customBlockingQueues = ServiceLoaderRegistry
                 .getSingletonServiceInstances(CustomBlockingQueue.class);
 
         return customBlockingQueues.stream()

@@ -15,17 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.spi.annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package cn.hippo4j.common.extension;
 
 /**
- * Annotation of singleton SPI.
+ * Top level interface of extension-point request obj.
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SingletonSPI {
+public interface IExtensionRequest {
 }

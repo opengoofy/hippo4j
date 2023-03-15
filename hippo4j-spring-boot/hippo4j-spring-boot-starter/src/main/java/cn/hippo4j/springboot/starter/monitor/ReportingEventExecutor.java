@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.monitor;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.common.monitor.Message;
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.ThreadUtil;
@@ -119,7 +119,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
                 new Integer(collectType.split(",").length),
                 ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());
         Collection<ThreadPoolMonitor> dynamicThreadPoolMonitors =
-                DynamicThreadPoolServiceLoader.getSingletonServiceInstances(ThreadPoolMonitor.class);
+                ServiceLoaderRegistry.getSingletonServiceInstances(ThreadPoolMonitor.class);
         Map<String, ThreadPoolMonitor> threadPoolMonitorMap = ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class);
         boolean customerDynamicThreadPoolMonitorFlag = CollectionUtil.isNotEmpty(dynamicThreadPoolMonitors) || CollectionUtil.isNotEmpty(threadPoolMonitorMap);
         if (customerDynamicThreadPoolMonitorFlag) {

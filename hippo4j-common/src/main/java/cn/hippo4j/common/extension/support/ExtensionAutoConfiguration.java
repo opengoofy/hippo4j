@@ -15,26 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.constant;
+package cn.hippo4j.common.extension.support;
 
-/**
- * Http method constants.
- */
-public class HttpMethod {
+import cn.hippo4j.common.extension.config.ExtensionRegisterBootstrap;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-    public static final String GET = "GET";
+@Configuration
+public class ExtensionAutoConfiguration {
 
-    public static final String HEAD = "HEAD";
-
-    public static final String POST = "POST";
-
-    public static final String PUT = "PUT";
-
-    public static final String PATCH = "PATCH";
-
-    public static final String DELETE = "DELETE";
-
-    public static final String OPTIONS = "OPTIONS";
-
-    public static final String TRACE = "TRACE";
+    @Bean
+    public ExtensionRegisterBootstrap bootstrap() {
+        return new ExtensionRegisterBootstrap();
+    }
 }

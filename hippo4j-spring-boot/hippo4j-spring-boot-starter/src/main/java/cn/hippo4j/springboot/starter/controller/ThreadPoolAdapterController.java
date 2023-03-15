@@ -21,7 +21,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.api.ClientNetworkService;
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
@@ -59,7 +59,7 @@ public class ThreadPoolAdapterController {
             ThreadPoolAdapterState threadPoolState = each.getThreadPoolState(requestParameter.getThreadPoolKey());
             String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
             threadPoolState.setActive(active.toUpperCase());
-            String[] customerNetwork = DynamicThreadPoolServiceLoader.getSingletonServiceInstances(ClientNetworkService.class)
+            String[] customerNetwork = ServiceLoaderRegistry.getSingletonServiceInstances(ClientNetworkService.class)
                     .stream().findFirst().map(network -> network.getNetworkIpPort(environment)).orElse(null);
             String clientAddress;
             if (customerNetwork != null) {

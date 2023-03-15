@@ -15,26 +15,15 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.constant;
+package cn.hippo4j.common.extension.anymatch;
 
-/**
- * Http method constants.
- */
-public class HttpMethod {
+import cn.hippo4j.common.extension.annotation.Realization;
 
-    public static final String GET = "GET";
+@Realization
+public class AnyMatchExtImplA implements IAnyMatchExtension {
 
-    public static final String HEAD = "HEAD";
-
-    public static final String POST = "POST";
-
-    public static final String PUT = "PUT";
-
-    public static final String PATCH = "PATCH";
-
-    public static final String DELETE = "DELETE";
-
-    public static final String OPTIONS = "OPTIONS";
-
-    public static final String TRACE = "TRACE";
+    @Override
+    public Integer foo(Integer arg) {
+        return arg > 0 ? arg : null;
+    }
 }
