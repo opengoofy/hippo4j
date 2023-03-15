@@ -28,8 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Log message.
- *
- * @author Rongzhen Yan
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LogMessage {

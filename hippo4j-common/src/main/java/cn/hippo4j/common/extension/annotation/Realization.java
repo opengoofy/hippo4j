@@ -15,26 +15,21 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.constant;
+package cn.hippo4j.common.extension.annotation;
 
-/**
- * Http method constants.
- */
-public class HttpMethod {
+import org.springframework.stereotype.Component;
 
-    public static final String GET = "GET";
+import java.lang.annotation.*;
 
-    public static final String HEAD = "HEAD";
+@Inherited
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+@Component
+public @interface Realization {
 
-    public static final String POST = "POST";
+    String code() default "DEFAULT_CODE";
 
-    public static final String PUT = "PUT";
+    String name() default "DEFAULT_NAME";
 
-    public static final String PATCH = "PATCH";
-
-    public static final String DELETE = "DELETE";
-
-    public static final String OPTIONS = "OPTIONS";
-
-    public static final String TRACE = "TRACE";
+    int order() default 0;
 }

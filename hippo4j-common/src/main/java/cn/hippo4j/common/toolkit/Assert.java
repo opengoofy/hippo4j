@@ -38,6 +38,12 @@ public class Assert {
         isTrue(expression, "[Assertion failed] - this expression must be true");
     }
 
+    public static void isEmpty(Collection<?> collection, String message) {
+        if (!CollectionUtil.isEmpty(collection)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     public static void isNull(Object object, String message) {
         if (object != null) {
             throw new IllegalArgumentException(message);

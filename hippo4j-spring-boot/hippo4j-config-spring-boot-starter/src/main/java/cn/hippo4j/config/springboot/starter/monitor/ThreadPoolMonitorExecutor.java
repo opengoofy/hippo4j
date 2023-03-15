@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
-import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.MonitorProperties;
@@ -74,7 +74,7 @@ public class ThreadPoolMonitorExecutor implements ApplicationRunner, DisposableB
         List<String> collectTypes = Arrays.asList(monitor.getCollectTypes().split(","));
         ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class).forEach((beanName, bean) -> threadPoolMonitors.add(bean));
         Collection<DynamicThreadPoolMonitor> dynamicThreadPoolMonitors =
-                DynamicThreadPoolServiceLoader.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
+                ServiceLoaderRegistry.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
         dynamicThreadPoolMonitors.stream().filter(each -> collectTypes.contains(each.getType())).forEach(each -> threadPoolMonitors.add(each));
         // Execute dynamic thread pool monitoring component.
         collectScheduledExecutor.scheduleWithFixedDelay(
