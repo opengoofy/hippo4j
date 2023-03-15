@@ -21,8 +21,6 @@ import cn.hippo4j.common.toolkit.StringUtil;
 
 /**
  * Http media type.
- *
- * @author Rongzhen Yan
  */
 public final class HttpMediaType {
 

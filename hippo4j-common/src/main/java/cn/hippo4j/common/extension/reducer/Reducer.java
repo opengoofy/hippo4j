@@ -15,26 +15,39 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.constant;
+package cn.hippo4j.common.extension.reducer;
 
-/**
- * Http method constants.
- */
-public class HttpMethod {
+import cn.hippo4j.common.extension.IExtension;
+import cn.hippo4j.common.extension.IExtensionRequest;
+import cn.hippo4j.common.extension.support.ExtensionCallback;
+import cn.hippo4j.common.extension.support.ReduceType;
+import lombok.Getter;
+import lombok.Setter;
 
-    public static final String GET = "GET";
+import java.util.ArrayList;
+import java.util.List;
 
-    public static final String HEAD = "HEAD";
+public abstract class Reducer<Element, Result> {
 
-    public static final String POST = "POST";
+    @Getter
+    private Result result;
 
-    public static final String PUT = "PUT";
+    @Setter
+    protected IExtensionRequest request;
 
-    public static final String PATCH = "PATCH";
+    @Setter
+    protected List<IExtension> realizations;
 
-    public static final String DELETE = "DELETE";
+    @Setter
+    @Getter
+    private ExtensionCallback<IExtension, Element> callback;
 
-    public static final String OPTIONS = "OPTIONS";
+    public abstract Result reduce();
 
-    public static final String TRACE = "TRACE";
+    public abstract ReduceType reducerType();
+
+    public String reduceName() {
+        return this.getClass().getSimpleName();
+    }
+
 }

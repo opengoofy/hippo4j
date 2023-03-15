@@ -17,8 +17,10 @@
 
 package cn.hippo4j.common.spi;
 
+import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
+
 /**
- * test {@link DynamicThreadPoolServiceLoader}
+ * test {@link ServiceLoaderRegistry}
  */
 public class TestSingletonInterfaceSPIImpl implements TestSingletonInterfaceSPI {
 }

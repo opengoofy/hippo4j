@@ -15,26 +15,15 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.constant;
+package cn.hippo4j.common.extension.support;
 
-/**
- * Http method constants.
- */
-public class HttpMethod {
+import cn.hippo4j.common.extension.IExtension;
 
-    public static final String GET = "GET";
+import java.util.List;
 
-    public static final String HEAD = "HEAD";
+public interface IExtensionRegistry {
 
-    public static final String POST = "POST";
+    void register(IExtension realization);
 
-    public static final String PUT = "PUT";
-
-    public static final String PATCH = "PATCH";
-
-    public static final String DELETE = "DELETE";
-
-    public static final String OPTIONS = "OPTIONS";
-
-    public static final String TRACE = "TRACE";
+    List<IExtension> find(Class<? extends IExtension> extension);
 }

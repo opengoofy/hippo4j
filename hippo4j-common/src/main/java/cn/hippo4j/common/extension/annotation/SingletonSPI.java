@@ -15,26 +15,18 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.constant;
+package cn.hippo4j.common.extension.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Http method constants.
+ * Annotation of singleton SPI.
  */
-public class HttpMethod {
-
-    public static final String GET = "GET";
-
-    public static final String HEAD = "HEAD";
-
-    public static final String POST = "POST";
-
-    public static final String PUT = "PUT";
-
-    public static final String PATCH = "PATCH";
-
-    public static final String DELETE = "DELETE";
-
-    public static final String OPTIONS = "OPTIONS";
-
-    public static final String TRACE = "TRACE";
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Deprecated
+public @interface SingletonSPI {
 }

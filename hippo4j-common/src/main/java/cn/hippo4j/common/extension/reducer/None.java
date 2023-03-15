@@ -15,26 +15,22 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.constant;
+package cn.hippo4j.common.extension.reducer;
 
-/**
- * Http method constants.
- */
-public class HttpMethod {
+import cn.hippo4j.common.extension.support.ReduceType;
 
-    public static final String GET = "GET";
+import java.util.List;
+import java.util.stream.Collectors;
 
-    public static final String HEAD = "HEAD";
+public class None<Element> extends Reducer<Element, List<Element>> {
 
-    public static final String POST = "POST";
+    @Override
+    public ReduceType reducerType() {
+        return ReduceType.NONE;
+    }
 
-    public static final String PUT = "PUT";
-
-    public static final String PATCH = "PATCH";
-
-    public static final String DELETE = "DELETE";
-
-    public static final String OPTIONS = "OPTIONS";
-
-    public static final String TRACE = "TRACE";
+    @Override
+    public List<Element> reduce() {
+        return realizations.stream().map(getCallback()).collect(Collectors.toList());
+    }
 }
