@@ -20,18 +20,8 @@ package cn.hippo4j.common.executor.support;
 import cn.hippo4j.common.spi.DynamicThreadPoolServiceLoader;
 import lombok.Getter;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.LinkedTransferQueue;
-import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.function.Predicate;
 
 /**
@@ -145,10 +135,10 @@ public enum BlockingQueueTypeEnum {
     };
 
     @Getter
-    private Integer type;
+    private final Integer type;
 
     @Getter
-    private String name;
+    private final String name;
 
     /**
      * Create the specified implement of BlockingQueue with init capacity.
@@ -175,16 +165,16 @@ public enum BlockingQueueTypeEnum {
         this.name = name;
     }
 
-    private static Map<Integer, BlockingQueueTypeEnum> typeToEnumMap;
-    private static Map<String, BlockingQueueTypeEnum> nameToEnumMap;
+    private static final Map<Integer, BlockingQueueTypeEnum> TYPE_TO_ENUM_MAP;
+    private static final Map<String, BlockingQueueTypeEnum> NAME_TO_ENUM_MAP;
 
     static {
         final BlockingQueueTypeEnum[] values = BlockingQueueTypeEnum.values();
-        typeToEnumMap = new HashMap<>(values.length);
-        nameToEnumMap = new HashMap<>(values.length);
+        TYPE_TO_ENUM_MAP = new HashMap<>(values.length);
+        NAME_TO_ENUM_MAP = new HashMap<>(values.length);
         for (BlockingQueueTypeEnum value : values) {
-            typeToEnumMap.put(value.type, value);
-            nameToEnumMap.put(value.name, value);
+            TYPE_TO_ENUM_MAP.put(value.type, value);
+            NAME_TO_ENUM_MAP.put(value.name, value);
         }
     }
 
@@ -198,7 +188,7 @@ public enum BlockingQueueTypeEnum {
      * @return a BlockingQueue view of the specified T
      */
     private static <T> BlockingQueue<T> of(String blockingQueueName, Integer capacity) {
-        final BlockingQueueTypeEnum typeEnum = nameToEnumMap.get(blockingQueueName);
+        final BlockingQueueTypeEnum typeEnum = NAME_TO_ENUM_MAP.get(blockingQueueName);
         if (typeEnum == null) {
             return null;
         }
@@ -215,7 +205,7 @@ public enum BlockingQueueTypeEnum {
      * @return a BlockingQueue view of the specified T
      */
     private static <T> BlockingQueue<T> of(int type, Integer capacity) {
-        final BlockingQueueTypeEnum typeEnum = typeToEnumMap.get(type);
+        final BlockingQueueTypeEnum typeEnum = TYPE_TO_ENUM_MAP.get(type);
         if (typeEnum == null) {
             return null;
         }
@@ -262,7 +252,7 @@ public enum BlockingQueueTypeEnum {
         }
 
         return customOrDefaultQueue(capacity,
-                (customeQueue) -> Objects.equals(customeQueue.getName(), blockingQueueName));
+                (customerQueue) -> Objects.equals(customerQueue.getName(), blockingQueueName));
     }
 
     /**
@@ -293,7 +283,7 @@ public enum BlockingQueueTypeEnum {
      * @return {@link BlockingQueueTypeEnum#name BlockingQueueTypeEnum.name } or "".
      */
     public static String getBlockingQueueNameByType(int type) {
-        return Optional.ofNullable(typeToEnumMap.get(type))
+        return Optional.ofNullable(TYPE_TO_ENUM_MAP.get(type))
                 .map(value -> value.getName())
                 .orElse("");
     }
@@ -306,7 +296,7 @@ public enum BlockingQueueTypeEnum {
      * @return enum  {@link BlockingQueueTypeEnum}
      */
     public static BlockingQueueTypeEnum getBlockingQueueTypeEnumByName(String name) {
-        return Optional.ofNullable(nameToEnumMap.get(name))
+        return Optional.ofNullable(NAME_TO_ENUM_MAP.get(name))
                 .orElse(LINKED_BLOCKING_QUEUE);
     }
 }
