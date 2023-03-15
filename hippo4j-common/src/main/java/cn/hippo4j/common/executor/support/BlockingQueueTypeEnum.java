@@ -227,7 +227,7 @@ public enum BlockingQueueTypeEnum {
                 .map(each -> each.generateBlockingQueue())
                 .findFirst()
                 .orElseGet(() -> {
-                    int temCapacity = capacity;
+                    Integer temCapacity = capacity;
                     if (capacity == null || capacity <= 0) {
                         temCapacity = DEFAULT_CAPACITY;
                     }
