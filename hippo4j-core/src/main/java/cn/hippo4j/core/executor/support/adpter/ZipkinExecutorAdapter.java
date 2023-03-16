@@ -41,10 +41,10 @@ public class ZipkinExecutorAdapter implements DynamicThreadPoolAdapter {
     }
 
     public boolean matchSuper(Object executor) {
-        if (Objects.equals(MATCH_CLASS_NAME, Optional.ofNullable(executor).map(executorName -> executor.getClass().getName()))) {
+        if (Objects.equals(MATCH_CLASS_NAME, Optional.ofNullable(executor).map(Object::getClass).map(Class::getName).orElse(null))) {
             return true;
         } else {
-            return Objects.equals(MATCH_CLASS_NAME, Optional.ofNullable(executor).map(executorName -> executor.getClass().getSuperclass().getName()));
+            return Objects.equals(MATCH_CLASS_NAME, Optional.ofNullable(executor).map(Object::getClass).map(Class::getSuperclass).map(Class::getName).orElse(null));
         }
     }
 
