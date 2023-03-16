@@ -48,6 +48,11 @@ public class DefaultTomcatWebThreadPoolHandler extends DefaultAbstractWebThreadP
         super(new TomcatWebThreadPoolHandlerSupport(runtime));
     }
 
+    /**
+     * Get the thread pool object of the current web container based on the WebServer.
+     * @param webServer current Web-Server.
+     * @return Thread pool executor of the current web container.
+     */
     @Override
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
         if (cacheFlag.get()) {

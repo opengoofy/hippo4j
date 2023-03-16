@@ -25,16 +25,40 @@ import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 
 import java.util.concurrent.Executor;
 
+/**
+ * Support class for WebThreadPoolHandler, providing some common methods.
+ */
 public interface IWebThreadPoolHandlerSupport {
 
+    /**
+     * Set the Executor to the current class
+     * so that other methods in the class can function properly.
+     * @param executor
+     */
     void setExecutor(Executor executor);
 
+    /**
+     * Retrieve the simple information of the thread pool.
+     * @return
+     */
     ThreadPoolBaseInfo simpleInfo();
 
+    /**
+     * Retrieve the parameter of the thread pool.
+     * @return
+     */
     ThreadPoolParameter getWebThreadPoolParameter();
 
+    /**
+     * Retrieve the run state of the thread pool.
+     * @return
+     */
     ThreadPoolRunStateInfo getWebRunStateInfo();
 
+    /**
+     * Update thread pool parameters.
+     * @param threadPoolParameterInfo New parameters
+     */
     void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo);
 
     WebContainerEnum getWebContainerType();

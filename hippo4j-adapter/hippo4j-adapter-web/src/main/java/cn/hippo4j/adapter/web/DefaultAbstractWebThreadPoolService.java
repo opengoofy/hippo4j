@@ -24,30 +24,46 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.concurrent.Executor;
 
+/**
+ * Default WebThreadPoolService abstract class,
+ * reuses common capabilities for web container operations.
+ */
 public abstract class DefaultAbstractWebThreadPoolService extends AbstractWebThreadPoolService {
 
     public DefaultAbstractWebThreadPoolService(IWebThreadPoolHandlerSupport support) {
         super(support);
     }
 
+    /**
+     * Get the internal abstract method of the web container thread pool,
+     * to be implemented by subclasses.
+     * @return
+     */
     @Override
     protected Executor getWebThreadPoolInternal() {
         return getWebThreadPoolByServer(getWebServer());
     }
 
+    /**
+     * Get port by server.
+     * @return web port
+     */
     @Override
     public Integer getPort() {
         return getWebServer().getPort();
     }
 
     /**
-     * Get web thread pool by server
-     *
-     * @param webServer
-     * @return
+     * Get the thread pool object of the current web container based on the WebServer.
+     * @param webServer current Web-Server.
+     * @return Thread pool executor of the current web container.
      */
     protected abstract Executor getWebThreadPoolByServer(WebServer webServer);
 
+    /**
+     * Get current Web Server.
+     * @return webServer current Web-Server.
+     */
     public WebServer getWebServer() {
         ApplicationContext applicationContext = ApplicationContextHolder.getInstance();
         return ((WebServerApplicationContext) applicationContext).getWebServer();

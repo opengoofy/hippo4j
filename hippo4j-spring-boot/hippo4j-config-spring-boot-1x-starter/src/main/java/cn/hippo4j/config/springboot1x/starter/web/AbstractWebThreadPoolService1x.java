@@ -32,10 +32,16 @@ public abstract class AbstractWebThreadPoolService1x extends AbstractWebThreadPo
         super(support);
     }
 
+    /**
+     * Get the embedded Servlet container from the Spring application context.
+     */
     protected EmbeddedServletContainer getContainer() {
         return ((EmbeddedWebApplicationContext) ApplicationContextHolder.getInstance()).getEmbeddedServletContainer();
     }
 
+    /**
+     * Get the port from web container.
+     */
     @Override
     public Integer getPort() {
         return getContainer().getPort();

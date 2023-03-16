@@ -49,6 +49,11 @@ public class DefaultUndertowWebThreadPoolHandler extends DefaultAbstractWebThrea
         super(new UndertowWebThreadPoolHandlerSupport());
     }
 
+    /**
+     * Get the thread pool object of the current web container based on the WebServer.
+     * @param webServer current Web-Server.
+     * @return Thread pool executor of the current web container.
+     */
     @Override
     protected Executor getWebThreadPoolByServer(WebServer webServer) {
         // There is no need to consider reflection performance because the fetch is a singleton.
