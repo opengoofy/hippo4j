@@ -15,31 +15,12 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.adapter.web;
+package cn.hippo4j.adapter.web.undertow;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
-import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.web.exception.ServiceException;
-import lombok.extern.slf4j.Slf4j;
 
 /**
- * Web thread pool handler choose.
+ * Adapt interface of Undertow web thread-pool handler.
  */
-@Slf4j
-public class WebThreadPoolHandlerChoose {
-
-    /**
-     * Choose the web thread pool service bean.
-     *
-     * @return web thread pool service bean
-     */
-    public WebThreadPoolService choose() {
-        WebThreadPoolService webThreadPoolService;
-        try {
-            webThreadPoolService = ApplicationContextHolder.getBean(WebThreadPoolService.class);
-        } catch (Exception ex) {
-            throw new ServiceException("Web thread pool service bean not found.", ex);
-        }
-        return webThreadPoolService;
-    }
+public interface UndertowWebThreadPoolHandlerAdapt extends WebThreadPoolService {
 }

@@ -15,31 +15,29 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.adapter.web;
+package cn.hippo4j.config.springboot1x.starter.web;
 
-import cn.hippo4j.adapter.web.WebThreadPoolService;
+import cn.hippo4j.adapter.web.AbstractWebThreadPoolService;
+import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.web.exception.ServiceException;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.embedded.EmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 
 /**
- * Web thread pool handler choose.
+ * Abstract class for adapting WebThreadPoolService to Spring 1.x version.
  */
-@Slf4j
-public class WebThreadPoolHandlerChoose {
+public abstract class AbstractWebThreadPoolService1x extends AbstractWebThreadPoolService {
 
-    /**
-     * Choose the web thread pool service bean.
-     *
-     * @return web thread pool service bean
-     */
-    public WebThreadPoolService choose() {
-        WebThreadPoolService webThreadPoolService;
-        try {
-            webThreadPoolService = ApplicationContextHolder.getBean(WebThreadPoolService.class);
-        } catch (Exception ex) {
-            throw new ServiceException("Web thread pool service bean not found.", ex);
-        }
-        return webThreadPoolService;
+    public AbstractWebThreadPoolService1x(IWebThreadPoolHandlerSupport support) {
+        super(support);
+    }
+
+    protected EmbeddedServletContainer getContainer() {
+        return ((EmbeddedWebApplicationContext) ApplicationContextHolder.getInstance()).getEmbeddedServletContainer();
+    }
+
+    @Override
+    public Integer getPort() {
+        return getContainer().getPort();
     }
 }

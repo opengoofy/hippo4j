@@ -15,15 +15,9 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.adapter.web;
+package cn.hippo4j.adapter.web.undertow;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-import java.util.concurrent.Executor;
-
+import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
 import cn.hippo4j.common.constant.ChangeThreadPoolConstants;
 import cn.hippo4j.common.enums.WebContainerEnum;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
@@ -32,33 +26,33 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import io.undertow.Undertow;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ReflectionUtils;
 import org.xnio.Options;
 import org.xnio.XnioWorker;
 
-import org.springframework.boot.web.embedded.undertow.UndertowServletWebServer;
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.util.ReflectionUtils;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.Executor;
 
 /**
- * Undertow web thread pool handler.
+ * The supporting class for WebThreadPoolHandler,
+ * which facilitates the creation of a Undertow web container.
  */
 @Slf4j
-public class UndertowWebThreadPoolHandler extends AbstractWebThreadPoolService {
+public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerSupport {
 
-    private static final String UNDERTOW_NAME = "undertow";
+    private Executor executor;
 
+    /**
+     * A callback will be invoked and the Executor will be set up when the web container has been started.
+     * @param executor Thread-pool executor in Undertow container.
+     */
     @Override
-    protected Executor getWebThreadPoolByServer(WebServer webServer) {
-        // There is no need to consider reflection performance because the fetch is a singleton.
-        // Springboot 2-3 version, can directly through reflection to obtain the undertow property
-        UndertowServletWebServer undertowServletWebServer = (UndertowServletWebServer) webServer;
-        Field undertowField = ReflectionUtils.findField(UndertowServletWebServer.class, UNDERTOW_NAME);
-        ReflectionUtils.makeAccessible(undertowField);
-
-        Undertow undertow = (Undertow) ReflectionUtils.getField(undertowField, undertowServletWebServer);
-        return Objects.isNull(undertow) ? null : undertow.getWorker();
+    public void setExecutor(Executor executor) {
+        this.executor = executor;
     }
 
     @Override

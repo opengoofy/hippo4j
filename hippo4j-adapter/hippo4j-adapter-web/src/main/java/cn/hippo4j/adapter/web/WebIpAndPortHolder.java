@@ -23,7 +23,6 @@ import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.web.server.WebServer;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Arrays;
@@ -86,8 +85,7 @@ public class WebIpAndPortHolder {
             WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
             WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
             // When get the port at startup, can get the message: "port xxx was already in use" or use two ports
-            WebServer webServer = webThreadPoolService.getWebServer();
-            port = webServer.getPort();
+            port = webThreadPoolService.getPort();
         }
 
         return new WebIpAndPortInfo(ip, String.valueOf(port));

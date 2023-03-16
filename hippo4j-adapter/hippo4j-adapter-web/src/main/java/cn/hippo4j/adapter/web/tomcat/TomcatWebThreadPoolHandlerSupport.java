@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.adapter.web;
+package cn.hippo4j.adapter.web.tomcat;
 
+import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
 import cn.hippo4j.common.constant.ChangeThreadPoolConstants;
 import cn.hippo4j.common.enums.WebContainerEnum;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
@@ -25,10 +26,7 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
-import org.springframework.boot.web.server.WebServer;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,36 +34,29 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Tomcat web thread pool handler.
+ * The supporting class for WebThreadPoolHandler,
+ * which facilitates the creation of a Tomcat web container.
  */
 @Slf4j
-@RequiredArgsConstructor
-public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
+public class TomcatWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerSupport {
 
-    private final AtomicBoolean cacheFlag = new AtomicBoolean(Boolean.FALSE);
+    private final AbstractThreadPoolRuntime runtime;
 
-    private static String exceptionMessage;
+    private Executor executor;
 
-    private final AbstractThreadPoolRuntime webThreadPoolRunStateHandler;
+    public TomcatWebThreadPoolHandlerSupport(AbstractThreadPoolRuntime runtime) {
+        this.runtime = runtime;
+    }
 
+    /**
+     * A callback will be invoked and the Executor will be set up when the web container has been started.
+     * @param executor Thread-pool executor in Tomcat container.
+     */
     @Override
-    protected Executor getWebThreadPoolByServer(WebServer webServer) {
-        if (cacheFlag.get()) {
-            log.warn("Exception getting Tomcat thread pool. Exception message: {}", exceptionMessage);
-            return null;
-        }
-        Executor tomcatExecutor = null;
-        try {
-            tomcatExecutor = ((TomcatWebServer) webServer).getTomcat().getConnector().getProtocolHandler().getExecutor();
-        } catch (Exception ex) {
-            cacheFlag.set(Boolean.TRUE);
-            exceptionMessage = ex.getMessage();
-            log.error("Failed to get Tomcat thread pool. Message: {}", exceptionMessage);
-        }
-        return tomcatExecutor;
+    public void setExecutor(Executor executor) {
+        this.executor = executor;
     }
 
     @Override
@@ -110,7 +101,7 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
     @Override
     public ThreadPoolRunStateInfo getWebRunStateInfo() {
         if (executor instanceof ThreadPoolExecutor) {
-            return webThreadPoolRunStateHandler.getPoolRunState(null, executor);
+            return runtime.getPoolRunState(null, executor);
         }
         ThreadPoolRunStateInfo runStateInfo = new ThreadPoolRunStateInfo();
         org.apache.tomcat.util.threads.ThreadPoolExecutor tomcatThreadPoolExecutor = (org.apache.tomcat.util.threads.ThreadPoolExecutor) executor;
@@ -144,7 +135,7 @@ public class TomcatWebThreadPoolHandler extends AbstractWebThreadPoolService {
         String rejectedExecutionHandlerName = executor instanceof ThreadPoolExecutor ? ((ThreadPoolExecutor) executor).getRejectedExecutionHandler().getClass().getSimpleName()
                 : tomcatThreadPoolExecutor.getRejectedExecutionHandler().getClass().getSimpleName();
         runStateInfo.setRejectedName(rejectedExecutionHandlerName);
-        return webThreadPoolRunStateHandler.supplement(runStateInfo);
+        return runtime.supplement(runStateInfo);
     }
 
     @Override

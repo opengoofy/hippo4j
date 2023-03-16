@@ -15,66 +15,41 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.adapter.web;
+package cn.hippo4j.adapter.web.jetty;
 
+import cn.hippo4j.adapter.web.DefaultAbstractWebThreadPoolService;
+import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
+import cn.hippo4j.common.constant.ChangeThreadPoolConstants;
 import cn.hippo4j.common.enums.WebContainerEnum;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.toolkit.ReflectUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.springframework.boot.web.embedded.jetty.JettyWebServer;
+import org.springframework.boot.web.server.WebServer;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
 /**
- * Web thread pool service.
+ * Jetty web thread pool handler.
  */
-public interface WebThreadPoolService {
+@Slf4j
+public class DefaultJettyWebThreadPoolHandler extends DefaultAbstractWebThreadPoolService
+        implements
+            JettyWebThreadPoolHandlerAdapt {
 
-    /**
-     * Get web thread pool.
-     *
-     * @return Tomcat、Jetty、Undertow ThreadPoolExecutor
-     */
-    Executor getWebThreadPool();
+    public DefaultJettyWebThreadPoolHandler() {
+        super(new JettyWebThreadPoolHandlerSupport());
+    }
 
-    /**
-     * Get web container port.
-     * @return
-     */
-    Integer getPort();
+    @Override
+    protected Executor getWebThreadPoolByServer(WebServer webServer) {
+        JettyWebServer jettyWebServer = (JettyWebServer) webServer;
+        return jettyWebServer.getServer().getThreadPool();
+    }
 
-    /**
-     * Simple info.
-     *
-     * @return
-     */
-    ThreadPoolBaseInfo simpleInfo();
-
-    /**
-     * Get web thread pool parameter.
-     *
-     * @return
-     */
-    ThreadPoolParameter getWebThreadPoolParameter();
-
-    /**
-     * Get web run state info.
-     *
-     * @return
-     */
-    ThreadPoolRunStateInfo getWebRunStateInfo();
-
-    /**
-     * Update web thread pool.
-     *
-     * @param threadPoolParameterInfo
-     */
-    void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo);
-
-    /**
-     * resolve current web container type.
-     *
-     * <p>e.g: tomcat, jetty, undertow, etc.</p>
-     */
-    WebContainerEnum getWebContainerType();
 }

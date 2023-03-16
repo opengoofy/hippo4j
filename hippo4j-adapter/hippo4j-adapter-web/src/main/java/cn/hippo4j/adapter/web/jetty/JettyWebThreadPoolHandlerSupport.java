@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.adapter.web;
+package cn.hippo4j.adapter.web.jetty;
 
+import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
 import cn.hippo4j.common.constant.ChangeThreadPoolConstants;
 import cn.hippo4j.common.enums.WebContainerEnum;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
@@ -26,22 +27,26 @@ import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
-import org.springframework.boot.web.embedded.jetty.JettyWebServer;
-import org.springframework.boot.web.server.WebServer;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
 /**
- * Jetty web thread pool handler.
+ * The supporting class for WebThreadPoolHandler,
+ * which facilitates the creation of a Jetty web container.
  */
 @Slf4j
-public class JettyWebThreadPoolHandler extends AbstractWebThreadPoolService {
+public class JettyWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerSupport {
 
+    private Executor executor;
+
+    /**
+     * A callback will be invoked and the Executor will be set up when the web container has been started.
+     * @param executor Thread-pool executor in Jetty container.
+     */
     @Override
-    protected Executor getWebThreadPoolByServer(WebServer webServer) {
-        JettyWebServer jettyWebServer = (JettyWebServer) webServer;
-        return jettyWebServer.getServer().getThreadPool();
+    public void setExecutor(Executor executor) {
+        this.executor = executor;
     }
 
     @Override
