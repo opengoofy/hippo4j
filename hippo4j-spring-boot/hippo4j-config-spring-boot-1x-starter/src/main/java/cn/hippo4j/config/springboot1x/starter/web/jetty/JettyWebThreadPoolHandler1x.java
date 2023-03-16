@@ -26,6 +26,7 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.springboot1x.starter.web.AbstractWebThreadPoolService1x;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainer;
 
 import java.util.concurrent.Executor;
@@ -33,6 +34,7 @@ import java.util.concurrent.Executor;
 /**
  * WebThreadPoolHandler compatible with Jetty container for Spring 1.x version.
  */
+@Slf4j
 public class JettyWebThreadPoolHandler1x extends AbstractWebThreadPoolService1x {
 
     public JettyWebThreadPoolHandler1x() {
@@ -44,7 +46,8 @@ public class JettyWebThreadPoolHandler1x extends AbstractWebThreadPoolService1x 
         try {
             return ((JettyEmbeddedServletContainer) getContainer()).getServer().getThreadPool();
         } catch (Throwable th) {
-            throw new ServiceException("Failed to get Jetty thread pool.", th);
+            log.error("Failed to get Jetty thread pool.", th);
+            return null;
         }
     }
 

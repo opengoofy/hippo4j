@@ -48,7 +48,8 @@ public class TomcatWebThreadPoolHandler1x extends AbstractWebThreadPoolService1x
             return ((TomcatEmbeddedServletContainer) getContainer())
                     .getTomcat().getConnector().getProtocolHandler().getExecutor();
         } catch (Throwable th) {
-            throw new ServiceException("Failed to get Tomcat thread pool.", th);
+            log.error("Failed to get Tomcat thread pool.", th);
+            return null;
         }
     }
 

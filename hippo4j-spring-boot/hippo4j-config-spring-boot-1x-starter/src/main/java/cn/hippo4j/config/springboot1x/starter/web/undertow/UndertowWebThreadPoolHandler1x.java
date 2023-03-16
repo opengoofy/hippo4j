@@ -55,7 +55,8 @@ public class UndertowWebThreadPoolHandler1x extends AbstractWebThreadPoolService
             Undertow undertow = (Undertow) ReflectionUtils.getField(field, container);
             return undertow.getWorker();
         } catch (Throwable th) {
-            throw new ServiceException("Failed to get Undertow thread pool.", th);
+            log.error("Failed to get Undertow thread pool.", th);
+            return null;
         }
     }
 

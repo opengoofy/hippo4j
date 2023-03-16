@@ -17,7 +17,6 @@
 
 package cn.hippo4j.adapter.web;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.enums.WebContainerEnum;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
@@ -26,14 +25,7 @@ import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.web.context.WebServerApplicationContext;
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.context.ApplicationContext;
-
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Abstract web thread pool service.
