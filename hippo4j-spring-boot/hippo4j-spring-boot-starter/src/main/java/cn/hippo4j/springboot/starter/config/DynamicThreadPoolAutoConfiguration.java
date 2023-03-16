@@ -43,6 +43,7 @@ import cn.hippo4j.springboot.starter.controller.ThreadPoolAdapterController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolRunStateController;
 import cn.hippo4j.springboot.starter.core.BaseThreadDetailStateHandler;
+import cn.hippo4j.springboot.starter.core.ClientShutdown;
 import cn.hippo4j.springboot.starter.core.ClientWorker;
 import cn.hippo4j.springboot.starter.core.DynamicThreadPoolSubscribeConfig;
 import cn.hippo4j.springboot.starter.core.ServerThreadPoolDynamicRefresh;
@@ -62,6 +63,7 @@ import cn.hippo4j.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.springboot.starter.support.ThreadPoolPluginRegisterPostProcessor;
 import lombok.AllArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -247,4 +249,8 @@ public class DynamicThreadPoolAutoConfiguration {
         return new ThreadPoolPluginRegisterPostProcessor();
     }
 
+    @Bean
+    public ClientShutdown clientShutdown() {
+        return new ClientShutdown();
+    }
 }
