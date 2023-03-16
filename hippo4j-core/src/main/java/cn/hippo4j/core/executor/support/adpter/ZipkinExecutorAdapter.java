@@ -23,6 +23,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.Executor;
 
 /**
@@ -40,10 +41,10 @@ public class ZipkinExecutorAdapter implements DynamicThreadPoolAdapter {
     }
 
     public boolean matchSuper(Object executor) {
-        if (Objects.equals(MATCH_CLASS_NAME, executor.getClass().getName())) {
+       if (Objects.equals(MATCH_CLASS_NAME, Optional.ofNullable(executor).map(executorName -> executor.getClass().getName()))) {
             return true;
         } else {
-            return Objects.equals(MATCH_CLASS_NAME, executor.getClass().getSuperclass().getName());
+            return Objects.equals(MATCH_CLASS_NAME, Optional.ofNullable(executor).map(executorName -> executor.getClass().getSuperclass().getName()));
         }
     }
 
