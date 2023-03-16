@@ -17,10 +17,13 @@
 
 package cn.hippo4j.springboot.starter.adapter.web;
 
-import cn.hippo4j.adapter.web.JettyWebThreadPoolHandler;
-import cn.hippo4j.adapter.web.TomcatWebThreadPoolHandler;
-import cn.hippo4j.adapter.web.UndertowWebThreadPoolHandler;
+import cn.hippo4j.adapter.web.jetty.DefaultJettyWebThreadPoolHandler;
+import cn.hippo4j.adapter.web.jetty.JettyWebThreadPoolHandlerAdapt;
+import cn.hippo4j.adapter.web.tomcat.DefaultTomcatWebThreadPoolHandler;
+import cn.hippo4j.adapter.web.tomcat.TomcatWebThreadPoolHandlerAdapt;
+import cn.hippo4j.adapter.web.undertow.DefaultUndertowWebThreadPoolHandler;
 import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
+import cn.hippo4j.adapter.web.undertow.UndertowWebThreadPoolHandlerAdapt;
 import io.undertow.Undertow;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.coyote.UpgradeProtocol;
@@ -29,6 +32,7 @@ import org.eclipse.jetty.util.Loader;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.boot.web.embedded.jetty.ConfigurableJettyWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.ConfigurableTomcatWebServerFactory;
@@ -49,6 +53,7 @@ public class WebThreadPoolHandlerConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({Servlet.class, Tomcat.class, UpgradeProtocol.class})
     @ConditionalOnBean(value = ConfigurableTomcatWebServerFactory.class, search = SearchStrategy.CURRENT)
+    @ConditionalOnMissingBean({DefaultTomcatWebThreadPoolHandler.class, TomcatWebThreadPoolHandlerAdapt.class})
     static class EmbeddedTomcat {
 
         /**
@@ -57,14 +62,15 @@ public class WebThreadPoolHandlerConfiguration {
          * the Web embedded server loads the {@link ServletWebServerFactory} top-level interface type at the same time
          */
         @Bean
-        public TomcatWebThreadPoolHandler tomcatWebThreadPoolHandler(WebThreadPoolRunStateHandler webThreadPoolRunStateHandler) {
-            return new TomcatWebThreadPoolHandler(webThreadPoolRunStateHandler);
+        public TomcatWebThreadPoolHandlerAdapt tomcatWebThreadPoolHandler(WebThreadPoolRunStateHandler webThreadPoolRunStateHandler) {
+            return new DefaultTomcatWebThreadPoolHandler(webThreadPoolRunStateHandler);
         }
     }
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({Servlet.class, Server.class, Loader.class, WebAppContext.class})
     @ConditionalOnBean(value = ConfigurableJettyWebServerFactory.class, search = SearchStrategy.CURRENT)
+    @ConditionalOnMissingBean({DefaultJettyWebThreadPoolHandler.class, JettyWebThreadPoolHandlerAdapt.class})
     static class EmbeddedJetty {
 
         /**
@@ -73,14 +79,15 @@ public class WebThreadPoolHandlerConfiguration {
          * the Web embedded server loads the {@link ServletWebServerFactory} top-level interface type at the same time
          */
         @Bean
-        public JettyWebThreadPoolHandler jettyWebThreadPoolHandler() {
-            return new JettyWebThreadPoolHandler();
+        public JettyWebThreadPoolHandlerAdapt jettyWebThreadPoolHandler() {
+            return new DefaultJettyWebThreadPoolHandler();
         }
     }
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({Servlet.class, Undertow.class, SslClientAuthMode.class})
     @ConditionalOnBean(value = ConfigurableUndertowWebServerFactory.class, search = SearchStrategy.CURRENT)
+    @ConditionalOnMissingBean({DefaultUndertowWebThreadPoolHandler.class, UndertowWebThreadPoolHandlerAdapt.class})
     static class EmbeddedUndertow {
 
         /**
@@ -89,8 +96,8 @@ public class WebThreadPoolHandlerConfiguration {
          * the Web embedded server loads the {@link ServletWebServerFactory} top-level interface type at the same time
          */
         @Bean
-        public UndertowWebThreadPoolHandler undertowWebThreadPoolHandler() {
-            return new UndertowWebThreadPoolHandler();
+        public UndertowWebThreadPoolHandlerAdapt undertowWebThreadPoolHandler() {
+            return new DefaultUndertowWebThreadPoolHandler();
         }
     }
 }

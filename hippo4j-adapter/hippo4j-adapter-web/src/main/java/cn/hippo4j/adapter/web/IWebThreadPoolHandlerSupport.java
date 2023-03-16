@@ -26,55 +26,40 @@ import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import java.util.concurrent.Executor;
 
 /**
- * Web thread pool service.
+ * Support class for WebThreadPoolHandler, providing some common methods.
  */
-public interface WebThreadPoolService {
+public interface IWebThreadPoolHandlerSupport {
 
     /**
-     * Get web thread pool.
-     *
-     * @return Tomcat、Jetty、Undertow ThreadPoolExecutor
+     * Set the Executor to the current class
+     * so that other methods in the class can function properly.
+     * @param executor
      */
-    Executor getWebThreadPool();
+    void setExecutor(Executor executor);
 
     /**
-     * Get web container port.
-     * @return
-     */
-    Integer getPort();
-
-    /**
-     * Simple info.
-     *
+     * Retrieve the simple information of the thread pool.
      * @return
      */
     ThreadPoolBaseInfo simpleInfo();
 
     /**
-     * Get web thread pool parameter.
-     *
+     * Retrieve the parameter of the thread pool.
      * @return
      */
     ThreadPoolParameter getWebThreadPoolParameter();
 
     /**
-     * Get web run state info.
-     *
+     * Retrieve the run state of the thread pool.
      * @return
      */
     ThreadPoolRunStateInfo getWebRunStateInfo();
 
     /**
-     * Update web thread pool.
-     *
-     * @param threadPoolParameterInfo
+     * Update thread pool parameters.
+     * @param threadPoolParameterInfo New parameters
      */
     void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo);
 
-    /**
-     * resolve current web container type.
-     *
-     * <p>e.g: tomcat, jetty, undertow, etc.</p>
-     */
     WebContainerEnum getWebContainerType();
 }

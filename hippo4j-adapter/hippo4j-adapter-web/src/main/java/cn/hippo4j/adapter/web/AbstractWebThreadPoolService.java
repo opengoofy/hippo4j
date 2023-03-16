@@ -17,14 +17,14 @@
 
 package cn.hippo4j.adapter.web;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.enums.WebContainerEnum;
+import cn.hippo4j.common.model.ThreadPoolBaseInfo;
+import cn.hippo4j.common.model.ThreadPoolParameter;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.web.context.WebServerApplicationContext;
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.context.ApplicationContext;
-
 import java.util.concurrent.Executor;
 
 /**
@@ -32,6 +32,12 @@ import java.util.concurrent.Executor;
  */
 @Slf4j
 public abstract class AbstractWebThreadPoolService implements WebThreadPoolService, ApplicationRunner {
+
+    private final IWebThreadPoolHandlerSupport support;
+
+    public AbstractWebThreadPoolService(IWebThreadPoolHandlerSupport support) {
+        this.support = support;
+    }
 
     /**
      * Thread pool executor
@@ -41,17 +47,16 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
     /**
      * Get web thread pool by server
      *
-     * @param webServer
      * @return
      */
-    protected abstract Executor getWebThreadPoolByServer(WebServer webServer);
+    protected abstract Executor getWebThreadPoolInternal();
 
     @Override
     public Executor getWebThreadPool() {
         if (executor == null) {
             synchronized (AbstractWebThreadPoolService.class) {
                 if (executor == null) {
-                    executor = getWebThreadPoolByServer(getWebServer());
+                    executor = getWebThreadPoolInternal();
                 }
             }
         }
@@ -59,16 +64,37 @@ public abstract class AbstractWebThreadPoolService implements WebThreadPoolServi
     }
 
     @Override
-    public WebServer getWebServer() {
-        ApplicationContext applicationContext = ApplicationContextHolder.getInstance();
-        WebServer webServer = ((WebServerApplicationContext) applicationContext).getWebServer();
-        return webServer;
+    public ThreadPoolBaseInfo simpleInfo() {
+        return support.simpleInfo();
     }
 
     @Override
+    public ThreadPoolParameter getWebThreadPoolParameter() {
+        return support.getWebThreadPoolParameter();
+    }
+
+    @Override
+    public ThreadPoolRunStateInfo getWebRunStateInfo() {
+        return support.getWebRunStateInfo();
+    }
+
+    @Override
+    public void updateWebThreadPool(ThreadPoolParameterInfo threadPoolParameterInfo) {
+        support.updateWebThreadPool(threadPoolParameterInfo);
+    }
+
+    @Override
+    public WebContainerEnum getWebContainerType() {
+        return support.getWebContainerType();
+    }
+
+    /**
+     * Call-back after the web container has been started.
+     */
+    @Override
     public void run(ApplicationArguments args) {
         try {
-            getWebThreadPool();
+            this.support.setExecutor(getWebThreadPool());
         } catch (Exception ignored) {
         }
     }

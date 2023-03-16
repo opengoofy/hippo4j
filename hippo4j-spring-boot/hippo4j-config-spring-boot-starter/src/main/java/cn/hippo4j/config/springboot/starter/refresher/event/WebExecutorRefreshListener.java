@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEventOrder.WEB_EXECUTOR_LISTENER;
 
@@ -55,6 +56,17 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
                 WebThreadPoolHandlerChoose webThreadPoolHandlerChoose = ApplicationContextHolder.getBean(WebThreadPoolHandlerChoose.class);
                 WebThreadPoolService webThreadPoolService = webThreadPoolHandlerChoose.choose();
                 ThreadPoolParameter beforeParameter = webThreadPoolService.getWebThreadPoolParameter();
+
+                // Prevent NPE exceptions from being thrown when certain parameters are not configured.
+                if (nowParameter.getCoreSize() == null) {
+                    nowParameter.setCoreSize(beforeParameter.getCoreSize());
+                }
+                if (nowParameter.getMaxSize() == null) {
+                    nowParameter.setMaxSize(beforeParameter.getMaxSize());
+                }
+                if (nowParameter.getKeepAliveTime() == null) {
+                    nowParameter.setKeepAliveTime(beforeParameter.getKeepAliveTime());
+                }
                 if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
                         || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
                         || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())) {
