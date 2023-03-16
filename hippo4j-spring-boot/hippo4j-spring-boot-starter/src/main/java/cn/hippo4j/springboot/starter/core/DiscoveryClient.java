@@ -54,7 +54,6 @@ public class DiscoveryClient implements DisposableBean {
 
     private final String appPathIdentifier;
 
-
     public DiscoveryClient(HttpAgent httpAgent, InstanceInfo instanceInfo) {
         this.httpAgent = httpAgent;
         this.instanceInfo = instanceInfo;

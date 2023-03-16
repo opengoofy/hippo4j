@@ -135,7 +135,6 @@ public class ServerHttpAgent implements HttpAgent {
         serverHealthCheck.isHealthStatus();
     }
 
-
     private boolean isPrepareClose() {
         if (clientShutdown == null) {
             clientShutdown = ApplicationContextHolder.getBean(ClientShutdown.class);

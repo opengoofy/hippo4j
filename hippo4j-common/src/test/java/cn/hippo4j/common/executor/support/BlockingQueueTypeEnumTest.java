@@ -111,7 +111,7 @@ public final class BlockingQueueTypeEnumTest {
         Assert.assertEquals("LinkedTransferQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(5));
         Assert.assertEquals("PriorityBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(6));
         Assert.assertEquals("ResizableCapacityLinkedBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(9));
-        //check illegal range of type
+        // check illegal range of type
         Assert.assertEquals("", BlockingQueueTypeEnum.getBlockingQueueNameByType(0));
         Assert.assertEquals("", BlockingQueueTypeEnum.getBlockingQueueNameByType(-1));
         Assert.assertEquals("", BlockingQueueTypeEnum.getBlockingQueueNameByType(100));
@@ -127,7 +127,7 @@ public final class BlockingQueueTypeEnumTest {
         Assert.assertEquals(BlockingQueueTypeEnum.LINKED_TRANSFER_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("LinkedTransferQueue"));
         Assert.assertEquals(BlockingQueueTypeEnum.PRIORITY_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("PriorityBlockingQueue"));
         Assert.assertEquals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("ResizableCapacityLinkedBlockingQueue"));
-        //check illegal range of name
+        // check illegal range of name
         Assert.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("Hello"));
         Assert.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName(null));
     }
