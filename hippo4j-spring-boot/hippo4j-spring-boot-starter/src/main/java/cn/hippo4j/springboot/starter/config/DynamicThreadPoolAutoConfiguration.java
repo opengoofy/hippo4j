@@ -63,7 +63,6 @@ import cn.hippo4j.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.springboot.starter.support.ThreadPoolPluginRegisterPostProcessor;
 import lombok.AllArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -250,7 +249,7 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public ClientShutdown clientShutdown() {
+    public ClientShutdown hippo4jClientShutdown() {
         return new ClientShutdown();
     }
 }

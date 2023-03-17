@@ -21,6 +21,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 
+/**
+ * Client Shutdown
+ */
 public class ClientShutdown {
 
     @Getter

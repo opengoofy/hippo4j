@@ -115,8 +115,7 @@ public class DiscoveryClient implements DisposableBean {
     }
 
     private void prepareDestroy() throws InterruptedException {
-        // close scheduled
-        this.scheduler.shutdown();
+        this.scheduler.shutdownNow();
         // try to make sure the ClientWorker is closed first
         ApplicationContextHolder.getBean(ClientShutdown.class).prepareDestroy();
     }

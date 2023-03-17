@@ -32,10 +32,12 @@ import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Server http agent.
  */
+@Slf4j
 public class ServerHttpAgent implements HttpAgent {
 
     private final BootstrapProperties dynamicThreadPoolProperties;
@@ -114,7 +116,7 @@ public class ServerHttpAgent implements HttpAgent {
         isHealthStatus();
         injectSecurityInfo(paramValues);
         if (isPrepareClose()) {
-            return null;
+            return new Result();
         }
         return HttpUtil.post(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
     }
@@ -141,6 +143,7 @@ public class ServerHttpAgent implements HttpAgent {
         }
         if (clientShutdown.isPrepareClose()) {
             clientShutdown.countDown();
+            log.info("client prepare shutdown");
             return true;
         }
         return false;
