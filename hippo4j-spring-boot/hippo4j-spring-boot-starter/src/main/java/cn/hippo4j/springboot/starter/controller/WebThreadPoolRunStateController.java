@@ -40,7 +40,6 @@ import java.util.List;
 public class WebThreadPoolRunStateController {
 
     private final ThreadPoolRunStateHandler threadPoolRunStateHandler;
-
     private final ThreadDetailState threadDetailState;
 
     @GetMapping("/run/state/{threadPoolId}")

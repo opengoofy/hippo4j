@@ -49,7 +49,6 @@ import static cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer.THREAD_POOL
 public class ThreadPoolAdapterController {
 
     private final ConfigurableEnvironment environment;
-
     private final InetUtils hippo4JInetUtils;
 
     @GetMapping("/adapter/thread-pool/info")
