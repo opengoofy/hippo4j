@@ -86,9 +86,10 @@ For full documentation & more details, visit: [Docs](https://www.hippo4j.cn)
 
 如果大家想要实时关注 Hippo4j 更新的文章以及分享的干货的话，可以关注我的公众号。
 
-使用过程中有任何问题，或者对项目有什么建议，添加微信备注：`hippo4j`，和 `1000+` 志同道合的朋友交流讨论。
+使用过程中有任何问题，或者对项目有什么建议，关注公众号回复：加群，和 `1000+` 志同道合的朋友交流讨论。
 
-<img width="558" alt="image" src="https://user-images.githubusercontent.com/77398366/222431518-1879472e-291f-403f-90da-b6cc4dc78f1a.png">
+<img width="586" alt="image" src="https://user-images.githubusercontent.com/77398366/225888779-367f42a6-8401-4867-8e80-44214e1d17c1.png">
+
 
 ### 深入原理
 
