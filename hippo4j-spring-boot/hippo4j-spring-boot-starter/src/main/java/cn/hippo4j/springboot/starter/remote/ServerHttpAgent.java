@@ -24,6 +24,7 @@ import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
+import cn.hippo4j.springboot.starter.core.ClientShutdown;
 import cn.hippo4j.springboot.starter.security.SecurityProxy;
 
 import java.util.HashMap;
@@ -31,10 +32,12 @@ import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Server http agent.
  */
+@Slf4j
 public class ServerHttpAgent implements HttpAgent {
 
     private final BootstrapProperties dynamicThreadPoolProperties;
@@ -44,6 +47,8 @@ public class ServerHttpAgent implements HttpAgent {
     private SecurityProxy securityProxy;
 
     private ServerHealthCheck serverHealthCheck;
+
+    private ClientShutdown clientShutdown;
 
     private ScheduledExecutorService executorService;
 
@@ -110,6 +115,9 @@ public class ServerHttpAgent implements HttpAgent {
     public Result httpPostByConfig(String path, Map<String, String> headers, Map<String, String> paramValues, long readTimeoutMs) {
         isHealthStatus();
         injectSecurityInfo(paramValues);
+        if (isPrepareClose()) {
+            return new Result();
+        }
         return HttpUtil.post(buildUrl(path), headers, paramValues, readTimeoutMs, Result.class);
     }
 
@@ -127,6 +135,18 @@ public class ServerHttpAgent implements HttpAgent {
             serverHealthCheck = ApplicationContextHolder.getBean(ServerHealthCheck.class);
         }
         serverHealthCheck.isHealthStatus();
+    }
+
+    private boolean isPrepareClose() {
+        if (clientShutdown == null) {
+            clientShutdown = ApplicationContextHolder.getBean(ClientShutdown.class);
+        }
+        if (clientShutdown.isPrepareClose()) {
+            clientShutdown.countDown();
+            log.info("client prepare shutdown");
+            return true;
+        }
+        return false;
     }
 
     private Map injectSecurityInfo(Map<String, String> params) {

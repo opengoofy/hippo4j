@@ -43,6 +43,7 @@ import cn.hippo4j.springboot.starter.controller.ThreadPoolAdapterController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolController;
 import cn.hippo4j.springboot.starter.controller.WebThreadPoolRunStateController;
 import cn.hippo4j.springboot.starter.core.BaseThreadDetailStateHandler;
+import cn.hippo4j.springboot.starter.core.ClientShutdown;
 import cn.hippo4j.springboot.starter.core.ClientWorker;
 import cn.hippo4j.springboot.starter.core.DynamicThreadPoolSubscribeConfig;
 import cn.hippo4j.springboot.starter.core.ServerThreadPoolDynamicRefresh;
@@ -247,4 +248,8 @@ public class DynamicThreadPoolAutoConfiguration {
         return new ThreadPoolPluginRegisterPostProcessor();
     }
 
+    @Bean
+    public ClientShutdown hippo4jClientShutdown() {
+        return new ClientShutdown();
+    }
 }

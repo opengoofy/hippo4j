@@ -28,6 +28,7 @@ import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.StringUtils;
 
 import java.net.URLDecoder;
@@ -56,7 +57,7 @@ import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
  * Client worker.
  */
 @Slf4j
-public class ClientWorker {
+public class ClientWorker implements DisposableBean {
 
     private final long timeout;
 
@@ -102,6 +103,11 @@ public class ClientWorker {
         }, 1L, TimeUnit.MILLISECONDS);
     }
 
+    @Override
+    public void destroy() throws Exception {
+        executorService.shutdownNow();
+    }
+
     class LongPollingRunnable implements Runnable {
 
         private boolean cacheMapInitEmptyFlag;
@@ -116,6 +122,9 @@ public class ClientWorker {
         @Override
         @SneakyThrows
         public void run() {
+            if (executorService.isShutdown()) {
+                return;
+            }
             if (cacheMapInitEmptyFlag) {
                 cacheCondition.await();
                 cacheMapInitEmptyFlag = false;

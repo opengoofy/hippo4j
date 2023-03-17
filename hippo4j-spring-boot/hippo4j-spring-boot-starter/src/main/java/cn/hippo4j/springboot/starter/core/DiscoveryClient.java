@@ -92,8 +92,7 @@ public class DiscoveryClient implements DisposableBean {
         String clientCloseUrlPath = Constants.BASE_PATH + "/client/close";
         Result clientCloseResult;
         try {
-            // close scheduledExecutor
-            this.scheduler.shutdown();
+            this.prepareDestroy();
             String groupKeyIp = new StringBuilder()
                     .append(instanceInfo.getGroupKey())
                     .append(Constants.GROUP_KEY_DELIMITER)
@@ -113,6 +112,12 @@ public class DiscoveryClient implements DisposableBean {
             }
             log.error("{}{} - client close hook fail.", PREFIX, appPathIdentifier, ex);
         }
+    }
+
+    private void prepareDestroy() throws InterruptedException {
+        this.scheduler.shutdownNow();
+        // try to make sure the ClientWorker is closed first
+        ApplicationContextHolder.getBean(ClientShutdown.class).prepareDestroy();
     }
 
     public class HeartbeatThread implements Runnable {
