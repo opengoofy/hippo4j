@@ -60,30 +60,30 @@ import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
 public class ClientWorker implements DisposableBean {
 
     private final long timeout;
-
-    private final HttpAgent agent;
-
     private final String identify;
-
     private final String version;
 
+    private final HttpAgent agent;
     private final ServerHealthCheck serverHealthCheck;
-
     private final ScheduledExecutorService executorService;
+    private final ClientShutdown hippo4jClientShutdown;
 
     private final CountDownLatch awaitApplicationComplete = new CountDownLatch(1);
-
     private final CountDownLatch cacheCondition = new CountDownLatch(1);
-
     private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap<>(16);
 
     @SuppressWarnings("all")
-    public ClientWorker(HttpAgent httpAgent, String identify, ServerHealthCheck serverHealthCheck, String version) {
+    public ClientWorker(HttpAgent httpAgent,
+                        String identify,
+                        ServerHealthCheck serverHealthCheck,
+                        String version,
+                        ClientShutdown hippo4jClientShutdown) {
         this.agent = httpAgent;
         this.identify = identify;
         this.timeout = CONFIG_LONG_POLL_TIMEOUT;
         this.version = version;
         this.serverHealthCheck = serverHealthCheck;
+        this.hippo4jClientShutdown = hippo4jClientShutdown;
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1, runnable -> {
             Thread thread = new Thread(runnable);
             thread.setName("client.worker.executor");
@@ -122,7 +122,9 @@ public class ClientWorker implements DisposableBean {
         @Override
         @SneakyThrows
         public void run() {
-            if (executorService.isShutdown()) {
+            if (executorService.isShutdown() || hippo4jClientShutdown.isPrepareClose()) {
+                hippo4jClientShutdown.countDown();
+                log.info("The task of monitoring dynamic thread pool changes has stopped.");
                 return;
             }
             if (cacheMapInitEmptyFlag) {

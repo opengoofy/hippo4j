@@ -114,9 +114,10 @@ public class DynamicThreadPoolAutoConfiguration {
     public ClientWorker hippo4jClientWorker(HttpAgent httpAgent,
                                             InetUtils hippo4JInetUtils,
                                             ServerHealthCheck serverHealthCheck,
-                                            DynamicThreadPoolBannerHandler dynamicThreadPoolBannerHandlers) {
+                                            DynamicThreadPoolBannerHandler dynamicThreadPoolBannerHandlers,
+                                            ClientShutdown hippo4jClientShutdown) {
         String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);
-        return new ClientWorker(httpAgent, identify, serverHealthCheck, dynamicThreadPoolBannerHandlers.getVersion());
+        return new ClientWorker(httpAgent, identify, serverHealthCheck, dynamicThreadPoolBannerHandlers.getVersion(), hippo4jClientShutdown);
     }
 
     @Bean
@@ -246,10 +247,5 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     public ThreadPoolPluginRegisterPostProcessor threadPoolPluginRegisterPostProcessor() {
         return new ThreadPoolPluginRegisterPostProcessor();
-    }
-
-    @Bean
-    public ClientShutdown hippo4jClientShutdown() {
-        return new ClientShutdown();
     }
 }
