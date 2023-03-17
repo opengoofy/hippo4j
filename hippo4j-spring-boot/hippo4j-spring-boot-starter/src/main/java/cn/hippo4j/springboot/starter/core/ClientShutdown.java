@@ -31,7 +31,7 @@ public class ClientShutdown {
 
     private CountDownLatch countDownLatch = new CountDownLatch(1);
 
-    private final static Long TIME_OUT_SECOND = 5L;
+    private final static Long TIME_OUT_SECOND = 1L;
 
     public void prepareDestroy() throws InterruptedException {
         prepareClose = true;
