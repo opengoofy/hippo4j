@@ -17,14 +17,7 @@
 
 package cn.hippo4j.config.springboot1x.starter.web.jetty;
 
-import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
 import cn.hippo4j.adapter.web.jetty.JettyWebThreadPoolHandlerSupport;
-import cn.hippo4j.common.enums.WebContainerEnum;
-import cn.hippo4j.common.model.ThreadPoolBaseInfo;
-import cn.hippo4j.common.model.ThreadPoolParameter;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.springboot1x.starter.web.AbstractWebThreadPoolService1x;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainer;

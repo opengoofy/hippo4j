@@ -127,8 +127,9 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public WebExecutorRefreshListener hippo4jWebExecutorListener() {
-        return new WebExecutorRefreshListener();
+    @SuppressWarnings("all")
+    public WebExecutorRefreshListener hippo4jWebExecutorListener(ThreadPoolConfigChange threadPoolConfigChange) {
+        return new WebExecutorRefreshListener(threadPoolConfigChange);
     }
 
     @Bean

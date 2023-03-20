@@ -91,7 +91,7 @@ public class TomcatWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerS
             long keepAliveTime = tomcatThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
             parameterInfo.setCoreSize(minThreads);
             parameterInfo.setMaxSize(maxThreads);
-            parameterInfo.setKeepAliveTime((int) keepAliveTime);
+            parameterInfo.setKeepAliveTime(keepAliveTime);
         } catch (Exception ex) {
             log.error("Failed to get the tomcat thread pool parameter.", ex);
         }

@@ -19,11 +19,14 @@ package cn.hippo4j.config.springboot.starter.refresher.event;
 
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.adapter.web.WebThreadPoolService;
+import cn.hippo4j.common.api.NotifyRequest;
+import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.WebThreadPoolProperties;
+import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 
@@ -37,7 +40,14 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
  */
 @Slf4j
 @Order(WEB_EXECUTOR_LISTENER)
+@SuppressWarnings("all")
 public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThreadPoolProperties> {
+
+    private final ThreadPoolConfigChange configChange;
+
+    public WebExecutorRefreshListener(ThreadPoolConfigChange configChange) {
+        this.configChange = configChange;
+    }
 
     @Override
     public String getNodes(WebThreadPoolProperties properties) {
@@ -71,11 +81,28 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
                         || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
                         || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())) {
                     webThreadPoolService.updateWebThreadPool(nowParameter);
+                    configChange.sendPoolConfigChange(buildChangeRequest(beforeParameter, nowParameter));
                 }
             }
         } catch (Exception ex) {
             log.error("Failed to modify web thread pool.", ex);
         }
+    }
+
+    /**
+     * Constructing a request for thread pool parameter change notification
+     * @param before
+     * @param now
+     * @return
+     */
+    private ChangeParameterNotifyRequest buildChangeRequest(ThreadPoolParameter before, ThreadPoolParameter now) {
+        return ChangeParameterNotifyRequest.builder()
+                .beforeCorePoolSize(before.getCoreSize())
+                .nowCorePoolSize(now.getCoreSize())
+                .beforeMaximumPoolSize(before.getMaxSize())
+                .nowMaximumPoolSize(now.getMaxSize())
+                .beforeKeepAliveTime(before.getKeepAliveTime())
+                .nowKeepAliveTime(now.getKeepAliveTime()).build();
     }
 
     private ThreadPoolParameterInfo buildWebPoolParameter(BootstrapConfigProperties bindableCoreProperties) {
