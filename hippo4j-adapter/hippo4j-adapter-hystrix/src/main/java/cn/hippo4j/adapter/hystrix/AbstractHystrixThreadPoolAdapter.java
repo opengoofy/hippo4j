@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -67,9 +68,11 @@ public abstract class AbstractHystrixThreadPoolAdapter implements ThreadPoolAdap
         ThreadPoolAdapterState result = new ThreadPoolAdapterState();
         ThreadPoolExecutor threadPoolExecutor = hystrixConsumeExecutor.get(identify);
         if (threadPoolExecutor != null) {
+            BlockingQueue<Runnable> blockingQueue = threadPoolExecutor.getQueue();
             result.setThreadPoolKey(identify);
             result.setCoreSize(threadPoolExecutor.getCorePoolSize());
             result.setMaximumSize(threadPoolExecutor.getMaximumPoolSize());
+            result.setBlockingQueueCapacity(blockingQueue.size() + blockingQueue.remainingCapacity());
             return result;
         }
         log.warn("[{}] Hystrix thread pool not found.", identify);
