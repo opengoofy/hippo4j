@@ -1,5 +1,5 @@
 
-## 动态可观测线程池，通过对 JDK 线程池的增强，以及扩展三方框架底层线程池等功能，为业务系统提高线上运行保障能力
+## 动态可观测线程池，提高系统运行保障能力
 
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
