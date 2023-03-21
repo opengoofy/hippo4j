@@ -15,38 +15,39 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.message.request;
 
+import cn.hippo4j.message.request.base.BaseNotifyRequest;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * Web thread pool properties.
+ * Change parameter notify request for web thread pool.
  */
 @Data
-public class WebThreadPoolProperties {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class WebChangeParameterNotifyRequest extends BaseNotifyRequest {
 
-    /**
-     * Core pool size
-     */
-    private Integer corePoolSize;
+    private String active;
 
-    /**
-     * Maximum pool size
-     */
-    private Integer maximumPoolSize;
+    private String appName;
 
-    /**
-     * Keep alive time
-     */
-    private Long keepAliveTime;
+    private String identify;
 
-    /**
-     * Nodes, application startup is not affect, change properties is effect
-     */
-    private String nodes;
+    private Integer beforeCorePoolSize;
 
-    /**
-     * these propertied is enabled?
-     */
-    private Boolean enable = true;
+    private Integer nowCorePoolSize;
+
+    private Integer beforeMaximumPoolSize;
+
+    private Integer nowMaximumPoolSize;
+
+    private Long beforeKeepAliveTime;
+
+    private Long nowKeepAliveTime;
+
 }

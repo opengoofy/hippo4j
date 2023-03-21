@@ -19,11 +19,14 @@ package cn.hippo4j.message.service;
 
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.common.api.NotifyRequest;
+import cn.hippo4j.message.request.AlarmNotifyRequest;
+import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.request.WebChangeParameterNotifyRequest;
 
 /**
  * Send message handler.
  */
-public interface SendMessageHandler<T extends NotifyRequest, R extends NotifyRequest> {
+public interface SendMessageHandler {
 
     /**
      * Get the message send type.
@@ -38,7 +41,7 @@ public interface SendMessageHandler<T extends NotifyRequest, R extends NotifyReq
      * @param notifyConfig       notify config
      * @param alarmNotifyRequest alarm notify request
      */
-    void sendAlarmMessage(NotifyConfigDTO notifyConfig, T alarmNotifyRequest);
+    void sendAlarmMessage(NotifyConfigDTO notifyConfig, AlarmNotifyRequest alarmNotifyRequest);
 
     /**
      * Send change message.
@@ -46,5 +49,15 @@ public interface SendMessageHandler<T extends NotifyRequest, R extends NotifyReq
      * @param notifyConfig                 notify config
      * @param changeParameterNotifyRequest change parameter notify request
      */
-    void sendChangeMessage(NotifyConfigDTO notifyConfig, R changeParameterNotifyRequest);
+    void sendChangeMessage(NotifyConfigDTO notifyConfig, ChangeParameterNotifyRequest changeParameterNotifyRequest);
+
+    /**
+     * Send web change message.
+     *
+     * @param notifyConfig                 notify config
+     * @param changeParameterNotifyRequest parameter notify request
+     */
+    default void sendWebChangeMessage(NotifyConfigDTO notifyConfig, WebChangeParameterNotifyRequest changeParameterNotifyRequest) throws IllegalAccessException {
+        throw new IllegalAccessException("Please implement this method before using it.");
+    }
 }

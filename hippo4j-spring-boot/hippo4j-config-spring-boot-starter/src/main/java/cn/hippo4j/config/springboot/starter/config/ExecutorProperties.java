@@ -31,7 +31,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class ExecutorProperties {
+public class ExecutorProperties implements IExecutorProperties {
 
     /**
      * Thread pool id

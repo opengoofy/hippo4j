@@ -15,45 +15,30 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.message.request.base;
-
-import cn.hippo4j.common.api.NotifyRequest;
-import cn.hippo4j.message.enums.NotifyTypeEnum;
-import lombok.Data;
+package cn.hippo4j.config.springboot.starter.config;
 
 /**
- * Base notify request.
+ * Interface for thread pool configuration.
  */
-@Data
-public class BaseNotifyRequest implements NotifyRequest {
+public interface IExecutorProperties {
 
     /**
-     * Tenant id
+     * Core pool size
      */
-    private String tenantId;
+    Integer getCorePoolSize();
 
     /**
-     * Item id
+     * Maximum pool size
      */
-    private String itemId;
+    Integer getMaximumPoolSize();
 
     /**
-     * Thread pool id
+     * Keep alive time
      */
-    private String threadPoolId;
+    Long getKeepAliveTime();
 
     /**
-     * Platform
+     * Notify configs
      */
-    private String platform;
-
-    /**
-     * Type
-     */
-    private String type;
-
-    /**
-     * Receives
-     */
-    private String receives;
+    DynamicThreadPoolNotifyProperties getNotify();
 }

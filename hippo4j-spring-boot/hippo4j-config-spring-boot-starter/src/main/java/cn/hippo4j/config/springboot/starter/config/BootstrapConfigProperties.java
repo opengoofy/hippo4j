@@ -78,8 +78,9 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
 
     /**
      * web config
+     * @since 1.5.0
      */
-    private WebThreadPoolProperties web;
+    private WebExecutorProperties web;
 
     /**
      * Notify platforms.

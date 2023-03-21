@@ -20,6 +20,7 @@ package cn.hippo4j.message.service;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.request.WebChangeParameterNotifyRequest;
 
 /**
  * Hippo-4j send message service.
@@ -40,4 +41,11 @@ public interface Hippo4jSendMessageService {
      * @param changeParameterNotifyRequest change parameter notify request
      */
     void sendChangeMessage(ChangeParameterNotifyRequest changeParameterNotifyRequest);
+
+    /**
+     * Send web thread pool parameter change notification.
+     *
+     * @param webChangeParameterNotifyRequest change parameter notify request
+     */
+    void sendChangeMessage(WebChangeParameterNotifyRequest webChangeParameterNotifyRequest);
 }

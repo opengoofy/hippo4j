@@ -32,7 +32,7 @@ import java.util.Objects;
 /**
  * Abstract robot send message handler.
  */
-public abstract class AbstractRobotSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
+public abstract class AbstractRobotSendMessageHandler implements SendMessageHandler {
 
     /**
      * Build message actual content.

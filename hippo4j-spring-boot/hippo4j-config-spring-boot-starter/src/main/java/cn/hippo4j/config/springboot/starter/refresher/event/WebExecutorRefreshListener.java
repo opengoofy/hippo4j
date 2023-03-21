@@ -19,19 +19,19 @@ package cn.hippo4j.config.springboot.starter.refresher.event;
 
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.adapter.web.WebThreadPoolService;
-import cn.hippo4j.common.api.NotifyRequest;
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-import cn.hippo4j.config.springboot.starter.config.WebThreadPoolProperties;
+import cn.hippo4j.config.springboot.starter.config.WebExecutorProperties;
+import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.request.WebChangeParameterNotifyRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEventOrder.WEB_EXECUTOR_LISTENER;
 
@@ -41,7 +41,7 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
 @Slf4j
 @Order(WEB_EXECUTOR_LISTENER)
 @SuppressWarnings("all")
-public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThreadPoolProperties> {
+public class WebExecutorRefreshListener extends AbstractRefreshListener<WebExecutorProperties> {
 
     private final ThreadPoolConfigChange configChange;
 
@@ -50,7 +50,7 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
     }
 
     @Override
-    public String getNodes(WebThreadPoolProperties properties) {
+    public String getNodes(WebExecutorProperties properties) {
         return properties.getNodes();
     }
 
@@ -79,9 +79,10 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
                 }
                 if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
                         || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
-                        || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())) {
+                        || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())
+                        || !webThreadPoolService.isContainerStarted()) {
                     webThreadPoolService.updateWebThreadPool(nowParameter);
-                    configChange.sendPoolConfigChange(buildChangeRequest(beforeParameter, nowParameter));
+                    configChange.sendPoolConfigChange(buildChangeRequest(beforeParameter, nowParameter, webThreadPoolService));
                 }
             }
         } catch (Exception ex) {
@@ -90,24 +91,27 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
     }
 
     /**
-     * Constructing a request for thread pool parameter change notification
+     * Constructing a request for web thread pool parameter change notification
      * @param before
      * @param now
      * @return
      */
-    private ChangeParameterNotifyRequest buildChangeRequest(ThreadPoolParameter before, ThreadPoolParameter now) {
-        return ChangeParameterNotifyRequest.builder()
+    private WebChangeParameterNotifyRequest buildChangeRequest(ThreadPoolParameter before, ThreadPoolParameter now,
+                                                               WebThreadPoolService webThreadPoolService) {
+        WebChangeParameterNotifyRequest changeNotifyRequest = WebChangeParameterNotifyRequest.builder()
                 .beforeCorePoolSize(before.getCoreSize())
                 .nowCorePoolSize(now.getCoreSize())
                 .beforeMaximumPoolSize(before.getMaxSize())
                 .nowMaximumPoolSize(now.getMaxSize())
                 .beforeKeepAliveTime(before.getKeepAliveTime())
                 .nowKeepAliveTime(now.getKeepAliveTime()).build();
+        changeNotifyRequest.setThreadPoolId(webThreadPoolService.getWebContainerType().name());
+        return changeNotifyRequest;
     }
 
     private ThreadPoolParameterInfo buildWebPoolParameter(BootstrapConfigProperties bindableCoreProperties) {
         ThreadPoolParameterInfo threadPoolParameterInfo = null;
-        WebThreadPoolProperties webThreadPoolProperties = bindableCoreProperties.getWeb();
+        WebExecutorProperties webThreadPoolProperties = bindableCoreProperties.getWeb();
 
         if (webThreadPoolProperties != null && webThreadPoolProperties.getEnable() && match(webThreadPoolProperties)) {
             threadPoolParameterInfo = ThreadPoolParameterInfo.builder()
