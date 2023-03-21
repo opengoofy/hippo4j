@@ -31,6 +31,11 @@ import java.util.concurrent.Executor;
 public interface WebThreadPoolService {
 
     /**
+     * Determine if the web container has started.
+     */
+    boolean isContainerStarted();
+
+    /**
      * Get web thread pool.
      *
      * @return Tomcat、Jetty、Undertow ThreadPoolExecutor

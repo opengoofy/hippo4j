@@ -18,21 +18,27 @@
 package cn.hippo4j.adapter.web;
 
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.Executor;
 
 /**
  * Default WebThreadPoolService abstract class,
  * reuses common capabilities for web container operations.
  */
+@Slf4j
 public abstract class DefaultAbstractWebThreadPoolService extends AbstractWebThreadPoolService {
 
     public DefaultAbstractWebThreadPoolService(IWebThreadPoolHandlerSupport support) {
         super(support);
     }
+
+    private static final String STARTED_FIELD_NAME = "started";
 
     /**
      * Get the internal abstract method of the web container thread pool,
@@ -51,6 +57,19 @@ public abstract class DefaultAbstractWebThreadPoolService extends AbstractWebThr
     @Override
     public Integer getPort() {
         return getWebServer().getPort();
+    }
+
+    @Override
+    public boolean isContainerStarted() {
+        try {
+            WebServer container = getWebServer();
+            Field field = ReflectionUtils.findField(WebServer.class, STARTED_FIELD_NAME);
+            ReflectionUtils.makeAccessible(field);
+            return (boolean) ReflectionUtils.getField(field, container);
+        } catch (Throwable th) {
+            log.error("Failed to get isStarted flag.", th);
+            return false;
+        }
     }
 
     /**
