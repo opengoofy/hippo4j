@@ -25,8 +25,6 @@ import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.config.WebExecutorProperties;
-import cn.hippo4j.message.enums.NotifyTypeEnum;
-import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.request.WebChangeParameterNotifyRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -79,8 +77,7 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebExecu
                 }
                 if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
                         || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
-                        || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())
-                        || !webThreadPoolService.isContainerStarted()) {
+                        || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())) {
                     webThreadPoolService.updateWebThreadPool(nowParameter);
                     configChange.sendPoolConfigChange(buildChangeRequest(beforeParameter, nowParameter, webThreadPoolService));
                 }

@@ -20,24 +20,17 @@ package cn.hippo4j.config.springboot1x.starter.web;
 import cn.hippo4j.adapter.web.AbstractWebThreadPoolService;
 import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
 import cn.hippo4j.common.config.ApplicationContextHolder;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.embedded.EmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
-import org.springframework.util.ReflectionUtils;
-
-import java.lang.reflect.Field;
 
 /**
  * Abstract class for adapting WebThreadPoolService to Spring 1.x version.
  */
-@Slf4j
 public abstract class AbstractWebThreadPoolService1x extends AbstractWebThreadPoolService {
 
     public AbstractWebThreadPoolService1x(IWebThreadPoolHandlerSupport support) {
         super(support);
     }
-
-    private static final String STARTED_FIELD_NAME = "started";
 
     /**
      * Get the embedded Servlet container from the Spring application context.
@@ -52,18 +45,5 @@ public abstract class AbstractWebThreadPoolService1x extends AbstractWebThreadPo
     @Override
     public Integer getPort() {
         return getContainer().getPort();
-    }
-
-    @Override
-    public boolean isContainerStarted() {
-        try {
-            EmbeddedServletContainer container = getContainer();
-            Field field = ReflectionUtils.findField(EmbeddedServletContainer.class, STARTED_FIELD_NAME);
-            ReflectionUtils.makeAccessible(field);
-            return (boolean) ReflectionUtils.getField(field, container);
-        } catch (Throwable th) {
-            log.error("Failed to get isStarted flag.", th);
-            return false;
-        }
     }
 }
