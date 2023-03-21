@@ -17,6 +17,7 @@
 
 package cn.hippo4j.common.config;
 
+import cn.hippo4j.common.enums.ProfileEnum;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -90,4 +91,12 @@ public class ApplicationContextHolder implements ApplicationContextAware {
     public static ApplicationContext getInstance() {
         return CONTEXT;
     }
+
+    /**
+     * Get current application profile.
+     */
+    public static ProfileEnum getActiveProfile() {
+        return ProfileEnum.of(CONTEXT.getEnvironment().getActiveProfiles()[0]);
+    }
+
 }

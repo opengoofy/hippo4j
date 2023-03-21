@@ -33,20 +33,28 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 public class WebThreadPoolConfigChangeHandler implements ThreadPoolConfigChange<WebChangeParameterNotifyRequest> {
 
+    @Value("${spring.profiles.active:UNKNOWN}")
+    private String active;
+
+    @Value("${spring.dynamic.thread-pool.item-id:}")
+    private String itemId;
+
     @Value("${spring.application.name:UNKNOWN}")
     private String applicationName;
 
     private final Hippo4jSendMessageService hippo4jSendMessageService;
 
     /**
-     * Send pool config change.
+     * Send pool config change message for web.
      *
      * @param requestParam change parameter notify request
      */
     @Override
     public void sendPoolConfigChange(WebChangeParameterNotifyRequest requestParam) {
         try {
-            requestParam.setAppName(applicationName);
+            requestParam.setActive(active.toUpperCase());
+            String appName = StringUtil.isBlank(itemId) ? applicationName : itemId;
+            requestParam.setAppName(appName);
             requestParam.setIdentify(IdentifyUtil.getIdentify());
             hippo4jSendMessageService.sendChangeMessage(requestParam);
         } catch (Throwable th) {
