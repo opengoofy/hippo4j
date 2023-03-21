@@ -37,7 +37,6 @@ import java.util.concurrent.Executor;
  * Abstract web thread pool service.
  */
 @Slf4j
-@Order(Ordered.HIGHEST_PRECEDENCE)
 public abstract class AbstractWebThreadPoolService implements WebThreadPoolService, ApplicationRunner {
 
     private final IWebThreadPoolHandlerSupport support;
