@@ -25,12 +25,16 @@ import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+
 import java.util.concurrent.Executor;
 
 /**
  * Abstract web thread pool service.
  */
 @Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public abstract class AbstractWebThreadPoolService implements WebThreadPoolService, ApplicationRunner {
 
     private final IWebThreadPoolHandlerSupport support;
