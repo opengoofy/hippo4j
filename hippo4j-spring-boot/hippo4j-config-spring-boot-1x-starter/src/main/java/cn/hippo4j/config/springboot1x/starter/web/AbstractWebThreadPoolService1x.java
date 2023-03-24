@@ -54,16 +54,4 @@ public abstract class AbstractWebThreadPoolService1x extends AbstractWebThreadPo
         return getContainer().getPort();
     }
 
-    @Override
-    public boolean isContainerStarted() {
-        try {
-            EmbeddedServletContainer container = getContainer();
-            Field field = ReflectionUtils.findField(EmbeddedServletContainer.class, STARTED_FIELD_NAME);
-            ReflectionUtils.makeAccessible(field);
-            return (boolean) ReflectionUtils.getField(field, container);
-        } catch (Throwable th) {
-            log.error("Failed to get isStarted flag.", th);
-            return false;
-        }
-    }
 }

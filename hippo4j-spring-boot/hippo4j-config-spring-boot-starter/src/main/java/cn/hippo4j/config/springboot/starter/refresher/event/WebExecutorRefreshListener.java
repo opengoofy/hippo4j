@@ -69,8 +69,7 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebThrea
                 }
                 if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
                         || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
-                        || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())
-                        || !webThreadPoolService.isContainerStarted()) {
+                        || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())) {
                     webThreadPoolService.updateWebThreadPool(nowParameter);
                 }
             }

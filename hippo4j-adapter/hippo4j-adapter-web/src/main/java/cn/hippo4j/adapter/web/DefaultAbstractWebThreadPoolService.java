@@ -59,19 +59,6 @@ public abstract class DefaultAbstractWebThreadPoolService extends AbstractWebThr
         return getWebServer().getPort();
     }
 
-    @Override
-    public boolean isContainerStarted() {
-        try {
-            WebServer container = getWebServer();
-            Field field = ReflectionUtils.findField(WebServer.class, STARTED_FIELD_NAME);
-            ReflectionUtils.makeAccessible(field);
-            return (boolean) ReflectionUtils.getField(field, container);
-        } catch (Throwable th) {
-            log.error("Failed to get isStarted flag.", th);
-            return false;
-        }
-    }
-
     /**
      * Get the thread pool object of the current web container based on the WebServer.
      * @param webServer current Web-Server.
