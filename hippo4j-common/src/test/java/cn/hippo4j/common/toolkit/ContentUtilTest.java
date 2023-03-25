@@ -24,9 +24,9 @@ public class ContentUtilTest {
 
     @Test
     public void assertGetPoolContent() {
-        String testText = "{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":" +
-                "\"message-consume\",\"queueType\":1,\"capacity\":4,\"keepAliveTime\":513,\"rejectedType\":4,\"isAlarm\"" +
-                ":1,\"capacityAlarm\":80,\"livenessAlarm\":80,\"allowCoreThreadTimeOut\":1}";
+        String testText = "{\"allowCoreThreadTimeOut\":1,\"capacity\":4,\"capacityAlarm\":" +
+                "80,\"isAlarm\":1,\"itemId\":\"dynamic-threadpool-example\",\"keepAliveTime\":513,\"livenessAlarm\":80,\"queueType\"" +
+                ":1,\"rejectedType\":4,\"tenantId\":\"prescription\",\"tpId\":\"message-consume\"}";
         ThreadPoolParameterInfo threadPoolParameterInfo = ThreadPoolParameterInfo.builder().tenantId("prescription")
                 .itemId("dynamic-threadpool-example").tpId("message-consume").content("描述信息").corePoolSize(1)
                 .maximumPoolSize(2).queueType(1).capacity(4).keepAliveTime(513).executeTimeOut(null).rejectedType(4)

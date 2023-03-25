@@ -31,11 +31,11 @@ import java.util.List;
 
 public class JSONUtilTest {
 
-    private static final Foo EXPECTED_FOO = new Foo(1, "foo1", new Foo(2, "foo2", null));
+    private static final Foo EXPECTED_FOO = new Foo(new Foo(null, 2, "foo2"), 1, "foo1");
 
     private static final List<Foo> EXPECTED_FOO_ARRAY = Arrays.asList(EXPECTED_FOO, EXPECTED_FOO);
 
-    private static final String EXPECTED_FOO_JSON = "{\"id\":1,\"name\":\"foo1\",\"foo\":{\"id\":2,\"name\":\"foo2\"}}";
+    private static final String EXPECTED_FOO_JSON = "{\"foo\":{\"id\":2,\"name\":\"foo2\"},\"id\":1,\"name\":\"foo1\"}";
 
     private static final String EXPECTED_FOO_JSON_ARRAY = "[" + EXPECTED_FOO_JSON + "," + EXPECTED_FOO_JSON + "]";
 
@@ -79,10 +79,11 @@ public class JSONUtilTest {
     @Data
     private static class Foo {
 
+        private Foo foo;
+
         private Integer id;
 
         private String name;
 
-        private Foo foo;
     }
 }
