@@ -116,7 +116,7 @@ const config = {
                         position: 'left',
                     },
                     {
-                        href: 'https://sourl.cn/Fyp7y4',
+                        href: 'https://magestack.cn',
                         label: '👉 刚果商城',
                         position: 'left',
                     },
