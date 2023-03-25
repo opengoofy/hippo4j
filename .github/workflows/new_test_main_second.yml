@@ -1,4 +1,4 @@
-name: Test:ConnectHandlerTest.handlerTest
+name: Test:ContentUtilTest.assertGetPoolContent
 run-name: New known flaky test
 on: [push]
 jobs:
