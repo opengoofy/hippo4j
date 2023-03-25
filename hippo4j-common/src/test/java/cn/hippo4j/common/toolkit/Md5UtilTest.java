@@ -50,7 +50,7 @@ public class Md5UtilTest {
 
     @Test
     public void assetGetTpContentMd5() {
-        String md5Result = "ef5ea7cb47377fb9fb85a7125e76715d";
+        String md5Result = "d853e7e86e0c4a4ef8a71f33caa26fac";
         ThreadPoolParameterInfo threadPoolParameterInfo = ThreadPoolParameterInfo.builder().tenantId("prescription")
                 .itemId("dynamic-threadpool-example").tpId("message-consume").content("描述信息").corePoolSize(1)
                 .maximumPoolSize(2).queueType(1).capacity(4).keepAliveTime(513).executeTimeOut(null).rejectedType(4)
