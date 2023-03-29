@@ -40,7 +40,8 @@ export default {
     createTime: 'Create Time',
     updateTime: 'Update Time',
     hint: 'Warning',
-    info: 'Info'
+    info: 'Info',
+    stack: 'Stack'
   },
 
   // 运行报表
@@ -125,5 +126,12 @@ export default {
     allowCoreThreadTimeOut: 'Allow Core Thread Time Out',
     changeAll: 'Change All',
     stackRequestFail: 'The current thread pool has no stack information'
+  },
+
+  //线程池监控
+  threadPoolMonitor: {
+    ipPort: 'IP : Port',
+    ipPortRequired: 'IP : Port(Required)',
+    noResultsYet: 'No results yet'
   }
 }
