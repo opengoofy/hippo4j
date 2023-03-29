@@ -40,7 +40,8 @@ export default {
     createTime: '创建时间',
     updateTime: '修改时间',
     hint: '提示',
-    info: '详情'
+    info: '详情',
+    stack: '堆栈'
   },
 
   // 运行报表
@@ -126,5 +127,12 @@ export default {
     allowCoreThreadTimeOut: '线程超时',
     changeAll: '全部修改',
     stackRequestFail: '当前线程池暂无堆栈信息'
+  },
+
+  //线程池监控
+  threadPoolMonitor: {
+    ipPort: 'IP : Port',
+    ipPortRequired: 'IP : Port（必填）',
+    noResultsYet: '暂无结果'
   }
 }
