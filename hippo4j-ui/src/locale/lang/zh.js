@@ -19,7 +19,9 @@ export default {
     NoDeletionPermissionTip: '请联系管理员删除',
     emptyWarning: "{name}不允许为空",
     queryFailure: '查询失败，请尝试刷新页面',
-    updateFailure:'修改线程池失败'
+    updateFailure:'修改线程池失败',
+    auditApprovedMessage: '此操作将接受线程池变更申请, 是否继续?',
+    auditRejectionMessage: '此操作将拒绝线程池变更申请, 是否继续?'
   },
 
   // 公共
@@ -42,7 +44,10 @@ export default {
     updateTime: '修改时间',
     hint: '提示',
     info: '详情',
-    stack: '堆栈'
+    stack: '堆栈',
+    audit: '审核',
+    yes: '是',
+    no: '否'
   },
 
   // 运行报表
@@ -97,7 +102,6 @@ export default {
     threadsNumErrorTip: '最大线程必须大于等于核心线程'
   },
 
-
   // 线程池实例
   threadPoolInstance: {
     instanceID: '实例标识',
@@ -138,9 +142,31 @@ export default {
   },
 
   //框架线程池
-  frameworkThreadPool : {
+  frameworkThreadPool: {
     threadPoolIDRequired: '线程池标识（必填）',
     threadPoolID: '线程池标识',
     threadPoolType: '线程池类型'
+  },
+
+  //线程池审核
+  threadPoolAudit:  {
+    changeType: '变化类型',
+    modifiedBy: '修改人',
+    auditStatus: '审核状态',
+    reviewer: '审核人',
+    submissionTime: '提交时间',
+    auditTime: '审核时间',
+    unaudited: '待审核',
+    expired: '失效',
+    auditApproved: '审核通过',
+    auditRejection: '审核拒绝',
+    manage: '管理',
+    instance: '实例',
+    container: '容器',
+    framework: '框架',
+    threadPoolManage: '线程池管理',
+    threadPoolInstance: '线程池实例',
+    containerThreadPool: '容器线程池',
+    frameworkThreadPool: '框架线程池',
   }
 }

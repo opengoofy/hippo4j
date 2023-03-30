@@ -19,7 +19,9 @@ export default {
     NoDeletionPermissionTip: 'Contact the administrator to delete it',
     emptyWarning: "The '{name}' cannot be empty",
     queryFailure: 'The query fails. Please refresh the page',
-    updateFailure:'Failed to modify thread pool'
+    updateFailure:'Failed to modify thread pool',
+    auditApprovedMessage: 'This operation will accept thread pool change requests. Do you want to continue?',
+    auditRejectionMessage: 'This operation will reject the thread pool change request. Do you want to continue?'
   },
 
   // 公共
@@ -42,7 +44,10 @@ export default {
     updateTime: 'Update Time',
     hint: 'Warning',
     info: 'Info',
-    stack: 'Stack'
+    stack: 'Stack',
+    audit: 'audit',
+    yes: 'Yes',
+    no: 'No'
   },
 
   // 运行报表
@@ -141,5 +146,27 @@ export default {
     threadPoolIDRequired: 'ThreadPool ID(Required)',
     threadPoolID: 'ThreadPool ID',
     threadPoolType: 'ThreadPool Type'
+  },
+
+  //线程池审核
+  threadPoolAudit:  {
+    changeType: 'Change Type',
+    modifiedBy: 'Modified by',
+    auditStatus: 'Audit Status',
+    reviewer: 'Reviewer',
+    submissionTime: 'Submission Time',
+    auditTime: 'Audit Time',
+    unaudited: 'Unaudited',
+    expired: 'Expired',
+    auditApproved: 'Audit Approved',
+    auditRejection: 'Audit Rejection',
+    manage: 'Manage',
+    instance: 'Instance',
+    container: 'Container',
+    framework: 'Framework',
+    threadPoolManage: 'ThreadPool Manage',
+    threadPoolInstance: 'ThreadPool Instance',
+    containerThreadPool: 'Container ThreadPool',
+    frameworkThreadPool: 'Framework ThreadPool',
   }
 }
