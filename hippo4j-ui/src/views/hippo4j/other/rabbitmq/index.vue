@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-select
         v-model="listQuery.tenantId"
-        placeholder="租户（必填）"
+        :placeholder="$t('tenantManage.tenantRequired')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -18,7 +18,7 @@
       </el-select>
       <el-select
         v-model="listQuery.itemId"
-        placeholder="项目（必填）"
+        :placeholder="$t('projectManage.itemRequired')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -33,7 +33,7 @@
       </el-select>
       <el-select
         v-model="listQuery.threadPoolKey"
-        placeholder="线程池标识（必填）"
+        :placeholder="$t('frameworkThreadPool.threadPoolIDRequired')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -52,7 +52,7 @@
         icon="el-icon-search"
         @click="fetchData"
       >
-        搜索
+        {{ $t('common.query') }}
       </el-button>
       <el-button
         v-waves
@@ -62,7 +62,7 @@
         icon="el-icon-refresh"
         @click="refreshData"
       >
-        重置
+        {{ $t('common.reset') }}
       </el-button>
     </div>
     <el-table
@@ -74,32 +74,32 @@
       max-height="714"
       highlight-current-row
     >
-      <el-table-column label="序号" width="95">
+      <el-table-column :label="$t('common.num')" fixed width="95">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column label="实例标识" width="260">
+      <el-table-column :label="$t('threadPoolInstance.instanceID')" width="260">
         <template slot-scope="scope">
           <el-link type="primary" :underline="false">{{ scope.row.identify }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="Active">
+      <el-table-column :label="$t('threadPoolInstance.active')" width="120">
         <template slot-scope="scope">
           <el-tag :type="scope.row.active | statusFilter">
             {{ scope.row.active }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="线程池标识">
+      <el-table-column :label="$t('frameworkThreadPool.threadPoolID')">
         <template slot-scope="scope">
           {{ scope.row.threadPoolKey }}
         </template>
       </el-table-column>
-      <el-table-column label="核心线程">
+      <el-table-column :label="$t('threadPool.coreSize')">
         <template slot-scope="scope">
           <el-link type="success" :underline="false">{{ scope.row.coreSize }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="最大线程">
+      <el-table-column :label="$t('threadPool.maximumSize')" width="120">
         <template slot-scope="scope">
           <el-link type="danger" :underline="false">{{ scope.row.maximumSize }}</el-link>
         </template>
@@ -110,7 +110,7 @@
       <el-table-column label="队列容量" >
         <template slot-scope="scope">{{ scope.row.queueCapacity }}</template>
       </el-table-column>-->
-      <el-table-column label="操作" width="180" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" width="180" class-name="small-padding fixed-width">
         <template slot-scope="{ row }">
           <!--<el-dropdown trigger="click">
             <span class="el-dropdown-link">
@@ -121,7 +121,7 @@
               <el-dropdown-item @click.native="handleUpdate(row)">编辑</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>-->
-          <el-button type="text" size="small" @click="handleUpdate(row)"> 编辑 </el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)"> {{ $t('common.edit') }} </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -134,7 +134,7 @@
         label-position="left"
         label-width="110px"
       >
-        <el-form-item label="核心线程" prop="coreSize">
+        <el-form-item :label="$t('threadPool.coreSize')" prop="coreSize">
           <template>
             <el-input-number
               v-model="temp.coreSize"
@@ -144,7 +144,7 @@
             ></el-input-number>
           </template>
         </el-form-item>
-        <el-form-item label="最大线程" prop="maximumSize">
+        <el-form-item :label="$t('threadPool.maximumSize')" prop="maximumSize">
           <template>
             <el-input-number
               v-model="temp.maximumSize"
@@ -154,13 +154,13 @@
             ></el-input-number>
           </template>
         </el-form-item>
-        <el-form-item label="全部修改" prop="allUpdate">
+        <el-form-item :label="$t('threadPoolInstance.changeAll')" prop="allUpdate">
           <el-switch v-model="temp.allUpdate"></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> 取消 </el-button>
-        <el-button type="primary" @click="updateData()"> 确认 </el-button>
+        <el-button @click="dialogFormVisible = false"> {{ $t('common.cancel') }} </el-button>
+        <el-button type="primary" @click="updateData()"> {{$t('common.confirm')}} </el-button>
       </div>
     </el-dialog>
     <el-dialog :visible.sync="dialogPluginVisible" title="Reading statistics">
@@ -283,19 +283,19 @@ export default {
     },
     fetchData() {
       if (!this.listQuery.mark) {
-        this.$message.warning('线程池类型不允许为空');
+        this.$message.warning(this.$t('message.emptyWarning', { name: this. $t('frameworkThreadPool.threadPoolType') }));
         return;
       }
       if (!this.listQuery.tenantId) {
-        this.$message.warning('租户不允许为空');
+        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('tenantManage.tenant') }));
         return;
       }
       if (!this.listQuery.itemId) {
-        this.$message.warning('项目不允许为空');
+        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('projectManage.item') }));
         return;
       }
       if (!this.listQuery.threadPoolKey) {
-        this.$message.warning('线程池标识不允许为空');
+        this.$message.warning(this.$t('message.emptyWarning', { name: this. $t('frameworkThreadPool.threadPoolID') }));
         return;
       }
       this.listLoading = true;
@@ -333,7 +333,7 @@ export default {
         if (valid) {
           if (parseInt(this.temp.maximumSize) < parseInt(this.temp.coreSize)) {
             this.$message({
-              message: '最大线程必须大于等于核心线程',
+              message: this.$t('threadPool.threadsNumErrorTip'),
               type: 'warning',
             });
             return;
@@ -381,13 +381,13 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          this.$message.error('修改线程池失败');
+          this.$message.error(this.$t('message.updateFailure'));
         });
     },
     openDelConfirm(name) {
-      return this.$confirm(`此操作将删除 ${name}, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      return this.$confirm(this.$t('message.deleteMessage', { name }), this.$t('common.hint'), {
+        confirmButtonText: this.$t('common.ok'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       });
     },
@@ -493,7 +493,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          this.$message.error('查询失败，请尝试刷新页面');
+          this.$message.error(this.$t('message.queryFailure'));
         });
     },
   },

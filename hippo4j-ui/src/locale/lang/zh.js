@@ -18,7 +18,8 @@ export default {
     selectMessage: '请选择{target}',
     NoDeletionPermissionTip: '请联系管理员删除',
     emptyWarning: "{name}不允许为空",
-    queryFailure: '查询失败，请尝试刷新页面'
+    queryFailure: '查询失败，请尝试刷新页面',
+    updateFailure:'修改线程池失败'
   },
 
   // 公共
@@ -134,5 +135,12 @@ export default {
     ipPort: 'IP : Port',
     ipPortRequired: 'IP : Port（必填）',
     noResultsYet: '暂无结果'
+  },
+
+  //框架线程池
+  frameworkThreadPool : {
+    threadPoolIDRequired: '线程池标识（必填）',
+    threadPoolID: '线程池标识',
+    threadPoolType: '线程池类型'
   }
 }
