@@ -18,7 +18,8 @@ export default {
     selectMessage: 'Please select a {target}',
     NoDeletionPermissionTip: 'Contact the administrator to delete it',
     emptyWarning: "The '{name}' cannot be empty",
-    queryFailure: 'The query fails. Please refresh the page'
+    queryFailure: 'The query fails. Please refresh the page',
+    updateFailure:'Failed to modify thread pool'
   },
 
   // 公共
@@ -133,5 +134,12 @@ export default {
     ipPort: 'IP : Port',
     ipPortRequired: 'IP : Port(Required)',
     noResultsYet: 'No results yet'
+  },
+
+  //框架线程池
+  frameworkThreadPool : {
+    threadPoolIDRequired: 'ThreadPool ID(Required)',
+    threadPoolID: 'ThreadPool ID',
+    threadPoolType: 'ThreadPool Type'
   }
 }
