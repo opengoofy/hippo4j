@@ -150,7 +150,7 @@ export default {
 
   //线程池审核
   threadPoolAudit:  {
-    changeType: '变化类型',
+    changeType: '变更类型',
     modifiedBy: '修改人',
     auditStatus: '审核状态',
     reviewer: '审核人',
