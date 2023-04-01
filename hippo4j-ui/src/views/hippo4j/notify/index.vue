@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-select
         v-model="listQuery.tenantId"
-        placeholder="租户"
+        :placeholder="$t('tenantManage.tenant')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -18,7 +18,7 @@
       </el-select>
       <el-select
         v-model="listQuery.itemId"
-        placeholder="项目"
+        :placeholder="$t('projectManage.item')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -33,7 +33,7 @@
       </el-select>
       <el-select
         v-model="listQuery.tpId"
-        placeholder="线程池"
+        :placeholder="$t('threadPool.threadPool')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -52,7 +52,7 @@
         icon="el-icon-search"
         @click="fetchData"
       >
-        搜索
+        {{ $t('common.query') }}
       </el-button>
       <el-button
         class="filter-item"
@@ -61,7 +61,7 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >
-        添加
+        {{ $t('common.insert') }}
       </el-button>
     </div>
     <el-table
@@ -72,29 +72,29 @@
       border
       highlight-current-row
     >
-      <el-table-column label="序号" fixed width="95">
+      <el-table-column fixed :label="$t('common.num')" width="95">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column label="租户" width="150">
+      <el-table-column :label="$t('tenantManage.tenant')" width="150">
         <template slot-scope="scope">{{ scope.row.tenantId }}</template>
       </el-table-column>
-      <el-table-column label="项目" width="260">
+      <el-table-column :label="$t('projectManage.item')"  width="260">
         <template slot-scope="scope">{{ scope.row.itemId }}</template>
       </el-table-column>
-      <el-table-column label="线程池" width="260">
+      <el-table-column :label="$t('threadPool.threadPool')" width="260">
         <template slot-scope="scope">{{ scope.row.tpId }}</template>
       </el-table-column>
-      <el-table-column label="通知平台" width="150">
+      <el-table-column :label="$t('notifyAlarm.platform')" width="150">
         <template slot-scope="scope">
           <el-tag> {{ scope.row.platform }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="通知类型" width="150">
+      <el-table-column :label="$t('notifyAlarm.type')" width="150">
         <template slot-scope="scope">
           <el-tag type="success">{{ scope.row.type }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="是否启用" width="100">
+      <el-table-column :label="$t('notifyAlarm.enabled')" width="100">
         <template slot-scope="scope">
           <el-tooltip :content="'Switch value: ' + scope.row.enable" placement="top">
             <el-switch
@@ -109,34 +109,34 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="通知间隔" width="150">
+      <el-table-column :label="$t('notifyAlarm.interval')" width="150">
         <template slot-scope="scope">{{ scope.row.interval | intervals }}</template>
       </el-table-column>
-      <el-table-column label="接收者" width="200">
+      <el-table-column :label="$t('notifyAlarm.receiver')" width="200">
         <template slot-scope="scope">{{ scope.row.receives | ellipsis }}</template>
       </el-table-column>
-      <el-table-column label="创建时间" width="180">
+      <el-table-column :label="$t('common.createTime')" width="180">
         <template slot-scope="scope">{{ scope.row.gmtCreate }}</template>
       </el-table-column>
-      <el-table-column label="修改时间" width="180">
+      <el-table-column :label="$t('common.updateTime')" width="180">
         <template slot-scope="scope">{{ scope.row.gmtModified }}</template>
       </el-table-column>
       <el-table-column
-        label="操作"
+        :label="$t('common.operation')"
         fixed="right"
         width="90"
         align="center"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="handleUpdate(row)"> 编辑 </el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)"> {{$t('common.edit')}} </el-button>
           <el-button
             v-if="row.status !== 'deleted'"
             size="small"
             type="text"
             @click="handleDelete(row)"
           >
-            删除
+            {{$t('common.delete')}}
           </el-button>
         </template>
       </el-table-column>
@@ -157,10 +157,10 @@
         :model="temp"
         label-width="80px"
       >
-        <el-form-item v-if="isEdit" label="租户" prop="tenantId">
+        <el-form-item v-if="isEdit" :label="$t('tenantManage.tenant')" prop="tenantId">
           <el-select
             v-model="temp.tenantId"
-            placeholder="请选择租户"
+            :placeholder="$t('message.selectMessage', { target: $t('tenantManage.tenant') })"
             style="display: block"
             :disabled="dialogStatus === 'create' ? false : true"
             @change="tenantTempSelectList()"
@@ -173,10 +173,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="isEdit" label="项目" prop="itemId">
+        <el-form-item v-if="isEdit" :label="$t('projectManage.item')" prop="itemId">
           <el-select
             v-model="temp.itemId"
-            placeholder="请选择项目"
+            :placeholder="$t('message.selectMessage', { target: $t('projectManage.item') })"
             style="display: block"
             :disabled="dialogStatus === 'create' ? false : true"
             @change="itemTempSelectList()"
@@ -189,10 +189,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="isEdit" label="线程池" prop="tpId">
+        <el-form-item v-if="isEdit" :label="$t('threadPool.threadPool')" prop="tpId">
           <el-select
             v-model="temp.tpId"
-            placeholder="线程池"
+            :placeholder="$t('threadPool.threadPool')"
             style="display: block"
             :disabled="dialogStatus === 'create' ? false : true"
           >
@@ -205,7 +205,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="通知平台" prop="platform">
+        <el-form-item :label="$t('notifyAlarm.platform')" prop="platform">
           <template>
             <div>
               <el-radio-group v-model="temp.platform">
@@ -216,18 +216,18 @@
             </div>
           </template>
         </el-form-item>
-        <el-form-item label="是否启用" prop="enable">
+        <el-form-item :label="$t('notifyAlarm.enabled')" prop="enable">
           <template>
             <div>
               <el-radio-group v-model="temp.enable">
-                <el-radio-button :label="1">启用</el-radio-button>
-                <el-radio-button :label="0">停用</el-radio-button>
+                <el-radio-button :label="1">{{ $t('notifyAlarm.enabling') }}</el-radio-button>
+                <el-radio-button :label="0">{{ $t('notifyAlarm.disabling') }}</el-radio-button>
               </el-radio-group>
             </div>
           </template>
         </el-form-item>
 
-        <el-form-item label="通知类型" prop="configType">
+        <el-form-item :label="$t('notifyAlarm.type')" prop="configType">
           <!--          <el-tooltip :content="123">
             <i class="el-icon-question"/>
           </el-tooltip>-->
@@ -248,10 +248,10 @@
             </div>
           </template>
         </el-form-item>
-        <el-form-item label="报警间隔" prop="interval">
+        <el-form-item :label="$t('notifyAlarm.interval')" prop="interval">
           <el-input-number
             v-model="temp.interval"
-            placeholder="报警间隔 / Min"
+            :placeholder= "$t('notifyAlarm.interval') + ' / Min'"
             controls-position="right"
             :min="0"
             :max="999999"
@@ -259,31 +259,28 @@
           />
         </el-form-item>
 
-        <el-form-item label="Token" prop="secretKey">
+        <el-form-item :label="$t('notifyAlarm.token')" prop="secretKey">
           <el-input
             v-model="temp.secretKey"
             type="textarea"
-            placeholder="请输入 Token"
+            :placeholder="$t('message.inputMessage', { target: $t('notifyAlarm.token') })"
             show-word-limit
           />
         </el-form-item>
 
-        <el-form-item label="接收者" prop="receives">
+        <el-form-item :label="$t('notifyAlarm.receiver')" prop="receives">
           <el-input
             v-model="temp.receives"
             type="textarea"
             :autosize="{ minRows: 4, maxRows: 4 }"
-            placeholder="多个接收者使用英文逗号 , 分割 (注意不要有空格)
-- 钉钉：填写手机号
-- 企微：填写user_id会以@的消息发给用户，否则填写姓名，如：小马哥
-- 飞书：填写ou_开头用户唯一标识会以@的消息发给用户，填写手机号则是普通的@"
+            :placeholder="$t('notifyAlarm.receiverTip')"
           />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cleanForm()"> 取消 </el-button>
+        <el-button @click="cleanForm()"> {{ $t('common.cancel') }} </el-button>
         <el-button type="primary" @click="dialogStatus === 'create' ? createData() : updateData()">
-          确认
+          {{ $t('common.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -293,7 +290,7 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('common.confirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -380,14 +377,14 @@ export default {
         create: 'Create',
       },
       rules: {
-        tenantId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        itemId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        tpId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        receives: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        secretKey: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        platform: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        configType: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        enable: [{ required: true, message: 'this is required', trigger: 'blur' }],
+        tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        itemId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tpId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        receives: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        secretKey: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        platform: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        configType: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        enable: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
       },
       temp: {
         id: undefined,
@@ -479,8 +476,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.createdSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -509,8 +506,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.updateSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -519,9 +516,9 @@ export default {
       });
     },
     openDelConfirm(name) {
-      return this.$confirm(`此操作将删除 ${name}, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      return this.$confirm(this.$t('message.deleteMessage', { name }), this.$t('common.hint'), {
+        confirmButtonText: this.$t('common.ok'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       });
     },
@@ -531,8 +528,8 @@ export default {
         notifyApi.deleted(row).then((response) => {
           this.fetchData();
           this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
+            title: this.$t('message.success'),
+            message: this.$t('message.deleteSuccess'),
             type: 'success',
             duration: 2000,
           });
@@ -543,8 +540,8 @@ export default {
       notifyApi.enable(row).then((response) => {
         this.fetchData();
         this.$notify({
-          title: 'Success',
-          message: 'Delete Successfully',
+          title: this.$t('message.success'),
+          message: this.$t('message.updateSuccess'),
           type: 'success',
           duration: 2000,
         });
@@ -557,7 +554,7 @@ export default {
         this.rules['interval'] = [];
       }
       if (configType != null && configType != undefined && alarmType === true) {
-        this.rules['interval'] = [{ required: true, message: 'this is required', trigger: 'blur' }];
+        this.rules['interval'] = [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }];
       }
     },
 

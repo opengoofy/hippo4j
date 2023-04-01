@@ -21,7 +21,8 @@ export default {
     queryFailure: 'The query fails. Please refresh the page',
     updateFailure:'Failed to modify thread pool',
     auditApprovedMessage: 'This operation will accept thread pool change requests. Do you want to continue?',
-    auditRejectionMessage: 'This operation will reject the thread pool change request. Do you want to continue?'
+    auditRejectionMessage: 'This operation will reject the thread pool change request. Do you want to continue?',
+    inputMessage: 'Please input {target}',
   },
 
   // 公共
@@ -168,5 +169,21 @@ export default {
     threadPoolInstance: 'ThreadPool Instance',
     containerThreadPool: 'Container ThreadPool',
     frameworkThreadPool: 'Framework ThreadPool',
-  }
+  },
+
+  //通知报警
+  notifyAlarm: {
+    platform: 'Platform',
+    type: 'Type',
+    enabled: 'Enabled',
+    interval: 'Interval',
+    receiver: 'Receiver',
+    enabling: 'Enabling',
+    disabling: 'Disabling',
+    token: 'Token',
+    receiverTip: 'Use English commas for multiple recipients and separate them (be careful not to have spaces)\n' +
+      '-Ding: Fill in the phone number\n' +
+      '-WeChat: Fill in \'userid\' and it will be sent to the user as a @ message, otherwise fill in the name, such as: XiaomaGe\n' +
+      '-Lark: Fill in with \'ou_\' the unique user ID at the beginning will be sent to the user as a @ message, and filling in the phone number is normal@'
+  },
 }
