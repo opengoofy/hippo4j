@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.userName"
-        placeholder="用户名"
+        :placeholder="$t('userAuthority.userName')"
         style="width: 200px"
         class="filter-item"
       />
@@ -14,7 +14,7 @@
         icon="el-icon-search"
         @click="fetchData"
       >
-        搜索
+        {{ $t('common.query') }}
       </el-button>
       <el-button
         class="filter-item"
@@ -23,7 +23,7 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >
-        添加
+        {{ $t('common.insert') }}
       </el-button>
     </div>
     <el-table
@@ -34,28 +34,28 @@
       border
       highlight-current-row
     >
-      <el-table-column label="序号" width="95">
+      <el-table-column fixed :label="$t('common.num')" width="95">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column label="用户名">
+      <el-table-column :label="$t('userAuthority.userName')">
         <template slot-scope="scope">{{ scope.row.userName }}</template>
       </el-table-column>
-      <el-table-column label="角色">
+      <el-table-column :label="$t('userAuthority.role')">
         <template slot-scope="scope">
           <span>
             <el-tag :type="scope.row.role | statusFilter">{{ scope.row.role }}</el-tag>
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间">
+      <el-table-column :label="$t('common.createTime')">
         <template slot-scope="scope">{{ scope.row.gmtCreate }}</template>
       </el-table-column>
-      <el-table-column label="修改时间">
+      <el-table-column :label="$t('common.updateTime')">
         <template slot-scope="scope">{{ scope.row.gmtModified }}</template>
       </el-table-column>
-      <el-table-column label="操作" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" class-name="small-padding fixed-width">
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="handleUpdate(row)"> 编辑 </el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)"> {{ $t('common.edit') }} </el-button>
           <el-button
             v-if="row.status !== 'deleted'"
             size="small"
@@ -63,7 +63,7 @@
             :disabled="row.userName !== 'admin' ? false : true"
             @click="handleDelete(row)"
           >
-            删除
+            {{ $t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -85,38 +85,38 @@
         label-width="100px"
         style="width: 400px; margin-left: 50px"
       >
-        <el-form-item label="用户名" prop="userName">
+        <el-form-item :label="$t('userAuthority.userName')" prop="userName">
           <el-input
             v-model="temp.userName"
             :disabled="temp.userName !== 'admin' ? false : true"
-            placeholder="用户名"
+            :placeholder="$t('userAuthority.userName')"
           />
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="temp.password" placeholder="密码" minlength="6" />
+        <el-form-item :label="$t('userAuthority.password')" prop="password">
+          <el-input v-model="temp.password" :placeholder="$t('userAuthority.password')" minlength="6" />
         </el-form-item>
-        <el-form-item label="角色" prop="role">
+        <el-form-item :label="$t('userAuthority.role')" prop="role">
           <el-select
             v-model="temp.role"
             class="filter-item"
             :disabled="temp.userName !== 'admin' ? false : true"
-            placeholder="角色类型"
+            :placeholder="$t('userAuthority.role')"
           >
             <el-option v-for="item in roles" :key="item.key" :label="item" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item label="租户" prop="tenants" v-if="temp.userName !== 'admin' ? true : false">
+        <el-form-item :label="$t('tenantManage.tenant')" prop="tenants" v-if="temp.userName !== 'admin' ? true : false">
           <el-checkbox-group v-model="temp.tempResources">
             <el-checkbox v-for="tenantKey in tenantList" :label="tenantKey" :key="tenantKey">{{
-              tenantKey
-            }}</el-checkbox>
+                tenantKey
+              }}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> 取消 </el-button>
+        <el-button @click="dialogFormVisible = false"> {{ $t('common.cancel') }} </el-button>
         <el-button type="primary" @click="dialogStatus === 'create' ? createData() : updateData()">
-          确定
+          {{ $t('common.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -168,10 +168,10 @@ export default {
         create: 'Create',
       },
       rules: {
-        role: [{ required: true, message: 'role is required', trigger: 'change' }],
-        userName: [{ required: true, message: 'userName is required', trigger: 'blur' }],
-        tenants: [{ required: false, message: 'tenants is required', trigger: 'blur' }],
-        password: [{ required: false, message: 'password is required', trigger: 'blur' }],
+        role: [{ required: true, message: this.$t('message.requiredError'), trigger: 'change' }],
+        userName: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tenants: [{ required: false, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        password: [{ required: false, message: this.$t('message.requiredError'), trigger: 'blur' }],
       },
       temp: {
         id: undefined,
@@ -182,7 +182,14 @@ export default {
         resources: [],
       },
       resetTemp() {
-        this.temp = this.$options.data().temp;
+        this.temp = {
+          id: undefined,
+          role: '',
+          userName: '',
+          password: '',
+          permission: '',
+          resources: [],
+        }
       },
     };
   },
@@ -222,8 +229,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.createdSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -256,8 +263,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.updateSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -266,9 +273,9 @@ export default {
       });
     },
     openDelConfirm(name) {
-      return this.$confirm(`此操作将删除 ${name}, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      return this.$confirm(this.$t('message.deleteMessage', { name }), this.$t('common.hint'), {
+        confirmButtonText: this.$t('common.ok'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       });
     },
@@ -277,8 +284,8 @@ export default {
         user.deleteUser(row.userName).then((response) => {
           this.fetchData();
           this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
+            title: this.$t('message.success'),
+            message: this.$t('message.deleteSuccess'),
             type: 'success',
             duration: 2000,
           });
