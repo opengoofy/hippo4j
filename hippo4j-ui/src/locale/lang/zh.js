@@ -21,7 +21,8 @@ export default {
     queryFailure: '查询失败，请尝试刷新页面',
     updateFailure:'修改线程池失败',
     auditApprovedMessage: '此操作将接受线程池变更申请, 是否继续?',
-    auditRejectionMessage: '此操作将拒绝线程池变更申请, 是否继续?'
+    auditRejectionMessage: '此操作将拒绝线程池变更申请, 是否继续?',
+    inputMessage: '请输入{target}',
   },
 
   // 公共
@@ -168,5 +169,21 @@ export default {
     threadPoolInstance: '线程池实例',
     containerThreadPool: '容器线程池',
     frameworkThreadPool: '框架线程池',
-  }
+  },
+
+  //通知报警
+  notifyAlarm: {
+    platform: '通知平台',
+    type: '通知类型',
+    enabled: '是否启用',
+    interval: '通知间隔',
+    receiver: '接收者',
+    enabling: '启用',
+    disabling: '禁用',
+    token: 'Token',
+    receiverTip: '多个接收者使用英文逗号 , 分割 (注意不要有空格)\n' +
+      '- 钉钉：填写手机号\n' +
+      '- 企微：填写user_id会以@的消息发给用户，否则填写姓名，如：小马哥\n' +
+      '- 飞书：填写ou_开头用户唯一标识会以@的消息发给用户，填写手机号则是普通的@"'
+  },
 }
