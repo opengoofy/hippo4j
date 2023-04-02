@@ -4,21 +4,21 @@
       <el-input
         v-model="listQuery.category"
         clearable
-        placeholder="业务类型"
+        :placeholder="$t('logManage.bizType')"
         style="width: 200px"
         class="filter-item"
       />
       <el-input
         v-model="listQuery.bizNo"
         clearable
-        placeholder="业务标识"
+        :placeholder="$t('logManage.bizID')"
         style="width: 200px"
         class="filter-item"
       />
       <el-input
         v-model="listQuery.operator"
         clearable
-        placeholder="操作人"
+        :placeholder="$t('logManage.operator')"
         style="width: 200px"
         class="filter-item"
       />
@@ -29,7 +29,7 @@
         icon="el-icon-search"
         @click="fetchData"
       >
-        搜索
+        {{ $t('common.query') }}
       </el-button>
     </div>
     <el-table
@@ -40,33 +40,33 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="序号" fixed width="95">
+      <el-table-column :label="$t('common.num')" fixed width="95">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column label="业务类型" width="200">
+      <el-table-column :label="$t('logManage.bizType')" width="200">
         <template slot-scope="scope">{{ scope.row.category }}</template>
       </el-table-column>
-      <el-table-column label="业务标识" width="380">
+      <el-table-column :label="$t('logManage.bizID')" width="380">
         <template slot-scope="scope">{{ scope.row.bizNo }}</template>
       </el-table-column>
-      <el-table-column label="日志内容" width="500">
+      <el-table-column :label="$t('logManage.logContent')" width="500">
         <template slot-scope="scope">{{ scope.row.action | ellipsis }}</template>
       </el-table-column>
-      <el-table-column label="操作人" width="140">
+      <el-table-column :label="$t('logManage.operator')" width="140">
         <template slot-scope="scope">{{ scope.row.operator }} </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="160">
+      <el-table-column :label="$t('common.createTime')" width="160">
         <template slot-scope="scope">{{ scope.row.createTime }}</template>
       </el-table-column>
       <el-table-column
-        label="操作"
+        :label="$t('common.operation')"
         fixed="right"
         width="90"
         align="center"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="handleUpdate(row)"> 查看 </el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)"> {{ $t('common.detail') }} </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -80,45 +80,45 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="800px">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px">
-        <el-form-item label="业务类型" prop="category">
+        <el-form-item :label="$t('logManage.bizType')" prop="category">
           <el-input
             v-model="temp.category"
             :disabled="true"
-            placeholder="业务类型"
+            :placeholder="$t('logManage.bizType')"
             style="width: 40%"
           />
         </el-form-item>
-        <el-form-item label="业务标识" prop="bizNo">
+        <el-form-item :label="$t('logManage.bizID')" prop="bizNo">
           <el-input
             v-model="temp.bizNo"
             :disabled="true"
-            placeholder="业务标识"
+            :placeholder="$t('logManage.bizID')"
             style="width: 40%"
           />
         </el-form-item>
-        <el-form-item label="操作人" prop="operator">
+        <el-form-item :label="$t('logManage.operator')" prop="operator">
           <el-input
             v-model="temp.operator"
             :disabled="true"
-            placeholder="操作人"
+            :placeholder="$t('logManage.operator')"
             style="width: 40%"
           />
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="$t('common.createTime')" prop="createTime">
           <el-input
             v-model="temp.createTime"
             :disabled="true"
-            placeholder="创建时间"
+            :placeholder="$t('common.createTime')"
             style="width: 40%"
           />
         </el-form-item>
-        <el-form-item label="日志内容" prop="action">
+        <el-form-item :label="$t('logManage.logContent')" prop="action">
           <el-input
             v-model="temp.action"
             :disabled="true"
             :autosize="{ minRows: 4, maxRows: 10 }"
             type="textarea"
-            placeholder="日志内容"
+            :placeholder="$t('logManage.logContent')"
             style="width: 60%"
           />
         </el-form-item>
@@ -227,8 +227,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.createdSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -252,8 +252,8 @@ export default {
             this.fetchData();
             this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: this.$t('message.success'),
+              message: this.$t('message.updateSuccess'),
               type: 'success',
               duration: 2000,
             });
@@ -266,8 +266,8 @@ export default {
       jobProjectApi.deleted(row.tenantId).then((response) => {
         this.fetchData();
         this.$notify({
-          title: 'Success',
-          message: 'Delete Successfully',
+          title: this.$t('message.success'),
+          message: this.$t('message.deleteSuccess'),
           type: 'success',
           duration: 2000,
         });
