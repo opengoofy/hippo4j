@@ -193,4 +193,12 @@ export default {
     role: 'Role',
     password: 'Password'
   },
+
+  //日志管理
+  logManage: {
+    bizType: 'Biz Type',
+    bizID: 'Biz ID',
+    operator: 'Operator',
+    logContent: 'Log Content',
+  },
 }
