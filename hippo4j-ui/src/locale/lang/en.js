@@ -186,4 +186,11 @@ export default {
       '-WeChat: Fill in \'userid\' and it will be sent to the user as a @ message, otherwise fill in the name, such as: XiaomaGe\n' +
       '-Lark: Fill in with \'ou_\' the unique user ID at the beginning will be sent to the user as a @ message, and filling in the phone number is normal@'
   },
+
+  //用户权限
+  userAuthority: {
+    userName: 'User Name',
+    role: 'Role',
+    password: 'Password'
+  },
 }
