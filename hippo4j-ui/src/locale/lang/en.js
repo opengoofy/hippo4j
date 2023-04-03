@@ -201,4 +201,32 @@ export default {
     operator: 'Operator',
     logContent: 'Log Content',
   },
+
+  //菜单
+  menu: {
+    dashboard: 'Dashboard',
+    tenantManage: 'Tenant Manage',
+    itemManage: 'Item Manage',
+    dynamicThreadPool: 'Dynamic ThreadPool',
+    threadPoolManage: 'ThreadPool Manage',
+    threadPoolInstance: 'ThreadPool Instance',
+    threadPoolMonitor: 'ThreadPool Monitor',
+    containerThreadPool: 'Container ThreadPool',
+    tomcat:	'Tomcat',
+    undertow:	'Undertow',
+    jetty	: 'Jetty',
+    frameworkThreadPool: 'Framework ThreadPool',
+    dubbo: 'Dubbo',
+    hystrix: 'Hystrix',
+    rabbitMQ: 'RabbitMQ',
+    rocketMQ: 'RocketMQ',
+    alibabaDubbo: 'AlibabaDubbo',
+    rabbitMQStream: 'RabbitMQStream',
+    rocketMQStream: 'RocketMQStream',
+    threadPoolAudit: 'ThreadPool Audit',
+    notifyAlarm: 'Notify Alarm',
+    userAuthority: 'User Authority',
+    logManage: 'Log Manage',
+    officialWebsite: 'Official Website',
+  }
 }

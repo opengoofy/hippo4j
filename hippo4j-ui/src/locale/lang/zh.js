@@ -201,4 +201,32 @@ export default {
     operator: '操作人',
     logContent: '日志内容',
   },
+
+  //菜单
+  menu: {
+    dashboard: '运行报表',
+    tenantManage: '租户管理',
+    itemManage: '项目管理',
+    dynamicThreadPool: '动态线程池',
+    threadPoolManage: '线程池管理',
+    threadPoolInstance: '线程池实例',
+    threadPoolMonitor: '线程池监控',
+    containerThreadPool: '容器线程池',
+    tomcat:	'Tomcat',
+    undertow:	'Undertow',
+    jetty	: 'Jetty',
+    frameworkThreadPool: '框架线程池',
+    dubbo: 'Dubbo',
+    hystrix: 'Hystrix',
+    rabbitMQ: 'rabbitMQ',
+    rocketMQ: 'RocketMQ',
+    alibabaDubbo: 'AlibabaDubbo',
+    rabbitMQStream: 'RabbitMQStream',
+    rocketMQStream: 'RocketMQStream',
+    threadPoolAudit: '线程池审核',
+    notifyAlarm: '通知报警',
+    userAuthority: '用户权限',
+    logManage: '日志管理',
+    officialWebsite: '官网外链',
+  }
 }
