@@ -29,7 +29,7 @@
             <el-dropdown-item>Profile</el-dropdown-item>
           </router-link>-->
           <router-link to="/">
-            <el-dropdown-item>Dashboard</el-dropdown-item>
+            <el-dropdown-item>{{ this.$t('menu.dashboard') }}</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">{{ $t('system.logOut') }}</span>
