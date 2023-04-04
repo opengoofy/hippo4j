@@ -358,7 +358,7 @@
             v-model="temp.executeTimeOut"
             :placeholder="$t('threadPool.executionTimeoutUnit')"
             controls-position="right"
-            :min="0"
+            :min="-1"
             :max="999999"
           />
         </el-form-item>
