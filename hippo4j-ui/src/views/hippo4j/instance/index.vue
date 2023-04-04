@@ -149,9 +149,9 @@
           </el-dropdown>
         </template>-->
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="handleInfo(row)"> {{ $t('common.detail') }} </el-button>
-          <el-button type="text" size="small" @click="handleShowStack(row)"> {{ $t('common.stack') }} </el-button>
-          <el-button type="text" size="small" @click="handleUpdate(row)"> {{ $t('common.edit') }} </el-button>
+          <el-button type="text" size="small" @click="handleInfo(row)"> {{ $t('common.detail') }}</el-button>
+          <el-button type="text" size="small" @click="handleShowStack(row)"> {{ $t('common.stack') }}</el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)"> {{ $t('common.edit') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -169,122 +169,127 @@
       width="1000px"
     >
       <template>
-        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.basicInformation')" :column="3" :size="size" border>
+        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.basicInformation')" :column="3" :size="size"
+                         border>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.threadPoolID') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.threadPoolID') }}</template>
             {{ runTimeTemp.tpId }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.activeID') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.activeID') }}</template>
             <el-tag :type="runTimeTemp.active | statusFilter">
               {{ runTimeTemp.active }}
             </el-tag>
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.runningState') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.runningState') }}</template>
             <el-tag>{{ runTimeTemp.state }}</el-tag>
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.instanceHost') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.instanceHost') }}</template>
             {{ runTimeTemp.host }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.instanceID') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.instanceID') }}</template>
             {{ runTimeTemp.identify }}
           </el-descriptions-item>
         </el-descriptions>
-        <br />
-        <br />
-        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.LoadInformation')" :column="3" :size="size" border>
+        <br/>
+        <br/>
+        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.LoadInformation')" :column="3" :size="size"
+                         border>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.CurrentLoad') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.CurrentLoad') }}</template>
             {{ runTimeTemp.currentLoad }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.PeakLoad') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.PeakLoad') }}</template>
             {{ runTimeTemp.peakLoad }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.RemainingMemory') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.RemainingMemory') }}</template>
             {{ runTimeTemp.freeMemory }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.MemoryRatio') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.MemoryRatio') }}</template>
             {{ runTimeTemp.memoryProportion }}
           </el-descriptions-item>
         </el-descriptions>
-        <br />
-        <br />
-        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.threadInformation')" :column="3" :size="size" border>
+        <br/>
+        <br/>
+        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.threadInformation')" :column="3" :size="size"
+                         border>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPool.coreSize') }} </template>
+            <template slot="label"> {{ $t('threadPool.coreSize') }}</template>
             {{ runTimeTemp.coreSize }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.currentSize') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.currentSize') }}</template>
             {{ runTimeTemp.poolSize }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPool.maximumSize') }} </template>
+            <template slot="label"> {{ $t('threadPool.maximumSize') }}</template>
             {{ runTimeTemp.maximumSize }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.activeSize') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.activeSize') }}</template>
             {{ runTimeTemp.activeSize }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.largestSize') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.largestSize') }}</template>
             {{ runTimeTemp.largestPoolSize }}
           </el-descriptions-item>
         </el-descriptions>
-        <br />
-        <br />
-        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.queueInformation')" :column="3" :size="size" border>
+        <br/>
+        <br/>
+        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.queueInformation')" :column="3" :size="size"
+                         border>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPool.queueCapacity') }} </template>
+            <template slot="label"> {{ $t('threadPool.queueCapacity') }}</template>
             {{ runTimeTemp.queueCapacity }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.queueCount') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.queueCount') }}</template>
             {{ runTimeTemp.queueSize }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.queueRemainingCapacity') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.queueRemainingCapacity') }}</template>
             {{ runTimeTemp.queueRemainingCapacity }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.queueType') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.queueType') }}</template>
             {{ runTimeTemp.queueType }}
           </el-descriptions-item>
         </el-descriptions>
-        <br />
-        <br />
-        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.otherInformation')" :column="3" :size="size" border>
+        <br/>
+        <br/>
+        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.otherInformation')" :column="3" :size="size"
+                         border>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.totalTask') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.totalTask') }}</template>
             {{ runTimeTemp.completedTaskCount }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.totalRejection') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.totalRejection') }}</template>
             <el-link type="danger" :underline="false">{{ runTimeTemp.rejectCount }}</el-link>
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.lastUpdateTime') }} </template>
+            <template slot="label"> {{ $t('threadPoolInstance.lastUpdateTime') }}</template>
             {{ runTimeTemp.clientLastRefreshTime }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPool.rejectedHandler') }} </template>
+            <template slot="label"> {{ $t('threadPool.rejectedHandler') }}</template>
             {{ runTimeTemp.rejectedName }}
           </el-descriptions-item>
         </el-descriptions>
       </template>
       <div slot="footer" class="dialog-footer">
         <el-button @click="instanceDialogFormVisible = false">
-          <i class="el-icon-close" />
+          <i class="el-icon-close"/>
           {{ $t('common.close') }}
         </el-button>
         <el-button type="primary" @click="handleInfo()">
-          <i class="el-icon-refresh-right" />
+          <i class="el-icon-refresh-right"/>
           {{ $t('common.refresh') }}
         </el-button>
       </div>
@@ -358,7 +363,7 @@
             v-model="temp.executeTimeOut"
             :placeholder="$t('threadPool.executionTimeoutUnit')"
             controls-position="right"
-            :min="0"
+            :min="-1"
             :max="999999"
           />
         </el-form-item>
@@ -394,11 +399,11 @@
           />
         </el-form-item>
         <el-form-item :label="$t('threadPoolInstance.changeAll')" prop="allUpdate">
-          <el-switch v-model="allUpdate"> </el-switch>
+          <el-switch v-model="allUpdate"></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> {{ $t('common.cancel') }} </el-button>
+        <el-button @click="dialogFormVisible = false"> {{ $t('common.cancel') }}</el-button>
         <el-button type="primary" @click="dialogStatus === 'create' ? createData() : updateData()">
           {{ $t('common.confirm') }}
         </el-button>
@@ -406,8 +411,8 @@
     </el-dialog>
     <el-dialog :visible.sync="dialogPluginVisible" title="Reading statistics">
       <el-table :data="pluginData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
+        <el-table-column prop="key" label="Channel"/>
+        <el-table-column prop="pv" label="Pv"/>
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogPvVisible = false"> {{ $t('common.confirm') }} </el-button>
@@ -426,9 +431,9 @@
         </li>
       </ul>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="isStackShow = false"> <i class="el-icon-close" />{{ $t('common.close') }}</el-button>
+        <el-button @click="isStackShow = false"> <i class="el-icon-close"/>{{ $t('common.close') }}</el-button>
         <el-button type="primary" @click="handleStackInfo">
-          <i class="el-icon-refresh-right" />
+          <i class="el-icon-refresh-right"/>
           {{ $t('common.refresh') }}
         </el-button>
       </span>
@@ -446,8 +451,8 @@ import Pagination from '@/components/Pagination';
 import axios from 'axios';
 
 export default {
-  components: { Pagination },
-  directives: { waves },
+  components: {Pagination},
+  directives: {waves},
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -520,48 +525,48 @@ export default {
       threadPoolOptions: [],
       itemOptions: [],
       queueTypeOptions: [
-        { key: 1, display_name: 'ArrayBlockingQueue' },
-        { key: 2, display_name: 'LinkedBlockingQueue' },
-        { key: 3, display_name: 'LinkedBlockingDeque' },
-        { key: 4, display_name: 'SynchronousQueue' },
-        { key: 5, display_name: 'LinkedTransferQueue' },
-        { key: 6, display_name: 'PriorityBlockingQueue' },
+        {key: 1, display_name: 'ArrayBlockingQueue'},
+        {key: 2, display_name: 'LinkedBlockingQueue'},
+        {key: 3, display_name: 'LinkedBlockingDeque'},
+        {key: 4, display_name: 'SynchronousQueue'},
+        {key: 5, display_name: 'LinkedTransferQueue'},
+        {key: 6, display_name: 'PriorityBlockingQueue'},
         {
           key: 9,
           display_name: 'ResizableLinkedBlockingQueue (动态修改队列大小)',
         },
       ],
       rejectedOptions: [
-        { key: 1, display_name: 'CallerRunsPolicy' },
-        { key: 2, display_name: 'AbortPolicy' },
-        { key: 3, display_name: 'DiscardPolicy' },
-        { key: 4, display_name: 'DiscardOldestPolicy' },
-        { key: 5, display_name: 'RunsOldestTaskPolicy' },
-        { key: 6, display_name: 'SyncPutQueuePolicy' },
-        { key: 99, display_name: 'CustomRejectedPolicy（自定义 SPI 策略）' },
+        {key: 1, display_name: 'CallerRunsPolicy'},
+        {key: 2, display_name: 'AbortPolicy'},
+        {key: 3, display_name: 'DiscardPolicy'},
+        {key: 4, display_name: 'DiscardOldestPolicy'},
+        {key: 5, display_name: 'RunsOldestTaskPolicy'},
+        {key: 6, display_name: 'SyncPutQueuePolicy'},
+        {key: 99, display_name: 'CustomRejectedPolicy（自定义 SPI 策略）'},
       ],
       alarmTypes: [
-        { key: 1, display_name: '报警' },
-        { key: 0, display_name: '不报警' },
+        {key: 1, display_name: '报警'},
+        {key: 0, display_name: '不报警'},
       ],
       allowCoreThreadTimeOutTypes: [
-        { key: 1, display_name: '超时' },
-        { key: 0, display_name: '不超时' },
+        {key: 1, display_name: '超时'},
+        {key: 0, display_name: '不超时'},
       ],
       rules: {
-        tenantId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        itemId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        tpId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        coreSize: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        maxSize: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        queueType: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        executeTimeOut: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        keepAliveTime: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        isAlarm: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        capacity: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        capacityAlarm: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        livenessAlarm: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        rejectedType: [{ required: true, message: 'this is required', trigger: 'blur' }],
+        tenantId: [{required: true, message: 'this is required', trigger: 'blur'}],
+        itemId: [{required: true, message: 'this is required', trigger: 'blur'}],
+        tpId: [{required: true, message: 'this is required', trigger: 'blur'}],
+        coreSize: [{required: true, message: 'this is required', trigger: 'blur'}],
+        maxSize: [{required: true, message: 'this is required', trigger: 'blur'}],
+        queueType: [{required: true, message: 'this is required', trigger: 'blur'}],
+        executeTimeOut: [{required: true, message: 'this is required', trigger: 'blur'}],
+        keepAliveTime: [{required: true, message: 'this is required', trigger: 'blur'}],
+        isAlarm: [{required: true, message: 'this is required', trigger: 'blur'}],
+        capacity: [{required: true, message: 'this is required', trigger: 'blur'}],
+        capacityAlarm: [{required: true, message: 'this is required', trigger: 'blur'}],
+        livenessAlarm: [{required: true, message: 'this is required', trigger: 'blur'}],
+        rejectedType: [{required: true, message: 'this is required', trigger: 'blur'}],
       },
       dialogStatus: '',
       textMap: {
@@ -593,15 +598,15 @@ export default {
     },
     fetchData() {
       if (!this.listQuery.tenantId) {
-        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('tenantManage.tenant') }));
+        this.$message.warning(this.$t('message.emptyWarning', {name: this.$t('tenantManage.tenant')}));
         return;
       }
       if (!this.listQuery.itemId) {
-        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('projectManage.item') }));
+        this.$message.warning(this.$t('message.emptyWarning', {name: this.$t('projectManage.item')}));
         return;
       }
       if (!this.listQuery.tpId) {
-        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('threadPool.threadPool') }));
+        this.$message.warning(this.$t('message.emptyWarning', {name: this.$t('threadPool.threadPool')}));
         return;
       }
       this.listLoading = true;
@@ -620,9 +625,9 @@ export default {
     },
     initSelect() {
       tenantApi
-        .list({ size: this.size })
+        .list({size: this.size})
         .then((response) => {
-          const { records } = response;
+          const {records} = response;
           for (let i = 0; i < records.length; i++) {
             this.tenantOptions.push({
               key: records[i].tenantId,
@@ -630,7 +635,8 @@ export default {
             });
           }
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
     resetTemp() {
       this.isRejectShow = false;
@@ -667,7 +673,8 @@ export default {
             });
           }
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
     // 打开弹框
     handleUpdate(row) {
@@ -722,7 +729,7 @@ export default {
         clientAddressStr = clientAddress;
       }
       threadPoolApi
-        .runState({ clientAddress: clientAddressStr, tpId: row.tpId })
+        .runState({clientAddress: clientAddressStr, tpId: row.tpId})
         .then((response) => {
           this.instanceDialogFormVisible = true;
           this.runTimeTemp = response;
@@ -737,12 +744,12 @@ export default {
       this.handleStackInfo();
     },
     handleStackInfo() {
-      const { clientAddress, tpId } = this.rowInfo;
+      const {clientAddress, tpId} = this.rowInfo;
       const clientBasePath = this.rowInfo.clientBasePath || '';
 
       let clientAddressStr = clientAddress + clientBasePath;
       threadPoolApi
-        .runThreadState({ clientAddress: clientAddressStr, tpId: tpId })
+        .runThreadState({clientAddress: clientAddressStr, tpId: tpId})
         .then((response) => {
           const data = response;
           if (data && data.length != 0) {
@@ -798,7 +805,8 @@ export default {
                 this.listLoading = false;
               }, 1500);
             })
-            .catch(() => {});
+            .catch(() => {
+            });
         }
       });
     },
@@ -816,11 +824,11 @@ export default {
 
       this.itemOptions = [];
       this.threadPoolOptions = [];
-      const tenantId = { tenantId: this.listQuery.tenantId, size: this.size };
+      const tenantId = {tenantId: this.listQuery.tenantId, size: this.size};
       itemApi
         .list(tenantId)
         .then((response) => {
-          const { records = [] } = response || {};
+          const {records = []} = response || {};
           for (var i = 0; i < records.length; i++) {
             this.itemOptions.push({
               key: records[i].itemId,
@@ -828,18 +836,19 @@ export default {
             });
           }
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
 
     itemSelectList() {
       this.listQuery.tpId = null;
 
       this.threadPoolOptions = [];
-      const itemId = { itemId: this.listQuery.itemId, size: this.size };
+      const itemId = {itemId: this.listQuery.itemId, size: this.size};
       threadPoolApi
         .list(itemId)
         .then((response) => {
-          const { records = [] } = response || {};
+          const {records = []} = response || {};
           for (var i = 0; i < records.length; i++) {
             this.threadPoolOptions.push({
               key: records[i].tpId,
@@ -847,16 +856,18 @@ export default {
             });
           }
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.headerRowName{
+.headerRowName {
 
 }
+
 /* 滚动槽 */
 ::-webkit-scrollbar {
   width: 8px;

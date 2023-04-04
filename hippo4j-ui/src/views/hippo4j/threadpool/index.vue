@@ -203,7 +203,7 @@
             />
           </el-form-item>
         </template>
-        
+
         <el-form-item :label="$t('threadPool.coreSize')" prop="coreSize">
           <el-input-number
             v-model="temp.coreSize"
@@ -252,6 +252,8 @@
             v-model="temp.executeTimeOut"
             :placeholder="$t('threadPool.executionTimeoutUnit')"
             controls-position="right"
+            :min="-1"
+            :max="999999"
           />
         </el-form-item>
         <el-form-item :label="$t('threadPool.keepAliveTime')" prop="keepAliveTime">
