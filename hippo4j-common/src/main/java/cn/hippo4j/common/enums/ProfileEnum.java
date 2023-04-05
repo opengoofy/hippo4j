@@ -26,7 +26,7 @@ public enum ProfileEnum {
 
     UNKNOWN,
     DEV,
-    TEST01,
+    TEST,
     PRE,
     PROD;
 
