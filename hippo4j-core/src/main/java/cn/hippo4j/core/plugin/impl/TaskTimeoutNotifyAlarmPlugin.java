@@ -94,7 +94,7 @@ public class TaskTimeoutNotifyAlarmPlugin extends AbstractTaskTimerPlugin {
      */
     @Override
     protected void processTaskTime(long taskExecuteTime) {
-        if (taskExecuteTime <= executeTimeOut) {
+        if (executeTimeOut <= 0 || taskExecuteTime <= executeTimeOut) {
             return;
         }
         threadPoolCheckAlarm.asyncSendExecuteTimeOutAlarm(threadPoolId, taskExecuteTime, executeTimeOut, threadPoolExecutor);
