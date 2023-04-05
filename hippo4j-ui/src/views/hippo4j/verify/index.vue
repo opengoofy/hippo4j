@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-select
         v-model="listQuery.tenantId"
-        placeholder="租户"
+        :placeholder="$t('tenantManage.tenant')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -18,7 +18,7 @@
       </el-select>
       <el-select
         v-model="listQuery.itemId"
-        placeholder="项目"
+        :placeholder="$t('projectManage.item')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -38,7 +38,7 @@
         icon="el-icon-search"
         @click="fetchData"
       >
-        搜索
+        {{ $t('common.query') }}
       </el-button>
       <el-button
         v-waves
@@ -48,7 +48,7 @@
         icon="el-icon-refresh"
         @click="refreshData"
       >
-        重置
+        {{ $t('common.reset') }}
       </el-button>
     </div>
     <el-table
@@ -59,54 +59,54 @@
       fit
       highlight-current-row
     >
-      <el-table-column fixed label="序号" width="80">
+      <el-table-column fixed :label="$t('common.num')" width="80">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column label="项目" width="260">
+      <el-table-column :label="$t('projectManage.item')" width="260">
         <template slot-scope="scope">{{ scope.row.itemId }}</template>
       </el-table-column>
-      <el-table-column label="线程池" width="260">
+      <el-table-column :label="$t('threadPool.threadPool')" width="260">
         <template slot-scope="scope">{{ scope.row.tpId || '-' }}</template>
       </el-table-column>
-      <el-table-column label="实例标识" width="280">
+      <el-table-column :label="$t('threadPoolInstance.instanceID')" width="280">
         <template slot-scope="scope">
           <el-link type="primary" :underline="false">{{ scope.row.identify || '-' }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="变更类型" width="100">
-        <template slot-scope="scope"> {{ scope.row.type | modifyTypeFilter }} </template>
+      <el-table-column :label="$t('threadPoolAudit.changeType')" width="100">
+        <template slot-scope="scope"> {{ scope.row.type | modifyTypeFilter(that) }} </template>
       </el-table-column>
-      <el-table-column label="全部修改" width="100">
+      <el-table-column :label="$t('threadPoolInstance.changeAll')" width="100">
         <template slot-scope="scope">
           <el-tag :type="scope.row.modifyAll | modifyAllTagFilter">
             {{ scope.row.modifyAll | modifyAllFilter }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="修改人" width="120">
+      <el-table-column :label="$t('threadPoolAudit.modifiedBy')" width="120">
         <template slot-scope="scope"> {{ scope.row.modifyUser }}</template>
       </el-table-column>
-      <el-table-column label="审核状态" width="110">
-        <template slot-scope="scope">{{ scope.row.verifyStatus | verifyStatusFilter }}</template>
+      <el-table-column :label="$t('threadPoolAudit.auditStatus')" width="110">
+        <template slot-scope="scope">{{ scope.row.verifyStatus | verifyStatusFilter(that) }}</template>
       </el-table-column>
-      <el-table-column label="审核人" width="120">
+      <el-table-column :label="$t('threadPoolAudit.reviewer')" width="120">
         <template slot-scope="scope">{{ scope.row.verifyUser }}</template>
       </el-table-column>
-      <el-table-column label="提交时间" width="180">
+      <el-table-column :label="$t('threadPoolAudit.submissionTime')" width="180">
         <template slot-scope="scope">{{ scope.row.gmtCreate }}</template>
       </el-table-column>
-      <el-table-column label="审核时间" width="180">
+      <el-table-column :label="$t('threadPoolAudit.auditTime')" width="180">
         <template slot-scope="scope">{{ scope.row.gmtVerify }}</template>
       </el-table-column>
       <el-table-column
-        label="操作"
+        :label="$t('common.operation')"
         fixed="right"
         width="90"
         align="center"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="applicationDetail(row)"> 审核 </el-button>
+          <el-button type="text" size="small" @click="applicationDetail(row)"> {{$t('common.audit')}} </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -126,38 +126,38 @@
         :model="temp"
         label-width="80px"
       >
-        <el-form-item label="核心线程" prop="corePoolSize">
+        <el-form-item :label="$t('threadPool.coreSize')" prop="corePoolSize">
           {{ detailInfo.corePoolSize }}
         </el-form-item>
-        <el-form-item label="最大线程" prop="maxSize">
+        <el-form-item :label="$t('threadPool.maximumSize')" prop="maxSize">
           {{ detailInfo.maximumPoolSize }}
         </el-form-item>
-        <el-form-item label="队列类型" prop="queueType">
+        <el-form-item :label="$t('threadPool.queueType')" prop="queueType">
           {{ detailInfo.queueType | queueTypeFilter }}
         </el-form-item>
-        <el-form-item label="队列容量" prop="capacity">
+        <el-form-item :label="$t('threadPool.queueCapacity')" prop="capacity">
           {{ detailInfo.capacity }}
         </el-form-item>
-        <el-form-item label="执行超时" prop="executeTimeOut">
+        <el-form-item :label="$t('threadPool.executionTimeout')" prop="executeTimeOut">
           {{ detailInfo.executeTimeOut }}
         </el-form-item>
-        <el-form-item label="空闲回收" prop="keepAliveTime">
+        <el-form-item :label="$t('threadPool.keepAliveTime')" prop="keepAliveTime">
           {{ detailInfo.keepAliveTime }}
         </el-form-item>
-        <el-form-item label="是否超时" prop="allowCoreThreadTimeOut">
-          {{ detailInfo.allowCoreThreadTimeOut | enableFilter }}
+        <el-form-item :label="$t('threadPool.isTimeout')" prop="allowCoreThreadTimeOut">
+          {{ detailInfo.allowCoreThreadTimeOut | enableFilter(that) }}
         </el-form-item>
-        <el-form-item label="是否报警" prop="isAlarm">
-          {{ detailInfo.isAlarm | enableFilter }}
+        <el-form-item :label="$t('threadPool.isAlarm')" prop="isAlarm">
+          {{ detailInfo.isAlarm | enableFilter(that) }}
         </el-form-item>
-        <el-form-item label="活跃报警" prop="livenessAlarm">
+        <el-form-item :label="$t('threadPool.activeAlarm')" prop="livenessAlarm">
           {{ detailInfo.livenessAlarm }}
         </el-form-item>
 
-        <el-form-item label="容量报警" prop="capacityAlarm">
+        <el-form-item :label="$t('threadPool.capacityAlarm')" prop="capacityAlarm">
           {{ detailInfo.capacityAlarm }}
         </el-form-item>
-        <el-form-item label="拒绝策略" prop="rejectedType">
+        <el-form-item :label="$t('threadPool.rejectedHandler')" prop="rejectedType">
           {{ detailInfo.rejectedType | rejectedTypeFilter }}
         </el-form-item>
         <!-- <el-form-item v-if="isRejectShow" label="自定义拒绝策略" prop="customRejectedType">
@@ -170,14 +170,14 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button :disabled="detailInfo.verifyStatus != 0" @click="reject(detailInfo)">
-          审核拒绝
+          {{ $t('threadPoolAudit.auditRejection') }}
         </el-button>
         <el-button
           :disabled="detailInfo.verifyStatus != 0"
           type="primary"
           @click="accept(detailInfo)"
         >
-          审核通过
+          {{ $t('threadPoolAudit.auditApproved') }}
         </el-button>
       </div>
     </el-dialog>
@@ -190,44 +190,44 @@
         :model="temp"
         label-width="80px"
       >
-        <el-form-item label="核心线程" prop="corePoolSize">
+        <el-form-item :label="$t('threadPool.coreSize')" prop="corePoolSize">
           {{ detailInfo.corePoolSize }}
         </el-form-item>
-        <el-form-item label="最大线程" prop="maximumPoolSize">
+        <el-form-item :label="$t('threadPool.maximumSize')" prop="maximumPoolSize">
           {{ detailInfo.maximumPoolSize }}
         </el-form-item>
-        <el-form-item label="队列类型" prop="queueType">
+        <el-form-item :label="$t('threadPool.queueType')" prop="queueType">
           {{ detailInfo.queueType | queueTypeFilter }}
         </el-form-item>
-        <el-form-item label="队列容量" prop="capacity">
+        <el-form-item :label="$t('threadPool.queueCapacity')" prop="capacity">
           {{ detailInfo.capacity }}
         </el-form-item>
-        <el-form-item label="是否超时" prop="isAlarm">
-          {{ detailInfo.allowCoreThreadTimeOut | enableFilter }}
+        <el-form-item :label="$t('threadPoolInstance.allowCoreThreadTimeOut')" prop="isAlarm">
+          {{ detailInfo.allowCoreThreadTimeOut | enableFilter(that) }}
         </el-form-item>
-        <el-form-item label="执行超时" prop="executeTimeOut">
+        <el-form-item :label="$t('threadPool.executionTimeout')" prop="executeTimeOut">
           {{ detailInfo.executeTimeOut }}
         </el-form-item>
-        <el-form-item label="空闲回收" prop="keepAliveTime">
+        <el-form-item :label="$t('threadPool.keepAliveTime')" prop="keepAliveTime">
           {{ detailInfo.keepAliveTime }}
         </el-form-item>
-        <el-form-item label="拒绝策略" prop="rejectedType">
+        <el-form-item :label="$t('threadPool.rejectedHandler')" prop="rejectedType">
           {{ detailInfo.rejectedType | rejectedTypeFilter }}
         </el-form-item>
-        <el-form-item label="全部修改" prop="allUpdate">
+        <el-form-item :label="$t('threadPoolInstance.changeAll')" prop="allUpdate">
           <el-switch v-model="detailInfo.modifyAll"> </el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button :disabled="detailInfo.verifyStatus != 0" @click="reject(detailInfo)">
-          审核拒绝
+          {{ $t('threadPoolAudit.auditRejection') }}
         </el-button>
         <el-button
           type="primary"
           :disabled="detailInfo.verifyStatus != 0"
           @click="accept(detailInfo)"
         >
-          审核通过
+          {{ $t('threadPoolAudit.auditApproved') }}
         </el-button>
       </div>
     </el-dialog>
@@ -235,29 +235,29 @@
     <!--web thread pool-->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="webThreadPoolDialog">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="110px">
-        <el-form-item label="核心线程" prop="corePoolSize">
+        <el-form-item :label="$t('threadPool.coreSize')" prop="corePoolSize">
           {{ detailInfo.corePoolSize }}
         </el-form-item>
-        <el-form-item label="最大线程" prop="maximumPoolSize">
+        <el-form-item :label="$t('threadPool.maximumSize')" prop="maximumPoolSize">
           {{ detailInfo.maximumPoolSize }}
         </el-form-item>
-        <el-form-item label="空闲回收时间" prop="keepAliveTime">
+        <el-form-item :label="$t('threadPool.keepAliveTime')" prop="keepAliveTime">
           {{ detailInfo.keepAliveTime }}
         </el-form-item>
-        <el-form-item label="全部修改" prop="modifyAll">
+        <el-form-item :label="$t('threadPoolInstance.changeAll')" prop="modifyAll">
           <el-switch v-model="detailInfo.modifyAll"></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button :disabled="detailInfo.verifyStatus != 0" @click="reject(detailInfo)">
-          审核拒绝
+          {{ $t('threadPoolAudit.auditRejection') }}
         </el-button>
         <el-button
           :disabled="detailInfo.verifyStatus != 0"
           type="primary"
           @click="accept(detailInfo)"
         >
-          审核通过
+          {{ $t('threadPoolAudit.auditApproved') }}
         </el-button>
       </div>
     </el-dialog>
@@ -268,26 +268,26 @@
         <el-form-item label="mark" prop="corePoolSize">
           {{ detailInfo.mark }}
         </el-form-item>
-        <el-form-item label="核心线程" prop="corePoolSize">
+        <el-form-item :label="$t('threadPool.coreSize')" prop="corePoolSize">
           {{ detailInfo.corePoolSize }}
         </el-form-item>
-        <el-form-item label="最大线程" prop="maximumPoolSize">
+        <el-form-item :label="$t('threadPool.maximumSize')" prop="maximumPoolSize">
           {{ detailInfo.maximumPoolSize }}
         </el-form-item>
-        <el-form-item label="全部修改" prop="allUpdate">
+        <el-form-item :label="$t('threadPoolInstance.changeAll')" prop="allUpdate">
           <el-switch v-model="detailInfo.modifyAll"></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button :disabled="detailInfo.verifyStatus != 0" @click="reject(detailInfo)">
-          审核拒绝
+          {{ $t('threadPoolAudit.auditRejection') }}
         </el-button>
         <el-button
           :disabled="detailInfo.verifyStatus != 0"
           type="primary"
           @click="accept(detailInfo)"
         >
-          审核通过
+          {{ $t('threadPoolAudit.auditApproved') }}
         </el-button>
       </div>
     </el-dialog>
@@ -310,6 +310,8 @@ import * as tenantApi from '@/api/hippo4j-tenant';
 import * as verifyApi from '@/api/verify';
 import waves from '@/directive/waves';
 import Pagination from '@/components/Pagination';
+import * as threadPoolApi from '@/api/hippo4j-threadPool';
+import * as threadPoolAdapterApi from '@/api/hippo4j-adapterThreadPool';
 
 export default {
   name: 'JobProject',
@@ -329,11 +331,11 @@ export default {
       }
       return value;
     },
-    enableFilter(type) {
+    enableFilter(type, that) {
       if (1 == type) {
-        return '是';
+        return  that.$t('common.yes');
       } else if (0 == type) {
-        return '否';
+        return that.$t('common.no')
       }
     },
     alarmFilter(type) {
@@ -377,26 +379,27 @@ export default {
         return 'CustomRejectedPolicy_' + type;
       }
     },
-    modifyTypeFilter(type) {
+    modifyTypeFilter(type, that) {
+      console.log(that)
       if (1 == type) {
-        return '管理';
+        return that.$t('threadPoolAudit.manage')
       } else if (2 == type) {
-        return '实例';
+        return that.$t('threadPoolAudit.instance');
       } else if (3 == type) {
-        return '容器';
+        return that.$t('threadPoolAudit.container');
       } else if (4 == type) {
-        return '框架';
+        return that.$t('threadPoolAudit.framework');
       }
     },
-    verifyStatusFilter(type) {
+    verifyStatusFilter(type, that) {
       if (0 == type) {
-        return '待审核';
+        return that.$t('threadPoolAudit.unaudited')
       } else if (1 == type) {
-        return '审核通过';
+        return that.$t('threadPoolAudit.auditApproved');
       } else if (2 == type) {
-        return '审核拒绝';
+        return that.$t('threadPoolAudit.auditRejection');
       } else if (3 == type) {
-        return '失效';
+        return that.$t('threadPoolAudit.expired');
       }
     },
     modifyAllFilter(type) {
@@ -463,10 +466,10 @@ export default {
       size: 500,
       dialogStatus: '',
       textMap: {
-        1: '线程池管理',
-        2: '线程池实例',
-        3: '容器线程池',
-        4: '框架线程池',
+        1: this.$t('threadPoolAudit.threadPoolManage'),
+        2: this.$t('threadPoolAudit.threadPoolInstance'),
+        3: this.$t('threadPoolAudit.containerThreadPool'),
+        4: this.$t('threadPoolAudit.frameworkThreadPool'),
       },
       temp: {
         id: undefined,
@@ -478,6 +481,8 @@ export default {
         maxSize: 8,
       },
       visible: true,
+      // filters中无法使用this来调用$t，通过参数that传入filters中
+      that: this
     };
   },
   created() {
@@ -565,16 +570,16 @@ export default {
       });
     },
     openAcceptConfitm() {
-      return this.$confirm(`此操作将接受线程池变更申请, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      return this.$confirm(this.$t('message.auditApprovedMessage'), this.$t('common.hint'), {
+        confirmButtonText: this.$t('common.ok'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       });
     },
     openRejectConfirm() {
-      return this.$confirm(`此操作将拒绝线程池变更申请, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      return this.$confirm(this.$t('message.auditRejectionMessage'), this.$t('common.hint'), {
+        confirmButtonText: this.$t('common.ok'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       });
     },
@@ -631,7 +636,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          this.$message.error('查询失败，请尝试刷新页面');
+          this.$message.error(this.$t('message.queryFailure'));
         });
     },
 

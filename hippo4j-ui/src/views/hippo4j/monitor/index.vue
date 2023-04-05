@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-select
         v-model="listQuery.tenantId"
-        placeholder="租户（必填）"
+        :placeholder="$t('tenantManage.tenantRequired')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -18,7 +18,7 @@
       </el-select>
       <el-select
         v-model="listQuery.itemId"
-        placeholder="项目（必填）"
+        :placeholder="$t('projectManage.itemRequired')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -33,7 +33,7 @@
       </el-select>
       <el-select
         v-model="listQuery.tpId"
-        placeholder="线程池（必填）"
+        :placeholder="$t('threadPool.threadPoolRequired')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -48,7 +48,7 @@
       </el-select>
       <el-select
         v-model="listQuery.identify"
-        placeholder="IP : Port（必填）"
+        :placeholder="$t('threadPoolMonitor.ipPortRequired')"
         style="width: 220px"
         filterable
         class="filter-item"
@@ -69,7 +69,7 @@
         icon="el-icon-search"
         @click="fetchData"
       >
-        搜索
+        {{ $t('common.query') }}
       </el-button>
       <el-button
         v-waves
@@ -79,10 +79,10 @@
         icon="el-icon-refresh"
         @click="refreshData"
       >
-        重置
+        {{ $t('common.reset') }}
       </el-button>
     </div>
-    <el-empty v-if="!temp.coreSize" description="暂无结果" />
+    <el-empty v-if="!temp.coreSize" :description="$t('threadPoolMonitor.noResultsYet')" />
     <section v-else>
       <!-- <el-card shadow="hover">
         <el-descriptions :column="3" border>
@@ -267,19 +267,19 @@ export default {
   methods: {
     fetchData() {
       if (!this.listQuery.tenantId) {
-        this.$message.warning('租户不允许为空');
+        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('tenantManage.tenant') }));
         return;
       }
       if (!this.listQuery.itemId) {
-        this.$message.warning('项目不允许为空');
+        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('projectManage.item') }));
         return;
       }
       if (!this.listQuery.tpId) {
-        this.$message.warning('线程池不允许为空');
+        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('threadPool.threadPool') }));
         return;
       }
       if (!this.listQuery.identify) {
-        this.$message.warning('IP : PORT 不允许为空');
+        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('threadPoolMonitor.ipPort') }));
         return;
       }
 
