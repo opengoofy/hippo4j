@@ -24,7 +24,6 @@ import cn.hippo4j.adapter.web.tomcat.TomcatWebThreadPoolHandlerAdapt;
 import cn.hippo4j.adapter.web.undertow.DefaultUndertowWebThreadPoolHandler;
 import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
 import cn.hippo4j.adapter.web.undertow.UndertowWebThreadPoolHandlerAdapt;
-import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import io.undertow.Undertow;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.coyote.UpgradeProtocol;
