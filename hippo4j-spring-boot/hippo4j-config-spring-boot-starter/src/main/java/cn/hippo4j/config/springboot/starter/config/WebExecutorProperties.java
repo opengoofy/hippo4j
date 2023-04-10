@@ -17,6 +17,8 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
+import cn.hippo4j.common.api.ExecutorNotifyProperties;
+import cn.hippo4j.common.api.IExecutorProperties;
 import lombok.Data;
 
 /**
@@ -58,5 +60,5 @@ public class WebExecutorProperties implements IExecutorProperties {
     /**
      * Notify config
      */
-    private DynamicThreadPoolNotifyProperties notify;
+    private ExecutorNotifyProperties notify;
 }

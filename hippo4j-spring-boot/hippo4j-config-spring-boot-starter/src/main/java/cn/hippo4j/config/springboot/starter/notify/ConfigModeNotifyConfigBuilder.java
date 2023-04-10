@@ -18,6 +18,8 @@
 package cn.hippo4j.config.springboot.starter.notify;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
+import cn.hippo4j.common.api.ExecutorNotifyProperties;
+import cn.hippo4j.common.api.IExecutorProperties;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.*;
@@ -128,19 +130,19 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
 
     private int buildInterval(IExecutorProperties executorProperties) {
         return Optional.ofNullable(executorProperties.getNotify())
-                .map(DynamicThreadPoolNotifyProperties::getInterval)
+                .map(ExecutorNotifyProperties::getInterval)
                 .orElse(Optional.ofNullable(configProperties.getDefaultExecutor())
                         .map(ExecutorProperties::getNotify)
-                        .map(DynamicThreadPoolNotifyProperties::getInterval)
+                        .map(ExecutorNotifyProperties::getInterval)
                         .orElse(5));
     }
 
     private String buildReceive(IExecutorProperties executorProperties) {
         return Optional.ofNullable(executorProperties.getNotify())
-                .map(DynamicThreadPoolNotifyProperties::getReceives)
+                .map(ExecutorNotifyProperties::getReceives)
                 .orElse(Optional.ofNullable(configProperties.getDefaultExecutor())
                         .map(ExecutorProperties::getNotify)
-                        .map(DynamicThreadPoolNotifyProperties::getReceives).orElse(""));
+                        .map(ExecutorNotifyProperties::getReceives).orElse(""));
     }
 
     private String getToken(NotifyPlatformProperties platformProperties) {

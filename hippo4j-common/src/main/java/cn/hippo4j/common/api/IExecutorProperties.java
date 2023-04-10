@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.common.api;
 
 /**
  * Interface for thread pool configuration.
@@ -45,5 +45,5 @@ public interface IExecutorProperties {
     /**
      * Notify configs
      */
-    DynamicThreadPoolNotifyProperties getNotify();
+    ExecutorNotifyProperties getNotify();
 }

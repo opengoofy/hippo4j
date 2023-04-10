@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.common.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DynamicThreadPoolNotifyProperties {
+public class ExecutorNotifyProperties {
 
     /**
      * Thread pool run alarm interval. unit: s
