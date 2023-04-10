@@ -26,6 +26,11 @@ import lombok.Data;
 public class WebExecutorProperties implements IExecutorProperties {
 
     /**
+     * Thread pool id
+     */
+    private String threadPoolId;
+
+    /**
      * Core pool size
      */
     private Integer corePoolSize;

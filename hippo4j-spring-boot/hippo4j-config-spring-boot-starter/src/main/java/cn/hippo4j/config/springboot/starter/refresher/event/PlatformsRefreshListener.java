@@ -48,7 +48,7 @@ public class PlatformsRefreshListener extends AbstractRefreshListener<ExecutorPr
             if (wrapper != null && !wrapper.isInitFlag()) {
                 Hippo4jBaseSendMessageService sendMessageService = ApplicationContextHolder.getBean(Hippo4jBaseSendMessageService.class);
                 ConfigModeNotifyConfigBuilder configBuilder = ApplicationContextHolder.getBean(ConfigModeNotifyConfigBuilder.class);
-                Map<String, List<NotifyConfigDTO>> notifyConfig = configBuilder.buildSingleNotifyConfig(threadPoolId, executorProperties);
+                Map<String, List<NotifyConfigDTO>> notifyConfig = configBuilder.buildSingleNotifyConfig(executorProperties);
                 sendMessageService.putPlatform(notifyConfig);
                 wrapper.setInitFlag(Boolean.TRUE);
             }

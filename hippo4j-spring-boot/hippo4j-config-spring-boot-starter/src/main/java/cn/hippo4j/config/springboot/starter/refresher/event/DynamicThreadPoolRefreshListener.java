@@ -168,7 +168,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
         boolean checkNotifyAlarm = false;
         List<String> changeKeys = new ArrayList<>();
         Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap =
-                configModeNotifyConfigBuilder.buildSingleNotifyConfig(executorProperties.getThreadPoolId(), executorProperties);
+                configModeNotifyConfigBuilder.buildSingleNotifyConfig(executorProperties);
         Map<String, List<NotifyConfigDTO>> notifyConfigs = hippo4jBaseSendMessageService.getNotifyConfigs();
         if (CollectionUtil.isNotEmpty(notifyConfigs)) {
             for (Map.Entry<String, List<NotifyConfigDTO>> each : newDynamicThreadPoolNotifyMap.entrySet()) {

@@ -23,6 +23,11 @@ package cn.hippo4j.config.springboot.starter.config;
 public interface IExecutorProperties {
 
     /**
+     * Thread pool id
+     */
+    String getThreadPoolId();
+
+    /**
      * Core pool size
      */
     Integer getCorePoolSize();

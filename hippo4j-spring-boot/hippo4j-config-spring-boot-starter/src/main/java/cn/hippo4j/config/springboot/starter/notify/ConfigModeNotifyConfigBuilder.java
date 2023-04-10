@@ -62,15 +62,17 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
             return resultMap;
         }
         for (ExecutorProperties executorProperties : executors) {
-            Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig =
-                    buildSingleNotifyConfig(executorProperties.getThreadPoolId(), executorProperties);
+            Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig = buildSingleNotifyConfig(executorProperties);
             initCacheAndLock(buildSingleNotifyConfig);
             resultMap.putAll(buildSingleNotifyConfig);
         }
         // register notify config for web
         WebExecutorProperties webProperties = configProperties.getWeb();
+        if (StringUtil.isBlank(webProperties.getThreadPoolId())) {
+            webProperties.setThreadPoolId(webThreadPoolService.getWebContainerType().name());
+        }
         Map<String, List<NotifyConfigDTO>> webSingleNotifyConfigMap =
-                buildSingleNotifyConfig(webThreadPoolService.getWebContainerType().name(), webProperties);
+                buildSingleNotifyConfig(webProperties);
         initCacheAndLock(webSingleNotifyConfigMap);
         resultMap.putAll(webSingleNotifyConfigMap);
 
@@ -83,7 +85,8 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
      * @param executorProperties
      * @return
      */
-    public Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig(String threadPoolId, IExecutorProperties executorProperties) {
+    public Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig(IExecutorProperties executorProperties) {
+        String threadPoolId = executorProperties.getThreadPoolId();
         Map<String, List<NotifyConfigDTO>> resultMap = new HashMap<>();
         String alarmBuildKey = threadPoolId + "+ALARM";
         List<NotifyConfigDTO> alarmNotifyConfigs = new ArrayList<>();

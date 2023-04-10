@@ -21,6 +21,7 @@ import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.monitor.ThreadPoolMonitorExecutor;
 import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;
 import cn.hippo4j.config.springboot.starter.refresher.event.AdapterExecutorsRefreshListener;
@@ -50,6 +51,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+
+import java.util.Optional;
 
 /**
  * Dynamic thread-pool auto-configuration.
@@ -97,7 +100,12 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public WebThreadPoolConfigChangeHandler webThreadPoolConfigChangeHandler(Hippo4jSendMessageService hippo4jSendMessageService) {
+    public WebThreadPoolConfigChangeHandler webThreadPoolConfigChangeHandler(BootstrapConfigProperties bootstrapConfigProperties,
+                                                                             WebThreadPoolService webThreadPoolService,
+                                                                             Hippo4jSendMessageService hippo4jSendMessageService) {
+        if (bootstrapConfigProperties.getWeb() != null && StringUtil.isBlank(bootstrapConfigProperties.getWeb().getThreadPoolId())) {
+            bootstrapConfigProperties.getWeb().setThreadPoolId(webThreadPoolService.getWebContainerType().name());
+        }
         return new WebThreadPoolConfigChangeHandler(hippo4jSendMessageService);
     }
 
