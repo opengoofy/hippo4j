@@ -82,7 +82,7 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
             XnioWorker xnioWorker = (XnioWorker) executor;
             int minThreads = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int maxThreads = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
-            int keepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);
+            long keepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);
             parameterInfo.setCoreSize(minThreads);
             parameterInfo.setMaxSize(maxThreads);
             parameterInfo.setKeepAliveTime(keepAliveTime);
@@ -135,7 +135,7 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
             XnioWorker xnioWorker = (XnioWorker) executor;
             Integer coreSize = threadPoolParameterInfo.corePoolSizeAdapt();
             Integer maxSize = threadPoolParameterInfo.maximumPoolSizeAdapt();
-            Integer keepAliveTime = threadPoolParameterInfo.getKeepAliveTime();
+            int keepAliveTime = threadPoolParameterInfo.getKeepAliveTime().intValue();
             int originalCoreSize = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int originalMaximumPoolSize = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
             int originalKeepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);

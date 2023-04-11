@@ -30,6 +30,7 @@ import cn.hippo4j.config.springboot.starter.support.GlobalCoreThreadPoolManage;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
+import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
@@ -166,7 +167,8 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
         boolean checkNotifyConfig = false;
         boolean checkNotifyAlarm = false;
         List<String> changeKeys = new ArrayList<>();
-        Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap = configModeNotifyConfigBuilder.buildSingleNotifyConfig(executorProperties);
+        Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap =
+                configModeNotifyConfigBuilder.buildSingleNotifyConfig(executorProperties);
         Map<String, List<NotifyConfigDTO>> notifyConfigs = hippo4jBaseSendMessageService.getNotifyConfigs();
         if (CollectionUtil.isNotEmpty(notifyConfigs)) {
             for (Map.Entry<String, List<NotifyConfigDTO>> each : newDynamicThreadPoolNotifyMap.entrySet()) {

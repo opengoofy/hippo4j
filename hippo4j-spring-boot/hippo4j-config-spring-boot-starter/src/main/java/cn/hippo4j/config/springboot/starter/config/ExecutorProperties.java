@@ -17,6 +17,8 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
+import cn.hippo4j.common.api.ExecutorNotifyProperties;
+import cn.hippo4j.common.api.IExecutorProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +33,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class ExecutorProperties {
+public class ExecutorProperties implements IExecutorProperties {
 
     /**
      * Thread pool id
@@ -101,7 +103,7 @@ public class ExecutorProperties {
     /**
      * Notify
      */
-    private DynamicThreadPoolNotifyProperties notify;
+    private ExecutorNotifyProperties notify;
 
     /**
      * Nodes, application startup is not affect, change properties is effect

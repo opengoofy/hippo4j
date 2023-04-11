@@ -17,11 +17,12 @@
 
 package cn.hippo4j.config.springboot.starter.notify;
 
+import cn.hippo4j.adapter.web.WebThreadPoolService;
+import cn.hippo4j.common.api.ExecutorNotifyProperties;
+import cn.hippo4j.common.api.IExecutorProperties;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-import cn.hippo4j.config.springboot.starter.config.ExecutorProperties;
-import cn.hippo4j.config.springboot.starter.config.NotifyPlatformProperties;
+import cn.hippo4j.config.springboot.starter.config.*;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.service.AlarmControlHandler;
@@ -42,16 +43,23 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
 
     private final BootstrapConfigProperties configProperties;
 
+    private final WebThreadPoolService webThreadPoolService;
+
     @Override
     public Map<String, List<NotifyConfigDTO>> buildNotify() {
         Map<String, List<NotifyConfigDTO>> resultMap = new HashMap<>();
-        boolean globalAlarm = Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getAlarm()).orElse(true);
+        boolean globalAlarm = Optional.ofNullable(configProperties.getDefaultExecutor())
+                .map(ExecutorProperties::getAlarm)
+                .orElse(true);
         List<ExecutorProperties> executors = configProperties.getExecutors();
         if (CollectionUtil.isEmpty(executors)) {
             log.warn("Failed to build notify, executors configuration is empty.");
             return resultMap;
         }
-        List<ExecutorProperties> actual = executors.stream().filter(each -> Optional.ofNullable(each.getAlarm()).orElse(false)).collect(Collectors.toList());
+        List<ExecutorProperties> actual = executors.stream()
+                .filter(each -> Optional.ofNullable(each.getAlarm())
+                        .orElse(false))
+                .collect(Collectors.toList());
         if (!globalAlarm && CollectionUtil.isEmpty(actual)) {
             return resultMap;
         }
@@ -60,6 +68,16 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
             initCacheAndLock(buildSingleNotifyConfig);
             resultMap.putAll(buildSingleNotifyConfig);
         }
+        // register notify config for web
+        WebExecutorProperties webProperties = configProperties.getWeb();
+        if (StringUtil.isBlank(webProperties.getThreadPoolId())) {
+            webProperties.setThreadPoolId(webThreadPoolService.getWebContainerType().name());
+        }
+        Map<String, List<NotifyConfigDTO>> webSingleNotifyConfigMap =
+                buildSingleNotifyConfig(webProperties);
+        initCacheAndLock(webSingleNotifyConfigMap);
+        resultMap.putAll(webSingleNotifyConfigMap);
+
         return resultMap;
     }
 
@@ -69,9 +87,9 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
      * @param executorProperties
      * @return
      */
-    public Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig(ExecutorProperties executorProperties) {
-        Map<String, List<NotifyConfigDTO>> resultMap = new HashMap<>();
+    public Map<String, List<NotifyConfigDTO>> buildSingleNotifyConfig(IExecutorProperties executorProperties) {
         String threadPoolId = executorProperties.getThreadPoolId();
+        Map<String, List<NotifyConfigDTO>> resultMap = new HashMap<>();
         String alarmBuildKey = threadPoolId + "+ALARM";
         List<NotifyConfigDTO> alarmNotifyConfigs = new ArrayList<>();
         List<NotifyPlatformProperties> notifyPlatforms = configProperties.getNotifyPlatforms();
@@ -82,10 +100,7 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
             notifyConfig.setType("ALARM");
             notifyConfig.setSecret(platformProperties.getSecret());
             notifyConfig.setSecretKey(getToken(platformProperties));
-            int interval = Optional.ofNullable(executorProperties.getNotify())
-                    .map(each -> each.getInterval())
-                    .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getNotify()).map(each -> each.getInterval()).orElse(5));
-            notifyConfig.setInterval(interval);
+            notifyConfig.setInterval(buildInterval(executorProperties));
             notifyConfig.setReceives(buildReceive(executorProperties));
             alarmNotifyConfigs.add(notifyConfig);
         }
@@ -113,12 +128,21 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
                         .forEach(each -> alarmControlHandler.initCacheAndLock(each.getTpId(), each.getPlatform(), each.getInterval())));
     }
 
-    private String buildReceive(ExecutorProperties executorProperties) {
-        String receives = Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getNotify()).map(each -> each.getReceives()).orElse("");
-        if (executorProperties.getNotify() != null && StringUtil.isNotEmpty(executorProperties.getNotify().getReceives())) {
-            receives = executorProperties.getNotify().getReceives();
-        }
-        return receives;
+    private int buildInterval(IExecutorProperties executorProperties) {
+        return Optional.ofNullable(executorProperties.getNotify())
+                .map(ExecutorNotifyProperties::getInterval)
+                .orElse(Optional.ofNullable(configProperties.getDefaultExecutor())
+                        .map(ExecutorProperties::getNotify)
+                        .map(ExecutorNotifyProperties::getInterval)
+                        .orElse(5));
+    }
+
+    private String buildReceive(IExecutorProperties executorProperties) {
+        return Optional.ofNullable(executorProperties.getNotify())
+                .map(ExecutorNotifyProperties::getReceives)
+                .orElse(Optional.ofNullable(configProperties.getDefaultExecutor())
+                        .map(ExecutorProperties::getNotify)
+                        .map(ExecutorNotifyProperties::getReceives).orElse(""));
     }
 
     private String getToken(NotifyPlatformProperties platformProperties) {

@@ -18,20 +18,10 @@
 package cn.hippo4j.adapter.web.jetty;
 
 import cn.hippo4j.adapter.web.DefaultAbstractWebThreadPoolService;
-import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
-import cn.hippo4j.common.constant.ChangeThreadPoolConstants;
-import cn.hippo4j.common.enums.WebContainerEnum;
-import cn.hippo4j.common.model.ThreadPoolBaseInfo;
-import cn.hippo4j.common.model.ThreadPoolParameter;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.common.toolkit.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.springframework.boot.web.embedded.jetty.JettyWebServer;
 import org.springframework.boot.web.server.WebServer;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
 /**

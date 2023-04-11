@@ -15,38 +15,35 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
-
-import lombok.Data;
+package cn.hippo4j.common.api;
 
 /**
- * Web thread pool properties.
+ * Interface for thread pool configuration.
  */
-@Data
-public class WebThreadPoolProperties {
+public interface IExecutorProperties {
+
+    /**
+     * Thread pool id
+     */
+    String getThreadPoolId();
 
     /**
      * Core pool size
      */
-    private Integer corePoolSize;
+    Integer getCorePoolSize();
 
     /**
      * Maximum pool size
      */
-    private Integer maximumPoolSize;
+    Integer getMaximumPoolSize();
 
     /**
      * Keep alive time
      */
-    private Integer keepAliveTime;
+    Long getKeepAliveTime();
 
     /**
-     * Nodes, application startup is not affect, change properties is effect
+     * Notify configs
      */
-    private String nodes;
-
-    /**
-     * these propertied is enabled?
-     */
-    private Boolean enable = true;
+    ExecutorNotifyProperties getNotify();
 }

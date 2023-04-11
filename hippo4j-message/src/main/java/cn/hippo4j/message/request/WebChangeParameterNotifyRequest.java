@@ -15,27 +15,39 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.message.request;
 
+import cn.hippo4j.message.request.base.BaseNotifyRequest;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Dynamic thread-pool notify properties.
+ * Change parameter notify request for web thread pool.
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DynamicThreadPoolNotifyProperties {
+public class WebChangeParameterNotifyRequest extends BaseNotifyRequest {
 
-    /**
-     * Thread pool run alarm interval. unit: s
-     */
-    private Integer interval;
+    private String active;
 
-    /**
-     * Receives
-     */
-    private String receives;
+    private String appName;
+
+    private String identify;
+
+    private Integer beforeCorePoolSize;
+
+    private Integer nowCorePoolSize;
+
+    private Integer beforeMaximumPoolSize;
+
+    private Integer nowMaximumPoolSize;
+
+    private Long beforeKeepAliveTime;
+
+    private Long nowKeepAliveTime;
+
 }

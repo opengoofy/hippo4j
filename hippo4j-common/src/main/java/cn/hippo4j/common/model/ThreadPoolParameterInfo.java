@@ -94,7 +94,7 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
     /**
      * Keep alive time
      */
-    private Integer keepAliveTime;
+    private Long keepAliveTime;
 
     /**
      * Execute time out

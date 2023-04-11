@@ -22,12 +22,6 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import cn.hippo4j.adapter.web.DefaultAbstractWebThreadPoolService;
-import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
-import cn.hippo4j.common.enums.WebContainerEnum;
-import cn.hippo4j.common.model.ThreadPoolBaseInfo;
-import cn.hippo4j.common.model.ThreadPoolParameter;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import io.undertow.Undertow;
 import lombok.extern.slf4j.Slf4j;
 

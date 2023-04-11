@@ -53,7 +53,7 @@ public class Md5UtilTest {
         String md5Result = "ef5ea7cb47377fb9fb85a7125e76715d";
         ThreadPoolParameterInfo threadPoolParameterInfo = ThreadPoolParameterInfo.builder().tenantId("prescription")
                 .itemId("dynamic-threadpool-example").tpId("message-consume").content("描述信息").corePoolSize(1)
-                .maximumPoolSize(2).queueType(1).capacity(4).keepAliveTime(513).executeTimeOut(null).rejectedType(4)
+                .maximumPoolSize(2).queueType(1).capacity(4).keepAliveTime(513L).executeTimeOut(null).rejectedType(4)
                 .isAlarm(1).capacityAlarm(80).livenessAlarm(80).allowCoreThreadTimeOut(1).build();
         Assert.isTrue(md5Result.equals(Md5Util.getTpContentMd5(threadPoolParameterInfo)));
     }

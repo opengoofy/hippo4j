@@ -81,7 +81,7 @@ public class ConfigInfoBase implements Serializable {
     /**
      * keepAliveTime
      */
-    private Integer keepAliveTime;
+    private Long keepAliveTime;
 
     /**
      * executeTimeOut

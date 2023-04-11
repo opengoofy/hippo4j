@@ -76,7 +76,7 @@ public interface ThreadPoolParameter {
      *
      * @return
      */
-    Integer getKeepAliveTime();
+    Long getKeepAliveTime();
 
     /**
      * Get execute time out

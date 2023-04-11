@@ -15,27 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.message.request.base;
+package cn.hippo4j.config.springboot.starter.config;
 
-import cn.hippo4j.common.api.NotifyRequest;
-import cn.hippo4j.message.enums.NotifyTypeEnum;
+import cn.hippo4j.common.api.ExecutorNotifyProperties;
+import cn.hippo4j.common.api.IExecutorProperties;
 import lombok.Data;
 
 /**
- * Base notify request.
+ * Web thread pool executor properties.
  */
 @Data
-public class BaseNotifyRequest implements NotifyRequest {
-
-    /**
-     * Tenant id
-     */
-    private String tenantId;
-
-    /**
-     * Item id
-     */
-    private String itemId;
+public class WebExecutorProperties implements IExecutorProperties {
 
     /**
      * Thread pool id
@@ -43,17 +33,32 @@ public class BaseNotifyRequest implements NotifyRequest {
     private String threadPoolId;
 
     /**
-     * Platform
+     * Core pool size
      */
-    private String platform;
+    private Integer corePoolSize;
 
     /**
-     * Type
+     * Maximum pool size
      */
-    private String type;
+    private Integer maximumPoolSize;
 
     /**
-     * Receives
+     * Keep alive time
      */
-    private String receives;
+    private Long keepAliveTime;
+
+    /**
+     * Nodes, application startup is not affect, change properties is effect
+     */
+    private String nodes;
+
+    /**
+     * these propertied is enabled?
+     */
+    private Boolean enable = true;
+
+    /**
+     * Notify config
+     */
+    private ExecutorNotifyProperties notify;
 }

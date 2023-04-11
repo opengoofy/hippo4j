@@ -44,7 +44,7 @@ import static cn.hippo4j.message.platform.constant.LarkAlarmConstants.*;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class LarkSendMessageHandler implements SendMessageHandler<AlarmNotifyRequest, ChangeParameterNotifyRequest> {
+public class LarkSendMessageHandler implements SendMessageHandler {
 
     @Override
     public String getType() {

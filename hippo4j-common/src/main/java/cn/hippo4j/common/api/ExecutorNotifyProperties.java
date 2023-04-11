@@ -15,42 +15,24 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.message.request.base;
+package cn.hippo4j.common.api;
 
-import cn.hippo4j.common.api.NotifyRequest;
-import cn.hippo4j.message.enums.NotifyTypeEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * Base notify request.
+ * Dynamic thread-pool notify properties.
  */
 @Data
-public class BaseNotifyRequest implements NotifyRequest {
+@NoArgsConstructor
+@AllArgsConstructor
+public class ExecutorNotifyProperties {
 
     /**
-     * Tenant id
+     * Thread pool run alarm interval. unit: s
      */
-    private String tenantId;
-
-    /**
-     * Item id
-     */
-    private String itemId;
-
-    /**
-     * Thread pool id
-     */
-    private String threadPoolId;
-
-    /**
-     * Platform
-     */
-    private String platform;
-
-    /**
-     * Type
-     */
-    private String type;
+    private Integer interval;
 
     /**
      * Receives

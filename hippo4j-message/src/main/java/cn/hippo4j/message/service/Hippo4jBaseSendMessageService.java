@@ -25,6 +25,7 @@ import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.request.WebChangeParameterNotifyRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,11 +54,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     @Override
     public void sendAlarmMessage(NotifyTypeEnum typeEnum, AlarmNotifyRequest alarmNotifyRequest) {
         String threadPoolId = alarmNotifyRequest.getThreadPoolId();
-        String buildKey = new StringBuilder()
-                .append(threadPoolId)
-                .append("+")
-                .append("ALARM")
-                .toString();
+        String buildKey = generateAlarmKey(threadPoolId);
         List<NotifyConfigDTO> notifyList = notifyConfigs.get(buildKey);
         if (CollectionUtil.isEmpty(notifyList)) {
             return;
@@ -82,11 +79,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
     @Override
     public void sendChangeMessage(ChangeParameterNotifyRequest changeParameterNotifyRequest) {
         String threadPoolId = changeParameterNotifyRequest.getThreadPoolId();
-        String buildKey = new StringBuilder()
-                .append(threadPoolId)
-                .append("+")
-                .append("CONFIG")
-                .toString();
+        String buildKey = generateConfigKey(threadPoolId);
         List<NotifyConfigDTO> notifyList = notifyConfigs.get(buildKey);
         if (CollectionUtil.isEmpty(notifyList)) {
             log.warn("[{}] Please configure alarm notification on the server.", threadPoolId);
@@ -104,6 +97,45 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
                 log.warn("Failed to send thread pool change notification. key: [{}]", threadPoolId, ex);
             }
         });
+    }
+
+    @Override
+    public void sendChangeMessage(WebChangeParameterNotifyRequest webChangeParameterNotifyRequest) {
+        String threadPoolId = webChangeParameterNotifyRequest.getThreadPoolId();
+        String buildKey = generateConfigKey(threadPoolId);
+        List<NotifyConfigDTO> notifyList = notifyConfigs.get(buildKey);
+        if (CollectionUtil.isEmpty(notifyList)) {
+            log.warn("[{}] Please configure alarm notification on the server.", threadPoolId);
+            return;
+        }
+        notifyList.forEach(each -> {
+            try {
+                SendMessageHandler messageHandler = sendMessageHandlers.get(each.getPlatform());
+                if (messageHandler == null) {
+                    log.warn("[{}] Please configure alarm notification on the server.", threadPoolId);
+                    return;
+                }
+                messageHandler.sendWebChangeMessage(each, webChangeParameterNotifyRequest);
+            } catch (Exception ex) {
+                log.warn("Failed to send thread pool change notification. key: [{}]", threadPoolId, ex);
+            }
+        });
+    }
+
+    private String generateConfigKey(String threadPoolId) {
+        return new StringBuilder()
+                .append(threadPoolId)
+                .append("+")
+                .append("CONFIG")
+                .toString();
+    }
+
+    private String generateAlarmKey(String threadPoolId) {
+        return new StringBuilder()
+                .append(threadPoolId)
+                .append("+")
+                .append("ALARM")
+                .toString();
     }
 
     /**
