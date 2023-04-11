@@ -38,7 +38,7 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
  */
 @Slf4j
 @Order(WEB_EXECUTOR_LISTENER)
-@SuppressWarnings("all")
+@SuppressWarnings("rawtypes")
 public class WebExecutorRefreshListener extends AbstractRefreshListener<WebExecutorProperties> {
 
     private final ThreadPoolConfigChange configChange;
