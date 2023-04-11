@@ -5,7 +5,7 @@ title: 采用公司
 
 ## 谁在使用 Hippo4j
 
-共计 32+ 家公司生产接入 Hippo4j。按照公司登记时间排序。
+共计 33+ 家公司生产接入 Hippo4j，按照公司登记时间排序。
 
 - [身边云](https://serviceshare.com)
 - [思派健康科技](https://www.medbanks.cn)
@@ -39,6 +39,7 @@ title: 采用公司
 - [九四智能](https://94ai.com)
 - [新华智云科技有限公司](https://www.xinhuazhiyun.com)
 - [银丰新融](https://www.ist.com.cn)
+- [深圳市帮客帮科技有限公司](https://www.bangkebang.com)
 
 ## 登记
 
