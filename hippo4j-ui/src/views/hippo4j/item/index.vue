@@ -25,7 +25,7 @@
         :disabled="isEditDisabled"
         @click="handleCreate"
       >
-      {{ $t('common.insert') }}
+        {{ $t('common.insert') }}
       </el-button>
     </div>
     <el-table
@@ -60,7 +60,11 @@
       <el-table-column :label="$t('common.updateTime')">
         <template slot-scope="scope">{{ scope.row.gmtModified }}</template>
       </el-table-column>
-      <el-table-column :label="$t('common.operation')" width="90" class-name="small-padding fixed-width">
+      <el-table-column
+        :label="$t('common.operation')"
+        width="90"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="{ row }">
           <el-button type="text" :disabled="isEditDisabled" size="small" @click="handleUpdate(row)">
             {{ $t('common.edit') }}
@@ -72,7 +76,7 @@
             type="text"
             @click="handleDelete(row)"
           >
-          {{ $t('common.delete') }}
+            {{ $t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -85,22 +89,22 @@
       @pagination="fetchData"
     />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="800px">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
+        style="width: 500px; margin-left: 50px"
         :rules="rules"
         :model="temp"
-        label-position="left"
-        label-width="100px"
+        label-width="120px"
       >
         <el-form-item :label="$t('tenantManage.tenant')" prop="tenantId">
           <el-select
             v-model="temp.tenantId"
             :placeholder="$t('tenantManage.tenant')"
             filterable
+            style="display: block"
             clearable
             class="filter-item"
-            style="width: 40%"
             :disabled="dialogStatus === 'create' ? false : true"
           >
             <el-option
@@ -116,14 +120,13 @@
             v-model="temp.itemId"
             :disabled="dialogStatus === 'create' ? false : true"
             :placeholder="$t('projectManage.item')"
-            style="width: 40%"
           />
         </el-form-item>
         <el-form-item :label="$t('projectManage.itemName')" prop="itemName">
-          <el-input v-model="temp.itemName" :placeholder="$t('projectManage.itemName')" style="width: 40%" />
+          <el-input v-model="temp.itemName" :placeholder="$t('projectManage.itemName')" />
         </el-form-item>
         <el-form-item :label="$t('projectManage.owner')" prop="owner">
-          <el-input v-model="temp.owner" :placeholder="$t('projectManage.owner')" style="width: 40%" />
+          <el-input v-model="temp.owner" :placeholder="$t('projectManage.owner')" />
         </el-form-item>
         <el-form-item :label="$t('projectManage.itemIntro')" prop="itemDesc">
           <el-input
@@ -131,7 +134,6 @@
             :autosize="{ minRows: 3, maxRows: 6 }"
             type="textarea"
             :placeholder="$t('projectManage.itemIntro')"
-            style="width: 40%"
           />
         </el-form-item>
       </el-form>
@@ -148,7 +150,9 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('common.confirm') }}</el-button>
+        <el-button type="primary" @click="dialogPvVisible = false">{{
+          $t('common.confirm')
+        }}</el-button>
       </span>
     </el-dialog>
   </div>

@@ -95,8 +95,12 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="handleInfo(row)"> {{ $t('common.detail') }} </el-button>
-          <el-button type="text" :disabled="isEditDisabled" size="small" @click="handleUpdate(row)">{{ $t('common.edit') }} </el-button>
+          <el-button type="text" size="small" @click="handleInfo(row)">
+            {{ $t('common.detail') }}
+          </el-button>
+          <el-button type="text" :disabled="isEditDisabled" size="small" @click="handleUpdate(row)"
+            >{{ $t('common.edit') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -106,7 +110,13 @@
       width="1000px"
     >
       <template>
-        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.LoadInformation')" :column="3" :size="size" border>
+        <el-descriptions
+          class="margin-top"
+          :title="$t('threadPoolInstance.LoadInformation')"
+          :column="3"
+          :size="size"
+          border
+        >
           <el-descriptions-item>
             <template slot="label"> {{ $t('threadPoolInstance.CurrentLoad') }} </template>
             {{ runTimeTemp.currentLoad }}
@@ -126,7 +136,13 @@
         </el-descriptions>
         <br />
         <br />
-        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.threadInformation')" :column="3" :size="size" border>
+        <el-descriptions
+          class="margin-top"
+          :title="$t('threadPoolInstance.threadInformation')"
+          :column="3"
+          :size="size"
+          border
+        >
           <el-descriptions-item>
             <template slot="label"> {{ $t('threadPool.coreSize') }} </template>
             {{ runTimeTemp.coreSize }}
@@ -150,7 +166,13 @@
         </el-descriptions>
         <br />
         <br />
-        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.queueInformation')" :column="3" :size="size" border>
+        <el-descriptions
+          class="margin-top"
+          :title="$t('threadPoolInstance.queueInformation')"
+          :column="3"
+          :size="size"
+          border
+        >
           <el-descriptions-item>
             <template slot="label"> {{ $t('threadPool.queueCapacity') }} </template>
             {{ runTimeTemp.queueCapacity }}
@@ -160,7 +182,9 @@
             {{ runTimeTemp.queueSize }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> {{ $t('threadPoolInstance.queueRemainingCapacity') }} </template>
+            <template slot="label">
+              {{ $t('threadPoolInstance.queueRemainingCapacity') }}
+            </template>
             {{ runTimeTemp.queueRemainingCapacity }}
           </el-descriptions-item>
           <el-descriptions-item>
@@ -170,7 +194,13 @@
         </el-descriptions>
         <br />
         <br />
-        <el-descriptions class="margin-top" :title="$t('threadPoolInstance.otherInformation')" :column="3" :size="size" border>
+        <el-descriptions
+          class="margin-top"
+          :title="$t('threadPoolInstance.otherInformation')"
+          :column="3"
+          :size="size"
+          border
+        >
           <el-descriptions-item>
             <template slot="label"> {{ $t('threadPoolInstance.totalTask') }} </template>
             {{ runTimeTemp.completedTaskCount }}
@@ -201,8 +231,8 @@
         ref="dataForm"
         :rules="rules"
         :model="temp"
-        label-position="left"
-        label-width="110px"
+        style="width: 500px; margin-left: 50px"
+        label-width="120px"
       >
         <el-form-item :label="$t('threadPool.coreSize')" prop="coreSize">
           <template>
@@ -230,7 +260,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> {{ $t('common.cancel') }} </el-button>
-        <el-button type="primary" @click="updateData()"> {{$t('common.confirm')}} </el-button>
+        <el-button type="primary" @click="updateData()"> {{ $t('common.confirm') }} </el-button>
       </div>
     </el-dialog>
     <el-dialog :visible.sync="dialogPluginVisible" title="Reading statistics">
@@ -350,11 +380,15 @@ export default {
     },
     fetchData() {
       if (!this.listQuery.tenantId) {
-        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('tenantManage.tenant') }));
+        this.$message.warning(
+          this.$t('message.emptyWarning', { name: this.$t('tenantManage.tenant') }),
+        );
         return;
       }
       if (!this.listQuery.itemId) {
-        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('projectManage.item') }));
+        this.$message.warning(
+          this.$t('message.emptyWarning', { name: this.$t('projectManage.item') }),
+        );
         return;
       }
       this.listLoading = true;

@@ -78,7 +78,7 @@
       <el-table-column :label="$t('tenantManage.tenant')" width="150">
         <template slot-scope="scope">{{ scope.row.tenantId }}</template>
       </el-table-column>
-      <el-table-column :label="$t('projectManage.item')"  width="260">
+      <el-table-column :label="$t('projectManage.item')" width="260">
         <template slot-scope="scope">{{ scope.row.itemId }}</template>
       </el-table-column>
       <el-table-column :label="$t('threadPool.threadPool')" width="260">
@@ -129,14 +129,16 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="handleUpdate(row)"> {{$t('common.edit')}} </el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)">
+            {{ $t('common.edit') }}
+          </el-button>
           <el-button
             v-if="row.status !== 'deleted'"
             size="small"
             type="text"
             @click="handleDelete(row)"
           >
-            {{$t('common.delete')}}
+            {{ $t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -155,7 +157,7 @@
         style="width: 500px; margin-left: 50px"
         :rules="rules"
         :model="temp"
-        label-width="80px"
+        label-width="105px"
       >
         <el-form-item v-if="isEdit" :label="$t('tenantManage.tenant')" prop="tenantId">
           <el-select
@@ -251,7 +253,7 @@
         <el-form-item :label="$t('notifyAlarm.interval')" prop="interval">
           <el-input-number
             v-model="temp.interval"
-            :placeholder= "$t('notifyAlarm.interval') + ' / Min'"
+            :placeholder="$t('notifyAlarm.interval') + ' / Min'"
             controls-position="right"
             :min="0"
             :max="999999"
@@ -290,7 +292,9 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('common.confirm') }}</el-button>
+        <el-button type="primary" @click="dialogPvVisible = false">{{
+          $t('common.confirm')
+        }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -383,7 +387,9 @@ export default {
         receives: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
         secretKey: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
         platform: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        configType: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        configType: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
         enable: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
       },
       temp: {
@@ -554,7 +560,9 @@ export default {
         this.rules['interval'] = [];
       }
       if (configType != null && configType != undefined && alarmType === true) {
-        this.rules['interval'] = [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }];
+        this.rules['interval'] = [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ];
       }
     },
 

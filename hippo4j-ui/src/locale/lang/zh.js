@@ -17,9 +17,9 @@ export default {
     deleteMessage: '此操作将删除 {name}, 是否继续?',
     selectMessage: '请选择{target}',
     NoDeletionPermissionTip: '请联系管理员删除',
-    emptyWarning: "{name}不允许为空",
+    emptyWarning: '{name}不允许为空',
     queryFailure: '查询失败，请尝试刷新页面',
-    updateFailure:'修改线程池失败',
+    updateFailure: '修改线程池失败',
     auditApprovedMessage: '此操作将接受线程池变更申请, 是否继续?',
     auditRejectionMessage: '此操作将拒绝线程池变更申请, 是否继续?',
     inputMessage: '请输入{target}',
@@ -48,7 +48,7 @@ export default {
     stack: '堆栈',
     audit: '审核',
     yes: '是',
-    no: '否'
+    no: '否',
   },
 
   // 运行报表
@@ -56,7 +56,10 @@ export default {
     poolInstance: '线程池实例',
     user: '登录用户',
     role: '用户角色',
-    tenants: '所属租户'
+    tenants: '所属租户',
+    threadPoolId: '线程池',
+    taskCount: '任务数',
+    inst: '实例数',
   },
 
   // 租户管理
@@ -65,7 +68,7 @@ export default {
     tenantRequired: '租户（必填）',
     tenantName: '租户名称',
     owner: '负责人',
-    tenantIntro: '租户简介'
+    tenantIntro: '租户简介',
   },
 
   // 项目管理
@@ -74,7 +77,7 @@ export default {
     itemRequired: '项目（必填）',
     itemName: '项目名称',
     owner: '负责人',
-    itemIntro: '项目简介'
+    itemIntro: '项目简介',
   },
 
   // 线程池管理
@@ -100,7 +103,7 @@ export default {
     capacityAlarm: '容量报警',
     customRejectedHandler: '自定义拒绝策略',
     customRejectedHandlerTip: '请输入自定义 SPI 拒绝策略标识',
-    threadsNumErrorTip: '最大线程必须大于等于核心线程'
+    threadsNumErrorTip: '最大线程必须大于等于核心线程',
   },
 
   // 线程池实例
@@ -132,25 +135,25 @@ export default {
     lastUpdateTime: '最后更新时间',
     allowCoreThreadTimeOut: '线程超时',
     changeAll: '全部修改',
-    stackRequestFail: '当前线程池暂无堆栈信息'
+    stackRequestFail: '当前线程池暂无堆栈信息',
   },
 
   //线程池监控
   threadPoolMonitor: {
     ipPort: 'IP : Port',
     ipPortRequired: 'IP : Port（必填）',
-    noResultsYet: '暂无结果'
+    noResultsYet: '暂无结果',
   },
 
   //框架线程池
   frameworkThreadPool: {
     threadPoolIDRequired: '线程池标识（必填）',
     threadPoolID: '线程池标识',
-    threadPoolType: '线程池类型'
+    threadPoolType: '线程池类型',
   },
 
   //线程池审核
-  threadPoolAudit:  {
+  threadPoolAudit: {
     changeType: '变更类型',
     modifiedBy: '修改人',
     auditStatus: '审核状态',
@@ -181,17 +184,18 @@ export default {
     enabling: '启用',
     disabling: '禁用',
     token: 'Token',
-    receiverTip: '多个接收者使用英文逗号 , 分割 (注意不要有空格)\n' +
+    receiverTip:
+      '多个接收者使用英文逗号 , 分割 (注意不要有空格)\n' +
       '- 钉钉：填写手机号\n' +
       '- 企微：填写user_id会以@的消息发给用户，否则填写姓名，如：小马哥\n' +
-      '- 飞书：填写ou_开头用户唯一标识会以@的消息发给用户，填写手机号则是普通的@"'
+      '- 飞书：填写ou_开头用户唯一标识会以@的消息发给用户，填写手机号则是普通的@',
   },
 
   //用户权限
   userAuthority: {
     userName: '用户名',
     role: '角色',
-    password: '密码'
+    password: '密码',
   },
 
   //日志管理
@@ -212,9 +216,9 @@ export default {
     threadPoolInstance: '线程池实例',
     threadPoolMonitor: '线程池监控',
     containerThreadPool: '容器线程池',
-    tomcat:	'Tomcat',
-    undertow:	'Undertow',
-    jetty	: 'Jetty',
+    tomcat: 'Tomcat',
+    undertow: 'Undertow',
+    jetty: 'Jetty',
     frameworkThreadPool: '框架线程池',
     dubbo: 'Dubbo',
     hystrix: 'Hystrix',
@@ -228,5 +232,5 @@ export default {
     userAuthority: '用户权限',
     logManage: '日志管理',
     officialWebsite: '官网外链',
-  }
-}
+  },
+};

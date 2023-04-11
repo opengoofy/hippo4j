@@ -110,7 +110,11 @@
       <el-table-column label="队列容量" >
         <template slot-scope="scope">{{ scope.row.queueCapacity }}</template>
       </el-table-column>-->
-      <el-table-column :label="$t('common.operation')" width="180" class-name="small-padding fixed-width">
+      <el-table-column
+        :label="$t('common.operation')"
+        width="180"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="{ row }">
           <!--<el-dropdown trigger="click">
             <span class="el-dropdown-link">
@@ -121,7 +125,9 @@
               <el-dropdown-item @click.native="handleUpdate(row)">编辑</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>-->
-          <el-button type="text" size="small" @click="handleUpdate(row)"> {{ $t('common.edit') }} </el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)">
+            {{ $t('common.edit') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -131,8 +137,8 @@
         ref="dataForm"
         :rules="rules"
         :model="temp"
-        label-position="left"
-        label-width="110px"
+        style="width: 500px; margin-left: 50px"
+        label-width="120px"
       >
         <el-form-item :label="$t('threadPool.coreSize')" prop="coreSize">
           <template>
@@ -160,7 +166,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> {{ $t('common.cancel') }} </el-button>
-        <el-button type="primary" @click="updateData()"> {{$t('common.confirm')}} </el-button>
+        <el-button type="primary" @click="updateData()"> {{ $t('common.confirm') }} </el-button>
       </div>
     </el-dialog>
     <el-dialog :visible.sync="dialogPluginVisible" title="Reading statistics">
@@ -283,19 +289,27 @@ export default {
     },
     fetchData() {
       if (!this.listQuery.mark) {
-        this.$message.warning(this.$t('message.emptyWarning', { name: this. $t('frameworkThreadPool.threadPoolType') }));
+        this.$message.warning(
+          this.$t('message.emptyWarning', { name: this.$t('frameworkThreadPool.threadPoolType') }),
+        );
         return;
       }
       if (!this.listQuery.tenantId) {
-        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('tenantManage.tenant') }));
+        this.$message.warning(
+          this.$t('message.emptyWarning', { name: this.$t('tenantManage.tenant') }),
+        );
         return;
       }
       if (!this.listQuery.itemId) {
-        this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('projectManage.item') }));
+        this.$message.warning(
+          this.$t('message.emptyWarning', { name: this.$t('projectManage.item') }),
+        );
         return;
       }
       if (!this.listQuery.threadPoolKey) {
-        this.$message.warning(this.$t('message.emptyWarning', { name: this. $t('frameworkThreadPool.threadPoolID') }));
+        this.$message.warning(
+          this.$t('message.emptyWarning', { name: this.$t('frameworkThreadPool.threadPoolID') }),
+        );
         return;
       }
       this.listLoading = true;

@@ -1,17 +1,17 @@
 <template>
   <el-table :data="list" style="width: 100%; padding-top: 15px">
-    <el-table-column label="threadPool ID" min-width="200">
+    <el-table-column :label="$t('report.threadPoolId')" min-width="200">
       <template slot-scope="scope">
         {{ scope.row.groupKey }}
         <!--{{ scope.row.groupKey | orderNoFilter }}-->
       </template>
     </el-table-column>
-    <el-table-column label="taskCount" width="195" align="center">
+    <el-table-column :label="$t('report.taskCount')" width="195" align="center">
       <template slot-scope="scope">
         {{ scope.row.maxCompletedTaskCount | toThousandFilter }}
       </template>
     </el-table-column>
-    <el-table-column label="inst" width="100" align="center">
+    <el-table-column :label="$t('report.inst')" width="100" align="center">
       <template slot-scope="{ row }">
         <el-tag :type="row.inst | statusFilter">
           {{ row.inst }}

@@ -19,9 +19,11 @@ export default {
     NoDeletionPermissionTip: 'Contact the administrator to delete it',
     emptyWarning: "The '{name}' cannot be empty",
     queryFailure: 'The query fails. Please refresh the page',
-    updateFailure:'Failed to modify thread pool',
-    auditApprovedMessage: 'This operation will accept thread pool change requests. Do you want to continue?',
-    auditRejectionMessage: 'This operation will reject the thread pool change request. Do you want to continue?',
+    updateFailure: 'Failed to modify thread-pool',
+    auditApprovedMessage:
+      'This operation will accept thread-pool change requests. Do you want to continue?',
+    auditRejectionMessage:
+      'This operation will reject the thread-pool change request. Do you want to continue?',
     inputMessage: 'Please input {target}',
   },
 
@@ -48,7 +50,7 @@ export default {
     stack: 'Stack',
     audit: 'audit',
     yes: 'Yes',
-    no: 'No'
+    no: 'No',
   },
 
   // 运行报表
@@ -56,7 +58,10 @@ export default {
     poolInstance: 'Pool Instance',
     user: 'User',
     role: 'Role',
-    tenants: 'Tenants'
+    tenants: 'Tenants',
+    threadPoolId: 'ThreadPool ID',
+    taskCount: 'Task Count',
+    inst: 'Instance',
   },
 
   // 租户管理
@@ -65,7 +70,7 @@ export default {
     tenantRequired: 'Tenant(Required)',
     tenantName: 'Tenant Name',
     owner: 'Owner',
-    tenantIntro: 'Tenant Intro'
+    tenantIntro: 'Tenant Intro',
   },
 
   // 项目管理
@@ -74,12 +79,12 @@ export default {
     itemRequired: 'Item(Required)',
     itemName: 'Item Name',
     owner: 'Owner',
-    itemIntro: 'Item Intro'
+    itemIntro: 'Item Intro',
   },
 
   // 线程池管理
   threadPool: {
-    threadPool: 'Thread Pool',
+    threadPool: 'ThreadPool',
     threadPoolRequired: 'ThreadPool(Required)',
     coreSize: 'Core Size',
     maximumSize: 'Maximum Size',
@@ -100,7 +105,7 @@ export default {
     capacityAlarm: 'Capacity Alarm',
     customRejectedHandler: 'Custom Rejected Handler',
     customRejectedHandlerTip: 'Please enter a custom SPI Deny Policy ID',
-    threadsNumErrorTip: 'The maximum thread must be greater than or equal to the core thread'
+    threadsNumErrorTip: 'The maximum thread must be greater than or equal to the core thread',
   },
 
   // 线程池实例
@@ -132,25 +137,25 @@ export default {
     lastUpdateTime: 'Last update time',
     allowCoreThreadTimeOut: 'Allow Core Thread Time Out',
     changeAll: 'Change All',
-    stackRequestFail: 'The current thread pool has no stack information'
+    stackRequestFail: 'The current thread-pool has no stack information',
   },
 
   //线程池监控
   threadPoolMonitor: {
     ipPort: 'IP : Port',
     ipPortRequired: 'IP : Port(Required)',
-    noResultsYet: 'No results yet'
+    noResultsYet: 'No results yet',
   },
 
   //框架线程池
-  frameworkThreadPool : {
+  frameworkThreadPool: {
     threadPoolIDRequired: 'ThreadPool ID(Required)',
     threadPoolID: 'ThreadPool ID',
-    threadPoolType: 'ThreadPool Type'
+    threadPoolType: 'ThreadPool Type',
   },
 
   //线程池审核
-  threadPoolAudit:  {
+  threadPoolAudit: {
     changeType: 'Change Type',
     modifiedBy: 'Modified by',
     auditStatus: 'Audit Status',
@@ -181,17 +186,18 @@ export default {
     enabling: 'Enabling',
     disabling: 'Disabling',
     token: 'Token',
-    receiverTip: 'Use English commas for multiple recipients and separate them (be careful not to have spaces)\n' +
+    receiverTip:
+      'Use English commas for multiple recipients and separate them (be careful not to have spaces)\n' +
       '-Ding: Fill in the phone number\n' +
-      '-WeChat: Fill in \'userid\' and it will be sent to the user as a @ message, otherwise fill in the name, such as: XiaomaGe\n' +
-      '-Lark: Fill in with \'ou_\' the unique user ID at the beginning will be sent to the user as a @ message, and filling in the phone number is normal@'
+      "-WeChat: Fill in 'userid' and it will be sent to the user as a @ message, otherwise fill in the name, such as: XiaomaGe\n" +
+      "-Lark: Fill in with 'ou_' the unique user ID at the beginning will be sent to the user as a @ message, and filling in the phone number is normal@",
   },
 
   //用户权限
   userAuthority: {
     userName: 'User Name',
     role: 'Role',
-    password: 'Password'
+    password: 'Password',
   },
 
   //日志管理
@@ -212,9 +218,9 @@ export default {
     threadPoolInstance: 'ThreadPool Instance',
     threadPoolMonitor: 'ThreadPool Monitor',
     containerThreadPool: 'Container ThreadPool',
-    tomcat:	'Tomcat',
-    undertow:	'Undertow',
-    jetty	: 'Jetty',
+    tomcat: 'Tomcat',
+    undertow: 'Undertow',
+    jetty: 'Jetty',
     frameworkThreadPool: 'Framework ThreadPool',
     dubbo: 'Dubbo',
     hystrix: 'Hystrix',
@@ -228,5 +234,5 @@ export default {
     userAuthority: 'User Authority',
     logManage: 'Log Manage',
     officialWebsite: 'Official Website',
-  }
-}
+  },
+};

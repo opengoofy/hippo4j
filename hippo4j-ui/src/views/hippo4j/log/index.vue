@@ -66,7 +66,9 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="handleUpdate(row)"> {{ $t('common.detail') }} </el-button>
+          <el-button type="text" size="small" @click="handleUpdate(row)">
+            {{ $t('common.detail') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -79,13 +81,13 @@
     />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="800px">
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px">
+      <el-form ref="dataForm" :model="temp" label-width="110px">
         <el-form-item :label="$t('logManage.bizType')" prop="category">
           <el-input
             v-model="temp.category"
             :disabled="true"
             :placeholder="$t('logManage.bizType')"
-            style="width: 40%"
+            style="width: 50%"
           />
         </el-form-item>
         <el-form-item :label="$t('logManage.bizID')" prop="bizNo">
@@ -93,7 +95,7 @@
             v-model="temp.bizNo"
             :disabled="true"
             :placeholder="$t('logManage.bizID')"
-            style="width: 40%"
+            style="width: 50%"
           />
         </el-form-item>
         <el-form-item :label="$t('logManage.operator')" prop="operator">
@@ -101,7 +103,7 @@
             v-model="temp.operator"
             :disabled="true"
             :placeholder="$t('logManage.operator')"
-            style="width: 40%"
+            style="width: 50%"
           />
         </el-form-item>
         <el-form-item :label="$t('common.createTime')" prop="createTime">
@@ -109,7 +111,7 @@
             v-model="temp.createTime"
             :disabled="true"
             :placeholder="$t('common.createTime')"
-            style="width: 40%"
+            style="width: 50%"
           />
         </el-form-item>
         <el-form-item :label="$t('logManage.logContent')" prop="action">

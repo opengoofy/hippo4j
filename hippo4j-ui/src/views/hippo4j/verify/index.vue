@@ -73,7 +73,7 @@
           <el-link type="primary" :underline="false">{{ scope.row.identify || '-' }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('threadPoolAudit.changeType')" width="100">
+      <el-table-column :label="$t('threadPoolAudit.changeType')" width="110">
         <template slot-scope="scope"> {{ scope.row.type | modifyTypeFilter(that) }} </template>
       </el-table-column>
       <el-table-column :label="$t('threadPoolInstance.changeAll')" width="100">
@@ -87,7 +87,9 @@
         <template slot-scope="scope"> {{ scope.row.modifyUser }}</template>
       </el-table-column>
       <el-table-column :label="$t('threadPoolAudit.auditStatus')" width="110">
-        <template slot-scope="scope">{{ scope.row.verifyStatus | verifyStatusFilter(that) }}</template>
+        <template slot-scope="scope">{{
+          scope.row.verifyStatus | verifyStatusFilter(that)
+        }}</template>
       </el-table-column>
       <el-table-column :label="$t('threadPoolAudit.reviewer')" width="120">
         <template slot-scope="scope">{{ scope.row.verifyUser }}</template>
@@ -106,7 +108,9 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="text" size="small" @click="applicationDetail(row)"> {{$t('common.audit')}} </el-button>
+          <el-button type="text" size="small" @click="applicationDetail(row)">
+            {{ $t('common.audit') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -122,9 +126,9 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="threadPoolManagerDialog">
       <el-form
         ref="dataForm"
-        style="width: 500px; margin-left: 50px"
         :model="temp"
-        label-width="80px"
+        style="width: 500px; margin-left: 50px"
+        label-width="140px"
       >
         <el-form-item :label="$t('threadPool.coreSize')" prop="corePoolSize">
           {{ detailInfo.corePoolSize }}
@@ -333,9 +337,9 @@ export default {
     },
     enableFilter(type, that) {
       if (1 == type) {
-        return  that.$t('common.yes');
+        return that.$t('common.yes');
       } else if (0 == type) {
-        return that.$t('common.no')
+        return that.$t('common.no');
       }
     },
     alarmFilter(type) {
@@ -380,9 +384,9 @@ export default {
       }
     },
     modifyTypeFilter(type, that) {
-      console.log(that)
+      console.log(that);
       if (1 == type) {
-        return that.$t('threadPoolAudit.manage')
+        return that.$t('threadPoolAudit.manage');
       } else if (2 == type) {
         return that.$t('threadPoolAudit.instance');
       } else if (3 == type) {
@@ -393,7 +397,7 @@ export default {
     },
     verifyStatusFilter(type, that) {
       if (0 == type) {
-        return that.$t('threadPoolAudit.unaudited')
+        return that.$t('threadPoolAudit.unaudited');
       } else if (1 == type) {
         return that.$t('threadPoolAudit.auditApproved');
       } else if (2 == type) {
@@ -482,7 +486,7 @@ export default {
       },
       visible: true,
       // filters中无法使用this来调用$t，通过参数that传入filters中
-      that: this
+      that: this,
     };
   },
   created() {

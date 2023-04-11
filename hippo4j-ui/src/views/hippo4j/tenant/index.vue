@@ -25,7 +25,7 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >
-      {{ $t('common.insert') }}
+        {{ $t('common.insert') }}
       </el-button>
     </div>
     <el-table
@@ -56,7 +56,11 @@
       <el-table-column :label="$t('common.updateTime')">
         <template slot-scope="scope">{{ scope.row.gmtModified }}</template>
       </el-table-column>
-      <el-table-column :label="$t('common.operation')" width="90" class-name="small-padding fixed-width">
+      <el-table-column
+        :label="$t('common.operation')"
+        width="90"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="{ row }">
           <el-button type="text" :disabled="isEditDisabled" size="small" @click="handleUpdate(row)">
             {{ $t('common.edit') }}
@@ -75,12 +79,12 @@
       @pagination="fetchData"
     />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="800px">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
+        style="width: 500px; margin-left: 50px"
         :rules="rules"
         :model="temp"
-        label-position="left"
         label-width="120px"
       >
         <el-form-item :label="$t('tenantManage.tenant')" prop="tenantId">
@@ -88,14 +92,13 @@
             v-model="temp.tenantId"
             :disabled="dialogStatus === 'create' ? false : true"
             :placeholder="$t('tenantManage.tenant')"
-            style="width: 40%"
           />
         </el-form-item>
         <el-form-item :label="$t('tenantManage.tenantName')" prop="tenantName">
-          <el-input v-model="temp.tenantName" :placeholder="$t('tenantManage.tenantName')" style="width: 40%" />
+          <el-input v-model="temp.tenantName" :placeholder="$t('tenantManage.tenantName')" />
         </el-form-item>
         <el-form-item :label="$t('tenantManage.owner')" prop="owner">
-          <el-input v-model="temp.owner" :placeholder="$t('tenantManage.owner')" style="width: 40%" />
+          <el-input v-model="temp.owner" :placeholder="$t('tenantManage.owner')" />
         </el-form-item>
         <el-form-item :label="$t('tenantManage.tenantIntro')" prop="tenantDesc">
           <el-input
@@ -103,7 +106,6 @@
             :autosize="{ minRows: 3, maxRows: 6 }"
             type="textarea"
             :placeholder="$t('tenantManage.tenantIntro')"
-            style="width: 40%"
           />
         </el-form-item>
       </el-form>
@@ -120,7 +122,9 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('common.confirm') }}</el-button>
+        <el-button type="primary" @click="dialogPvVisible = false">{{
+          $t('common.confirm')
+        }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -170,14 +174,18 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: this.$t('common.edit'),
-        create: this.$t('common.create'),
+        update: 'Edit',
+        create: 'Create',
       },
       rules: {
         tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        tenantName: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tenantName: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
         owner: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        tenantDesc: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tenantDesc: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
       },
       temp: {
         id: undefined,

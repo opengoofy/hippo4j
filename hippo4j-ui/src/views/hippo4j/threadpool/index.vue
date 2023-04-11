@@ -91,7 +91,10 @@
           <el-link type="success" :underline="false">{{ scope.row.coreSize }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('threadPool.maximumSize')" :width="$langMatch({ zh: '100', en: '120' })">
+      <el-table-column
+        :label="$t('threadPool.maximumSize')"
+        :width="$langMatch({ zh: '100', en: '120' })"
+      >
         <template slot-scope="scope">
           <el-link type="danger" :underline="false">{{ scope.row.maxSize }}</el-link>
         </template>
@@ -99,13 +102,19 @@
       <el-table-column :label="$t('threadPool.queueType')" width="260">
         <template slot-scope="scope">{{ scope.row.queueType | queueFilter }}</template>
       </el-table-column>
-      <el-table-column :label="$t('threadPool.queueCapacity')" :width="$langMatch({ zh: '100', en: '120' })">
+      <el-table-column
+        :label="$t('threadPool.queueCapacity')"
+        :width="$langMatch({ zh: '100', en: '120' })"
+      >
         <template slot-scope="scope">{{ scope.row.capacity }}</template>
       </el-table-column>
       <el-table-column :label="$t('threadPool.rejectedHandler')" width="200">
         <template slot-scope="scope">{{ scope.row.rejectedType | rejectedTypeFilter }}</template>
       </el-table-column>
-      <el-table-column :label="$t('threadPool.executionTimeout')" :width="$langMatch({ zh: '100', en: '150' })">
+      <el-table-column
+        :label="$t('threadPool.executionTimeout')"
+        :width="$langMatch({ zh: '100', en: '150' })"
+      >
         <template slot-scope="scope">{{
           scope.row.executeTimeOut | defaultExecuteTimeoutValue
         }}</template>
@@ -198,12 +207,12 @@
             <el-input
               v-model="temp.tpId"
               size="medium"
-              :placeholder="$t('message.selectMessage', { target: $t('threadPool.threadPool') }) "
+              :placeholder="$t('message.selectMessage', { target: $t('threadPool.threadPool') })"
               :disabled="dialogStatus === 'create' ? false : true"
             />
           </el-form-item>
         </template>
-        
+
         <el-form-item :label="$t('threadPool.coreSize')" prop="coreSize">
           <el-input-number
             v-model="temp.coreSize"
@@ -325,7 +334,11 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="isRejectShow" :label="$t('threadPool.customRejectedHandler')" prop="customRejectedType">
+        <el-form-item
+          v-if="isRejectShow"
+          :label="$t('threadPool.customRejectedHandler')"
+          prop="customRejectedType"
+        >
           <el-input
             v-model="temp.customRejectedType"
             :placeholder="$t('threadPool.customRejectedHandlerTip')"
@@ -346,7 +359,9 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('common.confirm') }}</el-button>
+        <el-button type="primary" @click="dialogPvVisible = false">{{
+          $t('common.confirm')
+        }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -465,8 +480,8 @@ export default {
       size: 500,
       dialogStatus: '',
       textMap: {
-        update: this.$t('common.edit'),
-        create: this.$t('common.create'),
+        update: 'Edit',
+        create: 'Create',
       },
       rules: {
         tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
@@ -487,14 +502,26 @@ export default {
           // },
         ],
         queueType: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        allowCoreThreadTimeOut: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        keepAliveTime: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        allowCoreThreadTimeOut: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
+        keepAliveTime: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
         isAlarm: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        capacityAlarm: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        livenessAlarm: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        rejectedType: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        capacityAlarm: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
+        livenessAlarm: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
+        rejectedType: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
         capacity: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        executeTimeOut: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        executeTimeOut: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
       },
       temp: {
         id: undefined,
