@@ -13,6 +13,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                   <artifactId>jakarta.annotation-api</artifactId>
+                   <groupId>jakarta.annotation</groupId>
+                </exclusion>
+             </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -23,6 +29,20 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-core</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-configuration-processor</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>error_prone_annotations</artifactId>
+                    <groupId>com.google.errorprone</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>checker-qual</artifactId>
+                    <groupId>org.checkerframework</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
@@ -40,6 +60,12 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
             <version>${spring-cloud-starter-alibaba-nacos-config.version}</version>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-security-crypto</artifactId>
+                    <groupId>org.springframework.security</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ctrip.framework.apollo</groupId>
@@ -53,12 +79,28 @@
             <version>${consul.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <artifactId>bcpkix-jdk15on</artifactId>
+                    <groupId>org.bouncycastle</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-security-rsa</artifactId>
+                    <groupId>org.springframework.security</groupId>
+                </exclusion>
+            </exclusions>            
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
             <version>${curator-framework.version}</version>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <artifactId>audience-annotations</artifactId>
+                    <groupId>org.apache.yetus</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.etcd</groupId>
@@ -104,12 +146,23 @@
                     <groupId>io.grpc</groupId>
                     <artifactId>grpc-all</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>circuitbreaker-common</artifactId>
+                    <groupId>com.tencent.polaris</groupId>
+                 </exclusion>
+                 <exclusion>
+                    <artifactId>polaris-circuitbreaker-api</artifactId>
+                    <groupId>com.tencent.polaris</groupId>
+                 </exclusion>
+                 <exclusion>
+                    <artifactId>simpleclient_common</artifactId>
+                    <groupId>io.prometheus</groupId>
+                 </exclusion>
+                 <exclusion>
+                    <artifactId>simpleclient_httpserver</artifactId>
+                    <groupId>io.prometheus</groupId>
+                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
@@ -130,6 +183,12 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter-monitor-micrometer</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.64</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
