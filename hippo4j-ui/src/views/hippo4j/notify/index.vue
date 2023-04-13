@@ -400,6 +400,7 @@ export default {
         alarmType: false,
       },
       visible: true,
+      size: 500,
     };
   },
   created() {
