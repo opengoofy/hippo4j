@@ -17,7 +17,9 @@
 
 package cn.hippo4j.message.platform;
 
+import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.FileUtil;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
@@ -64,7 +66,12 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
             Markdown markdown = new Markdown();
             markdown.setContent(robotMessageExecuteDTO.getText());
             weChatReq.setMarkdown(markdown);
-            HttpUtil.post(serverUrl, weChatReq);
+            String responseBody = HttpUtil.post(serverUrl, weChatReq);
+            WeChatRobotResponse response = JSONUtil.parseObject(responseBody, WeChatRobotResponse.class);
+            Assert.isTrue(response != null, "Response is null.");
+            if (response.getErrcode() != 0) {
+                log.error("WeChat failed to send message, reason : {}", response.errmsg);
+            }
         } catch (Exception ex) {
             log.error("WeChat failed to send message", ex);
         }
@@ -89,5 +96,22 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
     public static class Markdown {
 
         private String content;
+    }
+
+    /**
+     * WeChat robot response.
+     */
+    @Data
+    static class WeChatRobotResponse {
+
+        /**
+         * Error code
+         */
+        private Long errcode;
+
+        /**
+         * Error message
+         */
+        private String errmsg;
     }
 }
