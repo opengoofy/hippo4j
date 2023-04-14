@@ -117,14 +117,14 @@ public class ThreadPoolRunStateInfo extends ThreadPoolBaseInfo implements Serial
     private Long timestamp;
 
     public Integer getSimpleCurrentLoad() {
-        if (Objects.nonNull(getCurrentLoad())){
+        if (Objects.nonNull(getCurrentLoad())) {
             return Integer.parseInt(getCurrentLoad().replace("%", ""));
         }
         return null;
     }
 
     public Integer getSimplePeakLoad() {
-        if (Objects.nonNull(getPeakLoad())){
+        if (Objects.nonNull(getPeakLoad())) {
             return Integer.parseInt(getPeakLoad().replace("%", ""));
         }
         return null;

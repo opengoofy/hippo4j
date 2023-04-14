@@ -70,6 +70,9 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
         }
         // register notify config for web
         WebExecutorProperties webProperties = configProperties.getWeb();
+        if (webProperties == null) {
+            return resultMap;
+        }
         if (StringUtil.isBlank(webProperties.getThreadPoolId())) {
             webProperties.setThreadPoolId(webThreadPoolService.getWebContainerType().name());
         }
