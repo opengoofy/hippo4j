@@ -17,7 +17,7 @@
 
 package cn.hippo4j.message.platform;
 
-import cn.hippo4j.common.toolkit.Singleton;
+import cn.hippo4j.common.toolkit.*;
 import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
@@ -25,8 +25,7 @@ import cn.hippo4j.message.enums.NotifyTypeEnum;
 import cn.hippo4j.message.service.SendMessageHandler;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
-import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.toolkit.FileUtil;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -137,9 +136,31 @@ public class LarkSendMessageHandler implements SendMessageHandler {
     private void execute(String secretKey, String text) {
         String serverUrl = LARK_BOT_URL + secretKey;
         try {
-            HttpUtil.postJson(serverUrl, text);
+            String responseBody = HttpUtil.postJson(serverUrl, text);
+            LarkRobotResponse response = JSONUtil.parseObject(responseBody, LarkRobotResponse.class);
+            Assert.isTrue(response != null, "Response is null.");
+            if (response.getCode() != 0) {
+                log.error("Lark failed to send message, reason : {}", response.msg);
+            }
         } catch (Exception ex) {
             log.error("Lark failed to send message", ex);
         }
+    }
+
+    /**
+     * Lark robot response.
+     */
+    @Data
+    static class LarkRobotResponse {
+
+        /**
+         * code
+         */
+        private Long code;
+
+        /**
+         * message
+         */
+        private String msg;
     }
 }
