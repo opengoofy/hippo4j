@@ -24,10 +24,13 @@ import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
@@ -42,6 +45,7 @@ public class JettyWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerSu
 
     /**
      * A callback will be invoked and the Executor will be set up when the web container has been started.
+     *
      * @param executor Thread-pool executor in Jetty container.
      */
     @Override
@@ -82,7 +86,30 @@ public class JettyWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerSu
 
     @Override
     public ThreadPoolRunStateInfo getWebRunStateInfo() {
-        return null;
+        ThreadPoolRunStateInfo runStateInfo = new ThreadPoolRunStateInfo();
+        QueuedThreadPool queuedThreadPool = (QueuedThreadPool) executor;
+        int corePoolSize = queuedThreadPool.getMinThreads();
+        int maximumPoolSize = queuedThreadPool.getMaxThreads();
+        int poolSize = queuedThreadPool.getThreads();
+        int busyCount = queuedThreadPool.getBusyThreads();
+        String currentLoad = CalculateUtil.divide(busyCount, maximumPoolSize) + "";
+        BlockingQueue<Runnable> queue = ReflectUtil.invoke(queuedThreadPool, "getQueue");
+        String queueType = queue.getClass().getSimpleName();
+        int remainingCapacity = queue.remainingCapacity();
+        int queueSize = queue.size();
+        int queueCapacity = queueSize + remainingCapacity;
+        runStateInfo.setQueueType(queueType);
+        runStateInfo.setQueueSize(queueSize);
+        runStateInfo.setQueueCapacity(queueCapacity);
+        runStateInfo.setQueueRemainingCapacity(remainingCapacity);
+        runStateInfo.setCoreSize(corePoolSize);
+        runStateInfo.setPoolSize(poolSize);
+        runStateInfo.setMaximumSize(maximumPoolSize);
+        runStateInfo.setActiveSize(busyCount);
+        runStateInfo.setCurrentLoad(currentLoad);
+        runStateInfo.setClientLastRefreshTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        runStateInfo.setTimestamp(System.currentTimeMillis());
+        return runStateInfo;
     }
 
     @Override

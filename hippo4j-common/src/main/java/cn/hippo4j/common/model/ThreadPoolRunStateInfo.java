@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Pool run state info.
@@ -116,10 +117,16 @@ public class ThreadPoolRunStateInfo extends ThreadPoolBaseInfo implements Serial
     private Long timestamp;
 
     public Integer getSimpleCurrentLoad() {
-        return Integer.parseInt(getCurrentLoad().replace("%", ""));
+        if (Objects.nonNull(getCurrentLoad())){
+            return Integer.parseInt(getCurrentLoad().replace("%", ""));
+        }
+        return null;
     }
 
     public Integer getSimplePeakLoad() {
-        return Integer.parseInt(getPeakLoad().replace("%", ""));
+        if (Objects.nonNull(getPeakLoad())){
+            return Integer.parseInt(getPeakLoad().replace("%", ""));
+        }
+        return null;
     }
 }
