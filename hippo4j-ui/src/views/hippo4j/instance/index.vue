@@ -548,21 +548,6 @@ export default {
         { key: 1, display_name: '超时' },
         { key: 0, display_name: '不超时' },
       ],
-      rules: {
-        tenantId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        itemId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        tpId: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        coreSize: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        maxSize: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        queueType: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        executeTimeOut: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        keepAliveTime: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        isAlarm: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        capacity: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        capacityAlarm: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        livenessAlarm: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        rejectedType: [{ required: true, message: 'this is required', trigger: 'blur' }],
-      },
       dialogStatus: '',
       textMap: {
         update: this.$t('common.edit'),
@@ -581,6 +566,25 @@ export default {
       tempRow: {},
       visible: true,
     };
+  },
+  computed:{
+    rules(){
+      return{
+        tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        itemId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tpId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        coreSize: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        maxSize: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        queueType: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        executeTimeOut: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        keepAliveTime: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        isAlarm: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        capacity: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        capacityAlarm: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        livenessAlarm: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        rejectedType: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+      }
+    },
   },
   created() {
     // this.fetchData()

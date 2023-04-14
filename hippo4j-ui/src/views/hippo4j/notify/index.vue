@@ -380,7 +380,19 @@ export default {
         update: 'Edit',
         create: 'Create',
       },
-      rules: {
+      temp: {
+        id: undefined,
+        tenantId: '',
+        interval: undefined,
+        configType: false,
+        alarmType: false,
+      },
+      visible: true,
+    };
+  },
+  computed:{
+    rules(){
+      return{
         tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
         itemId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
         tpId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
@@ -391,16 +403,8 @@ export default {
           { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
         ],
         enable: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-      },
-      temp: {
-        id: undefined,
-        tenantId: '',
-        interval: undefined,
-        configType: false,
-        alarmType: false,
-      },
-      visible: true,
-    };
+      }
+    },
   },
   created() {
     this.fetchData();

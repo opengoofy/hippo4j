@@ -263,10 +263,6 @@ export default {
         update: 'Edit',
         create: 'Create',
       },
-      rules: {
-        coreSize: [{ required: true, message: 'this is required', trigger: 'blur' }],
-        maximumSize: [{ required: true, message: 'this is required', trigger: 'blur' }],
-      },
       temp: {
         id: undefined,
         tenantId: '',
@@ -277,6 +273,14 @@ export default {
       },
       visible: true,
     };
+  },
+  computed:{
+    rules(){
+      return{
+        coreSize: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        maximumSize: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+      }
+    },
   },
   created() {
     // 初始化租户、项目

@@ -483,24 +483,26 @@ export default {
         update: 'Edit',
         create: 'Create',
       },
-      rules: {
+      temp: {
+        id: undefined,
+        tenantId: '',
+        itemId: '',
+        rejectedType: null,
+        customRejectedType: null,
+        coreSize: 4,
+        maxSize: 8,
+      },
+      visible: true,
+    };
+  },
+  computed:{
+    rules(){
+      return{
         tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
         itemId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
         tpId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
         coreSize: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        maxSize: [
-          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
-          // {
-          //   validator: (rule, value, callback) => {
-          //     if (parseInt(value) < parseInt(this.temp.coreSize)) {
-          //       console.log(value);
-          //       console.log(this.temp.coreSize);
-          //       callback('最大线程必须大于等于核心线程');
-          //     }
-          //     callback();
-          //   },
-          // },
-        ],
+        maxSize: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' },],
         queueType: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
         allowCoreThreadTimeOut: [
           { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
@@ -522,18 +524,8 @@ export default {
         executeTimeOut: [
           { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
         ],
-      },
-      temp: {
-        id: undefined,
-        tenantId: '',
-        itemId: '',
-        rejectedType: null,
-        customRejectedType: null,
-        coreSize: 4,
-        maxSize: 8,
-      },
-      visible: true,
-    };
+      }
+    },
   },
   created() {
     this.fetchData();
