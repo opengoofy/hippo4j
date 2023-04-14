@@ -177,16 +177,6 @@ export default {
         update: 'Edit',
         create: 'Create',
       },
-      rules: {
-        tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        tenantName: [
-          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
-        ],
-        owner: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        tenantDesc: [
-          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
-        ],
-      },
       temp: {
         id: undefined,
         tenantId: '',
@@ -196,6 +186,20 @@ export default {
       },
       visible: true,
     };
+  },
+  computed:{
+    rules(){
+      return{
+        tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tenantName: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
+        owner: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tenantDesc: [
+          { required: true, message: this.$t('message.requiredError'), trigger: 'blur' },
+        ],
+      }
+    },
   },
   created() {
     this.fetchData();

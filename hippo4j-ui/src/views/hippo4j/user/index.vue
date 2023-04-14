@@ -167,12 +167,6 @@ export default {
         update: 'Edit',
         create: 'Create',
       },
-      rules: {
-        role: [{ required: true, message: this.$t('message.requiredError'), trigger: 'change' }],
-        userName: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        tenants: [{ required: false, message: this.$t('message.requiredError'), trigger: 'blur' }],
-        password: [{ required: false, message: this.$t('message.requiredError'), trigger: 'blur' }],
-      },
       temp: {
         id: undefined,
         role: '',
@@ -192,6 +186,16 @@ export default {
         }
       },
     };
+  },
+  computed:{
+    rules(){
+      return{
+        role: [{ required: true, message: this.$t('message.requiredError'), trigger: 'change' }],
+        userName: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        tenants: [{ required: false, message: this.$t('message.requiredError'), trigger: 'blur' }],
+        password: [{ required: false, message: this.$t('message.requiredError'), trigger: 'blur' }],
+      }
+    },
   },
   created() {
     this.fetchData();
