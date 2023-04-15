@@ -22,7 +22,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 /**
  * Hippo4J application listener.
  */
-public interface Hippo4JApplicationListener {
+public interface Hippo4jApplicationListener {
 
     /**
      * {@link BaseSpringApplicationRunListener#starting}

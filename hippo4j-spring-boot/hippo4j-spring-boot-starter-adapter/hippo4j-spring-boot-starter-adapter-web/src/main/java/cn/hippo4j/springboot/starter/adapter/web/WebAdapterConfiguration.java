@@ -54,8 +54,8 @@ public class WebAdapterConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public ThreadPoolRunStateHandler threadPoolRunStateHandler(InetUtils hippo4JInetUtils) {
-        return new ThreadPoolRunStateHandler(hippo4JInetUtils, environment);
+    public ThreadPoolRunStateHandler threadPoolRunStateHandler(InetUtils hippo4jInetUtils) {
+        return new ThreadPoolRunStateHandler(hippo4jInetUtils, environment);
     }
 
     @Bean

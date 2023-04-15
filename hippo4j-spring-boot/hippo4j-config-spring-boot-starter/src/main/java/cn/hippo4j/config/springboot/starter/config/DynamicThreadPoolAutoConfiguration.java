@@ -19,7 +19,6 @@ package cn.hippo4j.config.springboot.starter.config;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
-import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.monitor.ThreadPoolMonitorExecutor;
@@ -36,7 +35,12 @@ import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.config.MessageConfiguration;
-import cn.hippo4j.message.service.*;
+import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.message.service.DefaultThreadPoolCheckAlarmHandler;
+import cn.hippo4j.message.service.DefaultThreadPoolConfigChangeHandler;
+import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
+import cn.hippo4j.message.service.Hippo4jSendMessageService;
+import cn.hippo4j.message.service.WebThreadPoolConfigChangeHandler;
 import cn.hippo4j.springboot.starter.adapter.web.WebAdapterConfiguration;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.ObjectProvider;
@@ -51,8 +55,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-
-import java.util.Optional;
 
 /**
  * Dynamic thread-pool auto-configuration.
@@ -77,7 +79,7 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public ApplicationContextHolder hippo4JApplicationContextHolder() {
+    public ApplicationContextHolder hippo4jApplicationContextHolder() {
         return new ApplicationContextHolder();
     }
 
@@ -110,7 +112,7 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public DynamicThreadPoolPostProcessor dynamicThreadPoolPostProcessor(ApplicationContextHolder hippo4JApplicationContextHolder) {
+    public DynamicThreadPoolPostProcessor dynamicThreadPoolPostProcessor(ApplicationContextHolder hippo4jApplicationContextHolder) {
         return new DynamicThreadPoolPostProcessor(bootstrapConfigProperties);
     }
 

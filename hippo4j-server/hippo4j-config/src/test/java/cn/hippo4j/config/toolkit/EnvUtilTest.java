@@ -27,9 +27,9 @@ import org.junit.Test;
 public class EnvUtilTest {
 
     @Test
-    public void getHippo4JHomeTest() {
-        String hippo4JHome = EnvUtil.getHippo4JHome();
-        Assert.isTrue(StringUtil.isNotBlank(hippo4JHome));
+    public void getHippo4jHomeTest() {
+        String hippo4jHome = EnvUtil.getHippo4jHome();
+        Assert.isTrue(StringUtil.isNotBlank(hippo4jHome));
     }
 
     @Test

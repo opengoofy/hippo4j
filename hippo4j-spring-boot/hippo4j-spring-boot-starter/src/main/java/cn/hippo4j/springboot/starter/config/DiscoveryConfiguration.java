@@ -37,11 +37,11 @@ public class DiscoveryConfiguration {
 
     private final BootstrapProperties bootstrapProperties;
 
-    private final InetUtils hippo4JInetUtils;
+    private final InetUtils hippo4jInetUtils;
 
     @Bean
     public InstanceInfo instanceConfig() {
-        return InstanceInfoProviderFactory.getInstance(environment, bootstrapProperties, hippo4JInetUtils);
+        return InstanceInfoProviderFactory.getInstance(environment, bootstrapProperties, hippo4jInetUtils);
     }
 
     @Bean
@@ -50,7 +50,7 @@ public class DiscoveryConfiguration {
     }
 
     @Bean
-    public DiscoveryClient hippo4JDiscoveryClient(HttpAgent httpAgent,
+    public DiscoveryClient hippo4jDiscoveryClient(HttpAgent httpAgent,
                                                   InstanceInfo instanceInfo,
                                                   ClientShutdown hippo4jClientShutdown) {
         return new DiscoveryClient(httpAgent, instanceInfo, hippo4jClientShutdown);

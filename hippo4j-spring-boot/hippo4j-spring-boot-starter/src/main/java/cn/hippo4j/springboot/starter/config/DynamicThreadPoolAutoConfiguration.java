@@ -106,17 +106,17 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public ApplicationContextHolder hippo4JApplicationContextHolder() {
+    public ApplicationContextHolder hippo4jApplicationContextHolder() {
         return new ApplicationContextHolder();
     }
 
     @Bean
     public ClientWorker hippo4jClientWorker(HttpAgent httpAgent,
-                                            InetUtils hippo4JInetUtils,
+                                            InetUtils hippo4jInetUtils,
                                             ServerHealthCheck serverHealthCheck,
                                             DynamicThreadPoolBannerHandler dynamicThreadPoolBannerHandlers,
                                             ClientShutdown hippo4jClientShutdown) {
-        String identify = IdentifyUtil.generate(environment, hippo4JInetUtils);
+        String identify = IdentifyUtil.generate(environment, hippo4jInetUtils);
         return new ClientWorker(httpAgent, identify, serverHealthCheck, dynamicThreadPoolBannerHandlers.getVersion(), hippo4jClientShutdown);
     }
 
@@ -138,7 +138,7 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @SuppressWarnings("all")
     public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent,
-                                                                      ApplicationContextHolder hippo4JApplicationContextHolder,
+                                                                      ApplicationContextHolder hippo4jApplicationContextHolder,
                                                                       DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig) {
         return new DynamicThreadPoolPostProcessor(properties, httpAgent, dynamicThreadPoolSubscribeConfig);
     }
@@ -182,8 +182,8 @@ public class DynamicThreadPoolAutoConfiguration {
 
     @Bean
     @SuppressWarnings("all")
-    public ThreadPoolAdapterController threadPoolAdapterController(InetUtils hippo4JInetUtils) {
-        return new ThreadPoolAdapterController(environment, hippo4JInetUtils);
+    public ThreadPoolAdapterController threadPoolAdapterController(InetUtils hippo4jInetUtils) {
+        return new ThreadPoolAdapterController(environment, hippo4jInetUtils);
     }
 
     @Bean
@@ -205,8 +205,8 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @SuppressWarnings("all")
     public ThreadPoolAdapterRegister threadPoolAdapterRegister(HttpAgent httpAgent,
-                                                               InetUtils hippo4JInetUtils) {
-        return new ThreadPoolAdapterRegister(httpAgent, properties, environment, hippo4JInetUtils);
+                                                               InetUtils hippo4jInetUtils) {
+        return new ThreadPoolAdapterRegister(httpAgent, properties, environment, hippo4jInetUtils);
     }
 
     @Bean

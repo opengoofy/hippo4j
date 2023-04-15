@@ -31,7 +31,7 @@ public class UtilAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public InetUtils hippo4JInetUtils(InetUtilsProperties inetUtilsProperties) {
+    public InetUtils hippo4jInetUtils(InetUtilsProperties inetUtilsProperties) {
         return new InetUtils(inetUtilsProperties);
     }
 }

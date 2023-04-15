@@ -55,7 +55,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
 
     private final ConfigurableEnvironment environment;
 
-    private final InetUtils hippo4JInetUtils;
+    private final InetUtils hippo4jInetUtils;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -76,7 +76,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
             String tenantItemKey = properties.getNamespace() + IDENTIFY_SLICER_SYMBOL + properties.getItemId();
             cacheConfig.setTenantItemKey(tenantItemKey);
             cacheConfig.setClientIdentify(IdentifyUtil.getIdentify());
-            String clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4JInetUtils);
+            String clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4jInetUtils);
             cacheConfig.setClientAddress(clientAddress);
             cacheConfig.setThreadPoolAdapterStates(threadPoolStates);
             adapterCacheConfigList.add(cacheConfig);

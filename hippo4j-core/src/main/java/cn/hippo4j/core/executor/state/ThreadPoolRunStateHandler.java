@@ -41,7 +41,7 @@ import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
 @AllArgsConstructor
 public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
 
-    private final InetUtils hippo4JInetUtils;
+    private final InetUtils hippo4jInetUtils;
 
     private final ConfigurableEnvironment environment;
 
@@ -56,7 +56,7 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
                 ByteConvertUtil.getPrintSize(max));
         poolRunStateInfo.setCurrentLoad(poolRunStateInfo.getCurrentLoad() + "%");
         poolRunStateInfo.setPeakLoad(poolRunStateInfo.getPeakLoad() + "%");
-        String ipAddress = hippo4JInetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
+        String ipAddress = hippo4jInetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
         poolRunStateInfo.setHost(ipAddress);
         poolRunStateInfo.setMemoryProportion(memoryProportion);
         poolRunStateInfo.setFreeMemory(ByteConvertUtil.getPrintSize(Math.subtractExact(max, used)));

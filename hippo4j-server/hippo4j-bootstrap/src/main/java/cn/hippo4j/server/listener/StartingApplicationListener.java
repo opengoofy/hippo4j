@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * Starting application listener.
  */
 @Slf4j
-public class StartingApplicationListener implements Hippo4JApplicationListener {
+public class StartingApplicationListener implements Hippo4jApplicationListener {
 
     private volatile boolean starting;
 
@@ -53,7 +53,7 @@ public class StartingApplicationListener implements Hippo4JApplicationListener {
                     });
             scheduledExecutorService.scheduleWithFixedDelay(() -> {
                 if (starting) {
-                    log.info("Hippo4J is starting...");
+                    log.info("Hippo4j is starting...");
                 }
             }, 1, 1, TimeUnit.SECONDS);
         }
@@ -64,7 +64,7 @@ public class StartingApplicationListener implements Hippo4JApplicationListener {
         starting = false;
         closeExecutor();
         if (EnvUtil.getStandaloneMode()) {
-            log.info("Hippo4J started successfully...");
+            log.info("Hippo4j started successfully...");
         }
     }
 
@@ -73,8 +73,8 @@ public class StartingApplicationListener implements Hippo4JApplicationListener {
         log.error("Startup errors: {}", exception);
         closeExecutor();
         context.close();
-        log.error("Hippo4J failed to start, please see {} for more details.",
-                Paths.get(EnvUtil.getHippo4JHome(), "logs/hippo4j.log"));
+        log.error("Hippo4j failed to start, please see {} for more details.",
+                Paths.get(EnvUtil.getHippo4jHome(), "logs/hippo4j.log"));
     }
 
     private void closeExecutor() {

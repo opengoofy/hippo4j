@@ -40,7 +40,7 @@ public class EnvUtil {
      *
      * @return
      */
-    public static String getHippo4JHome() {
+    public static String getHippo4jHome() {
         if (StringUtil.isBlank(HIPPO4J_HOME_PATH)) {
             String hippo4jHome = System.getProperty(HIPPO4J_HOME_KEY);
             if (StringUtil.isBlank(hippo4jHome)) {

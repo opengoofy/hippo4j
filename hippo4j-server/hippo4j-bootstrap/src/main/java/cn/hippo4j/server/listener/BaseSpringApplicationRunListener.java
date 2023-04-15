@@ -34,10 +34,10 @@ public class BaseSpringApplicationRunListener implements SpringApplicationRunLis
 
     private final String[] args;
 
-    private List<Hippo4JApplicationListener> hippo4JApplicationListeners = new ArrayList();
+    private List<Hippo4jApplicationListener> hippo4jApplicationListeners = new ArrayList();
 
     {
-        hippo4JApplicationListeners.add(new StartingApplicationListener());
+        hippo4jApplicationListeners.add(new StartingApplicationListener());
     }
 
     public BaseSpringApplicationRunListener(SpringApplication application, String[] args) {
@@ -47,22 +47,22 @@ public class BaseSpringApplicationRunListener implements SpringApplicationRunLis
 
     @Override
     public void starting() {
-        hippo4JApplicationListeners.forEach(each -> each.starting());
+        hippo4jApplicationListeners.forEach(each -> each.starting());
     }
 
     @Override
     public void contextPrepared(ConfigurableApplicationContext context) {
-        hippo4JApplicationListeners.forEach(each -> each.contextPrepared(context));
+        hippo4jApplicationListeners.forEach(each -> each.contextPrepared(context));
     }
 
     @Override
     public void started(ConfigurableApplicationContext context) {
-        hippo4JApplicationListeners.forEach(each -> each.started(context));
+        hippo4jApplicationListeners.forEach(each -> each.started(context));
     }
 
     @Override
     public void failed(ConfigurableApplicationContext context, Throwable exception) {
-        hippo4JApplicationListeners.forEach(each -> each.failed(context, exception));
+        hippo4jApplicationListeners.forEach(each -> each.failed(context, exception));
     }
 
     @Override

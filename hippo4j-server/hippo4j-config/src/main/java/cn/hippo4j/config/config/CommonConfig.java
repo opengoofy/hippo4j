@@ -34,7 +34,7 @@ public class CommonConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    public ApplicationContextHolder hippo4JApplicationContextHolder() {
+    public ApplicationContextHolder hippo4jApplicationContextHolder() {
         return new ApplicationContextHolder();
     }
 

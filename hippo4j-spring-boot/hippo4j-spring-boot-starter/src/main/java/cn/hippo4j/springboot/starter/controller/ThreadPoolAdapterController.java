@@ -49,7 +49,7 @@ import static cn.hippo4j.adapter.base.ThreadPoolAdapterBeanContainer.THREAD_POOL
 public class ThreadPoolAdapterController {
 
     private final ConfigurableEnvironment environment;
-    private final InetUtils hippo4JInetUtils;
+    private final InetUtils hippo4jInetUtils;
 
     @GetMapping("/adapter/thread-pool/info")
     public Result<ThreadPoolAdapterState> getAdapterThreadPool(ThreadPoolAdapterParameter requestParameter) {
@@ -64,7 +64,7 @@ public class ThreadPoolAdapterController {
             if (customerNetwork != null) {
                 clientAddress = StringUtil.newBuilder(customerNetwork[0], ":", customerNetwork[1]);
             } else {
-                clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4JInetUtils);
+                clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4jInetUtils);
             }
             threadPoolState.setClientAddress(clientAddress);
             threadPoolState.setIdentify(IdentifyUtil.getIdentify());
