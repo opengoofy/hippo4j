@@ -23,7 +23,6 @@ import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterCoreNotifyParameter;
 import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterServerNotifyParameter;
-import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +72,7 @@ public class RegisterDynamicThreadPoolTest {
                 .serverNotify(serverNotifyParameter)
                 .build();
         ThreadPoolExecutor dynamicThreadPool = GlobalThreadPoolManage.dynamicRegister(registerWrapper);
-        log.info("Dynamic registration thread pool parameter details: {}", JSONUtil.toJSONString(dynamicThreadPool));
+        log.info("Dynamic registration thread pool parameter details: {}", dynamicThreadPool);
         return dynamicThreadPool;
     }
 }
