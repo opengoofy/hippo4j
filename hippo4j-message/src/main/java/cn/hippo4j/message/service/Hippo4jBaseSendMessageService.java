@@ -94,7 +94,7 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
                 }
                 messageHandler.sendChangeMessage(each, changeParameterNotifyRequest);
             } catch (Exception ex) {
-                log.warn("Failed to send thread pool change notification. key: [{}]", threadPoolId, ex);
+                log.error("Failed to send thread pool change notification. key: [{}]", threadPoolId, ex);
             }
         });
     }
@@ -116,8 +116,10 @@ public class Hippo4jBaseSendMessageService implements Hippo4jSendMessageService,
                     return;
                 }
                 messageHandler.sendWebChangeMessage(each, webChangeParameterNotifyRequest);
+            } catch (IllegalAccessException ex) {
+                log.warn("Failed to send thread pool change notification. key: [{}]", threadPoolId);
             } catch (Exception ex) {
-                log.warn("Failed to send thread pool change notification. key: [{}]", threadPoolId, ex);
+                log.error("Failed to send thread pool change notification. key: [{}]", threadPoolId, ex);
             }
         });
     }
