@@ -53,7 +53,7 @@ spring:
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-spring-boot-starter-monitor-micrometer</artifactId>
-    <version>1.4.3-upgrade</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 

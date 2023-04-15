@@ -1,0 +1,8 @@
+{
+  "label": "开发者手册",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Hippo4j 留给使用者能够扩展的知识点。"
+  }
+}

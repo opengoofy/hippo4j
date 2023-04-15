@@ -12,7 +12,7 @@ Nacos、Apollo、Zookeeper、ETCD、Polaris、Consul 配置中心任选其一。
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-config-spring-boot-starter</artifactId>
-    <version>1.4.3-upgrade</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
@@ -67,8 +67,8 @@ spring:
         namespace: xxxx
       # 配置中心文件格式
       config-file-type: yml
-      # tomcat、undertow、jetty 三种容器线程池，任选其一
-      undertow:
+      # 支持 tomcat、undertow、jetty 三种容器线程池
+      web:
         core-pool-size: 100
         maximum-pool-size: 200
         keep-alive-time: 1000

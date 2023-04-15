@@ -10,7 +10,7 @@ sidebar_position: 5
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-config-spring-boot-1x-starter</artifactId>
-    <version>1.4.3-upgrade</version>
+    <version>1.5.0</version>
 </dependency>
 ```
  

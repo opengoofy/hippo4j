@@ -33,7 +33,7 @@ Hippo4j 目前已支持的三方框架线程池列表：
     <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rocketmq</artifactId>
     <!-- SpringCloud Stream RabbitMQ -->
     <artifactId>hippo4j-spring-boot-starter-adapter-spring-cloud-stream-rabbitmq</artifactId>
-    <version>1.4.3-upgrade</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
@@ -43,7 +43,7 @@ Hippo4j 目前已支持的三方框架线程池列表：
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-spring-boot-starter-adapter-all</artifactId>
-    <version>1.4.3-upgrade</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 

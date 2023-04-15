@@ -22,7 +22,7 @@ SpringBoot Pom 引入 Hippo4j Starter Jar。
 <dependency>
     <groupId>cn.hippo4j</groupId>
     <artifactId>hippo4j-spring-boot-starter</artifactId>
-    <version>1.4.3-upgrade</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
