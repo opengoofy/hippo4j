@@ -25,6 +25,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
@@ -55,10 +56,13 @@ public class DynamicThreadPoolAdapterRegister implements InitializingBean {
     }
 
     public void discoverAdapterExecutor() {
-        List<AdapterExecutorProperties> adapterExecutors = bootstrapConfigProperties.getAdapterExecutors();
-        for (AdapterExecutorProperties each : adapterExecutors) {
-            String buildKey = each.getMark() + IDENTIFY_SLICER_SYMBOL + each.getThreadPoolKey();
-            ADAPTER_EXECUTORS_MAP.putIfAbsent(buildKey, each);
-        }
+        Optional<List<AdapterExecutorProperties>> adapterExecutorProperties =
+                Optional.ofNullable(bootstrapConfigProperties.getAdapterExecutors());
+        adapterExecutorProperties.ifPresent(props -> {
+            for (AdapterExecutorProperties each : props) {
+                String buildKey = each.getMark() + IDENTIFY_SLICER_SYMBOL + each.getThreadPoolKey();
+                ADAPTER_EXECUTORS_MAP.putIfAbsent(buildKey, each);
+            }
+        });
     }
 }
