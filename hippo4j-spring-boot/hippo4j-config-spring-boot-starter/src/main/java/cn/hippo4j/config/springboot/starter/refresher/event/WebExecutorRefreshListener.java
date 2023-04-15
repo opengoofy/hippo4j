@@ -102,7 +102,7 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebExecu
                 .nowMaximumPoolSize(now.getMaxSize())
                 .beforeKeepAliveTime(before.getKeepAliveTime())
                 .nowKeepAliveTime(now.getKeepAliveTime()).build();
-        changeNotifyRequest.setThreadPoolId(webThreadPoolService.getWebContainerType().name());
+        changeNotifyRequest.setThreadPoolId(webThreadPoolService.getWebContainerType().getName());
         return changeNotifyRequest;
     }
 

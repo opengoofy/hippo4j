@@ -17,8 +17,35 @@
 
 package cn.hippo4j.common.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+/**
+ * Web container enum.
+ */
+@RequiredArgsConstructor
 public enum WebContainerEnum {
-    TOMCAT,
-    JETTY,
-    UNDERTOW
+
+    /**
+     * Tomcat
+     */
+    TOMCAT("Tomcat"),
+
+    /**
+     * Jetty
+     */
+    JETTY("Jetty"),
+
+    /**
+     * Undertow
+     */
+    UNDERTOW("Undertow");
+
+    @Getter
+    private final String name;
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

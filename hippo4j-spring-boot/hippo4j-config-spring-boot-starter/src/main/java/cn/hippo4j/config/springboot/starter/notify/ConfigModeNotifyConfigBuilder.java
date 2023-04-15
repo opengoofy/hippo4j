@@ -74,7 +74,7 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
             return resultMap;
         }
         if (StringUtil.isBlank(webProperties.getThreadPoolId())) {
-            webProperties.setThreadPoolId(webThreadPoolService.getWebContainerType().name());
+            webProperties.setThreadPoolId(webThreadPoolService.getWebContainerType().getName());
         }
         Map<String, List<NotifyConfigDTO>> webSingleNotifyConfigMap =
                 buildSingleNotifyConfig(webProperties);

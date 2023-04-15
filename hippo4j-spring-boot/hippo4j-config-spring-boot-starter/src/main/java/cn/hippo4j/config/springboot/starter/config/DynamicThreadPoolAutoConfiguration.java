@@ -106,7 +106,7 @@ public class DynamicThreadPoolAutoConfiguration {
                                                                              WebThreadPoolService webThreadPoolService,
                                                                              Hippo4jSendMessageService hippo4jSendMessageService) {
         if (bootstrapConfigProperties.getWeb() != null && StringUtil.isBlank(bootstrapConfigProperties.getWeb().getThreadPoolId())) {
-            bootstrapConfigProperties.getWeb().setThreadPoolId(webThreadPoolService.getWebContainerType().name());
+            bootstrapConfigProperties.getWeb().setThreadPoolId(webThreadPoolService.getWebContainerType().getName());
         }
         return new WebThreadPoolConfigChangeHandler(hippo4jSendMessageService);
     }
@@ -130,8 +130,8 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public AdapterExecutorsRefreshListener hippo4jAdapterExecutorsListener() {
-        return new AdapterExecutorsRefreshListener();
+    public AdapterExecutorsRefreshListener hippo4jAdapterExecutorsListener(DynamicThreadPoolAdapterRegister dynamicThreadPoolAdapterRegister) {
+        return new AdapterExecutorsRefreshListener(dynamicThreadPoolAdapterRegister);
     }
 
     @Bean
