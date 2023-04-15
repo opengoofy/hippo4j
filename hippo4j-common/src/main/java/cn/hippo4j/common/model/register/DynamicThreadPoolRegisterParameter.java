@@ -20,6 +20,7 @@ package cn.hippo4j.common.model.register;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -106,6 +107,7 @@ public class DynamicThreadPoolRegisterParameter {
     /**
      * Thread factory
      */
+    @JsonIgnore
     private ThreadFactory threadFactory;
 
     /**

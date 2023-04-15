@@ -48,7 +48,7 @@ export default {
     hint: 'Warning',
     info: 'Info',
     stack: 'Stack',
-    audit: 'audit',
+    audit: 'Audit',
     yes: 'Yes',
     no: 'No',
   },
@@ -157,7 +157,7 @@ export default {
   //线程池审核
   threadPoolAudit: {
     changeType: 'Change Type',
-    modifiedBy: 'Modified by',
+    modifiedBy: 'Modified By',
     auditStatus: 'Audit Status',
     reviewer: 'Reviewer',
     submissionTime: 'Submission Time',
