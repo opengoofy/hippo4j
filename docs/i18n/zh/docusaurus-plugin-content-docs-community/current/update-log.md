@@ -3,6 +3,73 @@ title: 更新日志
 sidebar_position: 5
 ---
 
+## 1.5.0 (Apr 15, 2023)
+
+这是一个大的功能增强版本，建议按照当前版本升级。具体信息可查看 Release 标签地址：[1.5.0](https://github.com/opengoofy/hippo4j/milestone/14?closed=1)
+
+**Use Change**
+
+- [Config] 配置属性中容器线程池配置命名改为 `spring.dynamic.thread-pool.web`。
+
+- [Server] 为了使语义更加明确，当前版本中线程池执行超时时间的最低可设置为-1，表示不设置超时。需要注意的是，如果客户端使用的是低于1.5.0的版本，可能会存在不兼容的情况。
+
+- [Common] 为了使语义更加明确，废弃 `ThreadPoolBuilder#maxPoolNum`，新增加 `ThreadPoolBuilder#maximumPoolSize`，原 API 还可以使用，将在后续版本删除。
+
+**Feature**
+
+- [#1124 ] Config 模式支持 Web 容器配置修改通知 @yanrongzhen
+- [#1148 ] 优化执行时间超时 executeTimeOut 为空或 <= 0 的场景 @sususama
+- [#1128 ] 控制台前端国际化开发 @Svamei @ PleasePerfunctory
+- [#1068 ] 默认线程池配置填充至线程池实例 @magestacks
+- [#1055 ] 适配第三方自定义线程池，支持外部SPI方式扩展线程池类型 @lingfengcoder
+- [#547 ] 支持 Consul 配置中心动态调整参数 @road2master
+- [#624 ] 添加 Dubbox 线程池监控及动态变更 @iwangjie
+- [#977 ] 增加 ROLE_MANAGE 角色，主要负责线程池变更审核 @magestacks
+- [#821 ] 开发用户修改密码功能 @wulangcode
+
+**Refactor**
+
+- [#1092 ] 关于扩展点 SPI 方案的重构 @yanrongzhen
+- [#1025 ] 优化BlockingQueueTypeEnum实现 @lianyiwuming
+- [#1015 ] 重构Web线程池配置文件命名 @yanrongzhen
+- [#1071 ] ThreadPoolBuilder提供全新的最大线程池API @jjiey
+- [#1058 ] 客户端引入多个 Web 容器依赖导致 WebThreadPoolService 报错  @Createsequence
+- [#844 ] 移除 alibaba-dingtalk-service-sdk @baymax55
+
+**Bug**
+
+- [#1085 ] DynamicThreadPoolRegisterParameter#threadFactory序列化异常 @magestacks
+- [#1163 ] Adapter 适配三方线程池启动顺序错误 @magestacks
+- [#1134 ] Web容器启动时刷新最新配置失败 @yanrongzhen
+- [#1129 ] Prometheus 不能正常采集 Hystrix 线程池 queue.capacity 数据 @jjiey
+- [#1121 ] 线程池实例包含已关闭客户端节点 @zjHe
+- [#1106 ] springBoot 1.5.x适配Web容器线程池调整 @yanrongzhen
+- [#1114 ] ZipkinExecutorAdapter 可能出现空指针异常 @yult97
+- [#1074 ] Hystrix Adapter 支持 hippo4j config @jjiey
+- [#1040 ]线程池参数默认配置与文档描述不符 @wulangcode
+-  [#1002 ] SpringBoot Nacos 动态刷新错误使用 SpringCloud Nacos 类 @BigXin0109
+- [#990 ] TTL 装饰的线程池无法执行等待任务完成插件 @Createsequence
+- [#966 ] Alibaba Dubbo 无法获取线程池运行状态 @iwangjie
+
+**Optimize**
+
+- [#1159 ] 优化飞书和企业微信失败处理逻辑 @ITXiaoShiTou
+- [#1156 ] 线程池通知管理调整查询租户&项目&线程池默认10条 @tudou0806
+- [#1069 ] 线程池执行超时时间最小值支持 -1 @Ronan1024
+- [#1111 ] 核心阻塞队列枚举 BlockingQueueTypeEnum.createBlockingQueue(String blockingQueueName, Integer capacity)抛出NPE问题修复 @LiXuemin
+- [#1072 ] 提供公用方法安全设置 corePoolSize 和 maxPoolSize @jjiey
+- [#1051 ] 前端国际化登录页面中文错误 @xiaobaisdz
+- [#1001 ] 容器停止时，若线程池在等待关闭时，有任务触发超时告警会抛异常警类 @Createsequence
+- [#1024 ] 客户端与 Hippo4j revision 冲突 @baymax55
+- [#720 ] 修复 Dubbo 错误的日志打印 @baymax55
+- [#992 ] 优化 Hippo4j Banner 打印时可能存在的空指针 @wulangcode
+- [#976 ] 注册线程池默认指定过期时间和线程工厂 @magestacks
+- [#964 ] 长轮询时配置未变更返回304状态码适配低版本客户端 @wulangcode
+- [#942 ] 修改 MyBatis-Plus 数据库方言配置 @li-xiao-shuang
+- [#959 ] ThreadPoolPluginRegisterPostProcessor 打印过多 WARN 日志 @Createsequence
+- [#960 ] ThreadPoolPluginRegisterPostProcessor 实现 BeanPostProcessor 默认方法 postProcessBeforeInitialization @Createsequence
+
+
 ## 1.4.3 (Nov 06, 2022)
 
 这是一个功能增强版本，修复了少量 BUG。建议按照当前版本升级。具体信息可查看 Release 标签地址：[1.4.3](https://github.com/opengoofy/hippo4j/milestone/13?closed=1)
@@ -179,7 +246,7 @@ sidebar_position: 5
 - 配置变更通知 & 报警通知重构
 - Web 容器线程池适配迁移 hippo4j-adapter
 
-## 1.3.1 (July 17, 2022) 
+## 1.3.1 (July 17, 2022)
 
 注：这是一个兼容历史版本的小范围升级。
 
