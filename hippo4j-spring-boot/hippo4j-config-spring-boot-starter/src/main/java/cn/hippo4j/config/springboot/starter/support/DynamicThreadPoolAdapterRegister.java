@@ -17,13 +17,11 @@
 
 package cn.hippo4j.config.springboot.starter.support;
 
-import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.config.AdapterExecutorProperties;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
 import java.util.Map;
@@ -36,21 +34,31 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
  */
 @Slf4j
 @AllArgsConstructor
-public class DynamicThreadPoolAdapterRegister implements ApplicationRunner {
+public class DynamicThreadPoolAdapterRegister implements InitializingBean {
 
     private final BootstrapConfigProperties bootstrapConfigProperties;
 
     public static final Map<String, AdapterExecutorProperties> ADAPTER_EXECUTORS_MAP = new ConcurrentHashMap<>();
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        List<AdapterExecutorProperties> adapterExecutors;
-        if (CollectionUtil.isEmpty(adapterExecutors = bootstrapConfigProperties.getAdapterExecutors())) {
-            return;
-        }
+    public void afterPropertiesSet() throws Exception {
+        discoverAdapterExecutor();
+    }
+
+    public AdapterExecutorProperties discoverAdapterExecutorAndGet(String mark) {
+        List<AdapterExecutorProperties> adapterExecutors = bootstrapConfigProperties.getAdapterExecutors();
         for (AdapterExecutorProperties each : adapterExecutors) {
             String buildKey = each.getMark() + IDENTIFY_SLICER_SYMBOL + each.getThreadPoolKey();
-            ADAPTER_EXECUTORS_MAP.put(buildKey, each);
+            ADAPTER_EXECUTORS_MAP.putIfAbsent(buildKey, each);
+        }
+        return ADAPTER_EXECUTORS_MAP.get(mark);
+    }
+
+    public void discoverAdapterExecutor() {
+        List<AdapterExecutorProperties> adapterExecutors = bootstrapConfigProperties.getAdapterExecutors();
+        for (AdapterExecutorProperties each : adapterExecutors) {
+            String buildKey = each.getMark() + IDENTIFY_SLICER_SYMBOL + each.getThreadPoolKey();
+            ADAPTER_EXECUTORS_MAP.putIfAbsent(buildKey, each);
         }
     }
 }
