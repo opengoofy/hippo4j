@@ -19,13 +19,14 @@ package cn.hippo4j.config.springboot.starter.refresher.event;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.config.AdapterExecutorProperties;
 import cn.hippo4j.config.springboot.starter.support.DynamicThreadPoolAdapterRegister;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
@@ -40,7 +41,10 @@ import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfig
  */
 @Slf4j
 @Order(ADAPTER_EXECUTORS_LISTENER)
+@RequiredArgsConstructor
 public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<AdapterExecutorProperties> {
+
+    private final DynamicThreadPoolAdapterRegister dynamicThreadPoolAdapterRegister;
 
     @Override
     public String getNodes(AdapterExecutorProperties properties) {
@@ -56,19 +60,22 @@ public class AdapterExecutorsRefreshListener extends AbstractRefreshListener<Ada
         }
         for (AdapterExecutorProperties each : adapterExecutors) {
             String buildKey = each.getMark() + IDENTIFY_SLICER_SYMBOL + each.getThreadPoolKey();
-            AdapterExecutorProperties adapterExecutorProperties = DynamicThreadPoolAdapterRegister.ADAPTER_EXECUTORS_MAP.get(buildKey);
-            if (adapterExecutorProperties == null || !adapterExecutorProperties.getEnable() || !match(adapterExecutorProperties)) {
+            AdapterExecutorProperties adapterExecutorProperties = dynamicThreadPoolAdapterRegister.discoverAdapterExecutorAndGet(buildKey);
+            if (adapterExecutorProperties == null
+                    || !adapterExecutorProperties.getEnable()
+                    || !match(adapterExecutorProperties)) {
                 continue;
             }
-            if (!Objects.equals(adapterExecutorProperties.getCorePoolSize(), each.getCorePoolSize())
-                    || !Objects.equals(adapterExecutorProperties.getMaximumPoolSize(), each.getMaximumPoolSize())) {
-                threadPoolAdapterMap.forEach((key, val) -> {
-                    if (Objects.equals(val.mark(), each.getMark())) {
+            threadPoolAdapterMap.forEach((key, val) -> {
+                if (Objects.equals(val.mark(), each.getMark())) {
+                    ThreadPoolAdapterState threadPoolState = val.getThreadPoolState(each.getThreadPoolKey());
+                    if (!Objects.equals(threadPoolState.getCoreSize(), each.getCorePoolSize())
+                            || !Objects.equals(threadPoolState.getMaximumSize(), each.getMaximumPoolSize())) {
                         val.updateThreadPool(BeanUtil.convert(each, ThreadPoolAdapterParameter.class));
                         DynamicThreadPoolAdapterRegister.ADAPTER_EXECUTORS_MAP.put(buildKey, each);
                     }
-                });
-            }
+                }
+            });
         }
     }
 }
