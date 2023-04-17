@@ -86,7 +86,7 @@
       <el-table-column :label="$t('threadPoolAudit.modifiedBy')" width="120">
         <template slot-scope="scope"> {{ scope.row.modifyUser }}</template>
       </el-table-column>
-      <el-table-column :label="$t('threadPoolAudit.auditStatus')" width="110">
+      <el-table-column :label="$t('threadPoolAudit.auditStatus')" width="130">
         <template slot-scope="scope">{{
           scope.row.verifyStatus | verifyStatusFilter(that)
         }}</template>

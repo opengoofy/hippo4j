@@ -20,12 +20,17 @@ package cn.hippo4j.config.service.biz.impl;
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.toolkit.BeanUtil;
+import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.LogRecordInfo;
-import cn.hippo4j.config.model.biz.threadpool.*;
+import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.ThreadPoolQueryReqDTO;
+import cn.hippo4j.config.model.biz.threadpool.ThreadPoolRespDTO;
+import cn.hippo4j.config.model.biz.threadpool.ThreadPoolSaveOrUpdateReqDTO;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.service.biz.OperationLogService;
 import cn.hippo4j.config.service.biz.ThreadPoolService;
@@ -34,7 +39,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -45,16 +50,15 @@ import java.util.Objects;
  * Thread pool service impl.
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     private final ConfigService configService;
-
     private final ConfigInfoMapper configInfoMapper;
-
     private final OperationLogService operationLogService;
-
     private final ConfigModificationVerifyServiceChoose configModificationVerifyServiceChoose;
+
+    private static final List<String> AUDITABLE_ROLES = CollectionUtil.toList("ROLE_ADMIN", "ROLE_MANAGE");
 
     @Override
     public IPage<ThreadPoolRespDTO> queryThreadPoolPage(ThreadPoolQueryReqDTO reqDTO) {
@@ -83,8 +87,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     @Override
     public void saveOrUpdateThreadPoolConfig(String identify, ThreadPoolSaveOrUpdateReqDTO reqDTO) {
-        // TODO to optimize the Role of judgment
-        if (UserContext.getUserRole().equals("ROLE_ADMIN")) {
+        if (AUDITABLE_ROLES.contains(UserContext.getUserRole())) {
             ConfigAllInfo configAllInfo = BeanUtil.convert(reqDTO, ConfigAllInfo.class);
             Long executeTimeOut = Objects.equals(configAllInfo.getExecuteTimeOut(), 0L) ? null : configAllInfo.getExecuteTimeOut();
             configAllInfo.setExecuteTimeOut(executeTimeOut);
@@ -98,7 +101,6 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
             modifySaveReqDTO.setType(ConfigModifyTypeConstants.THREAD_POOL_MANAGER);
             configModificationVerifyServiceChoose.choose(modifySaveReqDTO.getType()).saveConfigModifyApplication(modifySaveReqDTO);
         }
-
     }
 
     @Override
