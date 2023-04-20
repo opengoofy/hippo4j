@@ -115,7 +115,7 @@ For full documentation & more details, visit: [Docs](https://www.hippo4j.cn)
 - [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 - [[ Jpom ]](https://gitee.com/dromara/Jpom)：简而轻的低侵入式在线构建、自动部署、日常运维、项目监控软件。
-- [[ CongoMall ]](https://magestack.cn)：刚果商城，不一样的 C 端商城系统，包含商城核心业务和基础架构两大模块。
+- [[ CongoMall ]](https://github.com/opengoofy/congomall)：刚果商城，不一样的 C2C 商城系统，包含商城核心业务和基础架构两大模块。
 
 ### 贡献者
 
