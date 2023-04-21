@@ -1,12 +1,12 @@
 ---
-name: "需求建议"
-about: 提出针对本项目的想法和建议
+name: "Demand advice"
+about: Propose ideas and suggestions for this project
 ---
 
-## 需求建议
+## Demand advice
 
-请在提交问题之前回答这些问题，谢谢。
+Please answer these questions before submitting them. Thank you.
 
-### 您的功能请求是否与问题有关？
+### Is your function request related to the problem?
 
-### 描述你想要的功能
+### Describe the function you want

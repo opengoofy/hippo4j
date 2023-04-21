@@ -1,27 +1,27 @@
 ---
-name: "BUG 报告"
-about: 提交问题缺陷帮助我们更好的改进
+name: "BUG Report"
+about: Submitting problem defects helps us to improve
 ---
 
-## BUG 报告
+## BUG Report
 
-在开始报告错误之前，请确保认真查看了以下步骤：
+Before you start reporting errors, make sure you carefully review the following steps:
 
-- 搜索打开和关闭的 [GitHub 问题](https://github.com/opengoofy/hippo4j/issues)
-- 阅读 [常见问题文档](https://hippo4j.cn/community/faq)
+- Search for open and closed [GitHub ISSUE](https://github.com/opengoofy/hippo4j/issues)
+- Read [Frequently asked questions](https://hippo4j.cn/community/faq)
 
-请在提交问题之前回答这些问题，谢谢。
+Please answer these questions before submitting them. Thank you.
 
-### 你使用了哪个项目？hippo4j config 还是 hippo4j server?
+### Which Project did you use? Hippo4j config or Hippo4j server?
 
-### 你使用了哪个版本？
+### Which version did you use?
 
-### 预期行为
+### Expected behavior
 
-### 实际行为
+### Actual behavior
 
-### 原因分析（如果可以）
+### Cause analysis (if possible)
 
-### 问题重现步骤
+### Problem recurrence steps
 
-### 用于重现此问题的示例代码（例如 GitHub 链接）
+### Sample code to reproduce the problem (for example, the GitHub Link) 
