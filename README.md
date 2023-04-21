@@ -3,7 +3,7 @@
 
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://github.com/opengoofy/hippo4j/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/opengoofy.hippo4j)
+[![Build Status](https://github.com/opengoofy/hippo4j/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/opengoofy/hippo4j)
 
 ![](https://img.shields.io/github/stars/opengoofy/hippo4j?color=5470c6)
 ![](https://img.shields.io/github/forks/opengoofy/hippo4j?color=3ba272)
