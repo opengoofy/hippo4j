@@ -12,7 +12,7 @@ Before you begin to report problems, make sure you carefully review the followin
 
 Please answer these questions before submitting them. Thank you.
 
-### Which Project did you use? Hippo4j config or hippo4j server?
+### Which Project did you use? Hippo4j config or Hippo4j server?
 
 ### Which version did you use?
 
