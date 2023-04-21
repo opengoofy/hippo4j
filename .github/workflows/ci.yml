@@ -67,7 +67,7 @@ jobs:
         run: echo y | mvn clean install -Dskip.gpg=true -Dspotless.apply.skip=true -Dmaven.javadoc.skip=true
 
   test-coverage:
-    if: github.repository == 'DDreame/hippo4j'
+    if: github.repository == 'opengoofy/hippo4j'
     name: Test coverage report
     runs-on: ubuntu-latest
     steps:
