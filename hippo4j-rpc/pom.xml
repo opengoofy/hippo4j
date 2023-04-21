@@ -8,7 +8,6 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-rpc</artifactId>
-
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
