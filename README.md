@@ -67,8 +67,7 @@ For full documentation & more details, visit: [Docs](https://www.hippo4j.cn)
 ### 架构设计
 
 ---
-
-<img width="994" alt="image" src="https://user-images.githubusercontent.com/77398366/233792583-438e1a76-32c1-4a6f-be16-a08a38e5ef6f.png">
+<img width="1307" alt="image" src="https://user-images.githubusercontent.com/106363931/233792824-f879500f-fea1-4872-be15-957236f6bf2b.png">
 
 ### 快速开始
 
