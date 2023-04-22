@@ -116,7 +116,7 @@ const config = {
                         position: 'left',
                     },
                     {
-                        href: 'https://magestack.cn',
+                        href: 'https://gitee.com/opengoofy/congomall',
                         label: '👉 刚果商城',
                         position: 'left',
                     },
