@@ -74,7 +74,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column fixed :label="$t('common.num')" width="80">
+      <el-table-column :label="$t('common.num')" width="80">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
       <el-table-column :label="$t('tenantManage.tenant')" width="150">
