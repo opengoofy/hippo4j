@@ -51,6 +51,8 @@ public class UserServiceImpl implements UserService {
 
     private static final int MINI_PASSWORD_LENGTH = 6;
 
+    private static final int MAX_PASSWORD_LENGTH = 72;
+
     private final UserMapper userMapper;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -74,6 +76,7 @@ public class UserServiceImpl implements UserService {
         if (existUserInfo != null) {
             throw new RuntimeException("用户名重复");
         }
+        this.checkPasswordLength(requestParam.getPassword());
         requestParam.setPassword(bCryptPasswordEncoder.encode(requestParam.getPassword()));
         UserInfo insertUser = BeanUtil.convert(requestParam, UserInfo.class);
         userMapper.insert(insertUser);
@@ -84,9 +87,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(UserReqDTO requestParam) {
         if (StringUtil.isNotBlank(requestParam.getPassword())) {
-            if (requestParam.getPassword().length() < MINI_PASSWORD_LENGTH) {
-                throw new RuntimeException("密码最少为6个字符");
-            }
+            this.checkPasswordLength(requestParam.getPassword());
             requestParam.setPassword(bCryptPasswordEncoder.encode(requestParam.getPassword()));
         }
         UserInfo updateUser = BeanUtil.convert(requestParam, UserInfo.class);
@@ -129,4 +130,17 @@ public class UserServiceImpl implements UserService {
         result.setTempResources(permissionRespList.stream().map(PermissionRespDTO::getResource).collect(Collectors.toList()));
         return result;
     }
+
+    protected void checkPasswordLength(String password) {
+        if (StringUtil.isBlank(password)) {
+            throw new RuntimeException("密码不可为空");
+        }
+        if (password.length() < MINI_PASSWORD_LENGTH) {
+            throw new RuntimeException("密码最少为6个字符");
+        }
+        if (password.length() > MAX_PASSWORD_LENGTH) {
+            throw new RuntimeException("密码最多为72个字符");
+        }
+    }
+
 }
