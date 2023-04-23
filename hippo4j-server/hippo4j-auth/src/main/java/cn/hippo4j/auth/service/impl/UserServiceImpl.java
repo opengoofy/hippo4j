@@ -131,9 +131,9 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-    private void checkPasswordLength(String password) {
+    protected void checkPasswordLength(String password) {
         if (StringUtil.isBlank(password)) {
-            return;
+            throw new RuntimeException("密码不可为空");
         }
         if (password.length() < MINI_PASSWORD_LENGTH) {
             throw new RuntimeException("密码最少为6个字符");
