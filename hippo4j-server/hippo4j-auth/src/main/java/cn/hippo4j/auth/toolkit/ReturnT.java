@@ -43,13 +43,13 @@ public class ReturnT<T> implements Serializable {
 
     private int code;
 
-    private String msg;
+    private String message;
 
     private T content;
 
-    public ReturnT(int code, String msg) {
+    public ReturnT(int code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 
     public ReturnT(T content) {
