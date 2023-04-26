@@ -107,10 +107,9 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 手动注入 DaoAuthentication
-     * 取代 void configure(AuthenticationManagerBuilder auth) 方法
-     * 修改 hideUserNotFoundExceptions 初始值为 false
-     * 解决 UserNotFoundException 不抛出问题
+     * Injection DaoAuthenticationProvider
+     * Modify hideUserNotFoundExceptions initial value to false
+     * Solve the problem of UserNotFoundException don't throw
      */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
