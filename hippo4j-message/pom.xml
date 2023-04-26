@@ -24,6 +24,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -33,6 +41,7 @@
                 <includes>
                     <include>**/*.txt</include>
                     <include>**/*.json</include>
+                    <include>**/*.ftl</include>
                 </includes>
             </resource>
         </resources>

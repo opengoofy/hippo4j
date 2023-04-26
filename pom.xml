@@ -95,6 +95,7 @@
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
+        <freemarker.version>2.3.31</freemarker.version>
     </properties>
 
     <dependencyManagement>
@@ -125,6 +126,11 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
