@@ -119,7 +119,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     /**
      * Return different echo information to the front end according to different exception types
      */
-    protected String getMessage(AuthenticationException failed) {
+    private String getMessage(AuthenticationException failed) {
         String message = "Server Error";
         if (failed instanceof UsernameNotFoundException) {
             message = "用户不存在";
