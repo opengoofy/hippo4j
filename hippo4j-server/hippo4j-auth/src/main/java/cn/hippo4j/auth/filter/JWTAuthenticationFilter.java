@@ -117,7 +117,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     /**
-     * 根据不同的异常类型返回给前端不同的回显信息
+     * Return different echo information to the front end according to different exception types
      */
     protected String getMessage(AuthenticationException failed) {
         String message = "Server Error";
