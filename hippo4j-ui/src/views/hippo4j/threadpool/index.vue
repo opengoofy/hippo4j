@@ -74,7 +74,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column :label="$t('common.num')" width="80">
+      <el-table-column fixed :label="$t('common.num')" width="80">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
       <el-table-column :label="$t('tenantManage.tenant')" width="150">
@@ -366,6 +366,17 @@
     </el-dialog>
   </div>
 </template>
+
+<style>
+.el-table--border th.el-table__cell {
+  padding: 0;
+  height: 40px;
+}
+
+.el-table .cell {
+  line-height: normal;
+}
+</style>
 
 <script>
 import * as itemApi from '@/api/hippo4j-item';
