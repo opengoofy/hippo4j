@@ -41,6 +41,7 @@
         <module>hippo4j-rpc</module>
         <module>hippo4j-server</module>
         <module>hippo4j-spring-boot</module>
+        <module>hippo4j-agent</module>
     </modules>
 
     <properties>
