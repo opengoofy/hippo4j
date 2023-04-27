@@ -59,7 +59,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         UserInfo userInfo = userMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, userName));
         if (Objects.isNull(userInfo)) {
-            log.warn("User {} not found", userName);
             throw new UsernameNotFoundException(userName);
         }
         JwtUser jwtUser = new JwtUser();

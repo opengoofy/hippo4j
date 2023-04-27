@@ -31,6 +31,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -72,8 +73,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             rememberMe.set(loginUser.getRememberMe());
             authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList()));
+        } catch (UsernameNotFoundException e) {
+            log.warn("User {} not found", e.getMessage());
+            throw e;
         } catch (BadCredentialsException e) {
             log.warn("Bad credentials exception: {}", e.getMessage());
+            throw e;
         } catch (Exception e) {
             log.error("Attempt authentication error", e);
         }
@@ -108,6 +113,19 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(JSONUtil.toJSONString(new ReturnT(ReturnT.JWT_FAIL_CODE, "Server Error")));
+        response.getWriter().write(JSONUtil.toJSONString(new ReturnT(ReturnT.JWT_FAIL_CODE, getMessage(failed))));
+    }
+
+    /**
+     * Return different echo information to the front end according to different exception types
+     */
+    private String getMessage(AuthenticationException failed) {
+        String message = "Server Error";
+        if (failed instanceof UsernameNotFoundException) {
+            message = "用户不存在";
+        } else if (failed instanceof BadCredentialsException) {
+            message = "密码错误";
+        }
+        return message;
     }
 }
