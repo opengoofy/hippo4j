@@ -367,6 +367,17 @@
   </div>
 </template>
 
+<style>
+.el-table--border th.el-table__cell {
+  padding: 0;
+  height: 40px;
+}
+
+.el-table .cell {
+  line-height: normal;
+}
+</style>
+
 <script>
 import * as itemApi from '@/api/hippo4j-item';
 import * as tenantApi from '@/api/hippo4j-tenant';
