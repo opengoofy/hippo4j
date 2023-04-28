@@ -59,7 +59,7 @@ public class ThreadPoolRunStateHandlerTest {
     }
 
     @Test
-    void testSupplement(){
+    void testSupplement() {
         long used = MemoryUtil.heapMemoryUsed();
         long max = MemoryUtil.heapMemoryMax();
         String memoryProportion = StringUtil.newBuilder(
@@ -77,8 +77,8 @@ public class ThreadPoolRunStateHandlerTest {
 
         String threadPoolId = poolRunStateInfo.getTpId();
 
-        try(final MockedStatic<GlobalThreadPoolManage> globalThreadPoolManage = mockStatic(GlobalThreadPoolManage.class)) {
-            globalThreadPoolManage.when(()->GlobalThreadPoolManage.getExecutorService("1")).thenReturn(new DynamicThreadPoolWrapper());
+        try (final MockedStatic<GlobalThreadPoolManage> globalThreadPoolManage = mockStatic(GlobalThreadPoolManage.class)) {
+            globalThreadPoolManage.when(() -> GlobalThreadPoolManage.getExecutorService("1")).thenReturn(new DynamicThreadPoolWrapper());
             DynamicThreadPoolWrapper executorService = GlobalThreadPoolManage.getExecutorService(threadPoolId);
             Assertions.assertNotNull(executorService);
         }
@@ -89,7 +89,7 @@ public class ThreadPoolRunStateHandlerTest {
         Assertions.assertNotNull(pool);
 
         String rejectedName;
-        rejectedName="java.util.concurrent.ThreadPoolExecutor.AbortPolicy";
+        rejectedName = "java.util.concurrent.ThreadPoolExecutor.AbortPolicy";
         poolRunStateInfo.setRejectedName(rejectedName);
 
         ManyThreadPoolRunStateInfo manyThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, ManyThreadPoolRunStateInfo.class);
@@ -102,8 +102,8 @@ public class ThreadPoolRunStateHandlerTest {
     }
 
     @Test
-    void testGetheapMemory(){
-        try(MockedStatic<MemoryUtil> memoryUtil = mockStatic(MemoryUtil.class)) {
+    void testGetHeapMemory() {
+        try (MockedStatic<MemoryUtil> memoryUtil = mockStatic(MemoryUtil.class)) {
             memoryUtil.when(MemoryUtil::heapMemoryUsed).thenReturn(57534464L);
             memoryUtil.when(MemoryUtil::heapMemoryMax).thenReturn(8566865920L);
             Assertions.assertEquals(8566865920L, MemoryUtil.heapMemoryMax());
@@ -112,7 +112,7 @@ public class ThreadPoolRunStateHandlerTest {
     }
 
     @Test
-    void testMemoryProportion(){
+    void testMemoryProportion() {
         long used = 57534464L;
         long max = 8566865920L;
         String memoryProportion = StringUtil.newBuilder(
