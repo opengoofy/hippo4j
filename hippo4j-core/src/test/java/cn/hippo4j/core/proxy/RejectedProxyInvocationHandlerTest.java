@@ -28,11 +28,14 @@ public class RejectedProxyInvocationHandlerTest {
 
     @Mock
     private Method mockMethod;
+
+    @Mock
+    private Object target;
+
     private RejectedProxyInvocationHandler handler;
 
     @Before
     public void setUp() {
-        Object target = new Object();
         String threadPoolId = "test-pool";
         AtomicLong rejectCount = new AtomicLong(0);
         handler = new RejectedProxyInvocationHandler(target, threadPoolId, rejectCount);
@@ -48,11 +51,10 @@ public class RejectedProxyInvocationHandlerTest {
         Mockito.doNothing().when(mockAlarmHandler).asyncSendRejectedAlarm("test-pool");
         handler.invoke(null, mockMethod, mockArgs);
 
-        Mockito.when(mockMethod.invoke(new Object(), mockArgs)).thenThrow(new IllegalAccessException());
-        try {
+        Mockito.doThrow(new InvocationTargetException(new Throwable())).when(mockMethod).invoke(target, mockArgs);
+        Assertions.assertThrows(Throwable.class, () -> {
             handler.invoke(null, mockMethod, mockArgs);
-        } catch (Exception ex){
-            Assertions.assertTrue(ex instanceof InvocationTargetException);
-        }
+        });
+
     }
 }
