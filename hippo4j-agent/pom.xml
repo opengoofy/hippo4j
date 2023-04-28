@@ -19,7 +19,7 @@
     <properties>
         <shade.package>cn.hippo4j.agent.dependencies</shade.package>
         <compiler.version>1.8</compiler.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <powermock.version>2.0.7</powermock.version>
         <mockito-core.version>3.5.13</mockito-core.version>
         <lombok.version>1.18.20</lombok.version>
