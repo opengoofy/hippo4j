@@ -58,7 +58,6 @@ public class ThreadPoolRunStateHandlerTest {
         poolRunStateInfo.setTpId("1");
     }
 
-
     @Test
     void testSupplement(){
         long used = MemoryUtil.heapMemoryUsed();
@@ -100,8 +99,6 @@ public class ThreadPoolRunStateHandlerTest {
         String threadPoolState = ThreadPoolStatusHandler.getThreadPoolState(pool);
         manyThreadPoolRunStateInfo.setState(threadPoolState);
         Assertions.assertNotNull(manyThreadPoolRunStateInfo);
-
-
     }
 
     @Test
@@ -127,5 +124,4 @@ public class ThreadPoolRunStateHandlerTest {
     }
 
 }
-
 
