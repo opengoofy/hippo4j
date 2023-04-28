@@ -27,12 +27,13 @@ public class RejectedProxyInvocationHandlerTest {
     private ApplicationContext applicationContext;
 
     @Mock
+    private Object target;
+    @Mock
     private Method mockMethod;
     private RejectedProxyInvocationHandler handler;
 
     @Before
     public void setUp() {
-        Object target = new Object();
         String threadPoolId = "test-pool";
         AtomicLong rejectCount = new AtomicLong(0);
         handler = new RejectedProxyInvocationHandler(target, threadPoolId, rejectCount);
@@ -40,7 +41,6 @@ public class RejectedProxyInvocationHandlerTest {
 
     @Test
     public void testInvoke() throws Throwable {
-
         Object[] mockArgs = new Object[] {"arg1", "arg2"};
         MockedStatic<ApplicationContextHolder> mockedStatic = Mockito.mockStatic(ApplicationContextHolder.class);
         mockedStatic.when(ApplicationContextHolder::getInstance).thenReturn(applicationContext);
@@ -48,11 +48,7 @@ public class RejectedProxyInvocationHandlerTest {
         Mockito.doNothing().when(mockAlarmHandler).asyncSendRejectedAlarm("test-pool");
         handler.invoke(null, mockMethod, mockArgs);
 
-        Mockito.when(mockMethod.invoke(new Object(), mockArgs)).thenThrow(new IllegalAccessException());
-        try {
-            handler.invoke(null, mockMethod, mockArgs);
-        } catch (Exception ex){
-            Assertions.assertTrue(ex instanceof InvocationTargetException);
-        }
+        Mockito.doThrow(new InvocationTargetException(new Throwable())).when(mockMethod).invoke(target, mockArgs);
+        Assertions.assertThrows(Throwable.class, () -> handler.invoke(null, mockMethod, mockArgs));
     }
 }
