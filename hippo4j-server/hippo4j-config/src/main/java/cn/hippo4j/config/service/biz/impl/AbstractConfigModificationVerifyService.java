@@ -17,6 +17,8 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.adapter.base.ThreadPoolAdapterApi;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.common.enums.VerifyEnum;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.BeanUtil;
@@ -30,6 +32,7 @@ import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import cn.hippo4j.config.service.biz.ConfigModificationVerifyService;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
+import cn.hippo4j.rpc.support.NettyProxyCenter;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 
 import javax.annotation.Resource;
@@ -44,6 +47,8 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
 
     @Resource
     protected HisConfigVerifyMapper hisConfigVerifyMapper;
+
+    private static final Class<ThreadPoolAdapterApi> CLASS = ThreadPoolAdapterApi.class;
 
     @Resource
     private BaseInstanceRegistry baseInstanceRegistry;
@@ -100,11 +105,11 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
         List<Lease<InstanceInfo>> leases = baseInstanceRegistry.listInstance(reqDTO.getItemId());
         ConditionUtil
                 .condition(reqDTO.getModifyAll(),
-                        () -> leases.forEach(lease -> clientAddressList.add(lease.getHolder().getCallBackUrl())),
+                        () -> leases.forEach(lease -> clientAddressList.add(lease.getHolder().getServerUrl())),
                         () -> clientAddressList.add(
                                 leases.stream()
                                         .filter(lease -> lease.getHolder().getIdentify().equals(reqDTO.getIdentify())).findAny().orElseThrow(() -> new RuntimeException("该线程池实例不存在")).getHolder()
-                                        .getCallBackUrl()));
+                                        .getServerUrl()));
         return clientAddressList;
     }
 
@@ -113,5 +118,15 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
      *
      * @param reqDTO
      */
-    protected abstract void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO);
+    protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
+        for (String each : getClientAddress(reqDTO)) {
+            ThreadPoolAdapterApi poolAdapterApi = NettyProxyCenter.getProxy(CLASS, each);
+            ThreadPoolAdapterParameter parameter = new ThreadPoolAdapterParameter();
+            parameter.setMark(reqDTO.getMark());
+            parameter.setMaximumPoolSize(reqDTO.getMaximumPoolSize());
+            parameter.setCorePoolSize(reqDTO.getCorePoolSize());
+            parameter.setThreadPoolKey(reqDTO.getThreadPoolKey());
+            poolAdapterApi.updateAdapterThreadPool(parameter);
+        }
+    }
 }

@@ -45,6 +45,19 @@ public class CloudCommonIdUtil {
     }
 
     /**
+     * Get local server ip port.
+     *
+     * @param resolver  resolver
+     * @param inetUtils inet utils
+     * @return ip and port
+     */
+    public static String getLocalServerIpPort(PropertyResolver resolver, InetUtils inetUtils) {
+        String hostname = inetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
+        String port = resolver.getProperty("spring.dynamic.thread-pool.local-server-port", "16691");
+        return combineParts(hostname, SEPARATOR, port);
+    }
+
+    /**
      * Get default instance id.
      *
      * @param resolver  resolver

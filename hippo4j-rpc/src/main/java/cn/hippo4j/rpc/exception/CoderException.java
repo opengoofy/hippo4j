@@ -20,6 +20,8 @@ package cn.hippo4j.rpc.exception;
 /**
  * During decoding and encoding, if an exception occurs, an exception of type {@link CoderException} is thrown,
  * which is not different from a {@link RuntimeException}, but is more explicit about the type of exception
+ *
+ * @since 1.5.1
  */
 public class CoderException extends RuntimeException {
 

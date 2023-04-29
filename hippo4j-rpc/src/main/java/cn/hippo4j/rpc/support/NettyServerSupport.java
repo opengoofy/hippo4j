@@ -40,6 +40,7 @@ import java.util.List;
  * @see RPCServer
  * @see NettyServerConnection
  * @see NettyClientSupport
+ * @since 1.5.1
  */
 public class NettyServerSupport implements Server {
 

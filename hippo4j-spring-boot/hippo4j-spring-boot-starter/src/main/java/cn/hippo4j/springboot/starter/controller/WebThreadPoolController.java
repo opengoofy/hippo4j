@@ -19,6 +19,7 @@ package cn.hippo4j.springboot.starter.controller;
 
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.adapter.web.WebThreadPoolService;
+import cn.hippo4j.common.api.WebThreadPoolApi;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
@@ -33,13 +34,14 @@ import org.springframework.web.bind.annotation.*;
  * <p> At present, only Tomcat is well supported, and other web containers need to be improved.
  */
 @CrossOrigin
-@RestController
+// @RestController
 @AllArgsConstructor
-public class WebThreadPoolController {
+public class WebThreadPoolController implements WebThreadPoolApi {
 
     private final WebThreadPoolHandlerChoose webThreadPoolServiceChoose;
 
-    @GetMapping("/web/base/info")
+    @Override
+    // @GetMapping("/web/base/info")
     public Result<ThreadPoolBaseInfo> getPoolBaseState(@RequestParam(value = "mark") String mark) {
         WebThreadPoolService webThreadPoolService = webThreadPoolServiceChoose.choose();
         if (webThreadPoolService != null && webThreadPoolService.getClass().getSimpleName().contains(mark)) {
@@ -48,13 +50,15 @@ public class WebThreadPoolController {
         return Results.success(null);
     }
 
-    @GetMapping("/web/run/state")
+    @Override
+    // @GetMapping("/web/run/state")
     public Result<ThreadPoolRunStateInfo> getPoolRunState() {
         ThreadPoolRunStateInfo result = webThreadPoolServiceChoose.choose().getWebRunStateInfo();
         return Results.success(result);
     }
 
-    @PostMapping("/web/update/pool")
+    @Override
+    // @PostMapping("/web/update/pool")
     public Result<Void> updateWebThreadPool(@RequestBody ThreadPoolParameterInfo threadPoolParameterInfo) {
         webThreadPoolServiceChoose.choose().updateWebThreadPool(threadPoolParameterInfo);
         return Results.success();

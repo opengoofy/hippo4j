@@ -19,13 +19,13 @@ package cn.hippo4j.rpc.handler;
 
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.rpc.process.ActivePostProcess;
-import cn.hippo4j.rpc.process.ActiveProcessChain;
-import cn.hippo4j.rpc.model.Request;
-import cn.hippo4j.rpc.model.DefaultResponse;
-import cn.hippo4j.rpc.model.Response;
 import cn.hippo4j.rpc.discovery.ClassRegistry;
 import cn.hippo4j.rpc.discovery.Instance;
+import cn.hippo4j.rpc.model.DefaultResponse;
+import cn.hippo4j.rpc.model.Request;
+import cn.hippo4j.rpc.model.Response;
+import cn.hippo4j.rpc.process.ActivePostProcess;
+import cn.hippo4j.rpc.process.ActiveProcessChain;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -35,6 +35,8 @@ import java.util.List;
 
 /**
  * netty adaptation layer
+ *
+ * @since 1.5.1
  */
 @ChannelHandler.Sharable
 public class NettyServerTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {

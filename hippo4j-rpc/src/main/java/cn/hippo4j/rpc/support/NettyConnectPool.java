@@ -30,10 +30,13 @@ import io.netty.util.concurrent.Future;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
  * This parameter applies only to the connection pool of netty
+ *
+ * @since 1.5.1
  */
 @Slf4j
 public class NettyConnectPool {
@@ -58,7 +61,9 @@ public class NettyConnectPool {
         this.handler = handler;
         this.pool = new FixedChannelPool(bootstrap, handler, healthCheck, acquireTimeoutAction,
                 timeout, maxConnect, maxPendingAcquires, true, true);
-        log.info("The connection pool is established with the connection target {}:{}", address.getHostName(), address.getPort());
+        if (log.isDebugEnabled()) {
+            log.info("The connection pool is established with the connection target {}:{}", address.getHostName(), address.getPort());
+        }
         NettyConnectPoolHolder.createPool(address, this);
     }
 
@@ -82,14 +87,15 @@ public class NettyConnectPool {
     }
 
     public void release(Channel channel) {
-        try {
-            if (channel != null) {
-                pool.release(channel);
-            }
-        } catch (Exception e) {
-            NettyClientSupport.closeClient(address);
-            throw new ConnectionException("Failed to release the connection", e);
-        }
+        Optional.ofNullable(channel)
+                .ifPresent(c -> {
+                    try {
+                        pool.release(channel);
+                    } catch (Exception e) {
+                        NettyClientSupport.closeClient(address);
+                        throw new ConnectionException("Failed to release the connection", e);
+                    }
+                });
     }
 
     public void close() {

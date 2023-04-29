@@ -37,10 +37,13 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.locks.LockSupport;
 
 /**
  * Client implemented using netty
+ *
+ * @since 1.5.1
  */
 @Slf4j
 public class NettyClientConnection implements ClientConnection {
@@ -73,11 +76,14 @@ public class NettyClientConnection implements ClientConnection {
     public Response connect(Request request) {
         activeProcessChain.applyPreHandle(request);
         this.channel = connectionPool.acquire(timeout);
+        boolean debugEnabled = log.isDebugEnabled();
         Response response = null;
         try {
             String key = request.getKey();
             this.future = channel.writeAndFlush(request);
-            log.info("Call successful, target address is {}:{}, request key is {}", address.getHostName(), address.getPort(), key);
+            if (debugEnabled) {
+                log.debug("Call successful, target address is {}:{}, request key is {}", address.getHostName(), address.getPort(), key);
+            }
             // Wait for execution to complete
             ResultHolder.putThread(key, Thread.currentThread());
             LockSupport.parkNanos(timeout() * 1000000);
@@ -86,7 +92,9 @@ public class NettyClientConnection implements ClientConnection {
                 throw new TimeOutException("Timeout waiting for server-side response");
             }
             activeProcessChain.applyPostHandle(request, response);
-            log.info("The response from {}:{} was received successfully with the response key {}.", address.getHostName(), address.getPort(), key);
+            if (debugEnabled) {
+                log.debug("The response from {}:{} was received successfully with the response key {}.", address.getHostName(), address.getPort(), key);
+            }
             return response;
         } catch (Exception ex) {
             activeProcessChain.afterCompletion(request, response, ex);
@@ -108,13 +116,13 @@ public class NettyClientConnection implements ClientConnection {
     }
 
     @Override
-    public synchronized void close() {
-        if (this.channel == null) {
-            return;
-        }
-        worker.shutdownGracefully();
-        this.future.channel().close();
-        this.channel.close();
+    public void close() {
+        Optional.ofNullable(this.channel)
+                .ifPresent(c -> {
+                    worker.shutdownGracefully();
+                    this.future.channel().close();
+                    this.channel.close();
+                });
     }
 
     @Override

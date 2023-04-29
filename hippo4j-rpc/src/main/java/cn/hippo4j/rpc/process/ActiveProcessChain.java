@@ -30,6 +30,7 @@ import java.util.List;
  * reference resources: spring HandlerExecutionChain
  *
  * @see ActivePostProcess
+ * @since 1.5.1
  */
 @Slf4j
 public final class ActiveProcessChain {
@@ -94,7 +95,9 @@ public final class ActiveProcessChain {
             try {
                 handle.afterCompletion(request, response, ex);
             } catch (Throwable e) {
-                log.error("HandlerInterceptor.afterCompletion threw exception", e);
+                if (log.isErrorEnabled()) {
+                    log.error("HandlerInterceptor.afterCompletion threw exception", e);
+                }
             }
         }
     }

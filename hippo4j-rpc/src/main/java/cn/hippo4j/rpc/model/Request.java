@@ -21,6 +21,8 @@ import java.io.Serializable;
 
 /**
  * request
+ *
+ * @since 1.5.1
  */
 public interface Request extends Serializable {
 

@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetSocketAddress;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -51,6 +52,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see cn.hippo4j.rpc.client.NettyClientConnection
  * @see NettyServerSupport
  * @see ClientFactoryBean
+ * @since 1.5.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NettyClientSupport {
@@ -97,12 +99,13 @@ public final class NettyClientSupport {
      */
     public static void closeClient(InetSocketAddress address) {
         Client client = clientMap.remove(address);
-        try {
-            if (client != null) {
-                client.close();
-            }
-        } catch (IOException e) {
-            throw new IllegalException(e);
-        }
+        Optional.ofNullable(client)
+                .ifPresent(c -> {
+                    try {
+                        c.close();
+                    } catch (IOException e) {
+                        throw new IllegalException(e);
+                    }
+                });
     }
 }
