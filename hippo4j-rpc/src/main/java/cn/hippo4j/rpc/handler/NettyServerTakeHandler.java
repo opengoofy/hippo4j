@@ -24,14 +24,10 @@ import cn.hippo4j.rpc.discovery.Instance;
 import cn.hippo4j.rpc.model.DefaultResponse;
 import cn.hippo4j.rpc.model.Request;
 import cn.hippo4j.rpc.model.Response;
-import cn.hippo4j.rpc.process.ActivePostProcess;
-import cn.hippo4j.rpc.process.ActiveProcessChain;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * netty adaptation layer
@@ -41,16 +37,10 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class NettyServerTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {
 
-    ActiveProcessChain activeProcessChain;
     Instance instance;
 
-    public NettyServerTakeHandler(List<ActivePostProcess> processes, Instance instance) {
-        this.activeProcessChain = new ActiveProcessChain(processes);
-        this.instance = instance;
-    }
-
     public NettyServerTakeHandler(Instance instance) {
-        this(new LinkedList<>(), instance);
+        this.instance = instance;
     }
 
     @Override
@@ -65,24 +55,17 @@ public class NettyServerTakeHandler extends AbstractNettyTakeHandler implements 
 
     @Override
     public Response sendHandler(Request request) {
-        if (!activeProcessChain.applyPreHandle(request)) {
-            return null;
-        }
-        Response response = null;
+        Response response;
         try {
             Class<?> cls = ClassRegistry.get(request.getClassName());
             Method method = ReflectUtil.getMethodByName(cls, request.getMethodName(), request.getParameterTypes());
             Assert.notNull(method);
             Object invoke = ReflectUtil.invoke(instance.getInstance(cls), method, request.getParameters());
             response = new DefaultResponse(request.getKey(), invoke.getClass(), invoke);
-            activeProcessChain.applyPostHandle(request, response);
             return response;
         } catch (Exception e) {
             response = new DefaultResponse(request.getKey(), e, e.getMessage());
-            activeProcessChain.afterCompletion(request, response, e);
             return response;
-        } finally {
-            activeProcessChain.afterCompletion(request, response, null);
         }
     }
 

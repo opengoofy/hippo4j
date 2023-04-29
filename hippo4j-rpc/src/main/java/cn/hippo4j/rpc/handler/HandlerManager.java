@@ -47,20 +47,6 @@ public interface HandlerManager<T> {
     HandlerManager<T> addFirst(String name, T handler);
 
     /**
-     * Add handler to the end of the Handler chain, without specifying a name
-     *
-     * @param handler handler
-     */
-    HandlerManager<T> addLast(T handler);
-
-    /**
-     * Adds handler to the head of the Handler chain, without specifying a name
-     *
-     * @param handler handler
-     */
-    HandlerManager<T> addFirst(T handler);
-
-    /**
      * Whether handler exists
      *
      * @return Whether handler exists

@@ -63,18 +63,6 @@ public class NettyClientPoolHandler extends AbstractNettyHandlerManager implemen
     }
 
     @Override
-    public NettyClientPoolHandler addLast(ChannelHandler handler) {
-        super.addLast(handler);
-        return this;
-    }
-
-    @Override
-    public NettyClientPoolHandler addFirst(ChannelHandler handler) {
-        super.addFirst(handler);
-        return this;
-    }
-
-    @Override
     public void channelReleased(Channel ch) {
         ch.writeAndFlush(Unpooled.EMPTY_BUFFER);
         if (log.isDebugEnabled()) {

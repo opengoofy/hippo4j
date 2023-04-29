@@ -83,28 +83,4 @@ public abstract class AbstractNettyHandlerManager implements HandlerManager<Chan
         this.handlerEntities.add(getHandlerEntity(firstIndex.getAndIncrement(), handler, name));
         return this;
     }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param handler handler
-     * @return NettyHandlerManager
-     */
-    public AbstractNettyHandlerManager addLast(ChannelHandler handler) {
-        Assert.notNull(handler);
-        this.handlerEntities.add(getHandlerEntity(lastIndex.getAndIncrement(), handler, null));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param handler handler
-     * @return NettyHandlerManager
-     */
-    public AbstractNettyHandlerManager addFirst(ChannelHandler handler) {
-        Assert.notNull(handler);
-        this.handlerEntities.add(getHandlerEntity(firstIndex.getAndDecrement(), handler, null));
-        return this;
-    }
 }

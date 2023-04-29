@@ -96,7 +96,7 @@ public class NettyServerSupport implements Server {
                 : new NettyServerConnection();
         // Assign a default handler if no handler exists
         if (connection.isEmpty()) {
-            connection.addFirst(new NettyServerTakeHandler(new DefaultInstance()));
+            connection.addFirst(null, new NettyServerTakeHandler(new DefaultInstance()));
         }
         server = new RPCServer(connection, serverPort);
     }

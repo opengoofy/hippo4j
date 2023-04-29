@@ -72,6 +72,10 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
 
     @Override
     public void bind(ServerPort port) {
+        int serverPort = port.getPort();
+        if (serverPort < 0 || serverPort > 65535) {
+            throw new ConnectionException("The port number " + serverPort + " is outside 0~65535, which is not a legal port number");
+        }
         ServerBootstrap server = new ServerBootstrap();
         server.group(leader, worker)
                 .channel(socketChannelCls)
@@ -79,7 +83,7 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
                 .childHandler(new ChannelInitializer<SocketChannel>() {
 
                     @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
+                    protected void initChannel(SocketChannel ch) {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new NettyEncoder());
                         pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)));
@@ -95,10 +99,10 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
                     }
                 });
         try {
-            this.future = server.bind(port.getPort()).sync();
+            this.future = server.bind(serverPort).sync();
             this.channel = this.future.channel();
             if (log.isDebugEnabled()) {
-                log.debug("The server is started and can receive requests. The listening port is {}", port.getPort());
+                log.debug("The server is started and can receive requests. The listening port is {}", serverPort);
             }
             this.port = port;
             this.future.channel().closeFuture().sync();
@@ -139,18 +143,6 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
     @Override
     public NettyServerConnection addFirst(String name, ChannelHandler handler) {
         super.addFirst(name, handler);
-        return this;
-    }
-
-    @Override
-    public NettyServerConnection addLast(ChannelHandler handler) {
-        super.addLast(handler);
-        return this;
-    }
-
-    @Override
-    public NettyServerConnection addFirst(ChannelHandler handler) {
-        super.addFirst(handler);
         return this;
     }
 

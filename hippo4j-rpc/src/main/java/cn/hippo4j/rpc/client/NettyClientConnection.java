@@ -22,8 +22,6 @@ import cn.hippo4j.common.web.exception.IllegalException;
 import cn.hippo4j.rpc.exception.TimeOutException;
 import cn.hippo4j.rpc.model.Request;
 import cn.hippo4j.rpc.model.Response;
-import cn.hippo4j.rpc.process.ActivePostProcess;
-import cn.hippo4j.rpc.process.ActiveProcessChain;
 import cn.hippo4j.rpc.support.NettyConnectPool;
 import cn.hippo4j.rpc.support.NettyConnectPoolHolder;
 import cn.hippo4j.rpc.support.ResultHolder;
@@ -35,8 +33,6 @@ import io.netty.channel.pool.ChannelPoolHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.locks.LockSupport;
 
@@ -54,30 +50,22 @@ public class NettyClientConnection implements ClientConnection {
      */
     long timeout = 30000L;
     EventLoopGroup worker = new NioEventLoopGroup();
-    ActiveProcessChain activeProcessChain;
     NettyConnectPool connectionPool;
     ChannelFuture future;
     Channel channel;
 
     public NettyClientConnection(InetSocketAddress address,
-                                 List<ActivePostProcess> activeProcesses,
                                  ChannelPoolHandler handler) {
         Assert.notNull(worker);
         this.address = address;
-        this.activeProcessChain = new ActiveProcessChain(activeProcesses);
         this.connectionPool = NettyConnectPoolHolder.getPool(address, timeout, worker, handler);
-    }
-
-    public NettyClientConnection(InetSocketAddress address, ChannelPoolHandler handler) {
-        this(address, new LinkedList<>(), handler);
     }
 
     @Override
     public Response connect(Request request) {
-        activeProcessChain.applyPreHandle(request);
         this.channel = connectionPool.acquire(timeout);
         boolean debugEnabled = log.isDebugEnabled();
-        Response response = null;
+        Response response;
         try {
             String key = request.getKey();
             this.future = channel.writeAndFlush(request);
@@ -91,16 +79,13 @@ public class NettyClientConnection implements ClientConnection {
             if (response == null) {
                 throw new TimeOutException("Timeout waiting for server-side response");
             }
-            activeProcessChain.applyPostHandle(request, response);
             if (debugEnabled) {
                 log.debug("The response from {}:{} was received successfully with the response key {}.", address.getHostName(), address.getPort(), key);
             }
             return response;
         } catch (Exception ex) {
-            activeProcessChain.afterCompletion(request, response, ex);
             throw new IllegalException(ex);
         } finally {
-            activeProcessChain.afterCompletion(request, response, null);
             connectionPool.release(this.channel);
         }
     }

@@ -75,7 +75,7 @@ public final class NettyClientSupport {
                     ? (NettyClientPoolHandler) handlerManager
                     : new NettyClientPoolHandler();
             if (handler.isEmpty()) {
-                handler.addFirst(new NettyClientTakeHandler());
+                handler.addFirst(null, new NettyClientTakeHandler());
             }
             NettyClientConnection connection = new NettyClientConnection(address, handler);
             return new RPCClient(connection);
