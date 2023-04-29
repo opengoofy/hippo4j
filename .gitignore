@@ -6,6 +6,10 @@ target/
 !**/node_modules/
 !**/dist/
 
+### Agent ###
+/hippo4j-agent/hippo4j-agent/
+**/dependency-reduced-pom.xml
+
 ### STS ###
 .apt_generated
 .classpath

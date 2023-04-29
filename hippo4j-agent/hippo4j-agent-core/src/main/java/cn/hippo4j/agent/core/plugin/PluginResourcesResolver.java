@@ -28,7 +28,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- * Use the current classloader to read all plugin define file. The file must be named 'skywalking-plugin.def'
+ * Use the current classloader to read all plugin define file. The file must be named 'hippo4j-plugin.def'
  */
 public class PluginResourcesResolver {
 
@@ -38,12 +38,12 @@ public class PluginResourcesResolver {
         List<URL> cfgUrlPaths = new ArrayList<URL>();
         Enumeration<URL> urls;
         try {
-            urls = AgentClassLoader.getDefault().getResources("skywalking-plugin.def");
+            urls = AgentClassLoader.getDefault().getResources("hippo4j-plugin.def");
 
             while (urls.hasMoreElements()) {
                 URL pluginUrl = urls.nextElement();
                 cfgUrlPaths.add(pluginUrl);
-                LOGGER.info("find skywalking plugin define in {}", pluginUrl);
+                LOGGER.info("find hippo4j plugin define in {}", pluginUrl);
             }
 
             return cfgUrlPaths;

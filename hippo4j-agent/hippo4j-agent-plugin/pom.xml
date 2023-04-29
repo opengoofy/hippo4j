@@ -9,7 +9,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>hippo4j-sdk-plugin</artifactId>
+    <artifactId>hippo4j-agent-plugin</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

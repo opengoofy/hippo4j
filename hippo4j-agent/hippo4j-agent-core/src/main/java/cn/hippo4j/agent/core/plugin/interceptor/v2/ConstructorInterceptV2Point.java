@@ -31,7 +31,7 @@ public interface ConstructorInterceptV2Point {
 
     /**
      * @return represents a class name, the class instance must be a instance of {@link
-     * org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor}
+     * cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor}
      */
     String getConstructorInterceptorV2();
 

@@ -23,7 +23,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.NegatingMatcher;
 
 /**
- * Util class to help to construct logical operations on {@link org.apache.skywalking.apm.agent.core.plugin.match.ClassMatch}s
+ * Util class to help to construct logical operations on {@link cn.hippo4j.agent.core.plugin.match.ClassMatch}s
  */
 public class LogicalMatchOperation {
 

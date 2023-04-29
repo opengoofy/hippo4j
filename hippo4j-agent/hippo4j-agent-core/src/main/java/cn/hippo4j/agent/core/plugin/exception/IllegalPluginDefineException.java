@@ -18,7 +18,7 @@
 package cn.hippo4j.agent.core.plugin.exception;
 
 /**
- * Thrown to indicate that a illegal format plugin definition has been defined in skywalking-plugin.define.
+ * Thrown to indicate that a illegal format plugin definition has been defined in hippo4j-plugin.define.
  */
 public class IllegalPluginDefineException extends Exception {
 

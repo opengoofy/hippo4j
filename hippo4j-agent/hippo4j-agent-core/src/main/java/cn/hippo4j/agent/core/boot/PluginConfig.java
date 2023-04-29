@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * ConfigInitializationService provides the config class which should host all parameters originally from agent setup.
- * {@link org.apache.skywalking.apm.agent.core.conf.Config} provides the core level config, all plugins could implement
+ * {@link cn.hippo4j.agent.core.conf.Config} provides the core level config, all plugins could implement
  * this interface to have the same capability about initializing config from agent.config, system properties and system
  * environment variables.
  */
