@@ -113,4 +113,6 @@ public class Constants {
     public static final int HTTP_EXECUTE_TIMEOUT = 5000;
 
     public static final String CLIENT_VERSION = "Client-Version";
+
+    public static final String HIPPO4J_LOCK = "hippo4j_lock";
 }

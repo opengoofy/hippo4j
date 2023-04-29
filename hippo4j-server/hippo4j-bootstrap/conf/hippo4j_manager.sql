@@ -230,6 +230,11 @@ CREATE TABLE `his_config_verify`  (
 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET=utf8mb4 COMMENT = '参数变更审核记录表';
 
+DROP TABLE IF EXISTS `hippo4j_lock`;
+CREATE TABLE `hippo4j_lock` (
+    `lock_name` varchar(50) NOT NULL COMMENT '锁名称',
+    PRIMARY KEY (`lock_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* Init SQL */
 INSERT IGNORE INTO `tenant` (`id`, `tenant_id`, `tenant_name`, `tenant_desc`, `owner`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', '处方组', '负责维护处方服务, 包括不限于电子处方等业务', '谢良辰', '2021-10-24 13:42:11', '2021-10-24 13:42:11', '0');
@@ -241,3 +246,5 @@ INSERT IGNORE INTO `config` (`id`, `tenant_id`, `item_id`, `tp_id`, `tp_name`, `
 INSERT IGNORE INTO `user` (`id`, `user_name`, `password`, `role`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'admin', '$2a$10$2KCqRbra0Yn2TwvkZxtfLuWuUP5KyCWsljO/ci5pLD27pqR3TV1vy', 'ROLE_ADMIN', '2021-11-04 21:35:17', '2021-11-15 23:04:59', '0');
 
 INSERT IGNORE INTO `notify` (`id`, `tenant_id`, `item_id`, `tp_id`, `platform`, `type`, `secret_key`, `interval`, `receives`, `enable`, `gmt_create`, `gmt_modified`, `del_flag`) VALUES ('1', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'CONFIG', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', NULL, '15601166691', '0', '2021-11-18 22:49:50', '2021-11-18 22:49:50', '0'), ('2', 'prescription', 'dynamic-threadpool-example', 'message-produce', 'DING', 'ALARM', '4a582a588a161d6e3a1bd1de7eea9ee9f562cdfcbe56b6e72029e7fd512b2eae', '30', '15601166691', '0', '2021-11-18 22:50:06', '2021-11-18 22:50:06', '0');
+
+INSERT IGNORE INTO `hippo4j_lock` VALUES ('hippo4j_lock');
