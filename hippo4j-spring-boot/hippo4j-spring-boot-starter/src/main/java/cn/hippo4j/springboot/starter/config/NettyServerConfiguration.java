@@ -26,12 +26,14 @@ import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
 import cn.hippo4j.rpc.server.NettyServerConnection;
 import cn.hippo4j.rpc.server.Server;
 import cn.hippo4j.rpc.support.NettyServerSupport;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class NettyServerConfiguration implements ApplicationRunner, EnvironmentAware {
 
@@ -51,6 +53,9 @@ public class NettyServerConfiguration implements ApplicationRunner, EnvironmentA
         try (
                 NettyServerConnection connection = new NettyServerConnection(handler);
                 Server server = new NettyServerSupport(serverPort, connection, classes)) {
+            if (log.isInfoEnabled()) {
+                log.info("Netty server started, binding to port {}", serverPort.getPort());
+            }
             server.bind();
         }
     }
