@@ -66,8 +66,7 @@ public class ThreadPoolRunStateHandlerTest {
                 "Allocation: ",
                 ByteConvertUtil.getPrintSize(used),
                 " / Maximum available: ",
-                ByteConvertUtil.getPrintSize(max)
-        );
+                ByteConvertUtil.getPrintSize(max));
 
         String ipAddress = "127.0.0.1";
 
@@ -124,4 +123,3 @@ public class ThreadPoolRunStateHandlerTest {
     }
 
 }
-
