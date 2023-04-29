@@ -15,24 +15,25 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.client;
+package cn.hippo4j.rpc.handler;
 
-import cn.hippo4j.common.toolkit.ThreadUtil;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
 
-public class CallManager {
+public class TestFalseHandler implements ChannelHandler {
 
-    public int call() {
-        return 1;
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+
     }
 
-    public int callTest(Integer a, Integer b) {
-        return a + b;
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+
     }
 
-    public int callTestTimeout() {
-        // thread sleep for 10 seconds
-        ThreadUtil.sleep(10000);
-        return 1;
-    }
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 
+    }
 }

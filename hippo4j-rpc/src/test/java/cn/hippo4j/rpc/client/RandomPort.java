@@ -17,22 +17,17 @@
 
 package cn.hippo4j.rpc.client;
 
-import cn.hippo4j.common.toolkit.ThreadUtil;
+import java.io.IOException;
+import java.net.ServerSocket;
 
-public class CallManager {
+public class RandomPort {
 
-    public int call() {
-        return 1;
-    }
-
-    public int callTest(Integer a, Integer b) {
-        return a + b;
-    }
-
-    public int callTestTimeout() {
-        // thread sleep for 10 seconds
-        ThreadUtil.sleep(10000);
-        return 1;
+    public static int getSafeRandomPort() {
+        try (ServerSocket socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

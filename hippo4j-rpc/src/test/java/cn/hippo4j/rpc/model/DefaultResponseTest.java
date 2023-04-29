@@ -83,4 +83,13 @@ public class DefaultResponseTest {
         Assert.assertTrue(response1.isErr());
     }
 
+    @Test
+    public void testEquals() throws NoSuchMethodException {
+        String key = "name";
+        Object o = "obj";
+        Class<?> cls = String.class;
+        Response response = new DefaultResponse(key, cls, o);
+        Assert.assertTrue(response.equals(response));
+        Assert.assertFalse(response.equals(null));
+    }
 }

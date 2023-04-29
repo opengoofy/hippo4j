@@ -22,9 +22,7 @@ import cn.hippo4j.rpc.discovery.ClassRegistry;
 import cn.hippo4j.rpc.discovery.DefaultInstance;
 import cn.hippo4j.rpc.discovery.Instance;
 import cn.hippo4j.rpc.discovery.ServerPort;
-import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
-import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
-import cn.hippo4j.rpc.handler.NettyServerTakeHandler;
+import cn.hippo4j.rpc.handler.*;
 import cn.hippo4j.rpc.model.DefaultRequest;
 import cn.hippo4j.rpc.model.Request;
 import cn.hippo4j.rpc.model.Response;
@@ -109,19 +107,53 @@ public class RPCClientTest {
         rpcServer.close();
     }
 
+    @Test(expected = Exception.class)
+    public void responseNullExceptionTest() throws IOException {
+        Class<CallManager> cls = CallManager.class;
+        String className = cls.getName();
+        ClassRegistry.put(className, cls);
+        // The mode connection was denied when the server was started on the specified port
+        Instance instance = new DefaultInstance();
+        NettyServerTakeHandler handler = new NettyServerTakeHandler(instance);
+        ServerConnection connection = new NettyServerConnection(handler);
+        RPCServer rpcServer = new RPCServer(connection, port);
+        rpcServer.bind();
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
+        }
+        InetSocketAddress address = InetSocketAddress.createUnresolved(host, port.getPort());
+        ChannelPoolHandler channelPoolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        ClientConnection clientConnection = new NettyClientConnection(address, channelPoolHandler);
+        clientConnection.setTimeout(300L);
+        try (RPCClient rpcClient = new RPCClient(clientConnection)) {
+            Request request = new DefaultRequest("127.0.0.18888", className, "callTestTimeout", null, null);
+            Response response = rpcClient.connection(request);
+            Assert.assertNotNull(response.getErrMsg());
+            Assert.assertNotNull(response.getThrowable());
+        } catch (IOException e) {
+            // no something
+        } finally {
+            rpcServer.close();
+        }
+    }
+
     static class TestServerPort implements ServerPort {
+
+        int port = RandomPort.getSafeRandomPort();
 
         @Override
         public int getPort() {
-            return 8888;
+            return port;
         }
     }
 
     static class TestPortServerPort implements ServerPort {
 
+        int port = RandomPort.getSafeRandomPort();
+
         @Override
         public int getPort() {
-            return 8889;
+            return port;
         }
     }
 }

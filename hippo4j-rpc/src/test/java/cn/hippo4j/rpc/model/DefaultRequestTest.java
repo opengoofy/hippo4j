@@ -59,4 +59,18 @@ public class DefaultRequestTest {
         Assert.assertEquals(request1, request);
     }
 
+    @Test
+    public void testEquals() throws NoSuchMethodException {
+        String key = "name";
+        String clsName = InstanceServerLoaderImpl.class.getName();
+        Method method = InstanceServerLoaderImpl.class.getMethod("setName", String.class);
+        String methodName = method.getName();
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        Object[] parameters = new Object[1];
+        parameters[0] = "hippo4j";
+        Request request = new DefaultRequest(key, clsName, methodName, parameterTypes, parameters);
+        Assert.assertTrue(request.equals(request));
+        Assert.assertFalse(request.equals(null));
+    }
+
 }
