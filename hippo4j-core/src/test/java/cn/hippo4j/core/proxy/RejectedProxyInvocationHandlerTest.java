@@ -11,11 +11,9 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicLong;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class RejectedProxyInvocationHandlerTest {
@@ -28,14 +26,17 @@ public class RejectedProxyInvocationHandlerTest {
 
     @Mock
     private Object target;
+
     @Mock
     private Method mockMethod;
+
     private RejectedProxyInvocationHandler handler;
 
+    private AtomicLong rejectCount;
     @Before
     public void setUp() {
         String threadPoolId = "test-pool";
-        AtomicLong rejectCount = new AtomicLong(0);
+        rejectCount = new AtomicLong(0);
         handler = new RejectedProxyInvocationHandler(target, threadPoolId, rejectCount);
     }
 
@@ -47,8 +48,8 @@ public class RejectedProxyInvocationHandlerTest {
         mockedStatic.when(() -> ApplicationContextHolder.getBean(ThreadPoolCheckAlarm.class)).thenReturn(mockAlarmHandler);
         Mockito.doNothing().when(mockAlarmHandler).asyncSendRejectedAlarm("test-pool");
         handler.invoke(null, mockMethod, mockArgs);
-
         Mockito.doThrow(new InvocationTargetException(new Throwable())).when(mockMethod).invoke(target, mockArgs);
         Assertions.assertThrows(Throwable.class, () -> handler.invoke(null, mockMethod, mockArgs));
+        Assertions.assertSame(rejectCount.get(), 2L);
     }
 }
