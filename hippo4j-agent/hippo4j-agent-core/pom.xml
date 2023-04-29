@@ -9,7 +9,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>agent-core</artifactId>
+    <artifactId>hippo4j-agent-core</artifactId>
     <packaging>jar</packaging>
 
     <properties>

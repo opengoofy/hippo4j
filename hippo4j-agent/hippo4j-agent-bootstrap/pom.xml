@@ -9,12 +9,12 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>agent-main</artifactId>
+    <artifactId>hippo4j-agent-bootstrap</artifactId>
     <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <premain.class>cn.hippo4j.agent.main.Hippo4jAgent</premain.class>
+        <premain.class>cn.hippo4j.agent.bootstrap.Hippo4jAgent</premain.class>
         <can.redefine.classes>true</can.redefine.classes>
         <can.retransform.classes>true</can.retransform.classes>
         <shade.net.bytebuddy.source>net.bytebuddy</shade.net.bytebuddy.source>
@@ -24,7 +24,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>agent-core</artifactId>
+            <artifactId>hippo4j-agent-core</artifactId>
         </dependency>
     </dependencies>
 

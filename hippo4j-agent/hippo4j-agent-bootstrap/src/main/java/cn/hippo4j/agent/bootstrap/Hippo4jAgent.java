@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.main;
+package cn.hippo4j.agent.bootstrap;
 
 import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
 import cn.hippo4j.agent.core.boot.ServiceManager;
