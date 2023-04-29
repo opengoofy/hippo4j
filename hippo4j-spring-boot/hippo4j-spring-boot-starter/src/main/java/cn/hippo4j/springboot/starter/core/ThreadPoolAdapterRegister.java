@@ -79,7 +79,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
             String clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4jInetUtils);
             cacheConfig.setClientAddress(clientAddress);
             cacheConfig.setThreadPoolAdapterStates(threadPoolStates);
-            String localServerAddress = CloudCommonIdUtil.getLocalServerIpPort(environment, hippo4JInetUtils);
+            String localServerAddress = CloudCommonIdUtil.getLocalServerIpPort(environment, hippo4jInetUtils);
             cacheConfig.setLocalServerAddress(localServerAddress);
             adapterCacheConfigList.add(cacheConfig);
         }
