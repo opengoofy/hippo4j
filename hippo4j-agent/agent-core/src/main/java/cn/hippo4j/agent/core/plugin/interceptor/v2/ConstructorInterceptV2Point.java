@@ -15,22 +15,24 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.auth.filter;
+package cn.hippo4j.agent.core.plugin.interceptor.v2;
 
-import cn.hippo4j.common.toolkit.ReflectUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 
-class JWTAuthenticationFilterTest {
+public interface ConstructorInterceptV2Point {
 
-    @Test
-    void getMessageTest() {
-        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(null);
-        Assertions.assertEquals("用户不存在", ReflectUtil.invoke(filter,
-                "getMessage", new UsernameNotFoundException("")));
-        Assertions.assertEquals("密码错误", ReflectUtil.invoke(filter,
-                "getMessage", new BadCredentialsException("")));
-    }
+    /**
+     * Constructor matcher
+     *
+     * @return matcher instance.
+     */
+    ElementMatcher<MethodDescription> getConstructorMatcher();
+
+    /**
+     * @return represents a class name, the class instance must be a instance of {@link
+     * cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor}
+     */
+    String getConstructorInterceptorV2();
+
 }

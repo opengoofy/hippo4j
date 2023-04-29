@@ -15,22 +15,14 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.auth.filter;
+package cn.hippo4j.agent.core.plugin.exception;
 
-import cn.hippo4j.common.toolkit.ReflectUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+/**
+ * Thrown to indicate that a illegal format plugin definition has been defined in hippo4j-plugin.define.
+ */
+public class IllegalPluginDefineException extends Exception {
 
-class JWTAuthenticationFilterTest {
-
-    @Test
-    void getMessageTest() {
-        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(null);
-        Assertions.assertEquals("用户不存在", ReflectUtil.invoke(filter,
-                "getMessage", new UsernameNotFoundException("")));
-        Assertions.assertEquals("密码错误", ReflectUtil.invoke(filter,
-                "getMessage", new BadCredentialsException("")));
+    public IllegalPluginDefineException(String define) {
+        super("Illegal plugin define : " + define);
     }
 }

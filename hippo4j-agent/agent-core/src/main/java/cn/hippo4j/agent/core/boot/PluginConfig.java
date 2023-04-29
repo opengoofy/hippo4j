@@ -15,22 +15,25 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.auth.filter;
+package cn.hippo4j.agent.core.boot;
 
-import cn.hippo4j.common.toolkit.ReflectUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-class JWTAuthenticationFilterTest {
+/**
+ * ConfigInitializationService provides the config class which should host all parameters originally from agent setup.
+ * {@link cn.hippo4j.agent.core.conf.Config} provides the core level config, all plugins could implement
+ * this interface to have the same capability about initializing config from agent.config, system properties and system
+ * environment variables.
+ */
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PluginConfig {
 
-    @Test
-    void getMessageTest() {
-        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(null);
-        Assertions.assertEquals("用户不存在", ReflectUtil.invoke(filter,
-                "getMessage", new UsernameNotFoundException("")));
-        Assertions.assertEquals("密码错误", ReflectUtil.invoke(filter,
-                "getMessage", new BadCredentialsException("")));
-    }
+    /**
+     * @return Class as the root to do config initialization.
+     */
+    Class<?> root();
 }
