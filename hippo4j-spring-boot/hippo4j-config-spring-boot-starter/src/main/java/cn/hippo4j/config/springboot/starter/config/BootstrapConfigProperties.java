@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +86,7 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
     /**
      * Notify platforms.
      */
-    private List<NotifyPlatformProperties> notifyPlatforms;
+    private List<NotifyPlatformProperties> notifyPlatforms = Collections.emptyList();
 
     /**
      * Check thread pool running status interval.
