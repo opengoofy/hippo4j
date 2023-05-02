@@ -18,6 +18,7 @@
 package cn.hippo4j.core.plugin.manager;
 
 import cn.hippo4j.core.plugin.ThreadPoolPlugin;
+import cn.hippo4j.core.plugin.impl.MaximumActiveThreadCountChecker;
 import cn.hippo4j.core.plugin.impl.TaskDecoratorPlugin;
 import cn.hippo4j.core.plugin.impl.TaskRejectCountRecordPlugin;
 import cn.hippo4j.core.plugin.impl.TaskRejectNotifyAlarmPlugin;
@@ -61,5 +62,6 @@ public class DefaultThreadPoolPluginRegistrar implements ThreadPoolPluginRegistr
         support.register(new TaskRejectCountRecordPlugin());
         support.register(new TaskRejectNotifyAlarmPlugin());
         support.register(new ThreadPoolExecutorShutdownPlugin(awaitTerminationMillis));
+        support.register(new MaximumActiveThreadCountChecker(support, true));
     }
 }
