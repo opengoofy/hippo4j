@@ -17,12 +17,16 @@
 
 package cn.hippo4j.rpc.handler;
 
+import cn.hippo4j.common.web.exception.IllegalException;
+import io.netty.channel.ChannelHandler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Manage the Handler used in the processing.<br>
  * The Handler must be able to exist multiple times and be invoked once in a single execution
+ *
+ * @since 1.5.1
  */
 public interface HandlerManager<T> {
 
@@ -43,20 +47,6 @@ public interface HandlerManager<T> {
     HandlerManager<T> addFirst(String name, T handler);
 
     /**
-     * Add handler to the end of the Handler chain, without specifying a name
-     *
-     * @param handler handler
-     */
-    HandlerManager<T> addLast(T handler);
-
-    /**
-     * Adds handler to the head of the Handler chain, without specifying a name
-     *
-     * @param handler handler
-     */
-    HandlerManager<T> addFirst(T handler);
-
-    /**
      * Whether handler exists
      *
      * @return Whether handler exists
@@ -72,6 +62,14 @@ public interface HandlerManager<T> {
      * @return HandlerEntity
      */
     default HandlerEntity<T> getHandlerEntity(long order, T handler, String name) {
+        Class<?> cls = handler.getClass();
+        boolean b = cls.isAnnotationPresent(ChannelHandler.Sharable.class)
+                || HandlerManager.class.isAssignableFrom(cls);
+        if (!b) {
+            throw new IllegalException("Join the execution of the handler must add io.netty.channel.ChannelHandler." +
+                    "Sharable annotations, Please for the handler class " + cls.getName() + " add io.netty.channel." +
+                    "ChannelHandler.Sharable annotation");
+        }
         return new HandlerEntity<>(order, handler, name);
     }
 
