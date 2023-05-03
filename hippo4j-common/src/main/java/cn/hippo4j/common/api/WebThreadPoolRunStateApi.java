@@ -15,47 +15,32 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.model;
+package cn.hippo4j.common.api;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+import cn.hippo4j.common.model.ThreadDetailStateInfo;
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.web.base.Result;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
- * Thread-pool base info.
+ * Web thread-pool run state api.
  */
-@Data
-@Accessors(chain = true)
-public class ThreadPoolBaseInfo implements Serializable {
+public interface WebThreadPoolRunStateApi {
 
     /**
-     * coreSize
+     * Get the run state info of the web thread pool
+     *
+     * @param threadPoolId the thread pool id
+     * @return the info
      */
-    private Integer coreSize;
+    Result<ThreadPoolRunStateInfo> getPoolRunState(String threadPoolId);
 
     /**
-     * maximumSize
+     * Get the run state detail of the web thread pool
+     *
+     * @param threadPoolId the thread pool id
+     * @return the detail
      */
-    private Integer maximumSize;
-
-    /**
-     * queueType
-     */
-    private String queueType;
-
-    /**
-     * queueCapacity
-     */
-    private Integer queueCapacity;
-
-    /**
-     * rejectedName
-     */
-    private String rejectedName;
-
-    /**
-     * keepAliveTime
-     */
-    private Long keepAliveTime;
+    Result<List<ThreadDetailStateInfo>> getThreadStateDetail(String threadPoolId);
 }

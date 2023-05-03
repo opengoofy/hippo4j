@@ -50,6 +50,8 @@ public class InstanceInfo {
 
     private String callBackUrl;
 
+    private String serverUrl;
+
     private String identify;
 
     private String active;

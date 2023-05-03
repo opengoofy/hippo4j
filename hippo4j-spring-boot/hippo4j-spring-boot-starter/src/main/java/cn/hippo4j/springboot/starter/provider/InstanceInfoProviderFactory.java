@@ -21,6 +21,7 @@ import cn.hippo4j.common.api.ClientNetworkService;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.ContentUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
@@ -58,12 +59,12 @@ public final class InstanceInfoProviderFactory {
         String namespace = bootstrapProperties.getNamespace();
         String itemId = bootstrapProperties.getItemId();
         String port = environment.getProperty("server.port", "8080");
+        String serverPort = environment.getProperty("spring.dynamic.thread-pool.local-server-port", "16691");
         String applicationName = environment.getProperty("spring.dynamic.thread-pool.item-id");
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
         InstanceInfo instanceInfo = new InstanceInfo();
         String instanceId = CloudCommonIdUtil.getDefaultInstanceId(environment, inetUtils);
-        instanceId = new StringBuilder()
-                .append(instanceId).append(IDENTIFY_SLICER_SYMBOL).append(CLIENT_IDENTIFICATION_VALUE).toString();
+        instanceId = instanceId + IDENTIFY_SLICER_SYMBOL + CLIENT_IDENTIFICATION_VALUE;
         String contextPath = environment.getProperty("server.servlet.context-path", "");
         instanceInfo.setInstanceId(instanceId)
                 .setIpApplicationName(CloudCommonIdUtil.getIpApplicationName(environment, inetUtils))
@@ -71,10 +72,19 @@ public final class InstanceInfoProviderFactory {
                 .setPort(port).setClientBasePath(contextPath).setGroupKey(ContentUtil.getGroupKey(itemId, namespace));
         String[] customerNetwork = ServiceLoaderRegistry.getSingletonServiceInstances(ClientNetworkService.class)
                 .stream().findFirst().map(each -> each.getNetworkIpPort(environment)).orElse(null);
-        String callBackUrl = new StringBuilder().append(Optional.ofNullable(customerNetwork).map(each -> each[0]).orElse(instanceInfo.getHostName())).append(":")
-                .append(Optional.ofNullable(customerNetwork).map(each -> each[1]).orElse(port)).append(instanceInfo.getClientBasePath())
-                .toString();
+
+        String callBackUrl = StringUtil.newBuilder(
+                Optional.ofNullable(customerNetwork).map(each -> each[0]).orElse(instanceInfo.getHostName()),
+                ":",
+                Optional.ofNullable(customerNetwork).map(each -> each[1]).orElse(port),
+                instanceInfo.getClientBasePath());
+        String serverUrl = StringUtil.newBuilder(
+                Optional.ofNullable(customerNetwork).map(each -> each[0]).orElse(instanceInfo.getHostName()),
+                ":",
+                serverPort,
+                instanceInfo.getClientBasePath());
         instanceInfo.setCallBackUrl(callBackUrl);
+        instanceInfo.setServerUrl(serverUrl);
         String identify = IdentifyUtil.generate(environment, inetUtils);
         instanceInfo.setIdentify(identify);
         instanceInfo.setActive(active.toUpperCase());

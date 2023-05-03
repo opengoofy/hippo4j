@@ -72,7 +72,7 @@ public class IdentifyUtil {
             port = customerNetwork[1];
         } else {
             ip = inetUtil.findFirstNonLoopBackHostInfo().getIpAddress();
-            port = environment.getProperty("server.port", "8080");
+            port = environment.getProperty("spring.dynamic.thread-pool.local-server-port", "16691");
         }
         String identify = ip
                 + ":"
