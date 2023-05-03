@@ -33,19 +33,5 @@ public class DefaultConfigConstructorInterceptor implements InstanceConstructorI
 
     @Override
     public void onConstruct(EnhancedInstance objInst, Object[] allArguments) throws Throwable {
-        // DefaultConfig config = (DefaultConfig) objInst;
-        // ConfigChangeListener configChangeListener = configChangeEvent -> {
-        // String namespace = this.namespace.replaceAll("." + bootstrapConfigProperties.getConfigFileType().getValue(), "");
-        // ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(bootstrapConfigProperties.getConfigFileType().getValue());
-        // ConfigFile configFile = ConfigService.getConfigFile(namespace, configFileFormat);
-        // Map<String, Object> newChangeValueMap = new HashMap<>();
-        // configChangeEvent.changedKeys().stream().filter(each -> each.contains(BootstrapConfigProperties.PREFIX)).forEach(each -> {
-        // ConfigChange change = configChangeEvent.getChange(each);
-        // String newValue = change.getNewValue();
-        // newChangeValueMap.put(each, newValue);
-        // });
-        // dynamicRefresh(configFile.getContent(), newChangeValueMap);
-        // };
-        // config.addChangeListener(configChangeListener);
     }
 }
