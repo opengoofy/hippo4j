@@ -113,4 +113,6 @@ public class Constants {
     public static final int HTTP_EXECUTE_TIMEOUT = 5000;
 
     public static final String CLIENT_VERSION = "Client-Version";
+
+    public static final String CONFIGURATION_PROPERTIES_PREFIX = "spring.dynamic.thread-pool";
 }

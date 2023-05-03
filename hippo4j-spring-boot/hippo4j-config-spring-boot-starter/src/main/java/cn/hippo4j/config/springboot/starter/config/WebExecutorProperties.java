@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
-import cn.hippo4j.common.api.ExecutorNotifyProperties;
+import cn.hippo4j.common.config.ExecutorNotifyProperties;
 import cn.hippo4j.common.api.IExecutorProperties;
 import lombok.Data;
 

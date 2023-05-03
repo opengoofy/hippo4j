@@ -17,6 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
+import cn.hippo4j.common.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.parser.ConfigFileTypeEnum;
 import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import lombok.Getter;
@@ -24,7 +25,6 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 

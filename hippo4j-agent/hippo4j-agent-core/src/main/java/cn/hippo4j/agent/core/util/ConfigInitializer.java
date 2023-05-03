@@ -30,14 +30,18 @@ import java.util.*;
 public class ConfigInitializer {
 
     public static void initialize(Properties properties, Class<?> rootConfigType) throws IllegalAccessException {
-        initNextLevel(properties, rootConfigType, new ConfigDesc());
+        initNextLevel(properties, rootConfigType, new ConfigDesc(), false);
+    }
+
+    public static void initialize(Properties properties, Class<?> rootConfigType, boolean isSpringProperties) throws IllegalAccessException {
+        initNextLevel(properties, rootConfigType, new ConfigDesc(), isSpringProperties);
     }
 
     private static void initNextLevel(Properties properties, Class<?> recentConfigType,
-                                      ConfigDesc parentDesc) throws IllegalArgumentException, IllegalAccessException {
+                                      ConfigDesc parentDesc, boolean isSpringProperties) throws IllegalArgumentException, IllegalAccessException {
         for (Field field : recentConfigType.getFields()) {
             if (Modifier.isPublic(field.getModifiers()) && Modifier.isStatic(field.getModifiers())) {
-                String configKey = (parentDesc + "." + field.getName()).toLowerCase();
+                String configKey = (parentDesc + "." + (isSpringProperties ? field.getName().replace("_", "-") : field.getName())).toLowerCase();
                 Class<?> type = field.getType();
 
                 if (type.equals(Map.class)) {
@@ -78,8 +82,10 @@ public class ConfigInitializer {
             }
         }
         for (Class<?> innerConfiguration : recentConfigType.getClasses()) {
-            parentDesc.append(innerConfiguration.getSimpleName());
-            initNextLevel(properties, innerConfiguration, parentDesc);
+            String simpleName = innerConfiguration.getSimpleName();
+            String description = isSpringProperties ? simpleName.replace("_", "-") : simpleName;
+            parentDesc.append(description);
+            initNextLevel(properties, innerConfiguration, parentDesc, isSpringProperties);
             parentDesc.removeLastDesc();
         }
     }

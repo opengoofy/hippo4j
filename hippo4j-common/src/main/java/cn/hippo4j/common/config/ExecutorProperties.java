@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.config;
+package cn.hippo4j.common.config;
 
-import cn.hippo4j.common.api.ExecutorNotifyProperties;
 import cn.hippo4j.common.api.IExecutorProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
