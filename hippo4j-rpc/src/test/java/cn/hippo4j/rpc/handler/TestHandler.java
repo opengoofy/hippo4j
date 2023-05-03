@@ -19,7 +19,7 @@ package cn.hippo4j.rpc.handler;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-
+@ChannelHandler.Sharable
 public class TestHandler implements ChannelHandler {
 
     @Override

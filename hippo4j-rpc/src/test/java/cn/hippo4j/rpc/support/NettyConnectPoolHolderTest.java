@@ -17,6 +17,7 @@
 
 package cn.hippo4j.rpc.support;
 
+import cn.hippo4j.rpc.client.RandomPort;
 import cn.hippo4j.rpc.discovery.ServerPort;
 import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
 import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
@@ -78,7 +79,7 @@ public class NettyConnectPoolHolderTest {
 
         @Override
         public int getPort() {
-            return 8895;
+            return RandomPort.getSafeRandomPort();
         }
     }
 }

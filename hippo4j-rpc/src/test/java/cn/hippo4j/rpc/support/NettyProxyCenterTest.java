@@ -17,13 +17,19 @@
 
 package cn.hippo4j.rpc.support;
 
+import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.common.web.exception.IllegalException;
-import cn.hippo4j.rpc.discovery.ServerPort;
-import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
-import cn.hippo4j.rpc.handler.NettyClientTakeHandler;
+import cn.hippo4j.rpc.client.*;
+import cn.hippo4j.rpc.discovery.*;
+import cn.hippo4j.rpc.exception.ConnectionException;
+import cn.hippo4j.rpc.handler.*;
+import cn.hippo4j.rpc.server.NettyServerConnection;
+import cn.hippo4j.rpc.server.RPCServer;
+import io.netty.channel.pool.ChannelPoolHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class NettyProxyCenterTest {
@@ -42,6 +48,27 @@ public class NettyProxyCenterTest {
     public void createProxy() {
         ProxyInterface localhost = NettyProxyCenter.getProxy(ProxyInterface.class, "localhost:8894");
         Assert.assertNotNull(localhost);
+        NettyProxyCenter.getProxy(ProxyInterface.class, "localhost:8894");
+        InetSocketAddress socketAddress = InetSocketAddress.createUnresolved("localhost", 8894);
+        Client client = NettyClientSupport.getClient(socketAddress);
+        ProxyInterface proxy = NettyProxyCenter.createProxy(client, ProxyInterface.class, socketAddress);
+        Assert.assertNotNull(proxy);
+    }
+
+    @Test(expected = ConnectionException.class)
+    public void createProxyException() {
+        NettyProxyCenter.getProxy(ProxyInterface.class, "localhost8894");
+    }
+
+    @Test
+    public void removeProxy() {
+        NettyProxyCenter.getProxy(ProxyInterface.class, "localhost:8894");
+        NettyProxyCenter.removeProxy(ProxyInterface.class, "localhost:8894");
+    }
+
+    @Test(expected = ConnectionException.class)
+    public void removeProxyException() {
+        NettyProxyCenter.removeProxy(ProxyInterface.class, "localhost8894");
     }
 
     @Test(expected = IllegalException.class)
@@ -50,6 +77,32 @@ public class NettyProxyCenterTest {
         NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());
         ProxyClass localhost = NettyProxyCenter.getProxy(ProxyClass.class, address, handler);
         Assert.assertNotNull(localhost);
+    }
+
+    @Test
+    public void bindPipelineTest() throws IOException {
+        // server
+        Class<InstanceServerLoader> cls = InstanceServerLoader.class;
+        ClassRegistry.put(cls.getName(), cls);
+        ServerPort port = new TestServerPort();
+        Instance instance = new DefaultInstance();
+        NettyServerTakeHandler serverHandler = new NettyServerTakeHandler(instance);
+        NettyServerConnection connection = new NettyServerConnection(serverHandler);
+        RPCServer rpcServer = new RPCServer(connection, port);
+        rpcServer.bind();
+        while (!rpcServer.isActive()) {
+            ThreadUtil.sleep(100L);
+        }
+        InetSocketAddress address = InetSocketAddress.createUnresolved("localhost", port.getPort());
+        ChannelPoolHandler channelPoolHandler = new NettyClientPoolHandler(new NettyClientTakeHandler());
+        NettyClientConnection clientConnection = new NettyClientConnection(address, channelPoolHandler);
+        RPCClient rpcClient = new RPCClient(clientConnection);
+
+        InstanceServerLoader loader = NettyProxyCenter.createProxy(rpcClient, cls, address);
+        String name = loader.getName();
+        Assert.assertEquals("name", name);
+        rpcClient.close();
+        rpcServer.close();
     }
 
     interface ProxyInterface {
@@ -63,9 +116,11 @@ public class NettyProxyCenterTest {
 
     static class TestServerPort implements ServerPort {
 
+        int port = RandomPort.getSafeRandomPort();
+
         @Override
         public int getPort() {
-            return 8894;
+            return port;
         }
     }
 }
