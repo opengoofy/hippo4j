@@ -20,16 +20,12 @@ package cn.hippo4j.common.extension.config;
 import cn.hippo4j.common.extension.IExtension;
 import cn.hippo4j.common.extension.annotation.Realization;
 import cn.hippo4j.common.extension.support.ExtensionRegistry;
-import cn.hippo4j.common.toolkit.ClassUtil;
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Extension register bootstrap

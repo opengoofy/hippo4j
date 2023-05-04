@@ -23,9 +23,6 @@ import cn.hippo4j.common.config.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.embedded.EmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
-import org.springframework.util.ReflectionUtils;
-
-import java.lang.reflect.Field;
 
 /**
  * Abstract class for adapting WebThreadPoolService to Spring 1.x version.

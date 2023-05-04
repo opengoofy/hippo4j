@@ -17,7 +17,6 @@
 
 package cn.hippo4j.agent.core.conf;
 
-import cn.hippo4j.agent.core.boot.SpringBootConfig;
 import cn.hippo4j.agent.core.logging.core.LogLevel;
 import cn.hippo4j.agent.core.logging.core.LogOutput;
 import cn.hippo4j.agent.core.logging.core.ResolverType;

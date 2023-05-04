@@ -17,14 +17,7 @@
 
 package cn.hippo4j.config.springboot1x.starter.web.undertow;
 
-import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
 import cn.hippo4j.adapter.web.undertow.UndertowWebThreadPoolHandlerSupport;
-import cn.hippo4j.common.enums.WebContainerEnum;
-import cn.hippo4j.common.model.ThreadPoolBaseInfo;
-import cn.hippo4j.common.model.ThreadPoolParameter;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.springboot1x.starter.web.AbstractWebThreadPoolService1x;
 import io.undertow.Undertow;
 import lombok.extern.slf4j.Slf4j;

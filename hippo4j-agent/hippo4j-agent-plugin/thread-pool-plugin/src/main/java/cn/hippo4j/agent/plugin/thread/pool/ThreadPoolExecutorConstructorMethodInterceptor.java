@@ -29,12 +29,7 @@ import cn.hippo4j.agent.core.util.StringUtil;
 import cn.hippo4j.common.config.ExecutorProperties;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
-import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
-import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
-import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterCoreNotifyParameter;
 import cn.hippo4j.common.toolkit.BooleanUtil;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

@@ -20,9 +20,6 @@ package cn.hippo4j.common.toolkit;
 import org.junit.Test;
 import org.junit.Assert;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 public class StringUtilTest {
 
     @Test

@@ -28,7 +28,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
 import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_CONSUME;

@@ -24,8 +24,6 @@ import cn.hippo4j.agent.core.conf.SnifferConfigInitializer;
 import cn.hippo4j.agent.core.plugin.PluginFinder;
 import cn.hippo4j.agent.core.util.StringUtil;
 
-import static cn.hippo4j.agent.core.logging.core.LogOutput.FILE;
-
 public class WriterFactory {
 
     private static IWriter WRITER;

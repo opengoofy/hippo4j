@@ -24,7 +24,6 @@ import cn.hippo4j.common.extension.support.ReduceType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Reducer<Element, Result> {

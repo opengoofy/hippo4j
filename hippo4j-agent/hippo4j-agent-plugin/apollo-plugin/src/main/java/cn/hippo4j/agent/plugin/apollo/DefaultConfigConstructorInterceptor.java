@@ -19,15 +19,6 @@ package cn.hippo4j.agent.plugin.apollo;
 
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
-import com.ctrip.framework.apollo.ConfigChangeListener;
-import com.ctrip.framework.apollo.ConfigFile;
-import com.ctrip.framework.apollo.ConfigService;
-import com.ctrip.framework.apollo.core.enums.ConfigFileFormat;
-import com.ctrip.framework.apollo.internals.DefaultConfig;
-import com.ctrip.framework.apollo.model.ConfigChange;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DefaultConfigConstructorInterceptor implements InstanceConstructorInterceptor {
 

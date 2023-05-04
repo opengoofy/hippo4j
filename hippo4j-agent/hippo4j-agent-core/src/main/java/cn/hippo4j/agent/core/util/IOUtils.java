@@ -17,7 +17,11 @@
 
 package cn.hippo4j.agent.core.util;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Copied from commons-io-2.2 (org.apache.commons.io.IOUtils)
