@@ -15,24 +15,19 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.discovery;
+package cn.hippo4j.rpc.client;
 
-import java.net.InetSocketAddress;
+import java.io.IOException;
+import java.net.ServerSocket;
 
-/**
- * The adaptation layer of different service centers is used to know
- * the host of different services through the registration center
- *
- * @since 1.5.1
- */
-public interface DiscoveryAdapter {
+public class RandomPort {
 
-    /**
-     * get InetSocketAddress served in the registry
-     *
-     * @param name server name
-     * @return InetSocketAddress
-     */
-    InetSocketAddress getSocketAddress(String name);
+    public static int getSafeRandomPort() {
+        try (ServerSocket socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

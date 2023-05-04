@@ -18,6 +18,7 @@
 package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.common.toolkit.ThreadUtil;
+import cn.hippo4j.rpc.client.RandomPort;
 import cn.hippo4j.rpc.discovery.DefaultInstance;
 import cn.hippo4j.rpc.discovery.Instance;
 import cn.hippo4j.rpc.discovery.ServerPort;
@@ -112,9 +113,10 @@ public class NettyConnectPoolTest {
 
     static class TestServerPort implements ServerPort {
 
+        int port = RandomPort.getSafeRandomPort();
         @Override
         public int getPort() {
-            return 8890;
+            return port;
         }
     }
 }

@@ -40,6 +40,7 @@ import java.util.List;
  * @see RPCServer
  * @see NettyServerConnection
  * @see NettyClientSupport
+ * @since 1.5.1
  */
 public class NettyServerSupport implements Server {
 
@@ -95,7 +96,7 @@ public class NettyServerSupport implements Server {
                 : new NettyServerConnection();
         // Assign a default handler if no handler exists
         if (connection.isEmpty()) {
-            connection.addFirst(new NettyServerTakeHandler(new DefaultInstance()));
+            connection.addFirst(null, new NettyServerTakeHandler(new DefaultInstance()));
         }
         server = new RPCServer(connection, serverPort);
     }

@@ -15,24 +15,25 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.discovery;
+package cn.hippo4j.rpc.handler;
 
-import java.net.InetSocketAddress;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
 
-/**
- * The adaptation layer of different service centers is used to know
- * the host of different services through the registration center
- *
- * @since 1.5.1
- */
-public interface DiscoveryAdapter {
+public class TestFalseHandler implements ChannelHandler {
 
-    /**
-     * get InetSocketAddress served in the registry
-     *
-     * @param name server name
-     * @return InetSocketAddress
-     */
-    InetSocketAddress getSocketAddress(String name);
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
 
+    }
+
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+
+    }
 }
