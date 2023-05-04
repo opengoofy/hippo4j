@@ -57,8 +57,8 @@ public class JettyWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerSu
     public ThreadPoolBaseInfo simpleInfo() {
         ThreadPoolBaseInfo poolBaseInfo = new ThreadPoolBaseInfo();
         QueuedThreadPool queuedThreadPool = (QueuedThreadPool) executor;
-        poolBaseInfo.setCoreSize(queuedThreadPool.getMinThreads());
-        poolBaseInfo.setMaximumSize(queuedThreadPool.getMaxThreads());
+        poolBaseInfo.setCorePoolSize(queuedThreadPool.getMinThreads());
+        poolBaseInfo.setMaximumPoolSize(queuedThreadPool.getMaxThreads());
         BlockingQueue jobs = (BlockingQueue) ReflectUtil.getFieldValue(queuedThreadPool, "_jobs");
         int queueCapacity = jobs.remainingCapacity() + jobs.size();
         poolBaseInfo.setQueueCapacity(queueCapacity);
@@ -76,8 +76,8 @@ public class JettyWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerSu
             QueuedThreadPool jettyExecutor = (QueuedThreadPool) executor;
             int minThreads = jettyExecutor.getMinThreads();
             int maxThreads = jettyExecutor.getMaxThreads();
-            parameterInfo.setCoreSize(minThreads);
-            parameterInfo.setMaxSize(maxThreads);
+            parameterInfo.setCorePoolSize(minThreads);
+            parameterInfo.setMaximumPoolSize(maxThreads);
         } catch (Exception ex) {
             log.error("Failed to get the jetty thread pool parameter.", ex);
         }
@@ -102,9 +102,9 @@ public class JettyWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerSu
         runStateInfo.setQueueSize(queueSize);
         runStateInfo.setQueueCapacity(queueCapacity);
         runStateInfo.setQueueRemainingCapacity(remainingCapacity);
-        runStateInfo.setCoreSize(corePoolSize);
+        runStateInfo.setCorePoolSize(corePoolSize);
         runStateInfo.setPoolSize(poolSize);
-        runStateInfo.setMaximumSize(maximumPoolSize);
+        runStateInfo.setMaximumPoolSize(maximumPoolSize);
         runStateInfo.setActiveSize(busyCount);
         runStateInfo.setCurrentLoad(currentLoad);
         runStateInfo.setClientLastRefreshTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));

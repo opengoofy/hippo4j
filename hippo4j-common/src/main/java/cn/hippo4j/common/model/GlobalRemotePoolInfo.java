@@ -47,14 +47,14 @@ public class GlobalRemotePoolInfo implements Serializable {
     private String tpId;
 
     /**
-     * coreSize
+     * corePoolSize
      */
-    private Integer coreSize;
+    private Integer corePoolSize;
 
     /**
-     * maxSize
+     * maximumPoolSize
      */
-    private Integer maxSize;
+    private Integer maximumPoolSize;
 
     /**
      * queueType

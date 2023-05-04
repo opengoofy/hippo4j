@@ -57,8 +57,8 @@ public class RocketMQThreadPoolAdapter implements ThreadPoolAdapter, Application
         ThreadPoolExecutor rocketMQConsumeExecutor = rocketmqConsumeExecutor.get(identify);
         if (rocketMQConsumeExecutor != null) {
             result.setThreadPoolKey(identify);
-            result.setCoreSize(rocketMQConsumeExecutor.getCorePoolSize());
-            result.setMaximumSize(rocketMQConsumeExecutor.getMaximumPoolSize());
+            result.setCorePoolSize(rocketMQConsumeExecutor.getCorePoolSize());
+            result.setMaximumPoolSize(rocketMQConsumeExecutor.getMaximumPoolSize());
             return result;
         }
         log.warn("[{}] RocketMQ consuming thread pool not found.", identify);

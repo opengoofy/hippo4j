@@ -81,8 +81,8 @@ public abstract class AbstractThreadPoolRuntime {
                 .rejectCount(rejectCount)
                 .timestamp(System.currentTimeMillis())
                 .build();
-        stateInfo.setCoreSize(actualExecutor.getCorePoolSize());
-        stateInfo.setMaximumSize(actualExecutor.getMaximumPoolSize());
+        stateInfo.setCorePoolSize(actualExecutor.getCorePoolSize());
+        stateInfo.setMaximumPoolSize(actualExecutor.getMaximumPoolSize());
         stateInfo.setQueueType(blockingQueue.getClass().getSimpleName());
         stateInfo.setQueueCapacity(blockingQueue.size() + blockingQueue.remainingCapacity());
         return supplement(stateInfo);

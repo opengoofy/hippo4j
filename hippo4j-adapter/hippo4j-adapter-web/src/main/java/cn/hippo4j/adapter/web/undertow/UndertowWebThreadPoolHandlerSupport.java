@@ -63,8 +63,8 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
             int coreSize = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int maximumPoolSize = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
             int keepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);
-            poolBaseInfo.setCoreSize(coreSize);
-            poolBaseInfo.setMaximumSize(maximumPoolSize);
+            poolBaseInfo.setCorePoolSize(coreSize);
+            poolBaseInfo.setMaximumPoolSize(maximumPoolSize);
             poolBaseInfo.setKeepAliveTime((long) keepAliveTime);
             poolBaseInfo.setRejectedName("-");
             poolBaseInfo.setQueueType("-");
@@ -83,8 +83,8 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
             int minThreads = xnioWorker.getOption(Options.WORKER_TASK_CORE_THREADS);
             int maxThreads = xnioWorker.getOption(Options.WORKER_TASK_MAX_THREADS);
             long keepAliveTime = xnioWorker.getOption(Options.WORKER_TASK_KEEPALIVE);
-            parameterInfo.setCoreSize(minThreads);
-            parameterInfo.setMaxSize(maxThreads);
+            parameterInfo.setCorePoolSize(minThreads);
+            parameterInfo.setMaximumPoolSize(maxThreads);
             parameterInfo.setKeepAliveTime(keepAliveTime);
         } catch (Exception ex) {
             log.error("Failed to get the undertow thread pool parameter.", ex);
@@ -114,9 +114,9 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
         activeCount = Math.max(activeCount, 0);
         String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
         String peakLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
-        stateInfo.setCoreSize(corePoolSize);
+        stateInfo.setCorePoolSize(corePoolSize);
         stateInfo.setPoolSize(poolSize);
-        stateInfo.setMaximumSize(maximumPoolSize);
+        stateInfo.setMaximumPoolSize(maximumPoolSize);
         stateInfo.setActiveSize(activeCount);
         stateInfo.setCurrentLoad(currentLoad);
         stateInfo.setPeakLoad(peakLoad);

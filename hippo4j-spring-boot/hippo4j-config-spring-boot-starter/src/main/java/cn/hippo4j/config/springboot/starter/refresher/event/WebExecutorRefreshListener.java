@@ -66,17 +66,17 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebExecu
                 ThreadPoolParameter beforeParameter = webThreadPoolService.getWebThreadPoolParameter();
 
                 // Prevent NPE exceptions from being thrown when certain parameters are not configured.
-                if (nowParameter.getCoreSize() == null) {
-                    nowParameter.setCoreSize(beforeParameter.getCoreSize());
+                if (nowParameter.corePoolSizeAdapt() == null) {
+                    nowParameter.setCorePoolSize(beforeParameter.getCoreSize());
                 }
-                if (nowParameter.getMaxSize() == null) {
-                    nowParameter.setMaxSize(beforeParameter.getMaxSize());
+                if (nowParameter.maximumPoolSizeAdapt() == null) {
+                    nowParameter.setMaximumPoolSize(beforeParameter.getMaxSize());
                 }
                 if (nowParameter.getKeepAliveTime() == null) {
                     nowParameter.setKeepAliveTime(beforeParameter.getKeepAliveTime());
                 }
-                if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.getCoreSize())
-                        || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.getMaxSize())
+                if (!Objects.equals(beforeParameter.getCoreSize(), nowParameter.corePoolSizeAdapt())
+                        || !Objects.equals(beforeParameter.getMaxSize(), nowParameter.maximumPoolSizeAdapt())
                         || !Objects.equals(beforeParameter.getKeepAliveTime(), nowParameter.getKeepAliveTime())) {
                     webThreadPoolService.updateWebThreadPool(nowParameter);
                     configChange.sendPoolConfigChange(buildChangeRequest(beforeParameter, nowParameter, webThreadPoolService));
@@ -112,7 +112,7 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebExecu
 
         if (webThreadPoolProperties != null && webThreadPoolProperties.getEnable() && match(webThreadPoolProperties)) {
             threadPoolParameterInfo = ThreadPoolParameterInfo.builder()
-                    .coreSize(webThreadPoolProperties.getCorePoolSize())
+                    .corePoolSize(webThreadPoolProperties.getCorePoolSize())
                     .maximumPoolSize(webThreadPoolProperties.getMaximumPoolSize())
                     .keepAliveTime(webThreadPoolProperties.getKeepAliveTime())
                     .build();

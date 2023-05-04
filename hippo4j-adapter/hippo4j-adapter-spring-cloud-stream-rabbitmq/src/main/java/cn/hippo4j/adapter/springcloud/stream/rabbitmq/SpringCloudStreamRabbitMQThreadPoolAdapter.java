@@ -64,17 +64,17 @@ public class SpringCloudStreamRabbitMQThreadPoolAdapter implements ThreadPoolAda
             result.setThreadPoolKey(identify);
             if (messageListenerContainer instanceof SimpleMessageListenerContainer) {
                 int concurrentConsumers = (int) ReflectUtil.getFieldValue(messageListenerContainer, "concurrentConsumers");
-                result.setCoreSize(concurrentConsumers);
+                result.setCorePoolSize(concurrentConsumers);
                 Object maxConcurrentConsumers = ReflectUtil.getFieldValue(messageListenerContainer, "maxConcurrentConsumers");
                 if (maxConcurrentConsumers != null) {
-                    result.setMaximumSize((Integer) maxConcurrentConsumers);
+                    result.setMaximumPoolSize((Integer) maxConcurrentConsumers);
                 } else {
-                    result.setMaximumSize(concurrentConsumers);
+                    result.setMaximumPoolSize(concurrentConsumers);
                 }
             } else if (messageListenerContainer instanceof DirectMessageListenerContainer) {
                 int consumersPerQueue = (int) ReflectUtil.getFieldValue(messageListenerContainer, "consumersPerQueue");
-                result.setCoreSize(consumersPerQueue);
-                result.setMaximumSize(consumersPerQueue);
+                result.setCorePoolSize(consumersPerQueue);
+                result.setMaximumPoolSize(consumersPerQueue);
             }
             return result;
         }

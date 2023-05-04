@@ -65,11 +65,11 @@ public class KafkaThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
 
         result.setThreadPoolKey(identify);
         if (listenerContainer instanceof ConcurrentMessageListenerContainer) {
-            result.setCoreSize(((ConcurrentMessageListenerContainer<?, ?>) listenerContainer).getConcurrency());
-            result.setMaximumSize(result.getCoreSize());
+            result.setCorePoolSize(((ConcurrentMessageListenerContainer<?, ?>) listenerContainer).getConcurrency());
+            result.setMaximumPoolSize(result.getCorePoolSize());
         } else {
-            result.setCoreSize(1);
-            result.setMaximumSize(1);
+            result.setCorePoolSize(1);
+            result.setMaximumPoolSize(1);
         }
         return result;
     }

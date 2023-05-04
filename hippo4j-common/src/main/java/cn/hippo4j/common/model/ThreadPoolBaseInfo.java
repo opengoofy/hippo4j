@@ -28,14 +28,14 @@ import lombok.experimental.Accessors;
 public class ThreadPoolBaseInfo {
 
     /**
-     * coreSize
+     * corePoolSize
      */
-    private Integer coreSize;
+    private Integer corePoolSize;
 
     /**
-     * maximumSize
+     * maximumPoolSize
      */
-    private Integer maximumSize;
+    private Integer maximumPoolSize;
 
     /**
      * queueType

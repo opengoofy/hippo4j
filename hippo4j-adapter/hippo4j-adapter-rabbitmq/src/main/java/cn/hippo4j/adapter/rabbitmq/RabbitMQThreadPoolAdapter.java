@@ -64,8 +64,8 @@ public class RabbitMQThreadPoolAdapter implements ThreadPoolAdapter, Application
         ThreadPoolExecutor threadPoolTaskExecutor = rabbitmqThreadPoolTaskExecutor.get(identify);
         threadPoolAdapterState.setThreadPoolKey(identify);
         if (Objects.nonNull(threadPoolTaskExecutor)) {
-            threadPoolAdapterState.setCoreSize(threadPoolTaskExecutor.getCorePoolSize());
-            threadPoolAdapterState.setMaximumSize(threadPoolTaskExecutor.getMaximumPoolSize());
+            threadPoolAdapterState.setCorePoolSize(threadPoolTaskExecutor.getCorePoolSize());
+            threadPoolAdapterState.setMaximumPoolSize(threadPoolTaskExecutor.getMaximumPoolSize());
         }
         return threadPoolAdapterState;
     }
