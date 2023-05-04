@@ -17,6 +17,7 @@
 
 package cn.hippo4j.agent.core.conf;
 
+import cn.hippo4j.agent.core.boot.SpringBootConfig;
 import cn.hippo4j.agent.core.logging.core.LogLevel;
 import cn.hippo4j.agent.core.logging.core.LogOutput;
 import cn.hippo4j.agent.core.logging.core.ResolverType;
@@ -358,6 +359,31 @@ public class Config {
          * Mount the folders of the plugins. The folder path is relative to agent.jar.
          */
         public static List<String> MOUNT = Arrays.asList("plugins", "activations");
+
+        public static class ThreadPool {
+
+            public static List<String> EXCLUDE_PACKAGE_PREFIX = Arrays.asList(
+                    "java", "sun", "okhttp3", "retrofit2", "reactor",
+                    "org.apache", "io.netty", "org.springframework", "com.ctrip", "com.google",
+                    "io.undertow", "org.xnio", "org.jboss", "com.zaxxer", "org.redisson", "com.alibaba",
+                    "com.netflix", "com.mysql", "rx.internal", "io.shardingjdbc", "org.drools", "org.elasticsearch",
+                    "ch.qos.logback", "net.sf.ehcache");
+        }
+
+        public static class Apollo {
+            public static class App {
+
+                public static String ID;
+            }
+            public static String META;
+
+            public static class BootStrap {
+
+                public static boolean ENABLED = false;
+
+                public static List<String> NAMESPACES;
+            }
+        }
     }
 
     public static class Correlation {

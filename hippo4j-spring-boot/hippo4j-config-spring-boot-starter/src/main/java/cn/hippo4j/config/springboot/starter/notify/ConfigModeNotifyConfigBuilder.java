@@ -18,8 +18,9 @@
 package cn.hippo4j.config.springboot.starter.notify;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
-import cn.hippo4j.common.api.ExecutorNotifyProperties;
+import cn.hippo4j.common.config.ExecutorNotifyProperties;
 import cn.hippo4j.common.api.IExecutorProperties;
+import cn.hippo4j.common.config.ExecutorProperties;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.*;

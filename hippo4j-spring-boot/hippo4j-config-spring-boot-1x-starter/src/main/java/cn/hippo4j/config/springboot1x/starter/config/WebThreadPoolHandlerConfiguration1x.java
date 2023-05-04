@@ -29,6 +29,7 @@ import org.apache.catalina.Server;
 import org.apache.catalina.startup.Tomcat;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
@@ -47,6 +48,7 @@ public class WebThreadPoolHandlerConfiguration1x {
 
     @Configuration
     @ConditionalOnClass({Servlet.class, Tomcat.class})
+    @ConditionalOnBean(WebThreadPoolRunStateHandler.class)
     @ConditionalOnMissingBean(value = WebThreadPoolService.class, search = SearchStrategy.CURRENT)
     static class EmbeddedTomcat {
 
@@ -64,6 +66,7 @@ public class WebThreadPoolHandlerConfiguration1x {
      */
     @Configuration
     @ConditionalOnClass({Servlet.class, Server.class, Loader.class, WebAppContext.class})
+    @ConditionalOnBean(WebThreadPoolRunStateHandler.class)
     @ConditionalOnMissingBean(value = WebThreadPoolService.class, search = SearchStrategy.CURRENT)
     static class EmbeddedJetty {
 
@@ -78,6 +81,7 @@ public class WebThreadPoolHandlerConfiguration1x {
      */
     @Configuration
     @ConditionalOnClass({Servlet.class, Undertow.class, SslClientAuthMode.class})
+    @ConditionalOnBean(WebThreadPoolRunStateHandler.class)
     @ConditionalOnMissingBean(value = WebThreadPoolService.class, search = SearchStrategy.CURRENT)
     static class EmbeddedUndertow {
 

@@ -41,4 +41,24 @@ public final class CollectionUtil {
     public static boolean isEmpty(Collection collection) {
         return collection == null || collection.isEmpty();
     }
+
+    /**
+     * Is empty.
+     *
+     * @param map
+     * @return
+     */
+    public static boolean isEmpty(Map<?, ?> map) {
+        return map == null || map.isEmpty();
+    }
+
+    /**
+     * Is not empty.
+     *
+     * @param map
+     * @return
+     */
+    public static boolean isNotEmpty(Map<?, ?> map) {
+        return !isEmpty(map);
+    }
 }

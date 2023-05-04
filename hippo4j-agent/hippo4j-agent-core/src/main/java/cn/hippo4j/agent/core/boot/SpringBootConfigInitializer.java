@@ -20,6 +20,7 @@ package cn.hippo4j.agent.core.boot;
 import cn.hippo4j.agent.core.logging.api.ILog;
 import cn.hippo4j.agent.core.logging.api.LogManager;
 import cn.hippo4j.agent.core.util.ConfigInitializer;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -38,17 +39,21 @@ public class SpringBootConfigInitializer {
 
     private static long PROPERTIES_LOAD_TIME;
 
-    private static Properties SPRING_PROPERTIES = null;
+    public static Properties SPRING_PROPERTIES = null;
 
     private SpringBootConfigInitializer() {
 
+    }
+
+    public static boolean isSpringPropertiesEmpty() {
+        return SPRING_PROPERTIES == null || SPRING_PROPERTIES.isEmpty();
     }
 
     public static synchronized void initializeConfig(SpringBootConfig springBootConfig) {
         if (SPRING_PROPERTIES != null) {
             try {
                 LOG.info("initialize Spring Config Class {}.", springBootConfig.root());
-                ConfigInitializer.initialize(SPRING_PROPERTIES, springBootConfig.root());
+                ConfigInitializer.initialize(SPRING_PROPERTIES, springBootConfig.root(), true);
             } catch (Throwable e) {
                 LOG.error(e, "Failed to set the agent settings {} to Config={} ", SPRING_PROPERTIES, springBootConfig.root());
             }

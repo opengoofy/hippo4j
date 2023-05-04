@@ -17,6 +17,7 @@
 
 package cn.hippo4j.springboot.starter.config;
 
+import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.springboot.starter.monitor.send.netty.NettyConnectSender;
 import cn.hippo4j.springboot.starter.monitor.send.MessageSender;
 import cn.hippo4j.springboot.starter.remote.ServerNettyAgent;
@@ -26,7 +27,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * Netty client configuration.
  */
-@ConditionalOnProperty(prefix = BootstrapProperties.PREFIX, name = "report-type", havingValue = "netty")
+@ConditionalOnProperty(prefix = Constants.CONFIGURATION_PROPERTIES_PREFIX, name = "report-type", havingValue = "netty")
 public class NettyClientConfiguration {
 
     @Bean

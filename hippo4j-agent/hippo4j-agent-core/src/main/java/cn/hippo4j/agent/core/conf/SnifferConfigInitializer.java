@@ -106,9 +106,9 @@ public class SnifferConfigInitializer {
                         Config.Agent.CLUSTER);
             }
         }
-        if (StringUtil.isEmpty(Config.Collector.BACKEND_SERVICE)) {
-            throw new ExceptionInInitializerError("`collector.backend_service` is missing.");
-        }
+        // if (StringUtil.isEmpty(Config.Collector.BACKEND_SERVICE)) {
+        // throw new ExceptionInInitializerError("`collector.backend_service` is missing.");
+        // }
         if (Config.Plugin.PEER_MAX_LENGTH <= 3) {
             LOGGER.warn(
                     "PEER_MAX_LENGTH configuration:{} error, the default value of 200 will be used.",

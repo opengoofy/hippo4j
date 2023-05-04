@@ -15,27 +15,20 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.common.api;
+package cn.hippo4j.agent.plugin.spring.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
 
-/**
- * Dynamic thread-pool notify properties.
- */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ExecutorNotifyProperties {
+import java.util.HashMap;
+import java.util.Map;
 
-    /**
-     * Thread pool run alarm interval. unit: s
-     */
-    private Integer interval;
+public class SpringEnvironmentSupport {
 
-    /**
-     * Receives
-     */
-    private String receives;
+    public static void disableNonAgentSwitch(ConfigurableEnvironment environment) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("spring.dynamic.thread-pool.enable", false); // Switch off in non-Agent mode
+        MapPropertySource propertySource = new MapPropertySource("Hippo4j-Agent-Properties", map);
+        environment.getPropertySources().addFirst(propertySource);
+    }
 }

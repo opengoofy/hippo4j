@@ -73,7 +73,7 @@ public class SpringBoot1xBootstrapConfigPropertiesBinderAdapt implements Applica
         return bindableCoreProperties;
     }
 
-    private static Set<String> getNames(Object target, Iterable<String> prefixes) {
+    public static Set<String> getNames(Object target, Iterable<String> prefixes) {
         Set<String> names = new LinkedHashSet<>();
         if (target != null) {
             PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(target.getClass());

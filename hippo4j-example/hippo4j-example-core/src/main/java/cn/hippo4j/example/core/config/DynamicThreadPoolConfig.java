@@ -28,8 +28,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
 import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_CONSUME;
@@ -41,6 +40,12 @@ import static cn.hippo4j.example.core.constant.GlobalTestConstant.MESSAGE_PRODUC
 @Slf4j
 @Configuration
 public class DynamicThreadPoolConfig {
+
+    public static final ThreadPoolExecutor FIELD1 = new ThreadPoolExecutor(10, 20,
+            1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(20));
+
+    public static final ThreadPoolExecutor FIELD2 = new ThreadPoolExecutor(10, 20,
+            1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(20));
 
     @Bean
     @DynamicThreadPool

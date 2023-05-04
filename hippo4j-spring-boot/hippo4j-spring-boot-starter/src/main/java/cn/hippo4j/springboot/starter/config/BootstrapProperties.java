@@ -17,6 +17,7 @@
 
 package cn.hippo4j.springboot.starter.config;
 
+import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,10 +30,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Slf4j
 @Getter
 @Setter
-@ConfigurationProperties(prefix = BootstrapProperties.PREFIX)
+@ConfigurationProperties(prefix = Constants.CONFIGURATION_PROPERTIES_PREFIX)
 public class BootstrapProperties implements BootstrapPropertiesInterface {
-
-    public static final String PREFIX = "spring.dynamic.thread-pool";
 
     /**
      * Username

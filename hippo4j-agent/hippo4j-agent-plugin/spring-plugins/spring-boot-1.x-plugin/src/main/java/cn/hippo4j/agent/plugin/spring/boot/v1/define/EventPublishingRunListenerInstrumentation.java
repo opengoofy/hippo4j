@@ -32,6 +32,7 @@ public class EventPublishingRunListenerInstrumentation extends ClassInstanceMeth
     private static final String ENHANCE_CLASS = "org.springframework.boot.context.event.EventPublishingRunListener";
 
     private static final String EVENT_PUBLISHING_FINISHED_INTERCEPTOR = "cn.hippo4j.agent.plugin.spring.boot.v1.EventPublishingFinishedInterceptor";
+    private static final String EVENT_PUBLISHING_ENVIRONMENT_PREPARED_INTERCEPTOR = "cn.hippo4j.agent.plugin.spring.boot.v1.EventPublishingRunListenerEnvironmentPreparedInterceptor";
 
     @Override
     protected ClassMatch enhanceClass() {
@@ -56,6 +57,23 @@ public class EventPublishingRunListenerInstrumentation extends ClassInstanceMeth
                     @Override
                     public String getMethodsInterceptor() {
                         return EVENT_PUBLISHING_FINISHED_INTERCEPTOR;
+                    }
+
+                    @Override
+                    public boolean isOverrideArgs() {
+                        return false;
+                    }
+                },
+                new InstanceMethodsInterceptPoint() {
+
+                    @Override
+                    public ElementMatcher<MethodDescription> getMethodsMatcher() {
+                        return named("environmentPrepared");
+                    }
+
+                    @Override
+                    public String getMethodsInterceptor() {
+                        return EVENT_PUBLISHING_ENVIRONMENT_PREPARED_INTERCEPTOR;
                     }
 
                     @Override

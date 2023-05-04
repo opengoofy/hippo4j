@@ -33,4 +33,7 @@ public class Constants {
     public static String EVENT_LAYER_NAME = "GENERAL";
 
     public static int NULL_VALUE = 0;
+
+    public static String SPRING_BOOT_CONFIG_PREFIX = "spring.dynamic.thread-pool";
+
 }
