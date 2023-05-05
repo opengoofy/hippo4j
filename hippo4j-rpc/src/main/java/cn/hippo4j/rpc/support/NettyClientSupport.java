@@ -60,7 +60,7 @@ public final class NettyClientSupport {
     /**
      * the cache for client
      */
-    private static final Map<InetSocketAddress, Client> clientMap = new ConcurrentHashMap<>();
+    private static final Map<InetSocketAddress, Client> CLIENT_MAP = new ConcurrentHashMap<>();
 
     /**
      * Obtain the client connected to the server through the server address. If the client does not exist, create one
@@ -70,7 +70,7 @@ public final class NettyClientSupport {
      * @return Client
      */
     public static Client getClient(InetSocketAddress address, HandlerManager<ChannelHandler> handlerManager) {
-        return clientMap.computeIfAbsent(address, a -> {
+        return CLIENT_MAP.computeIfAbsent(address, a -> {
             NettyClientPoolHandler handler = (handlerManager instanceof NettyClientPoolHandler)
                     ? (NettyClientPoolHandler) handlerManager
                     : new NettyClientPoolHandler();
@@ -98,7 +98,7 @@ public final class NettyClientSupport {
      * @param address the address
      */
     public static void closeClient(InetSocketAddress address) {
-        Client client = clientMap.remove(address);
+        Client client = CLIENT_MAP.remove(address);
         Optional.ofNullable(client)
                 .ifPresent(c -> {
                     try {

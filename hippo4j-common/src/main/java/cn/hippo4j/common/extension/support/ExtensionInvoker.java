@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class ExtensionInvoker {
 
-    private static final ExtensionRegistry registry = ExtensionRegistry.getInstance();
+    private static final ExtensionRegistry REGISTRY = ExtensionRegistry.getInstance();
 
     public static <T extends IExtension, E> List<E> reduceExecute(Class<T> targetClz,
                                                                   ExtensionCallback<T, E> callback) {
@@ -47,7 +47,7 @@ public class ExtensionInvoker {
         Assert.isTrue(IExtension.class.isAssignableFrom(targetClz),
                 "can not execute extension point. please implement base extension interface(" + IExtension.class.getName() + ") first.");
 
-        List<IExtension> realizations = registry.find(targetClz);
+        List<IExtension> realizations = REGISTRY.find(targetClz);
         if (CollectionUtil.isEmpty(realizations)) {
             realizations = new ArrayList<>(ServiceLoaderRegistry.getSingletonServiceInstances(targetClz));
         }
