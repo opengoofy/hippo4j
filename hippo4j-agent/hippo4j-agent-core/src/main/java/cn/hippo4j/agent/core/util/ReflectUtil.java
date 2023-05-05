@@ -33,8 +33,8 @@ public class ReflectUtil {
         Field[] fields = clazz.getFields();
         List<Field> result = new ArrayList<>();
         for (Field field : fields) {
-            if (field.getType().isAssignableFrom(declaredType) &&
-                    Modifier.isStatic(field.getModifiers())) {
+            if (field.getType().isAssignableFrom(declaredType)
+                    && Modifier.isStatic(field.getModifiers())) {
                 result.add(field);
             }
         }

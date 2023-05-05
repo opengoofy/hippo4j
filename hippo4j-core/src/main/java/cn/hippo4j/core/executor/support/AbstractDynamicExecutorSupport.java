@@ -161,14 +161,14 @@ public abstract class AbstractDynamicExecutorSupport extends ThreadPoolExecutor 
             try {
                 if (!executor.awaitTermination(this.awaitTerminationMillis, TimeUnit.MILLISECONDS)) {
                     if (log.isWarnEnabled()) {
-                        log.warn("Timed out while waiting for executor" +
-                                (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
+                        log.warn("Timed out while waiting for executor"
+                                + (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
                     }
                 }
             } catch (InterruptedException ex) {
                 if (log.isWarnEnabled()) {
-                    log.warn("Interrupted while waiting for executor" +
-                            (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
+                    log.warn("Interrupted while waiting for executor"
+                            + (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
                 }
                 Thread.currentThread().interrupt();
             }

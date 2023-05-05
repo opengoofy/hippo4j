@@ -66,9 +66,9 @@ public interface HandlerManager<T> {
         boolean b = cls.isAnnotationPresent(ChannelHandler.Sharable.class)
                 || HandlerManager.class.isAssignableFrom(cls);
         if (!b) {
-            throw new IllegalException("Join the execution of the handler must add io.netty.channel.ChannelHandler." +
-                    "Sharable annotations, Please for the handler class " + cls.getName() + " add io.netty.channel." +
-                    "ChannelHandler.Sharable annotation");
+            throw new IllegalException("Join the execution of the handler must add io.netty.channel.ChannelHandler."
+                    + "Sharable annotations, Please for the handler class " + cls.getName() + " add io.netty.channel."
+                    + "ChannelHandler.Sharable annotation");
         }
         return new HandlerEntity<>(order, handler, name);
     }

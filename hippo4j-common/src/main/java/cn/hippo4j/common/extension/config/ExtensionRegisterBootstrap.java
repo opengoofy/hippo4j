@@ -50,8 +50,8 @@ public class ExtensionRegisterBootstrap implements ApplicationContextAware, Appl
     }
 
     private boolean filterClass(String beanName, Object bean) {
-        return bean.getClass().isAssignableFrom(IExtension.class) ||
-                ScopedProxyUtils.isScopedTarget(beanName) ||
-                !(bean instanceof IExtension);
+        return bean.getClass().isAssignableFrom(IExtension.class)
+                || ScopedProxyUtils.isScopedTarget(beanName)
+                || !(bean instanceof IExtension);
     }
 }

@@ -24,7 +24,6 @@ import java.util.List;
 
 public class ApolloSpringBootProperties {
 
-
     public static class Spring {
 
         public static class Dynamic {

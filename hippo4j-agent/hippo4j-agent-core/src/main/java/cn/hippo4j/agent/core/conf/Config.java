@@ -370,6 +370,7 @@ public class Config {
         }
 
         public static class Apollo {
+
             public static class App {
 
                 public static String ID;
