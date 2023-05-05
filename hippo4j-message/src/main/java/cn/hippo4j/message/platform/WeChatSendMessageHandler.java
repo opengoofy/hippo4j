@@ -30,7 +30,9 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
-import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.*;
+import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.WE_CHAT_ALARM_TIMOUT_REPLACE_TXT;
+import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.WE_CHAT_ALARM_TIMOUT_TRACE_REPLACE_TXT;
+import static cn.hippo4j.message.platform.constant.WeChatAlarmConstants.WE_CHAT_SERVER_URL;
 
 /**
  * WeChat send message handler.

@@ -18,7 +18,6 @@
 package cn.hippo4j.common.extension.support;
 
 import cn.hippo4j.common.extension.annotation.SingletonSPI;
-import cn.hippo4j.common.extension.support.ServiceLoaderInstantiationException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;

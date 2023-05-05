@@ -17,8 +17,8 @@
 
 package cn.hippo4j.config.springboot1x.starter.config;
 
-import cn.hippo4j.adapter.web.*;
 import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
+import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.config.springboot1x.starter.web.jetty.JettyWebThreadPoolHandler1x;
 import cn.hippo4j.config.springboot1x.starter.web.tomcat.TomcatWebThreadPoolHandler1x;
 import cn.hippo4j.config.springboot1x.starter.web.undertow.UndertowWebThreadPoolHandler1x;

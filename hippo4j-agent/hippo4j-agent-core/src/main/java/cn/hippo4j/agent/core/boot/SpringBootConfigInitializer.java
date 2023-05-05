@@ -20,7 +20,6 @@ package cn.hippo4j.agent.core.boot;
 import cn.hippo4j.agent.core.logging.api.ILog;
 import cn.hippo4j.agent.core.logging.api.LogManager;
 import cn.hippo4j.agent.core.util.ConfigInitializer;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.HashSet;

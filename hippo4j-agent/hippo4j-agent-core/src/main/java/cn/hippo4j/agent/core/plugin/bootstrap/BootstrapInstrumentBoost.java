@@ -19,7 +19,11 @@ package cn.hippo4j.agent.core.plugin.bootstrap;
 
 import cn.hippo4j.agent.core.logging.api.ILog;
 import cn.hippo4j.agent.core.logging.api.LogManager;
-import cn.hippo4j.agent.core.plugin.*;
+import cn.hippo4j.agent.core.plugin.AbstractClassEnhancePluginDefine;
+import cn.hippo4j.agent.core.plugin.ByteBuddyCoreClasses;
+import cn.hippo4j.agent.core.plugin.InstrumentDebuggingClass;
+import cn.hippo4j.agent.core.plugin.PluginException;
+import cn.hippo4j.agent.core.plugin.PluginFinder;
 import cn.hippo4j.agent.core.plugin.interceptor.ConstructorInterceptPoint;
 import cn.hippo4j.agent.core.plugin.interceptor.InstanceMethodsInterceptPoint;
 import cn.hippo4j.agent.core.plugin.interceptor.StaticMethodsInterceptPoint;

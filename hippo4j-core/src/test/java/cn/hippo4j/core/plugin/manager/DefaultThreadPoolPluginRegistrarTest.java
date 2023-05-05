@@ -18,7 +18,11 @@
 package cn.hippo4j.core.plugin.manager;
 
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.plugin.impl.*;
+import cn.hippo4j.core.plugin.impl.TaskDecoratorPlugin;
+import cn.hippo4j.core.plugin.impl.TaskRejectCountRecordPlugin;
+import cn.hippo4j.core.plugin.impl.TaskRejectNotifyAlarmPlugin;
+import cn.hippo4j.core.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
+import cn.hippo4j.core.plugin.impl.ThreadPoolExecutorShutdownPlugin;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -18,7 +18,6 @@
 package cn.hippo4j.message.request.base;
 
 import cn.hippo4j.common.api.NotifyRequest;
-import cn.hippo4j.message.enums.NotifyTypeEnum;
 import lombok.Data;
 
 /**

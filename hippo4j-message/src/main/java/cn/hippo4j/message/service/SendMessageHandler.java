@@ -18,7 +18,6 @@
 package cn.hippo4j.message.service;
 
 import cn.hippo4j.message.dto.NotifyConfigDTO;
-import cn.hippo4j.common.api.NotifyRequest;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.request.WebChangeParameterNotifyRequest;
