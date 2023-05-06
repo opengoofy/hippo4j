@@ -181,7 +181,7 @@ public class MapUtil {
      * @return
      */
     private static boolean checkKey(String key, String filters) {
-        if (key.indexOf(filters) > -1) {
+        if (key.contains(filters)) {
             return true;
         } else {
             return false;

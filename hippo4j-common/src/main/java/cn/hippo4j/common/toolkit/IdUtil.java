@@ -74,17 +74,17 @@ public class IdUtil {
         long mostSigBits = uuid.getMostSignificantBits();
         long leastSigBits = uuid.getLeastSignificantBits();
         if (isSimple) {
-            return (digits(mostSigBits >> 32, 8) +
-                    digits(mostSigBits >> 16, 4) +
-                    digits(mostSigBits, 4) +
-                    digits(leastSigBits >> 48, 4) +
-                    digits(leastSigBits, 12));
+            return (digits(mostSigBits >> 32, 8)
+                    + digits(mostSigBits >> 16, 4)
+                    + digits(mostSigBits, 4)
+                    + digits(leastSigBits >> 48, 4)
+                    + digits(leastSigBits, 12));
         } else {
-            return (digits(mostSigBits >> 32, 8) + "-" +
-                    digits(mostSigBits >> 16, 4) + "-" +
-                    digits(mostSigBits, 4) + "-" +
-                    digits(leastSigBits >> 48, 4) + "-" +
-                    digits(leastSigBits, 12));
+            return (digits(mostSigBits >> 32, 8) + "-"
+                    + digits(mostSigBits >> 16, 4) + "-"
+                    + digits(mostSigBits, 4) + "-"
+                    + digits(leastSigBits >> 48, 4) + "-"
+                    + digits(leastSigBits, 12));
         }
     }
 

@@ -44,9 +44,9 @@ public abstract class AgentConfigChangeWatcher {
 
     @Override
     public String toString() {
-        return "AgentConfigChangeWatcher{" +
-                "propertyKey='" + propertyKey + '\'' +
-                '}';
+        return "AgentConfigChangeWatcher{"
+                + "propertyKey='" + propertyKey + '\''
+                + '}';
     }
 
     @Getter
