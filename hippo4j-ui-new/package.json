@@ -21,11 +21,8 @@
     "build": "craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .js src",
-    "lint:fix": "eslint --fix --ext .js src",
-    "lint-staged": "lint-staged",
-    "lint-staged:js": "eslint --ext .js src",
-    "format": "prettier --write ./src/**/**/**/*.js"
+    "lint": "eslint -c .eslintrc.js src --ext .ts,.tsx,.js,.jsx --fix",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +44,8 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
     "babel-eslint": "^10.1.0",
     "craco-css-modules": "^1.0.5",
     "craco-less": "^2.0.0",
@@ -55,11 +54,17 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "less-loader": "^11.1.0",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8"
   },
-  "cracoConfig": "./build/craco.config.js"
+  "cracoConfig": "./build/craco.config.js",
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,jsx}": [
+      "eslint -c .eslintrc.js --fix"
+    ]
+  }
 }
