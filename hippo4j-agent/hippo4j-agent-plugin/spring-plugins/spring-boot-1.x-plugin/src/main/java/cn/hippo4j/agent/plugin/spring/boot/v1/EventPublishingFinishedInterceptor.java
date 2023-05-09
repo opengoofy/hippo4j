@@ -24,6 +24,7 @@ import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInt
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
 import cn.hippo4j.agent.core.registry.AgentThreadPoolExecutorHolder;
 import cn.hippo4j.agent.core.registry.AgentThreadPoolInstanceRegistry;
+import cn.hippo4j.agent.core.util.ThreadPoolPropertyKey;
 import cn.hippo4j.agent.plugin.spring.common.SpringPropertiesLoader;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
@@ -60,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -143,20 +145,21 @@ public class EventPublishingFinishedInterceptor implements InstanceMethodsAround
             BootstrapConfigProperties afterConfigProperties = bindProperties(afterConfigMap, context);
 
             List<ExecutorProperties> executors = afterConfigProperties.getExecutors();
-            for (ExecutorProperties properties : executors) {
-                String threadPoolId = properties.getThreadPoolId();
-                // if (!match(properties)) {
-                // continue;
-                // }
-                if (!checkConsistency(threadPoolId, properties)) {
+            for (ExecutorProperties afterProperties : executors) {
+                String threadPoolId = afterProperties.getThreadPoolId();
+                AgentThreadPoolExecutorHolder holder = AgentThreadPoolInstanceRegistry.getInstance().getHolder(threadPoolId);
+                if (holder.isEmpty() || holder.getExecutor() == null) {
+                    continue;
+                }
+                ExecutorProperties beforeProperties = convert(holder.getProperties());
+
+                if (!checkConsistency(threadPoolId, beforeProperties, afterProperties)) {
                     continue;
                 }
 
-                dynamicRefreshPool(threadPoolId, properties);
-                AgentThreadPoolExecutorHolder holder = AgentThreadPoolInstanceRegistry.getInstance().getHolder(properties.getThreadPoolId());
-                ExecutorProperties beforeProperties = holder.getProperties();
-                holder.setProperties(failDefaultExecutorProperties(beforeProperties, properties)); // do refresh.
-                ChangeParameterNotifyRequest changeRequest = buildChangeRequest(beforeProperties, properties);
+                dynamicRefreshPool(beforeProperties, afterProperties);
+                holder.setProperties(failDefaultExecutorProperties(beforeProperties, afterProperties)); // do refresh.
+                ChangeParameterNotifyRequest changeRequest = buildChangeRequest(beforeProperties, afterProperties);
                 LOGGER.info(CHANGE_THREAD_POOL_TEXT,
                         threadPoolId,
                         String.format(CHANGE_DELIMITER, beforeProperties.getCorePoolSize(), changeRequest.getNowCorePoolSize()),
@@ -175,9 +178,8 @@ public class EventPublishingFinishedInterceptor implements InstanceMethodsAround
     /**
      * Dynamic refresh pool.
      */
-    private void dynamicRefreshPool(String threadPoolId, ExecutorProperties afterProperties) {
+    private void dynamicRefreshPool(ExecutorProperties beforeProperties, ExecutorProperties afterProperties) {
         AgentThreadPoolExecutorHolder holder = AgentThreadPoolInstanceRegistry.getInstance().getHolder(afterProperties.getThreadPoolId());
-        ExecutorProperties beforeProperties = holder.getProperties();
         ThreadPoolExecutor executor = holder.getExecutor();
         if (afterProperties.getMaximumPoolSize() != null && afterProperties.getCorePoolSize() != null) {
             ThreadPoolExecutorUtil.safeSetPoolSize(executor, afterProperties.getCorePoolSize(), afterProperties.getMaximumPoolSize());
@@ -219,31 +221,60 @@ public class EventPublishingFinishedInterceptor implements InstanceMethodsAround
      * Fail default executor properties.
      *
      * @param beforeProperties old properties
-     * @param properties       new properties
+     * @param afterProperties       new properties
      * @return executor properties
      */
-    private ExecutorProperties failDefaultExecutorProperties(ExecutorProperties beforeProperties, ExecutorProperties properties) {
-        return ExecutorProperties.builder()
-                .corePoolSize(Optional.ofNullable(properties.getCorePoolSize()).orElse(beforeProperties.getCorePoolSize()))
-                .maximumPoolSize(Optional.ofNullable(properties.getMaximumPoolSize()).orElse(beforeProperties.getMaximumPoolSize()))
-                .blockingQueue(properties.getBlockingQueue())
-                .queueCapacity(Optional.ofNullable(properties.getQueueCapacity()).orElse(beforeProperties.getQueueCapacity()))
-                .keepAliveTime(Optional.ofNullable(properties.getKeepAliveTime()).orElse(beforeProperties.getKeepAliveTime()))
-                .executeTimeOut(Optional.ofNullable(properties.getExecuteTimeOut()).orElse(beforeProperties.getExecuteTimeOut()))
-                .rejectedHandler(Optional.ofNullable(properties.getRejectedHandler()).orElse(beforeProperties.getRejectedHandler()))
-                .allowCoreThreadTimeOut(Optional.ofNullable(properties.getAllowCoreThreadTimeOut()).orElse(beforeProperties.getAllowCoreThreadTimeOut()))
+    private Properties failDefaultExecutorProperties(ExecutorProperties beforeProperties, ExecutorProperties afterProperties) {
+        return convert(ExecutorProperties.builder()
+                .corePoolSize(Optional.ofNullable(afterProperties.getCorePoolSize()).orElse(beforeProperties.getCorePoolSize()))
+                .maximumPoolSize(Optional.ofNullable(afterProperties.getMaximumPoolSize()).orElse(beforeProperties.getMaximumPoolSize()))
+                .blockingQueue(afterProperties.getBlockingQueue())
+                .queueCapacity(Optional.ofNullable(afterProperties.getQueueCapacity()).orElse(beforeProperties.getQueueCapacity()))
+                .keepAliveTime(Optional.ofNullable(afterProperties.getKeepAliveTime()).orElse(beforeProperties.getKeepAliveTime()))
+                .executeTimeOut(Optional.ofNullable(afterProperties.getExecuteTimeOut()).orElse(beforeProperties.getExecuteTimeOut()))
+                .rejectedHandler(Optional.ofNullable(afterProperties.getRejectedHandler()).orElse(beforeProperties.getRejectedHandler()))
+                .allowCoreThreadTimeOut(Optional.ofNullable(afterProperties.getAllowCoreThreadTimeOut()).orElse(beforeProperties.getAllowCoreThreadTimeOut()))
                 .threadPoolId(beforeProperties.getThreadPoolId())
+                .build());
+    }
+
+    private ExecutorProperties convert(Properties properties) {
+        return ExecutorProperties.builder()
+                .threadPoolId((String) properties.get(ThreadPoolPropertyKey.THREAD_POOL_ID))
+                .corePoolSize((Integer) properties.get(ThreadPoolPropertyKey.CORE_POOL_SIZE))
+                .maximumPoolSize((Integer) properties.get(ThreadPoolPropertyKey.MAXIMUM_POOL_SIZE))
+                .allowCoreThreadTimeOut((Boolean) properties.get(ThreadPoolPropertyKey.ALLOW_CORE_THREAD_TIME_OUT))
+                .keepAliveTime((Long) properties.get(ThreadPoolPropertyKey.KEEP_ALIVE_TIME))
+                .blockingQueue((String) properties.get(ThreadPoolPropertyKey.BLOCKING_QUEUE))
+                .queueCapacity((Integer) properties.get(ThreadPoolPropertyKey.QUEUE_CAPACITY))
+                .threadNamePrefix((String) properties.get(ThreadPoolPropertyKey.THREAD_NAME_PREFIX))
+                .rejectedHandler((String) properties.get(ThreadPoolPropertyKey.REJECTED_HANDLER))
+                .executeTimeOut((Long) properties.get(ThreadPoolPropertyKey.EXECUTE_TIME_OUT))
                 .build();
+    }
+
+    private Properties convert(ExecutorProperties executorProperties) {
+        Properties properties = new Properties();
+        Optional.ofNullable(executorProperties.getCorePoolSize()).ifPresent(v -> properties.put(ThreadPoolPropertyKey.CORE_POOL_SIZE, v));
+        Optional.ofNullable(executorProperties.getMaximumPoolSize()).ifPresent(v -> properties.put(ThreadPoolPropertyKey.MAXIMUM_POOL_SIZE, v));
+        Optional.ofNullable(executorProperties.getBlockingQueue()).ifPresent(v -> properties.put(ThreadPoolPropertyKey.BLOCKING_QUEUE, v));
+        Optional.ofNullable(executorProperties.getQueueCapacity()).ifPresent(v -> properties.put(ThreadPoolPropertyKey.QUEUE_CAPACITY, v));
+        Optional.ofNullable(executorProperties.getKeepAliveTime()).ifPresent(v -> properties.put(ThreadPoolPropertyKey.KEEP_ALIVE_TIME, v));
+        Optional.ofNullable(executorProperties.getExecuteTimeOut()).ifPresent(v -> properties.put(ThreadPoolPropertyKey.EXECUTE_TIME_OUT, v));
+        Optional.ofNullable(executorProperties.getRejectedHandler()).ifPresent(v -> properties.put(ThreadPoolPropertyKey.REJECTED_HANDLER, v));
+        Optional.ofNullable(executorProperties.getAllowCoreThreadTimeOut()).ifPresent(v -> properties.put(ThreadPoolPropertyKey.ALLOW_CORE_THREAD_TIME_OUT, v));
+        Optional.ofNullable(executorProperties.getThreadPoolId()).ifPresent(v -> properties.put(ThreadPoolPropertyKey.THREAD_POOL_ID, v));
+        return properties;
     }
 
     /**
      * Construct change parameter notify request instance.
      *
      * @param beforeProperties old properties
-     * @param properties       new properties
+     * @param afterProperties  new properties
      * @return instance
      */
-    private ChangeParameterNotifyRequest buildChangeRequest(ExecutorProperties beforeProperties, ExecutorProperties properties) {
+    private ChangeParameterNotifyRequest buildChangeRequest(ExecutorProperties beforeProperties, ExecutorProperties afterProperties) {
         ChangeParameterNotifyRequest changeParameterNotifyRequest = ChangeParameterNotifyRequest.builder()
                 .beforeCorePoolSize(beforeProperties.getCorePoolSize())
                 .beforeMaximumPoolSize(beforeProperties.getMaximumPoolSize())
@@ -252,14 +283,14 @@ public class EventPublishingFinishedInterceptor implements InstanceMethodsAround
                 .beforeQueueCapacity(beforeProperties.getQueueCapacity())
                 .beforeRejectedName(beforeProperties.getRejectedHandler())
                 .beforeExecuteTimeOut(beforeProperties.getExecuteTimeOut())
-                .blockingQueueName(properties.getBlockingQueue())
-                .nowCorePoolSize(Optional.ofNullable(properties.getCorePoolSize()).orElse(beforeProperties.getCorePoolSize()))
-                .nowMaximumPoolSize(Optional.ofNullable(properties.getMaximumPoolSize()).orElse(beforeProperties.getMaximumPoolSize()))
-                .nowAllowsCoreThreadTimeOut(Optional.ofNullable(properties.getAllowCoreThreadTimeOut()).orElse(beforeProperties.getAllowCoreThreadTimeOut()))
-                .nowKeepAliveTime(Optional.ofNullable(properties.getKeepAliveTime()).orElse(beforeProperties.getKeepAliveTime()))
-                .nowQueueCapacity(Optional.ofNullable(properties.getQueueCapacity()).orElse(beforeProperties.getQueueCapacity()))
-                .nowRejectedName(Optional.ofNullable(properties.getRejectedHandler()).orElse(beforeProperties.getRejectedHandler()))
-                .nowExecuteTimeOut(Optional.ofNullable(properties.getExecuteTimeOut()).orElse(beforeProperties.getExecuteTimeOut()))
+                .blockingQueueName(afterProperties.getBlockingQueue())
+                .nowCorePoolSize(Optional.ofNullable(afterProperties.getCorePoolSize()).orElse(beforeProperties.getCorePoolSize()))
+                .nowMaximumPoolSize(Optional.ofNullable(afterProperties.getMaximumPoolSize()).orElse(beforeProperties.getMaximumPoolSize()))
+                .nowAllowsCoreThreadTimeOut(Optional.ofNullable(afterProperties.getAllowCoreThreadTimeOut()).orElse(beforeProperties.getAllowCoreThreadTimeOut()))
+                .nowKeepAliveTime(Optional.ofNullable(afterProperties.getKeepAliveTime()).orElse(beforeProperties.getKeepAliveTime()))
+                .nowQueueCapacity(Optional.ofNullable(afterProperties.getQueueCapacity()).orElse(beforeProperties.getQueueCapacity()))
+                .nowRejectedName(Optional.ofNullable(afterProperties.getRejectedHandler()).orElse(beforeProperties.getRejectedHandler()))
+                .nowExecuteTimeOut(Optional.ofNullable(afterProperties.getExecuteTimeOut()).orElse(beforeProperties.getExecuteTimeOut()))
                 .build();
         changeParameterNotifyRequest.setThreadPoolId(beforeProperties.getThreadPoolId());
         return changeParameterNotifyRequest;
@@ -269,23 +300,22 @@ public class EventPublishingFinishedInterceptor implements InstanceMethodsAround
      * Check consistency.
      *
      * @param threadPoolId
-     * @param properties
+     * @param afterProperties
      */
-    private boolean checkConsistency(String threadPoolId, ExecutorProperties properties) {
+    private boolean checkConsistency(String threadPoolId, ExecutorProperties beforeProperties, ExecutorProperties afterProperties) {
         AgentThreadPoolExecutorHolder holder = AgentThreadPoolInstanceRegistry.getInstance().getHolder(threadPoolId);
         if (holder.isEmpty() || holder.getExecutor() == null) {
             return false;
         }
         ThreadPoolExecutor executor = holder.getExecutor();
-        ExecutorProperties beforeProperties = holder.getProperties();
-        return (properties.getCorePoolSize() != null && !Objects.equals(beforeProperties.getCorePoolSize(), properties.getCorePoolSize()))
-                || (properties.getMaximumPoolSize() != null && !Objects.equals(beforeProperties.getMaximumPoolSize(), properties.getMaximumPoolSize()))
-                || (properties.getAllowCoreThreadTimeOut() != null && !Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut()))
-                || (properties.getExecuteTimeOut() != null && !Objects.equals(beforeProperties.getExecuteTimeOut(), properties.getExecuteTimeOut()))
-                || (properties.getKeepAliveTime() != null && !Objects.equals(beforeProperties.getKeepAliveTime(), properties.getKeepAliveTime()))
-                || (properties.getRejectedHandler() != null && !Objects.equals(beforeProperties.getRejectedHandler(), properties.getRejectedHandler()))
+        return (afterProperties.getCorePoolSize() != null && !Objects.equals(beforeProperties.getCorePoolSize(), afterProperties.getCorePoolSize()))
+                || (afterProperties.getMaximumPoolSize() != null && !Objects.equals(beforeProperties.getMaximumPoolSize(), afterProperties.getMaximumPoolSize()))
+                || (afterProperties.getAllowCoreThreadTimeOut() != null && !Objects.equals(beforeProperties.getAllowCoreThreadTimeOut(), afterProperties.getAllowCoreThreadTimeOut()))
+                || (afterProperties.getExecuteTimeOut() != null && !Objects.equals(beforeProperties.getExecuteTimeOut(), afterProperties.getExecuteTimeOut()))
+                || (afterProperties.getKeepAliveTime() != null && !Objects.equals(beforeProperties.getKeepAliveTime(), afterProperties.getKeepAliveTime()))
+                || (afterProperties.getRejectedHandler() != null && !Objects.equals(beforeProperties.getRejectedHandler(), afterProperties.getRejectedHandler()))
                 ||
-                ((properties.getQueueCapacity() != null && !Objects.equals(beforeProperties.getQueueCapacity(), properties.getQueueCapacity())
+                ((afterProperties.getQueueCapacity() != null && !Objects.equals(beforeProperties.getQueueCapacity(), afterProperties.getQueueCapacity())
                         && Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getName(), executor.getQueue().getClass().getSimpleName())));
     }
 

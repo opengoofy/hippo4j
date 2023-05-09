@@ -23,6 +23,7 @@ import cn.hippo4j.common.config.ExecutorProperties;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -31,6 +32,8 @@ public class AgentThreadPoolInstanceRegistry {
     private static final ILog LOGGER = LogManager.getLogger(AgentThreadPoolInstanceRegistry.class);
 
     private final Map<String, AgentThreadPoolExecutorHolder> holderMap = new ConcurrentHashMap<>();
+
+    public final Map<ThreadPoolExecutor, Class<?>> earlyConstructMap = new ConcurrentHashMap<>();
 
     private volatile static AgentThreadPoolInstanceRegistry INSTANCE;
 
@@ -52,7 +55,7 @@ public class AgentThreadPoolInstanceRegistry {
         return holderMap;
     }
 
-    public void putHolder(String executorName, ThreadPoolExecutor executor, ExecutorProperties properties) {
+    public void putHolder(String executorName, ThreadPoolExecutor executor, Properties properties) {
         AgentThreadPoolExecutorHolder holder = new AgentThreadPoolExecutorHolder(executorName, executor, properties);
         holderMap.put(executorName, holder);
     }

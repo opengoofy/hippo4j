@@ -24,20 +24,12 @@ import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
 import cn.hippo4j.agent.core.registry.AgentThreadPoolInstanceRegistry;
 import cn.hippo4j.agent.core.util.CollectionUtil;
-import cn.hippo4j.agent.core.util.ReflectUtil;
 import cn.hippo4j.agent.core.util.StringUtil;
-import cn.hippo4j.common.config.ExecutorProperties;
-import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
-import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
-import cn.hippo4j.common.toolkit.BooleanUtil;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class ThreadPoolExecutorConstructorMethodInterceptor implements InstanceConstructorInterceptor {
 
@@ -54,41 +46,8 @@ public class ThreadPoolExecutorConstructorMethodInterceptor implements InstanceC
         }
         StackTraceElement declaredClassStackTraceElement = stackTraceElements.get(0);
         String declaredClassName = declaredClassStackTraceElement.getClassName();
-        List<Field> staticFieldsFromType = ReflectUtil.getStaticFieldsFromType(Class.forName(declaredClassName),
-                ThreadPoolExecutor.class);
-        for (Field field : staticFieldsFromType) {
-            try {
-                Object value = field.get(null);
-                if (value != null) {
-                    String threadPoolId = declaredClassName + "#" + field.getName();
-                    ThreadPoolExecutor executor = (ThreadPoolExecutor) field.get(null);
-                    register(threadPoolId, executor);
-                }
-            } catch (IllegalAccessException e) {
-                LOGGER.error(String.format("ExecutorNameUtil, register thread pool error. ClassName=[%s], ThreadPoolFieldName=[%s]",
-                        objInst.getClass().getName(), field.getName()), e);
-            }
-        }
-    }
-
-    private void register(String threadPoolId, ThreadPoolExecutor executor) {
-        // build parameter info.
-        ExecutorProperties executorProperties = ExecutorProperties.builder()
-                .threadPoolId(threadPoolId)
-                .corePoolSize(executor.getCorePoolSize())
-                .maximumPoolSize(executor.getMaximumPoolSize())
-                .allowCoreThreadTimeOut(BooleanUtil.toBoolean(String.valueOf(executor.allowsCoreThreadTimeOut())))
-                .keepAliveTime(executor.getKeepAliveTime(TimeUnit.MILLISECONDS))
-                .blockingQueue(BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName(executor.getQueue().getClass().getSimpleName()).getName())
-                .queueCapacity(executor.getQueue().remainingCapacity())
-                .threadNamePrefix(threadPoolId)
-                .rejectedHandler(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()).getName())
-                .executeTimeOut(10000L)
-                .build();
-
-        // register executor.
-        AgentThreadPoolInstanceRegistry.getInstance().putHolder(threadPoolId, executor, executorProperties);
-
+        Class<?> declaredClass = Thread.currentThread().getContextClassLoader().loadClass(declaredClassName);
+        AgentThreadPoolInstanceRegistry.getInstance().earlyConstructMap.put((ThreadPoolExecutor) objInst, declaredClass);
     }
 
     private List<StackTraceElement> getStackTraceElements() {

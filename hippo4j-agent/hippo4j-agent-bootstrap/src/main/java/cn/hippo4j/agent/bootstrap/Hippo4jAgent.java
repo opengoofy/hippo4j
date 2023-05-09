@@ -18,6 +18,7 @@
 package cn.hippo4j.agent.bootstrap;
 
 import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
+import cn.hippo4j.agent.core.boot.DefaultNamedThreadFactory;
 import cn.hippo4j.agent.core.boot.ServiceManager;
 import cn.hippo4j.agent.core.conf.Config;
 import cn.hippo4j.agent.core.conf.SnifferConfigInitializer;
@@ -48,6 +49,10 @@ import java.security.ProtectionDomain;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static net.bytebuddy.matcher.ElementMatchers.nameContains;
 import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
@@ -136,6 +141,12 @@ public class Hippo4jAgent {
             LOGGER.error(e, "Hippo4j agent boot failure.");
         }
 
+        try {
+            Class.forName("java.util.concurrent.ThreadPoolExecutor");
+        } catch (ClassNotFoundException e) {
+            LOGGER.error(e, "Hippo4j agent boot failure.");
+        }
+
         Runtime.getRuntime()
                 .addShutdownHook(new Thread(ServiceManager.INSTANCE::shutdown, "hippo4j service shutdown thread"));
     }
@@ -179,7 +190,7 @@ public class Hippo4jAgent {
     }
 
     private static ElementMatcher.Junction<NamedElement> allHippo4jAgentExcludeToolkit() {
-        return nameStartsWith("cn.hippo4j.agent").and(not(nameStartsWith("cn.hippo4j.agent.toolkit.")));
+        return nameStartsWith("cn.hippo4j").and(not(nameStartsWith("cn.hippo4j.agent.toolkit.")));
     }
 
     private static class Listener implements AgentBuilder.Listener {
