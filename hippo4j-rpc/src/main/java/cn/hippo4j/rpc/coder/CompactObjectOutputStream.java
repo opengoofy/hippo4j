@@ -24,6 +24,8 @@ import java.io.OutputStream;
 
 /**
  * object OutputStream
+ *
+ * @since 1.5.1
  */
 public class CompactObjectOutputStream extends ObjectOutputStream {
 

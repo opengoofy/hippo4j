@@ -18,17 +18,33 @@
 package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.common.toolkit.ThreadUtil;
+import cn.hippo4j.rpc.client.RandomPort;
 import cn.hippo4j.rpc.discovery.InstanceServerLoader;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NettyServerSupportTest {
 
     @Test
-    public synchronized void bind() throws IOException {
-        NettyServerSupport support = new NettyServerSupport(() -> 8891, InstanceServerLoader.class);
+    public void bind() throws IOException {
+        NettyServerSupport support = new NettyServerSupport(RandomPort::getSafeRandomPort, InstanceServerLoader.class);
+        support.bind();
+        while (!support.isActive()) {
+            ThreadUtil.sleep(100L);
+        }
+        Assert.assertTrue(support.isActive());
+        support.close();
+    }
+
+    @Test
+    public void bindTest() throws IOException {
+        List<Class<?>> classes = new ArrayList<>();
+        classes.add(InstanceServerLoader.class);
+        NettyServerSupport support = new NettyServerSupport(RandomPort::getSafeRandomPort, classes);
         support.bind();
         while (!support.isActive()) {
             ThreadUtil.sleep(100L);

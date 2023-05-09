@@ -31,13 +31,15 @@ import java.util.concurrent.locks.LockSupport;
  * The unique remote call can be determined by the key of request and
  * response, and the result of the call is stored in the secondary cache,
  * which is convenient for the client to use at any time.
+ *
+ * @since 1.5.1
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResultHolder {
 
-    private static final Map<String, Object> map = new ConcurrentHashMap<>();
-    private static final Map<String, Thread> threadMap = new HashMap<>();
+    private static final Map<String, Object> MAP = new ConcurrentHashMap<>();
+    private static final Map<String, Thread> THREAD_MAP = new HashMap<>();
 
     /**
      * Writes when the client receives a response
@@ -49,7 +51,7 @@ public class ResultHolder {
         if (log.isDebugEnabled()) {
             log.debug("Write the result, wake up the thread");
         }
-        map.put(key, o);
+        MAP.put(key, o);
     }
 
     /**
@@ -62,7 +64,7 @@ public class ResultHolder {
         if (log.isDebugEnabled()) {
             log.debug("Write thread, waiting to wake up");
         }
-        threadMap.put(key, t);
+        THREAD_MAP.put(key, t);
     }
 
     /**
@@ -74,7 +76,7 @@ public class ResultHolder {
         if (log.isDebugEnabled()) {
             log.debug("The future has been fetched, wake up the thread");
         }
-        Thread thread = threadMap.remove(key);
+        Thread thread = THREAD_MAP.remove(key);
         LockSupport.unpark(thread);
     }
 
@@ -91,7 +93,7 @@ public class ResultHolder {
         if (log.isDebugEnabled()) {
             log.debug("Get the future");
         }
-        return (T) map.remove(key);
+        return (T) MAP.remove(key);
     }
 
 }

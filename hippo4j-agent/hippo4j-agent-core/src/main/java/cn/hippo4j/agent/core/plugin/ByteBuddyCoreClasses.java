@@ -22,7 +22,7 @@ package cn.hippo4j.agent.core.plugin;
  */
 public class ByteBuddyCoreClasses {
 
-    private static final String SHADE_PACKAGE = "org.apache.skywalking.apm.dependencies.";
+    private static final String SHADE_PACKAGE = "cn.hippo4j.agent.dependencies.";
 
     public static final String[] CLASSES = {
             SHADE_PACKAGE + "net.bytebuddy.implementation.bind.annotation.RuntimeType",

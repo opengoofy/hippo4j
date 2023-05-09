@@ -17,8 +17,8 @@
 
 package cn.hippo4j.config.springboot1x.starter.config;
 
-import cn.hippo4j.adapter.web.*;
 import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
+import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.config.springboot1x.starter.web.jetty.JettyWebThreadPoolHandler1x;
 import cn.hippo4j.config.springboot1x.starter.web.tomcat.TomcatWebThreadPoolHandler1x;
 import cn.hippo4j.config.springboot1x.starter.web.undertow.UndertowWebThreadPoolHandler1x;
@@ -29,6 +29,7 @@ import org.apache.catalina.Server;
 import org.apache.catalina.startup.Tomcat;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
@@ -47,6 +48,7 @@ public class WebThreadPoolHandlerConfiguration1x {
 
     @Configuration
     @ConditionalOnClass({Servlet.class, Tomcat.class})
+    @ConditionalOnBean(WebThreadPoolRunStateHandler.class)
     @ConditionalOnMissingBean(value = WebThreadPoolService.class, search = SearchStrategy.CURRENT)
     static class EmbeddedTomcat {
 
@@ -64,6 +66,7 @@ public class WebThreadPoolHandlerConfiguration1x {
      */
     @Configuration
     @ConditionalOnClass({Servlet.class, Server.class, Loader.class, WebAppContext.class})
+    @ConditionalOnBean(WebThreadPoolRunStateHandler.class)
     @ConditionalOnMissingBean(value = WebThreadPoolService.class, search = SearchStrategy.CURRENT)
     static class EmbeddedJetty {
 
@@ -78,6 +81,7 @@ public class WebThreadPoolHandlerConfiguration1x {
      */
     @Configuration
     @ConditionalOnClass({Servlet.class, Undertow.class, SslClientAuthMode.class})
+    @ConditionalOnBean(WebThreadPoolRunStateHandler.class)
     @ConditionalOnMissingBean(value = WebThreadPoolService.class, search = SearchStrategy.CURRENT)
     static class EmbeddedUndertow {
 

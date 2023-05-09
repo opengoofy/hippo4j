@@ -20,7 +20,16 @@ package cn.hippo4j.rpc.handler;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.rpc.client.NettyClientConnection;
 import cn.hippo4j.rpc.client.RPCClient;
-import cn.hippo4j.rpc.discovery.*;
+import cn.hippo4j.rpc.client.RandomPort;
+import cn.hippo4j.rpc.discovery.ClassRegistry;
+import cn.hippo4j.rpc.discovery.DefaultInstance;
+import cn.hippo4j.rpc.discovery.Instance;
+import cn.hippo4j.rpc.discovery.InstanceServerLoader;
+import cn.hippo4j.rpc.discovery.ServerPort;
+import cn.hippo4j.rpc.model.DefaultRequest;
+import cn.hippo4j.rpc.model.DefaultResponse;
+import cn.hippo4j.rpc.model.Request;
+import cn.hippo4j.rpc.model.Response;
 import cn.hippo4j.rpc.server.NettyServerConnection;
 import cn.hippo4j.rpc.server.RPCServer;
 import cn.hippo4j.rpc.support.NettyProxyCenter;
@@ -38,7 +47,7 @@ public class ConnectHandlerTest {
         // server
         Class<InstanceServerLoader> cls = InstanceServerLoader.class;
         ClassRegistry.put(cls.getName(), cls);
-        ServerPort port = () -> 8892;
+        ServerPort port = new TestServerPort();
         Instance instance = new DefaultInstance();
         NettyServerTakeHandler serverHandler = new NettyServerTakeHandler(instance);
         NettyServerConnection connection = new NettyServerConnection(serverHandler);
@@ -57,6 +66,38 @@ public class ConnectHandlerTest {
         Assert.assertEquals("name", name);
         rpcClient.close();
         rpcServer.close();
+    }
+
+    @Test
+    public void testConnectHandlerDefault() {
+        ConnectHandler handler = new TestConnectHandler();
+
+        Request request = new DefaultRequest("key", "className", "methodName", new Class[0], new Object[0]);
+        Response response = handler.sendHandler(request);
+        Assert.assertNull(response);
+        Response response1 = new DefaultResponse("key", this.getClass(), handler);
+        String key = response1.getKey();
+        Class<?> cls = response1.getCls();
+        Object obj = response1.getObj();
+        handler.handler(response1);
+        Assert.assertEquals(key, response1.getKey());
+        Assert.assertEquals(cls, response1.getCls());
+        Assert.assertEquals(obj, response1.getObj());
+
+    }
+
+    static class TestConnectHandler implements ConnectHandler {
+
+    }
+
+    static class TestServerPort implements ServerPort {
+
+        int port = RandomPort.getSafeRandomPort();
+
+        @Override
+        public int getPort() {
+            return port;
+        }
     }
 
 }

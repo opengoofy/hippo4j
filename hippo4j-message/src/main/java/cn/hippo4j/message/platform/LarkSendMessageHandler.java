@@ -17,14 +17,18 @@
 
 package cn.hippo4j.message.platform;
 
-import cn.hippo4j.common.toolkit.*;
+import cn.hippo4j.common.toolkit.Assert;
+import cn.hippo4j.common.toolkit.FileUtil;
+import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.Singleton;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.enums.NotifyTypeEnum;
-import cn.hippo4j.message.service.SendMessageHandler;
 import cn.hippo4j.message.request.AlarmNotifyRequest;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.message.service.SendMessageHandler;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -36,7 +40,10 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static cn.hippo4j.message.platform.constant.LarkAlarmConstants.*;
+import static cn.hippo4j.message.platform.constant.LarkAlarmConstants.LARK_AT_FORMAT_OPENID;
+import static cn.hippo4j.message.platform.constant.LarkAlarmConstants.LARK_AT_FORMAT_USERNAME;
+import static cn.hippo4j.message.platform.constant.LarkAlarmConstants.LARK_BOT_URL;
+import static cn.hippo4j.message.platform.constant.LarkAlarmConstants.LARK_OPENID_PREFIX;
 
 /**
  * Send lark notification message.

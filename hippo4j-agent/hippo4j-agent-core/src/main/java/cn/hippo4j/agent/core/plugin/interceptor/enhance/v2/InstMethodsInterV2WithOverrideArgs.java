@@ -23,7 +23,11 @@ import cn.hippo4j.agent.core.plugin.PluginException;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.OverrideCallable;
 import cn.hippo4j.agent.core.plugin.loader.InterceptorInstanceLoader;
-import net.bytebuddy.implementation.bind.annotation.*;
+import net.bytebuddy.implementation.bind.annotation.AllArguments;
+import net.bytebuddy.implementation.bind.annotation.Morph;
+import net.bytebuddy.implementation.bind.annotation.Origin;
+import net.bytebuddy.implementation.bind.annotation.RuntimeType;
+import net.bytebuddy.implementation.bind.annotation.This;
 
 import java.lang.reflect.Method;
 

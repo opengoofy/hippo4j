@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetSocketAddress;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -51,6 +52,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see cn.hippo4j.rpc.client.NettyClientConnection
  * @see NettyServerSupport
  * @see ClientFactoryBean
+ * @since 1.5.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NettyClientSupport {
@@ -58,7 +60,7 @@ public final class NettyClientSupport {
     /**
      * the cache for client
      */
-    private static final Map<InetSocketAddress, Client> clientMap = new ConcurrentHashMap<>();
+    private static final Map<InetSocketAddress, Client> CLIENT_MAP = new ConcurrentHashMap<>();
 
     /**
      * Obtain the client connected to the server through the server address. If the client does not exist, create one
@@ -68,12 +70,12 @@ public final class NettyClientSupport {
      * @return Client
      */
     public static Client getClient(InetSocketAddress address, HandlerManager<ChannelHandler> handlerManager) {
-        return clientMap.computeIfAbsent(address, a -> {
+        return CLIENT_MAP.computeIfAbsent(address, a -> {
             NettyClientPoolHandler handler = (handlerManager instanceof NettyClientPoolHandler)
                     ? (NettyClientPoolHandler) handlerManager
                     : new NettyClientPoolHandler();
             if (handler.isEmpty()) {
-                handler.addFirst(new NettyClientTakeHandler());
+                handler.addFirst(null, new NettyClientTakeHandler());
             }
             NettyClientConnection connection = new NettyClientConnection(address, handler);
             return new RPCClient(connection);
@@ -96,13 +98,14 @@ public final class NettyClientSupport {
      * @param address the address
      */
     public static void closeClient(InetSocketAddress address) {
-        Client client = clientMap.remove(address);
-        try {
-            if (client != null) {
-                client.close();
-            }
-        } catch (IOException e) {
-            throw new IllegalException(e);
-        }
+        Client client = CLIENT_MAP.remove(address);
+        Optional.ofNullable(client)
+                .ifPresent(c -> {
+                    try {
+                        c.close();
+                    } catch (IOException e) {
+                        throw new IllegalException(e);
+                    }
+                });
     }
 }

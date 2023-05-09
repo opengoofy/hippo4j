@@ -82,14 +82,14 @@ public class Config {
         public static String AUTHENTICATION = "";
 
         /**
-         * If true, SkyWalking agent will save all instrumented classes files in `/debugging` folder. SkyWalking team
+         * If true, Hippo4j agent will save all instrumented classes files in `/debugging` folder. Hippo4j team
          * may ask for these files in order to resolve compatible problem.
          */
         public static boolean IS_OPEN_DEBUGGING_CLASS = false;
 
         /**
-         * If true, SkyWalking agent will cache all instrumented classes to memory or disk files (decided by class cache
-         * mode), allow other javaagent to enhance those classes that enhanced by SkyWalking agent.
+         * If true, Hippo4j agent will cache all instrumented classes to memory or disk files (decided by class cache
+         * mode), allow other javaagent to enhance those classes that enhanced by Hippo4j agent.
          */
         public static boolean IS_CACHE_ENHANCED_CLASS = false;
 
@@ -108,7 +108,7 @@ public class Config {
 
         /**
          * service instance properties in json format. e.g. agent.instance_properties_json = {"org":
-         * "apache-skywalking"}
+         * "cn.hippo4j"}
          */
         public static String INSTANCE_PROPERTIES_JSON = "";
 
@@ -181,7 +181,7 @@ public class Config {
          */
         public static int PROPERTIES_REPORT_PERIOD_FACTOR = 10;
         /**
-         * Collector skywalking trace receiver service addresses.
+         * Collector hippo4j trace receiver service addresses.
          */
         public static String BACKEND_SERVICE = "";
         /**
@@ -197,7 +197,7 @@ public class Config {
          */
         public static int GET_AGENT_DYNAMIC_CONFIG_INTERVAL = 20;
         /**
-         * If true, skywalking agent will enable periodically resolving DNS to update receiver service addresses.
+         * If true, hippo4j agent will enable periodically resolving DNS to update receiver service addresses.
          */
         public static boolean IS_RESOLVE_DNS_PERIODICALLY = false;
     }
@@ -205,7 +205,7 @@ public class Config {
     public static class Profile {
 
         /**
-         * If true, skywalking agent will enable profile when user create a new profile task. Otherwise disable
+         * If true, hippo4j agent will enable profile when user create a new profile task. Otherwise disable
          * profile.
          */
         public static boolean ACTIVE = true;
@@ -234,7 +234,7 @@ public class Config {
     public static class Meter {
 
         /**
-         * If true, skywalking agent will enable sending meters. Otherwise disable meter report.
+         * If true, Hippo4j agent will enable sending meters. Otherwise disable meter report.
          */
         public static boolean ACTIVE = true;
 
@@ -277,11 +277,11 @@ public class Config {
         /**
          * Log file name.
          */
-        public static String FILE_NAME = "skywalking-api.log";
+        public static String FILE_NAME = "hippo4j-api.log";
 
         /**
-         * Log files directory. Default is blank string, means, use "{theSkywalkingAgentJarDir}/logs  " to output logs.
-         * {theSkywalkingAgentJarDir} is the directory where the skywalking agent jar file is located.
+         * Log files directory. Default is blank string, means, use "{theHippo4jAgentJarDir}/logs  " to output logs.
+         * {theHippo4jAgentJarDir} is the directory where the hippo4j agent jar file is located.
          * <p>
          * Ref to {@link WriterFactory#getLogWriter()}
          */
@@ -358,6 +358,32 @@ public class Config {
          * Mount the folders of the plugins. The folder path is relative to agent.jar.
          */
         public static List<String> MOUNT = Arrays.asList("plugins", "activations");
+
+        public static class ThreadPool {
+
+            public static List<String> EXCLUDE_PACKAGE_PREFIX = Arrays.asList(
+                    "java", "sun", "okhttp3", "retrofit2", "reactor",
+                    "org.apache", "io.netty", "org.springframework", "com.ctrip", "com.google",
+                    "io.undertow", "org.xnio", "org.jboss", "com.zaxxer", "org.redisson", "com.alibaba",
+                    "com.netflix", "com.mysql", "rx.internal", "io.shardingjdbc", "org.drools", "org.elasticsearch",
+                    "ch.qos.logback", "net.sf.ehcache");
+        }
+
+        public static class Apollo {
+
+            public static class App {
+
+                public static String ID;
+            }
+            public static String META;
+
+            public static class BootStrap {
+
+                public static boolean ENABLED = false;
+
+                public static List<String> NAMESPACES;
+            }
+        }
     }
 
     public static class Correlation {

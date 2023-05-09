@@ -17,6 +17,8 @@
 
 package cn.hippo4j.common.api;
 
+import cn.hippo4j.common.config.ExecutorNotifyProperties;
+
 /**
  * Interface for thread pool configuration.
  */

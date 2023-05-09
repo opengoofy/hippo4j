@@ -46,7 +46,7 @@ public class PluginBootstrap {
         List<URL> resources = resolver.getResources();
 
         if (resources == null || resources.size() == 0) {
-            LOGGER.info("no plugin files (skywalking-plugin.def) found, continue to start application.");
+            LOGGER.info("no plugin files (hippo4j-plugin.def) found, continue to start application.");
             return new ArrayList<AbstractClassEnhancePluginDefine>();
         }
 

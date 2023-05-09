@@ -27,7 +27,10 @@ import cn.hippo4j.agent.core.util.ConfigInitializer;
 import cn.hippo4j.agent.core.util.PropertyPlaceholderHelper;
 import cn.hippo4j.agent.core.util.StringUtil;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +45,9 @@ import static cn.hippo4j.agent.core.conf.Constants.SERVICE_NAME_PART_CONNECTOR;
 public class SnifferConfigInitializer {
 
     private static ILog LOGGER = LogManager.getLogger(SnifferConfigInitializer.class);
-    private static final String SPECIFIED_CONFIG_PATH = "skywalking_config";
+    private static final String SPECIFIED_CONFIG_PATH = "hippo4j_config";
     private static final String DEFAULT_CONFIG_FILE_NAME = "/config/agent.config";
-    private static final String ENV_KEY_PREFIX = "skywalking.";
+    private static final String ENV_KEY_PREFIX = "hippo4j.";
     private static Properties AGENT_SETTINGS;
     private static boolean IS_INIT_COMPLETED = false;
 
@@ -54,7 +57,7 @@ public class SnifferConfigInitializer {
      * /config directory of agent package.
      * <p>
      * Also try to override the config by system.properties. All the keys in this place should start with {@link
-     * #ENV_KEY_PREFIX}. e.g. in env `skywalking.agent.service_name=yourAppName` to override `agent.service_name` in
+     * #ENV_KEY_PREFIX}. e.g. in env `hippo4j.agent.service_name=yourAppName` to override `agent.service_name` in
      * config file.
      * <p>
      * At the end, `agent.service_name` and `collector.servers` must not be blank.
@@ -69,7 +72,7 @@ public class SnifferConfigInitializer {
             }
 
         } catch (Exception e) {
-            LOGGER.error(e, "Failed to read the config file, skywalking is going to run in default config.");
+            LOGGER.error(e, "Failed to read the config file, hippo4j is going to run in default config.");
         }
 
         try {
@@ -106,9 +109,9 @@ public class SnifferConfigInitializer {
                         Config.Agent.CLUSTER);
             }
         }
-        if (StringUtil.isEmpty(Config.Collector.BACKEND_SERVICE)) {
-            throw new ExceptionInInitializerError("`collector.backend_service` is missing.");
-        }
+        // if (StringUtil.isEmpty(Config.Collector.BACKEND_SERVICE)) {
+        // throw new ExceptionInInitializerError("`collector.backend_service` is missing.");
+        // }
         if (Config.Plugin.PEER_MAX_LENGTH <= 3) {
             LOGGER.warn(
                     "PEER_MAX_LENGTH configuration:{} error, the default value of 200 will be used.",
@@ -180,10 +183,10 @@ public class SnifferConfigInitializer {
     }
 
     /**
-     * Override the config by system properties. The property key must start with `skywalking`, the result should be as
+     * Override the config by system properties. The property key must start with `hippo4j`, the result should be as
      * same as in `agent.config`
      * <p>
-     * such as: Property key of `agent.service_name` should be `skywalking.agent.service_name`
+     * such as: Property key of `agent.service_name` should be `hippo4j.agent.service_name`
      */
     private static void overrideConfigBySystemProp() {
         Properties systemProperties = System.getProperties();

@@ -17,7 +17,12 @@
 
 package cn.hippo4j.common.toolkit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Dictionary;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
@@ -176,7 +181,7 @@ public class MapUtil {
      * @return
      */
     private static boolean checkKey(String key, String filters) {
-        if (key.indexOf(filters) > -1) {
+        if (key.contains(filters)) {
             return true;
         } else {
             return false;

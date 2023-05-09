@@ -40,7 +40,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static cn.hippo4j.core.toolkit.IdentifyUtil.CLIENT_IDENTIFICATION_VALUE;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ThreadPoolRunStateHandlerTest {
@@ -66,8 +68,7 @@ public class ThreadPoolRunStateHandlerTest {
                 "Allocation: ",
                 ByteConvertUtil.getPrintSize(used),
                 " / Maximum available: ",
-                ByteConvertUtil.getPrintSize(max)
-        );
+                ByteConvertUtil.getPrintSize(max));
 
         String ipAddress = "127.0.0.1";
 
@@ -124,4 +125,3 @@ public class ThreadPoolRunStateHandlerTest {
     }
 
 }
-

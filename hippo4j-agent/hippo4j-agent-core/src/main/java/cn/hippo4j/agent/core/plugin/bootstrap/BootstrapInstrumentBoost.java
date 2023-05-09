@@ -19,7 +19,11 @@ package cn.hippo4j.agent.core.plugin.bootstrap;
 
 import cn.hippo4j.agent.core.logging.api.ILog;
 import cn.hippo4j.agent.core.logging.api.LogManager;
-import cn.hippo4j.agent.core.plugin.*;
+import cn.hippo4j.agent.core.plugin.AbstractClassEnhancePluginDefine;
+import cn.hippo4j.agent.core.plugin.ByteBuddyCoreClasses;
+import cn.hippo4j.agent.core.plugin.InstrumentDebuggingClass;
+import cn.hippo4j.agent.core.plugin.PluginException;
+import cn.hippo4j.agent.core.plugin.PluginFinder;
 import cn.hippo4j.agent.core.plugin.interceptor.ConstructorInterceptPoint;
 import cn.hippo4j.agent.core.plugin.interceptor.InstanceMethodsInterceptPoint;
 import cn.hippo4j.agent.core.plugin.interceptor.StaticMethodsInterceptPoint;
@@ -55,31 +59,31 @@ public class BootstrapInstrumentBoost {
     private static final ILog LOGGER = LogManager.getLogger(BootstrapInstrumentBoost.class);
 
     private static final String[] HIGH_PRIORITY_CLASSES = {
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.BootstrapInterRuntimeAssist",
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor",
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor",
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.StaticMethodsAroundInterceptor",
-            "org.apache.skywalking.apm.agent.core.plugin.bootstrap.IBootstrapLog",
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedInstance",
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.OverrideCallable",
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.MethodInterceptResult",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.BootstrapInterRuntimeAssist",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.StaticMethodsAroundInterceptor",
+            "cn.hippo4j.agent.core.plugin.bootstrap.IBootstrapLog",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.OverrideCallable",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult",
 
             // interceptor v2
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.v2.InstanceMethodsAroundInterceptorV2",
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.v2.StaticMethodsAroundInterceptorV2",
-            "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.v2.MethodInvocationContext",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.v2.InstanceMethodsAroundInterceptorV2",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.v2.StaticMethodsAroundInterceptorV2",
+            "cn.hippo4j.agent.core.plugin.interceptor.enhance.v2.MethodInvocationContext",
     };
 
-    private static String INSTANCE_METHOD_DELEGATE_TEMPLATE = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.template.InstanceMethodInterTemplate";
-    private static String INSTANCE_METHOD_WITH_OVERRIDE_ARGS_DELEGATE_TEMPLATE = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.template.InstanceMethodInterWithOverrideArgsTemplate";
-    private static String CONSTRUCTOR_DELEGATE_TEMPLATE = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.template.ConstructorInterTemplate";
-    private static String STATIC_METHOD_DELEGATE_TEMPLATE = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.template.StaticMethodInterTemplate";
-    private static String STATIC_METHOD_WITH_OVERRIDE_ARGS_DELEGATE_TEMPLATE = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.template.StaticMethodInterWithOverrideArgsTemplate";
+    private static String INSTANCE_METHOD_DELEGATE_TEMPLATE = "cn.hippo4j.agent.core.plugin.bootstrap.template.InstanceMethodInterTemplate";
+    private static String INSTANCE_METHOD_WITH_OVERRIDE_ARGS_DELEGATE_TEMPLATE = "cn.hippo4j.agent.core.plugin.bootstrap.template.InstanceMethodInterWithOverrideArgsTemplate";
+    private static String CONSTRUCTOR_DELEGATE_TEMPLATE = "cn.hippo4j.agent.core.plugin.bootstrap.template.ConstructorInterTemplate";
+    private static String STATIC_METHOD_DELEGATE_TEMPLATE = "cn.hippo4j.agent.core.plugin.bootstrap.template.StaticMethodInterTemplate";
+    private static String STATIC_METHOD_WITH_OVERRIDE_ARGS_DELEGATE_TEMPLATE = "cn.hippo4j.agent.core.plugin.bootstrap.template.StaticMethodInterWithOverrideArgsTemplate";
 
-    private static String INSTANCE_METHOD_V2_DELEGATE_TEMPLATE = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.template.v2.InstanceMethodInterV2Template";
-    private static String INSTANCE_METHOD_V2_WITH_OVERRIDE_ARGS_DELEGATE_TEMPLATE = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.template.v2.InstanceMethodInterV2WithOverrideArgsTemplate";
-    private static String STATIC_METHOD_V2_DELEGATE_TEMPLATE = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.template.v2.StaticMethodInterV2Template";
-    private static String STATIC_METHOD_V2_WITH_OVERRIDE_ARGS_DELEGATE_TEMPLATE = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.template.v2.StaticMethodInterV2WithOverrideArgsTemplate";
+    private static String INSTANCE_METHOD_V2_DELEGATE_TEMPLATE = "cn.hippo4j.agent.core.plugin.bootstrap.template.v2.InstanceMethodInterV2Template";
+    private static String INSTANCE_METHOD_V2_WITH_OVERRIDE_ARGS_DELEGATE_TEMPLATE = "cn.hippo4j.agent.core.plugin.bootstrap.template.v2.InstanceMethodInterV2WithOverrideArgsTemplate";
+    private static String STATIC_METHOD_V2_DELEGATE_TEMPLATE = "cn.hippo4j.agent.core.plugin.bootstrap.template.v2.StaticMethodInterV2Template";
+    private static String STATIC_METHOD_V2_WITH_OVERRIDE_ARGS_DELEGATE_TEMPLATE = "cn.hippo4j.agent.core.plugin.bootstrap.template.v2.StaticMethodInterV2WithOverrideArgsTemplate";
 
     public static AgentBuilder inject(PluginFinder pluginFinder, Instrumentation instrumentation,
                                       AgentBuilder agentBuilder, JDK9ModuleExporter.EdgeClasses edgeClasses) throws PluginException {
@@ -235,7 +239,7 @@ public class BootstrapInstrumentBoost {
      * @param classesTypeMap    hosts injected binary of generated class
      * @param typePool          to generate new class
      * @param templateClassName represents the class as template in this generation process. The templates are
-     *                          pre-defined in SkyWalking agent core.
+     *                          pre-defined in Hippo4j agent core.
      */
     private static void generateDelegator(Map<String, byte[]> classesTypeMap, TypePool typePool,
                                           String templateClassName, String methodsInterceptor) {

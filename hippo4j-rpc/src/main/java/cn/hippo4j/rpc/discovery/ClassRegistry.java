@@ -25,11 +25,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * the registration center for Client and Server
+ *
+ * @since 1.5.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClassRegistry {
 
-    private static final Map<String, Class<?>> serverRegister = new ConcurrentHashMap<>();
+    private static final Map<String, Class<?>> SERVER_REGISTER = new ConcurrentHashMap<>();
 
     /**
      * get a Obj in Registry center <br>
@@ -38,7 +40,7 @@ public class ClassRegistry {
      * @return t element
      */
     public static Class<?> get(String s) {
-        return serverRegister.get(s);
+        return SERVER_REGISTER.get(s);
     }
 
     /**
@@ -51,7 +53,7 @@ public class ClassRegistry {
      * @return final mapped value
      */
     public static Class<?> set(String s, Class<?> cls) {
-        return serverRegister.putIfAbsent(s, cls);
+        return SERVER_REGISTER.putIfAbsent(s, cls);
     }
 
     /**
@@ -62,13 +64,13 @@ public class ClassRegistry {
      * @param cls element
      */
     public static Class<?> put(String s, Class<?> cls) {
-        return serverRegister.put(s, cls);
+        return SERVER_REGISTER.put(s, cls);
     }
 
     /**
      * clear
      */
     public static void clear() {
-        serverRegister.clear();
+        SERVER_REGISTER.clear();
     }
 }

@@ -19,7 +19,7 @@ package cn.hippo4j.agent.core.plugin.interceptor.enhance;
 
 public interface EnhancedInstance {
 
-    Object getSkyWalkingDynamicField();
+    Object getHippo4jDynamicField();
 
-    void setSkyWalkingDynamicField(Object value);
+    void setHippo4jDynamicField(Object value);
 }

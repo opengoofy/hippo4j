@@ -27,7 +27,7 @@ public class DefaultNamedThreadFactory implements ThreadFactory {
     private final String namePrefix;
 
     public DefaultNamedThreadFactory(String name) {
-        namePrefix = "SkywalkingAgent-" + BOOT_SERVICE_SEQ.incrementAndGet() + "-" + name + "-";
+        namePrefix = "Hippo4jAgent-" + BOOT_SERVICE_SEQ.incrementAndGet() + "-" + name + "-";
     }
 
     @Override

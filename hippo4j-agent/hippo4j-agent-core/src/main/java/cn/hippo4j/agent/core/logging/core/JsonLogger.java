@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * An alternative logger for the SkyWalking agent. The default layout is
+ * An alternative logger for the Hippo4j agent. The default layout is
  * {
  *     "@timestamp": "", // timestamp
  *     "logger": "", // name of the Logger

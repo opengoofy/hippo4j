@@ -299,8 +299,8 @@ public class ReflectUtil {
     public static Field findField(Object obj, String filedName, String fieldType) {
         Field[] fields = ReflectUtil.getFields(obj.getClass());
         for (Field field : fields) {
-            if (field.getName().contains(filedName) &&
-                    (field.getType().getName().contains(fieldType))) {
+            if (field.getName().contains(filedName)
+                    && (field.getType().getName().contains(fieldType))) {
                 return field;
             }
         }

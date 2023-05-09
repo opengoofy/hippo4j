@@ -21,7 +21,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
 
 /**
  * Init a class's static fields by a {@link Properties}, including static fields and static inner classes.
@@ -30,14 +35,18 @@ import java.util.*;
 public class ConfigInitializer {
 
     public static void initialize(Properties properties, Class<?> rootConfigType) throws IllegalAccessException {
-        initNextLevel(properties, rootConfigType, new ConfigDesc());
+        initNextLevel(properties, rootConfigType, new ConfigDesc(), false);
+    }
+
+    public static void initialize(Properties properties, Class<?> rootConfigType, boolean isSpringProperties) throws IllegalAccessException {
+        initNextLevel(properties, rootConfigType, new ConfigDesc(), isSpringProperties);
     }
 
     private static void initNextLevel(Properties properties, Class<?> recentConfigType,
-                                      ConfigDesc parentDesc) throws IllegalArgumentException, IllegalAccessException {
+                                      ConfigDesc parentDesc, boolean isSpringProperties) throws IllegalArgumentException, IllegalAccessException {
         for (Field field : recentConfigType.getFields()) {
             if (Modifier.isPublic(field.getModifiers()) && Modifier.isStatic(field.getModifiers())) {
-                String configKey = (parentDesc + "." + field.getName()).toLowerCase();
+                String configKey = (parentDesc + "." + (isSpringProperties ? field.getName().replace("_", "-") : field.getName())).toLowerCase();
                 Class<?> type = field.getType();
 
                 if (type.equals(Map.class)) {
@@ -78,8 +87,10 @@ public class ConfigInitializer {
             }
         }
         for (Class<?> innerConfiguration : recentConfigType.getClasses()) {
-            parentDesc.append(innerConfiguration.getSimpleName());
-            initNextLevel(properties, innerConfiguration, parentDesc);
+            String simpleName = innerConfiguration.getSimpleName();
+            String description = isSpringProperties ? simpleName.replace("_", "-") : simpleName;
+            parentDesc.append(description);
+            initNextLevel(properties, innerConfiguration, parentDesc, isSpringProperties);
             parentDesc.removeLastDesc();
         }
     }

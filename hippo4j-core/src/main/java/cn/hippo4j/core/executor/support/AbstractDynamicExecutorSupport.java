@@ -22,7 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.RunnableFuture;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Dynamic executor configuration support.
@@ -154,14 +161,14 @@ public abstract class AbstractDynamicExecutorSupport extends ThreadPoolExecutor 
             try {
                 if (!executor.awaitTermination(this.awaitTerminationMillis, TimeUnit.MILLISECONDS)) {
                     if (log.isWarnEnabled()) {
-                        log.warn("Timed out while waiting for executor" +
-                                (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
+                        log.warn("Timed out while waiting for executor"
+                                + (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
                     }
                 }
             } catch (InterruptedException ex) {
                 if (log.isWarnEnabled()) {
-                    log.warn("Interrupted while waiting for executor" +
-                            (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
+                    log.warn("Interrupted while waiting for executor"
+                            + (this.threadPoolId != null ? " '" + this.threadPoolId + "'" : "") + " to terminate.");
                 }
                 Thread.currentThread().interrupt();
             }

@@ -20,7 +20,6 @@ package cn.hippo4j.message.service;
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
-import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.message.request.WebChangeParameterNotifyRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

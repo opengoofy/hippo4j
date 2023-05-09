@@ -21,7 +21,11 @@ import cn.hippo4j.rpc.discovery.InstanceServerLoaderImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
 
 public class DefaultRequestTest {
@@ -57,6 +61,20 @@ public class DefaultRequestTest {
         Assert.assertArrayEquals(parameterTypes, request1.getParameterTypes());
         Assert.assertArrayEquals(parameters, request1.getParameters());
         Assert.assertEquals(request1, request);
+    }
+
+    @Test
+    public void testEquals() throws NoSuchMethodException {
+        String key = "name";
+        String clsName = InstanceServerLoaderImpl.class.getName();
+        Method method = InstanceServerLoaderImpl.class.getMethod("setName", String.class);
+        String methodName = method.getName();
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        Object[] parameters = new Object[1];
+        parameters[0] = "hippo4j";
+        Request request = new DefaultRequest(key, clsName, methodName, parameterTypes, parameters);
+        Assert.assertTrue(request.equals(request));
+        Assert.assertFalse(request.equals(null));
     }
 
 }

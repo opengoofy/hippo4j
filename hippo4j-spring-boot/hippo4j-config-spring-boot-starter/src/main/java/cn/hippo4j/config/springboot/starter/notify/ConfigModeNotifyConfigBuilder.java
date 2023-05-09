@@ -18,18 +18,26 @@
 package cn.hippo4j.config.springboot.starter.notify;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
-import cn.hippo4j.common.api.ExecutorNotifyProperties;
 import cn.hippo4j.common.api.IExecutorProperties;
+import cn.hippo4j.common.config.ExecutorNotifyProperties;
+import cn.hippo4j.common.config.ExecutorProperties;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.config.springboot.starter.config.*;
+import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.config.springboot.starter.config.NotifyPlatformProperties;
+import cn.hippo4j.config.springboot.starter.config.WebExecutorProperties;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.service.AlarmControlHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**

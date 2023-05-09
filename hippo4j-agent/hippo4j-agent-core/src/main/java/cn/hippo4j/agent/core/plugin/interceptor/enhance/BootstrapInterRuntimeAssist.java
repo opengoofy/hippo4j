@@ -28,9 +28,9 @@ import java.lang.reflect.Method;
  */
 public class BootstrapInterRuntimeAssist {
 
-    private static final String AGENT_CLASSLOADER_DEFAULT = "org.apache.skywalking.apm.agent.core.plugin.loader.AgentClassLoader";
+    private static final String AGENT_CLASSLOADER_DEFAULT = "cn.hippo4j.agent.core.plugin.loader.AgentClassLoader";
     private static final String DEFAULT_AGENT_CLASSLOADER_INSTANCE = "DEFAULT_LOADER";
-    private static final String LOG_MANAGER_CLASS = "org.apache.skywalking.apm.agent.core.plugin.bootstrap.BootstrapPluginLogBridge";
+    private static final String LOG_MANAGER_CLASS = "cn.hippo4j.agent.core.plugin.bootstrap.BootstrapPluginLogBridge";
     private static final String LOG_MANAGER_GET_LOGGER_METHOD = "getLogger";
     private static final PrintStream OUT = System.out;
 

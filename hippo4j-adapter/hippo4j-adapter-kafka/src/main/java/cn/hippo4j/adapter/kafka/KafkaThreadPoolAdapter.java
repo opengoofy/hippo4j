@@ -151,8 +151,8 @@ public class KafkaThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
         ContainerProperties containerProperties = concurrentContainer.getContainerProperties();
         TopicPartitionOffset[] topicPartitions = containerProperties.getTopicPartitions();
         if (topicPartitions != null && concurrency > topicPartitions.length) {
-            log.warn("[{}] Kafka consuming thread pool not support modify. " +
-                    "When specific partitions are provided, the concurrency must be less than or "
+            log.warn("[{}] Kafka consuming thread pool not support modify. "
+                    + "When specific partitions are provided, the concurrency must be less than or "
                     + "equal to the number of partitions;", threadPoolKey);
             return false;
         }

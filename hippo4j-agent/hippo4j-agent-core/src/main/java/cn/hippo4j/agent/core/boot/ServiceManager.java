@@ -21,7 +21,13 @@ import cn.hippo4j.agent.core.logging.api.ILog;
 import cn.hippo4j.agent.core.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.loader.AgentClassLoader;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceLoader;
 
 /**
  * The <code>ServiceManager</code> bases on {@link ServiceLoader}, load all {@link BootService} implementations.

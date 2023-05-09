@@ -39,13 +39,13 @@ public interface HisRunDataMapper extends BaseMapper<HisRunDataInfo> {
      * @param endTime
      * @return
      */
-    @Select("SELECT " +
-            "tenant_id, item_id, tp_id, max(completed_task_count) as max_completed_task_count " +
-            "FROM his_run_data " +
-            "where timestamp between #{startTime} and #{endTime} " +
-            "group by tenant_id, item_id, tp_id " +
-            "order by max_completed_task_count desc " +
-            "limit 8")
+    @Select("SELECT "
+            + "tenant_id, item_id, tp_id, max(completed_task_count) as max_completed_task_count "
+            + "FROM his_run_data "
+            + "where timestamp between #{startTime} and #{endTime} "
+            + "group by tenant_id, item_id, tp_id "
+            + "order by max_completed_task_count desc "
+            + "limit 8")
     List<ThreadPoolTaskRanking> queryThreadPoolTaskSumRanking(@Param("startTime") Long startTime, @Param("endTime") Long endTime);
 
     /**
@@ -55,13 +55,13 @@ public interface HisRunDataMapper extends BaseMapper<HisRunDataInfo> {
      * @param endTime
      * @return
      */
-    @Select("SELECT " +
-            "tenant_id, item_id, tp_id, max(queue_size) as max_queue_size, max(reject_count) as max_reject_count,  max(completed_task_count) as max_completed_task_count " +
-            "FROM his_run_data " +
-            "where timestamp between #{startTime} and #{endTime} " +
-            "group by tenant_id, item_id, tp_id " +
-            "order by max_completed_task_count desc " +
-            "limit 4")
+    @Select("SELECT "
+            + "tenant_id, item_id, tp_id, max(queue_size) as max_queue_size, max(reject_count) as max_reject_count,  max(completed_task_count) as max_completed_task_count "
+            + "FROM his_run_data "
+            + "where timestamp between #{startTime} and #{endTime} "
+            + "group by tenant_id, item_id, tp_id "
+            + "order by max_completed_task_count desc "
+            + "limit 4")
     List<ThreadPoolTaskRanking> queryThreadPoolMaxRanking(@Param("startTime") Long startTime, @Param("endTime") Long endTime);
 
     @Data

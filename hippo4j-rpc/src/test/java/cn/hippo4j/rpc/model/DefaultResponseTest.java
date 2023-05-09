@@ -21,7 +21,11 @@ import cn.hippo4j.common.web.exception.IllegalException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class DefaultResponseTest {
 
@@ -83,4 +87,13 @@ public class DefaultResponseTest {
         Assert.assertTrue(response1.isErr());
     }
 
+    @Test
+    public void testEquals() throws NoSuchMethodException {
+        String key = "name";
+        Object o = "obj";
+        Class<?> cls = String.class;
+        Response response = new DefaultResponse(key, cls, o);
+        Assert.assertTrue(response.equals(response));
+        Assert.assertFalse(response.equals(null));
+    }
 }

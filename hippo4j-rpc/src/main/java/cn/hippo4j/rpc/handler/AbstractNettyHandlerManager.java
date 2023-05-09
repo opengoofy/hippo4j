@@ -20,12 +20,18 @@ package cn.hippo4j.rpc.handler;
 import cn.hippo4j.common.toolkit.Assert;
 import io.netty.channel.ChannelHandler;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
  * Processor manager for ChannelHandler in netty
+ *
+ * @since 1.5.1
  */
 public abstract class AbstractNettyHandlerManager implements HandlerManager<ChannelHandler> {
 
@@ -79,30 +85,6 @@ public abstract class AbstractNettyHandlerManager implements HandlerManager<Chan
     public AbstractNettyHandlerManager addFirst(String name, ChannelHandler handler) {
         Assert.notNull(handler);
         this.handlerEntities.add(getHandlerEntity(firstIndex.getAndIncrement(), handler, name));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param handler handler
-     * @return NettyHandlerManager
-     */
-    public AbstractNettyHandlerManager addLast(ChannelHandler handler) {
-        Assert.notNull(handler);
-        this.handlerEntities.add(getHandlerEntity(lastIndex.getAndIncrement(), handler, null));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param handler handler
-     * @return NettyHandlerManager
-     */
-    public AbstractNettyHandlerManager addFirst(ChannelHandler handler) {
-        Assert.notNull(handler);
-        this.handlerEntities.add(getHandlerEntity(firstIndex.getAndDecrement(), handler, null));
         return this;
     }
 }

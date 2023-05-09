@@ -26,7 +26,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
- * AgentPackagePath is a flag and finder to locate the SkyWalking agent.jar. It gets the absolute path of the agent jar.
+ * AgentPackagePath is a flag and finder to locate the Hippo4j agent.jar. It gets the absolute path of the agent jar.
  * The path is the required metadata for agent core looking up the plugins and toolkit activations. If the lookup
  * mechanism fails, the agent will exit directly.
  */

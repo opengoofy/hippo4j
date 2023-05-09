@@ -32,7 +32,7 @@ sidebar_position: 3
 spring:
   dynamic:
     thread-pool:
-      tomcat:
+      web:
         enable: true
       executors:
         - thread-pool-id: message-consume
@@ -50,7 +50,7 @@ spring:
 spring:
   dynamic:
     thread-pool:
-      tomcat:
+      web:
         nodes: 192.168.1.5:*,192.168.1.6:8080
       executors:
       - thread-pool-id: message-consume

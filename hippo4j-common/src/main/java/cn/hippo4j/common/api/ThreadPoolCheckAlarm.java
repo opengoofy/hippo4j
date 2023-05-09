@@ -118,7 +118,7 @@ public interface ThreadPoolCheckAlarm extends CommandLineRunner {
          */
         @Override
         public void asyncSendRejectedAlarm(String threadPoolId) {
-            log.info("Ignore async send rejected alarm for ExecuteService '{}'", threadPoolId);
+            log.debug("Ignore async send rejected alarm for ExecuteService '{}'", threadPoolId);
         }
 
         /**
@@ -131,7 +131,7 @@ public interface ThreadPoolCheckAlarm extends CommandLineRunner {
          */
         @Override
         public void asyncSendExecuteTimeOutAlarm(String threadPoolId, long executeTime, long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
-            log.info("Ignore async send execute time out alarm for ExecuteService '{}'", threadPoolId);
+            log.debug("Ignore async send execute time out alarm for ExecuteService '{}'", threadPoolId);
         }
 
         @Override

@@ -26,7 +26,7 @@ import net.bytebuddy.matcher.ElementMatcher;
  * them have compatible issues with byte-buddy core, which trigger "Can't resolve type description" exception.
  * <p>
  * So I build this protective shield by a nested matcher. When the origin matcher(s) can't resolve the type, the
- * SkyWalking agent ignores this types.
+ * Hippo4j agent ignores this types.
  * <p>
  * Notice: this ignore mechanism may miss some instrumentations, but at most cases, it's same. If missing happens,
  * please pay attention to the WARNING logs.

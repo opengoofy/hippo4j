@@ -58,12 +58,12 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
      * Print banner.
      */
     private void printBanner() {
-        String banner = "  __     __                       ___ ___   __ \n" +
-                " |  |--.|__|.-----..-----..-----.|   |   | |__|\n" +
-                " |     ||  ||  _  ||  _  ||  _  ||   |   | |  |\n" +
-                " |__|__||__||   __||   __||_____||____   | |  |\n" +
-                "            |__|   |__|              |:  ||___|\n" +
-                "                                     `---'     \n";
+        String banner = "  __     __                       ___ ___   __ \n"
+                + " |  |--.|__|.-----..-----..-----.|   |   | |__|\n"
+                + " |     ||  ||  _  ||  _  ||  _  ||   |   | |  |\n"
+                + " |__|__||__||   __||   __||_____||____   | |  |\n"
+                + "            |__|   |__|              |:  ||___|\n"
+                + "                                     `---'     \n";
         if (Boolean.TRUE.equals(properties.getBanner())) {
             String bannerVersion = StringUtil.isNotEmpty(version) ? " (v" + version + ")" : "no version.";
             StringBuilder padding = new StringBuilder();

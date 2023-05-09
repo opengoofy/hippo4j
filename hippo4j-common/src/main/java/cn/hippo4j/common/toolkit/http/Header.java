@@ -23,7 +23,11 @@ import cn.hippo4j.common.constant.HttpMediaType;
 import cn.hippo4j.common.toolkit.MapUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Http header.
