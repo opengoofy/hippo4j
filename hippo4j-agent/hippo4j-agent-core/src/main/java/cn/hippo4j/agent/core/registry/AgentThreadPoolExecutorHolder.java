@@ -22,6 +22,7 @@ import cn.hippo4j.agent.core.logging.api.LogManager;
 import cn.hippo4j.common.config.ExecutorProperties;
 import lombok.Data;
 
+import java.util.Properties;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Data
@@ -35,12 +36,12 @@ public class AgentThreadPoolExecutorHolder {
 
     private ThreadPoolExecutor executor;
 
-    private ExecutorProperties properties;
+    private Properties properties;
 
     public AgentThreadPoolExecutorHolder() {
     }
 
-    public AgentThreadPoolExecutorHolder(String executorName, ThreadPoolExecutor executor, ExecutorProperties properties) {
+    public AgentThreadPoolExecutorHolder(String executorName, ThreadPoolExecutor executor, Properties properties) {
         this.executorName = executorName;
         this.executor = executor;
         this.properties = properties;

@@ -16,6 +16,12 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-core</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

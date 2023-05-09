@@ -17,28 +17,16 @@
 
 package cn.hippo4j.agent.core.util;
 
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
+public interface ThreadPoolPropertyKey {
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-
-public class ReflectUtil {
-
-    private static final ILog LOGGER = LogManager.getLogger(ReflectUtil.class);
-
-    public static List<Field> getStaticFieldsFromType(Class<?> clazz, Class<?> declaredType) {
-        Field[] fields = clazz.getDeclaredFields();
-        List<Field> result = new ArrayList<>();
-        for (Field field : fields) {
-            if (field.getType().isAssignableFrom(declaredType)
-                    && Modifier.isStatic(field.getModifiers())) {
-                field.setAccessible(true);
-                result.add(field);
-            }
-        }
-        return result;
-    }
+    String THREAD_POOL_ID = "threadPoolId";
+    String CORE_POOL_SIZE = "corePoolSize";
+    String MAXIMUM_POOL_SIZE = "maximumPoolSize";
+    String ALLOW_CORE_THREAD_TIME_OUT = "allowCoreThreadTimeOut";
+    String KEEP_ALIVE_TIME = "keepAliveTime";
+    String BLOCKING_QUEUE = "blockingQueue";
+    String QUEUE_CAPACITY = "queueCapacity";
+    String THREAD_NAME_PREFIX = "threadNamePrefix";
+    String REJECTED_HANDLER = "rejectedHandler";
+    String EXECUTE_TIME_OUT = "executeTimeOut";
 }
