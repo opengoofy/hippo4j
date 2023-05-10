@@ -20,36 +20,106 @@ package cn.hippo4j.common.toolkit.http;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.catalina.Context;
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.connector.Connector;
+import org.apache.catalina.startup.Tomcat;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HttpUtilsTest {
 
-    /**
-     * test post url
-     */
-    static String postUrl = "http://console.hippo4j.cn/hippo4j/v1/cs/";
+    static int PORT = 8080;
+    static Tomcat tomcat;
+    static String PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
+    static final String HOME_PAGE_URL = "/home";
+    static final String HOME_PAGE_NAME = "homeServlet";
+    static final String LOGIN_URL = "/login";
+    static final String LOGIN_NAME = "loginServlet";
+    static final String CONTEXT_PATH = "/";
+    static final String PATH_NAME = ".";
+
+    @BeforeClass
+    public static void startWeb() throws IOException, LifecycleException {
+        tomcat = new Tomcat();
+        // get a random port
+        ServerSocket socket = new ServerSocket(0);
+        PORT = socket.getLocalPort();
+        socket.close();
+        tomcat.setPort(PORT);
+        Connector connector = new Connector(PROTOCOL);
+        connector.setThrowOnFailure(true);
+        connector.setPort(PORT);
+        tomcat.setConnector(connector);
+        String absolutePath = new File(PATH_NAME).getAbsolutePath();
+        Context context = tomcat.addContext(CONTEXT_PATH, absolutePath);
+        Tomcat.addServlet(context, HOME_PAGE_NAME, new HomeServlet()).setAsyncSupported(true);
+        context.addServletMappingDecoded(HOME_PAGE_URL, HOME_PAGE_NAME);
+        Tomcat.addServlet(context, LOGIN_NAME, new LoginServlet()).setAsyncSupported(true);
+        context.addServletMappingDecoded(LOGIN_URL, LOGIN_NAME);
+        tomcat.start();
+    }
+
+    @AfterClass
+    public static void stopWeb() throws LifecycleException, IOException {
+        // stop tomcat
+        tomcat.stop();
+        // del dir
+        String userUrl = System.getProperty("user.dir");
+        File file = new File(userUrl + "\\tomcat." + PORT);
+        Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
+
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+
+        });
+    }
 
     /**
-     * test get url
+     * test url
      */
-    static String getUrl = "https://hippo4j.cn/";
+    String url = "http://localhost:";
+
+    String passwordValue = "hippo4jtest";
+    String usernameValue = "hippo4j";
+    String password = "password";
+    String username = "username";
+    String suffix = "?password=hippo4jtest&username=hippo4j";
 
     @Test
     public void get() {
-        String s = HttpUtil.get(getUrl);
+        String s = HttpUtil.get(url + PORT + HOME_PAGE_URL);
         Assert.assertNotNull(s);
     }
 
     @Test
     public void restApiPost() {
-        String loginUrl = postUrl + "auth/login";
+        String loginUrl = url + PORT + LOGIN_URL;
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setPassword("hippo4jtest");
-        loginInfo.setUsername("hippo4j");
+        loginInfo.setPassword(passwordValue);
+        loginInfo.setUsername(usernameValue);
         loginInfo.setRememberMe(1);
         String s = HttpUtil.post(loginUrl, loginInfo);
         Result result = JSONUtil.parseObject(s, Result.class);
@@ -60,10 +130,10 @@ public class HttpUtilsTest {
 
     @Test
     public void testRestApiPost() {
-        String loginUrl = postUrl + "auth/login";
+        String loginUrl = url + PORT + LOGIN_URL;
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setPassword("hippo4jtest");
-        loginInfo.setUsername("hippo4j");
+        loginInfo.setPassword(passwordValue);
+        loginInfo.setUsername(usernameValue);
         loginInfo.setRememberMe(1);
         Result result = HttpUtil.post(loginUrl, loginInfo, Result.class);
         Assert.assertNotNull(result);
@@ -73,10 +143,10 @@ public class HttpUtilsTest {
 
     // @Test(expected = SocketTimeoutException.class)
     public void testRestApiPostTimeout() {
-        String loginUrl = postUrl + "auth/login";
+        String loginUrl = url + PORT + LOGIN_URL;
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setPassword("hippo4jtest");
-        loginInfo.setUsername("hippo4j");
+        loginInfo.setPassword(passwordValue);
+        loginInfo.setUsername(usernameValue);
         loginInfo.setRememberMe(1);
         HttpUtil.post(loginUrl, loginInfo, 1, Result.class);
     }
@@ -84,15 +154,15 @@ public class HttpUtilsTest {
     @Test
     public void buildUrl() {
         Map<String, String> map = new HashMap<>();
-        map.put("password", "hippo4jtest");
-        map.put("username", "hippo4j");
-        String s = HttpUtil.buildUrl(getUrl, map);
-        Assert.assertEquals(getUrl + "?password=hippo4jtest&username=hippo4j", s);
+        map.put(password, passwordValue);
+        map.put(username, usernameValue);
+        String s = HttpUtil.buildUrl(url + PORT, map);
+        Assert.assertEquals(url + PORT + suffix, s);
     }
 
     @Getter
     @Setter
-    private static class LoginInfo {
+    protected static class LoginInfo {
 
         private String username;
 
@@ -103,7 +173,7 @@ public class HttpUtilsTest {
 
     @Getter
     @Setter
-    private static class Result {
+    protected static class Result {
 
         private String code;
 
@@ -112,7 +182,7 @@ public class HttpUtilsTest {
 
     @Getter
     @Setter
-    private static class ResultData {
+    protected static class ResultData {
 
         private String data;
 
