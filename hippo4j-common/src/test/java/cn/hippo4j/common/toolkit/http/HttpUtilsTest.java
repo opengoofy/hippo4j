@@ -44,13 +44,15 @@ public class HttpUtilsTest {
 
     static int PORT = 8080;
     static Tomcat tomcat;
-    static String PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
+    static final String PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
     static final String HOME_PAGE_URL = "/home";
     static final String HOME_PAGE_NAME = "homeServlet";
     static final String LOGIN_URL = "/login";
     static final String LOGIN_NAME = "loginServlet";
     static final String CONTEXT_PATH = "/";
     static final String PATH_NAME = ".";
+    static final String USER_DIR = "user.dir";
+    static final String PREFIX = "\\tomcat.";
 
     @BeforeClass
     public static void startWeb() throws IOException, LifecycleException {
@@ -78,8 +80,8 @@ public class HttpUtilsTest {
         // stop tomcat
         tomcat.stop();
         // del dir
-        String userUrl = System.getProperty("user.dir");
-        File file = new File(userUrl + "\\tomcat." + PORT);
+        String userUrl = System.getProperty(USER_DIR);
+        File file = new File(userUrl + PREFIX + PORT);
         Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
 
             @Override
