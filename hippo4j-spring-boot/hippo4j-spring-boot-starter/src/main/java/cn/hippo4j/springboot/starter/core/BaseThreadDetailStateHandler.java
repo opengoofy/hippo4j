@@ -38,9 +38,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Slf4j
 public class BaseThreadDetailStateHandler implements ThreadDetailState {
 
-    private final String WORKERS = "workers";
+    private final String workersName = "workers";
 
-    private final String THREAD = "thread";
+    private final String threadName = "thread";
 
     @Override
     public List<ThreadDetailStateInfo> getThreadDetailStateInfo(String threadPoolId) {
@@ -53,14 +53,14 @@ public class BaseThreadDetailStateHandler implements ThreadDetailState {
     public List<ThreadDetailStateInfo> getThreadDetailStateInfo(ThreadPoolExecutor threadPoolExecutor) {
         List<ThreadDetailStateInfo> resultThreadStates = new ArrayList();
         try {
-            HashSet<Object> workers = (HashSet<Object>) ReflectUtil.getFieldValue(threadPoolExecutor, WORKERS);
+            HashSet<Object> workers = (HashSet<Object>) ReflectUtil.getFieldValue(threadPoolExecutor, workersName);
             if (CollectionUtil.isEmpty(workers)) {
                 return resultThreadStates;
             }
             for (Object worker : workers) {
                 Thread thread;
                 try {
-                    thread = (Thread) ReflectUtil.getFieldValue(worker, THREAD);
+                    thread = (Thread) ReflectUtil.getFieldValue(worker, threadName);
                     if (thread == null) {
                         log.warn("Reflection get worker thread is null. Worker: {}", worker);
                         continue;

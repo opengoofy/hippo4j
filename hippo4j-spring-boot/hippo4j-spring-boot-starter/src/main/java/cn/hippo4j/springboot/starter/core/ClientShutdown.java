@@ -33,7 +33,7 @@ public class ClientShutdown {
 
     @Getter
     private volatile boolean prepareClose = false;
-    private final static Long TIME_OUT_SECOND = 1L;
+    private static final Long TIME_OUT_SECOND = 1L;
 
     private static final int DEFAULT_COUNT = 1;
     private final CountDownLatch countDownLatch = new CountDownLatch(DEFAULT_COUNT);
