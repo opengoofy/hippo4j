@@ -42,7 +42,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMI
 @Slf4j
 public class AlibabaDubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationListener<ApplicationStartedEvent> {
 
-    private final Map<String, ThreadPoolExecutor> DUBBO_PROTOCOL_EXECUTOR = new HashMap<>();
+    private final Map<String, ThreadPoolExecutor> dubboProtocolExecutor = new HashMap<>();
 
     @Override
     public String mark() {
@@ -52,7 +52,7 @@ public class AlibabaDubboThreadPoolAdapter implements ThreadPoolAdapter, Applica
     @Override
     public ThreadPoolAdapterState getThreadPoolState(String identify) {
         ThreadPoolAdapterState threadPoolAdapterState = new ThreadPoolAdapterState();
-        ThreadPoolExecutor executor = DUBBO_PROTOCOL_EXECUTOR.get(identify);
+        ThreadPoolExecutor executor = dubboProtocolExecutor.get(identify);
         if (executor == null) {
             log.warn("[{}] Alibaba Dubbo consuming thread pool not found.", identify);
             return threadPoolAdapterState;
@@ -66,14 +66,14 @@ public class AlibabaDubboThreadPoolAdapter implements ThreadPoolAdapter, Applica
     @Override
     public List<ThreadPoolAdapterState> getThreadPoolStates() {
         List<ThreadPoolAdapterState> threadPoolAdapterStates = new ArrayList<>();
-        DUBBO_PROTOCOL_EXECUTOR.forEach((key, val) -> threadPoolAdapterStates.add(getThreadPoolState(String.valueOf(key))));
+        dubboProtocolExecutor.forEach((key, val) -> threadPoolAdapterStates.add(getThreadPoolState(String.valueOf(key))));
         return threadPoolAdapterStates;
     }
 
     @Override
     public boolean updateThreadPool(ThreadPoolAdapterParameter threadPoolAdapterParameter) {
         String threadPoolKey = threadPoolAdapterParameter.getThreadPoolKey();
-        ThreadPoolExecutor executor = DUBBO_PROTOCOL_EXECUTOR.get(threadPoolAdapterParameter.getThreadPoolKey());
+        ThreadPoolExecutor executor = dubboProtocolExecutor.get(threadPoolAdapterParameter.getThreadPoolKey());
         if (executor == null) {
             log.warn("[{}] Alibaba Dubbo consuming thread pool not found.", threadPoolKey);
             return false;
@@ -94,7 +94,7 @@ public class AlibabaDubboThreadPoolAdapter implements ThreadPoolAdapter, Applica
         try {
             DataStore dataStore = ExtensionLoader.getExtensionLoader(DataStore.class).getDefaultExtension();
             Map<String, Object> executors = dataStore.get(poolKey);
-            executors.forEach((key, value) -> DUBBO_PROTOCOL_EXECUTOR.put(key, (ThreadPoolExecutor) value));
+            executors.forEach((key, value) -> dubboProtocolExecutor.put(key, (ThreadPoolExecutor) value));
         } catch (Exception ex) {
             log.error("Failed to get Alibaba Dubbo protocol thread pool", ex);
         }
