@@ -87,7 +87,7 @@ public class HttpUtilsTest {
         map.put("password", "hippo4jtest");
         map.put("username", "hippo4j");
         String s = HttpUtil.buildUrl(getUrl, map);
-        Assert.assertEquals(getUrl + "?password=hippo4j&username=hippo4jtest", s);
+        Assert.assertEquals(getUrl + "?password=hippo4jtest&username=hippo4j", s);
     }
 
     @Getter
