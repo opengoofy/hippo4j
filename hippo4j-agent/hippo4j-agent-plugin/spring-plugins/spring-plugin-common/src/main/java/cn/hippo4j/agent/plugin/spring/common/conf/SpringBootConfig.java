@@ -17,7 +17,7 @@
 
 package cn.hippo4j.agent.plugin.spring.common.conf;
 
-import cn.hippo4j.agent.core.boot.SpringBootPluginConfig;
+import cn.hippo4j.agent.core.boot.SpringBootConfigNode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,10 +28,10 @@ public class SpringBootConfig {
 
         public static class Dynamic {
 
-            @SpringBootPluginConfig(root = SpringBootConfig.class)
+            @SpringBootConfigNode(root = SpringBootConfig.class)
             public static class Thread_Pool {
 
-                @SpringBootPluginConfig(root = SpringBootConfig.class)
+                @SpringBootConfigNode(root = SpringBootConfig.class)
                 public static class Apollo {
 
                     public static List<String> NAMESPACE = Arrays.asList("application");
