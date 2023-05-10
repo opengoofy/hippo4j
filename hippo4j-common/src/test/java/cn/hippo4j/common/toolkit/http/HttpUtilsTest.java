@@ -82,6 +82,9 @@ public class HttpUtilsTest {
         // del dir
         String userUrl = System.getProperty(USER_DIR);
         File file = new File(userUrl + PREFIX + PORT);
+        if (!file.exists()) {
+            return;
+        }
         Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
 
             @Override
