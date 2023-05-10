@@ -15,30 +15,20 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.boot.v1;
+package cn.hippo4j.agent.plugin.spring.common.support;
 
-import cn.hippo4j.agent.core.boot.SpringBootConfig;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ApolloSpringBootProperties {
+public class SpringEnvironmentSupport {
 
-    public static class Spring {
-
-        public static class Dynamic {
-
-            @SpringBootConfig(root = ApolloSpringBootProperties.class)
-            public static class Thread_Pool {
-
-                @SpringBootConfig(root = ApolloSpringBootProperties.class)
-                public static class Apollo {
-
-                    public static List<String> NAMESPACE = Arrays.asList("application");
-                }
-
-                public static String CONFIG_FILE_TYPE;
-            }
-        }
+    public static void disableNonAgentSwitch(ConfigurableEnvironment environment) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("spring.dynamic.thread-pool.enable", false); // Switch off in non-Agent mode
+        MapPropertySource propertySource = new MapPropertySource("Hippo4j-Agent-Properties", map);
+        environment.getPropertySources().addFirst(propertySource);
     }
 }

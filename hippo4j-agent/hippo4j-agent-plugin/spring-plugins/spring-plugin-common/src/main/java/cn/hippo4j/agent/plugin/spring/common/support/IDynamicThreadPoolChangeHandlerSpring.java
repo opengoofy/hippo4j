@@ -15,19 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.core.boot;
+package cn.hippo4j.agent.plugin.spring.common.support;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public interface IDynamicThreadPoolChangeHandlerSpring {
 
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SpringBootConfig {
+    void registerApolloConfigHandler();
 
-    /**
-     * @return Class as the root to do config initialization.
-     */
-    Class<?> root();
 }

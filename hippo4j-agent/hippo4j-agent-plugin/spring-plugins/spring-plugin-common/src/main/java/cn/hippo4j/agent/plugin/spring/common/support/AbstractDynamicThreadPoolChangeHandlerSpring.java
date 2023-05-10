@@ -15,25 +15,19 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.boot.v1;
+package cn.hippo4j.agent.plugin.spring.common.support;
 
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
 import cn.hippo4j.agent.core.registry.AgentThreadPoolExecutorHolder;
 import cn.hippo4j.agent.core.registry.AgentThreadPoolInstanceRegistry;
 import cn.hippo4j.agent.core.util.ThreadPoolPropertyKey;
-import cn.hippo4j.agent.plugin.spring.common.SpringPropertiesLoader;
+import cn.hippo4j.agent.plugin.spring.common.conf.SpringBootConfig;
+import cn.hippo4j.common.config.ExecutorProperties;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.common.toolkit.MapUtil;
 import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-import cn.hippo4j.common.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.parser.ConfigFileTypeEnum;
 import cn.hippo4j.config.springboot.starter.parser.ConfigParserHandler;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
@@ -45,24 +39,15 @@ import com.ctrip.framework.apollo.core.enums.ConfigFileFormat;
 import com.ctrip.framework.apollo.model.ConfigChange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.PropertyValues;
-import org.springframework.beans.support.ResourceEditorRegistrar;
-import org.springframework.boot.bind.CustomPropertyNamePatternsMatcher;
-import org.springframework.boot.bind.RelaxedDataBinder;
-import org.springframework.boot.bind.RelaxedNames;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.Set;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -70,27 +55,23 @@ import java.util.concurrent.TimeUnit;
 import static cn.hippo4j.agent.core.conf.Constants.SPRING_BOOT_CONFIG_PREFIX;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
-import static cn.hippo4j.config.springboot1x.starter.refresher.SpringBoot1xBootstrapConfigPropertiesBinderAdapt.getNames;
 
-public class EventPublishingFinishedInterceptor implements InstanceMethodsAroundInterceptor {
+public abstract class AbstractDynamicThreadPoolChangeHandlerSpring implements IDynamicThreadPoolChangeHandlerSpring {
 
-    private static final ILog FILE_LOGGER = LogManager.getLogger(EventPublishingFinishedInterceptor.class);
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventPublishingFinishedInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDynamicThreadPoolChangeHandlerSpring.class);
 
-    @Override
-    public void beforeMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, MethodInterceptResult result) throws Throwable {
+    private final ConfigurableApplicationContext applicationContext;
 
+    public AbstractDynamicThreadPoolChangeHandlerSpring(ConfigurableApplicationContext context) {
+        this.applicationContext = context;
     }
 
-    @Override
-    public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Object ret) throws Throwable {
-        ConfigurableApplicationContext context = (ConfigurableApplicationContext) allArguments[0];
-        SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
+    public void registerApolloConfigHandler() {
 
-        List<String> apolloNamespaces = ApolloSpringBootProperties.Spring.Dynamic.Thread_Pool.Apollo.NAMESPACE;
-
+        List<String> apolloNamespaces = SpringBootConfig.Spring.Dynamic.Thread_Pool.Apollo.NAMESPACE;
         String namespace = apolloNamespaces.get(0);
-        String configFileType = ApolloSpringBootProperties.Spring.Dynamic.Thread_Pool.CONFIG_FILE_TYPE;
+        String configFileType = SpringBootConfig.Spring.Dynamic.Thread_Pool.CONFIG_FILE_TYPE;
+
         com.ctrip.framework.apollo.Config config = ConfigService.getConfig(String.format("%s.%s", namespace, configFileType));
         ConfigChangeListener configChangeListener = configChangeEvent -> {
             String replacedNamespace = namespace.replaceAll("." + configFileType, "");
@@ -102,40 +83,17 @@ public class EventPublishingFinishedInterceptor implements InstanceMethodsAround
                 String newValue = change.getNewValue();
                 newChangeValueMap.put(each, newValue);
             });
-            dynamicRefresh(configFile.getContent(), newChangeValueMap, context);
+            dynamicRefresh(configFile.getContent(), newChangeValueMap, applicationContext);
         };
         config.addChangeListener(configChangeListener);
-        LOGGER.info("Dynamic thread pool refresher, add apollo listener success. namespace: {}", namespace);
-        return ret;
+        LOGGER.info("[Hippo4j-Agent] Dynamic thread pool refresher, add apollo listener success. namespace: {}", namespace);
     }
 
-    public BootstrapConfigProperties bindProperties(Map<Object, Object> configInfo, ApplicationContext applicationContext) {
-        BootstrapConfigProperties bindableCoreProperties = new BootstrapConfigProperties();
-        if (MapUtil.isEmpty(configInfo)) {
-            return bindableCoreProperties;
-        }
-        RelaxedNames relaxedNames = new RelaxedNames(BootstrapConfigProperties.PREFIX);
-        Set<String> names = getNames(bindableCoreProperties, relaxedNames);
-        Map<String, Object> stringConfigInfo = new HashMap<>(configInfo.size());
-        configInfo.forEach((key, value) -> stringConfigInfo.put(key.toString(), value));
-        MapPropertySource test = new MapPropertySource("Hippo4j", stringConfigInfo);
-        MutablePropertySources propertySources = new MutablePropertySources();
-        propertySources.addFirst(test);
-        PropertyValues propertyValues = CustomPropertyNamePatternsMatcher.getPropertySourcesPropertyValues(names, propertySources);
-        RelaxedDataBinder dataBinder = new RelaxedDataBinder(bindableCoreProperties, BootstrapConfigProperties.PREFIX);
-        dataBinder.setAutoGrowCollectionLimit(Integer.MAX_VALUE);
-        dataBinder.setIgnoreNestedProperties(false);
-        dataBinder.setIgnoreInvalidFields(false);
-        dataBinder.setIgnoreUnknownFields(true);
-        ResourceEditorRegistrar resourceEditorRegistrar = new ResourceEditorRegistrar(applicationContext, applicationContext.getEnvironment());
-        resourceEditorRegistrar.registerCustomEditors(dataBinder);
-        dataBinder.bind(propertyValues);
-        return bindableCoreProperties;
-    }
+    protected abstract BootstrapConfigProperties bindProperties(Map<Object, Object> configInfo, ApplicationContext applicationContext);
 
-    public void dynamicRefresh(String configContent, Map<String, Object> newValueChangeMap, ApplicationContext context) {
+    private void dynamicRefresh(String configContent, Map<String, Object> newValueChangeMap, ApplicationContext context) {
         try {
-            String configFileType = ApolloSpringBootProperties.Spring.Dynamic.Thread_Pool.CONFIG_FILE_TYPE;
+            String configFileType = SpringBootConfig.Spring.Dynamic.Thread_Pool.CONFIG_FILE_TYPE;
 
             Map<Object, Object> afterConfigMap = ConfigParserHandler.getInstance().parseConfig(configContent,
                     ConfigFileTypeEnum.of(configFileType));
@@ -319,8 +277,4 @@ public class EventPublishingFinishedInterceptor implements InstanceMethodsAround
                         && Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getName(), executor.getQueue().getClass().getSimpleName())));
     }
 
-    @Override
-    public void handleMethodException(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Throwable t) {
-
-    }
 }

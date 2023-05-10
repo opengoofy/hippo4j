@@ -48,7 +48,7 @@ public class SpringBootConfigInitializer {
         return SPRING_PROPERTIES == null || SPRING_PROPERTIES.isEmpty();
     }
 
-    public static synchronized void initializeConfig(SpringBootConfig springBootConfig) {
+    public static synchronized void initializeConfig(SpringBootPluginConfig springBootConfig) {
         if (SPRING_PROPERTIES != null) {
             try {
                 LOG.info("initialize Spring Config Class {}.", springBootConfig.root());

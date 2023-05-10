@@ -15,14 +15,30 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.apollo;
+package cn.hippo4j.agent.plugin.spring.common.conf;
 
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
+import cn.hippo4j.agent.core.boot.SpringBootPluginConfig;
 
-public class DefaultConfigConstructorInterceptor implements InstanceConstructorInterceptor {
+import java.util.Arrays;
+import java.util.List;
 
-    @Override
-    public void onConstruct(EnhancedInstance objInst, Object[] allArguments) throws Throwable {
+public class SpringBootConfig {
+
+    public static class Spring {
+
+        public static class Dynamic {
+
+            @SpringBootPluginConfig(root = SpringBootConfig.class)
+            public static class Thread_Pool {
+
+                @SpringBootPluginConfig(root = SpringBootConfig.class)
+                public static class Apollo {
+
+                    public static List<String> NAMESPACE = Arrays.asList("application");
+                }
+
+                public static String CONFIG_FILE_TYPE;
+            }
+        }
     }
 }

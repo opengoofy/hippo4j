@@ -15,20 +15,19 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.common;
+package cn.hippo4j.agent.core.boot;
 
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MapPropertySource;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.HashMap;
-import java.util.Map;
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SpringBootPluginConfig {
 
-public class SpringEnvironmentSupport {
-
-    public static void disableNonAgentSwitch(ConfigurableEnvironment environment) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("spring.dynamic.thread-pool.enable", false); // Switch off in non-Agent mode
-        MapPropertySource propertySource = new MapPropertySource("Hippo4j-Agent-Properties", map);
-        environment.getPropertySources().addFirst(propertySource);
-    }
+    /**
+     * @return Class as the root to do config initialization.
+     */
+    Class<?> root();
 }

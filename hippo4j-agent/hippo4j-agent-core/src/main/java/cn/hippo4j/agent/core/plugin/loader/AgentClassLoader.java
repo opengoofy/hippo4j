@@ -20,7 +20,7 @@ package cn.hippo4j.agent.core.plugin.loader;
 import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
 import cn.hippo4j.agent.core.boot.AgentPackagePath;
 import cn.hippo4j.agent.core.boot.PluginConfig;
-import cn.hippo4j.agent.core.boot.SpringBootConfig;
+import cn.hippo4j.agent.core.boot.SpringBootPluginConfig;
 import cn.hippo4j.agent.core.boot.SpringBootConfigInitializer;
 import cn.hippo4j.agent.core.conf.Config;
 import cn.hippo4j.agent.core.conf.SnifferConfigInitializer;
@@ -171,7 +171,7 @@ public class AgentClassLoader extends ClassLoader {
             SnifferConfigInitializer.initializeConfig(pluginConfig.root());
         }
 
-        final SpringBootConfig springBootConfig = loadedClass.getAnnotation(SpringBootConfig.class);
+        final SpringBootPluginConfig springBootConfig = loadedClass.getAnnotation(SpringBootPluginConfig.class);
         if (springBootConfig != null) {
             // Set up the plugin config when loaded by spring environment is prepared, just scan in here.
             // Agent class loader just loaded limited classes in the plugin jar(s), so the cost of this
