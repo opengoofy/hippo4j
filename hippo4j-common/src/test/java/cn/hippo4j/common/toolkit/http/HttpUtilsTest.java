@@ -48,7 +48,7 @@ public class HttpUtilsTest {
     public void restApiPost() {
         String loginUrl = postUrl + "auth/login";
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setPassword("hippo4j");
+        loginInfo.setPassword("hippo4jtest");
         loginInfo.setUsername("hippo4j");
         loginInfo.setRememberMe(1);
         String s = HttpUtil.post(loginUrl, loginInfo);
@@ -62,7 +62,7 @@ public class HttpUtilsTest {
     public void testRestApiPost() {
         String loginUrl = postUrl + "auth/login";
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setPassword("hippo4j");
+        loginInfo.setPassword("hippo4jtest");
         loginInfo.setUsername("hippo4j");
         loginInfo.setRememberMe(1);
         Result result = HttpUtil.post(loginUrl, loginInfo, Result.class);
@@ -75,7 +75,7 @@ public class HttpUtilsTest {
     public void testRestApiPostTimeout() {
         String loginUrl = postUrl + "auth/login";
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setPassword("hippo4j");
+        loginInfo.setPassword("hippo4jtest");
         loginInfo.setUsername("hippo4j");
         loginInfo.setRememberMe(1);
         HttpUtil.post(loginUrl, loginInfo, 1, Result.class);
@@ -84,10 +84,10 @@ public class HttpUtilsTest {
     @Test
     public void buildUrl() {
         Map<String, String> map = new HashMap<>();
-        map.put("password", "hippo4j");
+        map.put("password", "hippo4jtest");
         map.put("username", "hippo4j");
         String s = HttpUtil.buildUrl(getUrl, map);
-        Assert.assertEquals(getUrl + "?password=hippo4j&username=hippo4j", s);
+        Assert.assertEquals(getUrl + "?password=hippo4j&username=hippo4jtest", s);
     }
 
     @Getter
