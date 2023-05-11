@@ -120,6 +120,13 @@ Contributor 是对 Hippo4j 项目有贡献的个人，标准为：
     <td align="center">Committer</td>
     <td align="center">lijinxingerm@gmail.com</td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/yanrongzhen"><img src="https://avatars.githubusercontent.com/u/106363931?v=4" width="64px;"/></ a></td>
+    <td align="center">严荣振</td>
+    <td align="center"><a href="https://github.com/yanrongzhen">yanrongzhen</a></td>
+    <td align="center">Committer</td>
+    <td align="center">bruceyan@didiglobal.com</td>
+  </tr>
 </table>
 
 ## 成为 Committer
