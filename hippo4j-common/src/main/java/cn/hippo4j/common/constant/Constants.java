@@ -102,6 +102,22 @@ public class Constants {
 
     public static final int HEALTH_CHECK_INTERVAL = 5;
 
+    public static final int MAX_CHECK_FAILURE_COUNT = 4;
+
+    public static final int INITIAL_CAPACITY = 3;
+
+    public static final int DATA_GROUP_TENANT_SIZE = 3;
+
+    public static final int ACTIVE_ALARM = 80;
+
+    public static final int CAPACITY_ALARM = 80;
+
+    public static final long EXECUTE_TIME_OUT = 10000L;
+
+    public static final int SECONDS_IN_MILLISECONDS = 1000;
+
+    public static final long FAILURE_SLEEP_INTERVAL = 25000L;
+
     public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
 
     public static final String DEFAULT_GROUP = "default group";
@@ -110,7 +126,7 @@ public class Constants {
 
     public static final String EXECUTE_TIMEOUT_TRACE = "executeTimeoutTrace";
 
-    public static final int HTTP_EXECUTE_TIMEOUT = 5000;
+    public static final long HTTP_EXECUTE_TIMEOUT = 5000L;
 
     public static final String CLIENT_VERSION = "Client-Version";
 

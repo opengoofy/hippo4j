@@ -51,6 +51,8 @@ public class DiscoveryClient implements DisposableBean {
     private static final String PREFIX = "DiscoveryClient_";
     private final String appPathIdentifier;
 
+    private final int delayTime = 30;
+
     public DiscoveryClient(HttpAgent httpAgent, InstanceInfo instanceInfo, ClientShutdown hippo4jClientShutdown) {
         this.httpAgent = httpAgent;
         this.instanceInfo = instanceInfo;
@@ -65,7 +67,7 @@ public class DiscoveryClient implements DisposableBean {
     }
 
     private void initScheduledTasks() {
-        scheduler.scheduleWithFixedDelay(new HeartbeatThread(), 30, 30, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(new HeartbeatThread(), delayTime, delayTime, TimeUnit.SECONDS);
     }
 
     boolean register() {
@@ -118,6 +120,9 @@ public class DiscoveryClient implements DisposableBean {
         hippo4jClientShutdown.prepareDestroy();
     }
 
+    /**
+     * HeartbeatThread
+     */
     public class HeartbeatThread implements Runnable {
 
         @Override

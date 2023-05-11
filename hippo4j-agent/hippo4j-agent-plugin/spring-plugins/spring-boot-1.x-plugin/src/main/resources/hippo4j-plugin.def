@@ -15,4 +15,3 @@
 # limitations under the License.
 
 spring-boot-1.x=cn.hippo4j.agent.plugin.spring.boot.v1.define.EventPublishingRunListenerInstrumentation
-spring-boot-1.x=cn.hippo4j.agent.plugin.spring.boot.v1.define.SpringApplicationRunInstrumentation

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.thread.pool;
+package cn.hippo4j.agent.plugin.thread.pool.interceptor;
 
 import cn.hippo4j.agent.core.conf.Config;
 import cn.hippo4j.agent.core.logging.api.ILog;

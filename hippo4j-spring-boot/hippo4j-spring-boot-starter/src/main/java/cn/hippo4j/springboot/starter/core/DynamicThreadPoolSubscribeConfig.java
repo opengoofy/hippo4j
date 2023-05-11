@@ -41,10 +41,12 @@ public class DynamicThreadPoolSubscribeConfig {
 
     private final BootstrapProperties properties;
 
+    private final int defaultAliveTime = 2000;
+
     private final ExecutorService configRefreshExecutorService = ThreadPoolBuilder.builder()
             .corePoolSize(1)
             .maximumPoolSize(2)
-            .keepAliveTime(2000)
+            .keepAliveTime(defaultAliveTime)
             .timeUnit(TimeUnit.MILLISECONDS)
             .workQueue(BlockingQueueTypeEnum.SYNCHRONOUS_QUEUE)
             .allowCoreThreadTimeOut(true)

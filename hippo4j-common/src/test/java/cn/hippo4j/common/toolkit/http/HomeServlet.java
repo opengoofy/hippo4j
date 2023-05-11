@@ -15,20 +15,28 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.common;
+package cn.hippo4j.common.toolkit.http;
 
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MapPropertySource;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * Implement HttpServlet and receive post and get requests<br>
+ * This HttpServlet represents the home page
+ */
+public class HomeServlet extends HttpServlet {
 
-public class SpringEnvironmentSupport {
+    int status = 200;
+    String result = "success";
 
-    public static void disableNonAgentSwitch(ConfigurableEnvironment environment) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("spring.dynamic.thread-pool.enable", false); // Switch off in non-Agent mode
-        MapPropertySource propertySource = new MapPropertySource("Hippo4j-Agent-Properties", map);
-        environment.getPropertySources().addFirst(propertySource);
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setStatus(status);
+        PrintWriter writer = resp.getWriter();
+        writer.println(result);
     }
+
 }

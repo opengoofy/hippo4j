@@ -113,6 +113,9 @@ public abstract class AbstractHystrixThreadPoolAdapter implements ThreadPoolAdap
         scheduler.schedule(hystrixThreadPoolRefreshTask, taskIntervalSeconds, TimeUnit.SECONDS);
     }
 
+    /**
+     * hystrix thread-pool refresh task
+     */
     class HystrixThreadPoolRefreshTask implements Runnable {
 
         private final ScheduledExecutorService scheduler;

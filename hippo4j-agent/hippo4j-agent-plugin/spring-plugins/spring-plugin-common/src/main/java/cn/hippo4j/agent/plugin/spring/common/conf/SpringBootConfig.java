@@ -15,23 +15,23 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.boot.v1;
+package cn.hippo4j.agent.plugin.spring.common.conf;
 
-import cn.hippo4j.agent.core.boot.SpringBootConfig;
+import cn.hippo4j.agent.core.boot.SpringBootConfigNode;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ApolloSpringBootProperties {
+public class SpringBootConfig {
 
     public static class Spring {
 
         public static class Dynamic {
 
-            @SpringBootConfig(root = ApolloSpringBootProperties.class)
+            @SpringBootConfigNode(root = SpringBootConfig.class)
             public static class Thread_Pool {
 
-                @SpringBootConfig(root = ApolloSpringBootProperties.class)
+                @SpringBootConfigNode(root = SpringBootConfig.class)
                 public static class Apollo {
 
                     public static List<String> NAMESPACE = Arrays.asList("application");

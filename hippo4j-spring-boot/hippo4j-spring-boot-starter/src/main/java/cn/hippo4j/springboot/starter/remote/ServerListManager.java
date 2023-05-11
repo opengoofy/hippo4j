@@ -88,13 +88,16 @@ public class ServerListManager {
         return new ServerAddressIterator(serverUrls);
     }
 
+    /**
+     * Server Address Iterator
+     */
     private static class ServerAddressIterator implements Iterator<String> {
 
         final List<RandomizedServerAddress> sorted;
 
         final Iterator<RandomizedServerAddress> iter;
 
-        public ServerAddressIterator(List<String> source) {
+        ServerAddressIterator(List<String> source) {
             sorted = new ArrayList();
             for (String address : source) {
                 sorted.add(new RandomizedServerAddress(address));
@@ -113,6 +116,9 @@ public class ServerListManager {
             return null;
         }
 
+        /**
+         * Randomized Server Address
+         */
         static class RandomizedServerAddress implements Comparable<RandomizedServerAddress> {
 
             static Random random = new Random();
@@ -123,7 +129,7 @@ public class ServerListManager {
 
             int seed;
 
-            public RandomizedServerAddress(String ip) {
+            RandomizedServerAddress(String ip) {
                 try {
                     this.serverIp = ip;
                     /*
