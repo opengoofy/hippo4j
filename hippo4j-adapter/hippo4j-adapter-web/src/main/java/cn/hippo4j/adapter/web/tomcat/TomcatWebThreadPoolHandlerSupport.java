@@ -72,8 +72,8 @@ public class TomcatWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerS
         int queueCapacity = queueSize + remainingCapacity;
         String rejectedExecutionHandlerName = executor instanceof ThreadPoolExecutor ? ((ThreadPoolExecutor) executor).getRejectedExecutionHandler().getClass().getSimpleName()
                 : tomcatThreadPoolExecutor.getRejectedExecutionHandler().getClass().getSimpleName();
-        poolBaseInfo.setCoreSize(corePoolSize);
-        poolBaseInfo.setMaximumSize(maximumPoolSize);
+        poolBaseInfo.setCorePoolSize(corePoolSize);
+        poolBaseInfo.setMaximumPoolSize(maximumPoolSize);
         poolBaseInfo.setKeepAliveTime(keepAliveTime);
         poolBaseInfo.setQueueType(blockingQueue.getClass().getSimpleName());
         poolBaseInfo.setQueueCapacity(queueCapacity);
@@ -89,8 +89,8 @@ public class TomcatWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerS
             int minThreads = tomcatThreadPoolExecutor.getCorePoolSize();
             int maxThreads = tomcatThreadPoolExecutor.getMaximumPoolSize();
             long keepAliveTime = tomcatThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS);
-            parameterInfo.setCoreSize(minThreads);
-            parameterInfo.setMaxSize(maxThreads);
+            parameterInfo.setCorePoolSize(minThreads);
+            parameterInfo.setMaximumPoolSize(maxThreads);
             parameterInfo.setKeepAliveTime(keepAliveTime);
         } catch (Exception ex) {
             log.error("Failed to get the tomcat thread pool parameter.", ex);
@@ -118,9 +118,9 @@ public class TomcatWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerS
         String queueType = queue.getClass().getSimpleName();
         int remainingCapacity = queue.remainingCapacity();
         int queueCapacity = queueSize + remainingCapacity;
-        runStateInfo.setCoreSize(corePoolSize);
+        runStateInfo.setCorePoolSize(corePoolSize);
         runStateInfo.setPoolSize(poolSize);
-        runStateInfo.setMaximumSize(maximumPoolSize);
+        runStateInfo.setMaximumPoolSize(maximumPoolSize);
         runStateInfo.setActiveSize(activeCount);
         runStateInfo.setCurrentLoad(currentLoad);
         runStateInfo.setPeakLoad(peakLoad);

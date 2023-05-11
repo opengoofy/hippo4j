@@ -54,8 +54,8 @@ public class WebThreadPoolMicrometerMonitorHandler extends AbstractWebThreadPool
         Iterable<Tag> tags = CollectionUtil.newArrayList(Tag.of(APPLICATION_NAME_TAG, applicationName));
         Metrics.gauge(metricName("current.load"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getSimpleCurrentLoad);
         Metrics.gauge(metricName("peak.load"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getSimplePeakLoad);
-        Metrics.gauge(metricName("core.size"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getCoreSize);
-        Metrics.gauge(metricName("maximum.size"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getMaximumSize);
+        Metrics.gauge(metricName("core.size"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getCorePoolSize);
+        Metrics.gauge(metricName("maximum.size"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getMaximumPoolSize);
         Metrics.gauge(metricName("current.size"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getPoolSize);
         Metrics.gauge(metricName("largest.size"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getLargestPoolSize);
         Metrics.gauge(metricName("active.size"), tags, webThreadPoolRunStateInfo, ThreadPoolRunStateInfo::getActiveSize);

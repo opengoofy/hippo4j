@@ -58,8 +58,8 @@ public class AlibabaDubboThreadPoolAdapter implements ThreadPoolAdapter, Applica
             return threadPoolAdapterState;
         }
         threadPoolAdapterState.setThreadPoolKey(identify);
-        threadPoolAdapterState.setCoreSize(executor.getCorePoolSize());
-        threadPoolAdapterState.setMaximumSize(executor.getMaximumPoolSize());
+        threadPoolAdapterState.setCorePoolSize(executor.getCorePoolSize());
+        threadPoolAdapterState.setMaximumPoolSize(executor.getMaximumPoolSize());
         return threadPoolAdapterState;
     }
 

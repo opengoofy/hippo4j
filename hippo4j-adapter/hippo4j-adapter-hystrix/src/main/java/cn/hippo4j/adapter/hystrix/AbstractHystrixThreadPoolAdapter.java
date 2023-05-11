@@ -70,8 +70,8 @@ public abstract class AbstractHystrixThreadPoolAdapter implements ThreadPoolAdap
         if (threadPoolExecutor != null) {
             BlockingQueue<Runnable> blockingQueue = threadPoolExecutor.getQueue();
             result.setThreadPoolKey(identify);
-            result.setCoreSize(threadPoolExecutor.getCorePoolSize());
-            result.setMaximumSize(threadPoolExecutor.getMaximumPoolSize());
+            result.setCorePoolSize(threadPoolExecutor.getCorePoolSize());
+            result.setMaximumPoolSize(threadPoolExecutor.getMaximumPoolSize());
             result.setBlockingQueueCapacity(blockingQueue.size() + blockingQueue.remainingCapacity());
             return result;
         }
