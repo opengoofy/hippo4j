@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.boot.v1;
+package cn.hippo4j.agent.plugin.spring.common.interceptor;
 
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
-import cn.hippo4j.agent.plugin.spring.common.SpringEnvironmentSupport;
+import cn.hippo4j.agent.plugin.spring.common.support.SpringEnvironmentSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;

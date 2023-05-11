@@ -15,14 +15,19 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.apollo;
+package cn.hippo4j.agent.core.boot;
 
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class DefaultConfigConstructorInterceptor implements InstanceConstructorInterceptor {
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SpringBootConfigNode {
 
-    @Override
-    public void onConstruct(EnhancedInstance objInst, Object[] allArguments) throws Throwable {
-    }
+    /**
+     * @return Class as the root to do config initialization.
+     */
+    Class<?> root();
 }

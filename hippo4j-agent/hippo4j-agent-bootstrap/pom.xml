@@ -96,7 +96,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <delete dir="${project.basedir}/../skywalking-agent" />
+                                <delete dir="${project.basedir}/../hippo4j-agent" />
                             </target>
                         </configuration>
                     </execution>

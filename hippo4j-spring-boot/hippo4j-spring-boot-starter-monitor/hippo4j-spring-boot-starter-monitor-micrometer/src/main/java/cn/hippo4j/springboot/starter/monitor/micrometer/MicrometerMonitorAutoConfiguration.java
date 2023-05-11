@@ -38,6 +38,7 @@ public class MicrometerMonitorAutoConfiguration {
 
     @Bean
     @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('dynamic')")
+    @ConditionalOnProperty(prefix = Constants.CONFIGURATION_PROPERTIES_PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
     public DynamicThreadPoolMicrometerMonitorHandler dynamicThreadPoolMicrometerMonitorHandler() {
         return new DynamicThreadPoolMicrometerMonitorHandler();
     }

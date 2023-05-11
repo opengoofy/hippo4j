@@ -31,7 +31,7 @@ public class ThreadPoolExecutorInstrumentation extends ClassInstanceMethodsEnhan
 
     private static final String ENHANCE_CLASS = "java.util.concurrent.ThreadPoolExecutor";
 
-    private static final String CONSTRUCTOR_INTERCEPT_CLASS = "cn.hippo4j.agent.plugin.thread.pool.ThreadPoolExecutorConstructorMethodInterceptor";
+    private static final String CONSTRUCTOR_INTERCEPT_CLASS = "cn.hippo4j.agent.plugin.thread.pool.interceptor.ThreadPoolExecutorConstructorMethodInterceptor";
 
     private static final int CONSTRUCTOR_INTERCEPT_PARAMETER_LENGTH = 7;
 
