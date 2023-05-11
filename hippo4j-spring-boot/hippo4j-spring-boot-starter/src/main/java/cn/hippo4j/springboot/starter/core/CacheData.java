@@ -35,15 +35,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class CacheData {
 
     @Getter
-    public volatile String md5;
+    private volatile String md5;
 
-    public volatile String content;
+    private volatile String content;
 
-    public final String tenantId;
+    @Getter
+    private final String tenantId;
 
-    public final String itemId;
+    @Getter
+    private final String itemId;
 
-    public final String threadPoolId;
+    @Getter
+    private final String threadPoolId;
 
     @Setter
     private volatile boolean isInitializing = true;
@@ -56,7 +59,7 @@ public class CacheData {
         this.threadPoolId = threadPoolId;
         this.content = ContentUtil.getPoolContent(GlobalThreadPoolManage.getPoolParameter(threadPoolId));
         this.md5 = getMd5String(content);
-        this.listeners = new CopyOnWriteArrayList();
+        this.listeners = new CopyOnWriteArrayList<>();
     }
 
     public void addListener(Listener listener) {

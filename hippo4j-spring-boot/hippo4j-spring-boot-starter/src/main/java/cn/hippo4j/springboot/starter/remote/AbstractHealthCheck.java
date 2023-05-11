@@ -31,8 +31,10 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-
+import static cn.hippo4j.common.constant.Constants.MAX_CHECK_FAILURE_COUNT;
+import static cn.hippo4j.common.constant.Constants.SECONDS_IN_MILLISECONDS;
 import static cn.hippo4j.common.constant.Constants.HEALTH_CHECK_INTERVAL;
+import static cn.hippo4j.common.constant.Constants.FAILURE_SLEEP_INTERVAL;
 
 /**
  * Abstract health check.
@@ -99,10 +101,10 @@ public abstract class AbstractHealthCheck implements ServerHealthCheck, Initiali
         } else {
             healthStatus = false;
             checkFailureCount++;
-            if (checkFailureCount > 1 && checkFailureCount < 4) {
-                ThreadUtil.sleep(HEALTH_CHECK_INTERVAL * 1000 * (checkFailureCount - 1));
-            } else if (checkFailureCount >= 4) {
-                ThreadUtil.sleep(25000L);
+            if (checkFailureCount > 1 && checkFailureCount < MAX_CHECK_FAILURE_COUNT) {
+                ThreadUtil.sleep((long) HEALTH_CHECK_INTERVAL * SECONDS_IN_MILLISECONDS * (checkFailureCount - 1));
+            } else if (checkFailureCount >= MAX_CHECK_FAILURE_COUNT) {
+                ThreadUtil.sleep(FAILURE_SLEEP_INTERVAL);
             }
         }
     }

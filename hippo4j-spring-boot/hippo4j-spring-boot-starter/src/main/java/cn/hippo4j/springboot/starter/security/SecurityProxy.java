@@ -39,6 +39,8 @@ public class SecurityProxy {
 
     private static final String APPLY_TOKEN_URL = Constants.BASE_PATH + "/auth/users/apply/token";
 
+    private final int refreshWindowDuration = 10;
+
     private final String username;
 
     private final String password;
@@ -88,7 +90,7 @@ public class SecurityProxy {
                 TokenInfo tokenInfo = JSONUtil.parseObject(tokenJsonStr, TokenInfo.class);
                 accessToken = tokenInfo.getAccessToken();
                 tokenTtl = tokenInfo.getTokenTtl();
-                tokenRefreshWindow = tokenTtl / 10;
+                tokenRefreshWindow = tokenTtl / refreshWindowDuration;
             } catch (Throwable ex) {
                 log.error("Failed to apply for token. message: {}", ex.getMessage());
                 return false;

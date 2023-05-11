@@ -53,10 +53,14 @@ import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
+import static cn.hippo4j.common.constant.Constants.INITIAL_CAPACITY;
+import static cn.hippo4j.common.constant.Constants.TP_ID;
 import static cn.hippo4j.common.constant.Constants.ITEM_ID;
 import static cn.hippo4j.common.constant.Constants.NAMESPACE;
-import static cn.hippo4j.common.constant.Constants.TP_ID;
+import static cn.hippo4j.common.constant.Constants.ACTIVE_ALARM;
+import static cn.hippo4j.common.constant.Constants.CAPACITY_ALARM;
+import static cn.hippo4j.common.constant.Constants.EXECUTE_TIME_OUT;
+import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 
 /**
  * Dynamic thread-pool post processor.
@@ -94,7 +98,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 return bean;
             }
             DynamicThreadPoolExecutor dynamicThreadPoolExecutor;
-            if ((dynamicThreadPoolExecutor = DynamicThreadPoolAdapterChoose.unwrap(bean)) == null) {
+            dynamicThreadPoolExecutor = DynamicThreadPoolAdapterChoose.unwrap(bean);
+            if ((dynamicThreadPoolExecutor) == null) {
                 dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) bean;
             }
             DynamicThreadPoolWrapper dynamicThreadPoolWrapper = new DynamicThreadPoolWrapper(dynamicThreadPoolExecutor.getThreadPoolId(), dynamicThreadPoolExecutor);
@@ -128,16 +133,17 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     protected ThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrapper) {
         String threadPoolId = dynamicThreadPoolWrapper.getThreadPoolId();
         ThreadPoolExecutor executor = dynamicThreadPoolWrapper.getExecutor();
-        Map<String, String> queryStrMap = new HashMap(3);
+        Map<String, String> queryStrMap = new HashMap<>(INITIAL_CAPACITY);
         queryStrMap.put(TP_ID, threadPoolId);
         queryStrMap.put(ITEM_ID, properties.getItemId());
         queryStrMap.put(NAMESPACE, properties.getNamespace());
         ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
         try {
-            Result result = httpAgent.httpGetByConfig(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, 5000L);
+            Result result = httpAgent.httpGetByConfig(Constants.CONFIG_CONTROLLER_PATH, null, queryStrMap, HTTP_EXECUTE_TIMEOUT);
             if (result.isSuccess() && result.getData() != null) {
                 String resultJsonStr = JSONUtil.toJSONString(result.getData());
-                if ((threadPoolParameterInfo = JSONUtil.parseObject(resultJsonStr, ThreadPoolParameterInfo.class)) != null) {
+                threadPoolParameterInfo = JSONUtil.parseObject(resultJsonStr, ThreadPoolParameterInfo.class);
+                if (threadPoolParameterInfo != null) {
                     threadPoolParamReplace(executor, threadPoolParameterInfo);
                     registerNotifyAlarm(threadPoolParameterInfo);
                 }
@@ -153,9 +159,9 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .allowCoreThreadTimeOut(executor.allowsCoreThreadTimeOut())
                         .keepAliveTime(executor.getKeepAliveTime(TimeUnit.MILLISECONDS))
                         .isAlarm(false)
-                        .activeAlarm(80)
-                        .capacityAlarm(80)
-                        .executeTimeOut(10000L)
+                        .activeAlarm(ACTIVE_ALARM)
+                        .capacityAlarm(CAPACITY_ALARM)
+                        .executeTimeOut(EXECUTE_TIME_OUT)
                         .rejectedPolicyType(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()))
                         .build();
                 DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()
