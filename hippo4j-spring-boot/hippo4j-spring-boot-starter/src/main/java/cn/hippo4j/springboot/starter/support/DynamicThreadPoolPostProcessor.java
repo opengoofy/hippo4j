@@ -53,8 +53,14 @@ import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import static cn.hippo4j.common.constant.Constants.*;
+import static cn.hippo4j.common.constant.Constants.INITIAL_CAPACITY;
+import static cn.hippo4j.common.constant.Constants.TP_ID;
+import static cn.hippo4j.common.constant.Constants.ITEM_ID;
+import static cn.hippo4j.common.constant.Constants.NAMESPACE;
+import static cn.hippo4j.common.constant.Constants.ACTIVE_ALARM;
+import static cn.hippo4j.common.constant.Constants.CAPACITY_ALARM;
+import static cn.hippo4j.common.constant.Constants.EXECUTE_TIME_OUT;
+import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 
 /**
  * Dynamic thread-pool post processor.
@@ -127,7 +133,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     protected ThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrapper) {
         String threadPoolId = dynamicThreadPoolWrapper.getThreadPoolId();
         ThreadPoolExecutor executor = dynamicThreadPoolWrapper.getExecutor();
-        Map<String, String> queryStrMap = new HashMap(INITIAL_CAPACITY);
+        Map<String, String> queryStrMap = new HashMap<>(INITIAL_CAPACITY);
         queryStrMap.put(TP_ID, threadPoolId);
         queryStrMap.put(ITEM_ID, properties.getItemId());
         queryStrMap.put(NAMESPACE, properties.getNamespace());

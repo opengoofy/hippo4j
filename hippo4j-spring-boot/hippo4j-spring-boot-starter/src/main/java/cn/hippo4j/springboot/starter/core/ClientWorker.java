@@ -30,7 +30,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.StringUtils;
-
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,8 +42,21 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static cn.hippo4j.common.constant.Constants.*;
+import static cn.hippo4j.common.constant.Constants.CONFIG_LONG_POLL_TIMEOUT;
+import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER_TRANSLATION;
+import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
+import static cn.hippo4j.common.constant.Constants.LINE_SEPARATOR;
+import static cn.hippo4j.common.constant.Constants.PROBE_MODIFY_REQUEST;
+import static cn.hippo4j.common.constant.Constants.WEIGHT_CONFIGS;
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_TIMEOUT;
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_CLIENT_IDENTIFICATION;
+import static cn.hippo4j.common.constant.Constants.LONG_PULLING_TIMEOUT_NO_HANGUP;
+import static cn.hippo4j.common.constant.Constants.CLIENT_VERSION;
+import static cn.hippo4j.common.constant.Constants.LISTENER_PATH;
+import static cn.hippo4j.common.constant.Constants.INITIAL_CAPACITY;
+import static cn.hippo4j.common.constant.Constants.DATA_GROUP_TENANT_SIZE;
+import static cn.hippo4j.common.constant.Constants.CONFIG_CONTROLLER_PATH;
+import static cn.hippo4j.common.constant.Constants.NULL;
 
 /**
  * Client worker.
@@ -64,6 +76,8 @@ public class ClientWorker implements DisposableBean {
     private final CountDownLatch awaitApplicationComplete = new CountDownLatch(1);
     private final CountDownLatch cacheCondition = new CountDownLatch(1);
     private final ConcurrentHashMap<String, CacheData> cacheMap = new ConcurrentHashMap<>(16);
+
+    private final long defaultTimedOut = 3000L;
 
     @SuppressWarnings("all")
     public ClientWorker(HttpAgent httpAgent,
@@ -138,7 +152,7 @@ public class ClientWorker implements DisposableBean {
                 String itemId = keys[1];
                 String namespace = keys[2];
                 try {
-                    String content = getServerConfig(namespace, itemId, tpId, HTTP_EXECUTE_TIMEOUT);
+                    String content = getServerConfig(namespace, itemId, tpId, defaultTimedOut);
                     CacheData cacheData = cacheMap.get(tpId);
                     String poolContent = ContentUtil.getPoolContent(JSONUtil.parseObject(content, ThreadPoolParameterInfo.class));
                     cacheData.setContent(poolContent);
@@ -265,7 +279,7 @@ public class ClientWorker implements DisposableBean {
         if (lastCacheData == null) {
             String serverConfig;
             try {
-                serverConfig = getServerConfig(namespace, itemId, threadPoolId, HTTP_EXECUTE_TIMEOUT);
+                serverConfig = getServerConfig(namespace, itemId, threadPoolId, defaultTimedOut);
                 ThreadPoolParameterInfo poolInfo = JSONUtil.parseObject(serverConfig, ThreadPoolParameterInfo.class);
                 cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
             } catch (Exception ex) {
