@@ -28,18 +28,91 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-config-spring-boot-starter</artifactId>
             <version>${revision}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>error_prone_annotations</artifactId>
+                    <groupId>com.google.errorprone</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>checker-qual</artifactId>
+                    <groupId>org.checkerframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-codec</artifactId>
+                    <groupId>commons-codec</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-boot-configuration-processor</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hippo4j-spring-boot-starter-monitor-micrometer</artifactId>
+                    <groupId>cn.hippo4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hippo4j-spring-boot-starter-monitor-local-log</artifactId>
+                    <groupId>cn.hippo4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
             <version>5.1.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>audience-annotations</artifactId>
+                    <groupId>org.apache.yetus</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>error_prone_annotations</artifactId>
+                    <groupId>com.google.errorprone</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>j2objc-annotations</artifactId>
+                    <groupId>com.google.j2objc</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>checker-qual</artifactId>
+                    <groupId>org.checkerframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>animal-sniffer-annotations</artifactId>
+                    <groupId>org.codehaus.mojo</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>failureaccess</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-example-core</artifactId>
             <version>${revision}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>transmittable-thread-local</artifactId>
+                    <groupId>com.alibaba</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+             
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>listenablefuture</artifactId>
+            <version>9999.0-empty-to-avoid-conflict-with-guava</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
