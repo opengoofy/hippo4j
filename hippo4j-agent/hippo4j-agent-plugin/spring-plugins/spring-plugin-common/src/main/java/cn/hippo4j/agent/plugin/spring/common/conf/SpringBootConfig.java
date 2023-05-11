@@ -15,19 +15,30 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.core.boot;
+package cn.hippo4j.agent.plugin.spring.common.conf;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import cn.hippo4j.agent.core.boot.SpringBootConfigNode;
 
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SpringBootConfig {
+import java.util.Arrays;
+import java.util.List;
 
-    /**
-     * @return Class as the root to do config initialization.
-     */
-    Class<?> root();
+public class SpringBootConfig {
+
+    public static class Spring {
+
+        public static class Dynamic {
+
+            @SpringBootConfigNode(root = SpringBootConfig.class)
+            public static class Thread_Pool {
+
+                @SpringBootConfigNode(root = SpringBootConfig.class)
+                public static class Apollo {
+
+                    public static List<String> NAMESPACE = Arrays.asList("application");
+                }
+
+                public static String CONFIG_FILE_TYPE;
+            }
+        }
+    }
 }

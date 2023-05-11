@@ -15,11 +15,8 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.boot.v1;
+package cn.hippo4j.agent.plugin.spring.common.support;
 
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
-import cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
 import cn.hippo4j.agent.core.registry.AgentThreadPoolInstanceRegistry;
 import cn.hippo4j.agent.core.util.ReflectUtil;
 import cn.hippo4j.agent.core.util.ThreadPoolPropertyKey;
@@ -30,30 +27,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class SpringApplicationRunInterceptor implements InstanceMethodsAroundInterceptor {
+public class SpringThreadPoolRegisterSupport {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringApplicationRunInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringThreadPoolRegisterSupport.class);
 
-    @Override
-    public void beforeMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, MethodInterceptResult result) throws Throwable {
-
-    }
-
-    @Override
-    public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Object ret) throws Throwable {
-        registerThreadPoolInstances();
-        LOGGER.info("[Hippo4j-Agent] Registered thread pool instances successfully.");
-        return ret;
-    }
-
-    private void registerThreadPoolInstances() {
+    public static void registerThreadPoolInstances() {
         Map<ThreadPoolExecutor, Class<?>> earlyConstructMap = AgentThreadPoolInstanceRegistry.getInstance().earlyConstructMap;
         for (Map.Entry<ThreadPoolExecutor, Class<?>> entry : earlyConstructMap.entrySet()) {
             ThreadPoolExecutor enhancedInstance = entry.getKey();
@@ -72,9 +56,10 @@ public class SpringApplicationRunInterceptor implements InstanceMethodsAroundInt
                 }
             }
         }
+        LOGGER.info("[Hippo4j-Agent] Registered thread pool instances successfully.");
     }
 
-    private void register(String threadPoolId, ThreadPoolExecutor executor) {
+    public static void register(String threadPoolId, ThreadPoolExecutor executor) {
         // build parameter properties.
         Properties properties = new Properties();
         properties.put(ThreadPoolPropertyKey.THREAD_POOL_ID, threadPoolId);
@@ -90,11 +75,6 @@ public class SpringApplicationRunInterceptor implements InstanceMethodsAroundInt
 
         // register executor.
         AgentThreadPoolInstanceRegistry.getInstance().putHolder(threadPoolId, executor, properties);
-
-    }
-
-    @Override
-    public void handleMethodException(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Throwable t) {
 
     }
 }

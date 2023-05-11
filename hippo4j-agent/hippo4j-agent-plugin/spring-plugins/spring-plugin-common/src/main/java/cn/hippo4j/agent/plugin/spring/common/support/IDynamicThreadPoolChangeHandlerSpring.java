@@ -15,20 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.common;
+package cn.hippo4j.agent.plugin.spring.common.support;
 
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MapPropertySource;
+public interface IDynamicThreadPoolChangeHandlerSpring {
 
-import java.util.HashMap;
-import java.util.Map;
+    void registerApolloConfigHandler();
 
-public class SpringEnvironmentSupport {
-
-    public static void disableNonAgentSwitch(ConfigurableEnvironment environment) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("spring.dynamic.thread-pool.enable", false); // Switch off in non-Agent mode
-        MapPropertySource propertySource = new MapPropertySource("Hippo4j-Agent-Properties", map);
-        environment.getPropertySources().addFirst(propertySource);
-    }
 }

@@ -43,19 +43,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.ctrip.framework.apollo</groupId>
-            <artifactId>apollo-client</artifactId>
-            <version>${apollo.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-config-spring-boot-1x-starter</artifactId>
             <version>${project.version}</version>

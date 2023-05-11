@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.common;
+package cn.hippo4j.agent.plugin.spring.common.support;
 
 import cn.hippo4j.agent.core.boot.SpringBootConfigInitializer;
 import cn.hippo4j.agent.core.logging.api.ILog;
