@@ -18,7 +18,7 @@
         <jackson-bom.version>2.11.1</jackson-bom.version>
         <h2.version>2.1.214</h2.version>
         <mockito.version>3.12.4</mockito.version>
-        <dubbo.version>3.0.5</dubbo.version>
+        <dubbo.version>3.0.13</dubbo.version>
         <alibaba-dubbo.version>2.6.12</alibaba-dubbo.version>
         <slf4j-api.version>1.7.7</slf4j-api.version>
         <micrometer-core.version>1.8.4</micrometer-core.version>
