@@ -43,16 +43,6 @@
     </scm>
 
     <modules>
-        <module>hippo4j-adapter</module>
-        <module>hippo4j-common</module>
-        <module>hippo4j-core</module>
-        <module>hippo4j-example</module>
-        <module>hippo4j-message</module>
-        <module>hippo4j-monitor</module>
-        <module>hippo4j-rpc</module>
-        <module>hippo4j-server</module>
-        <module>hippo4j-spring-boot</module>
-        <module>hippo4j-agent</module>
         <module>dependencies</module>
         <module>threadpool</module>
         <module>common</module>

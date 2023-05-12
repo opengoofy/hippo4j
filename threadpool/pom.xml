@@ -10,4 +10,14 @@
     </parent>
     <artifactId>hippo4j-threadpool</artifactId>
     <packaging>pom</packaging>
+
+    <modules>
+        <module>adapter</module>
+        <module>common</module>
+        <module>core</module>
+        <module>message</module>
+        <module>monitor</module>
+        <module>rpc</module>
+        <module>server</module>
+    </modules>
 </project>
