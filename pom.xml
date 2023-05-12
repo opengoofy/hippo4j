@@ -233,10 +233,10 @@
                     <applySkip>${skip.spotless.apply}</applySkip>
                     <java>
                         <eclipse>
-                            <file>${maven.multiModuleProjectDirectory}/dev-support/hippo4j_spotless_formatter.xml</file>
+                            <file>${maven.multiModuleProjectDirectory}/format/hippo4j_spotless_formatter.xml</file>
                         </eclipse>
                         <licenseHeader>
-                            <file>${maven.multiModuleProjectDirectory}/dev-support/license-header</file>
+                            <file>${maven.multiModuleProjectDirectory}/format/license-header</file>
                         </licenseHeader>
                     </java>
                 </configuration>
@@ -254,10 +254,10 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${maven-checkstyle-plugin.version}</version>
                 <configuration>
-                    <configLocation>${maven.multiModuleProjectDirectory}/dev-support/hippo4j_checkstyle.xml
+                    <configLocation>${maven.multiModuleProjectDirectory}/checkstyle/hippo4j_checkstyle.xml
                     </configLocation>
                     <suppressionsLocation>
-                        ${maven.multiModuleProjectDirectory}/dev-support/hippo4j_checkstyle_suppression.xml
+                        ${maven.multiModuleProjectDirectory}/checkstyle/hippo4j_checkstyle_suppression.xml
                     </suppressionsLocation>
                     <!-- Do not scan the test directory for now -->
                     <includeTestSourceDirectory>false</includeTestSourceDirectory>
