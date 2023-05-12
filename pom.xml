@@ -53,7 +53,7 @@
         <module>hippo4j-server</module>
         <module>hippo4j-spring-boot</module>
         <module>hippo4j-agent</module>
-        <module>hippo4j-dependencies</module>
+        <module>dependencies</module>
     </modules>
 
     <properties>
