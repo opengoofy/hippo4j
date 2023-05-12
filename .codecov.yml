@@ -29,3 +29,7 @@ ignore:
   - "hippo4j-example/.*"
   - "docs/.*"
   - "dev-support/.*"
+  - "hippo4j-ui/.*"
+  - "hippo4j-ui-new/.*"
+  - "checkstyle/.*"
+  - "format/.*"
