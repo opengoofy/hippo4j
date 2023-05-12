@@ -101,7 +101,7 @@ public class SimpleReadWriteLockTest {
                 while (true) {
                     if (simpleReadWriteLock.tryWriteLock()) {
                         System.out.println(Thread.currentThread() + " -1 get write lock success");
-                        TimeUnit.SECONDS.sleep(5);
+                        TimeUnit.SECONDS.sleep(1);
                         System.out.println(Thread.currentThread() + " -1 execute done");
                         simpleReadWriteLock.releaseWriteLock();
                         countDownLatch.countDown();
