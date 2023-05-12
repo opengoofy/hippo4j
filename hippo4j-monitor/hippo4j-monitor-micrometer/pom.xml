@@ -18,7 +18,6 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
-            <version>${micrometer-core.version}</version>
         </dependency>
     </dependencies>
 </project>

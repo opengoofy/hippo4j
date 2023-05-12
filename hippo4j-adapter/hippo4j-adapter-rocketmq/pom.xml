@@ -18,7 +18,6 @@
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-spring-boot-starter</artifactId>
-            <version>${rocketmq.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

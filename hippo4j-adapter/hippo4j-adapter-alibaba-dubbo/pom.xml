@@ -18,7 +18,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo</artifactId>
-            <version>${alibaba-dubbo.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
