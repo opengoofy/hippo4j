@@ -36,6 +36,7 @@ public class AbstractThreadPoolRuntimeTest {
     @Test
     void testPoolRunState() {
         AbstractThreadPoolRuntime threadPoolRuntime = new AbstractThreadPoolRuntime() {
+
             @Override
             public ThreadPoolRunStateInfo supplement(ThreadPoolRunStateInfo threadPoolRunStateInfo) {
                 return threadPoolRunStateInfo;

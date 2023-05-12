@@ -18,7 +18,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
-            <version>${spring-cloud-starter-stream-rabbitmq.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
