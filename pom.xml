@@ -54,6 +54,12 @@
         <module>hippo4j-spring-boot</module>
         <module>hippo4j-agent</module>
         <module>dependencies</module>
+        <module>threadpool</module>
+        <module>common</module>
+        <module>starters</module>
+        <module>tests</module>
+        <module>examples</module>
+        <module>agents</module>
     </modules>
 
     <properties>
