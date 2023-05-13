@@ -131,13 +131,6 @@ export default {
     }
     console.log(hostname);
   },
-  mounted() {
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus();
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus();
-    }
-  },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
   },
