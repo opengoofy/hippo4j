@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-spring-boot-starter-adapter-rabbitmq</artifactId>
+            <artifactId>hippo4j-threadpool-spring-boot-starter-adapter-rabbitmq</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
