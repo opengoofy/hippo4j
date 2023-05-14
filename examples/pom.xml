@@ -10,4 +10,12 @@
     </parent>
     <artifactId>hippo4j-examples</artifactId>
     <packaging>pom</packaging>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
+    <modules>
+        <module>threadpool-example</module>
+    </modules>
 </project>

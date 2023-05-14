@@ -8,5 +8,5 @@
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>common</artifactId>
+    <artifactId>hippo4j-common</artifactId>
 </project>

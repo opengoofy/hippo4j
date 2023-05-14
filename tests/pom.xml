@@ -9,4 +9,8 @@
         <version>${revision}</version>
     </parent>
     <artifactId>hippo4j-tests</artifactId>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 </project>
