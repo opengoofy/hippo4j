@@ -46,3 +46,8 @@ build/
 docs/node_modules
 docs/build
 docs/.docusaurus
+
+
+### Docker ###
+docker/threadpool/server/conf
+docker/threadpool/server/target
