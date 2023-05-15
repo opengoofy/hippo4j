@@ -31,7 +31,7 @@ import java.util.Date;
  * User info.
  */
 @Data
-@TableName("user")
+@TableName("`user`")
 public class UserInfo {
 
     /**
