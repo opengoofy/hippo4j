@@ -54,7 +54,7 @@
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-common</artifactId>
+            <artifactId>hippo4j-threadpool-infra-common</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

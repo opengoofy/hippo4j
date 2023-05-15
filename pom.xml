@@ -38,18 +38,19 @@
 
     <scm>
         <connection>scm:git@github.com:opengoofy/hippo4j</connection>
-        <developerConnection>scm:git@github.com:opengoofy/hippo4j.git</developerConnection>
+        <developerConnection>scm:git@github.com:open-goofy/hippo4j.git</developerConnection>
         <url>git@github.com:opengoofy/hippo4j.git</url>
     </scm>
 
     <modules>
+        <module>agents</module>
         <module>dependencies</module>
-        <module>threadpool</module>
-        <module>common</module>
+        <module>examples</module>
+        <module>infra</module>
+        <module>kernel</module>
         <module>starters</module>
         <module>tests</module>
-        <module>examples</module>
-        <module>agents</module>
+        <module>threadpool</module>
     </modules>
 
     <properties>

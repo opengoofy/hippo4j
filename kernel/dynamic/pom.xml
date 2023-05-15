@@ -5,18 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-all</artifactId>
+        <artifactId>hippo4j-kernel</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>hippo4j-threadpool</artifactId>
-    <packaging>pom</packaging>
 
-    <modules>
-        <module>adapter</module>
-        <module>core</module>
-        <module>message</module>
-        <module>monitor</module>
-        <module>rpc</module>
-        <module>server</module>
-    </modules>
+    <artifactId>hippo4j-threadpool-kernel-dynamic</artifactId>
 </project>
