@@ -108,18 +108,14 @@
                 <configuration>
                     <images>
                         <image>
-                            <!--镜像名(含版本号)-->
                             <name>hippo4j/${project.build.finalName}:${project.version}</name>
-                            <!--别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置-->
                             <alias>${project.build.finalName}</alias>
                             <build>
                                 <contextDir>${contextDir}</contextDir>
                             </build>
                         </image>
                         <image>
-                            <!--镜像名(含版本号)-->
                             <name>hippo4j/${project.build.finalName}:latest</name>
-                            <!--别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置-->
                             <alias>${project.build.finalName}</alias>
                             <build>
                                 <contextDir>${contextDir}</contextDir>
