@@ -47,7 +47,7 @@ public class EventPublishingFinishedInterceptor implements InstanceMethodsAround
         ConfigurableApplicationContext context = (ConfigurableApplicationContext) allArguments[0];
         if (context.getParent() != null) {
             // After the child container is started, the thread pool registration will be carried out
-            SpringThreadPoolRegisterSupport.registerThreadPoolInstances();
+            SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
             return ret;
         }
         SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());

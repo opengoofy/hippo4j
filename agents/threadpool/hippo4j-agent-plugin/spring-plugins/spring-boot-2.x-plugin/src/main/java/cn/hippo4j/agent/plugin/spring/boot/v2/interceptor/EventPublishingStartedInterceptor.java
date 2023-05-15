@@ -26,9 +26,12 @@ import cn.hippo4j.agent.plugin.spring.boot.v2.DynamicThreadPoolChangeHandlerSpri
 import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
 import cn.hippo4j.agent.plugin.spring.common.support.IDynamicThreadPoolChangeHandlerSpring;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSupport;
+import cn.hippo4j.core.executor.DynamicThreadPool;
+import cn.hippo4j.core.executor.SpringDynamicThreadPool;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 public class EventPublishingStartedInterceptor implements InstanceMethodsAroundInterceptor {
 
@@ -44,7 +47,7 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
         ConfigurableApplicationContext context = (ConfigurableApplicationContext) allArguments[0];
         if (context.getParent() != null) {
             // After the child container is started, the thread pool registration will be carried out
-            SpringThreadPoolRegisterSupport.registerThreadPoolInstances();
+            SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
             return ret;
         }
         SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());

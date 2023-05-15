@@ -17,12 +17,16 @@
 
 package cn.hippo4j.agent.plugin.spring.boot.v1.define;
 
+import cn.hippo4j.agent.core.plugin.WitnessMethod;
 import cn.hippo4j.agent.core.plugin.interceptor.ConstructorInterceptPoint;
 import cn.hippo4j.agent.core.plugin.interceptor.InstanceMethodsInterceptPoint;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.ClassInstanceMethodsEnhancePluginDefine;
 import cn.hippo4j.agent.core.plugin.match.ClassMatch;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.matcher.ElementMatcher;
+
+import java.util.Collections;
+import java.util.List;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import static cn.hippo4j.agent.core.plugin.match.NameMatch.byName;
@@ -82,5 +86,11 @@ public class EventPublishingRunListenerInstrumentation extends ClassInstanceMeth
                     }
                 }
         };
+    }
+
+    @Override
+    protected List<WitnessMethod> witnessMethods() {
+        return Collections.singletonList(new WitnessMethod("org.springframework.boot.context.event.EventPublishingRunListener",
+                named("finished")));
     }
 }

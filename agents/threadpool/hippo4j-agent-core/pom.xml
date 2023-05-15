@@ -76,8 +76,6 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-threadpool-common</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
