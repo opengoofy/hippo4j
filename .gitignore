@@ -49,5 +49,5 @@ docs/.docusaurus
 
 
 ### Docker ###
-docker/threadpool/server/conf
-docker/threadpool/server/target
+docker/threadpool/conf
+docker/threadpool/target

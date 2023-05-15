@@ -11,6 +11,7 @@
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
+        <contextDir>${project.parent.parent.parent.basedir}/docker/threadpool</contextDir>
     </properties>
     
     <dependencies>
@@ -69,7 +70,7 @@
                         </goals>
                         <configuration>
                             <encoding>UTF-8</encoding>
-                            <outputDirectory>../../../docker/threadpool/server/conf/</outputDirectory>
+                            <outputDirectory>../../../docker/threadpool/conf/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>conf</directory>
@@ -90,7 +91,7 @@
                         </goals>
                         <configuration>
                             <encoding>UTF-8</encoding>
-                            <outputDirectory>../../../docker/threadpool/server/target</outputDirectory>
+                            <outputDirectory>../../../docker/threadpool/target</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>target</directory>
@@ -101,19 +102,30 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.spotify</groupId>
+                <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>1.2.2</version>
+                <version>0.42.1</version>
                 <configuration>
-                    <imageName>hippo4j-server:${project.version}</imageName>
-                    <dockerDirectory>${project.basedir}</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
+                    <images>
+                        <image>
+                            <!--镜像名(含版本号)-->
+                            <name>hippo4j/${project.build.finalName}:${project.version}</name>
+                            <!--别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置-->
+                            <alias>${project.build.finalName}</alias>
+                            <build>
+                                <contextDir>${contextDir}</contextDir>
+                            </build>
+                        </image>
+                        <image>
+                            <!--镜像名(含版本号)-->
+                            <name>hippo4j/${project.build.finalName}:latest</name>
+                            <!--别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置-->
+                            <alias>${project.build.finalName}</alias>
+                            <build>
+                                <contextDir>${contextDir}</contextDir>
+                            </build>
+                        </image>
+                    </images>
                 </configuration>
             </plugin>
         </plugins>
