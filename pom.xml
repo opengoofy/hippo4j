@@ -38,7 +38,7 @@
 
     <scm>
         <connection>scm:git@github.com:opengoofy/hippo4j</connection>
-        <developerConnection>scm:git@github.com:open-goofy/hippo4j.git</developerConnection>
+        <developerConnection>scm:git@github.com:opengoofy/hippo4j.git</developerConnection>
         <url>git@github.com:opengoofy/hippo4j.git</url>
     </scm>
 
