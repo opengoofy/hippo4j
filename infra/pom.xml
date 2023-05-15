@@ -8,15 +8,12 @@
         <artifactId>hippo4j-all</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>hippo4j-threadpool</artifactId>
+
+    <artifactId>hippo4j-infra</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>adapter</module>
-        <module>core</module>
-        <module>message</module>
-        <module>monitor</module>
-        <module>rpc</module>
-        <module>server</module>
+        <module>common</module>
+        <module>toolkit</module>
     </modules>
 </project>

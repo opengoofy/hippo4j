@@ -52,7 +52,6 @@ public class AbstractBuildThreadPoolTemplateTest {
                 .setTaskDecorator(runnable -> runnable);
     }
 
-
     @Test
     public void testBuildPool() {
         ThreadPoolExecutor executor = AbstractBuildThreadPoolTemplate.buildPool(initParam);
@@ -73,7 +72,6 @@ public class AbstractBuildThreadPoolTemplateTest {
         Assert.assertEquals(2, count.get());
 
     }
-
 
     @Test
     public void testBuildFastPool() {
@@ -96,8 +94,6 @@ public class AbstractBuildThreadPoolTemplateTest {
 
     }
 
-
-
     @Test
     public void testBuildDynamicPool() {
         initParam.setWaitForTasksToCompleteOnShutdown(true);
@@ -118,7 +114,5 @@ public class AbstractBuildThreadPoolTemplateTest {
         }
 
         Assert.assertEquals(2, count.get());
-
     }
-
 }
