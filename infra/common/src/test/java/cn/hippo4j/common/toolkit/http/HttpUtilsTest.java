@@ -52,7 +52,7 @@ public class HttpUtilsTest {
     static final String CONTEXT_PATH = "/";
     static final String PATH_NAME = ".";
     static final String USER_DIR = "user.dir";
-    static final String PREFIX = "\\tomcat.";
+    static final String PREFIX = File.separator + "tomcat.";
 
     @BeforeClass
     public static void startWeb() throws IOException, LifecycleException {
