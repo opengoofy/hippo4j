@@ -39,6 +39,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
+    private static final int INITIAL_CAPACITY = 64;
+
     @EventListener(EnvironmentChangeEvent.class)
     public void refreshed(EnvironmentChangeEvent event) {
         Map<String, Object> configInfo = extractLatestConfigInfo(event);
@@ -54,7 +56,7 @@ public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
                 .map(propertySource -> (BootstrapPropertySource<?>) propertySource).collect(Collectors.toList());
         Optional<BootstrapPropertySource<?>> bootstrapPropertySource = bootstrapPropertySourceList.stream()
                 .filter(source -> source.getName().contains(activeProfile) && source.getPropertyNames().length != 0).findFirst();
-        Map<String, Object> configInfo = new HashMap<>(64);
+        Map<String, Object> configInfo = new HashMap<>(INITIAL_CAPACITY);
         if (bootstrapPropertySource.isPresent()) {
             ConsulPropertySource consulPropertySource = (ConsulPropertySource) bootstrapPropertySource.get().getDelegate();
             String[] propertyNames = consulPropertySource.getPropertyNames();

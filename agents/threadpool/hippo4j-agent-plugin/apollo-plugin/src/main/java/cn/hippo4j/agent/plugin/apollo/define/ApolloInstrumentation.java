@@ -27,6 +27,9 @@ import net.bytebuddy.matcher.ElementMatcher;
 
 import static net.bytebuddy.matcher.ElementMatchers.any;
 
+/**
+ * Apollo instrumentation
+ */
 public class ApolloInstrumentation extends ClassInstanceMethodsEnhancePluginDefine {
 
     private static final String ENHANCE_CLASS = "com.ctrip.framework.apollo.internals.DefaultConfig";

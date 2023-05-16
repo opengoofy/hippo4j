@@ -48,6 +48,12 @@ public class DefaultPublisher extends Thread implements EventPublisher {
 
     protected volatile Long lastEventSequence = -1L;
 
+    private static final int DEFAULT_QUEUE_MAX_SIZE = -1;
+
+    private static final int DEFAULT_WAIT_TIMES = 60;
+
+    private static final long SLEEP_1S = 1000L;
+
     private static final AtomicReferenceFieldUpdater<DefaultPublisher, Long> UPDATER = AtomicReferenceFieldUpdater
             .newUpdater(DefaultPublisher.class, Long.class, "lastEventSequence");
 
@@ -64,8 +70,8 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     public synchronized void start() {
         if (!initialized) {
             super.start();
-            if (queueMaxSize == -1) {
-                queueMaxSize = NotifyCenter.ringBufferSize;
+            if (queueMaxSize == DEFAULT_QUEUE_MAX_SIZE) {
+                queueMaxSize = NotifyCenter.RING_BUFFER_SIZE;
             }
             initialized = true;
         }
@@ -78,13 +84,13 @@ public class DefaultPublisher extends Thread implements EventPublisher {
 
     private void openEventHandler() {
         try {
-            int waitTimes = 60;
+            int waitTimes = DEFAULT_WAIT_TIMES;
             for (;;) {
                 if (shutdown || hasSubscriber() || waitTimes <= 0) {
                     break;
                 }
                 try {
-                    Thread.sleep(1000L);
+                    Thread.sleep(SLEEP_1S);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }

@@ -27,6 +27,9 @@ import net.bytebuddy.matcher.ElementMatcher;
 
 import static net.bytebuddy.matcher.ElementMatchers.takesArguments;
 
+/**
+ * Thread pool executor instrumentation
+ */
 public class ThreadPoolExecutorInstrumentation extends ClassInstanceMethodsEnhancePluginDefine {
 
     private static final String ENHANCE_CLASS = "java.util.concurrent.ThreadPoolExecutor";

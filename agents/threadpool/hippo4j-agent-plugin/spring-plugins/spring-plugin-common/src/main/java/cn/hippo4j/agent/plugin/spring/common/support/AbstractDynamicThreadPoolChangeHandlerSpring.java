@@ -56,6 +56,9 @@ import static cn.hippo4j.agent.core.conf.Constants.SPRING_BOOT_CONFIG_PREFIX;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
 
+/**
+ * Abstract dynamic thread poo change handler spring
+ */
 public abstract class AbstractDynamicThreadPoolChangeHandlerSpring implements IDynamicThreadPoolChangeHandlerSpring {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDynamicThreadPoolChangeHandlerSpring.class);
@@ -68,9 +71,9 @@ public abstract class AbstractDynamicThreadPoolChangeHandlerSpring implements ID
 
     public void registerApolloConfigHandler() {
 
-        List<String> apolloNamespaces = SpringBootConfig.Spring.Dynamic.Thread_Pool.Apollo.NAMESPACE;
+        List<String> apolloNamespaces = SpringBootConfig.Spring.Dynamic.ThreadPool.Apollo.NAMESPACE;
         String namespace = apolloNamespaces.get(0);
-        String configFileType = SpringBootConfig.Spring.Dynamic.Thread_Pool.CONFIG_FILE_TYPE;
+        String configFileType = SpringBootConfig.Spring.Dynamic.ThreadPool.CONFIG_FILE_TYPE;
 
         com.ctrip.framework.apollo.Config config = ConfigService.getConfig(String.format("%s.%s", namespace, configFileType));
         ConfigChangeListener configChangeListener = configChangeEvent -> {
@@ -93,7 +96,7 @@ public abstract class AbstractDynamicThreadPoolChangeHandlerSpring implements ID
 
     private void dynamicRefresh(String configContent, Map<String, Object> newValueChangeMap, ApplicationContext context) {
         try {
-            String configFileType = SpringBootConfig.Spring.Dynamic.Thread_Pool.CONFIG_FILE_TYPE;
+            String configFileType = SpringBootConfig.Spring.Dynamic.ThreadPool.CONFIG_FILE_TYPE;
 
             Map<Object, Object> afterConfigMap = ConfigParserHandler.getInstance().parseConfig(configContent,
                     ConfigFileTypeEnum.of(configFileType));

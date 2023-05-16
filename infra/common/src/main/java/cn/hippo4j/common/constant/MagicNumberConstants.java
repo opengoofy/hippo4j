@@ -15,34 +15,18 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.apollo.boot;
+package cn.hippo4j.common.constant;
 
-import cn.hippo4j.agent.core.boot.BootService;
-import cn.hippo4j.agent.core.boot.DefaultImplementor;
+public class MagicNumberConstants {
 
-/**
- * Apollo plugin boot service
- */
-@DefaultImplementor
-public class ApolloPluginBootService implements BootService {
+    public static final int INDEX_0 = 0;
 
-    @Override
-    public void prepare() throws Throwable {
+    public static final int INDEX_1 = 1;
 
-    }
+    public static final int INDEX_2 = 2;
 
-    @Override
-    public void boot() throws Throwable {
+    public static final int INDEX_3 = 3;
 
-    }
+    public static final int SIZE_4 = 4;
 
-    @Override
-    public void onComplete() throws Throwable {
-
-    }
-
-    @Override
-    public void shutdown() throws Throwable {
-
-    }
 }

@@ -21,6 +21,9 @@ import cn.hippo4j.core.enable.EnableDynamicThreadPool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Config apollo spring boot 1x example application
+ */
 @EnableDynamicThreadPool
 @SpringBootApplication(scanBasePackages = "cn.hippo4j.example.core")
 public class ConfigApolloSpringBoot1xExampleApplication {

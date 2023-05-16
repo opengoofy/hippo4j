@@ -41,21 +41,25 @@ import java.util.Map;
 @Slf4j
 public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh {
 
-    static final String ZK_CONNECT_STR = "zk-connect-str";
+    private static final String ZK_CONNECT_STR = "zk-connect-str";
 
-    static final String ROOT_NODE = "root-node";
+    private static final String ROOT_NODE = "root-node";
 
-    static final String CONFIG_VERSION = "config-version";
+    private static final String CONFIG_VERSION = "config-version";
 
-    static final String NODE = "node";
+    private static final String NODE = "node";
 
     private CuratorFramework curatorFramework;
+
+    private static final int BASE_SLEEP_TIME_MS = 1000;
+
+    private static final int MAX_RETRIES = 3;
 
     @Override
     public void initRegisterListener() {
         Map<String, String> zkConfigs = bootstrapConfigProperties.getZookeeper();
         curatorFramework = CuratorFrameworkFactory.newClient(zkConfigs.get(ZK_CONNECT_STR),
-                new ExponentialBackoffRetry(1000, 3));
+                new ExponentialBackoffRetry(BASE_SLEEP_TIME_MS, MAX_RETRIES));
         String nodePath = ZKPaths.makePath(ZKPaths.makePath(zkConfigs.get(ROOT_NODE),
                 zkConfigs.get(CONFIG_VERSION)), zkConfigs.get(NODE));
         final ConnectionStateListener connectionStateListener = (client, newState) -> {

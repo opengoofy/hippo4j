@@ -27,6 +27,9 @@ import net.bytebuddy.matcher.ElementMatcher;
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import static cn.hippo4j.agent.core.plugin.match.NameMatch.byName;
 
+/**
+ * Event publishing run listener instrumentation
+ */
 public class EventPublishingRunListenerInstrumentation extends ClassInstanceMethodsEnhancePluginDefine {
 
     private static final String ENHANCE_CLASS = "org.springframework.boot.context.event.EventPublishingRunListener";

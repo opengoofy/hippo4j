@@ -20,6 +20,7 @@ package cn.hippo4j.agent.plugin.spring.common.support;
 import cn.hippo4j.agent.core.registry.AgentThreadPoolInstanceRegistry;
 import cn.hippo4j.agent.core.util.ReflectUtil;
 import cn.hippo4j.agent.core.util.ThreadPoolPropertyKey;
+import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.toolkit.BooleanUtil;
@@ -33,6 +34,9 @@ import java.util.Properties;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Spring thread pool register support
+ */
 public class SpringThreadPoolRegisterSupport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringThreadPoolRegisterSupport.class);
@@ -71,7 +75,7 @@ public class SpringThreadPoolRegisterSupport {
         properties.put(ThreadPoolPropertyKey.QUEUE_CAPACITY, executor.getQueue().remainingCapacity());
         properties.put(ThreadPoolPropertyKey.THREAD_NAME_PREFIX, threadPoolId);
         properties.put(ThreadPoolPropertyKey.REJECTED_HANDLER, RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()).getName());
-        properties.put(ThreadPoolPropertyKey.EXECUTE_TIME_OUT, 10000L);
+        properties.put(ThreadPoolPropertyKey.EXECUTE_TIME_OUT, Constants.EXECUTE_TIME_OUT);
 
         // register executor.
         AgentThreadPoolInstanceRegistry.getInstance().putHolder(threadPoolId, executor, properties);

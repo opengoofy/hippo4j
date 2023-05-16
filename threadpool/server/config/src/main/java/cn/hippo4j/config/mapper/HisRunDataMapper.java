@@ -64,6 +64,9 @@ public interface HisRunDataMapper extends BaseMapper<HisRunDataInfo> {
             + "limit 4")
     List<ThreadPoolTaskRanking> queryThreadPoolMaxRanking(@Param("startTime") Long startTime, @Param("endTime") Long endTime);
 
+    /**
+     * Thread Pool Task Ranking
+     */
     @Data
     class ThreadPoolTaskRanking {
 

@@ -29,9 +29,11 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public class ErrorLogRejectedExecutionHandler implements CustomRejectedExecutionHandler {
 
+    private static final int REJECTED_TYPE = 12;
+
     @Override
     public Integer getType() {
-        return 12;
+        return REJECTED_TYPE;
     }
 
     @Override
@@ -39,6 +41,9 @@ public class ErrorLogRejectedExecutionHandler implements CustomRejectedExecution
         return new CustomErrorLogRejectedExecutionHandler();
     }
 
+    /**
+     * Custom Error Log Rejected Execution Handler
+     */
     public static class CustomErrorLogRejectedExecutionHandler implements RejectedExecutionHandler {
 
         @Override

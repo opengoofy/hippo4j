@@ -27,7 +27,7 @@ import java.util.ServiceLoader;
 /**
  * Config parser handler.
  */
-public class ConfigParserHandler {
+public final class ConfigParserHandler {
 
     private static final List<ConfigParser> PARSERS = new ArrayList<>();
 
@@ -53,6 +53,9 @@ public class ConfigParserHandler {
         return ConfigParserHandlerHolder.INSTANCE;
     }
 
+    /**
+     * Config Parser Handler Holder
+     */
     private static class ConfigParserHandlerHolder {
 
         private static final ConfigParserHandler INSTANCE = new ConfigParserHandler();

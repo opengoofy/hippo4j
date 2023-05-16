@@ -27,6 +27,9 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.lang.reflect.Method;
 
+/**
+ * Event publishing run listener environment prepared interceptor
+ */
 public class EventPublishingRunListenerEnvironmentPreparedInterceptor implements InstanceMethodsAroundInterceptor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventPublishingRunListenerEnvironmentPreparedInterceptor.class);

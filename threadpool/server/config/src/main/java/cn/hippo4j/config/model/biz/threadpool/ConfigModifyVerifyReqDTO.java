@@ -20,8 +20,6 @@ package cn.hippo4j.config.model.biz.threadpool;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * Config modify verify dto
  */

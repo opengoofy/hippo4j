@@ -20,13 +20,13 @@ package cn.hippo4j.config.springboot.starter.refresher.event;
 /**
  * Hippo-4j config dynamic refresh event order.
  */
-public interface Hippo4jConfigDynamicRefreshEventOrder {
+public class Hippo4jConfigDynamicRefreshEventOrder {
 
-    int WEB_EXECUTOR_LISTENER = 0;
+    public static final int WEB_EXECUTOR_LISTENER = 0;
 
-    int PLATFORMS_LISTENER = 1;
+    public static final int PLATFORMS_LISTENER = 1;
 
-    int EXECUTORS_LISTENER = 2;
+    public static final int EXECUTORS_LISTENER = 2;
 
-    int ADAPTER_EXECUTORS_LISTENER = 3;
+    public static final int ADAPTER_EXECUTORS_LISTENER = 3;
 }

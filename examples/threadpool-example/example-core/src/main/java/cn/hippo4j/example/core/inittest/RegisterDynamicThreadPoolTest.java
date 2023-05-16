@@ -35,33 +35,41 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Slf4j
 public class RegisterDynamicThreadPoolTest {
 
+    private static final int CAPACITY = 1024;
+    private static final long KEEP_ALIVE_TIME = 1024L;
+    private static final long EXECUTE_TIMEOUT = 1024L;
+    private static final int CAPACITY_ALARM = 90;
+    private static final int ACTIVE_ALARM = 90;
+    private static final int CORE_NOTIFY_INTERVAL = 5;
+    private static final int SERVER_NOTIFY_INTERVAL = 10;
+
     public static ThreadPoolExecutor registerDynamicThreadPool(String threadPoolId) {
         DynamicThreadPoolRegisterParameter parameterInfo = DynamicThreadPoolRegisterParameter.builder()
                 .corePoolSize(1)
                 .maximumPoolSize(2)
                 .blockingQueueType(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE)
-                .capacity(1024)
+                .capacity(CAPACITY)
                 // TimeUnit.SECONDS
-                .keepAliveTime(1024L)
+                .keepAliveTime(KEEP_ALIVE_TIME)
                 // TimeUnit.MILLISECONDS
-                .executeTimeOut(1024L)
+                .executeTimeOut(EXECUTE_TIMEOUT)
                 .rejectedPolicyType(RejectedPolicyTypeEnum.DISCARD_POLICY)
                 .isAlarm(true)
                 .allowCoreThreadTimeOut(false)
-                .capacityAlarm(90)
-                .activeAlarm(90)
+                .capacityAlarm(CAPACITY_ALARM)
+                .activeAlarm(ACTIVE_ALARM)
                 .threadPoolId(threadPoolId)
                 .threadNamePrefix(threadPoolId)
                 .build();
         // Core mode and server mode, you can choose one of them.
         DynamicThreadPoolRegisterCoreNotifyParameter coreNotifyParameter = DynamicThreadPoolRegisterCoreNotifyParameter.builder()
                 .receives("chen.ma")
-                .interval(5)
+                .interval(CORE_NOTIFY_INTERVAL)
                 .build();
         DynamicThreadPoolRegisterServerNotifyParameter serverNotifyParameter = DynamicThreadPoolRegisterServerNotifyParameter.builder()
                 .platform(NotifyPlatformEnum.WECHAT.name())
                 .accessToken("7487d0a0-20ec-40ab-b67b-ce68db406b37")
-                .interval(10)
+                .interval(SERVER_NOTIFY_INTERVAL)
                 .receives("chen.ma")
                 .build();
         DynamicThreadPoolRegisterWrapper registerWrapper = DynamicThreadPoolRegisterWrapper.builder()

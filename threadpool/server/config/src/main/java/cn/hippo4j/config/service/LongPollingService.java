@@ -70,17 +70,23 @@ public class LongPollingService {
 
     private final Map<String, Long> retainIps = new ConcurrentHashMap<>();
 
+    private static final long SCHEDULE_PERIOD = 30L;
+
+    private static final int MAX_TIMEOUT = 10000;
+
+    private static final int DEFAULT_DELAY_TIME = 500;
+
     public LongPollingService() {
         allSubs = new ConcurrentLinkedQueue<>();
-        ConfigExecutor.scheduleLongPolling(new StatTask(), 0L, 30L, TimeUnit.SECONDS);
-        NotifyCenter.registerToPublisher(LocalDataChangeEvent.class, NotifyCenter.ringBufferSize);
+        ConfigExecutor.scheduleLongPolling(new StatTask(), 0L, SCHEDULE_PERIOD, TimeUnit.SECONDS);
+        NotifyCenter.registerToPublisher(LocalDataChangeEvent.class, NotifyCenter.RING_BUFFER_SIZE);
         NotifyCenter.registerSubscriber(new AbstractSubscriber() {
 
             @Override
             public void onEvent(AbstractEvent event) {
                 if (!isFixedPolling() && event instanceof LocalDataChangeEvent) {
                     LocalDataChangeEvent evt = (LocalDataChangeEvent) event;
-                    ConfigExecutor.executeLongPolling(new DataChangeTask(evt.identify, evt.groupKey));
+                    ConfigExecutor.executeLongPolling(new DataChangeTask(evt.getIdentify(), evt.getGroupKey()));
                 }
             }
 
@@ -155,25 +161,30 @@ public class LongPollingService {
                                      int probeRequestSize) {
         String str = req.getHeader(LONG_POLLING_HEADER);
         String noHangUpFlag = req.getHeader(LONG_POLLING_NO_HANG_UP_HEADER);
-        int delayTime = SwitchService.getSwitchInteger(SwitchService.FIXED_DELAY_TIME, 500);
-        long timeout = Math.max(10000, Long.parseLong(str) - delayTime);
+        int delayTime = SwitchService.getSwitchInteger(SwitchService.FIXED_DELAY_TIME, DEFAULT_DELAY_TIME);
+        long timeout = Math.max(MAX_TIMEOUT, Long.parseLong(str) - delayTime);
+        boolean shouldReturn = false;
+
         if (isFixedPolling()) {
-            timeout = Math.max(10000, getFixedPollingInterval());
+            timeout = Math.max(MAX_TIMEOUT, getFixedPollingInterval());
         } else {
             List<String> changedGroups = Md5ConfigUtil.compareMd5(req, clientMd5Map);
             if (!changedGroups.isEmpty()) {
                 generateResponse(rsp, changedGroups);
-                return;
+                shouldReturn = true;
             } else if (noHangUpFlag != null && noHangUpFlag.equalsIgnoreCase(TRUE_STR)) {
                 log.info("New initializing cacheData added in.");
-                return;
+                shouldReturn = true;
             }
         }
-        String clientIdentify = RequestUtil.getClientIdentify(req);
-        final AsyncContext asyncContext = req.startAsync();
-        asyncContext.setTimeout(0L);
-        ConfigExecutor.executeLongPolling(new ClientLongPolling(asyncContext, clientMd5Map, clientIdentify, probeRequestSize,
-                timeout - delayTime, Pair.of(req.getHeader(CLIENT_APP_NAME_HEADER), req.getHeader(CLIENT_VERSION))));
+
+        if (!shouldReturn) {
+            String clientIdentify = RequestUtil.getClientIdentify(req);
+            final AsyncContext asyncContext = req.startAsync();
+            asyncContext.setTimeout(0L);
+            ConfigExecutor.executeLongPolling(new ClientLongPolling(asyncContext, clientMd5Map, clientIdentify, probeRequestSize,
+                    timeout - delayTime, Pair.of(req.getHeader(CLIENT_APP_NAME_HEADER), req.getHeader(CLIENT_VERSION))));
+        }
     }
 
     /**
@@ -199,8 +210,8 @@ public class LongPollingService {
 
         Future<?> asyncTimeoutFuture;
 
-        public ClientLongPolling(AsyncContext asyncContext, Map<String, String> clientMd5Map, String clientIdentify,
-                                 int probeRequestSize, long timeout, Pair<String, String> appInfo) {
+        ClientLongPolling(AsyncContext asyncContext, Map<String, String> clientMd5Map, String clientIdentify,
+                          int probeRequestSize, long timeout, Pair<String, String> appInfo) {
             this.asyncContext = asyncContext;
             this.clientMd5Map = clientMd5Map;
             this.clientIdentify = clientIdentify;
