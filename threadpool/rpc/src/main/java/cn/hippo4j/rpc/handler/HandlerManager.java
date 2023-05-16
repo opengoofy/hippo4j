@@ -73,6 +73,10 @@ public interface HandlerManager<T> {
         return new HandlerEntity<>(order, handler, name);
     }
 
+    /**
+     * handler entity
+     * @param <T>
+     */
     @Getter
     @AllArgsConstructor
     class HandlerEntity<T> implements Comparable<HandlerEntity<T>> {

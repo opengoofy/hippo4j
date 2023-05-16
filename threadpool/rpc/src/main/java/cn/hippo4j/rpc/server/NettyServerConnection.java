@@ -56,6 +56,7 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
     Class<? extends ServerChannel> socketChannelCls = NioServerSocketChannel.class;
     ChannelFuture future;
     Channel channel;
+    private final int maxPortNum = 65535;
 
     public NettyServerConnection(EventLoopGroup leader, EventLoopGroup worker, List<ChannelHandler> handlers) {
         super(handlers);
@@ -80,7 +81,7 @@ public class NettyServerConnection extends AbstractNettyHandlerManager implement
     @Override
     public void bind(ServerPort port) {
         int serverPort = port.getPort();
-        if (serverPort < 0 || serverPort > 65535) {
+        if (serverPort < 0 || serverPort > maxPortNum) {
             throw new ConnectionException("The port number " + serverPort + " is outside 0~65535, which is not a legal port number");
         }
         ServerBootstrap server = new ServerBootstrap();

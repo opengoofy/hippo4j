@@ -55,6 +55,7 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
         this.executor = executor;
     }
 
+    private final long noRejectCount = -1L;
     @Override
     public ThreadPoolBaseInfo simpleInfo() {
         ThreadPoolBaseInfo poolBaseInfo = new ThreadPoolBaseInfo();
@@ -122,7 +123,7 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
         stateInfo.setPeakLoad(peakLoad);
         long rejectCount = fieldObject instanceof DynamicThreadPoolExecutor
                 ? ((DynamicThreadPoolExecutor) fieldObject).getRejectCountNum()
-                : -1L;
+                : -noRejectCount;
         stateInfo.setRejectCount(rejectCount);
         stateInfo.setClientLastRefreshTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         stateInfo.setTimestamp(System.currentTimeMillis());

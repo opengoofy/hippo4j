@@ -49,6 +49,8 @@ public class NettyClientConnection implements ClientConnection {
      * Obtain the connection timeout period. The default value is 30s
      */
     long timeout = 30000L;
+    final int nanosPerMilliSecond = 1000000;
+
     EventLoopGroup worker = new NioEventLoopGroup();
     NettyConnectPool connectionPool;
     ChannelFuture future;
@@ -74,7 +76,7 @@ public class NettyClientConnection implements ClientConnection {
             }
             // Wait for execution to complete
             ResultHolder.putThread(key, Thread.currentThread());
-            LockSupport.parkNanos(timeout() * 1000000);
+            LockSupport.parkNanos(timeout() * nanosPerMilliSecond);
             response = ResultHolder.get(key);
             if (response == null) {
                 throw new TimeOutException("Timeout waiting for server-side response");
