@@ -51,7 +51,7 @@ public class ThreadPoolExecutorShutdownPlugin implements ShutdownAwarePlugin {
      * Await termination millis
      */
     @Setter
-    public long awaitTerminationMillis;
+    private long awaitTerminationMillis;
 
     /**
      * Callback before pool shutdown.

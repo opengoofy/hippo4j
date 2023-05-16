@@ -39,7 +39,14 @@ import java.util.stream.Collectors;
  */
 public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
 
-    private static final int MAXIMUM_CAPACITY = 1 << 30;
+    /**
+     * maximumCapacity: 1 << 30
+     */
+    private static final int MAXIMUM_CAPACITY = 1073741824;
+
+    /**
+     * pluginName.
+     */
     public static final String PLUGIN_NAME = TaskTimeRecordPlugin.class.getSimpleName();
 
     /**
@@ -50,7 +57,22 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
     /**
      * timers
      */
-    public final Timer[] timerTable;
+    private final Timer[] timerTable;
+
+    /**
+     * The default time mills
+     */
+    private static final long DEFAULT_TIME_MILLS = -1L;
+
+    /**
+     * No task count
+     */
+    private static final long NO_TASK_COUNT = -1L;
+
+    /**
+     * All bits are values of 1
+     */
+    private static final int ALL_BIT_IS_ONE = -1;
 
     /**
      * Create a {@link TaskTimeRecordPlugin}
@@ -116,8 +138,8 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
 
         // summarize data
         long totalTaskTimeMillis = 0L;
-        long maxTaskTimeMillis = -1L;
-        long minTaskTimeMillis = -1L;
+        long maxTaskTimeMillis = DEFAULT_TIME_MILLS;
+        long minTaskTimeMillis = DEFAULT_TIME_MILLS;
         long taskCount = 0L;
         for (Summary summary : summaries) {
             if (taskCount > 0) {
@@ -147,13 +169,8 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
      * copy from {@link HashMap#tableSizeFor}
      */
     static int tableSizeFor(int cap) {
-        int n = cap - 1;
-        n |= n >>> 1;
-        n |= n >>> 2;
-        n |= n >>> 4;
-        n |= n >>> 8;
-        n |= n >>> 16;
-        return n >= MAXIMUM_CAPACITY ? MAXIMUM_CAPACITY : n + 1;
+        int n = ALL_BIT_IS_ONE >>> Integer.numberOfLeadingZeros(cap - 1);
+        return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
     }
 
     /**
@@ -267,7 +284,7 @@ public class TaskTimeRecordPlugin extends AbstractTaskTimerPlugin {
          */
         public long getAvgTaskTimeMillis() {
             long totalTaskCount = getTaskCount();
-            return totalTaskCount > 0L ? getTotalTaskTimeMillis() / totalTaskCount : -1;
+            return totalTaskCount > 0L ? getTotalTaskTimeMillis() / totalTaskCount : NO_TASK_COUNT;
         }
     }
 

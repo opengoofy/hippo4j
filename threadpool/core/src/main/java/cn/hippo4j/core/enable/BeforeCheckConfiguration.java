@@ -70,6 +70,9 @@ public class BeforeCheckConfiguration {
         return new BeforeCheckConfiguration.BeforeCheck();
     }
 
+    /**
+     * Before check.
+     */
     public class BeforeCheck {
 
     }

@@ -44,9 +44,9 @@ public abstract class AbstractDynamicExecutorSupport extends ThreadPoolExecutor 
 
     private ExecutorService executor;
 
-    public long awaitTerminationMillis;
+    private long awaitTerminationMillis;
 
-    public boolean waitForTasksToCompleteOnShutdown;
+    private boolean waitForTasksToCompleteOnShutdown;
 
     public AbstractDynamicExecutorSupport(int corePoolSize,
                                           int maximumPoolSize,

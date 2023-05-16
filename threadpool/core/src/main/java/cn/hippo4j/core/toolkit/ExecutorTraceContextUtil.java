@@ -29,7 +29,7 @@ public class ExecutorTraceContextUtil {
     /**
      * Execute timeout trace key.
      */
-    private static String EXECUTE_TIMEOUT_TRACE_KEY = EXECUTE_TIMEOUT_TRACE;
+    private static String executeTimeoutTraceKey = EXECUTE_TIMEOUT_TRACE;
 
     /**
      * Get and remove.
@@ -37,8 +37,8 @@ public class ExecutorTraceContextUtil {
      * @return timeout trace
      */
     public static String getAndRemoveTimeoutTrace() {
-        String val = MDC.get(EXECUTE_TIMEOUT_TRACE_KEY);
-        MDC.remove(EXECUTE_TIMEOUT_TRACE_KEY);
+        String val = MDC.get(executeTimeoutTraceKey);
+        MDC.remove(executeTimeoutTraceKey);
         return val;
     }
 
@@ -57,6 +57,6 @@ public class ExecutorTraceContextUtil {
      * @param key trace key
      */
     public static void setTimeoutTraceKey(String key) {
-        EXECUTE_TIMEOUT_TRACE_KEY = key;
+        executeTimeoutTraceKey = key;
     }
 }
