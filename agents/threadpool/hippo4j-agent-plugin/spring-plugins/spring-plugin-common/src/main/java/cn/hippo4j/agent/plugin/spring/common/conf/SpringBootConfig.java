@@ -41,7 +41,7 @@ public class SpringBootConfig {
              * ThreadPool
              */
             @SpringBootConfigNode(root = SpringBootConfig.class)
-            public static class ThreadPool {
+            public static class Thread_Pool {
 
                 /**
                  * Apollo
