@@ -54,7 +54,7 @@ import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
 /**
- * hippo for java Agent
+ * Hippo4j Agent
  */
 public class Hippo4jAgent {
 
