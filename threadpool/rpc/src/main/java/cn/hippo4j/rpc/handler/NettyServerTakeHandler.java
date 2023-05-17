@@ -32,7 +32,7 @@ import java.lang.reflect.Method;
 /**
  * netty adaptation layer
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 @ChannelHandler.Sharable
 public class NettyServerTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {

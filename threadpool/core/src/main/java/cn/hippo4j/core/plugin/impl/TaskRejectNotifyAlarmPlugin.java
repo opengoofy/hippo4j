@@ -17,8 +17,8 @@
 
 package cn.hippo4j.core.plugin.impl;
 
-import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.api.ThreadPoolCheckAlarm;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.RejectedAwarePlugin;
 import lombok.NonNull;

@@ -18,7 +18,6 @@
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.constant.Constants;
-import org.springframework.util.StringUtils;
 
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
 
@@ -55,7 +54,7 @@ public class GroupKey {
         urlEncode(dataId, sb);
         sb.append(GROUP_KEY_DELIMITER);
         urlEncode(group, sb);
-        if (!StringUtils.isEmpty(datumStr)) {
+        if (!StringUtil.isEmpty(datumStr)) {
             sb.append(GROUP_KEY_DELIMITER);
             urlEncode(datumStr, sb);
         }

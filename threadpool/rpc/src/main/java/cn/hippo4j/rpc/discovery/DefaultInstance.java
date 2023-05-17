@@ -28,7 +28,7 @@ import java.util.ServiceLoader;
  * Load through the ServiceLoader first. If the load fails, load directly through the instantiation.
  * If it is an interface, throw an exception. This is not elegant implementation
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public class DefaultInstance implements Instance {
 

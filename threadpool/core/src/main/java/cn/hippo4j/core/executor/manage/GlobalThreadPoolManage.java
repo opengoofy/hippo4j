@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.manage;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;

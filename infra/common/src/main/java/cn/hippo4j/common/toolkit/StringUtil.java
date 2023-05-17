@@ -362,4 +362,30 @@ public class StringUtil {
         }
         return str.substring(0, pos);
     }
+
+    /**
+     * Determine whether it is a string.
+     *
+     * @param str string
+     * @return String returns true, non-string returns false
+     */
+    public static boolean hasText(String str) {
+        return (str != null && !str.isEmpty() && containsText(str));
+    }
+
+    /**
+     * Whether to contain a string.
+     *
+     * @param str str
+     * @return String returns true, non-string returns false
+     */
+    private static boolean containsText(CharSequence str) {
+        int strLen = str.length();
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
