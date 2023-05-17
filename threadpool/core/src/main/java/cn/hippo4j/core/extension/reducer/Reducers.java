@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+/**
+ * reducers
+ */
 @SuppressWarnings("all")
 public class Reducers {
 

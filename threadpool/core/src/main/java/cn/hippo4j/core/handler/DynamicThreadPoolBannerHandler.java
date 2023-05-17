@@ -70,7 +70,7 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
             while (padding.length() < STRAP_LINE_SIZE - (bannerVersion.length() + DYNAMIC_THREAD_POOL.length())) {
                 padding.append(" ");
             }
-            System.out.println(AnsiOutput.toString(banner, AnsiColor.GREEN, DYNAMIC_THREAD_POOL, AnsiColor.DEFAULT,
+            log.info(AnsiOutput.toString(banner, AnsiColor.GREEN, DYNAMIC_THREAD_POOL, AnsiColor.DEFAULT,
                     padding.toString(), AnsiStyle.FAINT, bannerVersion, "\n\n", HIPPO4J_GITHUB, "\n", HIPPO4J_SITE, "\n"));
 
         }

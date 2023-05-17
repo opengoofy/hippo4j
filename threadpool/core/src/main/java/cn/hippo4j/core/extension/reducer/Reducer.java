@@ -26,6 +26,11 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * reducer
+ * @param <Element>
+ * @param <Result>
+ */
 public abstract class Reducer<Element, Result> {
 
     @Getter

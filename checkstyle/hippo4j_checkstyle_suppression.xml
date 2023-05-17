@@ -32,4 +32,5 @@
     <suppress checks="TypeName" files="SpringBootConfig.java"/>
     <suppress checks="ReturnCount" files="Hippo4jAgent.java"/>
     <suppress checks="StaticVariableName" files="Hippo4jAgent.java"/>
+    <suppress checks="StaticVariableName" files="ExtensionRegistry.java"/>
 </suppressions>

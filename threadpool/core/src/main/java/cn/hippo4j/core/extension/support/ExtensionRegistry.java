@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Extension registry
  */
 @Slf4j
-public class ExtensionRegistry implements IExtensionRegistry {
+public final class ExtensionRegistry implements IExtensionRegistry {
 
     private final Map<Class<? extends IExtension>, List<IExtension>> registry = new ConcurrentHashMap<>();
 
