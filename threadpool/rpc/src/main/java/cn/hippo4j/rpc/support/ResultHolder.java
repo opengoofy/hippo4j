@@ -32,7 +32,7 @@ import java.util.concurrent.locks.LockSupport;
  * response, and the result of the call is stored in the secondary cache,
  * which is convenient for the client to use at any time.
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

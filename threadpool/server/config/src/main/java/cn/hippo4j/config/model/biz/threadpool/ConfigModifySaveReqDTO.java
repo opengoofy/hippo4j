@@ -21,6 +21,9 @@ import lombok.Data;
 
 import javax.validation.constraints.Pattern;
 
+/**
+ * Config Modify Save Req DTO
+ */
 @Data
 public class ConfigModifySaveReqDTO {
 

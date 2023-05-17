@@ -17,7 +17,7 @@
 
 package cn.hippo4j.adapter.web;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.WebIpAndPortInfo;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.StringUtil;

@@ -43,10 +43,13 @@ public class MessageProduce {
 
     public static final String MESSAGE_CENTER_SAVE_MESSAGE_TAG = "framework_message-center_save-message_tag";
 
+    private static final int MAX_SEND_SIZE = 10;
+
+    private static final long SEND_TIMEOUT = 2000L;
+
     @GetMapping("/message/send")
     public String sendMessage() {
-        int maxSendSize = 10;
-        for (int i = 0; i < maxSendSize; i++) {
+        for (int i = 0; i < MAX_SEND_SIZE; i++) {
             sendMessage(MESSAGE_CENTER_SEND_MESSAGE_TAG);
             sendMessage(MESSAGE_CENTER_SAVE_MESSAGE_TAG);
         }
@@ -67,7 +70,7 @@ public class MessageProduce {
         long startTime = System.currentTimeMillis();
         boolean sendResult = false;
         try {
-            sendResult = output.send(message, 2000L);
+            sendResult = output.send(message, SEND_TIMEOUT);
         } finally {
             log.info("Send status: {}, Keys: {}, Execute time: {} ms, Message: {}",
                     sendResult,

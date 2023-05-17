@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.enums.DelEnum;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
@@ -67,6 +67,16 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_0;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_1;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_2;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_3;
+import static cn.hippo4j.common.executor.support.BlockingQueueTypeEnum.ARRAY_BLOCKING_QUEUE;
+import static cn.hippo4j.common.executor.support.BlockingQueueTypeEnum.LINKED_BLOCKING_DEQUE;
+import static cn.hippo4j.common.executor.support.BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE;
+import static cn.hippo4j.common.executor.support.BlockingQueueTypeEnum.LINKED_TRANSFER_QUEUE;
+import static cn.hippo4j.common.executor.support.BlockingQueueTypeEnum.PRIORITY_BLOCKING_QUEUE;
+import static cn.hippo4j.common.executor.support.BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE;
 import static cn.hippo4j.config.service.ConfigCacheService.getContent;
 
 /**
@@ -85,6 +95,8 @@ public class ConfigServiceImpl implements ConfigService {
 
     private final NotifyService notifyService;
 
+    private static final int DEFAULT_QUEUE_CAPACITY = 1024;
+
     @Override
     public ConfigAllInfo findConfigAllInfo(String tpId, String itemId, String tenantId) {
         LambdaQueryWrapper<ConfigAllInfo> wrapper = Wrappers.lambdaQuery(ConfigAllInfo.class)
@@ -99,13 +111,13 @@ public class ConfigServiceImpl implements ConfigService {
     public ConfigAllInfo findConfigRecentInfo(String... params) {
         ConfigAllInfo resultConfig;
         ConfigAllInfo configInstance = null;
-        String instanceId = params[3];
+        String instanceId = params[INDEX_3];
         if (StringUtil.isNotBlank(instanceId)) {
             LambdaQueryWrapper<ConfigInstanceInfo> instanceQueryWrapper = Wrappers.lambdaQuery(ConfigInstanceInfo.class)
-                    .eq(ConfigInstanceInfo::getTpId, params[0])
-                    .eq(ConfigInstanceInfo::getItemId, params[1])
-                    .eq(ConfigInstanceInfo::getTenantId, params[2])
-                    .eq(ConfigInstanceInfo::getInstanceId, params[3])
+                    .eq(ConfigInstanceInfo::getTpId, params[INDEX_0])
+                    .eq(ConfigInstanceInfo::getItemId, params[INDEX_1])
+                    .eq(ConfigInstanceInfo::getTenantId, params[INDEX_2])
+                    .eq(ConfigInstanceInfo::getInstanceId, params[INDEX_3])
                     .orderByDesc(ConfigInstanceInfo::getGmtCreate)
                     .last("LIMIT 1");
             ConfigInstanceInfo instanceInfo = configInstanceMapper.selectOne(instanceQueryWrapper);
@@ -216,6 +228,7 @@ public class ConfigServiceImpl implements ConfigService {
     public Long addConfigInfo(ConfigAllInfo config) {
         config.setContent(ContentUtil.getPoolContent(config));
         config.setMd5(Md5Util.getTpContentMd5(config));
+        Long configId = null;
         try {
             // Currently it is a single application, and it supports switching distributed locks during cluster deployment in the future.
             synchronized (ConfigService.class) {
@@ -225,14 +238,14 @@ public class ConfigServiceImpl implements ConfigService {
                                 .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
                 Assert.isNull(configAllInfo, "线程池配置已存在");
                 if (SqlHelper.retBool(configInfoMapper.insert(config))) {
-                    return config.getId();
+                    configId = config.getId();
                 }
             }
         } catch (Exception ex) {
             log.error("[db-error] message: {}", ex.getMessage(), ex);
             throw ex;
         }
-        return null;
+        return configId;
     }
 
     public void updateConfigInfo(String identify, boolean isChangeNotice, ConfigAllInfo config) {
@@ -251,7 +264,6 @@ public class ConfigServiceImpl implements ConfigService {
                 ConfigInstanceInfo instanceInfo = BeanUtil.convert(config, ConfigInstanceInfo.class);
                 instanceInfo.setInstanceId(identify);
                 configInstanceMapper.insert(instanceInfo);
-                return;
             } else if (StringUtil.isEmpty(identify) && isChangeNotice) {
                 List<String> identifyList = ConfigCacheService.getIdentifyList(config.getTenantId(), config.getItemId(), config.getTpId());
                 if (CollectionUtil.isNotEmpty(identifyList)) {
@@ -261,9 +273,9 @@ public class ConfigServiceImpl implements ConfigService {
                         configInstanceMapper.insert(instanceInfo);
                     }
                 }
-                return;
+            } else {
+                configInfoMapper.update(config, wrapper);
             }
-            configInfoMapper.update(config, wrapper);
         } catch (Exception ex) {
             log.error("[db-error] message: {}", ex.getMessage(), ex);
             throw ex;
@@ -294,18 +306,20 @@ public class ConfigServiceImpl implements ConfigService {
      */
     private Integer getQueueCapacityByType(ConfigAllInfo config) {
         int queueCapacity;
-        switch (config.getQueueType()) {
-            case 5:
-                queueCapacity = Integer.MAX_VALUE;
-                break;
-            default:
-                queueCapacity = config.getCapacity();
-                break;
+        if (LINKED_TRANSFER_QUEUE.getType().equals(config.getQueueType())) {
+            queueCapacity = Integer.MAX_VALUE;
+        } else {
+            queueCapacity = config.getCapacity();
         }
-        List<Integer> queueTypes = Stream.of(1, 2, 3, 6, 9).collect(Collectors.toList());
+        List<Integer> queueTypes = Stream.of(
+                ARRAY_BLOCKING_QUEUE.getType(),
+                LINKED_BLOCKING_QUEUE.getType(),
+                LINKED_BLOCKING_DEQUE.getType(),
+                PRIORITY_BLOCKING_QUEUE.getType(),
+                RESIZABLE_LINKED_BLOCKING_QUEUE.getType()).collect(Collectors.toList());
         boolean setDefaultFlag = queueTypes.contains(config.getQueueType()) && (config.getCapacity() == null || Objects.equals(config.getCapacity(), 0));
         if (setDefaultFlag) {
-            queueCapacity = 1024;
+            queueCapacity = DEFAULT_QUEUE_CAPACITY;
         }
         return queueCapacity;
     }

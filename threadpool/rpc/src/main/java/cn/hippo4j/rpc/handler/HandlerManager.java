@@ -26,7 +26,7 @@ import lombok.Getter;
  * Manage the Handler used in the processing.<br>
  * The Handler must be able to exist multiple times and be invoked once in a single execution
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public interface HandlerManager<T> {
 
@@ -73,6 +73,10 @@ public interface HandlerManager<T> {
         return new HandlerEntity<>(order, handler, name);
     }
 
+    /**
+     * handler entity
+     * @param <T>
+     */
     @Getter
     @AllArgsConstructor
     class HandlerEntity<T> implements Comparable<HandlerEntity<T>> {

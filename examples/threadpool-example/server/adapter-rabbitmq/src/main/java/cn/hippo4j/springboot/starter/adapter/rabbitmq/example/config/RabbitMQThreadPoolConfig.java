@@ -31,15 +31,23 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class RabbitMQThreadPoolConfig {
 
+    private static final int MAX_POOL_SIZE = 5;
+
+    private static final int CORE_POOL_SIZE = 5;
+
+    private static final int QUEUE_CAPACITY = 1000;
+
+    private static final int CONSUMERS_PER_QUEUE = 10;
+
     @Bean
     public ThreadPoolTaskExecutor rabbitListenerTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // Specify the maximum number of threads.
-        executor.setMaxPoolSize(5);
+        executor.setMaxPoolSize(MAX_POOL_SIZE);
         // Specifies the minimum number of thread pool maintenance threads.
-        executor.setCorePoolSize(5);
+        executor.setCorePoolSize(CORE_POOL_SIZE);
         // Specifies the number of tasks waiting to be processed.
-        executor.setQueueCapacity(1000);
+        executor.setQueueCapacity(QUEUE_CAPACITY);
         executor.setThreadNamePrefix("RabbitListenerTaskExecutor-");
         return executor;
     }
@@ -50,7 +58,7 @@ public class RabbitMQThreadPoolConfig {
         DirectRabbitListenerContainerFactory factory = new DirectRabbitListenerContainerFactory();
         factory.setConnectionFactory(abstractConnectionFactory);
         factory.setMessageConverter(messageConverter);
-        factory.setConsumersPerQueue(10);
+        factory.setConsumersPerQueue(CONSUMERS_PER_QUEUE);
         abstractConnectionFactory.setExecutor(rabbitListenerTaskExecutor);
         return factory;
     }

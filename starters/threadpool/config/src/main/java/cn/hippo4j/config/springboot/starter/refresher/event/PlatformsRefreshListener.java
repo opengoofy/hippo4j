@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.refresher.event;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.common.config.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;

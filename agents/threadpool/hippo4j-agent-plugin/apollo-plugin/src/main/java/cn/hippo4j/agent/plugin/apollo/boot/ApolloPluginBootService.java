@@ -20,6 +20,9 @@ package cn.hippo4j.agent.plugin.apollo.boot;
 import cn.hippo4j.agent.core.boot.BootService;
 import cn.hippo4j.agent.core.boot.DefaultImplementor;
 
+/**
+ * Apollo plugin boot service
+ */
 @DefaultImplementor
 public class ApolloPluginBootService implements BootService {
 

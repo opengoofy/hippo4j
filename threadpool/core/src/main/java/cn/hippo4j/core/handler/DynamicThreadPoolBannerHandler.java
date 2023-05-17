@@ -34,13 +34,13 @@ public class DynamicThreadPoolBannerHandler implements InitializingBean {
 
     private final BootstrapPropertiesInterface properties;
 
-    private final String DYNAMIC_THREAD_POOL = " :: Dynamic ThreadPool :: ";
+    private static final String DYNAMIC_THREAD_POOL = " :: Dynamic ThreadPool :: ";
 
-    private final String HIPPO4J_GITHUB = "GitHub:  https://github.com/opengoofy/hippo4j";
+    private static final String HIPPO4J_GITHUB = "GitHub:  https://github.com/opengoofy/hippo4j";
 
-    private final String HIPPO4J_SITE = "Site:    https://www.hippo4j.cn";
+    private static final String HIPPO4J_SITE = "Site:    https://www.hippo4j.cn";
 
-    private final int STRAP_LINE_SIZE = 50;
+    private static final int STRAP_LINE_SIZE = 50;
 
     private final String version;
 

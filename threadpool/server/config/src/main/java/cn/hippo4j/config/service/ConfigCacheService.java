@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.service;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.design.observer.Observer;
@@ -47,6 +47,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER;
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER_TRANSLATION;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_3;
 
 /**
  * Config cache service.
@@ -54,7 +55,7 @@ import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER_TRANSLATI
 @Slf4j
 public class ConfigCacheService {
 
-    private static ConfigService CONFIG_SERVICE;
+    private static ConfigService configService;
 
     static {
         AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.CLEAR_CONFIG_CACHE, new ClearConfigCache());
@@ -83,9 +84,11 @@ public class ConfigCacheService {
      */
     public static boolean checkTpId(String groupKey, String tpId, String clientIdentify) {
         Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CLIENT_CONFIG_CACHE.get(groupKey)).orElse(new HashMap<>());
-        CacheItem cacheItem;
-        if (CollectionUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(clientIdentify)) != null) {
-            return Objects.equals(tpId, cacheItem.configAllInfo.getTpId());
+        if (CollectionUtil.isNotEmpty(cacheItemMap)) {
+            CacheItem cacheItem = cacheItemMap.get(clientIdentify);
+            if (cacheItem != null) {
+                return Objects.equals(tpId, cacheItem.getConfigAllInfo().getTpId());
+            }
         }
         return Boolean.FALSE;
     }
@@ -97,31 +100,34 @@ public class ConfigCacheService {
      * @param clientIdentify
      * @return
      */
-    private synchronized static String getContentMd5IsNullPut(String groupKey, String clientIdentify) {
+    private static synchronized String getContentMd5IsNullPut(String groupKey, String clientIdentify) {
         Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CLIENT_CONFIG_CACHE.get(groupKey)).orElse(new HashMap<>());
         CacheItem cacheItem = null;
-        if (CollectionUtil.isNotEmpty(cacheItemMap) && (cacheItem = cacheItemMap.get(clientIdentify)) != null) {
-            return cacheItem.md5;
+        if (CollectionUtil.isNotEmpty(cacheItemMap)) {
+            cacheItem = cacheItemMap.get(clientIdentify);
+            if (cacheItem != null) {
+                return cacheItem.getMd5();
+            }
         }
-        if (CONFIG_SERVICE == null) {
-            CONFIG_SERVICE = ApplicationContextHolder.getBean(ConfigService.class);
+        if (configService == null) {
+            configService = ApplicationContextHolder.getBean(ConfigService.class);
         }
         String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
-        ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
+        ConfigAllInfo config = configService.findConfigRecentInfo(params);
         if (config != null && StringUtil.isNotBlank(config.getTpId())) {
             cacheItem = new CacheItem(groupKey, config);
             cacheItemMap.put(clientIdentify, cacheItem);
             CLIENT_CONFIG_CACHE.put(groupKey, cacheItemMap);
         }
-        return (cacheItem != null) ? cacheItem.md5 : Constants.NULL;
+        return (cacheItem != null) ? cacheItem.getMd5() : Constants.NULL;
     }
 
     public static String getContentMd5(String groupKey) {
-        if (CONFIG_SERVICE == null) {
-            CONFIG_SERVICE = ApplicationContextHolder.getBean(ConfigService.class);
+        if (configService == null) {
+            configService = ApplicationContextHolder.getBean(ConfigService.class);
         }
         String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
-        ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
+        ConfigAllInfo config = configService.findConfigRecentInfo(params);
         if (config == null || StringUtils.isEmpty(config.getTpId())) {
             String errorMessage = String.format("config is null. tpId: %s, itemId: %s, tenantId: %s", params[0], params[1], params[2]);
             throw new RuntimeException(errorMessage);
@@ -131,21 +137,23 @@ public class ConfigCacheService {
 
     public static void updateMd5(String groupKey, String identify, String md5) {
         CacheItem cache = makeSure(groupKey, identify);
-        if (cache.md5 == null || !cache.md5.equals(md5)) {
-            cache.md5 = md5;
+        if (cache.getMd5() == null || !cache.getMd5().equals(md5)) {
+            cache.setMd5(md5);
             String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
-            ConfigAllInfo config = CONFIG_SERVICE.findConfigRecentInfo(params);
-            cache.configAllInfo = config;
-            cache.lastModifiedTs = System.currentTimeMillis();
+            ConfigAllInfo config = configService.findConfigRecentInfo(params);
+            cache.setConfigAllInfo(config);
+            cache.setLastModifiedTs(System.currentTimeMillis());
             NotifyCenter.publishEvent(new LocalDataChangeEvent(identify, groupKey));
         }
     }
 
-    public synchronized static CacheItem makeSure(String groupKey, String ip) {
+    public static synchronized CacheItem makeSure(String groupKey, String ip) {
         Map<String, CacheItem> ipCacheItemMap = CLIENT_CONFIG_CACHE.get(groupKey);
-        CacheItem item;
-        if (ipCacheItemMap != null && (item = ipCacheItemMap.get(ip)) != null) {
-            return item;
+        if (ipCacheItemMap != null) {
+            CacheItem item = ipCacheItemMap.get(ip);
+            if (item != null) {
+                return item;
+            }
         }
         CacheItem tmp = new CacheItem(groupKey);
         Map<String, CacheItem> cacheItemMap = new HashMap<>();
@@ -176,7 +184,7 @@ public class ConfigCacheService {
             for (String each : keys) {
                 String[] keyArray = each.split(GROUP_KEY_DELIMITER_TRANSLATION);
                 if (keyArray.length > 2) {
-                    identifyList.add(keyArray[3]);
+                    identifyList.add(keyArray[INDEX_3]);
                 }
             }
         }
@@ -192,7 +200,7 @@ public class ConfigCacheService {
         coarseRemove(groupKey);
     }
 
-    private synchronized static void coarseRemove(String coarse) {
+    private static synchronized void coarseRemove(String coarse) {
         // fuzzy search
         List<String> identificationList = MapUtil.parseMapForFilter(CLIENT_CONFIG_CACHE, coarse);
         for (String cacheMapKey : identificationList) {

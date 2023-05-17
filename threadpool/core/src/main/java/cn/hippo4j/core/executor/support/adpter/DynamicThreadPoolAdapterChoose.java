@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.support.adpter;
 
-import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
+import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.support.spi.DynamicThreadPoolAdapterSPI;
@@ -33,7 +33,7 @@ import java.util.concurrent.Executor;
  */
 public class DynamicThreadPoolAdapterChoose {
 
-    private static List<DynamicThreadPoolAdapter> DYNAMIC_THREAD_POOL_ADAPTERS = new ArrayList<>();
+    private static final List<DynamicThreadPoolAdapter> DYNAMIC_THREAD_POOL_ADAPTERS = new ArrayList<>();
 
     static {
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new TransmittableThreadLocalExecutorAdapter());

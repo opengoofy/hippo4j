@@ -46,6 +46,9 @@ import javax.servlet.Servlet;
 @AutoConfigureBefore(WebThreadPoolHandlerConfiguration.class)
 public class WebThreadPoolHandlerConfiguration1x {
 
+    /**
+     * Embedded tomcat
+     */
     @Configuration
     @ConditionalOnClass({Servlet.class, Tomcat.class})
     @ConditionalOnBean(WebThreadPoolRunStateHandler.class)

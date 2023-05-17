@@ -114,7 +114,5 @@ public class AbstractBuildThreadPoolTemplateTest {
         }
 
         Assert.assertEquals(2, count.get());
-
     }
-
 }

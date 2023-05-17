@@ -44,6 +44,12 @@ public class RunStateHandlerTest {
     @Resource
     private ThreadPoolExecutor messageProduceDynamicThreadPool;
 
+    private static final int MAX_RANDOM = 10;
+    private static final int SLEEP_500 = 500;
+    private static final int SLEEP_1000 = 1000;
+    private static final int SLEEP_3000 = 3000;
+    private static final int SLEEP_5000 = 5000;
+
     /*
      * @Resource private ThreadPoolTaskExecutor testSpringThreadPoolTaskExecutor;
      */
@@ -82,7 +88,7 @@ public class RunStateHandlerTest {
              */
             MDC.put(EXECUTE_TIMEOUT_TRACE, "39948722194639841.251.16612352194691531");
             try {
-                Thread.sleep(5000);
+                Thread.sleep(SLEEP_5000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -90,14 +96,14 @@ public class RunStateHandlerTest {
                 try {
                     executor.execute(() -> {
                         try {
-                            int maxRandom = 10;
+                            int maxRandom = MAX_RANDOM;
                             int temp = 2;
                             Random random = new Random();
                             // Assignment thread pool completedTaskCount
                             if (random.nextInt(maxRandom) % temp == 0) {
-                                Thread.sleep(1000);
+                                Thread.sleep(SLEEP_1000);
                             } else {
-                                Thread.sleep(3000);
+                                Thread.sleep(SLEEP_3000);
                             }
                         } catch (InterruptedException ignored) {
                         }
@@ -105,7 +111,7 @@ public class RunStateHandlerTest {
                 } catch (Exception ignored) {
                 }
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(SLEEP_500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

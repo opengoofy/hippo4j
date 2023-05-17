@@ -37,10 +37,12 @@ public class MessageProduce {
 
     private final StreamBridge streamBridge;
 
+    private static final int MAX_SEND_SIZE = 10;
+
     @GetMapping("/message/send")
     public String sendMessage(@RequestParam(required = false) Integer maxSendSize) {
         if (maxSendSize == null) {
-            maxSendSize = 10;
+            maxSendSize = MAX_SEND_SIZE;
         }
         for (int i = 0; i < maxSendSize; i++) {
             sendMessage0();

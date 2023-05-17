@@ -29,6 +29,9 @@ import org.springframework.messaging.MessageHeaders;
 
 import java.util.function.Consumer;
 
+/**
+ * Server Adapter Spring Cloud Stream RabbitMQ Application
+ */
 @Slf4j
 @EnableDynamicThreadPool
 @SpringBootApplication

@@ -47,6 +47,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_0;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_1;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_2;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_3;
 import static cn.hippo4j.common.toolkit.DateUtil.NORM_TIME_PATTERN;
 
 /**
@@ -151,12 +155,12 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
         runtimeMessages.forEach(each -> {
             HisRunDataInfo hisRunDataInfo = BeanUtil.convert(each, HisRunDataInfo.class);
             String[] parseKey = GroupKey.parseKey(each.getGroupKey());
-            boolean checkFlag = ConfigCacheService.checkTpId(each.getGroupKey(), parseKey[0], parseKey[3]);
+            boolean checkFlag = ConfigCacheService.checkTpId(each.getGroupKey(), parseKey[INDEX_0], parseKey[INDEX_3]);
             if (checkFlag) {
-                hisRunDataInfo.setTpId(parseKey[0]);
-                hisRunDataInfo.setItemId(parseKey[1]);
-                hisRunDataInfo.setTenantId(parseKey[2]);
-                hisRunDataInfo.setInstanceId(parseKey[3]);
+                hisRunDataInfo.setTpId(parseKey[INDEX_0]);
+                hisRunDataInfo.setItemId(parseKey[INDEX_1]);
+                hisRunDataInfo.setTenantId(parseKey[INDEX_2]);
+                hisRunDataInfo.setInstanceId(parseKey[INDEX_3]);
                 hisRunDataInfos.add(hisRunDataInfo);
             }
         });

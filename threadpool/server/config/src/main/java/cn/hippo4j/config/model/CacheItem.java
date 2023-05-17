@@ -33,13 +33,13 @@ public class CacheItem {
 
     final String groupKey;
 
-    public volatile String md5 = Constants.NULL;
+    private volatile String md5 = Constants.NULL;
 
-    public volatile long lastModifiedTs;
+    private volatile long lastModifiedTs;
 
-    public volatile ConfigAllInfo configAllInfo;
+    private volatile ConfigAllInfo configAllInfo;
 
-    public SimpleReadWriteLock rwLock = new SimpleReadWriteLock();
+    private SimpleReadWriteLock rwLock = new SimpleReadWriteLock();
 
     public CacheItem(String groupKey) {
         this.groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);

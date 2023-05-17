@@ -31,11 +31,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
+/**
+ * Thread pool executor constructor method interceptor
+ */
 public class ThreadPoolExecutorConstructorMethodInterceptor implements InstanceConstructorInterceptor {
 
     private static final ILog LOGGER = LogManager.getLogger(ThreadPoolExecutorConstructorMethodInterceptor.class);
 
     private static final List<String> EXCLUDE_STACK_TRACE_ELEMENT_CLASS_PREFIX = Arrays.asList("java", "cn.hippo4j.agent");
+
+    private static final int INITIAL_CAPACITY = 3;
 
     @Override
     public void onConstruct(EnhancedInstance objInst, Object[] allArguments) throws Throwable {
@@ -64,8 +69,8 @@ public class ThreadPoolExecutorConstructorMethodInterceptor implements InstanceC
             }
         }
 
-        List<StackTraceElement> result = new ArrayList<>(3); // Find up to three layers
-        for (int j = 0; i < stackTraceElements.length && j < 3; i++, j++) {
+        List<StackTraceElement> result = new ArrayList<>(INITIAL_CAPACITY); // Find up to three layers
+        for (int j = 0; i < stackTraceElements.length && j < INITIAL_CAPACITY; i++, j++) {
             String fullClassName = stackTraceElements[i].getClassName();
             if (isExcludeThreadPoolClass(fullClassName)) {
                 break;

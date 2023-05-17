@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.adapter.alibaba.dubbo;
 
 import cn.hippo4j.adapter.alibaba.dubbo.AlibabaDubboThreadPoolAdapter;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

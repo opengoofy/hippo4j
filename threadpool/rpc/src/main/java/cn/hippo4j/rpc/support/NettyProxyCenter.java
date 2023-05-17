@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Add a proxy for the request, {@link Proxy} and {@link InvocationHandler}
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NettyProxyCenter {

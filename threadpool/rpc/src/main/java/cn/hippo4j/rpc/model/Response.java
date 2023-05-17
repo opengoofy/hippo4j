@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * Response
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public interface Response extends Serializable {
 

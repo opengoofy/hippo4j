@@ -34,6 +34,11 @@ import java.util.Map;
 
 import static cn.hippo4j.common.constant.Constants.LINE_SEPARATOR;
 import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_0;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_1;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_2;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_3;
+import static cn.hippo4j.common.constant.MagicNumberConstants.SIZE_4;
 
 /**
  * Md5 config util.
@@ -44,6 +49,10 @@ public class Md5ConfigUtil {
 
     static final char LINE_SEPARATOR_CHAR = (char) 1;
 
+    private static final int CLIENT_MD5_MAP_INIT_SIZE = 5;
+    private static final int CLIENT_MD5_MAP_MAX_SIZE = 10000;
+    private static final int CLIENT_MD5_TMP_LIST_INIT_SIZE = 3;
+    private static final int CLIENT_MD5_TMP_LIST_MAX_SIZE = 4;
     /**
      * Get thread pool content md5
      *
@@ -74,18 +83,18 @@ public class Md5ConfigUtil {
     }
 
     public static Map<String, String> getClientMd5Map(String configKeysString) {
-        Map<String, String> md5Map = new HashMap(5);
+        Map<String, String> md5Map = new HashMap(CLIENT_MD5_MAP_INIT_SIZE);
         if (null == configKeysString || "".equals(configKeysString)) {
             return md5Map;
         }
         int start = 0;
-        List<String> tmpList = new ArrayList(3);
+        List<String> tmpList = new ArrayList(CLIENT_MD5_TMP_LIST_INIT_SIZE);
         for (int i = start; i < configKeysString.length(); i++) {
             char c = configKeysString.charAt(i);
             if (c == WORD_SEPARATOR_CHAR) {
                 tmpList.add(configKeysString.substring(start, i));
                 start = i + 1;
-                if (tmpList.size() > 4) {
+                if (tmpList.size() > CLIENT_MD5_TMP_LIST_MAX_SIZE) {
                     // Malformed message and return parameter error.
                     throw new IllegalArgumentException("invalid protocol,too much key");
                 }
@@ -95,12 +104,12 @@ public class Md5ConfigUtil {
                     endValue = configKeysString.substring(start, i);
                 }
                 start = i + 1;
-                String groupKey = getKey(tmpList.get(0), tmpList.get(1), tmpList.get(2), tmpList.get(3));
+                String groupKey = getKey(tmpList.get(INDEX_0), tmpList.get(INDEX_1), tmpList.get(INDEX_2), tmpList.get(INDEX_3));
                 groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
                 md5Map.put(groupKey, endValue);
                 tmpList.clear();
                 // Protect malformed messages
-                if (md5Map.size() > 10000) {
+                if (md5Map.size() > CLIENT_MD5_MAP_MAX_SIZE) {
                     throw new IllegalArgumentException("invalid protocol, too much listener");
                 }
             }
@@ -140,7 +149,7 @@ public class Md5ConfigUtil {
             sb.append(WORD_SEPARATOR);
             sb.append(dataIdGroupId[1]);
             // if have tenant, then set it
-            if (dataIdGroupId.length == 4) {
+            if (dataIdGroupId.length == SIZE_4) {
                 if (StringUtil.isNotBlank(dataIdGroupId[2])) {
                     sb.append(WORD_SEPARATOR);
                     sb.append(dataIdGroupId[2]);

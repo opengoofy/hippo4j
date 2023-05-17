@@ -50,6 +50,9 @@ import javax.servlet.Servlet;
 @Configuration(proxyBeanMethods = false)
 public class WebThreadPoolHandlerConfiguration {
 
+    /**
+     * embedded tomcat
+     */
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({Servlet.class, Tomcat.class, UpgradeProtocol.class})
     @ConditionalOnBean(value = ConfigurableTomcatWebServerFactory.class, search = SearchStrategy.CURRENT)
@@ -67,6 +70,9 @@ public class WebThreadPoolHandlerConfiguration {
         }
     }
 
+    /**
+     * embedded jetty
+     */
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({Servlet.class, Server.class, Loader.class, WebAppContext.class})
     @ConditionalOnBean(value = ConfigurableJettyWebServerFactory.class, search = SearchStrategy.CURRENT)
@@ -84,6 +90,9 @@ public class WebThreadPoolHandlerConfiguration {
         }
     }
 
+    /**
+     * embedded undertow
+     */
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({Servlet.class, Undertow.class, SslClientAuthMode.class})
     @ConditionalOnBean(value = ConfigurableUndertowWebServerFactory.class, search = SearchStrategy.CURRENT)

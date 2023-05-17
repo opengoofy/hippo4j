@@ -38,6 +38,8 @@ public class TaskDecoratorTest {
 
     public static final String PLACEHOLDER = "site";
 
+    private static final int SLEEP_TIME = 5000;
+
     private final ThreadPoolExecutor taskDecoratorTestExecutor = new ThreadPoolExecutor(
             1,
             1,
@@ -60,7 +62,7 @@ public class TaskDecoratorTest {
         taskDecoratorTestExecutor.execute(() -> {
             MDC.put(PLACEHOLDER, "View the official website: https://www.hippo4j.cn");
             try {
-                Thread.sleep(5000);
+                Thread.sleep(SLEEP_TIME);
                 DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
                 ThreadPoolExecutor threadPoolExecutor = poolWrapper.getExecutor();
                 threadPoolExecutor.execute(() -> log.info("Pass context via taskDecorator MDC: {}", MDC.get(PLACEHOLDER)));
@@ -70,6 +72,9 @@ public class TaskDecoratorTest {
         });
     }
 
+    /**
+     * Context Copying Decorator
+     */
     public static class ContextCopyingDecorator implements TaskDecorator {
 
         @Override

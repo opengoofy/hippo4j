@@ -40,6 +40,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static cn.hippo4j.common.constant.Constants.NO_REJECT_COUNT_NUM;
+
 /**
  * Enhanced dynamic and monitored thread pool.
  */
@@ -57,7 +59,17 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
      */
     @Getter
     @Setter
-    public boolean waitForTasksToCompleteOnShutdown;
+    private boolean waitForTasksToCompleteOnShutdown;
+
+    /**
+     * The default await termination millis
+     */
+    private static final Long DEFAULT_AWAIT_TERMINATION_MILLIS = -1L;
+
+    /**
+     * The default execute timeout
+     */
+    private static final Long DEFAULT_EXECUTE_TIMEOUT = -1L;
 
     /**
      * Creates a new {@code DynamicThreadPoolExecutor} with the given initial parameters.
@@ -149,7 +161,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
     public long getAwaitTerminationMillis() {
         return getPluginOfType(ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME, ThreadPoolExecutorShutdownPlugin.class)
                 .map(ThreadPoolExecutorShutdownPlugin::getAwaitTerminationMillis)
-                .orElse(-1L);
+                .orElse(DEFAULT_AWAIT_TERMINATION_MILLIS);
     }
 
     /**
@@ -176,7 +188,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
     public Long getRejectCountNum() {
         return getPluginOfType(TaskRejectCountRecordPlugin.PLUGIN_NAME, TaskRejectCountRecordPlugin.class)
                 .map(TaskRejectCountRecordPlugin::getRejectCountNum)
-                .orElse(-1L);
+                .orElse(NO_REJECT_COUNT_NUM);
     }
 
     /**
@@ -201,7 +213,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
     public Long getExecuteTimeOut() {
         return getPluginOfType(TaskTimeoutNotifyAlarmPlugin.PLUGIN_NAME, TaskTimeoutNotifyAlarmPlugin.class)
                 .map(TaskTimeoutNotifyAlarmPlugin::getExecuteTimeOut)
-                .orElse(-1L);
+                .orElse(DEFAULT_EXECUTE_TIMEOUT);
     }
 
     /**

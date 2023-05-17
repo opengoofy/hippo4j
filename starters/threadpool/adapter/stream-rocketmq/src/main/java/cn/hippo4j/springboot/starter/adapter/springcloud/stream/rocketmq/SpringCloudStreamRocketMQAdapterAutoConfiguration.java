@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rocketmq;
 
 import cn.hippo4j.adapter.springcloud.stream.rocketmq.SpringCloudStreamRocketMQThreadPoolAdapter;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = ServerBootstrapProperties.PREFIX)
 public class ServerBootstrapProperties {
 
-    public final static String PREFIX = "hippo4j.core";
+    public static final String PREFIX = "hippo4j.core";
 
     /**
      * Whether to start the background task of cleaning up thread pool history data.

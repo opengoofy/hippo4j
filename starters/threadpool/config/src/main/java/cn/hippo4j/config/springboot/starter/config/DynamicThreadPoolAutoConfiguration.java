@@ -18,8 +18,8 @@
 package cn.hippo4j.config.springboot.starter.config;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
-import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.api.ThreadPoolCheckAlarm;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.monitor.ThreadPoolMonitorExecutor;
 import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;

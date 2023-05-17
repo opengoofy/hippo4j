@@ -35,6 +35,10 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class AlarmSendMessageTest {
 
+    private static final int SLEEP_TIME = 10240124;
+
+    private static final int INITIAL_DELAY = 3;
+
     /**
      * Test alarm notification.
      * If you need to run this single test, add @PostConstruct to the method.
@@ -48,7 +52,7 @@ public class AlarmSendMessageTest {
             try {
                 poolExecutor.execute(() -> {
                     try {
-                        Thread.sleep(10240124);
+                        Thread.sleep(SLEEP_TIME);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -56,6 +60,6 @@ public class AlarmSendMessageTest {
             } catch (Exception ex) {
                 log.error("Throw reject policy.", ex.getMessage());
             }
-        }, 3, 1, TimeUnit.SECONDS);
+        }, INITIAL_DELAY, 1, TimeUnit.SECONDS);
     }
 }

@@ -32,6 +32,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.lang.reflect.Method;
 
+/**
+ * Event publishing finished interceptor
+ */
 public class EventPublishingFinishedInterceptor implements InstanceMethodsAroundInterceptor {
 
     private static final ILog FILE_LOGGER = LogManager.getLogger(EventPublishingFinishedInterceptor.class);

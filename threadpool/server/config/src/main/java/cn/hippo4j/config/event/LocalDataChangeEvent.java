@@ -17,20 +17,23 @@
 
 package cn.hippo4j.config.event;
 
+import lombok.Getter;
+
 /**
  * Local data change event.
  */
+@Getter
 public class LocalDataChangeEvent extends AbstractEvent {
 
     /**
      * Tenant +  Item + Thread-pool
      */
-    public final String groupKey;
+    private final String groupKey;
 
     /**
      * Client instance unique identifier
      */
-    public final String identify;
+    private final String identify;
 
     public LocalDataChangeEvent(String identify, String groupKey) {
         this.identify = identify;

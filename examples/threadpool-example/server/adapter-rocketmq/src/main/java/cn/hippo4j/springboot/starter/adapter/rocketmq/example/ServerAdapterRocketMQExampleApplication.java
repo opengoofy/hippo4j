@@ -21,6 +21,9 @@ import cn.hippo4j.core.enable.EnableDynamicThreadPool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Server adapter rocketMQ example application
+ */
 @EnableDynamicThreadPool
 @SpringBootApplication(scanBasePackages = {"cn.hippo4j.example.core", "cn.hippo4j.springboot.starter.adapter.rocketmq.example"})
 public class ServerAdapterRocketMQExampleApplication {

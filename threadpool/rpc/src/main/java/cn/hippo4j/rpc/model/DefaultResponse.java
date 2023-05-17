@@ -26,7 +26,7 @@ import java.util.Objects;
  * default request<br>
  * Use the fully qualified name key of the interface and override equals and hashCode
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public class DefaultResponse implements Response {
 
@@ -84,10 +84,12 @@ public class DefaultResponse implements Response {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
         DefaultResponse that = (DefaultResponse) o;
         return Objects.equals(key, that.key) && Objects.equals(cls, that.cls);
     }

@@ -18,7 +18,6 @@
 package cn.hippo4j.agent.bootstrap;
 
 import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
-import cn.hippo4j.agent.core.boot.DefaultNamedThreadFactory;
 import cn.hippo4j.agent.core.boot.ServiceManager;
 import cn.hippo4j.agent.core.conf.Config;
 import cn.hippo4j.agent.core.conf.SnifferConfigInitializer;
@@ -49,15 +48,14 @@ import java.security.ProtectionDomain;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import static net.bytebuddy.matcher.ElementMatchers.nameContains;
 import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
+/**
+ * Hippo4j Agent
+ */
 public class Hippo4jAgent {
 
     private static ILog LOGGER = LogManager.getLogger(Hippo4jAgent.class);
@@ -151,6 +149,9 @@ public class Hippo4jAgent {
                 .addShutdownHook(new Thread(ServiceManager.INSTANCE::shutdown, "hippo4j service shutdown thread"));
     }
 
+    /**
+     * transformer
+     */
     private static class Transformer implements AgentBuilder.Transformer {
 
         private PluginFinder pluginFinder;
@@ -193,6 +194,9 @@ public class Hippo4jAgent {
         return nameStartsWith("cn.hippo4j").and(not(nameStartsWith("cn.hippo4j.agent.toolkit.")));
     }
 
+    /**
+     * listener
+     */
     private static class Listener implements AgentBuilder.Listener {
 
         @Override
@@ -235,6 +239,9 @@ public class Hippo4jAgent {
         }
     }
 
+    /**
+     * redefinition listener
+     */
     private static class RedefinitionListener implements AgentBuilder.RedefinitionStrategy.Listener {
 
         @Override

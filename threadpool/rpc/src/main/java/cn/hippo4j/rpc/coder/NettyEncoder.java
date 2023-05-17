@@ -30,11 +30,12 @@ import java.io.Serializable;
  * this is a encoder, For custom gluing and unpacking<br>
  * {@link io.netty.handler.codec.serialization.ObjectEncoder}
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public class NettyEncoder extends MessageToByteEncoder<Serializable> {
 
-    private static final byte[] BYTE = new byte[4];
+    private static final int BYTE_LENGTH = 4;
+    private static final byte[] BYTE = new byte[BYTE_LENGTH];
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Serializable msg, ByteBuf out) throws Exception {
@@ -49,6 +50,6 @@ public class NettyEncoder extends MessageToByteEncoder<Serializable> {
             throw new CoderException("The encoding is abnormal, which may be caused by the transfer object being unable to be serialized");
         }
         int endIndex = out.writerIndex();
-        out.setInt(startIndex, endIndex - startIndex - 4);
+        out.setInt(startIndex, endIndex - startIndex - BYTE_LENGTH);
     }
 }

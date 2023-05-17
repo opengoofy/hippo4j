@@ -17,9 +17,9 @@
 
 package cn.hippo4j.core.toolkit;
 
-import cn.hippo4j.common.api.ClientNetworkService;
-import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
+import cn.hippo4j.core.api.ClientNetworkService;
+import cn.hippo4j.core.config.ApplicationContextHolder;
+import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.Joiner;
@@ -45,12 +45,17 @@ public class IdentifyUtil {
     /**
      * Identify
      */
-    private static String IDENTIFY;
+    private static String identify;
 
     /**
      * Client identification value
      */
     public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
+
+    /**
+     * Get identify sleep time
+     */
+    private static final int SLEEP_TIME = 500;
 
     /**
      * Generate identify.
@@ -60,8 +65,8 @@ public class IdentifyUtil {
      * @return identify
      */
     public static synchronized String generate(ConfigurableEnvironment environment, InetUtils inetUtil) {
-        if (StringUtil.isNotBlank(IDENTIFY)) {
-            return IDENTIFY;
+        if (StringUtil.isNotBlank(identify)) {
+            return identify;
         }
         String[] customerNetwork = ServiceLoaderRegistry.getSingletonServiceInstances(ClientNetworkService.class)
                 .stream().findFirst().map(each -> each.getNetworkIpPort(environment)).orElse(null);
@@ -79,7 +84,7 @@ public class IdentifyUtil {
                 + port
                 + IDENTIFY_SLICER_SYMBOL
                 + CLIENT_IDENTIFICATION_VALUE;
-        IDENTIFY = identify;
+        identify = identify;
         return identify;
     }
 
@@ -89,16 +94,16 @@ public class IdentifyUtil {
      * @return identify
      */
     public static String getIdentify() {
-        while (StringUtil.isBlank(IDENTIFY)) {
+        while (StringUtil.isBlank(identify)) {
             ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
             InetUtils inetUtils = ApplicationContextHolder.getBean(InetUtils.class);
             if (environment != null && inetUtils != null) {
                 String identify = generate(environment, inetUtils);
                 return identify;
             }
-            ThreadUtil.sleep(500);
+            ThreadUtil.sleep(SLEEP_TIME);
         }
-        return IDENTIFY;
+        return identify;
     }
 
     /**

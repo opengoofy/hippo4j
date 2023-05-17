@@ -80,4 +80,24 @@ public class TaskTimeRecordPluginTest {
         return exceptLower < actual && actual < exceptUpper;
     }
 
+    @Test
+    public void testTableSizeFor() {
+        int maxCap = 1 << 30;
+        for (int i = 0; i <= maxCap; i++) {
+            int tabSize1 = tabSizeFor_JDK8(i);
+            int tabSize2 = TaskTimeRecordPlugin.tableSizeFor(i);
+            Assert.assertTrue(tabSize1 == tabSize2);
+        }
+    }
+
+    private static int tabSizeFor_JDK8(int cap) {
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return (n < 0) ? 1 : (n >= 1073741824) ? 1073741824 : n + 1;
+    }
+
 }

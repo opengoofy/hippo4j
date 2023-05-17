@@ -23,6 +23,9 @@ import org.springframework.core.env.MapPropertySource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Spring environment support
+ */
 public class SpringEnvironmentSupport {
 
     public static void disableNonAgentSwitch(ConfigurableEnvironment environment) {
