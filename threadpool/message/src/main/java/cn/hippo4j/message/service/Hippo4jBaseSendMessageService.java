@@ -19,7 +19,7 @@ package cn.hippo4j.message.service;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.message.dto.AlarmControlDTO;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyTypeEnum;

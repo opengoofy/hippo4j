@@ -20,7 +20,6 @@ package cn.hippo4j.common.toolkit;
 import cn.hippo4j.common.web.exception.IllegalException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.ReflectUtils;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -308,17 +307,20 @@ public class ReflectUtil {
     }
 
     /**
-     *
      * @param clazz
      * @param methodName
      * @param parameterTypes
      * @return
      */
-    public static Method findDeclaredMethod(Class clazz, String methodName, Class[] parameterTypes) {
-        try {
-            return ReflectUtils.findDeclaredMethod(clazz, methodName, parameterTypes);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+    public static Method findDeclaredMethod(Class clazz, String methodName, Class[] parameterTypes) throws NoSuchMethodException {
+        Class cl = clazz;
+        while (cl != null) {
+            try {
+                return cl.getDeclaredMethod(methodName, parameterTypes);
+            } catch (NoSuchMethodException e) {
+                cl = cl.getSuperclass();
+            }
         }
+        throw new NoSuchMethodException(methodName);
     }
 }

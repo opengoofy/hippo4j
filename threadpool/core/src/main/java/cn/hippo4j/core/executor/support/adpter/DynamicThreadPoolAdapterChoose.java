@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.support.adpter;
 
-import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
+import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.support.spi.DynamicThreadPoolAdapterSPI;

@@ -18,7 +18,7 @@
 package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.api.ClientCloseHookExecute;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.common.web.base.Results;
@@ -37,9 +37,9 @@ import java.util.Map;
 public class ClientCloseHookController {
 
     @PostMapping
-    public Result clientCloseHook(@RequestBody ClientCloseHookExecute.ClientCloseHookReq req) {
+    public Result clientCloseHook(@RequestBody ClientCloseHookExecute.ClientCloseHookReq requestParam) {
         Map<String, ClientCloseHookExecute> clientCloseHookExecuteMap = ApplicationContextHolder.getBeansOfType(ClientCloseHookExecute.class);
-        clientCloseHookExecuteMap.forEach((key, execute) -> execute.closeHook(req));
+        clientCloseHookExecuteMap.forEach((key, execute) -> execute.closeHook(requestParam));
         return Results.success();
     }
 }

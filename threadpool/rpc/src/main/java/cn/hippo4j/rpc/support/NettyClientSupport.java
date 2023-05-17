@@ -51,8 +51,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see cn.hippo4j.rpc.client.RPCClient
  * @see cn.hippo4j.rpc.client.NettyClientConnection
  * @see NettyServerSupport
- * @see ClientFactoryBean
- * @since 1.5.1
+ * @since 2.0.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NettyClientSupport {

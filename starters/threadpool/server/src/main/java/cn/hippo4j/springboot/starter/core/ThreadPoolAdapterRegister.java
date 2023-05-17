@@ -21,7 +21,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterRegisterAction;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.core.toolkit.IdentifyUtil;

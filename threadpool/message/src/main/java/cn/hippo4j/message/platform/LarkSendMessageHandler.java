@@ -18,11 +18,11 @@
 package cn.hippo4j.message.platform;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.common.toolkit.FileUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Singleton;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.http.HttpUtil;
+import cn.hippo4j.core.toolkit.FileUtil;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
 import cn.hippo4j.message.enums.NotifyPlatformEnum;
 import cn.hippo4j.message.enums.NotifyTypeEnum;

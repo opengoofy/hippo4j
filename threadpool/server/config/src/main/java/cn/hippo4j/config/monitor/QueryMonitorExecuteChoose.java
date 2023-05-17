@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.monitor;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageTypeEnum;
 import org.springframework.boot.CommandLineRunner;

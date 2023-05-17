@@ -17,9 +17,6 @@
 
 package cn.hippo4j.common.toolkit;
 
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
-
 import java.util.Collection;
 import java.util.Map;
 
@@ -65,7 +62,7 @@ public class Assert {
     }
 
     public static void notEmpty(Collection<?> collection, String message) {
-        if (CollectionUtils.isEmpty(collection)) {
+        if (CollectionUtil.isEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -76,7 +73,7 @@ public class Assert {
     }
 
     public static void notEmpty(Map<?, ?> map, String message) {
-        if (CollectionUtils.isEmpty(map)) {
+        if (CollectionUtil.isEmpty(map)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -86,13 +83,13 @@ public class Assert {
     }
 
     public static void notEmpty(String str, String message) {
-        if (StringUtils.isEmpty(str)) {
+        if (StringUtil.isEmpty(str)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void notEmpty(String str) {
-        if (StringUtils.isEmpty(str)) {
+        if (StringUtil.isEmpty(str)) {
             notEmpty(str, "[Assertion failed] - this string must not be empty");
         }
     }
@@ -108,7 +105,7 @@ public class Assert {
     }
 
     public static void hasText(String text, String message) {
-        if (!StringUtils.hasText(text)) {
+        if (!StringUtil.hasText(text)) {
             throw new IllegalArgumentException(message);
         }
     }

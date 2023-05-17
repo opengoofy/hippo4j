@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.toolkit;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;

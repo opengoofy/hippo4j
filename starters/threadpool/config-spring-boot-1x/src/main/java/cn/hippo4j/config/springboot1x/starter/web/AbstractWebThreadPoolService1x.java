@@ -19,7 +19,7 @@ package cn.hippo4j.config.springboot1x.starter.web;
 
 import cn.hippo4j.adapter.web.AbstractWebThreadPoolService;
 import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.embedded.EmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;

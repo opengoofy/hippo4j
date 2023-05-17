@@ -17,7 +17,7 @@
 
 package cn.hippo4j.example.core.handler;
 
-import cn.hippo4j.common.api.ClientNetworkService;
+import cn.hippo4j.core.api.ClientNetworkService;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**

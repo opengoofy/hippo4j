@@ -17,9 +17,9 @@
 
 package cn.hippo4j.config.verify;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.config.service.biz.ConfigModificationVerifyService;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

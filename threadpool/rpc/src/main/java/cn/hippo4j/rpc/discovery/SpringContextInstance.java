@@ -17,23 +17,23 @@
 
 package cn.hippo4j.rpc.discovery;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
-
 /**
  * Adapter Spring, The requested object is managed by spring
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public class SpringContextInstance implements Instance {
 
     @Override
     public Object getInstance(Class<?> cls) {
-        return ApplicationContextHolder.getBean(cls);
+        // return ApplicationContextHolder.getBean(cls);
+        return null;
     }
 
     @Override
     public Object getInstance(String name) {
-        return ApplicationContextHolder.getInstance().getBean(name);
+        // return ApplicationContextHolder.getInstance().getBean(name);
+        return null;
     }
 
 }

@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.adapter.rabbitmq;
 import java.util.Map;
 
 import cn.hippo4j.adapter.rabbitmq.RabbitMQThreadPoolAdapter;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;

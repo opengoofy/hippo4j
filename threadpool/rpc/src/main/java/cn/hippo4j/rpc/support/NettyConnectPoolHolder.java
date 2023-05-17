@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * To avoid creating multiple connection pools for the same host:port, save all connection pools of the client
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NettyConnectPoolHolder {

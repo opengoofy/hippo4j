@@ -20,7 +20,7 @@ package cn.hippo4j.config.springboot.starter.refresher.event;
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;

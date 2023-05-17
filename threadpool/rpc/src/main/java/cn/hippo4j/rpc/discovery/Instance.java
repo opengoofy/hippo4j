@@ -20,7 +20,7 @@ package cn.hippo4j.rpc.discovery;
 /**
  * Instance interface to get an instance
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public interface Instance {
 

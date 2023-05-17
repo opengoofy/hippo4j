@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.service;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
 import cn.hippo4j.common.design.observer.Observer;

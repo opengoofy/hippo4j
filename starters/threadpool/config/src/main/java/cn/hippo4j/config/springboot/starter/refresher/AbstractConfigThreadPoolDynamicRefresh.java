@@ -18,7 +18,7 @@
 package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.parser.ConfigParserHandler;
