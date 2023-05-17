@@ -26,12 +26,9 @@ import cn.hippo4j.agent.plugin.spring.boot.v2.DynamicThreadPoolChangeHandlerSpri
 import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
 import cn.hippo4j.agent.plugin.spring.common.support.IDynamicThreadPoolChangeHandlerSpring;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSupport;
-import cn.hippo4j.core.executor.DynamicThreadPool;
-import cn.hippo4j.core.executor.SpringDynamicThreadPool;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 /**
  * Event publishing started interceptor
