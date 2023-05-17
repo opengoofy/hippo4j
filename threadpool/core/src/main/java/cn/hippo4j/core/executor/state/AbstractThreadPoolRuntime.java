@@ -29,6 +29,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import static cn.hippo4j.common.constant.Constants.NO_REJECT_COUNT_NUM;
+
 /**
  * Abstract threadPool runtime info.
  */
@@ -66,7 +68,7 @@ public abstract class AbstractThreadPoolRuntime {
         int activeCount = actualExecutor.getActiveCount();
         int largestPoolSize = actualExecutor.getLargestPoolSize();
         BlockingQueue<Runnable> blockingQueue = actualExecutor.getQueue();
-        long rejectCount = actualExecutor instanceof DynamicThreadPoolExecutor ? ((DynamicThreadPoolExecutor) actualExecutor).getRejectCountNum() : -1L;
+        long rejectCount = actualExecutor instanceof DynamicThreadPoolExecutor ? ((DynamicThreadPoolExecutor) actualExecutor).getRejectCountNum() : NO_REJECT_COUNT_NUM;
         ThreadPoolRunStateInfo stateInfo = ThreadPoolRunStateInfo.builder()
                 .tpId(threadPoolId)
                 .activeSize(activeCount)

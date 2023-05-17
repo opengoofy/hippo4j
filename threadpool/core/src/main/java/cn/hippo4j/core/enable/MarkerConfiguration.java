@@ -31,6 +31,9 @@ public class MarkerConfiguration {
         return new Marker();
     }
 
+    /**
+     * Marker.
+     */
     public class Marker {
 
     }

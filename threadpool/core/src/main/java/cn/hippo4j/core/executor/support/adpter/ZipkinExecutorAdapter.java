@@ -31,9 +31,9 @@ import java.util.concurrent.Executor;
  */
 public class ZipkinExecutorAdapter implements DynamicThreadPoolAdapter {
 
-    private final static String MATCH_CLASS_NAME = "brave.internal.WrappingExecutorService";
-    private final static String FIELD_NAME = "delegate";
-    private final static String TYPE_NAME = "java.util.concurrent.ExecutorService";
+    private static final String MATCH_CLASS_NAME = "brave.internal.WrappingExecutorService";
+    private static final String FIELD_NAME = "delegate";
+    private static final String TYPE_NAME = "java.util.concurrent.ExecutorService";
 
     @Override
     public boolean match(Object executor) {

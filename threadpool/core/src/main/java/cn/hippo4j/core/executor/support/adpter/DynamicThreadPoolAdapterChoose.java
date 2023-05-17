@@ -33,7 +33,7 @@ import java.util.concurrent.Executor;
  */
 public class DynamicThreadPoolAdapterChoose {
 
-    private static List<DynamicThreadPoolAdapter> DYNAMIC_THREAD_POOL_ADAPTERS = new ArrayList<>();
+    private static final List<DynamicThreadPoolAdapter> DYNAMIC_THREAD_POOL_ADAPTERS = new ArrayList<>();
 
     static {
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new TransmittableThreadLocalExecutorAdapter());

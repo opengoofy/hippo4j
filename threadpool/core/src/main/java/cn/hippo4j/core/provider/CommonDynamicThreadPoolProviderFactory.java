@@ -29,6 +29,23 @@ import java.util.concurrent.TimeUnit;
 public class CommonDynamicThreadPoolProviderFactory {
 
     /**
+     * Core pool size.
+     */
+    private static final int CORE_POOL_SIZE = 2;
+    /**
+     * Maximum pool size.
+     */
+    private static final int MAXIMUM_POOL_SIZE = 4;
+    /**
+     * Keep alive time.
+     */
+    private static final long KEEP_ALIVE_TIME = 60L;
+    /**
+     * Work queue capacity.
+     */
+    private static final int WORK_QUEUE_CAPACITY = 1024;
+
+    /**
      * Get the public dynamic thread pool instance.
      *
      * @param threadPoolId thread-pool id
@@ -38,9 +55,9 @@ public class CommonDynamicThreadPoolProviderFactory {
         DynamicThreadPoolExecutor dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) ThreadPoolBuilder.builder()
                 .dynamicPool()
                 .threadFactory(threadPoolId)
-                .poolThreadSize(2, 4)
-                .keepAliveTime(60L, TimeUnit.SECONDS)
-                .workQueue(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, 1024)
+                .poolThreadSize(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE)
+                .keepAliveTime(KEEP_ALIVE_TIME, TimeUnit.SECONDS)
+                .workQueue(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, WORK_QUEUE_CAPACITY)
                 .build();
         return dynamicThreadPoolExecutor;
     }

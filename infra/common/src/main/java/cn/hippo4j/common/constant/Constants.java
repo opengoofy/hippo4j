@@ -131,4 +131,6 @@ public class Constants {
     public static final String CLIENT_VERSION = "Client-Version";
 
     public static final String CONFIGURATION_PROPERTIES_PREFIX = "spring.dynamic.thread-pool";
+
+    public static final long NO_REJECT_COUNT_NUM = -1L;
 }

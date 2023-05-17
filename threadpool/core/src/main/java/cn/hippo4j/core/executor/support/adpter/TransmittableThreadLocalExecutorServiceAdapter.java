@@ -28,9 +28,9 @@ import java.util.concurrent.Executor;
  */
 public class TransmittableThreadLocalExecutorServiceAdapter implements DynamicThreadPoolAdapter {
 
-    private static String MATCH_CLASS_NAME = "ExecutorServiceTtlWrapper";
+    private static final String MATCH_CLASS_NAME = "ExecutorServiceTtlWrapper";
 
-    private static String FIELD_NAME = "executorService";
+    private static final String FIELD_NAME = "executorService";
 
     @Override
     public boolean match(Object executor) {

@@ -46,7 +46,7 @@ public class ThreadPoolTaskExecutorAdapter implements DynamicThreadPoolAdapter {
 
     private static final String QUEUE_CAPACITY = "queueCapacity";
 
-    private static String MATCH_CLASS_NAME = "ThreadPoolTaskExecutor";
+    private static final String MATCH_CLASS_NAME = "ThreadPoolTaskExecutor";
 
     @Override
     public boolean match(Object executor) {
