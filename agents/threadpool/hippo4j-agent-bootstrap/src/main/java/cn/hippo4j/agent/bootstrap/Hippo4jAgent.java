@@ -18,7 +18,6 @@
 package cn.hippo4j.agent.bootstrap;
 
 import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
-import cn.hippo4j.agent.core.boot.DefaultNamedThreadFactory;
 import cn.hippo4j.agent.core.boot.ServiceManager;
 import cn.hippo4j.agent.core.conf.Config;
 import cn.hippo4j.agent.core.conf.SnifferConfigInitializer;
@@ -49,18 +48,17 @@ import java.security.ProtectionDomain;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import static net.bytebuddy.matcher.ElementMatchers.nameContains;
 import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
+/**
+ * hippo for java Agent
+ */
 public class Hippo4jAgent {
 
-    private static ILog LOGGER = LogManager.getLogger(Hippo4jAgent.class);
+    private static ILog logger = LogManager.getLogger(Hippo4jAgent.class);
 
     /**
      * Main entrance. Use byte-buddy transform to enhance all classes, which define in plugins.
@@ -76,16 +74,16 @@ public class Hippo4jAgent {
             return;
         } finally {
             // refresh logger again after initialization finishes
-            LOGGER = LogManager.getLogger(Hippo4jAgent.class);
+            logger = LogManager.getLogger(Hippo4jAgent.class);
         }
 
         try {
             pluginFinder = new PluginFinder(new PluginBootstrap().loadPlugins());
         } catch (AgentPackageNotFoundException ape) {
-            LOGGER.error(ape, "Locate agent.jar failure. Shutting down.");
+            logger.error(ape, "Locate agent.jar failure. Shutting down.");
             return;
         } catch (Exception e) {
-            LOGGER.error(e, "Hippo4j agent initialized failure. Shutting down.");
+            logger.error(e, "Hippo4j agent initialized failure. Shutting down.");
             return;
         }
 
@@ -106,23 +104,23 @@ public class Hippo4jAgent {
         try {
             agentBuilder = BootstrapInstrumentBoost.inject(pluginFinder, instrumentation, agentBuilder, edgeClasses);
         } catch (Exception e) {
-            LOGGER.error(e, "Hippo4j agent inject bootstrap instrumentation failure. Shutting down.");
+            logger.error(e, "Hippo4j agent inject bootstrap instrumentation failure. Shutting down.");
             return;
         }
 
         try {
             agentBuilder = JDK9ModuleExporter.openReadEdge(instrumentation, agentBuilder, edgeClasses);
         } catch (Exception e) {
-            LOGGER.error(e, "Hippo4j agent open read edge in JDK 9+ failure. Shutting down.");
+            logger.error(e, "Hippo4j agent open read edge in JDK 9+ failure. Shutting down.");
             return;
         }
 
         if (Config.Agent.IS_CACHE_ENHANCED_CLASS) {
             try {
                 agentBuilder = agentBuilder.with(new CacheableTransformerDecorator(Config.Agent.CLASS_CACHE_MODE));
-                LOGGER.info("Hippo4j agent class cache [{}] activated.", Config.Agent.CLASS_CACHE_MODE);
+                logger.info("Hippo4j agent class cache [{}] activated.", Config.Agent.CLASS_CACHE_MODE);
             } catch (Exception e) {
-                LOGGER.error(e, "Hippo4j agent can't active class cache.");
+                logger.error(e, "Hippo4j agent can't active class cache.");
             }
         }
 
@@ -138,19 +136,22 @@ public class Hippo4jAgent {
         try {
             ServiceManager.INSTANCE.boot();
         } catch (Exception e) {
-            LOGGER.error(e, "Hippo4j agent boot failure.");
+            logger.error(e, "Hippo4j agent boot failure.");
         }
 
         try {
             Class.forName("java.util.concurrent.ThreadPoolExecutor");
         } catch (ClassNotFoundException e) {
-            LOGGER.error(e, "Hippo4j agent boot failure.");
+            logger.error(e, "Hippo4j agent boot failure.");
         }
 
         Runtime.getRuntime()
                 .addShutdownHook(new Thread(ServiceManager.INSTANCE::shutdown, "hippo4j service shutdown thread"));
     }
 
+    /**
+     * transformer
+     */
     private static class Transformer implements AgentBuilder.Transformer {
 
         private PluginFinder pluginFinder;
@@ -178,13 +179,13 @@ public class Hippo4jAgent {
                     }
                 }
                 if (context.isEnhanced()) {
-                    LOGGER.debug("Finish the prepare stage for {}.", typeDescription.getName());
+                    logger.debug("Finish the prepare stage for {}.", typeDescription.getName());
                 }
 
                 return newBuilder;
             }
 
-            LOGGER.debug("Matched class {}, but ignore by finding mechanism.", typeDescription.getTypeName());
+            logger.debug("Matched class {}, but ignore by finding mechanism.", typeDescription.getTypeName());
             return builder;
         }
     }
@@ -193,6 +194,9 @@ public class Hippo4jAgent {
         return nameStartsWith("cn.hippo4j").and(not(nameStartsWith("cn.hippo4j.agent.toolkit.")));
     }
 
+    /**
+     * listener
+     */
     private static class Listener implements AgentBuilder.Listener {
 
         @Override
@@ -206,8 +210,8 @@ public class Hippo4jAgent {
                                      final JavaModule module,
                                      final boolean loaded,
                                      final DynamicType dynamicType) {
-            if (LOGGER.isDebugEnable()) {
-                LOGGER.debug("On Transformation class {}.", typeDescription.getName());
+            if (logger.isDebugEnable()) {
+                logger.debug("On Transformation class {}.", typeDescription.getName());
             }
 
             InstrumentDebuggingClass.INSTANCE.log(dynamicType);
@@ -227,7 +231,7 @@ public class Hippo4jAgent {
                             final JavaModule module,
                             final boolean loaded,
                             final Throwable throwable) {
-            LOGGER.error("Enhance class " + typeName + " error.", throwable);
+            logger.error("Enhance class " + typeName + " error.", throwable);
         }
 
         @Override
@@ -235,6 +239,9 @@ public class Hippo4jAgent {
         }
     }
 
+    /**
+     * redefinition listener
+     */
     private static class RedefinitionListener implements AgentBuilder.RedefinitionStrategy.Listener {
 
         @Override
@@ -244,7 +251,7 @@ public class Hippo4jAgent {
 
         @Override
         public Iterable<? extends List<Class<?>>> onError(int index, List<Class<?>> batch, Throwable throwable, List<Class<?>> types) {
-            LOGGER.error(throwable, "index={}, batch={}, types={}", index, batch, types);
+            logger.error(throwable, "index={}, batch={}, types={}", index, batch, types);
             return Collections.emptyList();
         }
 
