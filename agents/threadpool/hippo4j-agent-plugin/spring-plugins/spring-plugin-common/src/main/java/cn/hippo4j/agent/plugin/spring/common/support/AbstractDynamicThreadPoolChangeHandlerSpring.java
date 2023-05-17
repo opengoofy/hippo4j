@@ -56,6 +56,9 @@ import static cn.hippo4j.agent.core.conf.Constants.SPRING_BOOT_CONFIG_PREFIX;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
 
+/**
+ * Abstract dynamic thread poo change handler spring
+ */
 public abstract class AbstractDynamicThreadPoolChangeHandlerSpring implements IDynamicThreadPoolChangeHandlerSpring {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDynamicThreadPoolChangeHandlerSpring.class);

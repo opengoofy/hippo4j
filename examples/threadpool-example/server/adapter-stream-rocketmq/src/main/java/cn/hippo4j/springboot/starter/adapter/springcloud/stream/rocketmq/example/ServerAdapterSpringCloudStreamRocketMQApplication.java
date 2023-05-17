@@ -24,6 +24,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 
+/**
+ * Server Adapter Spring Cloud Stream RocketMQ Application
+ */
 @Slf4j
 @EnableDynamicThreadPool
 @EnableBinding({Source.class, MySink.class})

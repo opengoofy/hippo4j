@@ -17,6 +17,9 @@
 
 package cn.hippo4j.agent.plugin.spring.common.support;
 
+/**
+ * IDynamic thread pool change handler spring
+ */
 public interface IDynamicThreadPoolChangeHandlerSpring {
 
     void registerApolloConfigHandler();

@@ -21,6 +21,9 @@ import cn.hippo4j.core.enable.EnableDynamicThreadPool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Server Example Application
+ */
 @EnableDynamicThreadPool
 @SpringBootApplication(scanBasePackages = {"cn.hippo4j.example.core", "cn.hippo4j.example.server"})
 public class ServerExampleApplication {

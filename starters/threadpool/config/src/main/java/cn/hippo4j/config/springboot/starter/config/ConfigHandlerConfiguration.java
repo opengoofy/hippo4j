@@ -68,6 +68,9 @@ public class ConfigHandlerConfiguration {
         return new DefaultBootstrapConfigPropertiesBinderAdapt();
     }
 
+    /**
+     * Embedded Nacos
+     */
     @RequiredArgsConstructor
     @ConditionalOnClass(value = ConfigService.class, name = NACOS_INJECTED_BEAN_NAME)
     @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
@@ -80,6 +83,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Nacos Cloud
+     */
     @ConditionalOnClass(NacosConfigProperties.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
     static class EmbeddedNacosCloud {
@@ -90,6 +96,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Apollo
+     */
     @ConditionalOnClass(com.ctrip.framework.apollo.ConfigService.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = APOLLO_NAMESPACE_KEY)
     static class EmbeddedApollo {
@@ -100,6 +109,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Consul
+     */
     @ConditionalOnClass(ConsulConfigProperties.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = CONSUL_DATA_KEY)
     static class EmbeddedConsul {
@@ -110,6 +122,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Zookeeper
+     */
     @ConditionalOnClass(CuratorFramework.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ZOOKEEPER_CONNECT_STR_KEY)
     static class EmbeddedZookeeper {
@@ -120,6 +135,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Etcd
+     */
     @ConditionalOnClass(Client.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ETCD)
     static class EmbeddedEtcd {
@@ -130,6 +148,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Polaris
+     */
     @ConditionalOnClass(ConfigFileService.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = POLARIS)
     static class Polaris {

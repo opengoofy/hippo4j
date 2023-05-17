@@ -31,9 +31,9 @@ public class EnvUtil {
 
     public static final String STANDALONE_MODE_PROPERTY_NAME = "hippo4j.standalone";
 
-    private static String HIPPO4J_HOME_PATH = null;
+    private static String hippo4jHomePath = null;
 
-    private static Boolean IS_STANDALONE = null;
+    private static Boolean isStandalone = null;
 
     /**
      * Get hippo4j home.
@@ -41,14 +41,13 @@ public class EnvUtil {
      * @return
      */
     public static String getHippo4jHome() {
-        if (StringUtil.isBlank(HIPPO4J_HOME_PATH)) {
-            String hippo4jHome = System.getProperty(HIPPO4J_HOME_KEY);
-            if (StringUtil.isBlank(hippo4jHome)) {
-                hippo4jHome = Paths.get(System.getProperty("user.home"), "hippo4j").toString();
+        if (StringUtil.isBlank(hippo4jHomePath)) {
+            hippo4jHomePath = System.getProperty(HIPPO4J_HOME_KEY);
+            if (StringUtil.isBlank(hippo4jHomePath)) {
+                hippo4jHomePath = Paths.get(System.getProperty("user.home"), "hippo4j").toString();
             }
-            return hippo4jHome;
         }
-        return HIPPO4J_HOME_PATH;
+        return hippo4jHomePath;
     }
 
     /**
@@ -57,9 +56,9 @@ public class EnvUtil {
      * @return
      */
     public static boolean getStandaloneMode() {
-        if (Objects.isNull(IS_STANDALONE)) {
-            IS_STANDALONE = Boolean.getBoolean(STANDALONE_MODE_PROPERTY_NAME);
+        if (Objects.isNull(isStandalone)) {
+            isStandalone = Boolean.getBoolean(STANDALONE_MODE_PROPERTY_NAME);
         }
-        return IS_STANDALONE;
+        return isStandalone;
     }
 }

@@ -36,6 +36,9 @@ import java.util.Set;
 
 import static cn.hippo4j.config.springboot1x.starter.refresher.SpringBoot1xBootstrapConfigPropertiesBinderAdapt.getNames;
 
+/**
+ * Dynamic thread pool change handler spring 1x
+ */
 public class DynamicThreadPoolChangeHandlerSpring1x extends AbstractDynamicThreadPoolChangeHandlerSpring {
 
     public DynamicThreadPoolChangeHandlerSpring1x(ConfigurableApplicationContext context) {

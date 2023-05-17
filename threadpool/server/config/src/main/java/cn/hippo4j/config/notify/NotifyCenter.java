@@ -37,9 +37,9 @@ public class NotifyCenter {
 
     private static final NotifyCenter INSTANCE = new NotifyCenter();
 
-    public static int ringBufferSize = 16384;
+    public static final int RING_BUFFER_SIZE = 16384;
 
-    public static int shareBufferSize = 1024;
+    public static final int SHARE_BUFFER_SIZE = 1024;
 
     private DefaultSharePublisher sharePublisher;
 
@@ -61,7 +61,7 @@ public class NotifyCenter {
             }
         };
         INSTANCE.sharePublisher = new DefaultSharePublisher();
-        INSTANCE.sharePublisher.init(AbstractSlowEvent.class, shareBufferSize);
+        INSTANCE.sharePublisher.init(AbstractSlowEvent.class, SHARE_BUFFER_SIZE);
     }
 
     public static void registerSubscriber(final AbstractSubscriber consumer) {
@@ -73,20 +73,20 @@ public class NotifyCenter {
                     addSubscriber(consumer, subscribeType);
                 }
             }
-            return;
+        } else {
+            final Class<? extends AbstractEvent> subscribeType = consumer.subscribeType();
+            if (ClassUtil.isAssignableFrom(AbstractSlowEvent.class, subscribeType)) {
+                INSTANCE.sharePublisher.addSubscriber(consumer, subscribeType);
+            } else {
+                addSubscriber(consumer, subscribeType);
+            }
         }
-        final Class<? extends AbstractEvent> subscribeType = consumer.subscribeType();
-        if (ClassUtil.isAssignableFrom(AbstractSlowEvent.class, subscribeType)) {
-            INSTANCE.sharePublisher.addSubscriber(consumer, subscribeType);
-            return;
-        }
-        addSubscriber(consumer, subscribeType);
     }
 
     private static void addSubscriber(final AbstractSubscriber consumer, Class<? extends AbstractEvent> subscribeType) {
         final String topic = ClassUtil.getCanonicalName(subscribeType);
         synchronized (NotifyCenter.class) {
-            MapUtil.computeIfAbsent(INSTANCE.publisherMap, topic, publisherFactory, subscribeType, ringBufferSize);
+            MapUtil.computeIfAbsent(INSTANCE.publisherMap, topic, publisherFactory, subscribeType, RING_BUFFER_SIZE);
         }
         EventPublisher publisher = INSTANCE.publisherMap.get(topic);
         publisher.addSubscriber(consumer);

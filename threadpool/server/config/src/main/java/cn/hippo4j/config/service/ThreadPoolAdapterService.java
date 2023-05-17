@@ -140,6 +140,9 @@ public class ThreadPoolAdapterService {
         }
     }
 
+    /**
+     * Clear Thread Pool Adapter Cache
+     */
     static class ClearThreadPoolAdapterCache implements Observer<String> {
 
         @Override

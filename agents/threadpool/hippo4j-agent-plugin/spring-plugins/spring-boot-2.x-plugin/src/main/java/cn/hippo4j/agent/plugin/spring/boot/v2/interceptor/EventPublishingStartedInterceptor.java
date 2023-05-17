@@ -30,6 +30,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.lang.reflect.Method;
 
+/**
+ * Event publishing started interceptor
+ */
 public class EventPublishingStartedInterceptor implements InstanceMethodsAroundInterceptor {
 
     private static final ILog LOGGER = LogManager.getLogger(EventPublishingStartedInterceptor.class);

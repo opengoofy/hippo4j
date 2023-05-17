@@ -53,6 +53,8 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
 
     private final WebThreadPoolService webThreadPoolService;
 
+    private static final int DEFAULT_INTERVAL = 5;
+
     @Override
     public Map<String, List<NotifyConfigDTO>> buildNotify() {
         Map<String, List<NotifyConfigDTO>> resultMap = new HashMap<>();
@@ -145,7 +147,7 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
                 .orElse(Optional.ofNullable(configProperties.getDefaultExecutor())
                         .map(ExecutorProperties::getNotify)
                         .map(ExecutorNotifyProperties::getInterval)
-                        .orElse(5));
+                        .orElse(DEFAULT_INTERVAL));
     }
 
     private String buildReceive(IExecutorProperties executorProperties) {

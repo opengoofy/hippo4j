@@ -29,4 +29,5 @@
     <suppress checks="MagicNumber" files="UndertowWebThreadPoolHandler.java"/>
     <suppress checks="MagicNumber" files="DashboardServiceImpl.java"/>
     <suppress checks="MagicNumber" files="DefaultThreadPoolCheckAlarmHandler.java"/>
+    <suppress checks="TypeName" files="SpringBootConfig.java"/>
 </suppressions>

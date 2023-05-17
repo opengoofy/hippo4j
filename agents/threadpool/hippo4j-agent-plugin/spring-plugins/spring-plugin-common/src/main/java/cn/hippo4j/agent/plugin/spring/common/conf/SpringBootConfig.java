@@ -22,22 +22,37 @@ import cn.hippo4j.agent.core.boot.SpringBootConfigNode;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Spring boot config
+ */
 public class SpringBootConfig {
 
+    /**
+     *  Spring
+     */
     public static class Spring {
 
+        /**
+         * Dynamic
+         */
         public static class Dynamic {
 
+            /**
+             * ThreadPool
+             */
             @SpringBootConfigNode(root = SpringBootConfig.class)
             public static class Thread_Pool {
 
+                /**
+                 * Apollo
+                 */
                 @SpringBootConfigNode(root = SpringBootConfig.class)
                 public static class Apollo {
 
-                    public static List<String> NAMESPACE = Arrays.asList("application");
+                    public static final List<String> NAMESPACE = Arrays.asList("application");
                 }
 
-                public static String CONFIG_FILE_TYPE;
+                public static final String CONFIG_FILE_TYPE = null;
             }
         }
     }

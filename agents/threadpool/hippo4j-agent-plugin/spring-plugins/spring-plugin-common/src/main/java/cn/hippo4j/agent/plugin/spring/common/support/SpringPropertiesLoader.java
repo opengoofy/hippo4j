@@ -29,6 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Spring properties loader
+ */
 public class SpringPropertiesLoader {
 
     private static final ILog LOGGER = LogManager.getLogger(SpringPropertiesLoader.class);

@@ -24,6 +24,8 @@ public class SimpleReadWriteLock {
 
     private int status = 0;
 
+    private static final int FREE_STATUS = -1;
+
     public synchronized boolean tryReadLock() {
         if (isWriteLocked()) {
             return false;
@@ -41,7 +43,7 @@ public class SimpleReadWriteLock {
         if (!isFree()) {
             return false;
         } else {
-            status = -1;
+            status = FREE_STATUS;
             return true;
         }
     }

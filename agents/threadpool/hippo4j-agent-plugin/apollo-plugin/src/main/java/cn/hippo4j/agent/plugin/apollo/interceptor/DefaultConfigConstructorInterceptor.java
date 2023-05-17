@@ -20,6 +20,9 @@ package cn.hippo4j.agent.plugin.apollo.interceptor;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
 
+/**
+ * Default config constructor interceptor
+ */
 public class DefaultConfigConstructorInterceptor implements InstanceConstructorInterceptor {
 
     @Override

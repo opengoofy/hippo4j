@@ -28,6 +28,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Map;
 
+/**
+ * Dynamic thread pool change handler spring 2x
+ */
 public class DynamicThreadPoolChangeHandlerSpring2x extends AbstractDynamicThreadPoolChangeHandlerSpring {
 
     public DynamicThreadPoolChangeHandlerSpring2x(ConfigurableApplicationContext context) {

@@ -32,6 +32,10 @@ import static cn.hippo4j.common.constant.Constants.AVAILABLE_PROCESSORS;
 @Configuration
 public class CommonConfig {
 
+    private static final int DEFAULT_QUEUE_CAPACITY = 4096;
+
+    private static final int DEFAULT_AWAIT_TERMINATION_MILLIS = 5000;
+
     @Bean
     @ConditionalOnMissingBean
     public ApplicationContextHolder hippo4jApplicationContextHolder() {
@@ -45,9 +49,9 @@ public class CommonConfig {
         monitorThreadPool.setThreadNamePrefix("server.monitor.executor.");
         monitorThreadPool.setCorePoolSize(AVAILABLE_PROCESSORS);
         monitorThreadPool.setMaxPoolSize(AVAILABLE_PROCESSORS << 1);
-        monitorThreadPool.setQueueCapacity(4096);
+        monitorThreadPool.setQueueCapacity(DEFAULT_QUEUE_CAPACITY);
         monitorThreadPool.setAllowCoreThreadTimeOut(true);
-        monitorThreadPool.setAwaitTerminationMillis(5000);
+        monitorThreadPool.setAwaitTerminationMillis(DEFAULT_AWAIT_TERMINATION_MILLIS);
         return monitorThreadPool;
     }
 }

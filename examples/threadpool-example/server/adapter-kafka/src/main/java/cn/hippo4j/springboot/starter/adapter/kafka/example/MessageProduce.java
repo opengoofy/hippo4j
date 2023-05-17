@@ -39,6 +39,8 @@ public class MessageProduce {
 
     public static final String TOPIC = "test";
 
+    private static final int SLEEP_TIME = 3;
+
     private final KafkaTemplate template;
 
     @GetMapping("/message/send")
@@ -54,9 +56,9 @@ public class MessageProduce {
                 String message = UUID.randomUUID().toString();
                 template.send(TOPIC, "autoTestMessage " + message);
                 try {
-                    TimeUnit.SECONDS.sleep(3);
+                    TimeUnit.SECONDS.sleep(SLEEP_TIME);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage());
                 }
             }
         });
