@@ -17,6 +17,9 @@
 
 package cn.hippo4j.core.extension.support;
 
+/**
+ * reduce type
+ */
 public enum ReduceType {
 
     NONE,

@@ -21,6 +21,9 @@ import cn.hippo4j.core.extension.config.ExtensionRegisterBootstrap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * extension auto  configuration
+ */
 @Configuration
 public class ExtensionAutoConfiguration {
 

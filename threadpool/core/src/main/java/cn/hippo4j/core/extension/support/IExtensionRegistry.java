@@ -21,6 +21,9 @@ import cn.hippo4j.core.extension.IExtension;
 
 import java.util.List;
 
+/**
+ * extension registry interface
+ */
 public interface IExtensionRegistry {
 
     void register(IExtension realization);

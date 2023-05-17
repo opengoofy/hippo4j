@@ -22,6 +22,10 @@ import cn.hippo4j.core.extension.support.ReduceType;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * None extends
+ * @param <Element>
+ */
 public class None<Element> extends Reducer<Element, List<Element>> {
 
     @Override
