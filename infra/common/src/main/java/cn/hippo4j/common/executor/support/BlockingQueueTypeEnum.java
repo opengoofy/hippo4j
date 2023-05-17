@@ -17,7 +17,7 @@
 
 package cn.hippo4j.common.executor.support;
 
-import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
+import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import lombok.Getter;
 
 import java.util.Collection;

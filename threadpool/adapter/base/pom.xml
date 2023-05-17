@@ -12,7 +12,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-infra-common</artifactId>
+            <artifactId>hippo4j-threadpool-core</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

@@ -17,9 +17,9 @@
 
 package cn.hippo4j.springboot.starter.provider;
 
-import cn.hippo4j.common.api.ClientNetworkService;
+import cn.hippo4j.core.api.ClientNetworkService;
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
+import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;

@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.adapter.hystrix;
 import cn.hippo4j.adapter.hystrix.HystrixThreadPoolAdapter4Config;
 import cn.hippo4j.adapter.hystrix.HystrixThreadPoolAdapter4Server;
 import cn.hippo4j.adapter.hystrix.ThreadPoolAdapterScheduler;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

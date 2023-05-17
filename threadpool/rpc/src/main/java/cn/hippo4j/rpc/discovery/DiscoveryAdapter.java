@@ -23,7 +23,7 @@ import java.net.InetSocketAddress;
  * The adaptation layer of different service centers is used to know
  * the host of different services through the registration center
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public interface DiscoveryAdapter {
 

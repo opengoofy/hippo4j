@@ -17,7 +17,7 @@
 
 package cn.hippo4j.monitor.elasticsearch;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;

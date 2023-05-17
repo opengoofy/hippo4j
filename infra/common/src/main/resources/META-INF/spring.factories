@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.common.extension.support.ExtensionAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.core.extension.support.ExtensionAutoConfiguration

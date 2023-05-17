@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.adapter.springcloud.stream.rabbitmq;
 
 import cn.hippo4j.adapter.springcloud.stream.rabbitmq.SpringCloudStreamRabbitMQThreadPoolAdapter;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

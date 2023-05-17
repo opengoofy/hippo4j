@@ -22,7 +22,7 @@ import java.io.Closeable;
 /**
  * the service for RPC, Explain the role of the service in the request
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public interface Server extends Closeable {
 

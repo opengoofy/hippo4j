@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.plugin.impl;
 
-import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
+import cn.hippo4j.core.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
 import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;

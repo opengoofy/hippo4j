@@ -19,7 +19,7 @@ package cn.hippo4j.springboot.starter.adapter.web;
 
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.RequiredArgsConstructor;
