@@ -25,7 +25,7 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * Interconnect with the netty mediation layer
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 @ChannelHandler.Sharable
 public class NettyClientTakeHandler extends AbstractNettyTakeHandler implements ConnectHandler {

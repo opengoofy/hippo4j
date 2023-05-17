@@ -30,7 +30,7 @@ import java.io.Serializable;
  * this is a encoder, For custom gluing and unpacking<br>
  * {@link io.netty.handler.codec.serialization.ObjectEncoder}
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public class NettyEncoder extends MessageToByteEncoder<Serializable> {
 

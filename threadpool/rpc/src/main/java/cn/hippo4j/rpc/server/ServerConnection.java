@@ -23,7 +23,7 @@ import cn.hippo4j.rpc.handler.Connection;
 /**
  * This applies to server-side connections
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public interface ServerConnection extends Connection {
 

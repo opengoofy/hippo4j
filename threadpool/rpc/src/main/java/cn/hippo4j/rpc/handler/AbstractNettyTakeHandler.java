@@ -29,7 +29,7 @@ import java.util.Optional;
 /**
  * the abstract base of {@link ConnectHandler} and {@link ChannelInboundHandlerAdapter}
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public abstract class AbstractNettyTakeHandler extends ChannelInboundHandlerAdapter implements ConnectHandler {
 

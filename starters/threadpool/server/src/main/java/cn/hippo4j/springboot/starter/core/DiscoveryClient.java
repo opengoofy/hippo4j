@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.api.ClientCloseHookExecute;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.web.base.Result;

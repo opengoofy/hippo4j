@@ -28,9 +28,9 @@ public interface ClientCloseHookExecute {
     /**
      * Client close hook function execution.
      *
-     * @param req
+     * @param requestParam
      */
-    void closeHook(ClientCloseHookReq req);
+    void closeHook(ClientCloseHookReq requestParam);
 
     /**
      * Client close hook req.

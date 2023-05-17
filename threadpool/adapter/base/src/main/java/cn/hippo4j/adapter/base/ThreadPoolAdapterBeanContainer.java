@@ -17,7 +17,7 @@
 
 package cn.hippo4j.adapter.base;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Map;

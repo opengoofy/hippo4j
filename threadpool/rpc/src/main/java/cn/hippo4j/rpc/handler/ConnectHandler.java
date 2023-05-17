@@ -25,7 +25,7 @@ import cn.hippo4j.rpc.model.Response;
  * must be specified, such as serialization and parsing, requesting and receiving
  * requests, and so on<br>
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public interface ConnectHandler {
 

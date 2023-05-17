@@ -20,8 +20,9 @@ package cn.hippo4j.adapter.kafka;
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
-import cn.hippo4j.common.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.ReflectUtil;
+import cn.hippo4j.core.config.ApplicationContextHolder;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.cglib.core.Constants;
@@ -147,6 +148,7 @@ public class KafkaThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
      * @return true success
      * @since org.springframework.kafka.listener.ConcurrentMessageListenerContainer#doStart()
      */
+    @SneakyThrows
     private static boolean addConsumer(String threadPoolKey, ConcurrentMessageListenerContainer concurrentContainer, int originalCoreSize, Integer concurrency) {
         ContainerProperties containerProperties = concurrentContainer.getContainerProperties();
         TopicPartitionOffset[] topicPartitions = containerProperties.getTopicPartitions();

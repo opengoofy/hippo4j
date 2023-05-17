@@ -17,7 +17,7 @@
 
 package cn.hippo4j.message.service;
 
-import cn.hippo4j.common.api.ThreadPoolCheckAlarm;
+import cn.hippo4j.core.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.toolkit.CalculateUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
