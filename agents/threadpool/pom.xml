@@ -70,6 +70,12 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>hippo4j-threadpool-common</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
                 <version>${gson.version}</version>

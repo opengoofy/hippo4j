@@ -49,10 +49,10 @@ public class SpringBootConfig {
                 @SpringBootConfigNode(root = SpringBootConfig.class)
                 public static class Apollo {
 
-                    public static final List<String> NAMESPACE = Arrays.asList("application");
+                    public static List<String> NAMESPACE = Arrays.asList("application");
                 }
 
-                public static final String CONFIG_FILE_TYPE = null;
+                public static String CONFIG_FILE_TYPE;
             }
         }
     }
