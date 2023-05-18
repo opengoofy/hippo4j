@@ -10,7 +10,7 @@ title: 采用公司
 - [身边云](https://serviceshare.com)
 - [思派健康科技](https://www.medbanks.cn)
 - [北京智合联创科技有限公司](http://www.zhlc.com.cn)
-- [神州数码](http://www.digitalchina.com)
+- [神州数码（北京）](http://www.digitalchina.com)
 - [PayerMax](https://www.payermax.com/)
 - [轻松到家](http://www.uyess.com/index.html)
 - [某商业银行股份有限公司](https://github.com/opengoofy/hippo4j/issues/13)
