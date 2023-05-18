@@ -17,6 +17,8 @@
 
 package cn.hippo4j.common.toolkit;
 
+import cn.hippo4j.common.constant.MagicNumberConstants;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -354,10 +356,10 @@ public class StringUtil {
             return EMPTY;
         }
         int pos = str.indexOf(symbol);
-        if (-1 == pos) {
+        if (MagicNumberConstants.INDEX_NEGATIVE_1 == pos) {
             return str;
         }
-        if (0 == pos) {
+        if (MagicNumberConstants.INDEX_0 == pos) {
             return EMPTY;
         }
         return str.substring(0, pos);

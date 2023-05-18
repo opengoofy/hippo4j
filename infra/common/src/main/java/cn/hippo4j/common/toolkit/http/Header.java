@@ -34,7 +34,7 @@ import java.util.TreeMap;
  *
  * @author <a href="mailto:liaochuntao@live.com">liaochuntao</a>
  */
-public class Header {
+public final class Header {
 
     public static final Header EMPTY = Header.newInstance();
 

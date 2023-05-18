@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 /**
  * Dynamic thread-pool SPI service loader.
  */
-public class ServiceLoaderRegistry {
+public final class ServiceLoaderRegistry {
 
     /**
      * safe container。

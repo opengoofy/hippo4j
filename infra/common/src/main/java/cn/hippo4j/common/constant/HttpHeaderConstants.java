@@ -20,27 +20,27 @@ package cn.hippo4j.common.constant;
 /**
  * Http header constants.
  */
-public interface HttpHeaderConstants {
+public class HttpHeaderConstants {
 
-    String CLIENT_VERSION_HEADER = "Client-Version";
+    public static final String CLIENT_VERSION_HEADER = "Client-Version";
 
-    String USER_AGENT_HEADER = "User-Agent";
+    public static final String USER_AGENT_HEADER = "User-Agent";
 
-    String REQUEST_SOURCE_HEADER = "Request-Source";
+    public static final String REQUEST_SOURCE_HEADER = "Request-Source";
 
-    String CONTENT_TYPE = "Content-Type";
+    public static final String CONTENT_TYPE = "Content-Type";
 
-    String CONTENT_LENGTH = "Content-Length";
+    public static final String CONTENT_LENGTH = "Content-Length";
 
-    String ACCEPT_CHARSET = "Accept-Charset";
+    public static final String ACCEPT_CHARSET = "Accept-Charset";
 
-    String ACCEPT_ENCODING = "Accept-Encoding";
+    public static final String ACCEPT_ENCODING = "Accept-Encoding";
 
-    String CONTENT_ENCODING = "Content-Encoding";
+    public static final String CONTENT_ENCODING = "Content-Encoding";
 
-    String CONNECTION = "Requester";
+    public static final String CONNECTION = "Requester";
 
-    String REQUEST_ID = "RequestId";
+    public static final String REQUEST_ID = "RequestId";
 
-    String REQUEST_MODULE = "Request-Module";
+    public static final String REQUEST_MODULE = "Request-Module";
 }

@@ -32,5 +32,11 @@
     <suppress checks="TypeName" files="SpringBootConfig.java"/>
     <suppress checks="ReturnCount" files="Hippo4jAgent.java"/>
     <suppress checks="StaticVariableName" files="Hippo4jAgent.java"/>
-    <suppress checks="StaticVariableName" files="ExtensionRegistry.java"/>
+    <suppress checks="MagicNumber" files="IdUtil.java"/>
+    <suppress checks="MagicNumber" files="IoUtil.java"/>
+    <suppress checks="ReturnCount" files="StringUtil.java"/>
+    <suppress checks="ReturnCount" files="MapUtil.java"/>
+    <suppress checks="ReturnCount" files="ReflectUtil.java"/>
+    <suppress checks="InnerAssignment" files="IoUtil.java"/>
+    <suppress checks="ParameterNumber" files="HttpUtil.java"/>
 </suppressions>
