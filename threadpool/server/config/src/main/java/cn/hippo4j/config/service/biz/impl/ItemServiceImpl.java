@@ -18,7 +18,7 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.extension.enums.DelEnum;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.mapper.ItemInfoMapper;
 import cn.hippo4j.config.model.ItemInfo;

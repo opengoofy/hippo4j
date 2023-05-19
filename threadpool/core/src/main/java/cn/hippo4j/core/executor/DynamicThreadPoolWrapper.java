@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor;
 
-import cn.hippo4j.core.provider.CommonDynamicThreadPoolProviderFactory;
+import cn.hippo4j.core.executor.provider.CommonDynamicThreadPoolProviderFactory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

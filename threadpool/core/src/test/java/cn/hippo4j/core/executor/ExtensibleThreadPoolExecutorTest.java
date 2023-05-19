@@ -18,12 +18,12 @@
 package cn.hippo4j.core.executor;
 
 import cn.hippo4j.common.toolkit.ThreadUtil;
-import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
-import cn.hippo4j.core.plugin.RejectedAwarePlugin;
-import cn.hippo4j.core.plugin.ShutdownAwarePlugin;
-import cn.hippo4j.core.plugin.TaskAwarePlugin;
-import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
-import cn.hippo4j.core.plugin.manager.ThreadPoolPluginManager;
+import cn.hippo4j.core.executor.plugin.ExecuteAwarePlugin;
+import cn.hippo4j.core.executor.plugin.RejectedAwarePlugin;
+import cn.hippo4j.core.executor.plugin.ShutdownAwarePlugin;
+import cn.hippo4j.core.executor.plugin.TaskAwarePlugin;
+import cn.hippo4j.core.executor.plugin.manager.DefaultThreadPoolPluginManager;
+import cn.hippo4j.core.executor.plugin.manager.ThreadPoolPluginManager;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;

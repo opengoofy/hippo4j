@@ -20,5 +20,6 @@
         <module>config</module>
         <module>console</module>
         <module>discovery</module>
+        <module>common</module>
     </modules>
 </project>

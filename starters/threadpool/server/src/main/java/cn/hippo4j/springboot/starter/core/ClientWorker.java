@@ -17,19 +17,20 @@
 
 package cn.hippo4j.springboot.starter.core;
 
-import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
+import cn.hippo4j.common.executor.ThreadFactoryBuilder;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.StringUtils;
+
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +43,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import static cn.hippo4j.common.constant.Constants.CONFIG_LONG_POLL_TIMEOUT;
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER_TRANSLATION;
 import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;

@@ -18,9 +18,9 @@
 package cn.hippo4j.config.controller;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.config.service.ThreadPoolAdapterService;
+import cn.hippo4j.server.common.base.Results;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

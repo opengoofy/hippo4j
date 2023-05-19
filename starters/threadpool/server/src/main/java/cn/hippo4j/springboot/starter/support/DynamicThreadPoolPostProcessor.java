@@ -17,9 +17,10 @@
 
 package cn.hippo4j.springboot.starter.support;
 
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.enums.EnableEnum;
+import cn.hippo4j.common.extension.enums.EnableEnum;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
@@ -28,7 +29,6 @@ import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
@@ -53,6 +53,7 @@ import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
 import static cn.hippo4j.common.constant.Constants.INITIAL_CAPACITY;
 import static cn.hippo4j.common.constant.Constants.TP_ID;
 import static cn.hippo4j.common.constant.Constants.ITEM_ID;
@@ -70,9 +71,7 @@ import static cn.hippo4j.common.constant.Constants.HTTP_EXECUTE_TIMEOUT;
 public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
     private final BootstrapProperties properties;
-
     private final HttpAgent httpAgent;
-
     private final DynamicThreadPoolSubscribeConfig dynamicThreadPoolSubscribeConfig;
 
     @Override

@@ -22,7 +22,7 @@ import cn.hippo4j.auth.model.biz.user.LoginUser;
 import cn.hippo4j.auth.toolkit.JwtTokenUtil;
 import cn.hippo4j.auth.toolkit.ReturnT;
 import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.server.common.base.Results;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -24,7 +24,7 @@ import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-import cn.hippo4j.common.config.ExecutorProperties;
+import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;
 import cn.hippo4j.config.springboot.starter.support.GlobalCoreThreadPoolManage;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;

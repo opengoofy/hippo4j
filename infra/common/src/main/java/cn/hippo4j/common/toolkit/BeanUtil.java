@@ -17,7 +17,6 @@
 
 package cn.hippo4j.common.toolkit;
 
-import cn.hippo4j.common.web.exception.IllegalException;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import lombok.AccessLevel;
@@ -93,7 +92,7 @@ public class BeanUtil {
             T newInstance = clazz.newInstance();
             return mapToBean(map, newInstance, toCamelCase);
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new IllegalException("do not create instance for " + clazz.getName(), e);
+            throw new RuntimeException("do not create instance for " + clazz.getName(), e);
         }
     }
 
@@ -139,7 +138,7 @@ public class BeanUtil {
             PropertyDescriptor descriptor = new PropertyDescriptor(propertiesName, o);
             return descriptor.getReadMethod();
         } catch (IntrospectionException e) {
-            throw new IllegalException("not find getter for" + propertiesName + "in" + o.getName(), e);
+            throw new RuntimeException("not find getter for" + propertiesName + "in" + o.getName(), e);
         }
     }
 
@@ -158,7 +157,7 @@ public class BeanUtil {
             PropertyDescriptor descriptor = new PropertyDescriptor(propertiesName, o);
             return descriptor.getWriteMethod();
         } catch (IntrospectionException e) {
-            throw new IllegalException("not find setter for" + propertiesName + "in" + o.getName(), e);
+            throw new RuntimeException("not find setter for" + propertiesName + "in" + o.getName(), e);
         }
     }
 }

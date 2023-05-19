@@ -18,11 +18,11 @@
 package cn.hippo4j.springboot.starter.security;
 
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.model.TokenInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.http.HttpUtil;
-import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import lombok.extern.slf4j.Slf4j;
 

@@ -18,8 +18,8 @@
 package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.model.Result;
+import cn.hippo4j.server.common.base.Results;
 import cn.hippo4j.config.model.biz.log.LogRecordQueryReqDTO;
 import cn.hippo4j.config.model.biz.log.LogRecordRespDTO;
 import cn.hippo4j.config.service.biz.OperationLogService;

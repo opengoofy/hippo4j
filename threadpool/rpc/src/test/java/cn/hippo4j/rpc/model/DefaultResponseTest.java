@@ -17,7 +17,6 @@
 
 package cn.hippo4j.rpc.model;
 
-import cn.hippo4j.common.web.exception.IllegalException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -60,7 +59,7 @@ public class DefaultResponseTest {
     @Test
     public void testWriteObject() throws IOException, ClassNotFoundException {
         String key = "name";
-        Throwable throwable = new IllegalException("test throwable");
+        Throwable throwable = new RuntimeException("test throwable");
         String errMsg = "test throwable";
         Response response = new DefaultResponse(key, throwable, errMsg);
         byte[] bytes;
@@ -78,7 +77,7 @@ public class DefaultResponseTest {
             response1 = (Response) objectInputStream.readObject();
         }
         Assert.assertEquals(key, response1.getKey());
-        Assert.assertThrows(IllegalException.class, () -> {
+        Assert.assertThrows(RuntimeException.class, () -> {
             throw response1.getThrowable();
         });
         Assert.assertEquals(response1.hashCode(), response.hashCode());

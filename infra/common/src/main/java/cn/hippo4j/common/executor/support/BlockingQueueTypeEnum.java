@@ -173,7 +173,6 @@ public enum BlockingQueueTypeEnum {
      *
      * @param <T> the class of the objects in the BlockingQueue
      * @return a BlockingQueue view of the specified T
-     * @throws NotSupportedException
      */
     abstract <T> BlockingQueue<T> of();
 

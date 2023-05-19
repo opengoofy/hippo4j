@@ -19,9 +19,9 @@ package cn.hippo4j.config.service;
 
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
-import cn.hippo4j.common.design.observer.Observer;
-import cn.hippo4j.common.design.observer.ObserverMessage;
+import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
+import cn.hippo4j.common.extension.design.Observer;
+import cn.hippo4j.common.extension.design.ObserverMessage;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Joiner;

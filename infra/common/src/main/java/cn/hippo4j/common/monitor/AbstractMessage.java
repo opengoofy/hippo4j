@@ -30,17 +30,17 @@ import java.util.List;
 public abstract class AbstractMessage<T extends Message> implements Message {
 
     /**
-     * groupKey: tenant + item + tpId + identify
+     * GroupKey: tenant + item + threadPoolId + identify
      */
     private String groupKey;
 
     /**
-     * messageTypeEnum
+     * Message type enum
      */
     private MessageTypeEnum messageType;
 
     /**
-     * message
+     * Message
      */
     private List<T> messages;
 }

@@ -17,8 +17,8 @@
 
 package cn.hippo4j.discovery.core;
 
-import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
-import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
+import cn.hippo4j.common.executor.ThreadFactoryBuilder;
+import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.InstanceInfo.InstanceStatus;
 import cn.hippo4j.common.toolkit.CollectionUtil;

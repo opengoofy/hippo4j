@@ -26,7 +26,6 @@ import cn.hippo4j.common.toolkit.IoUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.logtracing.LogMessage;
-import cn.hippo4j.common.web.exception.ServiceException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -262,7 +261,7 @@ public class HttpUtil {
                     .kv("method", method)
                     .kv("json", json)
                     .kv2String("headers", JSONUtil.toJSONString(headers)));
-            throw new ServiceException("Invalid http json body, please check it again.");
+            throw new RuntimeException("Invalid http json body, please check it again.");
         }
         return execute(url, method, json, headers);
     }
@@ -319,7 +318,7 @@ public class HttpUtil {
             JdkHttpClientResponse response = new JdkHttpClientResponse(connection);
             if (!HttpResponseCode.isOk(response.getStatusCode())) {
                 String msg = String.format("HttpPost response code error. [code] %s [url] %s [body] %s", response.getStatusCode(), connection.getURL(), response.getBodyString());
-                throw new ServiceException(msg);
+                throw new RuntimeException(msg);
             }
             return response;
         } catch (Throwable ex) {

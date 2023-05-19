@@ -46,7 +46,7 @@ public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicR
 
     @SneakyThrows(NacosException.class)
     @Override
-    public void initRegisterListener() {
+    public void registerListener() {
         Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
         configService.addListener(nacosConfig.get(DATA_ID),
                 nacosConfig.get(GROUP), new Listener() {

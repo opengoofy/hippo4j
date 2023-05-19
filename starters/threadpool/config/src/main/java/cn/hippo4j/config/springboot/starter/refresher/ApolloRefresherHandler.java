@@ -42,7 +42,7 @@ public class ApolloRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
     private String namespace;
 
     @Override
-    public void initRegisterListener() {
+    public void registerListener() {
         String[] apolloNamespaces = this.namespace.split(",");
         this.namespace = apolloNamespaces[0];
         Config config = ConfigService.getConfig(String.format("%s.%s", namespace, bootstrapConfigProperties.getConfigFileType().getValue()));

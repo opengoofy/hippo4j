@@ -56,7 +56,7 @@ public class ZookeeperRefresherHandler extends AbstractConfigThreadPoolDynamicRe
     private static final int MAX_RETRIES = 3;
 
     @Override
-    public void initRegisterListener() {
+    public void registerListener() {
         Map<String, String> zkConfigs = bootstrapConfigProperties.getZookeeper();
         curatorFramework = CuratorFrameworkFactory.newClient(zkConfigs.get(ZK_CONNECT_STR),
                 new ExponentialBackoffRetry(BASE_SLEEP_TIME_MS, MAX_RETRIES));
