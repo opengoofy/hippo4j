@@ -17,7 +17,6 @@
 
 package cn.hippo4j.common.toolkit;
 
-import cn.hippo4j.common.web.exception.IllegalException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -63,7 +62,7 @@ public class ReflectUtil {
             result = field.get(obj);
         } catch (IllegalAccessException e) {
             String exceptionMsg = String.format("IllegalAccess for %s.%s", field.getDeclaringClass(), field.getName());
-            throw new IllegalException(exceptionMsg, e);
+            throw new RuntimeException(exceptionMsg, e);
         }
         return result;
     }
@@ -117,7 +116,7 @@ public class ReflectUtil {
         return field.getName();
     }
 
-    public static void setFieldValue(Object obj, String fieldName, Object value) throws IllegalException {
+    public static void setFieldValue(Object obj, String fieldName, Object value) throws RuntimeException {
         Assert.notNull(obj);
         Assert.notBlank(fieldName);
         final Field field = getField((obj instanceof Class) ? (Class<?>) obj : obj.getClass(), fieldName);
@@ -125,7 +124,7 @@ public class ReflectUtil {
         setFieldValue(obj, field, value);
     }
 
-    public static void setFieldValue(Object obj, Field field, Object value) throws IllegalException {
+    public static void setFieldValue(Object obj, Field field, Object value) throws RuntimeException {
         Assert.notNull(field, "Field in [" + obj + "] not exist !");
         final Class<?> fieldType = field.getType();
         if (null != value) {
@@ -142,7 +141,7 @@ public class ReflectUtil {
         try {
             field.set(obj instanceof Class ? null : obj, value);
         } catch (IllegalAccessException e) {
-            throw new IllegalException("IllegalAccess for " + obj + "." + field.getName(), e);
+            throw new RuntimeException("IllegalAccess for " + obj + "." + field.getName(), e);
         }
     }
 
@@ -183,7 +182,7 @@ public class ReflectUtil {
                 return clazz.getMethod(methodName, arguments);
             }
         } catch (NoSuchMethodException e) {
-            throw new IllegalException(e);
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -247,12 +246,12 @@ public class ReflectUtil {
         try {
             Method method = ReflectUtil.getMethodByName(obj.getClass(), methodName);
             if (method == null) {
-                throw new IllegalException(methodName + "method not exists");
+                throw new RuntimeException(methodName + "method not exists");
             }
             ReflectUtil.setAccessible(method);
             return (T) method.invoke(obj, arguments);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -269,7 +268,7 @@ public class ReflectUtil {
         try {
             return (T) method.invoke(obj, arguments);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -283,7 +282,7 @@ public class ReflectUtil {
         try {
             return cls.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new IllegalException(e);
+            throw new RuntimeException(e);
         }
     }
 

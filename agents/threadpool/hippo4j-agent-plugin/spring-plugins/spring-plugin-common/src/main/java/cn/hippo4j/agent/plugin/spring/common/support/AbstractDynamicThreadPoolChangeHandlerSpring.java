@@ -21,7 +21,7 @@ import cn.hippo4j.agent.core.registry.AgentThreadPoolExecutorHolder;
 import cn.hippo4j.agent.core.registry.AgentThreadPoolInstanceRegistry;
 import cn.hippo4j.agent.core.util.ThreadPoolPropertyKey;
 import cn.hippo4j.agent.plugin.spring.common.conf.SpringBootConfig;
-import cn.hippo4j.common.config.ExecutorProperties;
+import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
@@ -32,6 +32,7 @@ import cn.hippo4j.config.springboot.starter.parser.ConfigFileTypeEnum;
 import cn.hippo4j.config.springboot.starter.parser.ConfigParserHandler;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
 import com.ctrip.framework.apollo.ConfigChangeListener;
 import com.ctrip.framework.apollo.ConfigFile;
 import com.ctrip.framework.apollo.ConfigService;
@@ -59,7 +60,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD
 /**
  * Abstract dynamic thread poo change handler spring
  */
-public abstract class AbstractDynamicThreadPoolChangeHandlerSpring implements IDynamicThreadPoolChangeHandlerSpring {
+public abstract class AbstractDynamicThreadPoolChangeHandlerSpring implements ThreadPoolDynamicRefresh {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDynamicThreadPoolChangeHandlerSpring.class);
 
@@ -69,7 +70,7 @@ public abstract class AbstractDynamicThreadPoolChangeHandlerSpring implements ID
         this.applicationContext = context;
     }
 
-    public void registerApolloConfigHandler() {
+    public void registerListener() {
 
         List<String> apolloNamespaces = SpringBootConfig.Spring.Dynamic.Thread_Pool.Apollo.NAMESPACE;
         String namespace = apolloNamespaces.get(0);

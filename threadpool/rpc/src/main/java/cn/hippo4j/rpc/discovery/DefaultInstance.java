@@ -18,7 +18,6 @@
 package cn.hippo4j.rpc.discovery;
 
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.common.web.exception.IllegalException;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -48,7 +47,7 @@ public class DefaultInstance implements Instance {
             Class<?> cls = Class.forName(name);
             return getInstance(cls);
         } catch (ClassNotFoundException e) {
-            throw new IllegalException(e);
+            throw new RuntimeException(e);
         }
     }
 }

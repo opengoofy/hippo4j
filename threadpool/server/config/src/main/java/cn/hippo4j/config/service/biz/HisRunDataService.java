@@ -19,7 +19,7 @@ package cn.hippo4j.config.service.biz;
 
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
-import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.config.model.HisRunDataInfo;
 import cn.hippo4j.config.model.biz.monitor.MonitorActiveRespDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorQueryReqDTO;

@@ -18,8 +18,8 @@
 package cn.hippo4j.example.core;
 
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.plugin.impl.TaskTimeRecordPlugin;
-import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
+import cn.hippo4j.core.executor.plugin.impl.TaskTimeRecordPlugin;
+import cn.hippo4j.core.executor.plugin.manager.DefaultThreadPoolPluginManager;
 import lombok.SneakyThrows;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -44,7 +44,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * benchmark test for {@link cn.hippo4j.core.plugin.impl.TaskTimeRecordPlugin}
+ * benchmark test for {@link TaskTimeRecordPlugin}
  */
 @BenchmarkMode(Mode.All)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)

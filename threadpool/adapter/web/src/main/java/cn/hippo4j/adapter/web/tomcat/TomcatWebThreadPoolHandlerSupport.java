@@ -19,7 +19,7 @@ package cn.hippo4j.adapter.web.tomcat;
 
 import cn.hippo4j.adapter.web.IWebThreadPoolHandlerSupport;
 import cn.hippo4j.common.constant.ChangeThreadPoolConstants;
-import cn.hippo4j.common.enums.WebContainerEnum;
+import cn.hippo4j.common.extension.enums.WebContainerEnum;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;

@@ -19,13 +19,13 @@ package cn.hippo4j.config.controller;
 
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.monitor.MessageWrapper;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.config.model.biz.monitor.MonitorActiveRespDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorQueryReqDTO;
 import cn.hippo4j.config.model.biz.monitor.MonitorRespDTO;
 import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
 import cn.hippo4j.config.service.biz.HisRunDataService;
+import cn.hippo4j.server.common.base.Results;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;

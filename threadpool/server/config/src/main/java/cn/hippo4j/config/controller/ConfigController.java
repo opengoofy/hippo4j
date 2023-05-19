@@ -29,8 +29,7 @@ import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.UserContext;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.ConfigInfoBase;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
@@ -39,6 +38,7 @@ import cn.hippo4j.config.service.ConfigServletInner;
 import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.toolkit.Md5ConfigUtil;
 import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
+import cn.hippo4j.server.common.base.Results;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 

@@ -26,7 +26,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import cn.hippo4j.core.config.ApplicationContextHolder;
-import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
+import cn.hippo4j.common.executor.ThreadFactoryBuilder;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;

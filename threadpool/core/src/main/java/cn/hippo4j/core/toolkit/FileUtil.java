@@ -17,7 +17,6 @@
 
 package cn.hippo4j.core.toolkit;
 
-import cn.hippo4j.common.web.exception.IllegalException;
 import lombok.SneakyThrows;
 import org.springframework.core.io.ClassPathResource;
 
@@ -68,7 +67,7 @@ public class FileUtil {
                 strList.add(line);
             }
         } catch (IOException e) {
-            throw new IllegalException("file read error", e);
+            throw new RuntimeException("file read error", e);
         }
         return strList;
     }

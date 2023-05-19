@@ -17,13 +17,13 @@
 
 package cn.hippo4j.core.executor;
 
-import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
-import cn.hippo4j.core.plugin.RejectedAwarePlugin;
-import cn.hippo4j.core.plugin.ShutdownAwarePlugin;
-import cn.hippo4j.core.plugin.TaskAwarePlugin;
-import cn.hippo4j.core.plugin.ThreadPoolPlugin;
-import cn.hippo4j.core.plugin.manager.ThreadPoolPluginManager;
-import cn.hippo4j.core.plugin.manager.ThreadPoolPluginSupport;
+import cn.hippo4j.core.executor.plugin.ExecuteAwarePlugin;
+import cn.hippo4j.core.executor.plugin.RejectedAwarePlugin;
+import cn.hippo4j.core.executor.plugin.ShutdownAwarePlugin;
+import cn.hippo4j.core.executor.plugin.TaskAwarePlugin;
+import cn.hippo4j.core.executor.plugin.ThreadPoolPlugin;
+import cn.hippo4j.core.executor.plugin.manager.ThreadPoolPluginManager;
+import cn.hippo4j.core.executor.plugin.manager.ThreadPoolPluginSupport;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;

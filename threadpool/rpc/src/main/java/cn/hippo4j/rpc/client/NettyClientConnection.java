@@ -18,7 +18,6 @@
 package cn.hippo4j.rpc.client;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.common.web.exception.IllegalException;
 import cn.hippo4j.rpc.exception.TimeOutException;
 import cn.hippo4j.rpc.model.Request;
 import cn.hippo4j.rpc.model.Response;
@@ -86,7 +85,7 @@ public class NettyClientConnection implements ClientConnection {
             }
             return response;
         } catch (Exception ex) {
-            throw new IllegalException(ex);
+            throw ex;
         } finally {
             connectionPool.release(this.channel);
         }

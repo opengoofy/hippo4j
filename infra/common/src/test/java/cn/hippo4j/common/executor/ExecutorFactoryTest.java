@@ -17,7 +17,6 @@
 
 package cn.hippo4j.common.executor;
 
-import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import cn.hippo4j.common.toolkit.MapUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import org.junit.Assert;

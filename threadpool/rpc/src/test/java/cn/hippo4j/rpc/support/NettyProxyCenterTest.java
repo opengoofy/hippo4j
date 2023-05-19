@@ -18,7 +18,6 @@
 package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.common.toolkit.ThreadUtil;
-import cn.hippo4j.common.web.exception.IllegalException;
 import cn.hippo4j.rpc.client.Client;
 import cn.hippo4j.rpc.client.NettyClientConnection;
 import cn.hippo4j.rpc.client.RPCClient;
@@ -80,7 +79,7 @@ public class NettyProxyCenterTest {
         NettyProxyCenter.removeProxy(ProxyInterface.class, "localhost8894");
     }
 
-    @Test(expected = IllegalException.class)
+    @Test(expected = RuntimeException.class)
     public void getProxyTest() {
         InetSocketAddress address = InetSocketAddress.createUnresolved("localhost", port.getPort());
         NettyClientPoolHandler handler = new NettyClientPoolHandler(new NettyClientTakeHandler());

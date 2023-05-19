@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.monitor;
 
 import cn.hippo4j.core.config.ApplicationContextHolder;
-import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
+import cn.hippo4j.common.executor.ThreadFactoryBuilder;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.CollectionUtil;

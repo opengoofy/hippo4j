@@ -17,7 +17,6 @@
 
 package cn.hippo4j.rpc.support;
 
-import cn.hippo4j.common.web.exception.IllegalException;
 import cn.hippo4j.rpc.client.Client;
 import cn.hippo4j.rpc.client.ClientConnection;
 import cn.hippo4j.rpc.client.NettyClientConnection;
@@ -103,7 +102,7 @@ public final class NettyClientSupport {
                     try {
                         c.close();
                     } catch (IOException e) {
-                        throw new IllegalException(e);
+                        throw new RuntimeException(e);
                     }
                 });
     }

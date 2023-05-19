@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.support;
 
-import cn.hippo4j.common.config.ExecutorProperties;
+import cn.hippo4j.common.model.executor.ExecutorProperties;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

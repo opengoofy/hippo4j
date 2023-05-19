@@ -17,7 +17,7 @@
 
 package cn.hippo4j.common.toolkit;
 
-import cn.hippo4j.common.function.Matcher;
+import cn.hippo4j.common.extension.function.Matcher;
 
 import java.lang.reflect.Array;
 
