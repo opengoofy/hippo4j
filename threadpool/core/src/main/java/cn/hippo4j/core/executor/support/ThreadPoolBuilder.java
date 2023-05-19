@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.support;
 
-import cn.hippo4j.common.design.builder.Builder;
+import cn.hippo4j.common.extension.design.Builder;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.toolkit.Assert;
 import org.springframework.core.task.TaskDecorator;

@@ -20,11 +20,10 @@ package cn.hippo4j.springboot.starter.controller;
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.core.api.ClientNetworkService;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
@@ -70,7 +69,7 @@ public class ThreadPoolAdapterController {
             threadPoolState.setIdentify(IdentifyUtil.getIdentify());
             return threadPoolState;
         }).orElse(null);
-        return Results.success(result);
+        return new Result<ThreadPoolAdapterState>().setCode(Result.SUCCESS_CODE).setData(result);
     }
 
     @PostMapping("/adapter/thread-pool/update")
@@ -79,6 +78,6 @@ public class ThreadPoolAdapterController {
                 requestParameter.getMark(), requestParameter.getThreadPoolKey(), requestParameter.getCorePoolSize(), requestParameter.getMaximumPoolSize());
         ThreadPoolAdapter threadPoolAdapter = THREAD_POOL_ADAPTER_BEAN_CONTAINER.get(requestParameter.getMark());
         Optional.ofNullable(threadPoolAdapter).ifPresent(each -> each.updateThreadPool(requestParameter));
-        return Results.success();
+        return new Result<Void>().setCode(Result.SUCCESS_CODE);
     }
 }

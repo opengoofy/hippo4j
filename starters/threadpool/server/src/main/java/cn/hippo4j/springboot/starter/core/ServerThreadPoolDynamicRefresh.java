@@ -18,8 +18,7 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
-import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
-import cn.hippo4j.common.enums.EnableEnum;
+import cn.hippo4j.common.extension.enums.EnableEnum;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
@@ -30,6 +29,7 @@ import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

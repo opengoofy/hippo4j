@@ -18,21 +18,21 @@
 package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.console.model.ChartInfo;
 import cn.hippo4j.console.model.LineChartInfo;
 import cn.hippo4j.console.model.PieChartInfo;
 import cn.hippo4j.console.model.RankingChart;
 import cn.hippo4j.console.model.TenantChart;
 import cn.hippo4j.console.service.DashboardService;
+import cn.hippo4j.server.common.base.Results;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Dash board controller.
+ * Dashboard controller.
  */
 @RestController
 @AllArgsConstructor

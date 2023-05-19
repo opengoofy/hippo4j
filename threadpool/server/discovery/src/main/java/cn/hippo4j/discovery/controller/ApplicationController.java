@@ -18,11 +18,11 @@
 package cn.hippo4j.discovery.controller;
 
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
-import cn.hippo4j.common.web.exception.ErrorCodeEnum;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.discovery.core.InstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
+import cn.hippo4j.server.common.base.Results;
+import cn.hippo4j.server.common.base.exception.ErrorCodeEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

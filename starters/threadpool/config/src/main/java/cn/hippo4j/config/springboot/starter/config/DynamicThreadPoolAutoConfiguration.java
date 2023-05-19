@@ -32,7 +32,7 @@ import cn.hippo4j.config.springboot.starter.support.DynamicThreadPoolConfigServi
 import cn.hippo4j.config.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
-import cn.hippo4j.core.handler.DynamicThreadPoolBannerHandler;
+import cn.hippo4j.core.executor.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.config.MessageConfiguration;
 import cn.hippo4j.message.service.AlarmControlHandler;

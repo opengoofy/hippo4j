@@ -18,7 +18,6 @@
 package cn.hippo4j.rpc.support;
 
 import cn.hippo4j.common.toolkit.IdUtil;
-import cn.hippo4j.common.web.exception.IllegalException;
 import cn.hippo4j.rpc.client.Client;
 import cn.hippo4j.rpc.exception.ConnectionException;
 import cn.hippo4j.rpc.handler.NettyClientPoolHandler;
@@ -110,7 +109,7 @@ public class NettyProxyCenter {
     public static <T> T createProxy(Client client, Class<T> cls, InetSocketAddress address) {
         boolean b = cls.isInterface();
         if (!b) {
-            throw new IllegalException(cls.getName() + "is not a Interface");
+            throw new RuntimeException(cls.getName() + "is not a Interface");
         }
         String s = address.toString() + cls.getName();
         Object o = map.get(s);
@@ -131,7 +130,7 @@ public class NettyProxyCenter {
                         return null;
                     }
                     if (response.isErr()) {
-                        throw new IllegalException(response.getErrMsg(), response.getThrowable());
+                        throw new RuntimeException(response.getErrMsg(), response.getThrowable());
                     }
                     return response.getObj();
                 });

@@ -17,7 +17,7 @@
 
 package cn.hippo4j.console.service.impl;
 
-import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.extension.enums.DelEnum;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.DateUtil;

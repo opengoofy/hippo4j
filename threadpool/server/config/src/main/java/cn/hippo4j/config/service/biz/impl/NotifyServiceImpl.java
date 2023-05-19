@@ -17,12 +17,11 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.common.enums.EnableEnum;
+import cn.hippo4j.common.extension.enums.EnableEnum;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.BooleanUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.mapper.NotifyInfoMapper;
 import cn.hippo4j.config.model.NotifyInfo;
 import cn.hippo4j.config.model.biz.notify.NotifyListRespDTO;
@@ -31,6 +30,7 @@ import cn.hippo4j.config.model.biz.notify.NotifyReqDTO;
 import cn.hippo4j.config.model.biz.notify.NotifyRespDTO;
 import cn.hippo4j.config.service.biz.NotifyService;
 import cn.hippo4j.common.toolkit.BeanUtil;
+import cn.hippo4j.server.common.base.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;

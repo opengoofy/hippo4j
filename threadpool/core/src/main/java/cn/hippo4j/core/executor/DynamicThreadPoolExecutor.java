@@ -18,12 +18,12 @@
 package cn.hippo4j.core.executor;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.core.plugin.impl.TaskDecoratorPlugin;
-import cn.hippo4j.core.plugin.impl.TaskRejectCountRecordPlugin;
-import cn.hippo4j.core.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
-import cn.hippo4j.core.plugin.impl.ThreadPoolExecutorShutdownPlugin;
-import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
-import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginRegistrar;
+import cn.hippo4j.core.executor.plugin.impl.TaskDecoratorPlugin;
+import cn.hippo4j.core.executor.plugin.impl.TaskRejectCountRecordPlugin;
+import cn.hippo4j.core.executor.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
+import cn.hippo4j.core.executor.plugin.impl.ThreadPoolExecutorShutdownPlugin;
+import cn.hippo4j.core.executor.plugin.manager.DefaultThreadPoolPluginManager;
+import cn.hippo4j.core.executor.plugin.manager.DefaultThreadPoolPluginRegistrar;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;

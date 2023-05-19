@@ -17,7 +17,6 @@
 
 package cn.hippo4j.rpc.discovery;
 
-import cn.hippo4j.common.web.exception.IllegalException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,7 +40,7 @@ public class DefaultInstanceTest {
         Assert.assertEquals(className, instanceInstance.getClass().getName());
     }
 
-    @Test(expected = IllegalException.class)
+    @Test(expected = RuntimeException.class)
     public void testGetInstanceTest() {
         String className = "cn.hippo4j.rpc.discovery.InstanceModelTest";
         Object instanceInstance = instance.getInstance(className);

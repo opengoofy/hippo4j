@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
-import cn.hippo4j.common.enums.VerifyEnum;
+import cn.hippo4j.common.extension.enums.VerifyEnum;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.ConditionUtil;

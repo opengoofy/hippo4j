@@ -18,7 +18,7 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.core.config.ApplicationContextHolder;
-import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.extension.enums.DelEnum;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterServerNotifyParameter;
@@ -31,7 +31,6 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.UserContext;
-import cn.hippo4j.common.web.exception.ServiceException;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.mapper.ConfigInfoMapper;
 import cn.hippo4j.config.mapper.ConfigInstanceMapper;
@@ -47,6 +46,7 @@ import cn.hippo4j.config.service.biz.ItemService;
 import cn.hippo4j.config.service.biz.NotifyService;
 import cn.hippo4j.config.service.biz.OperationLogService;
 import cn.hippo4j.config.service.biz.TenantService;
+import cn.hippo4j.server.common.base.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

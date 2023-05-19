@@ -27,5 +27,10 @@
             <artifactId>hippo4j-threadpool-infra-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-server-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

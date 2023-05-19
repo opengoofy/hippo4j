@@ -19,7 +19,6 @@ package cn.hippo4j.agent.core.registry;
 
 import cn.hippo4j.agent.core.logging.api.ILog;
 import cn.hippo4j.agent.core.logging.api.LogManager;
-import cn.hippo4j.common.config.ExecutorProperties;
 import lombok.Data;
 
 import java.util.Properties;

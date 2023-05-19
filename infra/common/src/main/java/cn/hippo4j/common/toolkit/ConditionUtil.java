@@ -17,7 +17,7 @@
 
 package cn.hippo4j.common.toolkit;
 
-import cn.hippo4j.common.function.NoArgsConsumer;
+import cn.hippo4j.common.extension.function.NoArgsConsumer;
 
 /**
  * Condition util.

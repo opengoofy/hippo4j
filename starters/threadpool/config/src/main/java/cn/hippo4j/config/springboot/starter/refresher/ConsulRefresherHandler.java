@@ -75,7 +75,7 @@ public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
     }
 
     @Override
-    protected void initRegisterListener() {
+    public void registerListener() {
         // The listener has been registered by annotation.
     }
 }

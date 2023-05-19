@@ -17,10 +17,10 @@
 
 package cn.hippo4j.springboot.starter.notify;
 
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.web.base.Result;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.api.NotifyConfigBuilder;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
