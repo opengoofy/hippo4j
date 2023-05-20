@@ -50,28 +50,33 @@ public class HttpUtilsTest {
     static final String LOGIN_URL = "/login";
     static final String LOGIN_NAME = "loginServlet";
     static final String CONTEXT_PATH = "/";
-    static final String PATH_NAME = ".";
     static final String USER_DIR = "user.dir";
-    static final String PREFIX = File.separator + "tomcat.";
+    static final String BASE_DIR = System.getProperty(USER_DIR) + "/target/tomcat";
 
     @BeforeClass
     public static void startWeb() throws IOException, LifecycleException {
         tomcat = new Tomcat();
+        // clear historical files that may be left behind
+        deleteBaseDir();
+        // set base dir
+        tomcat.setBaseDir(BASE_DIR);
         // get a random port
         ServerSocket socket = new ServerSocket(0);
         PORT = socket.getLocalPort();
         socket.close();
         tomcat.setPort(PORT);
+        // set a connector
         Connector connector = new Connector(PROTOCOL);
         connector.setThrowOnFailure(true);
         connector.setPort(PORT);
         tomcat.setConnector(connector);
-        String absolutePath = new File(PATH_NAME).getAbsolutePath();
-        Context context = tomcat.addContext(CONTEXT_PATH, absolutePath);
+        // set a context
+        Context context = tomcat.addContext(CONTEXT_PATH, BASE_DIR);
         Tomcat.addServlet(context, HOME_PAGE_NAME, new HomeServlet()).setAsyncSupported(true);
         context.addServletMappingDecoded(HOME_PAGE_URL, HOME_PAGE_NAME);
         Tomcat.addServlet(context, LOGIN_NAME, new LoginServlet()).setAsyncSupported(true);
         context.addServletMappingDecoded(LOGIN_URL, LOGIN_NAME);
+        // start tomcat
         tomcat.start();
     }
 
@@ -80,8 +85,15 @@ public class HttpUtilsTest {
         // stop tomcat
         tomcat.stop();
         // del dir
-        String userUrl = System.getProperty(USER_DIR);
-        File file = new File(userUrl + PREFIX + PORT);
+        deleteBaseDir();
+    }
+
+    /**
+     * forcibly delete the tomcat's base dir and its sub files
+     */
+    private static void deleteBaseDir() throws IOException {
+        File file = new File(BASE_DIR);
+        // fail fast
         if (!file.exists()) {
             return;
         }
@@ -98,7 +110,6 @@ public class HttpUtilsTest {
                 Files.delete(dir);
                 return FileVisitResult.CONTINUE;
             }
-
         });
     }
 
