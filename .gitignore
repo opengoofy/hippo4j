@@ -7,7 +7,7 @@ target/
 !**/dist/
 
 ### Agent ###
-agent-dist/
+hippo4j-agent/
 **/dependency-reduced-pom.xml
 
 ### STS ###

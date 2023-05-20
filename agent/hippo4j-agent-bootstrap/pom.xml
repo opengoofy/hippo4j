@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-threadpool-agent</artifactId>
+        <artifactId>hippo4j-agent</artifactId>
         <version>${revision}</version>
     </parent>
 
@@ -96,7 +96,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <delete dir="${project.basedir}/../agent-dist" />
+                                <delete dir="${project.basedir}/../hippo4j-agent" />
                             </target>
                         </configuration>
                     </execution>
@@ -108,12 +108,12 @@
                         </goals>
                         <configuration>
                             <target>
-                                <mkdir dir="${project.basedir}/../agent-dist" />
-                                <copy file="${project.build.directory}/hippo4j-threadpool-agent.jar" tofile="${project.basedir}/../agent-dist/hippo4j-threadpool-agent.jar" overwrite="true" />
-                                <mkdir dir="${project.basedir}/../agent-dist/config" />
-                                <mkdir dir="${project.basedir}/../agent-dist/logs" />
-                                <copydir src="${project.basedir}/../config" dest="${project.basedir}/../agent-dist/config" forceoverwrite="true" />
-                                <copydir src="${project.basedir}/../dist-material" dest="${project.basedir}/../agent-dist" />
+                                <mkdir dir="${project.basedir}/../hippo4j-agent" />
+                                <copy file="${project.build.directory}/hippo4j-threadpool-agent.jar" tofile="${project.basedir}/../hippo4j-agent/hippo4j-threadpool-agent.jar" overwrite="true" />
+                                <mkdir dir="${project.basedir}/../hippo4j-agent/config" />
+                                <mkdir dir="${project.basedir}/../hippo4j-agent/logs" />
+                                <copydir src="${project.basedir}/../config" dest="${project.basedir}/../hippo4j-agent/config" forceoverwrite="true" />
+                                <copydir src="${project.basedir}/../dist-material" dest="${project.basedir}/../hippo4j-agent" />
                             </target>
                         </configuration>
                     </execution>
