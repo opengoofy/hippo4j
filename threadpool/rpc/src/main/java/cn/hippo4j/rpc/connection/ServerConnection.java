@@ -15,27 +15,33 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.handler;
+package cn.hippo4j.rpc.connection;
+
+import cn.hippo4j.rpc.discovery.ServerPort;
 
 import java.io.Closeable;
 
 /**
+ * This applies to server-side connections
+ * <p>
  * Represents a network request connection and provides IO layer support<br>
  * <p>
  * This is not a strict and stateless Connection interface, it contains the necessary
  * operations that should be done in the connection. It is more like integrating the
- * connection and the connection channel together, so creating {@link Connection} is
+ * connection and the connection channel together, so creating {@link ServerConnection} is
  * very resource intensive, for which caching is recommended
  *
  * @since 2.0.0
  */
-public interface Connection extends Closeable {
+public interface ServerConnection extends Closeable {
+
+    /**
+     * Bind ports and process them
+     */
+    void bind(ServerPort port);
 
     /**
      * Gets the state of the connection, which is interpreted differently by different programs<br>
-     * <p>
-     * Client: Active connection indicates that a connection is being maintained with the server.
-     * Inactive connection indicates that no connection is being established with the server<br>
      * <p>
      * Server: The active connection indicates that the server has been started, is receiving ports,
      * and can obtain requests at any time. The inactive connection indicates that the server has been
