@@ -17,7 +17,6 @@
 
 package cn.hippo4j.rpc.model;
 
-import cn.hippo4j.rpc.discovery.InstanceServerLoaderImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,20 +25,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Method;
 
 public class DefaultRequestTest {
 
+    static final String name = "name";
+    static final String rid = "rid";
+    static final String hippo4j = "hippo4j";
+
     @Test
-    public void testReadObject() throws IOException, ClassNotFoundException, NoSuchMethodException {
-        String key = "name";
-        String clsName = InstanceServerLoaderImpl.class.getName();
-        Method method = InstanceServerLoaderImpl.class.getMethod("setName", String.class);
-        String methodName = method.getName();
-        Class<?>[] parameterTypes = method.getParameterTypes();
+    public void testReadObject() throws IOException, ClassNotFoundException {
         Object[] parameters = new Object[1];
-        parameters[0] = "hippo4j";
-        Request request = new DefaultRequest(key, clsName, methodName, parameterTypes, parameters);
+        parameters[0] = hippo4j;
+        Request request = new DefaultRequest(rid, name, parameters);
         byte[] bytes;
         try (
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -55,26 +52,17 @@ public class DefaultRequestTest {
             request1 = (Request) objectInputStream.readObject();
         }
         Assert.assertEquals(request1.hashCode(), request1.hashCode());
-        Assert.assertEquals(key, request1.getKey());
-        Assert.assertEquals(clsName, request1.getClassName());
-        Assert.assertEquals(methodName, request1.getMethodName());
-        Assert.assertArrayEquals(parameterTypes, request1.getParameterTypes());
+        Assert.assertEquals(name, request1.getKey());
+        Assert.assertEquals(rid, request1.getRID());
         Assert.assertArrayEquals(parameters, request1.getParameters());
         Assert.assertEquals(request1, request);
     }
 
     @Test
-    public void testEquals() throws NoSuchMethodException {
-        String key = "name";
-        String clsName = InstanceServerLoaderImpl.class.getName();
-        Method method = InstanceServerLoaderImpl.class.getMethod("setName", String.class);
-        String methodName = method.getName();
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        Object[] parameters = new Object[1];
-        parameters[0] = "hippo4j";
-        Request request = new DefaultRequest(key, clsName, methodName, parameterTypes, parameters);
+    public void testEquals() {
+        Request request = new DefaultRequest(rid, name);
         Assert.assertTrue(request.equals(request));
-        Assert.assertFalse(request.equals(null));
+        Assert.assertFalse(request == null);
     }
 
 }

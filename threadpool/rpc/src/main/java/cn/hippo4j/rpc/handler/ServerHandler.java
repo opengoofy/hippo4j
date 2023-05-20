@@ -15,39 +15,41 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.client;
+package cn.hippo4j.rpc.handler;
 
-import cn.hippo4j.rpc.connection.ClientConnection;
+import cn.hippo4j.rpc.model.DefaultRequest;
 import cn.hippo4j.rpc.model.Request;
+import cn.hippo4j.rpc.model.Response;
+import io.netty.channel.ChannelHandlerContext;
 
-import java.io.IOException;
+import java.util.Objects;
 
 /**
- * The client, which provides a closing mechanism, maintains a persistent connection if not closed<br>
- * Delegate the method to the {@link ClientConnection} for implementation
+ * The handler located on the server side provides unified operations for the server side
  *
  * @since 2.0.0
  */
-public class RPCClient implements Client {
-
-    ClientConnection clientConnection;
-
-    public RPCClient(ClientConnection clientConnection) {
-        this.clientConnection = clientConnection;
-    }
+abstract class ServerHandler extends AbstractTakeHandler {
 
     @Override
-    public <R> R connect(Request request) {
-        return clientConnection.connect(request);
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        if (!(msg instanceof DefaultRequest)) {
+            ctx.fireChannelRead(msg);
+            return;
+        }
+        Request request = (Request) msg;
+        if (!Objects.equals(request.getKey(), getName())) {
+            ctx.fireChannelRead(msg);
+            return;
+        }
+        Response response = sendHandler(request);
+        ctx.writeAndFlush(response);
     }
 
     /**
-     * Close the client and release all connections.
+     * Get the name of the current handler
      *
-     * @throws IOException exception
+     * @return name
      */
-    @Override
-    public void close() throws IOException {
-        clientConnection.close();
-    }
+    abstract String getName();
 }
