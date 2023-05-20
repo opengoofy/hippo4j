@@ -27,6 +27,7 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
+import cn.hippo4j.springboot.starter.config.NettyServerConfiguration;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
 import lombok.AllArgsConstructor;
@@ -68,7 +69,7 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
         for (Map.Entry<String, ThreadPoolAdapter> threadPoolAdapterEntry : threadPoolAdapterMap.entrySet()) {
             ThreadPoolAdapter threadPoolAdapter = threadPoolAdapterEntry.getValue();
             List<ThreadPoolAdapterState> threadPoolStates = threadPoolAdapter.getThreadPoolStates();
-            if (CollectionUtil.isEmpty(threadPoolStates) || threadPoolStates.size() == 0) {
+            if (CollectionUtil.isEmpty(threadPoolStates)) {
                 continue;
             }
             ThreadPoolAdapterCacheConfig cacheConfig = new ThreadPoolAdapterCacheConfig();
@@ -79,6 +80,14 @@ public class ThreadPoolAdapterRegister implements ApplicationRunner, ThreadPoolA
             String clientAddress = CloudCommonIdUtil.getClientIpPort(environment, hippo4jInetUtils);
             cacheConfig.setClientAddress(clientAddress);
             cacheConfig.setThreadPoolAdapterStates(threadPoolStates);
+            // tell the server whether this client supports rpc
+            boolean enableRpc = properties.getEnableRpc();
+            cacheConfig.setEnableRpc(enableRpc);
+            if (enableRpc) {
+                // the client registers its own IP address with the server
+                NettyServerConfiguration nettyServer = ApplicationContextHolder.getBean(NettyServerConfiguration.class);
+                cacheConfig.setNettyServerAddress(CloudCommonIdUtil.getNettyServerIpPort(nettyServer.getServerPort(), hippo4jInetUtils));
+            }
             adapterCacheConfigList.add(cacheConfig);
         }
         return adapterCacheConfigList;

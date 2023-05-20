@@ -13,6 +13,12 @@
       "description": "dynamic thread-pool server netty port."
     },
     {
+      "name": "spring.dynamic.thread-pool.enable-rpc",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "dynamic thread-pool rpc switch."
+    },
+    {
       "name": "spring.dynamic.thread-pool.report-type",
       "type": "java.lang.String",
       "defaultValue": "http",

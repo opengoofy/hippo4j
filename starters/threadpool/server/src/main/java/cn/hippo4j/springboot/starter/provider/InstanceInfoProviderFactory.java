@@ -21,9 +21,13 @@ import cn.hippo4j.core.api.ClientNetworkService;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.ContentUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.core.config.ApplicationContextHolder;
+import cn.hippo4j.core.executor.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
+import cn.hippo4j.springboot.starter.config.NettyServerConfiguration;
 import cn.hippo4j.springboot.starter.toolkit.CloudCommonIdUtil;
 import lombok.SneakyThrows;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -62,8 +66,7 @@ public final class InstanceInfoProviderFactory {
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
         InstanceInfo instanceInfo = new InstanceInfo();
         String instanceId = CloudCommonIdUtil.getDefaultInstanceId(environment, inetUtils);
-        instanceId = new StringBuilder()
-                .append(instanceId).append(IDENTIFY_SLICER_SYMBOL).append(CLIENT_IDENTIFICATION_VALUE).toString();
+        instanceId = instanceId + IDENTIFY_SLICER_SYMBOL + CLIENT_IDENTIFICATION_VALUE;
         String contextPath = environment.getProperty("server.servlet.context-path", "");
         instanceInfo.setInstanceId(instanceId)
                 .setIpApplicationName(CloudCommonIdUtil.getIpApplicationName(environment, inetUtils))
@@ -71,13 +74,27 @@ public final class InstanceInfoProviderFactory {
                 .setPort(port).setClientBasePath(contextPath).setGroupKey(ContentUtil.getGroupKey(itemId, namespace));
         String[] customerNetwork = ServiceLoaderRegistry.getSingletonServiceInstances(ClientNetworkService.class)
                 .stream().findFirst().map(each -> each.getNetworkIpPort(environment)).orElse(null);
-        String callBackUrl = new StringBuilder().append(Optional.ofNullable(customerNetwork).map(each -> each[0]).orElse(instanceInfo.getHostName())).append(":")
-                .append(Optional.ofNullable(customerNetwork).map(each -> each[1]).orElse(port)).append(instanceInfo.getClientBasePath())
-                .toString();
+        String serverPort;
+        if (Boolean.FALSE.equals(bootstrapProperties.getEnableRpc())) {
+            serverPort = Optional.ofNullable(customerNetwork).map(each -> each[1]).orElse(port);
+        } else {
+            NettyServerConfiguration nettyServer = ApplicationContextHolder.getBean(NettyServerConfiguration.class);
+            serverPort = String.valueOf(nettyServer.getServerPort());
+        }
+
+        String callBackUrl = StringUtil.newBuilder(
+                Optional.ofNullable(customerNetwork).map(each -> each[0]).orElse(instanceInfo.getHostName()),
+                ":",
+                serverPort,
+                instanceInfo.getClientBasePath());
+        // notify server side clients of version information
+        DynamicThreadPoolBannerHandler bannerHandler = ApplicationContextHolder.getBean(DynamicThreadPoolBannerHandler.class);
+        instanceInfo.setClientVersion(bannerHandler.getVersion());
         instanceInfo.setCallBackUrl(callBackUrl);
         String identify = IdentifyUtil.generate(environment, inetUtils);
         instanceInfo.setIdentify(identify);
         instanceInfo.setActive(active.toUpperCase());
+        instanceInfo.setEnableRpc(bootstrapProperties.getEnableRpc());
         return instanceInfo;
     }
 }

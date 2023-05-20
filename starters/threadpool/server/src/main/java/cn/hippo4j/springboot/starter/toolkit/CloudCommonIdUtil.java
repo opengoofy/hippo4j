@@ -45,6 +45,19 @@ public class CloudCommonIdUtil {
     }
 
     /**
+     * Get netty server ip port.
+     *
+     * @param serverPort serverPort
+     * @param inetUtils  inet utils
+     * @return ip and port
+     */
+    public static String getNettyServerIpPort(int serverPort, InetUtils inetUtils) {
+        String hostname = inetUtils.findFirstNonLoopBackHostInfo().getIpAddress();
+        String port = String.valueOf(serverPort);
+        return combineParts(hostname, SEPARATOR, port);
+    }
+
+    /**
      * Get default instance id.
      *
      * @param resolver  resolver

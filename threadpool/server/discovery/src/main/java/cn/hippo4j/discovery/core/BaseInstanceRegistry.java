@@ -19,18 +19,22 @@ package cn.hippo4j.discovery.core;
 
 import cn.hippo4j.common.executor.ThreadFactoryBuilder;
 import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
+import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.model.InstanceInfo.InstanceStatus;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
+import java.util.Objects;
+import java.util.TimerTask;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -152,6 +156,45 @@ public class BaseInstanceRegistry implements InstanceRegistry<InstanceInfo> {
             log.info("Clean up unhealthy nodes. Node id: {}", id);
         }
         return true;
+    }
+
+    /**
+     * obtain whether a client supports rpc
+     *
+     * @param clientAddress address
+     * @return InstanceInfo
+     */
+    public boolean getInstanceSupport(String clientAddress) {
+        return registry.values().stream().map(Map::values)
+                .flatMap(Collection::stream)
+                .map(Lease::getHolder)
+                .filter(Objects::nonNull)
+                .anyMatch(i -> {
+                    String s = StringUtil.subBefore(i.getIdentify(), Constants.IDENTIFY_SLICER_SYMBOL);
+                    return (Objects.equals(clientAddress, s) || Objects.equals(clientAddress, i.getCallBackUrl()))
+                            && i.getEnableRpc();
+                });
+    }
+
+    /**
+     * get server address
+     *
+     * @param clientAddress address
+     * @return address
+     */
+    public String getInstanceCallUrl(String clientAddress) {
+        return registry.values().stream().map(Map::values)
+                .flatMap(Collection::stream)
+                .map(Lease::getHolder)
+                .filter(Objects::nonNull)
+                .filter(i -> {
+                    String s = StringUtil.subBefore(i.getIdentify(), Constants.IDENTIFY_SLICER_SYMBOL);
+                    return Objects.equals(clientAddress, s) || Objects.equals(clientAddress, i.getCallBackUrl())
+                            && i.getEnableRpc();
+                })
+                .findFirst()
+                .map(InstanceInfo::getCallBackUrl)
+                .orElse(null);
     }
 
     /**

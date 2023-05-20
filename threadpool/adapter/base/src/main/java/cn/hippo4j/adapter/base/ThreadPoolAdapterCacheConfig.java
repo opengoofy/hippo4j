@@ -53,6 +53,16 @@ public class ThreadPoolAdapterCacheConfig {
     private String clientAddress;
 
     /**
+     * Open server address
+     */
+    private String nettyServerAddress;
+
+    /**
+     * rpc switch
+     */
+    private Boolean enableRpc = false;
+
+    /**
      * Thread-pool adapter states
      */
     private List<ThreadPoolAdapterState> threadPoolAdapterStates;

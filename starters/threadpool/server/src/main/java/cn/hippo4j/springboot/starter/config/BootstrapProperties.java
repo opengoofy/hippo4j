@@ -54,6 +54,11 @@ public class BootstrapProperties implements BootstrapPropertiesInterface {
     private String nettyServerPort;
 
     /**
+     * is the rpc switch turned on
+     */
+    private Boolean enableRpc = false;
+
+    /**
      * Report type
      */
     private String reportType;
