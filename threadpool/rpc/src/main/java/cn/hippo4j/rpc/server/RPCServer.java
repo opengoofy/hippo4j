@@ -17,7 +17,7 @@
 
 package cn.hippo4j.rpc.server;
 
-import cn.hippo4j.common.toolkit.ThreadUtil;
+import cn.hippo4j.rpc.connection.ServerConnection;
 import cn.hippo4j.rpc.discovery.ServerPort;
 
 import java.io.IOException;
@@ -36,10 +36,7 @@ public class RPCServer implements Server {
     public RPCServer(ServerConnection serverConnection, ServerPort port) {
         this.port = port;
         this.serverConnection = serverConnection;
-        this.thread = ThreadUtil.newThread(
-                () -> serverConnection.bind(port),
-                "hippo4j-rpc-" + port.getPort(),
-                false);
+        this.thread = new Thread(() -> serverConnection.bind(port), "hippo4j-rpc-" + port.getPort());
     }
 
     /**
@@ -61,7 +58,7 @@ public class RPCServer implements Server {
      */
     @Override
     public void close() throws IOException {
-        thread = null;
+        thread.interrupt();
         serverConnection.close();
     }
 }

@@ -18,34 +18,42 @@
 package cn.hippo4j.rpc.handler;
 
 import cn.hippo4j.rpc.client.CallManager;
-import cn.hippo4j.rpc.connection.ServerConnection;
 import cn.hippo4j.rpc.client.RandomPort;
+import cn.hippo4j.rpc.connection.SimpleConnectPool;
 import cn.hippo4j.rpc.discovery.ServerPort;
-import cn.hippo4j.rpc.model.DefaultRequest;
-import cn.hippo4j.rpc.model.DefaultResponse;
-import cn.hippo4j.rpc.model.Request;
-import cn.hippo4j.rpc.model.Response;
 import cn.hippo4j.rpc.connection.SimpleServerConnection;
 import cn.hippo4j.rpc.server.RPCServer;
+import cn.hippo4j.rpc.connection.ServerConnection;
+import io.netty.channel.Channel;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.Future;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
-public class ConnectHandlerTest {
+public class SimpleConnectPoolTest {
+
+    String host = "127.0.0.1";
+    int maxCount = 64;
+    int timeout = 5000;
+    EventLoopGroup group = new NioEventLoopGroup();
+    Class<? extends Channel> cls = NioSocketChannel.class;
+
+    static ServerPort port = new TestServerPort();
 
     static final String take = "serverTake";
     static final String biTake = "biTake";
     static final String bareTake = "bareTake";
-    static final String timeout = "timeout";
-    static final String key = "key";
-    static final String test = "test";
+    static final String timeoutTake = "timeout";
     static RPCServer rpcServer;
-    static ServerPort port = new TestServerPort();
 
     @BeforeClass
     public static void startServer() {
@@ -53,7 +61,7 @@ public class ConnectHandlerTest {
         ServerTakeHandler<Integer, Integer> takeHandler = new ServerTakeHandler<>(biTake, manager::call);
         ServerBiTakeHandler<Integer, Integer, Integer> biTakeHandler = new ServerBiTakeHandler<>(take, manager::call);
         ServerBareTakeHandler<Integer> bareTakeHandler = new ServerBareTakeHandler<>(bareTake, manager::call);
-        ServerBareTakeHandler<Integer> timeoutHandler = new ServerBareTakeHandler<>(timeout, manager::callTestTimeout);
+        ServerBareTakeHandler<Integer> timeoutHandler = new ServerBareTakeHandler<>(timeoutTake, manager::callTestTimeout);
         ServerConnection connection = new SimpleServerConnection(takeHandler, bareTakeHandler, biTakeHandler, timeoutHandler);
         rpcServer = new RPCServer(connection, port);
         rpcServer.bind();
@@ -70,21 +78,33 @@ public class ConnectHandlerTest {
     }
 
     @Test
-    public void testConnectHandlerDefault() {
-        ConnectHandler handler = new TestConnectHandler();
-        Request request = new DefaultRequest(key, take, new Object[0]);
-        Response response = handler.sendHandler(request);
-        Assert.assertNull(response);
-        Response response1 = new DefaultResponse(key, test);
-        String key = response1.getRID();
-        Object obj = response1.getObj();
-        handler.handler(response1);
-        Assert.assertEquals(key, response1.getRID());
-        Assert.assertEquals(obj, response1.getObj());
+    public void acquire() {
+        InetSocketAddress address = InetSocketAddress.createUnresolved(host, port.getPort());
+        ClientPoolHandler poolHandler = new ClientPoolHandler(new ClientTakeHandler());
+        SimpleConnectPool pool = new SimpleConnectPool(address, maxCount, timeout, group, cls, poolHandler);
+        Channel acquire = pool.acquire(timeout);
+        Assert.assertNotNull(acquire);
+        pool.release(acquire);
     }
 
-    static class TestConnectHandler implements ConnectHandler {
+    @Test
+    public void testAcquire() {
+        InetSocketAddress address = InetSocketAddress.createUnresolved(host, port.getPort());
+        ClientPoolHandler poolHandler = new ClientPoolHandler(new ClientTakeHandler());
+        SimpleConnectPool pool = new SimpleConnectPool(address, maxCount, timeout, group, cls, poolHandler);
+        Future<Channel> acquire = pool.acquire();
+        Assert.assertNotNull(acquire);
+    }
 
+    @Test
+    public void close() {
+        InetSocketAddress address = InetSocketAddress.createUnresolved(host, port.getPort());
+        ClientPoolHandler poolHandler = new ClientPoolHandler(new ClientTakeHandler());
+        SimpleConnectPool pool = new SimpleConnectPool(address, maxCount, timeout, group, cls, poolHandler);
+        Channel acquire = pool.acquire(timeout);
+        Assert.assertNotNull(acquire);
+        pool.release(acquire);
+        pool.close();
     }
 
     static class TestServerPort implements ServerPort {
@@ -96,5 +116,4 @@ public class ConnectHandlerTest {
             return port;
         }
     }
-
 }

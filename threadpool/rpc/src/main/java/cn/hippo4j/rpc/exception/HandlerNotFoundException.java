@@ -15,39 +15,35 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.client;
-
-import cn.hippo4j.rpc.connection.ClientConnection;
-import cn.hippo4j.rpc.model.Request;
-
-import java.io.IOException;
+package cn.hippo4j.rpc.exception;
 
 /**
- * The client, which provides a closing mechanism, maintains a persistent connection if not closed<br>
- * Delegate the method to the {@link ClientConnection} for implementation
+ * HandlerNotFoundException occurs when no executable handler can be found
  *
  * @since 2.0.0
  */
-public class RPCClient implements Client {
+public class HandlerNotFoundException extends RuntimeException {
 
-    ClientConnection clientConnection;
+    private static final long serialVersionUID = 8247610319171014183L;
 
-    public RPCClient(ClientConnection clientConnection) {
-        this.clientConnection = clientConnection;
+    public HandlerNotFoundException() {
+        super();
     }
 
-    @Override
-    public <R> R connect(Request request) {
-        return clientConnection.connect(request);
+    public HandlerNotFoundException(String message) {
+        super(message);
     }
 
-    /**
-     * Close the client and release all connections.
-     *
-     * @throws IOException exception
-     */
-    @Override
-    public void close() throws IOException {
-        clientConnection.close();
+    public HandlerNotFoundException(Throwable e) {
+        super(e.getMessage(), e);
     }
+
+    public HandlerNotFoundException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
+    public HandlerNotFoundException(String message, Throwable throwable, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, throwable, enableSuppression, writableStackTrace);
+    }
+
 }

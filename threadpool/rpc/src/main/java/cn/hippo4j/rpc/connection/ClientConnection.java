@@ -15,39 +15,39 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.client;
+package cn.hippo4j.rpc.connection;
 
-import cn.hippo4j.rpc.connection.ClientConnection;
 import cn.hippo4j.rpc.model.Request;
 
-import java.io.IOException;
+import java.io.Closeable;
 
 /**
- * The client, which provides a closing mechanism, maintains a persistent connection if not closed<br>
- * Delegate the method to the {@link ClientConnection} for implementation
+ * Applicable to client connections<br>
+ * Represents a network request connection and provides IO layer support<br>
+ * <p>
+ * This is not a strict and stateless Connection interface, it contains the necessary
+ * operations that should be done in the connection. It is more like integrating the
+ * connection and the connection channel together, so creating {@link ClientConnection} is
+ * very resource intensive, for which caching is recommended
  *
  * @since 2.0.0
  */
-public class RPCClient implements Client {
-
-    ClientConnection clientConnection;
-
-    public RPCClient(ClientConnection clientConnection) {
-        this.clientConnection = clientConnection;
-    }
-
-    @Override
-    public <R> R connect(Request request) {
-        return clientConnection.connect(request);
-    }
+public interface ClientConnection extends Closeable {
 
     /**
-     * Close the client and release all connections.
+     * Establish a connection and process
      *
-     * @throws IOException exception
+     * @param request Request information
      */
-    @Override
-    public void close() throws IOException {
-        clientConnection.close();
-    }
+    <R> R connect(Request request);
+
+    /**
+     * Get timeout, ms
+     */
+    long timeout();
+
+    /**
+     * SET timeout, ms
+     */
+    void setTimeout(long timeout);
 }

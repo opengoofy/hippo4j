@@ -15,36 +15,27 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.model;
+package cn.hippo4j.rpc.server;
 
-import java.io.Serializable;
+import cn.hippo4j.rpc.client.RandomPort;
+import org.junit.Assert;
+import org.junit.Test;
 
-/**
- * Response
- *
- * @since 2.0.0
- */
-public interface Response extends Serializable {
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 
-    /**
-     * The unique identity of the current Response
-     */
-    String getRID();
+public class ServerSupportTest {
 
-    /**
-     * The results of this request can be obtained, The source of deserialization
-     */
-    Object getObj();
-
-    /**
-     * the error message
-     */
-    String getErrMsg();
-
-    /**
-     * Whether the current request has an error, <br>
-     * If it is true then it cannot be retrieved from obj
-     */
-    boolean isErr();
+    @Test
+    public void bind() throws IOException {
+        ServerSupport support = new ServerSupport(RandomPort::getSafeRandomPort);
+        support.bind();
+        while (!support.isActive()) {
+            LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(100L));
+        }
+        Assert.assertTrue(support.isActive());
+        support.close();
+    }
 
 }

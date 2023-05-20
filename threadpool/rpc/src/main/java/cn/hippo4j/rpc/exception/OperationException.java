@@ -15,39 +15,35 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.client;
-
-import cn.hippo4j.rpc.connection.ClientConnection;
-import cn.hippo4j.rpc.model.Request;
-
-import java.io.IOException;
+package cn.hippo4j.rpc.exception;
 
 /**
- * The client, which provides a closing mechanism, maintains a persistent connection if not closed<br>
- * Delegate the method to the {@link ClientConnection} for implementation
+ * a generic operational exception
  *
  * @since 2.0.0
  */
-public class RPCClient implements Client {
+public class OperationException extends RuntimeException {
 
-    ClientConnection clientConnection;
+    private static final long serialVersionUID = 8247610319171014183L;
 
-    public RPCClient(ClientConnection clientConnection) {
-        this.clientConnection = clientConnection;
+    public OperationException() {
+        super();
     }
 
-    @Override
-    public <R> R connect(Request request) {
-        return clientConnection.connect(request);
+    public OperationException(String message) {
+        super(message);
     }
 
-    /**
-     * Close the client and release all connections.
-     *
-     * @throws IOException exception
-     */
-    @Override
-    public void close() throws IOException {
-        clientConnection.close();
+    public OperationException(Throwable e) {
+        super(e.getMessage(), e);
     }
+
+    public OperationException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
+    public OperationException(String message, Throwable throwable, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, throwable, enableSuppression, writableStackTrace);
+    }
+
 }

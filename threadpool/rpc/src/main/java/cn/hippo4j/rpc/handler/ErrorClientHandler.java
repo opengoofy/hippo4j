@@ -15,39 +15,29 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.client;
+package cn.hippo4j.rpc.handler;
 
-import cn.hippo4j.rpc.connection.ClientConnection;
-import cn.hippo4j.rpc.model.Request;
-
-import java.io.IOException;
+import cn.hippo4j.rpc.exception.HandlerNotFoundException;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
- * The client, which provides a closing mechanism, maintains a persistent connection if not closed<br>
- * Delegate the method to the {@link ClientConnection} for implementation
+ * The final handler, which returned an exception because no usable handler could be found
  *
  * @since 2.0.0
  */
-public class RPCClient implements Client {
+@ChannelHandler.Sharable
+public class ErrorClientHandler extends AbstractTakeHandler implements ConnectHandler {
 
-    ClientConnection clientConnection;
-
-    public RPCClient(ClientConnection clientConnection) {
-        this.clientConnection = clientConnection;
-    }
+    private static final String ERR_MSG = "no handler found that matches the request";
 
     @Override
-    public <R> R connect(Request request) {
-        return clientConnection.connect(request);
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        try {
+            throw new HandlerNotFoundException(ERR_MSG);
+        } finally {
+            ctx.close();
+        }
     }
 
-    /**
-     * Close the client and release all connections.
-     *
-     * @throws IOException exception
-     */
-    @Override
-    public void close() throws IOException {
-        clientConnection.close();
-    }
 }

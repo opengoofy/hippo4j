@@ -15,39 +15,34 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.rpc.client;
+package cn.hippo4j.rpc.handler;
 
-import cn.hippo4j.rpc.connection.ClientConnection;
-import cn.hippo4j.rpc.model.Request;
-
-import java.io.IOException;
+import cn.hippo4j.rpc.exception.ConnectionException;
+import cn.hippo4j.rpc.model.Response;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
- * The client, which provides a closing mechanism, maintains a persistent connection if not closed<br>
- * Delegate the method to the {@link ClientConnection} for implementation
+ * Interconnect with the netty mediation layer
  *
  * @since 2.0.0
  */
-public class RPCClient implements Client {
-
-    ClientConnection clientConnection;
-
-    public RPCClient(ClientConnection clientConnection) {
-        this.clientConnection = clientConnection;
-    }
+@ChannelHandler.Sharable
+public class ClientTakeHandler extends AbstractTakeHandler implements ConnectHandler {
 
     @Override
-    public <R> R connect(Request request) {
-        return clientConnection.connect(request);
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        try {
+            if (msg instanceof Response) {
+                Response response = (Response) msg;
+                handler(response);
+                ctx.flush();
+            } else {
+                ctx.fireChannelRead(msg);
+            }
+        } catch (Exception e) {
+            throw new ConnectionException(e);
+        }
     }
 
-    /**
-     * Close the client and release all connections.
-     *
-     * @throws IOException exception
-     */
-    @Override
-    public void close() throws IOException {
-        clientConnection.close();
-    }
 }
