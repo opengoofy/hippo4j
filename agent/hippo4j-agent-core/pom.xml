@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-threadpool-agent</artifactId>
+        <artifactId>hippo4j-agent</artifactId>
         <version>${revision}</version>
     </parent>
 
