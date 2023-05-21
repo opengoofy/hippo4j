@@ -18,8 +18,8 @@
 package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.model.Result;
+import cn.hippo4j.server.common.base.Results;
 import cn.hippo4j.config.model.biz.item.ItemQueryReqDTO;
 import cn.hippo4j.config.model.biz.item.ItemRespDTO;
 import cn.hippo4j.config.model.biz.item.ItemSaveReqDTO;

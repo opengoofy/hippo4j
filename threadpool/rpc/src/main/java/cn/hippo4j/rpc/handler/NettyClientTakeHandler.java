@@ -17,7 +17,6 @@
 
 package cn.hippo4j.rpc.handler;
 
-import cn.hippo4j.common.web.exception.IllegalException;
 import cn.hippo4j.rpc.model.Response;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,7 +37,7 @@ public class NettyClientTakeHandler extends AbstractNettyTakeHandler implements 
             ctx.flush();
         } catch (Exception e) {
             ctx.close();
-            throw new IllegalException(e);
+            throw e;
         }
     }
 

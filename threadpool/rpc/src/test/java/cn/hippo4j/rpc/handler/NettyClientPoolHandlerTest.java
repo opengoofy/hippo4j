@@ -18,7 +18,6 @@
 package cn.hippo4j.rpc.handler;
 
 import cn.hippo4j.common.toolkit.ThreadUtil;
-import cn.hippo4j.common.web.exception.IllegalException;
 import cn.hippo4j.rpc.client.CallManager;
 import cn.hippo4j.rpc.client.ClientConnection;
 import cn.hippo4j.rpc.client.NettyClientConnection;
@@ -104,7 +103,7 @@ public class NettyClientPoolHandlerTest {
         Assert.assertFalse(handler.isEmpty());
     }
 
-    @Test(expected = IllegalException.class)
+    @Test(expected = RuntimeException.class)
     public void testGetHandlerEntityFalse() {
         TestFalseHandler handler = new TestFalseHandler();
         long order = 0;

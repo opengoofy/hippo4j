@@ -17,13 +17,13 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
-import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import cn.hippo4j.config.springboot.starter.parser.ConfigParserHandler;
 import cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEvent;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
+import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.ApplicationArguments;
@@ -40,7 +40,6 @@ import java.util.concurrent.ExecutorService;
 public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean, ApplicationRunner {
 
     private final BootstrapConfigPropertiesBinderAdapt bootstrapConfigPropertiesBinderAdapt;
-
     protected BootstrapConfigProperties bootstrapConfigProperties;
 
     protected final ExecutorService dynamicRefreshExecutorService = ThreadPoolBuilder.builder().singlePool("client.dynamic.refresh").build();
@@ -49,11 +48,6 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
         bootstrapConfigProperties = ApplicationContextHolder.getBean(BootstrapConfigProperties.class);
         bootstrapConfigPropertiesBinderAdapt = ApplicationContextHolder.getBean(BootstrapConfigPropertiesBinderAdapt.class);
     }
-
-    /**
-     * Init register listener.
-     */
-    protected abstract void initRegisterListener();
 
     @Override
     public void dynamicRefresh(String configContent) {
@@ -81,7 +75,7 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
     @Override
     public void afterPropertiesSet() {
         try {
-            initRegisterListener();
+            registerListener();
         } catch (Exception ex) {
             log.error("Hippo4j failed to initialize register listener.", ex);
         }

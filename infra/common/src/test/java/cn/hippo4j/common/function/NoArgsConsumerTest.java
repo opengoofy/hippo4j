@@ -17,6 +17,7 @@
 
 package cn.hippo4j.common.function;
 
+import cn.hippo4j.common.extension.function.NoArgsConsumer;
 import cn.hippo4j.common.toolkit.Assert;
 import org.junit.jupiter.api.Test;
 

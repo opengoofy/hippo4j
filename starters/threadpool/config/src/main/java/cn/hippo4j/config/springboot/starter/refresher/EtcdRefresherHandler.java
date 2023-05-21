@@ -58,7 +58,7 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
 
     @SneakyThrows(value = {InterruptedException.class, ExecutionException.class})
     @Override
-    public void initRegisterListener() {
+    public void registerListener() {
         Map<String, String> etcd = bootstrapConfigProperties.getEtcd();
         String key = etcd.get(KEY);
         Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));

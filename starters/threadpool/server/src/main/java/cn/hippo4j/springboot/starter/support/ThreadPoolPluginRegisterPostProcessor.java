@@ -18,11 +18,11 @@
 package cn.hippo4j.springboot.starter.support;
 
 import cn.hippo4j.common.toolkit.Assert;
-import cn.hippo4j.core.plugin.ThreadPoolPlugin;
-import cn.hippo4j.core.plugin.manager.DefaultGlobalThreadPoolPluginManager;
-import cn.hippo4j.core.plugin.manager.GlobalThreadPoolPluginManager;
-import cn.hippo4j.core.plugin.manager.ThreadPoolPluginRegistrar;
-import cn.hippo4j.core.plugin.manager.ThreadPoolPluginSupport;
+import cn.hippo4j.core.executor.plugin.ThreadPoolPlugin;
+import cn.hippo4j.core.executor.plugin.manager.DefaultGlobalThreadPoolPluginManager;
+import cn.hippo4j.core.executor.plugin.manager.GlobalThreadPoolPluginManager;
+import cn.hippo4j.core.executor.plugin.manager.ThreadPoolPluginRegistrar;
+import cn.hippo4j.core.executor.plugin.manager.ThreadPoolPluginSupport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.autoproxy.AutoProxyUtils;
 import org.springframework.beans.BeansException;
@@ -59,7 +59,7 @@ import java.util.Objects;
 public class ThreadPoolPluginRegisterPostProcessor extends DefaultGlobalThreadPoolPluginManager implements BeanPostProcessor, ApplicationContextAware {
 
     /**
-     * application context
+     * Application context
      */
     private ConfigurableListableBeanFactory beanFactory;
 

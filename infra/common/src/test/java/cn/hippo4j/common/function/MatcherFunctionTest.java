@@ -17,6 +17,7 @@
 
 package cn.hippo4j.common.function;
 
+import cn.hippo4j.common.extension.function.Matcher;
 import cn.hippo4j.common.toolkit.Assert;
 import org.junit.Test;
 

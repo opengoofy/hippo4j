@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * extension auto  configuration
+ * Extension auto configuration.
  */
 @Configuration
 public class ExtensionAutoConfiguration {

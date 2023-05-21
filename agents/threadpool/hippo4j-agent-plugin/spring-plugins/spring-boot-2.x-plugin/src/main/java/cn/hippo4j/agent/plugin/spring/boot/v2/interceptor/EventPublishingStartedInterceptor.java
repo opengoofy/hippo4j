@@ -24,8 +24,8 @@ import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInt
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
 import cn.hippo4j.agent.plugin.spring.boot.v2.DynamicThreadPoolChangeHandlerSpring2x;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
-import cn.hippo4j.agent.plugin.spring.common.support.IDynamicThreadPoolChangeHandlerSpring;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSupport;
+import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.lang.reflect.Method;
@@ -51,8 +51,8 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
             return ret;
         }
         SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
-        IDynamicThreadPoolChangeHandlerSpring handler = new DynamicThreadPoolChangeHandlerSpring2x(context);
-        handler.registerApolloConfigHandler();
+        ThreadPoolDynamicRefresh dynamicRefresh = new DynamicThreadPoolChangeHandlerSpring2x(context);
+        dynamicRefresh.registerListener();
 
         return ret;
     }
