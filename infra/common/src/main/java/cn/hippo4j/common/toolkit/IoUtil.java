@@ -100,7 +100,7 @@ public class IoUtil {
         try (GZIPOutputStream gzip = new GZIPOutputStream(out)) {
             gzip.write(str.getBytes(encoding));
         } catch (Exception e) {
-            log.info("gzip write is fail:{}", e.getMessage());
+            log.error("gzip write is fail:{}", e.getMessage());
         }
         return out.toByteArray();
     }
