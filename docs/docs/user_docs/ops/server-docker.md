@@ -36,9 +36,9 @@ hippo4j/hippo4j-server
 ```shell
 # 进入到 threadpool/server/bootstrap 工程路径下
 mvn clean package -Dskip.spotless.apply=true
-# 进入到  docker/threadpool 工程路径下
+# 进入到  docker 工程路径下
 # 默认打包是打包的 tag 是 latest
-docker build -t hippo4j/hippo4j-server ../threadpool 
+docker build -t hippo4j/hippo4j-server ../docker 
 ```
 
 方式二：
