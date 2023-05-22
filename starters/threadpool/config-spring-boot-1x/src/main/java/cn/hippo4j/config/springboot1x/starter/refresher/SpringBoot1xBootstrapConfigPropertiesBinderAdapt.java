@@ -18,7 +18,8 @@
 package cn.hippo4j.config.springboot1x.starter.refresher;
 
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-import cn.hippo4j.config.springboot.starter.refresher.BootstrapConfigPropertiesBinderAdapt;
+import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
+import cn.hippo4j.threadpool.dynamic.mode.config.refresher.BootstrapConfigPropertiesBinderAdapter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
@@ -40,7 +41,7 @@ import java.util.Set;
 /**
  * Bootstrap core properties binder adapt.
  */
-public class SpringBoot1xBootstrapConfigPropertiesBinderAdapt implements ApplicationContextAware, BootstrapConfigPropertiesBinderAdapt {
+public class SpringBoot1xBootstrapConfigPropertiesBinderAdapt implements ApplicationContextAware, BootstrapConfigPropertiesBinderAdapter {
 
     private ApplicationContext applicationContext;
 
@@ -52,7 +53,7 @@ public class SpringBoot1xBootstrapConfigPropertiesBinderAdapt implements Applica
      * @return
      */
     @Override
-    public BootstrapConfigProperties bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapConfigProperties bootstrapConfigProperties) {
+    public BootstrapPropertiesInterface bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapPropertiesInterface bootstrapConfigProperties) {
         BootstrapConfigProperties bindableCoreProperties = new BootstrapConfigProperties();
         RelaxedNames relaxedNames = new RelaxedNames(BootstrapConfigProperties.PREFIX);
         Set<String> names = getNames(bindableCoreProperties, relaxedNames);

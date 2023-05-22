@@ -19,7 +19,7 @@ package cn.hippo4j.config.springboot.starter.config;
 
 import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.parser.ConfigFileTypeEnum;
-import cn.hippo4j.core.config.BootstrapPropertiesInterface;
+import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

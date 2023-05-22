@@ -39,11 +39,30 @@ public interface ThreadPoolDynamicRefresh {
     }
 
     /**
+     * Dynamic refresh of configuration center data changes.
+     *
+     * @param configFileType config file type
+     * @param content        changed data
+     */
+    default void dynamicRefresh(String configFileType, String content) {
+    }
+
+    /**
      * Dynamic refresh.
      *
      * @param content           changed data
      * @param newValueChangeMap new value change map
      */
     default void dynamicRefresh(String content, Map<String, Object> newValueChangeMap) {
+    }
+
+    /**
+     * Dynamic refresh.
+     *
+     * @param configFileType    config file type
+     * @param content           changed data
+     * @param newValueChangeMap new value change map
+     */
+    default void dynamicRefresh(String configFileType, String content, Map<String, Object> newValueChangeMap) {
     }
 }

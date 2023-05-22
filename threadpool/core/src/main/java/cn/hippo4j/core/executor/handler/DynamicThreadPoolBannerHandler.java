@@ -18,7 +18,7 @@
 package cn.hippo4j.core.executor.handler;
 
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.core.config.BootstrapPropertiesInterface;
+import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.ansi.AnsiColor;

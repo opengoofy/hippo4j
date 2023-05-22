@@ -15,23 +15,58 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.config.springboot.starter.refresher;
+package cn.hippo4j.threadpool.dynamic.mode.config.parser;
 
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-
-import java.util.Map;
+import lombok.Getter;
 
 /**
- * Bootstrap config properties binder adapt.
+ * Config file type enum
  */
-public interface BootstrapConfigPropertiesBinderAdapt {
+@Getter
+public enum ConfigFileTypeEnum {
 
     /**
-     * Bootstrap core properties binder.
-     *
-     * @param configInfo                dynamic thread pool configuration
-     * @param bootstrapConfigProperties bootstrap config properties
-     * @return
+     * PROPERTIES
      */
-    BootstrapConfigProperties bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapConfigProperties bootstrapConfigProperties);
+    PROPERTIES("properties"),
+
+    /**
+     * XML
+     */
+    XML("xml"),
+
+    /**
+     * JSON
+     */
+    JSON("json"),
+
+    /**
+     * YML
+     */
+    YML("yml"),
+
+    /**
+     * YAML
+     */
+    YAML("yaml"),
+
+    /**
+     * TXT
+     */
+    TXT("txt");
+
+    private final String value;
+
+    ConfigFileTypeEnum(String value) {
+        this.value = value;
+    }
+
+    public static ConfigFileTypeEnum of(String value) {
+        for (ConfigFileTypeEnum typeEnum : ConfigFileTypeEnum.values()) {
+            if (typeEnum.value.equals(value)) {
+                return typeEnum;
+            }
+        }
+        return PROPERTIES;
+    }
 }

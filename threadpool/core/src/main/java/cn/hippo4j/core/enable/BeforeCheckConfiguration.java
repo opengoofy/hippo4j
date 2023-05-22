@@ -18,8 +18,8 @@
 package cn.hippo4j.core.enable;
 
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.core.config.BootstrapPropertiesInterface;
 import cn.hippo4j.core.config.ConfigEmptyException;
+import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +40,7 @@ public class BeforeCheckConfiguration {
     @Bean
     public BeforeCheckConfiguration.BeforeCheck dynamicThreadPoolBeforeCheckBean(@Autowired(required = false) BootstrapPropertiesInterface properties,
                                                                                  ConfigurableEnvironment environment) {
+        // TODO test
         boolean checkFlag = properties != null && Objects.equals(bootstrapPropertiesClassName, properties.getClass().getName()) && properties.getEnable();
         if (checkFlag) {
             String namespace = properties.getNamespace();

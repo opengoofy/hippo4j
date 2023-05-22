@@ -15,33 +15,15 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.auth.model.biz.user;
-
-import lombok.Data;
+package cn.hippo4j.threadpool.dynamic.mode.config.parser;
 
 /**
- * Login user.
+ * Abstract config parser
  */
-@Data
-public class LoginUser {
+public abstract class AbstractConfigParser implements ConfigParser {
 
-    /**
-     * encode key reverse
-     */
-    private String tag;
-
-    /**
-     * username
-     */
-    private String username;
-
-    /**
-     * password
-     */
-    private String password;
-
-    /**
-     * rememberMe
-     */
-    private Integer rememberMe;
+    @Override
+    public boolean supports(ConfigFileTypeEnum type) {
+        return getConfigFileTypes().contains(type);
+    }
 }

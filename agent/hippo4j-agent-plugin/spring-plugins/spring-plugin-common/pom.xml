@@ -37,14 +37,21 @@
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-config-spring-boot-starter</artifactId>
+            <artifactId>hippo4j-threadpool-dynamic-api</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-dynamic-api</artifactId>
+            <artifactId>hippo4j-threadpool-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-dynamic-mode-config</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

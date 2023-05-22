@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.hippo4j.auth.toolkit;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -30,15 +47,15 @@ public class AESUtil {
      * @return byte[]
      */
     public static byte[] encrypt(byte[] data, byte[] key) throws GeneralSecurityException {
-            SecretKeySpec sKeySpec = new SecretKeySpec(key, "AES");
-            Cipher cipher = Cipher.getInstance(AES_GCM_CIPHER);
-            cipher.init(Cipher.ENCRYPT_MODE, sKeySpec);
-            byte[] iv = cipher.getIV();
-            byte[] encryptData = cipher.doFinal(data);
-            byte[] message = new byte[12 + data.length + 16];
-            System.arraycopy(iv, 0, message, 0, 12);
-            System.arraycopy(encryptData, 0, message, 12, encryptData.length);
-            return message;
+        SecretKeySpec sKeySpec = new SecretKeySpec(key, "AES");
+        Cipher cipher = Cipher.getInstance(AES_GCM_CIPHER);
+        cipher.init(Cipher.ENCRYPT_MODE, sKeySpec);
+        byte[] iv = cipher.getIV();
+        byte[] encryptData = cipher.doFinal(data);
+        byte[] message = new byte[12 + data.length + 16];
+        System.arraycopy(iv, 0, message, 0, 12);
+        System.arraycopy(encryptData, 0, message, 12, encryptData.length);
+        return message;
     }
 
     /**
@@ -48,12 +65,12 @@ public class AESUtil {
      * @param key  Decryption key
      * @return byte[]
      */
-    public static byte[] decrypt(byte[] data, byte[] key) throws GeneralSecurityException{
-            GCMParameterSpec iv = new GCMParameterSpec(128, data, 0, 12);
-            Cipher cipher = Cipher.getInstance(AES_GCM_CIPHER);
-            SecretKey key2 = new SecretKeySpec(key, "AES");
-            cipher.init(Cipher.DECRYPT_MODE, key2, iv);
-            return cipher.doFinal(data, 12, data.length - 12);
+    public static byte[] decrypt(byte[] data, byte[] key) throws GeneralSecurityException {
+        GCMParameterSpec iv = new GCMParameterSpec(128, data, 0, 12);
+        Cipher cipher = Cipher.getInstance(AES_GCM_CIPHER);
+        SecretKey key2 = new SecretKeySpec(key, "AES");
+        cipher.init(Cipher.DECRYPT_MODE, key2, iv);
+        return cipher.doFinal(data, 12, data.length - 12);
     }
 
     /**

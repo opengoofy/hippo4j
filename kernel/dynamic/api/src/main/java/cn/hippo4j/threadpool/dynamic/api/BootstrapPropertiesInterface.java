@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.config;
+package cn.hippo4j.threadpool.dynamic.api;
 
 /**
  * Bootstrap properties interface.
