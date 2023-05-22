@@ -1,8 +1,7 @@
 import {login} from '@/api/user';
 import {getToken, removeToken, setToken} from '@/utils/auth';
 import router, {resetRouter} from '@/router';
-import {Buffer} from 'buffer'
-import crypto from 'crypto'
+import {genKey, encrypt} from '@/utils/aes-util';
 
 const state = {
     token: getToken(),
@@ -35,8 +34,8 @@ const actions = {
     login({commit}, userInfo) {
         const {username, password} = userInfo;
         return new Promise((resolve, reject) => {
-            let key = actions.genKey();
-            let encodePassword = actions.encrypt(password, key)
+            let key = genKey();
+            let encodePassword = encrypt(password, key)
             key = key.split("").reverse().join("")
             login({username: username.trim(), password: encodePassword, tag: key, rememberMe: 1})
                 .then((response) => {
@@ -121,29 +120,6 @@ const actions = {
 
             resolve();
         });
-    },
-    genKey() {
-        let chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        let result = '';
-        for (let i = 16; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-        return result;
-    },
-    encrypt(msg, key) {
-        try {
-            let pwd = Buffer.from(key)
-            let iv = crypto.randomBytes(12)
-            let cipher = crypto.createCipheriv('aes-128-gcm', pwd, iv)
-            let enc = cipher.update(msg, 'utf8', 'base64')
-            enc += cipher.final('base64')
-            let tags = cipher.getAuthTag()
-            enc = Buffer.from(enc, 'base64')
-            let totalLength = iv.length + enc.length + tags.length
-            let bufferMsg = Buffer.concat([iv, enc, tags], totalLength)
-            return bufferMsg.toString('base64')
-        } catch (e) {
-            console.log("Encrypt is error", e)
-            return null
-        }
     },
 };
 
