@@ -48,7 +48,7 @@ import java.util.zip.GZIPOutputStream;
  *
  * @author nacos
  */
-@Slf4j(topic = "IoUtil")
+@Slf4j
 public class IoUtil {
 
     /**
