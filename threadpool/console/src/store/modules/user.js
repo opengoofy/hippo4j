@@ -37,9 +37,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             let key = actions.genKey();
             let encodePassword = actions.encrypt(password, key)
-            console.log("enpwd:", encodePassword)
             key = key.split("").reverse().join("")
-
             login({username: username.trim(), password: encodePassword, tag: key, rememberMe: 1})
                 .then((response) => {
                     const {data} = response;
@@ -51,7 +49,7 @@ const actions = {
                     resolve();
                 })
                 .catch((error) => {
-                    alert('登录失败');
+                    // alert('登录失败');
                     reject(error);
                 });
         });

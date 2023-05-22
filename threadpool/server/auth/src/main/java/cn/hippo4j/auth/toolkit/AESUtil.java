@@ -11,7 +11,7 @@ import java.security.GeneralSecurityException;
 import java.util.Base64;
 
 /**
- * Aes加解密算法工具类
+ * AES encryption and decryption algorithm tool class
  *
  * @author <a href="mailto:SerenitySir@outlook.com">Serenity</a>
  * @date 2023/5/21 14:37
@@ -23,10 +23,10 @@ public class AESUtil {
     private static final String AES_GCM_CIPHER = "AES/GCM/PKCS5Padding";
 
     /**
-     * 加密
+     * encrypt
      *
-     * @param data 需要加密的内容
-     * @param key  加密密码
+     * @param data Content that needs to be encrypted
+     * @param key  Encrypt the password
      * @return byte[]
      */
     public static byte[] encrypt(byte[] data, byte[] key) throws GeneralSecurityException {
@@ -42,10 +42,10 @@ public class AESUtil {
     }
 
     /**
-     * 解密
+     * decrypt
      *
-     * @param data 待解密内容
-     * @param key  解密密钥
+     * @param data The content to be decrypted
+     * @param key  Decryption key
      * @return byte[]
      */
     public static byte[] decrypt(byte[] data, byte[] key) throws GeneralSecurityException{
@@ -57,10 +57,10 @@ public class AESUtil {
     }
 
     /**
-     * 加密
+     * encrypt
      *
-     * @param data 需要加密的内容
-     * @param key  加密密码
+     * @param data Content that needs to be encrypted
+     * @param key  Encrypt the password
      * @return String
      */
     public static String encrypt(String data, String key) throws GeneralSecurityException {
@@ -69,10 +69,10 @@ public class AESUtil {
     }
 
     /**
-     * 解密
+     * decrypt
      *
-     * @param data 待解密内容 base64 字符串
-     * @param key  解密密钥
+     * @param data The content to be decrypted is a base64 string
+     * @param key  Decryption key
      * @return String
      */
     public static String decrypt(String data, String key) throws GeneralSecurityException {
@@ -82,9 +82,9 @@ public class AESUtil {
     }
 
     /**
-     * 生成一个随机字符串密钥
+     * Generate a random string key
      *
-     * @return 字符串密钥
+     * @return The string key
      */
     public static String generateRandomKey() {
         return IdWorker.get32UUID().substring(0, 16);
