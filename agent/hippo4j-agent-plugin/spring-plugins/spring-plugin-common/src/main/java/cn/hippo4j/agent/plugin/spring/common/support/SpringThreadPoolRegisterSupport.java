@@ -24,8 +24,6 @@ import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.toolkit.BooleanUtil;
-import cn.hippo4j.core.executor.DynamicThreadPool;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,9 +99,7 @@ public class SpringThreadPoolRegisterSupport {
         properties.put(ThreadPoolPropertyKey.THREAD_NAME_PREFIX, threadPoolId);
         properties.put(ThreadPoolPropertyKey.REJECTED_HANDLER, RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()).getName());
         properties.put(ThreadPoolPropertyKey.EXECUTE_TIME_OUT, Constants.EXECUTE_TIME_OUT);
-
         // register executor.
         AgentThreadPoolInstanceRegistry.getInstance().putHolder(threadPoolId, executor, properties);
-
     }
 }

@@ -45,10 +45,11 @@ public class ApolloRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
     public void registerListener() {
         String[] apolloNamespaces = this.namespace.split(",");
         this.namespace = apolloNamespaces[0];
-        Config config = ConfigService.getConfig(String.format("%s.%s", namespace, bootstrapConfigProperties.getConfigFileType().getValue()));
+        BootstrapConfigProperties actualBootstrapConfigProperties = (BootstrapConfigProperties) bootstrapConfigProperties;
+        Config config = ConfigService.getConfig(String.format("%s.%s", namespace, actualBootstrapConfigProperties.getConfigFileType().getValue()));
         ConfigChangeListener configChangeListener = configChangeEvent -> {
-            String namespace = this.namespace.replaceAll("." + bootstrapConfigProperties.getConfigFileType().getValue(), "");
-            ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(bootstrapConfigProperties.getConfigFileType().getValue());
+            String namespace = this.namespace.replaceAll("." + actualBootstrapConfigProperties.getConfigFileType().getValue(), "");
+            ConfigFileFormat configFileFormat = ConfigFileFormat.fromString(actualBootstrapConfigProperties.getConfigFileType().getValue());
             ConfigFile configFile = ConfigService.getConfigFile(namespace, configFileFormat);
             Map<String, Object> newChangeValueMap = new HashMap<>();
             configChangeEvent.changedKeys().stream().filter(each -> each.contains(BootstrapConfigProperties.PREFIX)).forEach(each -> {

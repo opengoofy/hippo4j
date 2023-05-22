@@ -10,4 +10,12 @@
     </parent>
 
     <artifactId>hippo4j-threadpool-dynamic-mode-config</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-dynamic-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

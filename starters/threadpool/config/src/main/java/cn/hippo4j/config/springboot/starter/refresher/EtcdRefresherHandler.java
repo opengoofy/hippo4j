@@ -19,6 +19,7 @@ package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
 import io.etcd.jetcd.ByteSequence;
 import io.etcd.jetcd.Client;
 import io.etcd.jetcd.ClientBuilder;
@@ -59,7 +60,8 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
     @SneakyThrows(value = {InterruptedException.class, ExecutionException.class})
     @Override
     public void registerListener() {
-        Map<String, String> etcd = bootstrapConfigProperties.getEtcd();
+        BootstrapConfigProperties actualBootstrapConfigProperties = (BootstrapConfigProperties) bootstrapConfigProperties;
+        Map<String, String> etcd = actualBootstrapConfigProperties.getEtcd();
         String key = etcd.get(KEY);
         Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));
         initClient(etcd, charset);

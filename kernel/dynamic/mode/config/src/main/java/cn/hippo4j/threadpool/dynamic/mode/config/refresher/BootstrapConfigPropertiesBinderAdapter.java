@@ -15,33 +15,23 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.auth.model.biz.user;
+package cn.hippo4j.threadpool.dynamic.mode.config.refresher;
 
-import lombok.Data;
+import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
+
+import java.util.Map;
 
 /**
- * Login user.
+ * Bootstrap config properties binder adapt.
  */
-@Data
-public class LoginUser {
+public interface BootstrapConfigPropertiesBinderAdapter {
 
     /**
-     * encode key reverse
+     * Bootstrap core properties binder.
+     *
+     * @param configInfo                dynamic thread pool configuration
+     * @param bootstrapConfigProperties bootstrap config properties
+     * @return
      */
-    private String tag;
-
-    /**
-     * username
-     */
-    private String username;
-
-    /**
-     * password
-     */
-    private String password;
-
-    /**
-     * rememberMe
-     */
-    private Integer rememberMe;
+    BootstrapPropertiesInterface bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapPropertiesInterface bootstrapConfigProperties);
 }

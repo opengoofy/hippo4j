@@ -17,15 +17,8 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
-import cn.hippo4j.config.springboot.starter.refresher.ApolloRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.BootstrapConfigPropertiesBinderAdapt;
-import cn.hippo4j.config.springboot.starter.refresher.ConsulRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.DefaultBootstrapConfigPropertiesBinderAdapt;
-import cn.hippo4j.config.springboot.starter.refresher.EtcdRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.NacosCloudRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.NacosRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.PolarisRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.ZookeeperRefresherHandler;
+import cn.hippo4j.config.springboot.starter.refresher.*;
+import cn.hippo4j.threadpool.dynamic.mode.config.refresher.BootstrapConfigPropertiesBinderAdapter;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.tencent.polaris.configuration.api.core.ConfigFileService;
@@ -64,7 +57,7 @@ public class ConfigHandlerConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public BootstrapConfigPropertiesBinderAdapt bootstrapConfigPropertiesBinderAdapt() {
+    public BootstrapConfigPropertiesBinderAdapter bootstrapConfigPropertiesBinderAdapter() {
         return new DefaultBootstrapConfigPropertiesBinderAdapt();
     }
 

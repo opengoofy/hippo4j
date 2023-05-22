@@ -18,6 +18,8 @@
 package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
+import cn.hippo4j.threadpool.dynamic.mode.config.refresher.BootstrapConfigPropertiesBinderAdapter;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
@@ -28,7 +30,7 @@ import java.util.Map;
 /**
  * Bootstrap core properties binder adapt.
  */
-public class DefaultBootstrapConfigPropertiesBinderAdapt implements BootstrapConfigPropertiesBinderAdapt {
+public class DefaultBootstrapConfigPropertiesBinderAdapt implements BootstrapConfigPropertiesBinderAdapter {
 
     /**
      * Bootstrap core properties binder.
@@ -38,7 +40,7 @@ public class DefaultBootstrapConfigPropertiesBinderAdapt implements BootstrapCon
      * @return
      */
     @Override
-    public BootstrapConfigProperties bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapConfigProperties bootstrapConfigProperties) {
+    public BootstrapPropertiesInterface bootstrapCorePropertiesBinder(Map<Object, Object> configInfo, BootstrapPropertiesInterface bootstrapConfigProperties) {
         ConfigurationPropertySource sources = new MapConfigurationPropertySource(configInfo);
         Binder binder = new Binder(sources);
         return binder.bind(BootstrapConfigProperties.PREFIX, Bindable.ofInstance(bootstrapConfigProperties)).get();

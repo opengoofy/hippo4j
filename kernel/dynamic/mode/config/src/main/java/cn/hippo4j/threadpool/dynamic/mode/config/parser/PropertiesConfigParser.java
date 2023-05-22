@@ -15,33 +15,30 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.auth.model.biz.user;
+package cn.hippo4j.threadpool.dynamic.mode.config.parser;
 
-import lombok.Data;
+import cn.hippo4j.common.toolkit.CollectionUtil;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
- * Login user.
+ * Properties config parser.
  */
-@Data
-public class LoginUser {
+public class PropertiesConfigParser extends AbstractConfigParser {
 
-    /**
-     * encode key reverse
-     */
-    private String tag;
+    @Override
+    public Map<Object, Object> doParse(String content) throws IOException {
+        Properties properties = new Properties();
+        properties.load(new StringReader(content));
+        return properties;
+    }
 
-    /**
-     * username
-     */
-    private String username;
-
-    /**
-     * password
-     */
-    private String password;
-
-    /**
-     * rememberMe
-     */
-    private Integer rememberMe;
+    @Override
+    public List<ConfigFileTypeEnum> getConfigFileTypes() {
+        return CollectionUtil.newArrayList(ConfigFileTypeEnum.PROPERTIES);
+    }
 }

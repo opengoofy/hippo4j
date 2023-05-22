@@ -15,33 +15,26 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.auth.model.biz.user;
+package cn.hippo4j.threadpool.dynamic.mode.config.parser;
 
-import lombok.Data;
+import cn.hippo4j.common.toolkit.CollectionUtil;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * Login user.
+ * Yaml config parser.
  */
-@Data
-public class LoginUser {
+public class YamlConfigParser extends AbstractConfigParser {
 
-    /**
-     * encode key reverse
-     */
-    private String tag;
+    @Override
+    public Map<Object, Object> doParse(String content) {
+        // TODO
+        return null;
+    }
 
-    /**
-     * username
-     */
-    private String username;
-
-    /**
-     * password
-     */
-    private String password;
-
-    /**
-     * rememberMe
-     */
-    private Integer rememberMe;
+    @Override
+    public List<ConfigFileTypeEnum> getConfigFileTypes() {
+        return CollectionUtil.newArrayList(ConfigFileTypeEnum.YML, ConfigFileTypeEnum.YAML);
+    }
 }

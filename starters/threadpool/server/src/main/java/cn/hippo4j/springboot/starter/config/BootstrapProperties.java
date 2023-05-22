@@ -18,7 +18,7 @@
 package cn.hippo4j.springboot.starter.config;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.core.config.BootstrapPropertiesInterface;
+import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

@@ -37,7 +37,6 @@ public class DynamicThreadPoolChangeHandlerSpring2x extends AbstractDynamicThrea
         super(context);
     }
 
-    @Override
     protected BootstrapConfigProperties bindProperties(Map<Object, Object> configInfo, ApplicationContext applicationContext) {
         BootstrapConfigProperties bindableBootstrapConfigProperties = new BootstrapConfigProperties();
         ConfigurationPropertySource sources = new MapConfigurationPropertySource(configInfo);
