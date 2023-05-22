@@ -17,6 +17,8 @@
 
 package cn.hippo4j.common.toolkit;
 
+import cn.hippo4j.common.constant.MagicNumberConstants;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -164,7 +166,7 @@ public class CollectionUtil {
     private static int computeArrayListCapacity(int arraySize) {
         checkNonnegative(arraySize);
         // TODO(kevinb): Figure out the right behavior, and document it
-        return saturatedCast(5L + arraySize + (arraySize / 10));
+        return saturatedCast(MagicNumberConstants.LONG_5 + arraySize + (arraySize / MagicNumberConstants.INDEX_10));
     }
 
     private static void checkNonnegative(int value) {

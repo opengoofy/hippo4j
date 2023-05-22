@@ -39,7 +39,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BeanUtil {
 
-    protected static Mapper BEAN_MAPPER_BUILDER;
+    protected static final Mapper BEAN_MAPPER_BUILDER;
 
     static {
         BEAN_MAPPER_BUILDER = DozerBeanMapperBuilder.buildDefault();

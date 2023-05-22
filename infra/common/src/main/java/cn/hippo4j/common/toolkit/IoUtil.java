@@ -19,6 +19,7 @@ package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.constant.Constants;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -47,6 +48,7 @@ import java.util.zip.GZIPOutputStream;
  *
  * @author nacos
  */
+@Slf4j
 public class IoUtil {
 
     /**
@@ -98,7 +100,7 @@ public class IoUtil {
         try (GZIPOutputStream gzip = new GZIPOutputStream(out)) {
             gzip.write(str.getBytes(encoding));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("gzip write is fail: {}", e.getMessage());
         }
         return out.toByteArray();
     }
