@@ -17,7 +17,8 @@
 
 package cn.hippo4j.rpc.client;
 
-import cn.hippo4j.common.toolkit.ThreadUtil;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 
 public class CallManager {
 
@@ -25,13 +26,17 @@ public class CallManager {
         return 1;
     }
 
-    public int callTest(Integer a, Integer b) {
+    public int call(Integer a) {
+        return a;
+    }
+
+    public int call(Integer a, Integer b) {
         return a + b;
     }
 
     public int callTestTimeout() {
         // thread sleep for 10 seconds
-        ThreadUtil.sleep(10000);
+        LockSupport.parkNanos(TimeUnit.SECONDS.toNanos(10L));
         return 1;
     }
 

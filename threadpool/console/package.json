@@ -44,9 +44,11 @@
   },
   "dependencies": {
     "axios": ">=0.18.1",
+    "buffer": "^6.0.3",
     "clipboard": "2.0.4",
     "codemirror": "5.45.0",
     "core-js": "^3.26.0",
+    "crypto": "^1.0.1",
     "echarts": "^5.2.2",
     "element-ui": "^2.15.7",
     "fuse.js": "3.4.4",

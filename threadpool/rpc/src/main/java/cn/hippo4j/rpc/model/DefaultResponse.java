@@ -30,46 +30,32 @@ import java.util.Objects;
  */
 public class DefaultResponse implements Response {
 
-    String key;
-    Class<?> cls;
+    String RID;
     transient Object obj;
-    Throwable throwable;
     String errMsg;
 
-    public DefaultResponse(String key, Class<?> cls, Object obj, Throwable throwable, String errMsg) {
-        this.key = key;
-        this.cls = cls;
+    public DefaultResponse(String RID, Object obj, String errMsg) {
+        this.RID = RID;
         this.obj = obj;
-        this.throwable = throwable;
         this.errMsg = errMsg;
     }
 
-    public DefaultResponse(String key, Throwable throwable, String errMsg) {
-        this(key, null, null, throwable, errMsg);
+    public DefaultResponse(String RID, String errMsg) {
+        this(RID, null, errMsg);
     }
 
-    public DefaultResponse(String key, Class<?> cls, Object obj) {
-        this(key, cls, obj, null, null);
-    }
-
-    @Override
-    public String getKey() {
-        return key;
+    public DefaultResponse(String RID, Object obj) {
+        this(RID, obj, null);
     }
 
     @Override
-    public Class<?> getCls() {
-        return cls;
+    public String getRID() {
+        return RID;
     }
 
     @Override
     public Object getObj() {
         return obj;
-    }
-
-    @Override
-    public Throwable getThrowable() {
-        return throwable;
     }
 
     @Override
@@ -79,7 +65,7 @@ public class DefaultResponse implements Response {
 
     @Override
     public boolean isErr() {
-        return throwable != null || errMsg != null;
+        return errMsg != null;
     }
 
     @Override
@@ -91,12 +77,12 @@ public class DefaultResponse implements Response {
             return false;
         }
         DefaultResponse that = (DefaultResponse) o;
-        return Objects.equals(key, that.key) && Objects.equals(cls, that.cls);
+        return Objects.equals(RID, that.RID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, cls);
+        return Objects.hash(RID);
     }
 
     /**

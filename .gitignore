@@ -7,7 +7,7 @@ target/
 !**/dist/
 
 ### Agent ###
-agent-dist/
+hippo4j-agent/
 **/dependency-reduced-pom.xml
 
 ### STS ###
@@ -49,5 +49,5 @@ docs/.docusaurus
 
 
 ### Docker ###
-docker/threadpool/conf
-docker/threadpool/target
+docker/conf
+docker/target
