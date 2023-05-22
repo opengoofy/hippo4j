@@ -29,22 +29,12 @@ public interface Response extends Serializable {
     /**
      * The unique identity of the current Response
      */
-    String getKey();
-
-    /**
-     * The class of the current Response, The target of deserialization
-     */
-    Class<?> getCls();
+    String getRID();
 
     /**
      * The results of this request can be obtained, The source of deserialization
      */
     Object getObj();
-
-    /**
-     * The Throwable of the current Response
-     */
-    Throwable getThrowable();
 
     /**
      * the error message

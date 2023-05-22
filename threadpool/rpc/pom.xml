@@ -11,18 +11,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-infra-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-infra-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

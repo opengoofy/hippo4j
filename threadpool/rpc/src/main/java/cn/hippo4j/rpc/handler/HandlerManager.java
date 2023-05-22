@@ -17,6 +17,7 @@
 
 package cn.hippo4j.rpc.handler;
 
+import cn.hippo4j.rpc.exception.OperationException;
 import io.netty.channel.ChannelHandler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -65,7 +66,7 @@ public interface HandlerManager<T> {
         boolean b = cls.isAnnotationPresent(ChannelHandler.Sharable.class)
                 || HandlerManager.class.isAssignableFrom(cls);
         if (!b) {
-            throw new RuntimeException("Join the execution of the handler must add io.netty.channel.ChannelHandler."
+            throw new OperationException("Join the execution of the handler must add io.netty.channel.ChannelHandler."
                     + "Sharable annotations, Please for the handler class " + cls.getName() + " add io.netty.channel."
                     + "ChannelHandler.Sharable annotation");
         }

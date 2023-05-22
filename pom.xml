@@ -43,7 +43,7 @@
     </scm>
 
     <modules>
-        <module>agents</module>
+        <module>agent</module>
         <module>dependencies</module>
         <module>examples</module>
         <module>infra</module>
