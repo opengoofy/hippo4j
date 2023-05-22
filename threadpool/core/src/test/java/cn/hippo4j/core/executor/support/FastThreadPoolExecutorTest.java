@@ -20,7 +20,6 @@ package cn.hippo4j.core.executor.support;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +27,7 @@ import java.util.concurrent.TimeUnit;
  * test for {@link FastThreadPoolExecutor}
  */
 public class FastThreadPoolExecutorTest {
+
     private final static int corePoolSize = 1;
 
     private final static int capacity = 1;
@@ -67,16 +67,21 @@ public class FastThreadPoolExecutorTest {
         }
         Assertions.assertEquals(0, fastThreadPoolExecutor.getSubmittedTaskCount());
 
-        // reject
+        // exception
+        int expected = 0;
         for (int i = 0; i <= (corePoolSize + capacity); i++) {
+            expected++;
             try {
                 fastThreadPoolExecutor.execute(() -> {
-                    try {
-                        TimeUnit.SECONDS.sleep(2);
-                    } catch (InterruptedException ignored) {
+                    synchronized (fastThreadPoolExecutor) {
+                        try {
+                            fastThreadPoolExecutor.wait();
+                        } catch (InterruptedException ignored) {
+                        }
                     }
                 });
-            } catch (RejectedExecutionException ignored) {
+            } catch (Exception e) {
+                expected--;
             }
         }
 
@@ -84,6 +89,10 @@ public class FastThreadPoolExecutorTest {
             TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException ignored) {
         }
-        Assertions.assertEquals(corePoolSize + capacity, fastThreadPoolExecutor.getSubmittedTaskCount());
+        Assertions.assertEquals(expected, fastThreadPoolExecutor.getSubmittedTaskCount());
+
+        synchronized (fastThreadPoolExecutor) {
+            fastThreadPoolExecutor.notifyAll();
+        }
     }
 }
