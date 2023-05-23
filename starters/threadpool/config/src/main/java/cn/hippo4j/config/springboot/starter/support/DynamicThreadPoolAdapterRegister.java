@@ -17,8 +17,8 @@
 
 package cn.hippo4j.config.springboot.starter.support;
 
-import cn.hippo4j.config.springboot.starter.config.AdapterExecutorProperties;
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.AdapterExecutorProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;

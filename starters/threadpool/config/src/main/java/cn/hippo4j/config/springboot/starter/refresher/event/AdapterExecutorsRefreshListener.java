@@ -23,7 +23,7 @@ import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.config.springboot.starter.config.AdapterExecutorProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.AdapterExecutorProperties;
 import cn.hippo4j.config.springboot.starter.support.DynamicThreadPoolAdapterRegister;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

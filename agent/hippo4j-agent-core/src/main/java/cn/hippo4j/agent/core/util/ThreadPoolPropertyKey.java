@@ -20,13 +20,20 @@ package cn.hippo4j.agent.core.util;
 public interface ThreadPoolPropertyKey {
 
     String THREAD_POOL_ID = "threadPoolId";
+
     String CORE_POOL_SIZE = "corePoolSize";
+
     String MAXIMUM_POOL_SIZE = "maximumPoolSize";
+
     String ALLOW_CORE_THREAD_TIME_OUT = "allowCoreThreadTimeOut";
+
     String KEEP_ALIVE_TIME = "keepAliveTime";
+
     String BLOCKING_QUEUE = "blockingQueue";
+
     String QUEUE_CAPACITY = "queueCapacity";
-    String THREAD_NAME_PREFIX = "threadNamePrefix";
+
     String REJECTED_HANDLER = "rejectedHandler";
+
     String EXECUTE_TIME_OUT = "executeTimeOut";
 }

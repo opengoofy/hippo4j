@@ -140,6 +140,11 @@ public class AbstractSubjectCenter {
         /**
          * Clear config cache.
          */
-        CLEAR_CONFIG_CACHE
+        CLEAR_CONFIG_CACHE,
+
+        /**
+         * Thread-pool dynamic refresh.
+         */
+        THREAD_POOL_DYNAMIC_REFRESH
     }
 }

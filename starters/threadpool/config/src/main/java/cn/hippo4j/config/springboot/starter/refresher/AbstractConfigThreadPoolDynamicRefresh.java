@@ -18,13 +18,13 @@
 package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-import cn.hippo4j.config.springboot.starter.parser.ConfigParserHandler;
 import cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEvent;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
 import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
+import cn.hippo4j.threadpool.dynamic.mode.config.parser.ConfigParserHandler;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.refresher.BootstrapConfigPropertiesBinderAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;

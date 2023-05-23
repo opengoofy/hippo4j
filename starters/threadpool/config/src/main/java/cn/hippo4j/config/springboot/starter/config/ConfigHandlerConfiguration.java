@@ -18,6 +18,7 @@
 package cn.hippo4j.config.springboot.starter.config;
 
 import cn.hippo4j.config.springboot.starter.refresher.*;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.refresher.BootstrapConfigPropertiesBinderAdapter;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -58,7 +59,7 @@ public class ConfigHandlerConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public BootstrapConfigPropertiesBinderAdapter bootstrapConfigPropertiesBinderAdapter() {
-        return new DefaultBootstrapConfigPropertiesBinderAdapt();
+        return new DefaultBootstrapConfigPropertiesBinderAdapter();
     }
 
     /**

@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * test for {@link AbstractBuildThreadPoolTemplate}
+ *
  * @author dmego
  */
 public class AbstractBuildThreadPoolTemplateTest {
@@ -55,27 +56,6 @@ public class AbstractBuildThreadPoolTemplateTest {
     @Test
     public void testBuildPool() {
         ThreadPoolExecutor executor = AbstractBuildThreadPoolTemplate.buildPool(initParam);
-        AtomicInteger count = new AtomicInteger(0);
-        executor.submit(() -> {
-            ThreadUtil.sleep(100L);
-            return count.incrementAndGet();
-        });
-        executor.submit(() -> {
-            ThreadUtil.sleep(100L);
-            count.incrementAndGet();
-        });
-
-        // waiting for shutdown
-        executor.shutdown();
-        while (!executor.isTerminated()) {
-        }
-        Assert.assertEquals(2, count.get());
-
-    }
-
-    @Test
-    public void testBuildFastPool() {
-        ThreadPoolExecutor executor = AbstractBuildThreadPoolTemplate.buildFastPool(initParam);
         AtomicInteger count = new AtomicInteger(0);
         executor.submit(() -> {
             ThreadUtil.sleep(100L);

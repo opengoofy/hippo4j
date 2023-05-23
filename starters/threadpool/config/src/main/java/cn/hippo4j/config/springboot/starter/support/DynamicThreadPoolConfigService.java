@@ -29,6 +29,7 @@ import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.service.AbstractDynamicThreadPoolService;
 import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
+import cn.hippo4j.threadpool.dynamic.core.executor.manage.GlobalConfigThreadPoolManage;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -48,7 +49,7 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
                 .build();
         GlobalThreadPoolManage.registerPool(threadPoolId, dynamicThreadPoolWrapper);
         ExecutorProperties executorProperties = buildExecutorProperties(registerWrapper);
-        GlobalCoreThreadPoolManage.register(threadPoolId, executorProperties);
+        GlobalConfigThreadPoolManage.register(threadPoolId, executorProperties);
         DynamicThreadPoolRegisterCoreNotifyParameter notifyParameter = registerWrapper.getConfigNotify();
         ThreadPoolNotifyAlarm notifyAlarm = new ThreadPoolNotifyAlarm(true, registerParameter.getActiveAlarm(), registerParameter.getCapacityAlarm());
         notifyAlarm.setReceives(notifyParameter.getReceives());

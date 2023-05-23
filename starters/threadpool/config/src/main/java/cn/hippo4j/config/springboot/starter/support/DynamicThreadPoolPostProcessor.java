@@ -23,7 +23,7 @@ import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.common.model.executor.ExecutorNotifyProperties;
 import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.core.executor.DynamicThreadPool;
@@ -35,6 +35,7 @@ import cn.hippo4j.core.toolkit.DynamicThreadPoolAnnotationUtil;
 import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
 import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
+import cn.hippo4j.threadpool.dynamic.core.executor.manage.GlobalConfigThreadPoolManage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -85,11 +86,12 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 log.error("Failed to create dynamic thread pool in annotation mode.", ex);
                 return bean;
             }
-            DynamicThreadPoolExecutor dynamicThreadPoolExecutor = DynamicThreadPoolAdapterChoose.unwrap(bean);
+            ThreadPoolExecutor dynamicThreadPoolExecutor = DynamicThreadPoolAdapterChoose.unwrap(bean);
             if (dynamicThreadPoolExecutor == null) {
                 dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) bean;
             }
-            DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(dynamicThreadPoolExecutor.getThreadPoolId(), dynamicThreadPoolExecutor);
+            // TODO
+            DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(((DynamicThreadPoolExecutor) dynamicThreadPoolExecutor).getThreadPoolId(), dynamicThreadPoolExecutor);
             ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(wrap);
             DynamicThreadPoolAdapterChoose.replace(bean, remoteThreadPoolExecutor);
             return DynamicThreadPoolAdapterChoose.match(bean) ? bean : remoteThreadPoolExecutor;
@@ -128,7 +130,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
         }
         GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrapper.getThreadPoolId(), dynamicThreadPoolWrapper);
-        GlobalCoreThreadPoolManage.register(
+        GlobalConfigThreadPoolManage.register(
                 threadPoolId,
                 executorProperties == null
                         ? buildDefaultExecutorProperties(threadPoolId, executor)
