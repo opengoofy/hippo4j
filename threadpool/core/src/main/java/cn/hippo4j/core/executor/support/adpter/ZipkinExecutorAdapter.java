@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Zipkin thread local executor adapter.
@@ -49,7 +50,7 @@ public class ZipkinExecutorAdapter implements DynamicThreadPoolAdapter {
     }
 
     @Override
-    public DynamicThreadPoolExecutor unwrap(Object executor) {
+    public ThreadPoolExecutor unwrap(Object executor) {
         Object unwrap = doUnwrap(executor);
         if (unwrap instanceof DynamicThreadPoolExecutor) {
             return (DynamicThreadPoolExecutor) unwrap;

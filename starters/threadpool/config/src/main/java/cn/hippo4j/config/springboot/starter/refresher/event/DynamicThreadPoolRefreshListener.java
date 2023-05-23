@@ -23,10 +23,10 @@ import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;
-import cn.hippo4j.config.springboot.starter.support.GlobalCoreThreadPoolManage;
+import cn.hippo4j.threadpool.dynamic.core.executor.manage.GlobalConfigThreadPoolManage;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.message.dto.NotifyConfigDTO;
@@ -87,8 +87,8 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
                 continue;
             }
             dynamicRefreshPool(threadPoolId, properties);
-            ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
-            GlobalCoreThreadPoolManage.refresh(threadPoolId, failDefaultExecutorProperties(beforeProperties, properties));
+            ExecutorProperties beforeProperties = GlobalConfigThreadPoolManage.getProperties(properties.getThreadPoolId());
+            GlobalConfigThreadPoolManage.refresh(threadPoolId, failDefaultExecutorProperties(beforeProperties, properties));
             ChangeParameterNotifyRequest changeRequest = buildChangeRequest(beforeProperties, properties);
             log.info(CHANGE_THREAD_POOL_TEXT,
                     threadPoolId,
@@ -215,7 +215,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
      * @param properties
      */
     private boolean checkConsistency(String threadPoolId, ExecutorProperties properties) {
-        ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
+        ExecutorProperties beforeProperties = GlobalConfigThreadPoolManage.getProperties(properties.getThreadPoolId());
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutor(threadPoolId);
         if (executor == null) {
             return false;
@@ -239,7 +239,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
      * @param properties
      */
     private void dynamicRefreshPool(String threadPoolId, ExecutorProperties properties) {
-        ExecutorProperties beforeProperties = GlobalCoreThreadPoolManage.getProperties(properties.getThreadPoolId());
+        ExecutorProperties beforeProperties = GlobalConfigThreadPoolManage.getProperties(properties.getThreadPoolId());
         ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
         if (properties.getMaximumPoolSize() != null && properties.getCorePoolSize() != null) {
             ThreadPoolExecutorUtil.safeSetPoolSize(executor, properties.getCorePoolSize(), properties.getMaximumPoolSize());

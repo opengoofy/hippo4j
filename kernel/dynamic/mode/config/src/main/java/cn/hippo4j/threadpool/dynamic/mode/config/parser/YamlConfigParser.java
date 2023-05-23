@@ -30,6 +30,10 @@ public class YamlConfigParser extends AbstractConfigParser {
     @Override
     public Map<Object, Object> doParse(String content) {
         // TODO
+        /*
+         * if (StringUtils.isEmpty(content)) { return new HashMap<>(1); } YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
+         * yamlPropertiesFactoryBean.setResources(new ByteArrayResource(content.getBytes())); return yamlPropertiesFactoryBean.getObject();
+         */
         return null;
     }
 

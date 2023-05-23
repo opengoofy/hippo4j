@@ -10,4 +10,17 @@
     </parent>
 
     <artifactId>hippo4j-threadpool-dynamic-core</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-infra-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 </project>

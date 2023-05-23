@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;

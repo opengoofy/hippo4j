@@ -42,6 +42,7 @@ import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
 import cn.hippo4j.message.service.Hippo4jSendMessageService;
 import cn.hippo4j.message.service.WebThreadPoolConfigChangeHandler;
 import cn.hippo4j.springboot.starter.adapter.web.WebAdapterConfiguration;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -69,7 +70,7 @@ import org.springframework.core.annotation.Order;
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
-@EnableConfigurationProperties(BootstrapConfigProperties.class)
+@EnableConfigurationProperties(SpringBootstrapConfigProperties.class)
 @Import(ConfigHandlerConfiguration.class)
 @ImportAutoConfiguration({WebAdapterConfiguration.class, UtilAutoConfiguration.class, MessageConfiguration.class})
 public class DynamicThreadPoolAutoConfiguration {

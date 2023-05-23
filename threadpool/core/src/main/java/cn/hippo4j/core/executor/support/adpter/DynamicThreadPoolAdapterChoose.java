@@ -19,14 +19,13 @@ package cn.hippo4j.core.executor.support.adpter;
 
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.support.spi.DynamicThreadPoolAdapterSPI;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Dynamic thread pool adapter choose.
@@ -61,7 +60,7 @@ public class DynamicThreadPoolAdapterChoose {
      *                 of dynamic thread pools
      * @return get the real dynamic thread pool instance
      */
-    public static DynamicThreadPoolExecutor unwrap(Object executor) {
+    public static ThreadPoolExecutor unwrap(Object executor) {
         Optional<DynamicThreadPoolAdapter> dynamicThreadPoolAdapterOptional = DYNAMIC_THREAD_POOL_ADAPTERS.stream().filter(each -> each.match(executor)).findFirst();
         return dynamicThreadPoolAdapterOptional.map(each -> each.unwrap(executor)).orElse(null);
     }
@@ -83,15 +82,14 @@ public class DynamicThreadPoolAdapterChoose {
      * Load SPI customer adapter.
      */
     private static void loadCustomerAdapter() {
-        ServiceLoaderRegistry.register(DynamicThreadPoolAdapterSPI.class);
-        Collection<DynamicThreadPoolAdapterSPI> instances = ServiceLoaderRegistry.getSingletonServiceInstances(DynamicThreadPoolAdapterSPI.class);
+        ServiceLoaderRegistry.register(DynamicThreadPoolAdapter.class);
+        Collection<DynamicThreadPoolAdapter> instances = ServiceLoaderRegistry.getSingletonServiceInstances(DynamicThreadPoolAdapter.class);
         if (CollectionUtil.isEmpty(instances)) {
             return;
         }
-        for (DynamicThreadPoolAdapterSPI instance : instances) {
-            DynamicThreadPoolAdapter adapter = instance.adapter();
-            if (adapter != null) {
-                DYNAMIC_THREAD_POOL_ADAPTERS.add(adapter);
+        for (DynamicThreadPoolAdapter instance : instances) {
+            if (instance != null) {
+                DYNAMIC_THREAD_POOL_ADAPTERS.add(instance);
             }
         }
     }

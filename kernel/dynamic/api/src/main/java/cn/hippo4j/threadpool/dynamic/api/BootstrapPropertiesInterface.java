@@ -24,8 +24,6 @@ public interface BootstrapPropertiesInterface {
 
     /**
      * Get enable.
-     *
-     * @return
      */
     default Boolean getEnable() {
         return null;
@@ -33,8 +31,6 @@ public interface BootstrapPropertiesInterface {
 
     /**
      * Get username.
-     *
-     * @return
      */
     default String getUsername() {
         return null;
@@ -42,8 +38,6 @@ public interface BootstrapPropertiesInterface {
 
     /**
      * Get password.
-     *
-     * @return
      */
     default String getPassword() {
         return null;
@@ -51,8 +45,6 @@ public interface BootstrapPropertiesInterface {
 
     /**
      * Get namespace.
-     *
-     * @return
      */
     default String getNamespace() {
         return null;
@@ -60,8 +52,6 @@ public interface BootstrapPropertiesInterface {
 
     /**
      * Get item id.
-     *
-     * @return
      */
     default String getItemId() {
         return null;
@@ -69,8 +59,6 @@ public interface BootstrapPropertiesInterface {
 
     /**
      * Get server addr.
-     *
-     * @return
      */
     default String getServerAddr() {
         return null;
@@ -78,8 +66,6 @@ public interface BootstrapPropertiesInterface {
 
     /**
      * Get banner.
-     *
-     * @return
      */
     default Boolean getBanner() {
         return null;

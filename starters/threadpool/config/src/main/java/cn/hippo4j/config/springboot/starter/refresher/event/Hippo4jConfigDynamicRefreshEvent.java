@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.refresher.event;
 
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.ApplicationEvent;

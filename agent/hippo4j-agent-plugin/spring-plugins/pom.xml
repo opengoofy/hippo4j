@@ -9,11 +9,12 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>spring-plugins</artifactId>
+    <artifactId>hippo4j-agent-spring-plugins</artifactId>
     <packaging>pom</packaging>
+
     <modules>
-        <module>spring-boot-1.x-plugin</module>
-        <module>spring-boot-2.x-plugin</module>
+        <module>spring-boot-1x-plugin</module>
+        <module>spring-boot-2x-plugin</module>
         <module>spring-plugin-common</module>
     </modules>
 
@@ -26,10 +27,9 @@
         <dependencies>
             <dependency>
                 <groupId>cn.hippo4j</groupId>
-                <artifactId>spring-plugin-common</artifactId>
+                <artifactId>hippo4j-agent-spring-plugin-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 </project>

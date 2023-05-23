@@ -19,7 +19,7 @@ package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import io.etcd.jetcd.ByteSequence;
 import io.etcd.jetcd.Client;
 import io.etcd.jetcd.ClientBuilder;

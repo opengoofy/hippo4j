@@ -71,7 +71,7 @@ public class AdaptedThreadPoolDestroyPostProcessor implements DestructionAwareBe
     @Override
     public void postProcessBeforeDestruction(Object bean, String beanName) throws BeansException {
         Optional.ofNullable(DynamicThreadPoolAdapterChoose.unwrap(bean))
-                .map(DynamicThreadPoolExecutor::getThreadPoolId)
+                .map(each -> ((DynamicThreadPoolExecutor) each).getThreadPoolId())
                 // the internal thread pool is also managed by spring, no manual destruction required
                 .filter(applicationContext::containsBeanDefinition)
                 .map(GlobalThreadPoolManage::getExecutorService)

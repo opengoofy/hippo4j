@@ -31,6 +31,16 @@ public interface ThreadPoolDynamicRefresh {
     }
 
     /**
+     * Build thread-pool bootstrap properties.
+     *
+     * @param configInfo changed configuration properties
+     * @return bootstrap properties
+     */
+    default BootstrapPropertiesInterface buildBootstrapProperties(Map<Object, Object> configInfo) {
+        return null;
+    }
+
+    /**
      * Dynamic refresh of configuration center data changes.
      *
      * @param content changed data

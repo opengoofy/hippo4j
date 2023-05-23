@@ -17,7 +17,9 @@
 
 package cn.hippo4j.threadpool.dynamic.mode.config.refresher;
 
+import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
 import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.threadpool.dynamic.mode.config.parser.ConfigParserHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +45,9 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
             if (CollectionUtil.isNotEmpty(newValueChangeMap)) {
                 Optional.ofNullable(configInfo).ifPresent(each -> each.putAll(newValueChangeMap));
             }
-            // BootstrapConfigProperties binderCoreProperties = bootstrapConfigPropertiesBinderAdapt.bootstrapCorePropertiesBinder(configInfo, bootstrapConfigProperties);
+            BootstrapPropertiesInterface bootstrapProperties = buildBootstrapProperties(configInfo);
             // publishDynamicThreadPoolEvent(binderCoreProperties);
+            AbstractSubjectCenter.notify("", null);
         } catch (Exception ex) {
             log.error("Hippo4j config mode dynamic refresh failed.", ex);
         }

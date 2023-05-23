@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigChangeListener;
 import com.ctrip.framework.apollo.ConfigFile;
