@@ -46,8 +46,7 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
                 Optional.ofNullable(configInfo).ifPresent(each -> each.putAll(newValueChangeMap));
             }
             BootstrapPropertiesInterface bootstrapProperties = buildBootstrapProperties(configInfo);
-            // publishDynamicThreadPoolEvent(binderCoreProperties);
-            AbstractSubjectCenter.notify("", null);
+            AbstractSubjectCenter.notify(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH, () -> bootstrapProperties);
         } catch (Exception ex) {
             log.error("Hippo4j config mode dynamic refresh failed.", ex);
         }

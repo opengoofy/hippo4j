@@ -32,11 +32,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.ctrip.framework.apollo</groupId>
-            <artifactId>apollo-client</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-threadpool-dynamic-api</artifactId>
             <version>${project.version}</version>

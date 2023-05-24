@@ -33,6 +33,7 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-agent-spring-plugin-common</artifactId>
             <scope>provided</scope>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
