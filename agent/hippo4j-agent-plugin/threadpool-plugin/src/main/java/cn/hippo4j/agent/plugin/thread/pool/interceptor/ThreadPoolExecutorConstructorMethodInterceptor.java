@@ -22,7 +22,7 @@ import cn.hippo4j.agent.core.logging.api.ILog;
 import cn.hippo4j.agent.core.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
-import cn.hippo4j.common.executor.ThreadPoolInstanceRegistry;
+import cn.hippo4j.common.executor.ThreadPoolRegistry;
 import cn.hippo4j.agent.core.util.CollectionUtil;
 import cn.hippo4j.agent.core.util.StringUtil;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class ThreadPoolExecutorConstructorMethodInterceptor implements InstanceC
         StackTraceElement declaredClassStackTraceElement = stackTraceElements.get(0);
         String declaredClassName = declaredClassStackTraceElement.getClassName();
         Class<?> declaredClass = Thread.currentThread().getContextClassLoader().loadClass(declaredClassName);
-        ThreadPoolInstanceRegistry.getInstance().earlyConstructMap.put((ThreadPoolExecutor) objInst, declaredClass);
+        ThreadPoolRegistry.putReferencedClass((ThreadPoolExecutor) objInst, declaredClass);
     }
 
     private List<StackTraceElement> getStackTraceElements() {
