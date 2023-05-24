@@ -18,5 +18,6 @@
         <module>config</module>
         <module>example-core</module>
         <module>server</module>
+        <module>agent</module>
     </modules>
 </project>

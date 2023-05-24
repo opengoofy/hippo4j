@@ -64,8 +64,8 @@ public class SpringThreadPoolRegisterSupport {
         for (Map.Entry<String, Executor> entry : beansWithAnnotation.entrySet()) {
             String beanName = entry.getKey();
             Executor bean = entry.getValue();
-            ThreadPoolExecutor executor = null;
-            //
+            ThreadPoolExecutor executor = (ThreadPoolExecutor) bean;
+            // TODO
             // if (DynamicThreadPoolAdapterChoose.match(bean)) {
             // executor = DynamicThreadPoolAdapterChoose.unwrap(bean);
             // } else {

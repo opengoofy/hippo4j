@@ -5,21 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-agent-plugin</artifactId>
+        <artifactId>hippo4j-threadpool-example</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>hippo4j-agent-spring-plugins</artifactId>
+    <artifactId>hippo4j-threadpool-agent-example</artifactId>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>spring-boot-1x-plugin</module>
-        <module>spring-boot-2x-plugin</module>
-        <module>spring-plugin-common</module>
-    </modules>
-
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sdk.plugin.related.dir>/..</sdk.plugin.related.dir>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
+
+    <modules>
+        <module>config-apollo</module>
+    </modules>
 </project>
