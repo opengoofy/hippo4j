@@ -14,8 +14,8 @@
     <modules>
         <module>spring-plugins</module>
         <module>threadpool-plugin</module>
-        <module>mode</module>
         <module>adapter-plugins</module>
+        <module>apollo-plugin</module>
     </modules>
 
     <properties>

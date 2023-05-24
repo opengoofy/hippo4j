@@ -9,10 +9,19 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>hippo4j-agent-mode</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>hippo4j-agent-apollo-plugin</artifactId>
 
-    <modules>
-        <module>config</module>
-    </modules>
+    <properties>
+        <apollo.version>1.9.1</apollo.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ctrip.framework.apollo</groupId>
+            <artifactId>apollo-client</artifactId>
+            <version>${apollo.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 </project>
