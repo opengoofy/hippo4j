@@ -1,0 +1,45 @@
+package cn.hippo4j.common.design.builder;
+
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
+import org.junit.Assert;
+import org.junit.Test;
+import java.util.concurrent.ThreadFactory;
+import java.lang.Thread.UncaughtExceptionHandler;
+
+public class ThreadFactoryBuilderTest {
+
+    @Test
+    public void testBuild() {
+        ThreadFactoryBuilder builder = ThreadFactoryBuilder.builder();
+        TestUncaughtExceptionHandler uncaughtExceptionHandler = new TestUncaughtExceptionHandler();
+        builder.uncaughtExceptionHandler(uncaughtExceptionHandler);
+        builder.prefix("my-thread-factory");
+        builder.daemon(true);
+        builder.priority(Thread.MAX_PRIORITY);
+        ThreadFactory threadFactory = builder.build();
+        Thread thread = threadFactory.newThread(() -> {
+            System.out.println("创建新线程");
+        });
+        thread.start();
+        Assert.assertEquals("my-thread-factory_0", thread.getName());
+        Assert.assertTrue(thread.isDaemon());
+        Assert.assertEquals(uncaughtExceptionHandler,thread.getUncaughtExceptionHandler());
+        Assert.assertEquals(Thread.MAX_PRIORITY, thread.getPriority());
+    }
+
+}
+
+class TestUncaughtExceptionHandler implements UncaughtExceptionHandler {
+
+    private volatile boolean exceptionCaught = false;
+
+    @Override
+    public void uncaughtException(Thread t, Throwable e) {
+        System.out.println("Exception caught by " + t.getName());
+        exceptionCaught = true;
+    }
+
+    public boolean isExceptionCaught() {
+        return exceptionCaught;
+    }
+}
