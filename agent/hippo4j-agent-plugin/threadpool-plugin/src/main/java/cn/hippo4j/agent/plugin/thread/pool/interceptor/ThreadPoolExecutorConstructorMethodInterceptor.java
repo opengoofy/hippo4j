@@ -52,7 +52,7 @@ public class ThreadPoolExecutorConstructorMethodInterceptor implements InstanceC
         StackTraceElement declaredClassStackTraceElement = stackTraceElements.get(0);
         String declaredClassName = declaredClassStackTraceElement.getClassName();
         Class<?> declaredClass = Thread.currentThread().getContextClassLoader().loadClass(declaredClassName);
-        ThreadPoolRegistry.putReferencedClass((ThreadPoolExecutor) objInst, declaredClass);
+        ThreadPoolRegistry.REFERENCED_CLASS_MAP.put((ThreadPoolExecutor) objInst, declaredClass);
     }
 
     private List<StackTraceElement> getStackTraceElements() {

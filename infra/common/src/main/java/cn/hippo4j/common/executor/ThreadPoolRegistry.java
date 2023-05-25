@@ -49,12 +49,4 @@ public class ThreadPoolRegistry {
     public static Map<ThreadPoolExecutor, Class<?>> getReferencedClassMap() {
         return REFERENCED_CLASS_MAP;
     }
-
-    public static void putReferencedClass(ThreadPoolExecutor executor, Class<?> referencedClass) {
-        REFERENCED_CLASS_MAP.put(executor, referencedClass);
-    }
-
-    public static Class<?> getReferencedClass(ThreadPoolExecutor executor) {
-        return REFERENCED_CLASS_MAP.get(executor);
-    }
 }

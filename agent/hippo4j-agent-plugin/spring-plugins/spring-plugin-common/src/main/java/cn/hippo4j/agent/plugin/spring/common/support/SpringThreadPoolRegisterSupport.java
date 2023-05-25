@@ -41,7 +41,7 @@ public class SpringThreadPoolRegisterSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringThreadPoolRegisterSupport.class);
 
     public static void registerThreadPoolInstances(ApplicationContext context) {
-        Map<ThreadPoolExecutor, Class<?>> referencedClassMap = ThreadPoolRegistry.getReferencedClassMap();
+        Map<ThreadPoolExecutor, Class<?>> referencedClassMap = ThreadPoolRegistry.REFERENCED_CLASS_MAP;
         for (Map.Entry<ThreadPoolExecutor, Class<?>> entry : referencedClassMap.entrySet()) {
             ThreadPoolExecutor enhancedInstance = entry.getKey();
             Class<?> declaredClass = entry.getValue();
