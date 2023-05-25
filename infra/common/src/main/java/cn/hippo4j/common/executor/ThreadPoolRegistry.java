@@ -27,35 +27,26 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ThreadPoolInstanceRegistry {
+public class ThreadPoolRegistry {
 
-    private final Map<String, ThreadPoolExecutorHolder> holderMap = new ConcurrentHashMap<>();
+    private static final Map<String, ThreadPoolExecutorHolder> HOLDER_MAP = new ConcurrentHashMap<>();
 
-    public final Map<ThreadPoolExecutor, Class<?>> earlyConstructMap = new ConcurrentHashMap<>();
+    public static final Map<ThreadPoolExecutor, Class<?>> REFERENCED_CLASS_MAP = new ConcurrentHashMap<>();
 
-    private volatile static ThreadPoolInstanceRegistry INSTANCE;
-
-    public static ThreadPoolInstanceRegistry getInstance() {
-        if (INSTANCE == null) {
-            synchronized (ThreadPoolInstanceRegistry.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new ThreadPoolInstanceRegistry();
-                }
-            }
-        }
-        return INSTANCE;
+    public static Map<String, ThreadPoolExecutorHolder> getHolderMap() {
+        return HOLDER_MAP;
     }
 
-    public Map<String, ThreadPoolExecutorHolder> getHolderMap() {
-        return holderMap;
-    }
-
-    public void putHolder(String executorName, ThreadPoolExecutor executor, ExecutorProperties executorProperties) {
+    public static void putHolder(String executorName, ThreadPoolExecutor executor, ExecutorProperties executorProperties) {
         ThreadPoolExecutorHolder holder = new ThreadPoolExecutorHolder(executorName, executor, executorProperties);
-        holderMap.put(executorName, holder);
+        HOLDER_MAP.put(executorName, holder);
     }
 
-    public ThreadPoolExecutorHolder getHolder(String executorName) {
-        return Optional.ofNullable(holderMap.get(executorName)).orElse(ThreadPoolExecutorHolder.EMPTY);
+    public static ThreadPoolExecutorHolder getHolder(String executorName) {
+        return Optional.ofNullable(HOLDER_MAP.get(executorName)).orElse(ThreadPoolExecutorHolder.EMPTY);
+    }
+
+    public static Map<ThreadPoolExecutor, Class<?>> getReferencedClassMap() {
+        return REFERENCED_CLASS_MAP;
     }
 }
