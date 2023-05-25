@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
  package cn.hippo4j.common.toolkit;
 
 <<<<<<< HEAD:infra/common/src/test/java/cn/hippo4j/common/toolkit/JSONUtilTest.java
