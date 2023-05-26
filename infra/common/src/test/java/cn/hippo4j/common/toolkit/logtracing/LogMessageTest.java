@@ -30,7 +30,6 @@ public class LogMessageTest {
 
     private final static String MESSAGE = "message";
     private final static String THROWABLE_MESSAGE = "throwable message";
-
     private LogMessage logMessage;
 
     @Before
