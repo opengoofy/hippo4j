@@ -1,4 +1,3 @@
-package cn.hippo4j.common.design.builder;
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,6 +14,8 @@ package cn.hippo4j.common.design.builder;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package cn.hippo4j.common.design.builder;
+
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import org.junit.Assert;
 import org.junit.Before;
@@ -63,7 +64,6 @@ public class ThreadFactoryBuilderTest {
     public void testPriority() {
         Assert.assertEquals(Thread.MAX_PRIORITY, thread.getPriority());
     }
-
 }
 
 class TestUncaughtExceptionHandler implements UncaughtExceptionHandler {
@@ -80,4 +80,3 @@ class TestUncaughtExceptionHandler implements UncaughtExceptionHandler {
         return exceptionCaught;
     }
 }
-
