@@ -18,46 +18,46 @@
 package cn.hippo4j.common.toolkit.logtracing;
 
 import org.apache.logging.log4j.util.Strings;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LogMessageTest {
+public class LogMessageTest {
 
     private final static String MESSAGE = "message";
     private final static String THROWABLE_MESSAGE = "throwable message";
 
     private LogMessage logMessage;
 
-    @BeforeEach
+    @Before
     public void init() {
         logMessage = LogMessage.getInstance();
     }
 
     @Test
-    void testGetInstanceShouldReturnANewLogMessageInstance() {
+    public void testGetInstanceShouldReturnANewLogMessageInstance() {
         final LogMessage newInstance = LogMessage.getInstance();
         assertNotNull(newInstance);
         assertNotSame(logMessage, newInstance);
     }
 
     @Test
-    void testToStringShouldHaveAnEmptyMessage() {
+    public void testToStringShouldHaveAnEmptyMessage() {
         assertEquals(Strings.EMPTY, logMessage.toString());
     }
 
     @Test
-    void testSetMsgShouldSetAnewMessageInLogMessage() {
+    public void testSetMsgShouldSetAnewMessageInLogMessage() {
         logMessage.setMsg(MESSAGE);
         assertEquals(MESSAGE, logMessage.toString());
     }
 
     @Test
-    void testMsgShouldContainsMessageAndThrowableMessage() {
+    public void testMsgShouldContainsMessageAndThrowableMessage() {
         final String message = logMessage.msg(MESSAGE, new Throwable(THROWABLE_MESSAGE));
         assertNotNull(message);
         assertTrue(message.contains(MESSAGE));
@@ -65,20 +65,20 @@ class LogMessageTest {
     }
 
     @Test
-    void testKvShouldPutKeyAndValue() {
+    public void testKvShouldPutKeyAndValue() {
         logMessage.kv("key", "value");
         assertEquals("key=value", logMessage.toString());
     }
 
     @Test
-    void testKvShouldPutAllKeyAndValuePairs() {
+    public void testKvShouldPutAllKeyAndValuePairs() {
         logMessage.kv("key1", "value1");
         logMessage.kv("key2", "value2");
         assertEquals("key1=value1||key2=value2", logMessage.toString());
     }
 
     @Test
-    void testToStringShouldPrintMessageAndAllKeyAndValuePairs() {
+    public void testToStringShouldPrintMessageAndAllKeyAndValuePairs() {
         logMessage.setMsg(MESSAGE);
         logMessage.kv("key1", "value1");
         logMessage.kv("key2", "value2");
@@ -86,7 +86,7 @@ class LogMessageTest {
     }
 
     @Test
-    void testKv2StringShouldPrintMessageAndAllKeyAndValuePairs() {
+    public void testKv2StringShouldPrintMessageAndAllKeyAndValuePairs() {
         String result = logMessage.kv2String("key", "value");
         assertEquals("key=value", result);
     }

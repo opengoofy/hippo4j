@@ -17,25 +17,25 @@
 
 package cn.hippo4j.common;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
-
-@ExtendWith(MockitoExtension.class)
-class MockitoTests {
+@RunWith(MockitoJUnitRunner.class)
+public class MockitoTests {
 
     @Mock
     List<String> list;
 
     @Test
-    void mockTests() {
+    public void mockTests() {
         Mockito.when(list.get(1)).thenReturn("mock success.");
         Assertions.assertEquals("mock success.", list.get(1));
         try (final MockedStatic<StringUtils> mockStatic = Mockito.mockStatic(StringUtils.class)) {
