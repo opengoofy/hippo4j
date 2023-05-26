@@ -3,27 +3,52 @@ package cn.hippo4j.common.design.builder;
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import org.junit.Assert;
 import org.junit.Test;
+
 import java.util.concurrent.ThreadFactory;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 public class ThreadFactoryBuilderTest {
 
-    @Test
-    public void testBuild() {
-        ThreadFactoryBuilder builder = ThreadFactoryBuilder.builder();
-        TestUncaughtExceptionHandler uncaughtExceptionHandler = new TestUncaughtExceptionHandler();
+    ThreadFactoryBuilder builder;
+    TestUncaughtExceptionHandler uncaughtExceptionHandler;
+    Thread thread;
+
+    public void buildThread() {
+        builder = ThreadFactoryBuilder.builder();
+        uncaughtExceptionHandler = new TestUncaughtExceptionHandler();
         builder.uncaughtExceptionHandler(uncaughtExceptionHandler);
         builder.prefix("my-thread-factory");
         builder.daemon(true);
         builder.priority(Thread.MAX_PRIORITY);
         ThreadFactory threadFactory = builder.build();
-        Thread thread = threadFactory.newThread(() -> {
-            System.out.println("创建新线程");
+        thread = threadFactory.newThread(() -> {
+            System.out.println("Create a new thread.");
         });
         thread.start();
+    }
+
+    @Test
+    public void testName() {
+        buildThread();
         Assert.assertEquals("my-thread-factory_0", thread.getName());
+    }
+
+    @Test
+    public void testIsDaemon() {
+        buildThread();
         Assert.assertTrue(thread.isDaemon());
-        Assert.assertEquals(uncaughtExceptionHandler,thread.getUncaughtExceptionHandler());
+    }
+
+    @Test
+    public void testExceptionHandler() {
+        buildThread();
+        Assert.assertEquals(uncaughtExceptionHandler, thread.getUncaughtExceptionHandler());
+
+    }
+
+    @Test
+    public void testPriority() {
+        buildThread();
         Assert.assertEquals(Thread.MAX_PRIORITY, thread.getPriority());
     }
 
@@ -43,3 +68,4 @@ class TestUncaughtExceptionHandler implements UncaughtExceptionHandler {
         return exceptionCaught;
     }
 }
+
