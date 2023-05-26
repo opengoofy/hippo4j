@@ -39,25 +39,25 @@ class LogMessageTest {
     }
 
     @Test
-    void getInstance_shouldReturnANewLogMessageInstance() {
+    void testGetInstanceShouldReturnANewLogMessageInstance() {
         final LogMessage newInstance = LogMessage.getInstance();
         assertNotNull(newInstance);
         assertNotSame(logMessage, newInstance);
     }
 
     @Test
-    void getInstance_shouldHaveAnEmptyMessage() {
+    void testToStringShouldHaveAnEmptyMessage() {
         assertEquals(Strings.EMPTY, logMessage.toString());
     }
 
     @Test
-    void setMsg_shouldSetAnewMessageInLogMessage() {
+    void testSetMsgShouldSetAnewMessageInLogMessage() {
         logMessage.setMsg(MESSAGE);
         assertEquals(MESSAGE, logMessage.toString());
     }
 
     @Test
-    void msg_shouldContainsMessageAndThrowableMessage() {
+    void testMsgShouldContainsMessageAndThrowableMessage() {
         final String message = logMessage.msg(MESSAGE, new Throwable(THROWABLE_MESSAGE));
         assertNotNull(message);
         assertTrue(message.contains(MESSAGE));
@@ -65,20 +65,20 @@ class LogMessageTest {
     }
 
     @Test
-    void toString_shouldPrintKeyAndValueWhenSet() {
+    void testKvShouldPutKeyAndValue() {
         logMessage.kv("key", "value");
         assertEquals("key=value", logMessage.toString());
     }
 
     @Test
-    void toString_shouldPrintAllKeyAndValuePairs() {
+    void testKvShouldPutAllKeyAndValuePairs() {
         logMessage.kv("key1", "value1");
         logMessage.kv("key2", "value2");
         assertEquals("key1=value1||key2=value2", logMessage.toString());
     }
 
     @Test
-    void toString_shouldPrintMessageAndAllKeyAndValuePairs() {
+    void testToStringShouldPrintMessageAndAllKeyAndValuePairs() {
         logMessage.setMsg(MESSAGE);
         logMessage.kv("key1", "value1");
         logMessage.kv("key2", "value2");
@@ -86,7 +86,7 @@ class LogMessageTest {
     }
 
     @Test
-    void kv2String_shouldPrintMessageAndAllKeyAndValuePairs() {
+    void testKv2StringShouldPrintMessageAndAllKeyAndValuePairs() {
         String result = logMessage.kv2String("key", "value");
         assertEquals("key=value", result);
     }
