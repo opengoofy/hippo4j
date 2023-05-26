@@ -1,3 +1,4 @@
+package cn.hippo4j.common.design.builder;
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,13 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-package cn.hippo4j.common.design.builder;
-
 import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-
 import java.util.concurrent.ThreadFactory;
 import java.lang.Thread.UncaughtExceptionHandler;
 
@@ -30,6 +28,7 @@ public class ThreadFactoryBuilderTest {
     TestUncaughtExceptionHandler uncaughtExceptionHandler;
     Thread thread;
 
+    @Before
     public void buildThread() {
         builder = ThreadFactoryBuilder.builder();
         uncaughtExceptionHandler = new TestUncaughtExceptionHandler();
@@ -46,26 +45,22 @@ public class ThreadFactoryBuilderTest {
 
     @Test
     public void testName() {
-        buildThread();
         Assert.assertEquals("my-thread-factory_0", thread.getName());
     }
 
     @Test
     public void testIsDaemon() {
-        buildThread();
         Assert.assertTrue(thread.isDaemon());
     }
 
     @Test
     public void testExceptionHandler() {
-        buildThread();
         Assert.assertEquals(uncaughtExceptionHandler, thread.getUncaughtExceptionHandler());
 
     }
 
     @Test
     public void testPriority() {
-        buildThread();
         Assert.assertEquals(Thread.MAX_PRIORITY, thread.getPriority());
     }
 
