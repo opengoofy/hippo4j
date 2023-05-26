@@ -74,7 +74,6 @@ public class ThreadPoolExecutorUtilTest {
         Assert.assertEquals(newMaxPoolSize3, executor.getMaximumPoolSize());
     }
 
-
     @Test
     public void testException(){
         // Test when the new core pool size is greater than the new maximum pool size, which should throw an IllegalArgumentException.
