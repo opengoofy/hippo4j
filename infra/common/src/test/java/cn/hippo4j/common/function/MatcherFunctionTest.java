@@ -30,7 +30,7 @@ public final class MatcherFunctionTest {
     }
 
     @Test
-    public void assertMatch() {
+    public void testMatch() {
         Assert.isTrue(matchTest(Boolean.TRUE::equals, true));
         Assert.isTrue(matchTest(BigDecimal.ZERO::equals, BigDecimal.ZERO));
     }

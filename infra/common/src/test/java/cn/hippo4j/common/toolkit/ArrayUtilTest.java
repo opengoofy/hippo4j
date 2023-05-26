@@ -22,24 +22,24 @@ import org.junit.Test;
 import org.springframework.util.StringUtils;
 
 /**
- * test {@link ArrayUtil}
+ * test for {@link ArrayUtil}
  */
 public class ArrayUtilTest {
 
     @Test
-    public void assertIsEmpty() {
+    public void testIsEmpty() {
         String[] array = new String[0];
         Assert.isTrue(ArrayUtil.isEmpty(array));
     }
 
     @Test
-    public void assertIsNotEmpty() {
+    public void testIsNotEmpty() {
         String[] array = new String[0];
         Assert.isTrue(!ArrayUtil.isNotEmpty(array));
     }
 
     @Test
-    public void assertFirstMatch() {
+    public void testFirstMatch() {
         Matcher<String> matcher = (str) -> "1".equalsIgnoreCase(str);
         String[] array = new String[0];
         Assert.isTrue(StringUtils.isEmpty(ArrayUtil.firstMatch(matcher, array)));
@@ -50,7 +50,7 @@ public class ArrayUtilTest {
     }
 
     @Test
-    public void assertAddAll() {
+    public void testAddAll() {
         String[] array = new String[]{"1"};
         Assert.isTrue(ArrayUtil.addAll(array, null).length == 1);
         Assert.isTrue(ArrayUtil.addAll(null, array).length == 1);
@@ -58,7 +58,7 @@ public class ArrayUtilTest {
     }
 
     @Test
-    public void assertClone() {
+    public void testClone() {
         Assert.isNull(ArrayUtil.clone(null));
         String[] array = new String[0];
         Assert.isTrue(array != ArrayUtil.clone(array));

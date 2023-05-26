@@ -20,6 +20,9 @@ package cn.hippo4j.common.toolkit;
 import org.junit.Test;
 import org.junit.Assert;
 
+/**
+ * test for {@link StringUtil}
+ */
 public class StringUtilTest {
 
     @Test
@@ -70,13 +73,13 @@ public class StringUtilTest {
     }
 
     @Test
-    public void assertIsEmpty() {
+    public void testIsEmpty() {
         String string = "";
         Assert.assertTrue(StringUtil.isEmpty(string));
     }
 
     @Test
-    public void assertIsNotEmpty() {
+    public void testIsNotEmpty() {
         String string = "string";
         Assert.assertTrue(StringUtil.isNotEmpty(string));
     }

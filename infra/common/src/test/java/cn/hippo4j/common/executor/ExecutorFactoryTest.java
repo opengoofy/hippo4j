@@ -29,6 +29,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.stream.IntStream;
 
+/**
+ * test for {@link ExecutorFactory}
+ */
 public final class ExecutorFactoryTest {
 
     ThreadFactory threadFactory = new ThreadFactoryBuilder().prefix("test").build();
@@ -47,7 +50,7 @@ public final class ExecutorFactoryTest {
     Integer defaultIndex = 0;
 
     @Test
-    public void assertNewSingleScheduledExecutorService() {
+    public void testNewSingleScheduledExecutorService() {
         // init data snapshot
         ThreadPoolManager poolManager = (ThreadPoolManager) ReflectUtil.getFieldValue(ExecutorFactory.Managed.class, "THREAD_POOL_MANAGER");
         String poolName = (String) ReflectUtil.getFieldValue(ExecutorFactory.Managed.class, "DEFAULT_NAMESPACE");

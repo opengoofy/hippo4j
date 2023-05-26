@@ -85,13 +85,10 @@ public class ExtensibleThreadPoolExecutorTest {
     public void testInvokeTaskAwarePlugin() {
         TestTaskAwarePlugin plugin = new TestTaskAwarePlugin();
         executor.register(plugin);
-        executor.submit(() -> {
-        });
+        executor.submit(() -> {});
         executor.submit(() -> true);
-        executor.submit(() -> {
-        }, false);
-        executor.execute(() -> {
-        });
+        executor.submit(() -> {}, false);
+        executor.execute(() -> {});
         Assert.assertEquals(7, plugin.getInvokeCount().get());
     }
 
@@ -99,15 +96,13 @@ public class ExtensibleThreadPoolExecutorTest {
     public void testInvokeExecuteAwarePlugin() {
         TestExecuteAwarePlugin plugin = new TestExecuteAwarePlugin();
         executor.register(plugin);
-        executor.execute(() -> {
-        });
+        executor.execute(() -> {});
         ThreadUtil.sleep(500L);
         Assert.assertEquals(2, plugin.getInvokeCount().get());
 
         // no task will be executed because it has been replaced with null
         executor.register(new TestTaskToNullAwarePlugin());
-        executor.execute(() -> {
-        });
+        executor.execute(() -> {});
         ThreadUtil.sleep(500L);
         Assert.assertEquals(2, plugin.getInvokeCount().get());
     }
@@ -123,12 +118,9 @@ public class ExtensibleThreadPoolExecutorTest {
         executor.submit(() -> ThreadUtil.sleep(500L));
         executor.submit(() -> ThreadUtil.sleep(500L));
         // reject 3 tasks
-        executor.submit(() -> {
-        });
-        executor.submit(() -> {
-        });
-        executor.submit(() -> {
-        });
+        executor.submit(() -> {});
+        executor.submit(() -> {});
+        executor.submit(() -> {});
 
         ThreadUtil.sleep(500L);
         Assert.assertEquals(3, plugin.getInvokeCount().get());

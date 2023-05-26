@@ -21,18 +21,19 @@ import cn.hippo4j.common.toolkit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * test for {@link AuthUtil}
+ */
 public final class AuthUtilTest {
-
-    private AuthUtil authUtil;
 
     @Before
     public void beforeInit() {
-        authUtil = new AuthUtil();
+        AuthUtil authUtil = new AuthUtil();
         authUtil.setEnableAuthentication(true);
     }
 
     @Test
-    public void assertGetEnableAuthentication() {
+    public void testIsEnableAuthentication() {
         Assert.isTrue(AuthUtil.isEnableAuthentication());
     }
 }

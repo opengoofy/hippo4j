@@ -19,10 +19,13 @@ package cn.hippo4j.core.executor.handler;
 
 import org.junit.Test;
 
+/**
+ * test for {@link DynamicThreadPoolBannerHandler}
+ */
 public final class DynamicThreadPoolBannerHandlerTest {
 
     @Test
-    public void assertGetVersion() {
+    public void testGetVersion() {
         // Assert.assertTrue(StringUtil.isEmpty(DynamicThreadPoolBannerHandler.getVersion()));
     }
 }

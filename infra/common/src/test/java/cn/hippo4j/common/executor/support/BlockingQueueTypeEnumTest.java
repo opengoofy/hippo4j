@@ -17,16 +17,17 @@
 
 package cn.hippo4j.common.executor.support;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * BlockingQueueTypeEnum test class
+ * test for {@link BlockingQueueTypeEnum}
  */
 public final class BlockingQueueTypeEnumTest {
 
@@ -34,101 +35,99 @@ public final class BlockingQueueTypeEnumTest {
     private static final List<String> BLOCKING_QUEUE_NAMES = Arrays.stream(BlockingQueueTypeEnum.values()).map(BlockingQueueTypeEnum::getName).collect(Collectors.toList());
 
     @Test
-    void assertCreateBlockingQueueNormal() {
+    void testGetType() {
+        Assertions.assertEquals(1, BlockingQueueTypeEnum.ARRAY_BLOCKING_QUEUE.getType());
+        Assertions.assertEquals(2, BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE.getType());
+        Assertions.assertEquals(3, BlockingQueueTypeEnum.LINKED_BLOCKING_DEQUE.getType());
+        Assertions.assertEquals(4, BlockingQueueTypeEnum.SYNCHRONOUS_QUEUE.getType());
+        Assertions.assertEquals(5, BlockingQueueTypeEnum.LINKED_TRANSFER_QUEUE.getType());
+        Assertions.assertEquals(6, BlockingQueueTypeEnum.PRIORITY_BLOCKING_QUEUE.getType());
+        Assertions.assertEquals(9, BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getType());
+    }
+
+    @Test
+    void testGetName() {
+        Assertions.assertEquals("ArrayBlockingQueue", BlockingQueueTypeEnum.ARRAY_BLOCKING_QUEUE.getName());
+        Assertions.assertEquals("LinkedBlockingQueue", BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE.getName());
+        Assertions.assertEquals("LinkedBlockingDeque", BlockingQueueTypeEnum.LINKED_BLOCKING_DEQUE.getName());
+        Assertions.assertEquals("SynchronousQueue", BlockingQueueTypeEnum.SYNCHRONOUS_QUEUE.getName());
+        Assertions.assertEquals("LinkedTransferQueue", BlockingQueueTypeEnum.LINKED_TRANSFER_QUEUE.getName());
+        Assertions.assertEquals("PriorityBlockingQueue", BlockingQueueTypeEnum.PRIORITY_BLOCKING_QUEUE.getName());
+        Assertions.assertEquals("ResizableCapacityLinkedBlockingQueue", BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getName());
+    }
+
+    @Test
+    void testValues() {
+        Assertions.assertNotNull(BlockingQueueTypeEnum.values());
+    }
+
+    @Test
+    void testValueOf() {
+        Assertions.assertEquals(BlockingQueueTypeEnum.ARRAY_BLOCKING_QUEUE, BlockingQueueTypeEnum.valueOf("ARRAY_BLOCKING_QUEUE"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.valueOf("LINKED_BLOCKING_QUEUE"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_DEQUE, BlockingQueueTypeEnum.valueOf("LINKED_BLOCKING_DEQUE"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.SYNCHRONOUS_QUEUE, BlockingQueueTypeEnum.valueOf("SYNCHRONOUS_QUEUE"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.LINKED_TRANSFER_QUEUE, BlockingQueueTypeEnum.valueOf("LINKED_TRANSFER_QUEUE"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.PRIORITY_BLOCKING_QUEUE, BlockingQueueTypeEnum.valueOf("PRIORITY_BLOCKING_QUEUE"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.valueOf("RESIZABLE_LINKED_BLOCKING_QUEUE"));
+    }
+
+    @Test
+    void testCreateBlockingQueue() {
         // check legal param: name and capacity
         for (String name : BLOCKING_QUEUE_NAMES) {
             BlockingQueue<Object> blockingQueueByName = BlockingQueueTypeEnum.createBlockingQueue(name, 10);
-            Assert.assertNotNull(blockingQueueByName);
+            Assertions.assertNotNull(blockingQueueByName);
         }
-    }
-
-    @Test
-    void assertCreateBlockingQueueWithIllegalName() {
         // check illegal null name
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(null, 10));
-        // check unexistent name
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue("ABC", 10));
-    }
-
-    @Test
-    void assertCreateBlockingQueueWithIllegalCapacity() {
+        Assertions.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(null, 10));
+        // check nonexistent name
+        Assertions.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue("ABC", 10));
         // check illegal null capacity
         for (String name : BLOCKING_QUEUE_NAMES) {
-            BlockingQueue<Object> blockingQueueWithNullCapacity = BlockingQueueTypeEnum.createBlockingQueue(name, null);
-            Assert.assertNotNull(blockingQueueWithNullCapacity);
+            Assertions.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(name, null));
         }
         // check illegal negatives capacity
-        final String arrayBlockingQueueName = BlockingQueueTypeEnum.ARRAY_BLOCKING_QUEUE.getName();
-        Assert.assertThrows(IllegalArgumentException.class, () -> BlockingQueueTypeEnum.createBlockingQueue(arrayBlockingQueueName, -100));
-
-        final String linkedBlockingQueueName = BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE.getName();
-        Assert.assertThrows(IllegalArgumentException.class, () -> BlockingQueueTypeEnum.createBlockingQueue(linkedBlockingQueueName, -100));
-
-        final String linkedBlockingDequeName = BlockingQueueTypeEnum.LINKED_BLOCKING_DEQUE.getName();
-        Assert.assertThrows(IllegalArgumentException.class, () -> BlockingQueueTypeEnum.createBlockingQueue(linkedBlockingDequeName, -100));
-
-        final String synchronousQueueName = BlockingQueueTypeEnum.SYNCHRONOUS_QUEUE.getName();
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(synchronousQueueName, -99));
-
-        final String linkedTransferQueueName = BlockingQueueTypeEnum.LINKED_TRANSFER_QUEUE.getName();
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(linkedTransferQueueName, -0));
-
-        final String priorityBlockingQueueName = BlockingQueueTypeEnum.PRIORITY_BLOCKING_QUEUE.getName();
-        Assert.assertThrows(IllegalArgumentException.class, () -> BlockingQueueTypeEnum.createBlockingQueue(priorityBlockingQueueName, -100));
-
-        final String resizableLinkedBlockingQueueName = BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getName();
-        Assert.assertThrows(IllegalArgumentException.class, () -> BlockingQueueTypeEnum.createBlockingQueue(resizableLinkedBlockingQueueName, -100));
-    }
-
-    @Test
-    void assertCreateBlockingQueueWithIllegalParams() {
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> BlockingQueueTypeEnum.createBlockingQueue(BlockingQueueTypeEnum.ARRAY_BLOCKING_QUEUE.getName(), -100)
+        );
+        // check normal type
+        Stream.of(1, 2, 3, 4, 5, 6, 9, 100, -1, 0).forEach(each ->
+                Assertions.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(each, null)));
         // check illegal name and capacity
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue("HelloWorld", null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(null, null));
+        Assertions.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue("HelloWorld", null));
+        Assertions.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(null, null));
     }
 
     @Test
-    void assertCreateBlockingQueueWithType() {
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(1, null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(2, null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(3, null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(4, null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(5, null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(6, null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(9, null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(100, null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(-1, null));
-        Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(0, null));
-    }
-
-    @Test
-    void assertGetBlockingQueueNameByType() {
+    void testGetBlockingQueueNameByType() {
         // check legal range of type
-        Assert.assertEquals("ArrayBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(1));
-        Assert.assertEquals("LinkedBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(2));
-        Assert.assertEquals("LinkedBlockingDeque", BlockingQueueTypeEnum.getBlockingQueueNameByType(3));
-        Assert.assertEquals("SynchronousQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(4));
-        Assert.assertEquals("LinkedTransferQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(5));
-        Assert.assertEquals("PriorityBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(6));
-        Assert.assertEquals("ResizableCapacityLinkedBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(9));
+        Assertions.assertEquals("ArrayBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(1));
+        Assertions.assertEquals("LinkedBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(2));
+        Assertions.assertEquals("LinkedBlockingDeque", BlockingQueueTypeEnum.getBlockingQueueNameByType(3));
+        Assertions.assertEquals("SynchronousQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(4));
+        Assertions.assertEquals("LinkedTransferQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(5));
+        Assertions.assertEquals("PriorityBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(6));
+        Assertions.assertEquals("ResizableCapacityLinkedBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(9));
         // check illegal range of type
-        Assert.assertEquals("", BlockingQueueTypeEnum.getBlockingQueueNameByType(0));
-        Assert.assertEquals("", BlockingQueueTypeEnum.getBlockingQueueNameByType(-1));
-        Assert.assertEquals("", BlockingQueueTypeEnum.getBlockingQueueNameByType(100));
+        Assertions.assertEquals("", BlockingQueueTypeEnum.getBlockingQueueNameByType(0));
+        Assertions.assertEquals("", BlockingQueueTypeEnum.getBlockingQueueNameByType(-1));
+        Assertions.assertEquals("", BlockingQueueTypeEnum.getBlockingQueueNameByType(100));
     }
 
     @Test
-    void assertGetBlockingQueueTypeEnumByName() {
+    void testGetBlockingQueueTypeEnumByName() {
         // check legal range of name
-        Assert.assertEquals(BlockingQueueTypeEnum.ARRAY_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("ArrayBlockingQueue"));
-        Assert.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("LinkedBlockingQueue"));
-        Assert.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_DEQUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("LinkedBlockingDeque"));
-        Assert.assertEquals(BlockingQueueTypeEnum.SYNCHRONOUS_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("SynchronousQueue"));
-        Assert.assertEquals(BlockingQueueTypeEnum.LINKED_TRANSFER_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("LinkedTransferQueue"));
-        Assert.assertEquals(BlockingQueueTypeEnum.PRIORITY_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("PriorityBlockingQueue"));
-        Assert.assertEquals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("ResizableCapacityLinkedBlockingQueue"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.ARRAY_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("ArrayBlockingQueue"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("LinkedBlockingQueue"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_DEQUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("LinkedBlockingDeque"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.SYNCHRONOUS_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("SynchronousQueue"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.LINKED_TRANSFER_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("LinkedTransferQueue"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.PRIORITY_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("PriorityBlockingQueue"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("ResizableCapacityLinkedBlockingQueue"));
         // check illegal range of name
-        Assert.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("Hello"));
-        Assert.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName(null));
+        Assertions.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("Hello"));
+        Assertions.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName(null));
     }
 }

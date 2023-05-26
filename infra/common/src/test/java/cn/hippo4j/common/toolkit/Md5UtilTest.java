@@ -25,31 +25,34 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * test for {@link Md5Util}
+ */
 public class Md5UtilTest {
 
     @Test
-    public void assertMd5Hex() throws NoSuchAlgorithmException {
+    public void testMd5Hex() throws NoSuchAlgorithmException {
         String md5 = "3cdefff74dcf7a5d60893865b84b62c8";
         String message = "message-consume";
         Assert.isTrue(md5.equals(Md5Util.md5Hex(message.getBytes())));
     }
 
     @Test
-    public void assertMd5Hex2() {
+    public void testMd5Hex2() {
         String md5 = "503840dc3af3cdb39749cd099e4dfeff";
         String message = "dynamic-threadpool-example";
         Assert.isTrue(md5.equals(Md5Util.md5Hex(message, "UTF-8")));
     }
 
     @Test
-    public void assetEncodeHexString() {
+    public void testEncodeHexString() {
         String encodeHexString = "00010f107f80203040506070";
         byte[] bytes = {0, 1, 15, 16, 127, -128, 32, 48, 64, 80, 96, 112};
         Assert.isTrue(encodeHexString.equals(Md5Util.encodeHexString(bytes)));
     }
 
     @Test
-    public void assetGetTpContentMd5() {
+    public void testGetTpContentMd5() {
         String md5Result = "ef5ea7cb47377fb9fb85a7125e76715d";
         ThreadPoolParameterInfo threadPoolParameterInfo = ThreadPoolParameterInfo.builder().tenantId("prescription")
                 .itemId("dynamic-threadpool-example").tpId("message-consume").content("描述信息").corePoolSize(1)
@@ -59,7 +62,7 @@ public class Md5UtilTest {
     }
 
     @Test
-    public void assetCompareMd5ResultString() throws IOException {
+    public void testCompareMd5ResultString() throws IOException {
         Assert.isTrue("".equals(Md5Util.compareMd5ResultString(null)));
         String result = "prescription%02dynamic-threadpool-example%02message-consume%01" +
                 "prescription%02dynamic-threadpool-example%02message-produce%01";

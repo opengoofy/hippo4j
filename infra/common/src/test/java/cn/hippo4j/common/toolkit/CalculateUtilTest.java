@@ -19,10 +19,13 @@ package cn.hippo4j.common.toolkit;
 
 import org.junit.Test;
 
+/**
+ * test for {@link CalculateUtil}
+ */
 public class CalculateUtilTest {
 
     @Test
-    public void assertDivide() {
+    public void testDivide() {
         Assert.isTrue(CalculateUtil.divide(200, 100) == 200);
         Assert.isTrue(CalculateUtil.divide(100, 200) == 50);
         Assert.isTrue(CalculateUtil.divide(100, 100) == 100);

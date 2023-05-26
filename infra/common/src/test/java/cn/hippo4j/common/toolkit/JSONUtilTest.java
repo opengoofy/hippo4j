@@ -29,6 +29,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * test for {@link JSONUtil}
+ */
 public class JSONUtilTest {
 
     private static final Foo EXPECTED_FOO = new Foo(1, "foo1", new Foo(2, "foo2", null));
@@ -40,32 +43,26 @@ public class JSONUtilTest {
     private static final String EXPECTED_FOO_JSON_ARRAY = "[" + EXPECTED_FOO_JSON + "," + EXPECTED_FOO_JSON + "]";
 
     @Test
-    public void assertToJSONString() {
+    public void testToJSONString() {
         Assert.assertNull(JSONUtil.toJSONString(null));
         Assert.assertEquals(EXPECTED_FOO_JSON, JSONUtil.toJSONString(EXPECTED_FOO));
     }
 
     @Test
-    public void assertParseObject() {
+    public void testParseObject() {
         Assert.assertNull(JSONUtil.parseObject(null, Foo.class));
         Assert.assertNull(JSONUtil.parseObject(" ", Foo.class));
         Assert.assertEquals(EXPECTED_FOO, JSONUtil.parseObject(EXPECTED_FOO_JSON, Foo.class));
-    }
-
-    @Test
-    public void assertParseObjectTypeReference() {
-        Assert.assertNull(JSONUtil.parseObject(null, new TypeReference<List<Foo>>() {
-        }));
-        Assert.assertNull(JSONUtil.parseObject(" ", new TypeReference<List<Foo>>() {
-        }));
+        Assert.assertNull(JSONUtil.parseObject(null, new TypeReference<List<Foo>>() {}));
+        Assert.assertNull(JSONUtil.parseObject(" ", new TypeReference<List<Foo>>() {}));
         Assert.assertEquals(
                 EXPECTED_FOO_ARRAY,
-                JSONUtil.parseObject(EXPECTED_FOO_JSON_ARRAY, new TypeReference<List<Foo>>() {
-                }));
+                JSONUtil.parseObject(EXPECTED_FOO_JSON_ARRAY, new TypeReference<List<Foo>>() {})
+        );
     }
 
     @Test
-    public void assertParseArray() {
+    public void testParseArray() {
         Assert.assertEquals(Collections.emptyList(), JSONUtil.parseArray(null, Foo.class));
         Assert.assertEquals(Collections.emptyList(), JSONUtil.parseArray("  ", Foo.class));
         Assert.assertEquals(

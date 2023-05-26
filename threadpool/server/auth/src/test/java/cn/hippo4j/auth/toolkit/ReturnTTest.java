@@ -23,6 +23,9 @@ import org.junit.Test;
 
 import java.util.Objects;
 
+/**
+ * test for {@link ReturnT}
+ */
 public final class ReturnTTest {
 
     private ReturnT returnT;
@@ -33,17 +36,17 @@ public final class ReturnTTest {
     }
 
     @Test
-    public void assertGetCode() {
+    public void testGetCode() {
         Assert.isTrue(Objects.equals(returnT.getCode(), 200));
     }
 
     @Test
-    public void assertGetMessage() {
+    public void testGetMessage() {
         Assert.isNull(returnT.getMessage());
     }
 
     @Test
-    public void assertGetContent() {
+    public void testGetContent() {
         Assert.isTrue(Objects.equals(returnT.getContent(), "success"));
     }
 }

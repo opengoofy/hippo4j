@@ -21,10 +21,13 @@ import org.junit.Test;
 
 import java.util.Objects;
 
+/**
+ * test for {@link ByteConvertUtil}
+ */
 public class ByteConvertUtilTest {
 
     @Test
-    public void assertGetPrintSize() {
+    public void testGetPrintSize() {
         Assert.isTrue(Objects.equals(ByteConvertUtil.getPrintSize(220), "220B"));
         Assert.isTrue(Objects.equals(ByteConvertUtil.getPrintSize(2200), "2.15KB"));
         Assert.isTrue(Objects.equals(ByteConvertUtil.getPrintSize(2200000), "2.10MB"));

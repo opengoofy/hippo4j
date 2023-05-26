@@ -21,10 +21,13 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * test for {@link Singleton}
+ */
 public class SingletonTest {
 
     @Test
-    public void assertSingletonGet() {
+    public void testSingletonGet() {
         Assert.assertNull(Singleton.get("userName"));
         Singleton.put("userName", "hippo4j");
         Assert.assertEquals("hippo4j", Singleton.get("userName"));
@@ -37,7 +40,7 @@ public class SingletonTest {
     }
 
     @Test
-    public void assertSingletonGet2() {
+    public void testSingletonGet2() {
         Assert.assertNull(Singleton.get("userName1", () -> null));
         Assert.assertEquals("hippo4j", Singleton.get("userName1", () -> "hippo4j"));
         Assert.assertEquals("123456", Singleton.get("pw", () -> "123456") + "");

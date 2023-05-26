@@ -21,10 +21,13 @@ import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.StringUtil;
 import org.junit.Test;
 
+/**
+ * test for {@link LocalDataChangeEvent}
+ */
 public final class LocalDataChangeEventTest {
 
     @Test
-    public void assertGetSingleton() {
+    public void testGetSingleton() {
         LocalDataChangeEvent localDataChangeEvent = new LocalDataChangeEvent("groupKey", "identify");
         Assert.isTrue(StringUtil.isNotEmpty(localDataChangeEvent.getGroupKey()));
         Assert.isTrue(StringUtil.isNotEmpty(localDataChangeEvent.getIdentify()));

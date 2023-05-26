@@ -25,17 +25,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * test for {@link CollectionUtil}
+ */
 public class CollectionUtilTest {
 
     @Test
-    public void assertGetFirst() {
+    public void testGetFirst() {
         Assert.isNull(CollectionUtil.getFirst(null));
         String first = CollectionUtil.getFirst(Lists.newArrayList("1", "2"));
         Assert.notEmpty(first);
     }
 
     @Test
-    public void assertIsEmpty() {
+    public void testIsEmpty() {
         List list = null;
         Assert.isTrue(CollectionUtil.isEmpty(list));
         list = Lists.newArrayList();
@@ -57,7 +60,7 @@ public class CollectionUtilTest {
     }
 
     @Test
-    public void assertIsNotEmpty() {
+    public void testIsNotEmpty() {
         List list = null;
         Assert.isTrue(!CollectionUtil.isNotEmpty(list));
         list = Lists.newArrayList();

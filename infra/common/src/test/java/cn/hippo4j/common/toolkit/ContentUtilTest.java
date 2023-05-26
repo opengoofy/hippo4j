@@ -20,10 +20,13 @@ package cn.hippo4j.common.toolkit;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import org.junit.Test;
 
+/**
+ * test for {@link ContentUtil}
+ */
 public class ContentUtilTest {
 
     @Test
-    public void assertGetPoolContent() {
+    public void testGetPoolContent() {
         String testText = "{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":" +
                 "\"message-consume\",\"queueType\":1,\"capacity\":4,\"keepAliveTime\":513,\"rejectedType\":4,\"isAlarm\"" +
                 ":1,\"capacityAlarm\":80,\"livenessAlarm\":80,\"allowCoreThreadTimeOut\":1}";
@@ -35,7 +38,7 @@ public class ContentUtilTest {
     }
 
     @Test
-    public void assertGetGroupKey() {
+    public void testGetGroupKey() {
         String testText = "message-consume+dynamic-threadpool-example+prescription";
         ThreadPoolParameterInfo parameter = ThreadPoolParameterInfo.builder()
                 .tenantId("prescription").itemId("dynamic-threadpool-example").tpId("message-consume").build();
@@ -43,7 +46,7 @@ public class ContentUtilTest {
     }
 
     @Test
-    public void assertGetGroupKeys() {
+    public void testGetGroupKeys() {
         String testText = "message-consume+dynamic-threadpool-example+prescription";
         String groupKey = ContentUtil.getGroupKey("message-consume", "dynamic-threadpool-example", "prescription");
         Assert.isTrue(testText.equals(groupKey));

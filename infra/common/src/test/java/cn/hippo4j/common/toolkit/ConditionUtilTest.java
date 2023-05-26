@@ -22,10 +22,13 @@ import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * test for {@link ConditionUtil}
+ */
 public class ConditionUtilTest {
 
     @Test
-    public void assertCondition() {
+    public void testCondition() {
         // init consumer
         AtomicBoolean checkValue = new AtomicBoolean(false);
         NoArgsConsumer trueConsumer = () -> checkValue.set(true);

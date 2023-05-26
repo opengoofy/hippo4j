@@ -23,28 +23,31 @@ import org.junit.Test;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * test for {@link FileUtil}
+ */
 public class FileUtilTest {
 
     @Test
-    public void assertReadUtf8String() {
+    public void testReadUtf8String() {
         String testFilePath = "test/test_utf8.txt";
         String contentByFileUtil = FileUtil.readUtf8String(testFilePath);
         Assert.assertFalse(contentByFileUtil.isEmpty());
     }
 
     @Test
-    public void assertReadUtf8String2() {
+    public void testReadUtf8String2() {
         String linebreaks = System.getProperty("line.separator");
         String testText = "abcd简体繁体\uD83D\uDE04\uD83D\uDD25& *" + linebreaks +
                 "second line" + linebreaks +
                 "empty line next" + linebreaks;
         String testFilePath = "test/test_utf8.txt";
         String contentByFileUtil = FileUtil.readUtf8String(testFilePath);
-        Assert.assertTrue(testText.equals(contentByFileUtil));
+        Assert.assertEquals(testText, contentByFileUtil);
     }
 
     @Test
-    public void assertReadLines() {
+    public void testReadLines() {
         String testFilePath = "test/test_utf8.txt";
         List<String> readLines = FileUtil.readLines(testFilePath, StandardCharsets.UTF_8);
         Assert.assertEquals(3, readLines.size());

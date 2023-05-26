@@ -22,17 +22,20 @@ import cn.hippo4j.message.enums.NotifyTypeEnum;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * test for {@link AlarmControlHandler}
+ */
 public final class AlarmControlHandlerTest {
 
     @Test
-    public void assertIsNotSendAlarm() {
+    public void testIsNotSendAlarm() {
         AlarmControlHandler alarmControlHandler = new AlarmControlHandler();
         AlarmControlDTO alarmControlDTO = new AlarmControlDTO("1", "Wechat", NotifyTypeEnum.ACTIVITY);
         Assert.assertFalse(alarmControlHandler.isSendAlarm(alarmControlDTO));
     }
 
     @Test
-    public void assertIsSendAlarm() {
+    public void testIsSendAlarm() {
         AlarmControlHandler alarmControlHandler = new AlarmControlHandler();
         AlarmControlDTO alarmControlDTO = new AlarmControlDTO("1", "Wechat", NotifyTypeEnum.ACTIVITY);
         alarmControlHandler.initCacheAndLock("1", "Wechat", 1);
