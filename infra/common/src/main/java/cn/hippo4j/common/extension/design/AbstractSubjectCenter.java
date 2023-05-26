@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -74,12 +73,12 @@ public class AbstractSubjectCenter {
     }
 
     /**
-     * remove observe
-     * @param subjectType subject type code
-     * @param observer observer listener
+     * Remove observer.
+     *
+     * @param observer
      */
-    public static void remove(SubjectType subjectType, Observer observer) {
-        remove(subjectType.name(), observer);
+    public static void remove(Observer observer) {
+        remove(SubjectType.SPRING_CONTENT_REFRESHED.name(), observer);
     }
 
     /**
@@ -126,19 +125,6 @@ public class AbstractSubjectCenter {
                 log.error("Notification subject: {} observer exception", subject);
             }
         });
-    }
-
-    /**
-     * subject observer size
-     * @param subjectType subject type code
-     * @return list observer size
-     */
-    public static int size(SubjectType subjectType) {
-        List<Observer> observers = OBSERVERS_MAP.get(subjectType.name());
-        if (CollectionUtil.isEmpty(observers)) {
-            return 0;
-        }
-        return observers.size();
     }
 
     /**

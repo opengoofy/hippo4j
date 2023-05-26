@@ -2,32 +2,131 @@ package cn.hippo4j.common.extension.design;
 
 import lombok.Getter;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AbstractSubjectCenterTest {
 
-    /**
-     *  test Subject center
-     */
-    @Test
-    public void testSubjectCenter() {
-        AbstractSubjectCenter.SubjectType subjectType = AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH;
-        SubjectNotifyListener subjectNotifyListener = new SubjectNotifyListener();
-        NotifyMessage notifyMessage = new NotifyMessage();
-        Assert.assertEquals(0, notifyMessage.getCount().get());
 
-        AbstractSubjectCenter.register(subjectType, subjectNotifyListener);
-        Assert.assertEquals(1, AbstractSubjectCenter.size(subjectType));
+    private Map<String, List<Observer>> OBSERVERS_MAP ;
 
-        AbstractSubjectCenter.notify(subjectType, () -> notifyMessage);
-        Assert.assertEquals(1, notifyMessage.getCount().get());
+    private SubjectNotifyListener subjectNotifyListener;
 
-        AbstractSubjectCenter.remove(subjectType.name(), subjectNotifyListener);
-        Assert.assertEquals(0, AbstractSubjectCenter.size(subjectType));
+    @Before
+    public void setUp() throws NoSuchFieldException, IllegalAccessException {
+        subjectNotifyListener = new SubjectNotifyListener();
+
+        Field field = AbstractSubjectCenter.class.getDeclaredField("OBSERVERS_MAP");
+        field.setAccessible(true);
+        OBSERVERS_MAP = (Map<String, List<Observer>>) field.get(AbstractSubjectCenter.class);
     }
 
+    /**
+     * test register listener
+     */
+    @Test
+    public void testDefaultRegister() {
+        AbstractSubjectCenter.register(subjectNotifyListener);
+        List<Observer> list = OBSERVERS_MAP.get(AbstractSubjectCenter.SubjectType.SPRING_CONTENT_REFRESHED.name());
+        Assert.assertNotNull(list);
+        Assert.assertEquals(1, list.size());
+        Assert.assertSame(subjectNotifyListener, list.get(0));
+        OBSERVERS_MAP.clear();
+    }
+
+    /**
+     * test register listener
+     */
+    @Test
+    public void testSubjectTypeEnumRegister() {
+        AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH, subjectNotifyListener);
+        List<Observer> list = OBSERVERS_MAP.get(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH.name());
+        Assert.assertNotNull(list);
+        Assert.assertEquals(1, list.size());
+        Assert.assertSame(subjectNotifyListener, list.get(0));
+        OBSERVERS_MAP.clear();
+    }
+
+    /**
+     * test register listener
+     */
+    @Test
+    public void testSubjectTypeNameRegister() {
+        AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH.name(), subjectNotifyListener);
+        List<Observer> list = OBSERVERS_MAP.get(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH.name());
+        Assert.assertNotNull(list);
+        Assert.assertEquals(1, list.size());
+        Assert.assertSame(subjectNotifyListener, list.get(0));
+        OBSERVERS_MAP.clear();
+    }
+
+    /**
+     * test remove listener
+     */
+    @Test
+    public void testDefaultRemoveListener() {
+        AbstractSubjectCenter.register(subjectNotifyListener);
+        List<Observer> list = OBSERVERS_MAP.get(AbstractSubjectCenter.SubjectType.SPRING_CONTENT_REFRESHED.name());
+        Assert.assertNotNull(list);
+        Assert.assertEquals(1, list.size());
+        Assert.assertSame(subjectNotifyListener, list.get(0));
+
+        AbstractSubjectCenter.remove(subjectNotifyListener);
+        Assert.assertEquals(0, list.size());
+    }
+
+    /**
+     * test remove listener
+     */
+    @Test
+    public void testRemoveSubjectTypeNameListener() {
+        AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH, subjectNotifyListener);
+        List<Observer> list = OBSERVERS_MAP.get(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH.name());
+        Assert.assertNotNull(list);
+        Assert.assertEquals(1, list.size());
+        Assert.assertSame(subjectNotifyListener, list.get(0));
+
+        AbstractSubjectCenter.remove(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH.name(), subjectNotifyListener);
+        Assert.assertEquals(0, list.size());
+    }
+
+    /**
+     * test notify
+     */
+    @Test
+    public void testNotifyBySubjectType() {
+        AbstractSubjectCenter.register(subjectNotifyListener);
+        List<Observer> list = OBSERVERS_MAP.get(AbstractSubjectCenter.SubjectType.SPRING_CONTENT_REFRESHED.name());
+        Assert.assertNotNull(list);
+
+        NotifyMessage notifyMessage = new NotifyMessage();
+        Assert.assertEquals(0, notifyMessage.getCount().get());
+        AbstractSubjectCenter.notify(AbstractSubjectCenter.SubjectType.SPRING_CONTENT_REFRESHED, () -> notifyMessage);
+        Assert.assertEquals(1, notifyMessage.getCount().get());
+        OBSERVERS_MAP.clear();
+    }
+
+    /**
+     * test notify
+     */
+    @Test
+    public void testNotifyBySubjectTypeName() {
+        AbstractSubjectCenter.register(subjectNotifyListener);
+        List<Observer> list = OBSERVERS_MAP.get(AbstractSubjectCenter.SubjectType.SPRING_CONTENT_REFRESHED.name());
+        Assert.assertNotNull(list);
+
+        NotifyMessage notifyMessage = new NotifyMessage();
+        Assert.assertEquals(0, notifyMessage.getCount().get());
+        AbstractSubjectCenter.notify(AbstractSubjectCenter.SubjectType.SPRING_CONTENT_REFRESHED.name(), () -> notifyMessage);
+        Assert.assertEquals(1, notifyMessage.getCount().get());
+        OBSERVERS_MAP.clear();
+    }
 
     @Getter
     private static final class NotifyMessage {
