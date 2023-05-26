@@ -19,10 +19,14 @@ package cn.hippo4j.common.monitor;
 
 import cn.hippo4j.common.monitor.MessageTypeEnum;
 import cn.hippo4j.common.monitor.MessageWrapper;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import java.util.*;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Collections;
 
 public class MessageWrapperTest {
 
@@ -48,17 +52,17 @@ public class MessageWrapperTest {
 
     @Test
     void testGetContentParams() {
-        assertEquals(contentParams, messageWrapper.getContentParams());
+        Assert.assertEquals(contentParams, messageWrapper.getContentParams());
     }
 
     @Test
     void testGetResponseClass() {
-        assertEquals(responseClass, messageWrapper.getResponseClass());
+        Assert.assertEquals(responseClass, messageWrapper.getResponseClass());
     }
 
     @Test
     void testGetMessageType() {
-        assertEquals(messageType, messageWrapper.getMessageType());
+        Assert.assertEquals(messageType, messageWrapper.getMessageType());
     }
 
     @Test
@@ -69,8 +73,8 @@ public class MessageWrapperTest {
         messageWrapper.setContentParams(newContentParams);
         messageWrapper.setResponseClass(newResponseClass);
         messageWrapper.setMessageType(newMessageType);
-        assertEquals(newContentParams, messageWrapper.getContentParams());
-        assertEquals(newResponseClass, messageWrapper.getResponseClass());
-        assertEquals(newMessageType, messageWrapper.getMessageType());
+        Assert.assertEquals(newContentParams, messageWrapper.getContentParams());
+        Assert.assertEquals(newResponseClass, messageWrapper.getResponseClass());
+        Assert.assertEquals(newMessageType, messageWrapper.getMessageType());
     }
 }
