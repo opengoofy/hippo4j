@@ -20,17 +20,17 @@ package cn.hippo4j.common.executor.support;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-class RunsOldestTaskPolicyTest {
+@RunWith(MockitoJUnitRunner.class)
+public class RunsOldestTaskPolicyTest {
 
     private final RunsOldestTaskPolicy runsOldestTaskPolicy = new RunsOldestTaskPolicy();
 
@@ -47,7 +47,7 @@ class RunsOldestTaskPolicyTest {
     private BlockingQueue<Runnable> workQueue;
 
     @Test
-    void testRejectedExecutionWhenExecutorIsShutDown() {
+    public void testRejectedExecutionWhenExecutorIsShutDown() {
         when(threadPoolExecutor.isShutdown()).thenReturn(true);
 
         runsOldestTaskPolicy.rejectedExecution(runnable, threadPoolExecutor);
@@ -57,7 +57,7 @@ class RunsOldestTaskPolicyTest {
     }
 
     @Test
-    void testRejectedExecutionWhenATaskIsInTheQueueTheExecutorShouldNotExecute() {
+    public void testRejectedExecutionWhenATaskIsInTheQueueTheExecutorShouldNotExecute() {
         when(threadPoolExecutor.isShutdown()).thenReturn(false);
         when(threadPoolExecutor.getQueue()).thenReturn(workQueue);
         when(workQueue.poll()).thenReturn(runnableInTheQueue);
@@ -71,7 +71,7 @@ class RunsOldestTaskPolicyTest {
     }
 
     @Test
-    void testRejectedExecutionWhenATaskIsInTheQueueTheExecutorShouldExecute() {
+    public void testRejectedExecutionWhenATaskIsInTheQueueTheExecutorShouldExecute() {
         when(threadPoolExecutor.isShutdown()).thenReturn(false);
         when(threadPoolExecutor.getQueue()).thenReturn(workQueue);
         when(workQueue.poll()).thenReturn(runnableInTheQueue);
@@ -85,7 +85,7 @@ class RunsOldestTaskPolicyTest {
     }
 
     @Test
-    void testRejectedExecutionWhenATaskIsInTheQueueAndThePollReturnANullValue() {
+    public void testRejectedExecutionWhenATaskIsInTheQueueAndThePollReturnANullValue() {
         when(threadPoolExecutor.isShutdown()).thenReturn(false);
         when(threadPoolExecutor.getQueue()).thenReturn(workQueue);
         when(workQueue.poll()).thenReturn(null);
