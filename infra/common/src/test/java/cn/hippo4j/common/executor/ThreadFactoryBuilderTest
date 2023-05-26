@@ -1,0 +1,81 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package cn.hippo4j.common.design.builder;
+
+import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import java.util.concurrent.ThreadFactory;
+import java.lang.Thread.UncaughtExceptionHandler;
+
+public class ThreadFactoryBuilderTest {
+
+    ThreadFactoryBuilder builder;
+    TestUncaughtExceptionHandler uncaughtExceptionHandler;
+    Thread thread;
+
+    @Before
+    public void buildThread() {
+        builder = ThreadFactoryBuilder.builder();
+        uncaughtExceptionHandler = new TestUncaughtExceptionHandler();
+        builder.uncaughtExceptionHandler(uncaughtExceptionHandler);
+        builder.prefix("my-thread-factory");
+        builder.daemon(true);
+        builder.priority(Thread.MAX_PRIORITY);
+        ThreadFactory threadFactory = builder.build();
+        thread = threadFactory.newThread(() -> {
+            System.out.println("Create a new thread.");
+        });
+        thread.start();
+    }
+
+    @Test
+    public void testName() {
+        Assert.assertEquals("my-thread-factory_0", thread.getName());
+    }
+
+    @Test
+    public void testIsDaemon() {
+        Assert.assertTrue(thread.isDaemon());
+    }
+
+    @Test
+    public void testExceptionHandler() {
+        Assert.assertEquals(uncaughtExceptionHandler, thread.getUncaughtExceptionHandler());
+    }
+
+    @Test
+    public void testPriority() {
+        Assert.assertEquals(Thread.MAX_PRIORITY, thread.getPriority());
+    }
+}
+
+class TestUncaughtExceptionHandler implements UncaughtExceptionHandler {
+
+    private volatile boolean exceptionCaught = false;
+
+    @Override
+    public void uncaughtException(Thread t, Throwable e) {
+        System.out.println("Exception caught by " + t.getName());
+        exceptionCaught = true;
+    }
+
+    public boolean isExceptionCaught() {
+        return exceptionCaught;
+    }
+}
