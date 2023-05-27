@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * test for {@link JacksonHandler}
  */
-class JacksonHandlerTest {
+public class JacksonHandlerTest {
 
     private final static JacksonHandler JACKSON_HANDLER = new JacksonHandler();
 
@@ -56,7 +56,7 @@ class JacksonHandlerTest {
             "]";
 
     @Test
-    void testToJSONString() {
+    public void testToJSONString() {
         // boolean to json
         Assertions.assertEquals("true", JACKSON_HANDLER.toJSONString(true));
         // double to json
@@ -72,7 +72,7 @@ class JacksonHandlerTest {
     }
 
     @Test
-    void testParseObject() {
+    public void testParseObject() {
         // normal json to boolean
         Assertions.assertEquals(true, JACKSON_HANDLER.parseObject("true", Boolean.class));
         // normal json to double
@@ -101,7 +101,7 @@ class JacksonHandlerTest {
     }
 
     @Test
-    void testParseArray() {
+    public void testParseArray() {
         // normal json to array
         Assertions.assertEquals(EXPECTED_ENTITY_ARRAY, JSONUtil.parseArray(EXPECTED_ENTITY_ARRAY_JSON, Entity.class));
         // null json
@@ -111,7 +111,7 @@ class JacksonHandlerTest {
     }
 
     @Test
-    void testIsJson() {
+    public void testIsJson() {
         // normal json
         Assertions.assertTrue(JACKSON_HANDLER.isJson(EXPECTED_ENTITY_JSON));
         Assertions.assertTrue(JACKSON_HANDLER.isJson(EXPECTED_ENTITY_ARRAY_JSON));
