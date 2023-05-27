@@ -23,7 +23,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.core.io.ClassPathResource;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.Reader;
@@ -44,6 +43,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * test for {@link IoUtil}
@@ -75,22 +75,32 @@ public class IoUtilTest {
     }
 
     @Test
-    public void testTryDecompress() throws Exception {
-        String gzipPath = "IoUnitTest/testIoUtil.txt.gz";
-        String rawPath = "IoUnitTest/testIoUtil.txt";
-        ClassPathResource rawResource = new ClassPathResource(rawPath);
-        InputStream rawInputStream = rawResource.getInputStream();
-        byte[] rawBytes = new byte[rawInputStream.available()];
-        rawInputStream.read(rawBytes);
-        rawInputStream.close();
-        rawResource.getInputStream().close();
-        ClassPathResource gzipResource = new ClassPathResource(gzipPath);
-        InputStream gzipInputStream = gzipResource.getInputStream();
-        Assert.assertArrayEquals(rawBytes, IoUtil.tryDecompress(gzipInputStream));
-        InputStream readGzipInputStream = gzipResource.getInputStream();
-        byte[] gzipBytes = new byte[readGzipInputStream.available()];
-        readGzipInputStream.read(gzipBytes);
-        Assert.assertArrayEquals(rawBytes, IoUtil.tryDecompress(gzipBytes));
+    public void testTryDecompressInputStream() throws IOException {
+        byte[] inputBytes = "This is a test string.".getBytes("UTF-8");
+        ByteArrayOutputStream compressedOutput = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(compressedOutput)) {
+            gzipOutputStream.write(inputBytes);
+        }
+        byte[] compressedBytes = compressedOutput.toByteArray();
+        ByteArrayInputStream compressedInput = new ByteArrayInputStream(compressedBytes);
+        byte[] decompressedBytes = IoUtil.tryDecompress(compressedInput);
+        Assert.assertNotNull(decompressedBytes);
+        Assert.assertTrue(decompressedBytes.length > 0);
+        Assert.assertArrayEquals(inputBytes, decompressedBytes);
+    }
+
+    @Test
+    public void testTryDecompressByteArray() throws Exception {
+        byte[] inputBytes = "This is a test string.".getBytes("UTF-8");
+        ByteArrayOutputStream compressedOutput = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(compressedOutput)) {
+            gzipOutputStream.write(inputBytes);
+        }
+        byte[] compressedBytes = compressedOutput.toByteArray();
+        byte[] decompressedBytes = IoUtil.tryDecompress(compressedBytes);
+        Assert.assertNotNull(decompressedBytes);
+        Assert.assertTrue(decompressedBytes.length > 0);
+        Assert.assertArrayEquals(inputBytes, decompressedBytes);
     }
 
     @Test
@@ -101,8 +111,7 @@ public class IoUtilTest {
         Assert.assertNotNull(compressedBytes);
         Assert.assertTrue(compressedBytes.length > 0);
         try (
-                GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(compressedBytes))
-        ) {
+                GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(compressedBytes))) {
             byte[] decompressedBytes = new byte[1024];
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             int readBytes;
@@ -129,8 +138,7 @@ public class IoUtilTest {
     public void testReadLines() throws IOException {
         File tempFile = new File(tempDir.toFile(), "testReadLines.txt");
         try (
-                PrintWriter writer = new PrintWriter(tempFile)
-        ) {
+                PrintWriter writer = new PrintWriter(tempFile)) {
             writer.println("test string 1");
             writer.println("test string 2");
             writer.println("test string 3");
