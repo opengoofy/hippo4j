@@ -18,8 +18,8 @@
 package cn.hippo4j.auth.toolkit;
 
 import cn.hippo4j.common.toolkit.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 public final class JwtTokenUtilTest {
 
@@ -33,7 +33,7 @@ public final class JwtTokenUtilTest {
 
     private String token;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         token = JwtTokenUtil.createToken(userId, username, role, isRememberMe);
     }
