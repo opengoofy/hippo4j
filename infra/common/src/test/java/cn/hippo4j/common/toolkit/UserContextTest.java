@@ -17,7 +17,7 @@
 
 package cn.hippo4j.common.toolkit;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class UserContextTest {
 

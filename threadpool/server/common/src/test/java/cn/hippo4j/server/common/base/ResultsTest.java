@@ -21,7 +21,7 @@ import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.server.common.base.exception.AbstractException;
 import cn.hippo4j.server.common.base.exception.ErrorCode;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static cn.hippo4j.server.common.base.exception.ErrorCodeEnum.SERVICE_ERROR;
 

@@ -17,18 +17,18 @@
 
 package cn.hippo4j.common.executor.support;
 
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
 /**
  * test for {@link RejectedPolicyTypeEnum}
  */
-class RejectedPolicyTypeEnumTest {
+public class RejectedPolicyTypeEnumTest {
 
     @Test
-    void testGetType() {
+    public void testGetType() {
         Assertions.assertEquals(1, RejectedPolicyTypeEnum.CALLER_RUNS_POLICY.getType());
         Assertions.assertEquals(2, RejectedPolicyTypeEnum.ABORT_POLICY.getType());
         Assertions.assertEquals(3, RejectedPolicyTypeEnum.DISCARD_POLICY.getType());
@@ -38,7 +38,7 @@ class RejectedPolicyTypeEnumTest {
     }
 
     @Test
-    void testGetName() {
+    public void testGetName() {
         Assertions.assertEquals("CallerRunsPolicy", RejectedPolicyTypeEnum.CALLER_RUNS_POLICY.getName());
         Assertions.assertEquals("AbortPolicy", RejectedPolicyTypeEnum.ABORT_POLICY.getName());
         Assertions.assertEquals("DiscardPolicy", RejectedPolicyTypeEnum.DISCARD_POLICY.getName());
@@ -48,12 +48,12 @@ class RejectedPolicyTypeEnumTest {
     }
 
     @Test
-    void testValues() {
+    public void testValues() {
         Assertions.assertNotNull(RejectedPolicyTypeEnum.values());
     }
 
     @Test
-    void testValueOf() {
+    public void testValueOf() {
         Assertions.assertEquals(RejectedPolicyTypeEnum.CALLER_RUNS_POLICY, RejectedPolicyTypeEnum.valueOf("CALLER_RUNS_POLICY"));
         Assertions.assertEquals(RejectedPolicyTypeEnum.ABORT_POLICY, RejectedPolicyTypeEnum.valueOf("ABORT_POLICY"));
         Assertions.assertEquals(RejectedPolicyTypeEnum.DISCARD_POLICY, RejectedPolicyTypeEnum.valueOf("DISCARD_POLICY"));
@@ -63,7 +63,7 @@ class RejectedPolicyTypeEnumTest {
     }
 
     @Test
-    void testCreatePolicy() {
+    public void testCreatePolicy() {
         // check legal param: name and type
         Arrays.stream(RejectedPolicyTypeEnum.values()).forEach(each -> {
             Assertions.assertNotNull(RejectedPolicyTypeEnum.createPolicy(each.getName()));
@@ -78,19 +78,17 @@ class RejectedPolicyTypeEnumTest {
     }
 
     @Test
-    void testGetRejectedNameByType() {
+    public void testGetRejectedNameByType() {
         // check legal range of type
-        Arrays.stream(RejectedPolicyTypeEnum.values()).forEach(each ->
-                Assertions.assertEquals(each.getName(), RejectedPolicyTypeEnum.getRejectedNameByType(each.getType())));
+        Arrays.stream(RejectedPolicyTypeEnum.values()).forEach(each -> Assertions.assertEquals(each.getName(), RejectedPolicyTypeEnum.getRejectedNameByType(each.getType())));
         // check illegal range of type
         Assertions.assertEquals("AbortPolicy", RejectedPolicyTypeEnum.getRejectedNameByType(-1));
     }
 
     @Test
-    void testGetRejectedPolicyTypeEnumByName() {
+    public void testGetRejectedPolicyTypeEnumByName() {
         // check legal range of name
-        Arrays.stream(RejectedPolicyTypeEnum.values()).forEach(each ->
-                Assertions.assertEquals(each, RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(each.getName())));
+        Arrays.stream(RejectedPolicyTypeEnum.values()).forEach(each -> Assertions.assertEquals(each, RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(each.getName())));
         // check illegal name
         Assertions.assertEquals(RejectedPolicyTypeEnum.ABORT_POLICY,
                 RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName("XXX"));
