@@ -18,7 +18,7 @@
 package cn.hippo4j.common.executor.support;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +34,7 @@ public final class BlockingQueueTypeEnumTest {
     private static final List<String> BLOCKING_QUEUE_NAMES = Arrays.stream(BlockingQueueTypeEnum.values()).map(BlockingQueueTypeEnum::getName).collect(Collectors.toList());
 
     @Test
-    void assertCreateBlockingQueueNormal() {
+    public void testAssertCreateBlockingQueueNormal() {
         // check legal param: name and capacity
         for (String name : BLOCKING_QUEUE_NAMES) {
             BlockingQueue<Object> blockingQueueByName = BlockingQueueTypeEnum.createBlockingQueue(name, 10);
@@ -43,7 +43,7 @@ public final class BlockingQueueTypeEnumTest {
     }
 
     @Test
-    void assertCreateBlockingQueueWithIllegalName() {
+    public void testAssertCreateBlockingQueueWithIllegalName() {
         // check illegal null name
         Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(null, 10));
         // check unexistent name
@@ -51,7 +51,7 @@ public final class BlockingQueueTypeEnumTest {
     }
 
     @Test
-    void assertCreateBlockingQueueWithIllegalCapacity() {
+    public void testAssertCreateBlockingQueueWithIllegalCapacity() {
         // check illegal null capacity
         for (String name : BLOCKING_QUEUE_NAMES) {
             BlockingQueue<Object> blockingQueueWithNullCapacity = BlockingQueueTypeEnum.createBlockingQueue(name, null);
@@ -81,14 +81,14 @@ public final class BlockingQueueTypeEnumTest {
     }
 
     @Test
-    void assertCreateBlockingQueueWithIllegalParams() {
+    public void testAssertCreateBlockingQueueWithIllegalParams() {
         // check illegal name and capacity
         Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue("HelloWorld", null));
         Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(null, null));
     }
 
     @Test
-    void assertCreateBlockingQueueWithType() {
+    public void testAssertCreateBlockingQueueWithType() {
         Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(1, null));
         Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(2, null));
         Assert.assertNotNull(BlockingQueueTypeEnum.createBlockingQueue(3, null));
@@ -102,7 +102,7 @@ public final class BlockingQueueTypeEnumTest {
     }
 
     @Test
-    void assertGetBlockingQueueNameByType() {
+    public void testAssertGetBlockingQueueNameByType() {
         // check legal range of type
         Assert.assertEquals("ArrayBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(1));
         Assert.assertEquals("LinkedBlockingQueue", BlockingQueueTypeEnum.getBlockingQueueNameByType(2));
@@ -118,7 +118,7 @@ public final class BlockingQueueTypeEnumTest {
     }
 
     @Test
-    void assertGetBlockingQueueTypeEnumByName() {
+    public void testAssertGetBlockingQueueTypeEnumByName() {
         // check legal range of name
         Assert.assertEquals(BlockingQueueTypeEnum.ARRAY_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("ArrayBlockingQueue"));
         Assert.assertEquals(BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE, BlockingQueueTypeEnum.getBlockingQueueTypeEnumByName("LinkedBlockingQueue"));

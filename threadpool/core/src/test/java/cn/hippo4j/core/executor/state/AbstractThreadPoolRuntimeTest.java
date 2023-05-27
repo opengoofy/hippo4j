@@ -17,24 +17,24 @@
 
 package cn.hippo4j.core.executor.state;
 
-import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-@ExtendWith(MockitoExtension.class)
+import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
+import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
 public class AbstractThreadPoolRuntimeTest {
 
     @Test
-    void testPoolRunState() {
+    public void testPoolRunState() {
         AbstractThreadPoolRuntime threadPoolRuntime = new AbstractThreadPoolRuntime() {
 
             @Override
