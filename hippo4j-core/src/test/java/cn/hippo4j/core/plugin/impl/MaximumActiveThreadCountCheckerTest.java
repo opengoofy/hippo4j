@@ -44,16 +44,14 @@ public class MaximumActiveThreadCountCheckerTest {
     @Test
     public void testGetPluginRuntime() {
         ExtensibleThreadPoolExecutor executor = new ExtensibleThreadPoolExecutor(
-            "test", new DefaultThreadPoolPluginManager(),
-            5, 5, 0L, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(10), t -> new Thread(t, UUID.randomUUID().toString()), new ThreadPoolExecutor.AbortPolicy());
-        MaximumActiveThreadCountChecker checker = new MaximumActiveThreadCountChecker(executor, true);
+                "test", new DefaultThreadPoolPluginManager(),
+                5, 5, 0L, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(10), t -> new Thread(t, UUID.randomUUID().toString()), new ThreadPoolExecutor.AbortPolicy());
+        MaximumActiveThreadCountChecker checker = new MaximumActiveThreadCountChecker(executor);
         Assert.assertEquals(checker.getClass().getSimpleName(), checker.getPluginRuntime().getPluginId());
         // check plugin info
         List<PluginRuntime.Info> infoList = checker.getPluginRuntime().getInfoList();
-        Assert.assertEquals(1, infoList.size());
-        Assert.assertEquals("enableSubmitTaskAfterCheckFail", infoList.get(0).getName());
-        Assert.assertEquals(true, infoList.get(0).getValue());
+        Assert.assertEquals(0, infoList.size());
     }
 
     @Test
@@ -64,8 +62,7 @@ public class MaximumActiveThreadCountCheckerTest {
                 "test", new DefaultThreadPoolPluginManager(),
                 maximumThreadNum, maximumThreadNum, 0L, TimeUnit.MILLISECONDS,
                 queue, t -> new Thread(t, UUID.randomUUID().toString()), new ThreadPoolExecutor.AbortPolicy());
-        MaximumActiveThreadCountChecker checker = new MaximumActiveThreadCountChecker(executor, true);
-        Assert.assertTrue(checker.isEnableSubmitTaskAfterCheckFail());
+        MaximumActiveThreadCountChecker checker = new MaximumActiveThreadCountChecker(executor);
         executor.register(checker);
         WaitBeforeExecute waitBeforeExecute = new WaitBeforeExecute(0L);
         executor.register(waitBeforeExecute);
@@ -95,57 +92,6 @@ public class MaximumActiveThreadCountCheckerTest {
             throw new RuntimeException(e);
         }
         Assert.assertEquals(1, queue.size());
-        // last worker destroyed due to the exception which thrown by plugin
-        Assert.assertEquals(2, executor.getActiveCount());
-
-        // free resources
-        latch1.countDown();
-        latch2.countDown();
-        executor.shutdown();
-        while (executor.isTerminated()) {
-        }
-    }
-
-    @Test
-    public void testWhenNotEnableSubmitTaskAfterCheckFail() {
-        int maximumThreadNum = 3;
-        BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(1);
-        ExtensibleThreadPoolExecutor executor = new ExtensibleThreadPoolExecutor(
-                "test", new DefaultThreadPoolPluginManager(),
-                maximumThreadNum, maximumThreadNum, 0L, TimeUnit.MILLISECONDS,
-                queue, t -> new Thread(t, UUID.randomUUID().toString()), new ThreadPoolExecutor.AbortPolicy());
-        MaximumActiveThreadCountChecker checker = new MaximumActiveThreadCountChecker(executor, true);
-        checker.setEnableSubmitTaskAfterCheckFail(false);
-        Assert.assertFalse(checker.isEnableSubmitTaskAfterCheckFail());
-        executor.register(checker);
-        WaitBeforeExecute waitBeforeExecute = new WaitBeforeExecute(0L);
-        executor.register(waitBeforeExecute);
-
-        // create 2 workers and block them
-        CountDownLatch latch1 = submitTaskForBlockingThread(maximumThreadNum - 1, executor);
-        try {
-            // wait for the 2 workers to be executed task
-            Thread.sleep(500L);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        /*
-         * after 2 worker blocked, submit task and create the last worker, then change the maximum number of pool before the last task actually executed by worker, make plugin throw exception and
-         * re-deliver the task to the queue
-         */
-        waitBeforeExecute.setWaitBeforeExecute(200L);
-        CountDownLatch latch2 = submitTaskForBlockingThread(1, executor);
-        executor.setCorePoolSize(maximumThreadNum - 1);
-        executor.setMaximumPoolSize(maximumThreadNum - 1);
-
-        // wait for plugin abort the task
-        try {
-            Thread.sleep(500L);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        Assert.assertEquals(0, queue.size());
         // last worker destroyed due to the exception which thrown by plugin
         Assert.assertEquals(2, executor.getActiveCount());
 
