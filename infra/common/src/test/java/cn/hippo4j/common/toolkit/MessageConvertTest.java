@@ -34,12 +34,6 @@ import java.util.*;
 public class MessageConvertTest {
 
     @Test
-    public void TestMessageConvert(){
-        MessageConvert messageConvert = new MessageConvert();
-        Assertions.assertNotNull(messageConvert);
-    }
-
-    @Test
     public void testConvert() {
         AbstractMessage message = new RuntimeMessage();
         List<Message> runtimeMessages = new ArrayList<>();
