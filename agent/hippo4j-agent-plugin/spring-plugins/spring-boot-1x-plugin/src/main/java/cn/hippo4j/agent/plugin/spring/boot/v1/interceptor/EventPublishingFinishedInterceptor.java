@@ -17,6 +17,7 @@
 
 package cn.hippo4j.agent.plugin.spring.boot.v1.interceptor;
 
+import cn.hippo4j.agent.adapter.dubbo.DubboThreadPoolAdapter;
 import cn.hippo4j.agent.core.logging.api.ILog;
 import cn.hippo4j.agent.core.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
@@ -56,6 +57,7 @@ public class EventPublishingFinishedInterceptor implements InstanceMethodsAround
         SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
         ThreadPoolDynamicRefresh dynamicRefreshSpring1x = new DynamicThreadPoolChangeHandlerSpring1x(context);
         dynamicRefreshSpring1x.registerListener();
+        DubboThreadPoolAdapter.registerExecutors();
         return ret;
     }
 
