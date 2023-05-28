@@ -28,7 +28,7 @@ import java.util.UUID;
 import java.util.concurrent.*;
 
 /**
- * test for {@link MaximumActiveThreadCountChecker}
+ * test for {@link cn.hippo4j.core.plugin.impl.MaximumActiveThreadCountChecker}
  *
  * @author huangchengxing
  */
@@ -40,9 +40,10 @@ public class MaximumActiveThreadCountCheckerTest {
                 "test", new DefaultThreadPoolPluginManager(),
                 5, 5, 0L, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<>(10), t -> new Thread(t, UUID.randomUUID().toString()), new ThreadPoolExecutor.AbortPolicy());
-        MaximumActiveThreadCountChecker checker = new MaximumActiveThreadCountChecker(executor);
+        cn.hippo4j.core.plugin.impl.MaximumActiveThreadCountChecker checker = new cn.hippo4j.core.plugin.impl.MaximumActiveThreadCountChecker(executor);
         Assert.assertEquals(checker.getClass().getSimpleName(), checker.getPluginRuntime().getPluginId());
         // check plugin info
+        checker.checkOverflowThreads();
         List<PluginRuntime.Info> infoList = checker.getPluginRuntime().getInfoList();
         Assert.assertEquals(1, infoList.size());
         Assert.assertEquals("overflowThreadNumber", infoList.get(0).getName());
@@ -57,7 +58,7 @@ public class MaximumActiveThreadCountCheckerTest {
                 "test", new DefaultThreadPoolPluginManager(),
                 maximumThreadNum, maximumThreadNum, 0L, TimeUnit.MILLISECONDS,
                 queue, t -> new Thread(t, UUID.randomUUID().toString()), new ThreadPoolExecutor.AbortPolicy());
-        MaximumActiveThreadCountChecker checker = new MaximumActiveThreadCountChecker(executor);
+        cn.hippo4j.core.plugin.impl.MaximumActiveThreadCountChecker checker = new cn.hippo4j.core.plugin.impl.MaximumActiveThreadCountChecker(executor);
         executor.register(checker);
 
         // create 2 workers and block them

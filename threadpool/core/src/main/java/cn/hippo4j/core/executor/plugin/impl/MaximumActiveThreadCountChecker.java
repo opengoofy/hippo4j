@@ -19,6 +19,7 @@ package cn.hippo4j.core.plugin.impl;
 
 import cn.hippo4j.core.plugin.ExecuteAwarePlugin;
 import cn.hippo4j.core.plugin.PluginRuntime;
+import cn.hippo4j.core.plugin.manager.MaximumActiveThreadCountCheckerRegistrar;
 import cn.hippo4j.core.plugin.manager.ThreadPoolPluginSupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p><b>NOTE</b>: if custom {@link Thread.UncaughtExceptionHandler} is set for the thread pool,
  * it may catch the {@link IllegalMaximumActiveCountException} exception and cause the worker thread to not be destroyed.
  *
+ * @see MaximumActiveThreadCountCheckerRegistrar
  * @see IllegalMaximumActiveCountException
  */
 @RequiredArgsConstructor
@@ -100,6 +102,24 @@ public class MaximumActiveThreadCountChecker implements ExecuteAwarePlugin {
     public Integer getOverflowThreadNumber() {
         AtomicInteger currentOverflowThreads = overflowThreadNumber.get();
         return currentOverflowThreads == null ? 0 : currentOverflowThreads.get();
+    }
+
+    /**
+     * <p>Check {@link ThreadPoolExecutor#getActiveCount()} whether greater than {@link ThreadPoolExecutor#getMaximumPoolSize()}.
+     * if the number of threads in the thread pool exceeds the maximum thread count, set the number of overflow threads.
+     *
+     * @return number of overflow threads
+     * @see #setOverflowThreadNumber(int)
+     */
+    public Integer checkOverflowThreads() {
+        ThreadPoolExecutor executor = threadPoolPluginSupport.getThreadPoolExecutor();
+        int activeCount = executor.getActiveCount();
+        int maximumActiveCount = executor.getMaximumPoolSize();
+        int number = activeCount > maximumActiveCount ? activeCount - maximumActiveCount : 0;
+        if (number > 0) {
+            setOverflowThreadNumber(number);
+        }
+        return number;
     }
 
     /**
