@@ -52,8 +52,8 @@
 
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>adapter-dubbo</artifactId>
-            <version>${project.version}</version>
+            <artifactId>dubbo-plugin</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

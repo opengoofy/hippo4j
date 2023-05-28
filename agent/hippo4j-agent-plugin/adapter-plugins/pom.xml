@@ -19,7 +19,7 @@
     </properties>
 
     <modules>
-        <module>adapter-dubbo</module>
+        <module>dubbo-plugin</module>
     </modules>
 
 </project>

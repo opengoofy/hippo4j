@@ -83,6 +83,10 @@
             <artifactId>hippo4j-threadpool-dynamic-mode-config</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>dubbo-plugin</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

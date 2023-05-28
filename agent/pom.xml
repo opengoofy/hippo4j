@@ -154,6 +154,11 @@
                 <version>${jmh.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>cn.hippo4j</groupId>
+                <artifactId>dubbo-plugin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
