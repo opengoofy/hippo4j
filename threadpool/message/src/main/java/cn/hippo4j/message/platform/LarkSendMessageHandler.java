@@ -33,7 +33,13 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -81,7 +87,13 @@ public class LarkSendMessageHandler implements SendMessageHandler {
         } else {
             larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimeoutReplaceJson, "");
         }
+
+        String timestamp=String.valueOf(System.currentTimeMillis()).substring(0,10);;
+        String sign = genSign(notifyConfig.getSecret(), timestamp);
+
         String text = String.format(larkAlarmTxt,
+                timestamp,
+                sign,
                 alarmNotifyRequest.getActive(),
                 alarmNotifyRequest.getNotifyTypeEnum(),
                 alarmNotifyRequest.getThreadPoolId(),
@@ -152,6 +164,31 @@ public class LarkSendMessageHandler implements SendMessageHandler {
         } catch (Exception ex) {
             log.error("Lark failed to send message", ex);
         }
+    }
+
+    private String verifySign(String secret, long timestamp) throws Exception {
+        //把timestamp+"\n"+密钥当做签名字符串
+        String stringToSign = timestamp + "\n" + secret;
+
+        //使用HmacSHA256算法计算签名
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(stringToSign.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+        byte[] signData = mac.doFinal(new byte[]{});
+        return new String(Base64.encodeBase64(signData));
+    }
+
+    /**
+     * generate Signature
+     */
+    private String genSign(String secret, String timestamp) throws NoSuchAlgorithmException, InvalidKeyException {
+        //把timestamp+"\n"+密钥当做签名字符串
+        String stringToSign = timestamp + "\n" + secret;
+
+        //使用HmacSHA256算法计算签名
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(stringToSign.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+        byte[] signData = mac.doFinal(new byte[]{});
+        return new String(Base64.encodeBase64(signData));
     }
 
     /**
