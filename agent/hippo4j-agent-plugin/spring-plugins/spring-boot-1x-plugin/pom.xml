@@ -53,7 +53,6 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>dubbo-plugin</artifactId>
-            <scope>provided</scope>
         </dependency>
 
     </dependencies>
