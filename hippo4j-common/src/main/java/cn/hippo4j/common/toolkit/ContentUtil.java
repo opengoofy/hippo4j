@@ -36,8 +36,8 @@
                  "\"%s\",\"queueType\":%d,\"capacity\":%d,\"keepAliveTime\":%d,\"rejectedType\":%d,\"isAlarm\"" +
                  ":%d,\"capacityAlarm\":%d,\"livenessAlarm\":%d,\"allowCoreThreadTimeOut\":%d}", parameter.getTenantId(),
                  parameter.getItemId(), parameter.getTpId(), parameter.getQueueType(), parameter.getCapacity(),
-                 parameter.getKeepAliveTime(), parameter.getRejectedType(), parameter.getIsAlarm(),
-                 parameter.getCapacityAlarm(), parameter.getLivenessAlarm(), parameter.getAllowCoreThreadTimeOut());
+                 parameter.getKeepAliveTime(), parameter.getRejectedType(), parameter.getIsAlarm(),parameter.getCapacityAlarm(), 
+                 parameter.getLivenessAlarm(), parameter.getAllowCoreThreadTimeOut());
          return getPoolContent;
      }
  
