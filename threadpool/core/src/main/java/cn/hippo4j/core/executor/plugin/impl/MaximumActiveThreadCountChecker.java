@@ -168,13 +168,13 @@ public class MaximumActiveThreadCountChecker implements ExecuteAwarePlugin {
         while ((current = overflowThreadNumber.get()) != null) {
             int curr = current.get();
 
-            // it's aready no overflow thread
+            // it's already no overflow thread
             if (curr < 1) {
                 // check whether the current value is effective, if not, try again
                 if (overflowThreadNumber.compareAndSet(current, null)) {
-                    continue;
+                    return false;
                 }
-                return false;
+                continue;
             }
 
             // has overflow thread, try to cas to decrease the number of overflow threads
