@@ -88,12 +88,18 @@ public class LarkSendMessageHandler implements SendMessageHandler {
             larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimeoutReplaceJson, "");
         }
 
-        String timestamp=String.valueOf(System.currentTimeMillis()).substring(0,10);;
-        String sign = genSign(notifyConfig.getSecret(), timestamp);
+        String timestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+        String signKey = "";
+        String signVal = "";
+        if (notifyConfig.getSecret() != null) {
+            signVal = genSign(notifyConfig.getSecret(), timestamp);
+            signKey = "sign";
+        }
 
         String text = String.format(larkAlarmTxt,
                 timestamp,
-                sign,
+                signKey,
+                signVal,
                 alarmNotifyRequest.getActive(),
                 alarmNotifyRequest.getNotifyTypeEnum(),
                 alarmNotifyRequest.getThreadPoolId(),
@@ -166,25 +172,14 @@ public class LarkSendMessageHandler implements SendMessageHandler {
         }
     }
 
-    private String verifySign(String secret, long timestamp) throws Exception {
-        //把timestamp+"\n"+密钥当做签名字符串
-        String stringToSign = timestamp + "\n" + secret;
-
-        //使用HmacSHA256算法计算签名
-        Mac mac = Mac.getInstance("HmacSHA256");
-        mac.init(new SecretKeySpec(stringToSign.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
-        byte[] signData = mac.doFinal(new byte[]{});
-        return new String(Base64.encodeBase64(signData));
-    }
-
     /**
      * generate Signature
      */
     private String genSign(String secret, String timestamp) throws NoSuchAlgorithmException, InvalidKeyException {
-        //把timestamp+"\n"+密钥当做签名字符串
+        // geneSign
         String stringToSign = timestamp + "\n" + secret;
 
-        //使用HmacSHA256算法计算签名
+        // encode
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(new SecretKeySpec(stringToSign.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
         byte[] signData = mac.doFinal(new byte[]{});
