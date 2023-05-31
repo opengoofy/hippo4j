@@ -19,7 +19,6 @@ package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.ThreadPoolParameter;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 
 /**
  * Content util.
@@ -33,22 +32,13 @@ public class ContentUtil {
      * @return dynamic thread-pool content str
      */
     public static String getPoolContent(ThreadPoolParameter parameter) {
-        ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
-        threadPoolParameterInfo.setTenantId(parameter.getTenantId())
-                .setItemId(parameter.getItemId())
-                .setTpId(parameter.getTpId())
-                .setCoreSize(parameter.getCoreSize())
-                .setMaxSize(parameter.getMaxSize())
-                .setQueueType(parameter.getQueueType())
-                .setCapacity(parameter.getCapacity())
-                .setKeepAliveTime(parameter.getKeepAliveTime())
-                .setExecuteTimeOut(parameter.getExecuteTimeOut())
-                .setIsAlarm(parameter.getIsAlarm())
-                .setCapacityAlarm(parameter.getCapacityAlarm())
-                .setLivenessAlarm(parameter.getLivenessAlarm())
-                .setAllowCoreThreadTimeOut(parameter.getAllowCoreThreadTimeOut())
-                .setRejectedType(parameter.getRejectedType());
-        return JSONUtil.toJSONString(threadPoolParameterInfo);
+        String getPoolContent = String.format("{\"tenantId\":\"%s\",\"itemId\":\"%s\",\"tpId\":" +
+                "\"%s\",\"queueType\":%d,\"capacity\":%d,\"keepAliveTime\":%d,\"rejectedType\":%d,\"isAlarm\"" +
+                ":%d,\"capacityAlarm\":%d,\"livenessAlarm\":%d,\"allowCoreThreadTimeOut\":%d}", parameter.getTenantId(),
+                parameter.getItemId(), parameter.getTpId(), parameter.getQueueType(), parameter.getCapacity(),
+                parameter.getKeepAliveTime(), parameter.getRejectedType(), parameter.getIsAlarm(),parameter.getCapacityAlarm(), 
+                parameter.getLivenessAlarm(), parameter.getAllowCoreThreadTimeOut());
+        return getPoolContent;
     }
 
     /**
