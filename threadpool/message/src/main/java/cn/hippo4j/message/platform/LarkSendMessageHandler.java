@@ -89,17 +89,14 @@ public class LarkSendMessageHandler implements SendMessageHandler {
         }
 
         String timestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
-        String signKey = "";
-        String signVal = "";
+        String sign = "";
         if (notifyConfig.getSecret() != null) {
-            signVal = genSign(notifyConfig.getSecret(), timestamp);
-            signKey = "sign";
+            sign = genSign(notifyConfig.getSecret(), timestamp);
         }
 
         String text = String.format(larkAlarmTxt,
                 timestamp,
-                signKey,
-                signVal,
+                sign,
                 alarmNotifyRequest.getActive(),
                 alarmNotifyRequest.getNotifyTypeEnum(),
                 alarmNotifyRequest.getThreadPoolId(),
