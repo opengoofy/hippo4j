@@ -33,7 +33,13 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -81,7 +87,16 @@ public class LarkSendMessageHandler implements SendMessageHandler {
         } else {
             larkAlarmTxt = StringUtil.replace(larkAlarmTxt, larkAlarmTimeoutReplaceJson, "");
         }
+
+        String timestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+        String sign = "";
+        if (notifyConfig.getSecret() != null) {
+            sign = genSign(notifyConfig.getSecret(), timestamp);
+        }
+
         String text = String.format(larkAlarmTxt,
+                timestamp,
+                sign,
                 alarmNotifyRequest.getActive(),
                 alarmNotifyRequest.getNotifyTypeEnum(),
                 alarmNotifyRequest.getThreadPoolId(),
@@ -152,6 +167,20 @@ public class LarkSendMessageHandler implements SendMessageHandler {
         } catch (Exception ex) {
             log.error("Lark failed to send message", ex);
         }
+    }
+
+    /**
+     * generate Signature
+     */
+    private String genSign(String secret, String timestamp) throws NoSuchAlgorithmException, InvalidKeyException {
+        // geneSign
+        String stringToSign = timestamp + "\n" + secret;
+
+        // encode
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(stringToSign.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+        byte[] signData = mac.doFinal(new byte[]{});
+        return new String(Base64.encodeBase64(signData));
     }
 
     /**

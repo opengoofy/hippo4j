@@ -1,5 +1,7 @@
 {
   "msg_type": "interactive",
+  "timestamp": "%s",
+  "sign": "%s",
   "card": {
     "config": {
       "wide_screen_mode": true
