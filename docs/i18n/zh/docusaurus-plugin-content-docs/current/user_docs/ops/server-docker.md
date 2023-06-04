@@ -40,7 +40,6 @@ mvn clean package -Dskip.spotless.apply=true
 # 默认打包是打包的 tag 是 latest
 docker build -t hippo4j/hippo4j-server ../docker 
 
-
 # 构建多平台版本 
 docker buildx build --platform linux/arm64 -t hippo4j/hippo4j-server ../docker 
 docker buildx build --platform linux/amd64 -t hippo4j/hippo4j-server ../docker 
