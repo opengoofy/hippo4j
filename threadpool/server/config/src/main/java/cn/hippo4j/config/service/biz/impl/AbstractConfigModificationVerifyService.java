@@ -18,11 +18,14 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.extension.enums.VerifyEnum;
+import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
 import cn.hippo4j.common.model.InstanceInfo;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.ConditionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.UserContext;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.http.HttpUtil;
 import cn.hippo4j.config.mapper.HisConfigVerifyMapper;
 import cn.hippo4j.config.model.HisConfigVerifyInfo;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
@@ -30,6 +33,7 @@ import cn.hippo4j.config.model.biz.threadpool.ConfigModifyVerifyReqDTO;
 import cn.hippo4j.config.service.biz.ConfigModificationVerifyService;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
+import cn.hippo4j.rpc.client.ClientSupport;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 
 import javax.annotation.Resource;
@@ -113,5 +117,20 @@ public abstract class AbstractConfigModificationVerifyService implements ConfigM
      *
      * @param reqDTO
      */
-    protected abstract void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO);
+    protected void updateThreadPoolParameter(ConfigModifyVerifyReqDTO reqDTO) {
+        for (String each : getClientAddress(reqDTO)) {
+            ThreadPoolAdapterParameter parameter = new ThreadPoolAdapterParameter();
+            parameter.setMark(reqDTO.getMark());
+            parameter.setMaximumPoolSize(reqDTO.getMaximumPoolSize());
+            parameter.setCorePoolSize(reqDTO.getCorePoolSize());
+            parameter.setThreadPoolKey(reqDTO.getThreadPoolKey());
+            if (baseInstanceRegistry.getInstanceSupport(each)) {
+                String callUrl = baseInstanceRegistry.getInstanceCallUrl(each);
+                ClientSupport.clientSend(callUrl, "updateAdapterThreadPool", parameter);
+            } else {
+                String urlString = StringUtil.newBuilder("http://", each, "/adapter/thread-pool/update");
+                HttpUtil.post(urlString, reqDTO);
+            }
+        }
+    }
 }

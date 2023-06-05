@@ -48,11 +48,15 @@ public class InstanceInfo {
 
     private String clientBasePath;
 
+    private Boolean enableRpc;
+
     private String callBackUrl;
 
     private String identify;
 
     private String active;
+
+    private String clientVersion;
 
     private volatile String vipAddress;
 

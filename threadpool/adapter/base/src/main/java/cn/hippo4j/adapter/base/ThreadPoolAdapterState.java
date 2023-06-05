@@ -46,6 +46,16 @@ public class ThreadPoolAdapterState {
     private String clientAddress;
 
     /**
+     * Open server address
+     */
+    private String nettyServerAddress;
+
+    /**
+     * rpc switch
+     */
+    private Boolean enableRpc = false;
+
+    /**
      * Core size
      */
     private Integer coreSize;

@@ -20,6 +20,9 @@ package cn.hippo4j.common.model;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -49,7 +52,7 @@ public class Result<T> implements Serializable {
     /**
      * Response data.
      */
-    private T data;
+    private transient T data;
 
     /**
      * Is success.
@@ -58,5 +61,38 @@ public class Result<T> implements Serializable {
      */
     public boolean isSuccess() {
         return SUCCESS_CODE.equals(code);
+    }
+
+    /**
+     * Redefine the behavior of serialization, that is, re-acquire the initially serialized
+     * data from the stream and re-serialize it. Simple serialization will result in the
+     * loss of the field identified by transient.
+     */
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        if (data == null) {
+            return;
+        }
+        // Serialization obj
+        s.writeObject(this.data);
+    }
+
+    /**
+     * Redefine the deserialization behavior, and sequentially deserialize the data specified during
+     * serialization, because there is data that is not deserialized during initial deserialization,
+     * such as fields defined by transient
+     */
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        try {
+            // Deserialization obj
+            if (isSuccess()) {
+                this.data = (T) s.readObject();
+            }
+        } catch (IOException e) {
+            // data may also be null when successful
+        }
+
     }
 }

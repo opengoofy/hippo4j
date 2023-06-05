@@ -205,7 +205,9 @@ public class ClientWorker implements DisposableBean {
         if (isInitializingCacheList) {
             headers.put(LONG_PULLING_TIMEOUT_NO_HANGUP, "true");
         }
-        headers.put(CLIENT_VERSION, version);
+        if (version != null) {
+            headers.put(CLIENT_VERSION, version);
+        }
         try {
             long readTimeoutMs = timeout + Math.round(timeout >> 1);
             Result result = agent.httpPostByConfig(LISTENER_PATH, headers, params, readTimeoutMs);

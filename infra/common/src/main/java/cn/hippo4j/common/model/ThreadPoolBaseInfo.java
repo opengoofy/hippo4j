@@ -20,12 +20,14 @@ package cn.hippo4j.common.model;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * Thread-pool base info.
  */
 @Data
 @Accessors(chain = true)
-public class ThreadPoolBaseInfo {
+public class ThreadPoolBaseInfo implements Serializable {
 
     /**
      * coreSize
