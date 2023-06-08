@@ -93,7 +93,7 @@ public class MessageConvertTest {
 
     @Test
     public void testMessageWrapperConvertException() {
-        Assertions.assertThrows(Exception.class, ()->{
+        Assertions.assertThrows(Exception.class, () -> {
             Map<String, Object> data1 = new HashMap<>();
             data1.put("key1", "value1");
             data1.put("key2", 123);

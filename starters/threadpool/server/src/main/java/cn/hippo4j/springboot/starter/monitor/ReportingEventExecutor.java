@@ -17,14 +17,14 @@
 
 package cn.hippo4j.springboot.starter.monitor;
 
-import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.executor.ThreadFactoryBuilder;
-import cn.hippo4j.common.monitor.Message;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
+import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.ThreadUtil;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.monitor.base.MonitorTypeEnum;
 import cn.hippo4j.monitor.base.ThreadPoolMonitor;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
@@ -48,8 +48,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import static cn.hippo4j.core.executor.manage.GlobalThreadPoolManage.getThreadPoolNum;
 
 /**
  * Dynamic thread pool collection and reporting event executor.
@@ -144,8 +142,8 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
             // Start reporting monitoring data thread.
             ThreadUtil.newThread(this, "client.thread.reporting.task", Boolean.TRUE).start();
         }
-        if (GlobalThreadPoolManage.getThreadPoolNum() > 0) {
-            log.info("Dynamic thread pool: [{}]. The dynamic thread pool starts data collection and reporting.", getThreadPoolNum());
+        if (ThreadPoolExecutorRegistry.getThreadPoolExecutorSize() > 0) {
+            log.info("Dynamic thread pool: [{}]. The dynamic thread pool starts data collection and reporting.", ThreadPoolExecutorRegistry.getThreadPoolExecutorSize());
         }
     }
 

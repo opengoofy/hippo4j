@@ -18,18 +18,18 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
-import cn.hippo4j.common.extension.enums.EnableEnum;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
+import cn.hippo4j.common.extension.enums.EnableEnum;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
+import cn.hippo4j.threadpool.message.core.request.ChangeParameterNotifyRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,7 +55,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
     public void dynamicRefresh(String content) {
         ThreadPoolParameterInfo parameter = JSONUtil.parseObject(content, ThreadPoolParameterInfo.class);
         String threadPoolId = parameter.getTpId();
-        ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
+        ThreadPoolExecutor executor = ThreadPoolExecutorRegistry.getHolder(threadPoolId).getExecutor();
         refreshDynamicPool(parameter, executor);
     }
 
@@ -75,7 +75,7 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
             originalExecuteTimeOut = dynamicExecutor.getExecuteTimeOut();
         }
         changePoolInfo(executor, parameter);
-        ThreadPoolExecutor afterExecutor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
+        ThreadPoolExecutor afterExecutor = ThreadPoolExecutorRegistry.getHolder(threadPoolId).getExecutor();
         String originalRejected = rejectedExecutionHandler.getClass().getSimpleName();
         Long executeTimeOut = Optional.ofNullable(parameter.getExecuteTimeOut()).orElse(0L);
         ChangeParameterNotifyRequest changeNotifyRequest = ChangeParameterNotifyRequest.builder()

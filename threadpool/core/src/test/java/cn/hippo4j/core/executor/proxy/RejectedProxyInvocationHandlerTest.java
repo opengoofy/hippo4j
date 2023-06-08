@@ -17,9 +17,8 @@
 
 package cn.hippo4j.core.executor.proxy;
 
-import cn.hippo4j.core.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.core.config.ApplicationContextHolder;
-import cn.hippo4j.core.executor.proxy.RejectedProxyInvocationHandler;
+import cn.hippo4j.threadpool.alarm.api.ThreadPoolCheckAlarm;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -29,6 +28,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicLong;
@@ -51,6 +51,7 @@ public class RejectedProxyInvocationHandlerTest {
     private RejectedProxyInvocationHandler handler;
 
     private AtomicLong rejectCount;
+
     @Before
     public void setUp() {
         String threadPoolId = "test-pool";

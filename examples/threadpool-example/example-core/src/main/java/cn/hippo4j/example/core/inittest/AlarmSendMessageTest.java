@@ -17,9 +17,9 @@
 
 package cn.hippo4j.example.core.inittest;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.example.core.constant.GlobalTestConstant;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -47,8 +47,8 @@ public class AlarmSendMessageTest {
     public void alarmSendMessageTest() {
         ScheduledExecutorService scheduledThreadPool = Executors.newSingleThreadScheduledExecutor();
         scheduledThreadPool.scheduleWithFixedDelay(() -> {
-            DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
-            ThreadPoolExecutor poolExecutor = poolWrapper.getExecutor();
+            ThreadPoolExecutorHolder executorHolder = ThreadPoolExecutorRegistry.getHolder(GlobalTestConstant.MESSAGE_PRODUCE);
+            ThreadPoolExecutor poolExecutor = executorHolder.getExecutor();
             try {
                 poolExecutor.execute(() -> {
                     try {

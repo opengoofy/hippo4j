@@ -24,22 +24,18 @@ import java.util.Map;
 import cn.hippo4j.common.monitor.AbstractMessage;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 /**
  * Message convert.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MessageConvert {
-
-    private MessageConvert(){
-
-    }
 
     /**
      * {@link Message} to {@link MessageWrapper}.
-     *
-     * @param message
-     * @return
      */
     public static MessageWrapper convert(Message message) {
         MessageWrapper wrapper = new MessageWrapper();
@@ -58,9 +54,6 @@ public class MessageConvert {
 
     /**
      * {@link MessageWrapper} to {@link Message}.
-     *
-     * @param messageWrapper
-     * @return
      */
     @SneakyThrows
     public static Message convert(MessageWrapper messageWrapper) {

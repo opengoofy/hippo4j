@@ -10,4 +10,11 @@
     </parent>
 
     <artifactId>hippo4j-threadpool-kernel-message</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>api</module>
+        <module>core</module>
+        <module>mode</module>
+    </modules>
 </project>

@@ -17,6 +17,7 @@
 
 package cn.hippo4j.core.toolkit;
 
+import cn.hippo4j.common.propertie.IdentifyProperties;
 import cn.hippo4j.core.api.ClientNetworkService;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
@@ -36,16 +37,11 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 /**
  * Identify util.
  */
-public class IdentifyUtil {
+public class IdentifyUtil extends IdentifyProperties {
 
     static {
         ServiceLoaderRegistry.register(ClientNetworkService.class);
     }
-
-    /**
-     * Identify
-     */
-    private static String identify;
 
     /**
      * Client identification value
@@ -65,8 +61,8 @@ public class IdentifyUtil {
      * @return identify
      */
     public static synchronized String generate(ConfigurableEnvironment environment, InetUtils inetUtil) {
-        if (StringUtil.isNotBlank(identify)) {
-            return identify;
+        if (StringUtil.isNotBlank(IDENTIFY)) {
+            return IDENTIFY;
         }
         String[] customerNetwork = ServiceLoaderRegistry.getSingletonServiceInstances(ClientNetworkService.class)
                 .stream().findFirst().map(each -> each.getNetworkIpPort(environment)).orElse(null);
@@ -84,7 +80,7 @@ public class IdentifyUtil {
                 + port
                 + IDENTIFY_SLICER_SYMBOL
                 + CLIENT_IDENTIFICATION_VALUE;
-        identify = identify;
+        IDENTIFY = identify;
         return identify;
     }
 
@@ -94,7 +90,7 @@ public class IdentifyUtil {
      * @return identify
      */
     public static String getIdentify() {
-        while (StringUtil.isBlank(identify)) {
+        while (StringUtil.isBlank(IDENTIFY)) {
             ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
             InetUtils inetUtils = ApplicationContextHolder.getBean(InetUtils.class);
             if (environment != null && inetUtils != null) {
@@ -103,7 +99,7 @@ public class IdentifyUtil {
             }
             ThreadUtil.sleep(SLEEP_TIME);
         }
-        return identify;
+        return IDENTIFY;
     }
 
     /**

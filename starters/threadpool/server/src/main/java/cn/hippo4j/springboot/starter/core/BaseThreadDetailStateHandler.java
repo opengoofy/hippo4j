@@ -18,11 +18,11 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.api.ThreadDetailState;
+import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.model.ThreadDetailStateInfo;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -44,8 +44,8 @@ public class BaseThreadDetailStateHandler implements ThreadDetailState {
 
     @Override
     public List<ThreadDetailStateInfo> getThreadDetailStateInfo(String threadPoolId) {
-        DynamicThreadPoolWrapper dynamicThreadPoolWrapper = GlobalThreadPoolManage.getExecutorService(threadPoolId);
-        ThreadPoolExecutor threadPoolExecutor = dynamicThreadPoolWrapper.getExecutor();
+        ThreadPoolExecutorHolder executorHolder = ThreadPoolExecutorRegistry.getHolder(threadPoolId);
+        ThreadPoolExecutor threadPoolExecutor = executorHolder.getExecutor();
         return getThreadDetailStateInfo(threadPoolExecutor);
     }
 

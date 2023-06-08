@@ -87,8 +87,7 @@ public class JacksonHandlerTest {
         Assertions.assertEquals(
                 EXPECTED_ENTITY,
                 JACKSON_HANDLER.parseObject(EXPECTED_ENTITY_JSON, new TypeReference<Entity>() {
-                })
-        );
+                }));
         // illegal json
         Assertions.assertThrows(MismatchedInputException.class,
                 () -> JACKSON_HANDLER.parseObject(" ", Entity.class));

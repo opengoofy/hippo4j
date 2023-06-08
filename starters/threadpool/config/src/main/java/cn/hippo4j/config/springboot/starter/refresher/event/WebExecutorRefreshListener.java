@@ -20,18 +20,18 @@ package cn.hippo4j.config.springboot.starter.refresher.event;
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
-import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.WebExecutorProperties;
-import cn.hippo4j.message.request.WebChangeParameterNotifyRequest;
+import cn.hippo4j.threadpool.message.core.request.WebChangeParameterNotifyRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 
 import java.util.Objects;
 
-import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEventOrder.WEB_EXECUTOR_LISTENER;
+import static cn.hippo4j.config.springboot.starter.refresher.event.ThreadPoolConfigDynamicRefreshEventOrder.WEB_EXECUTOR_LISTENER;
 
 /**
  * Web executor refresh listener.
@@ -53,7 +53,7 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebExecu
     }
 
     @Override
-    public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
+    public void onApplicationEvent(ThreadPoolConfigDynamicRefreshEvent threadPoolDynamicRefreshEvent) {
         BootstrapConfigProperties bindableCoreProperties = threadPoolDynamicRefreshEvent.getBootstrapConfigProperties();
         if (bindableCoreProperties.getWeb() == null) {
             return;
@@ -89,6 +89,7 @@ public class WebExecutorRefreshListener extends AbstractRefreshListener<WebExecu
 
     /**
      * Constructing a request for web thread pool parameter change notification
+     *
      * @param before
      * @param now
      * @return

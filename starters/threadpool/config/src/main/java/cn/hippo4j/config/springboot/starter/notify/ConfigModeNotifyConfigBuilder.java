@@ -26,9 +26,9 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.NotifyPlatformProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.WebExecutorProperties;
-import cn.hippo4j.message.api.NotifyConfigBuilder;
-import cn.hippo4j.message.dto.NotifyConfigDTO;
-import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.threadpool.message.api.NotifyConfigBuilder;
+import cn.hippo4j.threadpool.message.api.NotifyConfigDTO;
+import cn.hippo4j.threadpool.message.core.service.AlarmControlHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

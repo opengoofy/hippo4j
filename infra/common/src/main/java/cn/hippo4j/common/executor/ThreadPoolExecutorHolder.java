@@ -17,6 +17,7 @@
 
 package cn.hippo4j.common.executor;
 
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.executor.ExecutorProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,12 @@ public class ThreadPoolExecutorHolder {
     private ThreadPoolExecutor executor;
 
     private ExecutorProperties executorProperties;
+
+    /**
+     * The Server mode is used to compare whether the parameters have changed,
+     * and consider refactoring later
+     */
+    private ThreadPoolParameterInfo parameterInfo;
 
     public ThreadPoolExecutorHolder(String threadPoolId, ThreadPoolExecutor executor, ExecutorProperties executorProperties) {
         this.threadPoolId = threadPoolId;
