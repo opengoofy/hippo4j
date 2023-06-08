@@ -17,18 +17,18 @@
 
 package cn.hippo4j.springboot.starter.notify;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.message.api.NotifyConfigBuilder;
-import cn.hippo4j.message.dto.NotifyConfigDTO;
-import cn.hippo4j.message.dto.ThreadPoolNotifyDTO;
-import cn.hippo4j.message.request.ThreadPoolNotifyRequest;
-import cn.hippo4j.message.service.AlarmControlHandler;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
+import cn.hippo4j.threadpool.message.api.NotifyConfigBuilder;
+import cn.hippo4j.threadpool.message.api.NotifyConfigDTO;
+import cn.hippo4j.threadpool.message.api.ThreadPoolNotifyDTO;
+import cn.hippo4j.threadpool.message.core.request.ThreadPoolNotifyRequest;
+import cn.hippo4j.threadpool.message.core.service.AlarmControlHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,7 +55,7 @@ public class ServerModeNotifyConfigBuilder implements NotifyConfigBuilder {
 
     @Override
     public Map<String, List<NotifyConfigDTO>> buildNotify() {
-        List<String> threadPoolIds = GlobalThreadPoolManage.listThreadPoolId();
+        List<String> threadPoolIds = ThreadPoolExecutorRegistry.listThreadPoolExecutorId();
         if (CollectionUtil.isEmpty(threadPoolIds)) {
             log.warn("The client does not have a dynamic thread pool instance configured.");
             return new HashMap<>();

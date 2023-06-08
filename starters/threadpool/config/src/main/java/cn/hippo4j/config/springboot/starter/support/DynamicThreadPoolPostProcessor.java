@@ -17,25 +17,23 @@
 
 package cn.hippo4j.config.springboot.starter.support;
 
-import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
-import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.common.model.executor.ExecutorNotifyProperties;
 import cn.hippo4j.common.model.executor.ExecutorProperties;
+import cn.hippo4j.common.toolkit.ReflectUtil;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import cn.hippo4j.core.toolkit.DynamicThreadPoolAnnotationUtil;
-import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
-import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
-import cn.hippo4j.threadpool.dynamic.core.executor.manage.GlobalConfigThreadPoolManage;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.message.core.service.GlobalNotifyAlarmManage;
+import cn.hippo4j.threadpool.message.core.service.ThreadPoolNotifyAlarm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -90,15 +88,9 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             if (dynamicThreadPoolExecutor == null) {
                 dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) bean;
             }
-            // TODO
-            DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(((DynamicThreadPoolExecutor) dynamicThreadPoolExecutor).getThreadPoolId(), dynamicThreadPoolExecutor);
-            ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(wrap);
+            ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(((DynamicThreadPoolExecutor) dynamicThreadPoolExecutor).getThreadPoolId(), dynamicThreadPoolExecutor);
             DynamicThreadPoolAdapterChoose.replace(bean, remoteThreadPoolExecutor);
             return DynamicThreadPoolAdapterChoose.match(bean) ? bean : remoteThreadPoolExecutor;
-        }
-        if (bean instanceof DynamicThreadPoolWrapper) {
-            DynamicThreadPoolWrapper wrap = (DynamicThreadPoolWrapper) bean;
-            fillPoolAndRegister(wrap);
         }
         return bean;
     }
@@ -106,11 +98,10 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     /**
      * Fill the thread pool and register.
      *
-     * @param dynamicThreadPoolWrapper dynamic thread-pool wrapper
+     * @param threadPoolId dynamic thread-pool id
+     * @param executor     dynamic thread-pool executor
      */
-    protected ThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrapper) {
-        String threadPoolId = dynamicThreadPoolWrapper.getThreadPoolId();
-        ThreadPoolExecutor executor = dynamicThreadPoolWrapper.getExecutor();
+    protected ThreadPoolExecutor fillPoolAndRegister(String threadPoolId, ThreadPoolExecutor executor) {
         ExecutorProperties executorProperties = null;
         if (configProperties.getExecutors() != null) {
             executorProperties = configProperties.getExecutors()
@@ -123,18 +114,20 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 threadPoolParamReplace(executor, executorProperties);
             } catch (Exception ex) {
                 log.error("Failed to initialize thread pool configuration.", ex);
-            } finally {
-                dynamicThreadPoolWrapper.setInitFlag(Boolean.TRUE);
             }
             ThreadPoolNotifyAlarm threadPoolNotifyAlarm = buildThreadPoolNotifyAlarm(executorProperties);
             GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
         }
-        GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrapper.getThreadPoolId(), dynamicThreadPoolWrapper);
-        GlobalConfigThreadPoolManage.register(
-                threadPoolId,
+        ThreadPoolExecutorRegistry.putHolder(threadPoolId, executor,
                 executorProperties == null
                         ? buildDefaultExecutorProperties(threadPoolId, executor)
                         : executorProperties);
+        // GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrapper.getThreadPoolId(), dynamicThreadPoolWrapper);
+        // GlobalConfigThreadPoolManage.register(
+        // threadPoolId,
+        // executorProperties == null
+        // ? buildDefaultExecutorProperties(threadPoolId, executor)
+        // : executorProperties);
         return executor;
     }
 

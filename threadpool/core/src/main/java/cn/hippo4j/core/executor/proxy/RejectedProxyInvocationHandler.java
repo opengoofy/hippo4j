@@ -17,8 +17,8 @@
 
 package cn.hippo4j.core.executor.proxy;
 
-import cn.hippo4j.core.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.core.config.ApplicationContextHolder;
+import cn.hippo4j.threadpool.alarm.api.ThreadPoolCheckAlarm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

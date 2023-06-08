@@ -18,7 +18,7 @@
 package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEvent;
+import cn.hippo4j.config.springboot.starter.refresher.event.ThreadPoolConfigDynamicRefreshEvent;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
@@ -73,7 +73,7 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
     }
 
     private void publishDynamicThreadPoolEvent(BootstrapConfigProperties configProperties) {
-        ApplicationContextHolder.getInstance().publishEvent(new Hippo4jConfigDynamicRefreshEvent(this, configProperties));
+        ApplicationContextHolder.getInstance().publishEvent(new ThreadPoolConfigDynamicRefreshEvent(this, configProperties));
     }
 
     @Override

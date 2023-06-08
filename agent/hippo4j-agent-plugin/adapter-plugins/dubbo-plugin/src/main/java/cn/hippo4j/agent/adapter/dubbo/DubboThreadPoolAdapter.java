@@ -17,7 +17,7 @@
 
 package cn.hippo4j.agent.adapter.dubbo;
 
-import cn.hippo4j.common.executor.ThreadPoolRegistry;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.model.executor.ExecutorProperties;
@@ -78,7 +78,7 @@ public class DubboThreadPoolAdapter {
                 .queueCapacity(executor.getQueue().remainingCapacity())
                 .rejectedHandler(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()).getName())
                 .build();
-        ThreadPoolRegistry.putHolder(executorName, executor, executorProperties);
+        ThreadPoolExecutorRegistry.putHolder(executorName, executor, executorProperties);
     }
 
     public static String mark() {

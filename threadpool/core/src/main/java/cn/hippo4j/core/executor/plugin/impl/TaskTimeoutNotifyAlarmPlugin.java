@@ -17,9 +17,9 @@
 
 package cn.hippo4j.core.executor.plugin.impl;
 
-import cn.hippo4j.core.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.plugin.PluginRuntime;
+import cn.hippo4j.threadpool.alarm.api.ThreadPoolCheckAlarm;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
@@ -63,8 +63,8 @@ public class TaskTimeoutNotifyAlarmPlugin extends AbstractTaskTimerPlugin {
     /**
      * Create a {@link TaskTimeoutNotifyAlarmPlugin}.
      *
-     * @param threadPoolId thread pool id
-     * @param executeTimeOut execute time out
+     * @param threadPoolId       thread pool id
+     * @param executeTimeOut     execute time out
      * @param threadPoolExecutor thread pool executor
      */
     public TaskTimeoutNotifyAlarmPlugin(String threadPoolId, Long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {

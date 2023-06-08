@@ -18,7 +18,7 @@
 package cn.hippo4j.agent.plugin.spring.common.support;
 
 import cn.hippo4j.agent.core.util.ReflectUtil;
-import cn.hippo4j.common.executor.ThreadPoolRegistry;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.model.executor.ExecutorProperties;
@@ -41,7 +41,7 @@ public class SpringThreadPoolRegisterSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringThreadPoolRegisterSupport.class);
 
     public static void registerThreadPoolInstances(ApplicationContext context) {
-        Map<ThreadPoolExecutor, Class<?>> referencedClassMap = ThreadPoolRegistry.REFERENCED_CLASS_MAP;
+        Map<ThreadPoolExecutor, Class<?>> referencedClassMap = ThreadPoolExecutorRegistry.REFERENCED_CLASS_MAP;
         for (Map.Entry<ThreadPoolExecutor, Class<?>> entry : referencedClassMap.entrySet()) {
             ThreadPoolExecutor enhancedInstance = entry.getKey();
             Class<?> declaredClass = entry.getValue();
@@ -93,6 +93,6 @@ public class SpringThreadPoolRegisterSupport {
                 .queueCapacity(executor.getQueue().remainingCapacity())
                 .rejectedHandler(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()).getName())
                 .build();
-        ThreadPoolRegistry.putHolder(threadPoolId, executor, executorProperties);
+        ThreadPoolExecutorRegistry.putHolder(threadPoolId, executor, executorProperties);
     }
 }

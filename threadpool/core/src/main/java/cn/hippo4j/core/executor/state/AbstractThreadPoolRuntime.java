@@ -17,11 +17,11 @@
 
 package cn.hippo4j.core.executor.state;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.common.toolkit.CalculateUtil;
+import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -51,8 +51,8 @@ public abstract class AbstractThreadPoolRuntime {
      * @return thread-pool run state info
      */
     public ThreadPoolRunStateInfo getPoolRunState(String threadPoolId) {
-        DynamicThreadPoolWrapper executorService = GlobalThreadPoolManage.getExecutorService(threadPoolId);
-        ThreadPoolExecutor pool = executorService.getExecutor();
+        ThreadPoolExecutorHolder executorHolder = ThreadPoolExecutorRegistry.getHolder(threadPoolId);
+        ThreadPoolExecutor pool = executorHolder.getExecutor();
         return getPoolRunState(threadPoolId, pool);
     }
 

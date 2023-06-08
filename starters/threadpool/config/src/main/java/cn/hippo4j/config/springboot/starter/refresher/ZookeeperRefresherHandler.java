@@ -18,8 +18,8 @@
 package cn.hippo4j.config.springboot.starter.refresher;
 
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
-import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
+import cn.hippo4j.threadpool.message.core.service.GlobalNotifyAlarmManage;
+import cn.hippo4j.threadpool.message.core.service.ThreadPoolNotifyAlarm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;

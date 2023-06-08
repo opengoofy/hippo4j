@@ -24,6 +24,7 @@ import cn.hippo4j.core.executor.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
 import cn.hippo4j.core.executor.plugin.impl.ThreadPoolExecutorShutdownPlugin;
 import cn.hippo4j.core.executor.plugin.manager.DefaultThreadPoolPluginManager;
 import cn.hippo4j.core.executor.plugin.manager.DefaultThreadPoolPluginRegistrar;
+import cn.hippo4j.threadpool.alarm.handler.DefaultThreadPoolCheckAlarmHandler;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -44,6 +45,8 @@ import static cn.hippo4j.common.constant.Constants.NO_REJECT_COUNT_NUM;
 
 /**
  * Enhanced dynamic and monitored thread pool.
+ *
+ * @see DefaultThreadPoolCheckAlarmHandler#buildAlarmNotifyRequest
  */
 @Slf4j
 public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor implements DisposableBean {
@@ -182,6 +185,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
      * Get reject count num.
      *
      * @return reject count num
+     * @see DefaultThreadPoolCheckAlarmHandler#buildAlarmNotifyRequest
      * @deprecated use {@link TaskRejectCountRecordPlugin}
      */
     @Deprecated

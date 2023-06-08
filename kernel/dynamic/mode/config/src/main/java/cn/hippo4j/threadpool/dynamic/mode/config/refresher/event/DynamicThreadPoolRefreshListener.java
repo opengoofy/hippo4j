@@ -18,7 +18,7 @@
 package cn.hippo4j.threadpool.dynamic.mode.config.refresher.event;
 
 import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
-import cn.hippo4j.common.executor.ThreadPoolRegistry;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
@@ -55,7 +55,7 @@ public class DynamicThreadPoolRefreshListener implements Observer<BootstrapConfi
         for (ExecutorProperties properties : executors) {
             String threadPoolId = properties.getThreadPoolId();
             // Check whether the thread pool configuration is empty and whether the parameters have changed
-            ThreadPoolExecutorHolder executorHolder = ThreadPoolRegistry.getHolder(threadPoolId);
+            ThreadPoolExecutorHolder executorHolder = ThreadPoolExecutorRegistry.getHolder(threadPoolId);
             if (executorHolder.isEmpty() || !checkPropertiesConsistency(executorHolder, properties)) {
                 continue;
             }
