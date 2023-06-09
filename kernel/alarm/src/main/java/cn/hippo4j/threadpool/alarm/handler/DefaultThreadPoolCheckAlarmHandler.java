@@ -75,8 +75,10 @@ public class DefaultThreadPoolCheckAlarmHandler implements Runnable, ThreadPoolC
                 private final AtomicInteger count = new AtomicInteger();
 
                 @Override
-                public Thread newThread(Runnable r) {
-                    return new Thread("client.execute.timeout.alarm_" + count.incrementAndGet());
+                public Thread newThread(Runnable runnable) {
+                    Thread thread = new Thread(runnable, "client.execute.timeout.alarm_" + count.incrementAndGet());
+                    thread.setDaemon(true);
+                    return thread;
                 }
             },
             new ThreadPoolExecutor.AbortPolicy());
