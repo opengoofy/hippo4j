@@ -31,7 +31,9 @@ public class ContentUtilTest {
                 .itemId("dynamic-threadpool-example").tpId("message-consume").content("描述信息").corePoolSize(1)
                 .maximumPoolSize(2).queueType(1).capacity(4).keepAliveTime(513).executeTimeOut(null).rejectedType(4)
                 .isAlarm(1).capacityAlarm(80).livenessAlarm(80).allowCoreThreadTimeOut(1).build();
-        Assert.isTrue(testText.equals(ContentUtil.getPoolContent(threadPoolParameterInfo)));
+        ThreadPoolParameterInfo testObject = JSONUtil.parseObject(testText, ThreadPoolParameterInfo.class);
+        String testText_ = ContentUtil.getPoolContent(testObject);
+        Assert.isTrue(testText_.equals(ContentUtil.getPoolContent(threadPoolParameterInfo)));
     }
 
     @Test
