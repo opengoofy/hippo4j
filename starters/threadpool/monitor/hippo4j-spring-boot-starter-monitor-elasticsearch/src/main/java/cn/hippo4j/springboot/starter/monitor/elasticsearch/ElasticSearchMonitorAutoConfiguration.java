@@ -18,9 +18,11 @@
 package cn.hippo4j.springboot.starter.monitor.elasticsearch;
 
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.monitor.elasticsearch.AdapterThreadPoolElasticSearchMonitorHandler;
 import cn.hippo4j.monitor.elasticsearch.DynamicThreadPoolElasticSearchMonitorHandler;
 import cn.hippo4j.monitor.elasticsearch.WebThreadPoolElasticSearchMonitorHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +32,7 @@ import org.springframework.context.annotation.Configuration;
  * Elastic-search monitor auto configuration.
  */
 @Configuration
+@ConditionalOnBean(MarkerConfiguration.Marker.class)
 @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.collect-types:}'.contains('elasticsearch')")
 @ConditionalOnProperty(prefix = Constants.CONFIGURATION_PROPERTIES_PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 public class ElasticSearchMonitorAutoConfiguration {
