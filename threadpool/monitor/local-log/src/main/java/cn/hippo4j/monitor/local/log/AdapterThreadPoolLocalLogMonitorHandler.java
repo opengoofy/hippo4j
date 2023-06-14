@@ -17,10 +17,10 @@
 
 package cn.hippo4j.monitor.local.log;
 
-import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.monitor.base.AbstractAdapterThreadPoolMonitor;
-import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import cn.hippo4j.threadpool.monitor.support.MonitorTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 
 /**

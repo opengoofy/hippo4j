@@ -19,7 +19,7 @@ package cn.hippo4j.adapter.springcloud.stream.rabbitmq;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import cn.hippo4j.core.config.ApplicationContextHolder;

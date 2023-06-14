@@ -15,10 +15,12 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.base;
+package cn.hippo4j.threadpool.monitor.api;
+
+import cn.hippo4j.threadpool.monitor.api.ThreadPoolMonitor;
 
 /**
- * Adapter thread-pool monitor.
+ * Web thread-pool monitor.
  */
-public interface AdapterThreadPoolMonitor extends ThreadPoolMonitor {
+public interface WebThreadPoolMonitor extends ThreadPoolMonitor {
 }

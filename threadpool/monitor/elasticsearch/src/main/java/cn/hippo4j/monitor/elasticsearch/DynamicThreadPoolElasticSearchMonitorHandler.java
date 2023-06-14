@@ -23,7 +23,7 @@ import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.core.toolkit.FileUtil;
 import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
-import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import cn.hippo4j.threadpool.monitor.support.MonitorTypeEnum;
 import cn.hippo4j.monitor.elasticsearch.model.ElasticSearchThreadPoolRunStateInfo;
 import lombok.Builder;
 import lombok.Getter;

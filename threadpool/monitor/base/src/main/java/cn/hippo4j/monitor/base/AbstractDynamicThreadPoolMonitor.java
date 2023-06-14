@@ -20,6 +20,7 @@ package cn.hippo4j.monitor.base;
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.threadpool.monitor.api.DynamicThreadPoolMonitor;
 
 import javax.annotation.Resource;
 import java.util.List;

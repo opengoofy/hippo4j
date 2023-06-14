@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-all</artifactId>
+        <artifactId>hippo4j-kernel</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>hippo4j-kernel</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>hippo4j-threadpool-kernel-monitor</artifactId>
 
-    <modules>
-        <module>alarm</module>
-        <module>dynamic</module>
-        <module>message</module>
-        <module>monitor</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-infra-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

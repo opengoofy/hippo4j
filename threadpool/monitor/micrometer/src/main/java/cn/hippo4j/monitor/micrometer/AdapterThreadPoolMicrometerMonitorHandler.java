@@ -17,12 +17,12 @@
 
 package cn.hippo4j.monitor.micrometer;
 
-import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.monitor.base.AbstractAdapterThreadPoolMonitor;
-import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import cn.hippo4j.threadpool.monitor.support.MonitorTypeEnum;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tag;
 import org.springframework.core.env.Environment;
