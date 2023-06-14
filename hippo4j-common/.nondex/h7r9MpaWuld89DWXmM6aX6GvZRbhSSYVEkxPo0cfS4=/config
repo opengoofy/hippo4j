@@ -1,0 +1,11 @@
+nondexFilter=.*
+nondexMode=FULL
+nondexSeed=1057510
+nondexStart=0
+nondexEnd=9223372036854775807
+nondexPrintstack=false
+nondexDir=/home/akib/develop/USA/UIUC/First Evaluation Task/hippo4j/hippo4j-common/.nondex
+nondexJarDir=/home/akib/develop/USA/UIUC/First Evaluation Task/hippo4j/hippo4j-common/.nondex
+nondexExecid=h7r9MpaWuld89DWXmM6aX6GvZRbhSSYVEkxPo0cfS4=
+nondexLogging=CONFIG
+test=
