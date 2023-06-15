@@ -15,23 +15,23 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support.adpter;
+package cn.hippo4j.common.handler;
 
 import cn.hippo4j.common.api.DynamicThreadPoolAdapter;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 
 import java.util.Objects;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Transmittable thread local executor service adapter.
+ * Transmittable thread local executor adapter.
  */
-public class TransmittableThreadLocalExecutorServiceAdapter implements DynamicThreadPoolAdapter {
+public class TransmittableThreadLocalExecutorAdapter implements DynamicThreadPoolAdapter {
 
-    private static final String MATCH_CLASS_NAME = "ExecutorServiceTtlWrapper";
+    private static final String MATCH_CLASS_NAME = "ExecutorTtlWrapper";
 
-    private static final String FIELD_NAME = "executorService";
+    private static final String FIELD_NAME = "executor";
 
     @Override
     public boolean match(Object executor) {
@@ -39,12 +39,8 @@ public class TransmittableThreadLocalExecutorServiceAdapter implements DynamicTh
     }
 
     @Override
-    public DynamicThreadPoolExecutor unwrap(Object executor) {
-        Object unwrap = ReflectUtil.getFieldValue(executor, FIELD_NAME);
-        if (unwrap != null && unwrap instanceof DynamicThreadPoolExecutor) {
-            return (DynamicThreadPoolExecutor) unwrap;
-        }
-        return null;
+    public ThreadPoolExecutor unwrap(Object executor) {
+        return (ThreadPoolExecutor) ReflectUtil.getFieldValue(executor, FIELD_NAME);
     }
 
     @Override

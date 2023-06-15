@@ -33,12 +33,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.collect-types:}'.contains('micrometer')")
-@ConditionalOnProperty(prefix = Constants.CONFIGURATION_PROPERTIES_PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
+//@ConditionalOnProperty(prefix = Constants.CONFIGURATION_PROPERTIES_PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 public class MicrometerMonitorAutoConfiguration {
 
     @Bean
     @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('dynamic')")
-    @ConditionalOnProperty(prefix = Constants.CONFIGURATION_PROPERTIES_PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
+//    @ConditionalOnProperty(prefix = Constants.CONFIGURATION_PROPERTIES_PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
     public DynamicThreadPoolMicrometerMonitorHandler dynamicThreadPoolMicrometerMonitorHandler() {
         return new DynamicThreadPoolMicrometerMonitorHandler();
     }

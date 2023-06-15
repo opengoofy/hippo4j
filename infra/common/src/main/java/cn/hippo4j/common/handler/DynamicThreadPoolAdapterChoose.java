@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support.adpter;
+package cn.hippo4j.common.handler;
 
 import cn.hippo4j.common.api.DynamicThreadPoolAdapter;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
@@ -38,7 +38,6 @@ public class DynamicThreadPoolAdapterChoose {
     static {
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new TransmittableThreadLocalExecutorAdapter());
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new TransmittableThreadLocalExecutorServiceAdapter());
-        DYNAMIC_THREAD_POOL_ADAPTERS.add(new ThreadPoolTaskExecutorAdapter());
         DYNAMIC_THREAD_POOL_ADAPTERS.add(new ZipkinExecutorAdapter());
         loadCustomerAdapter();
     }

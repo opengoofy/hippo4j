@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.support;
 import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapter;
+import cn.hippo4j.common.api.DynamicThreadPoolAdapter;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

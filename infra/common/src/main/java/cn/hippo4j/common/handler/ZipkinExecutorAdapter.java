@@ -15,12 +15,10 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support.adpter;
+package cn.hippo4j.common.handler;
 
 import cn.hippo4j.common.api.DynamicThreadPoolAdapter;
 import cn.hippo4j.common.toolkit.ReflectUtil;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -53,13 +51,10 @@ public class ZipkinExecutorAdapter implements DynamicThreadPoolAdapter {
     @Override
     public ThreadPoolExecutor unwrap(Object executor) {
         Object unwrap = doUnwrap(executor);
-        if (unwrap instanceof DynamicThreadPoolExecutor) {
-            return (DynamicThreadPoolExecutor) unwrap;
+        if (unwrap == null) {
+            return null;
         }
-        if (executor instanceof ThreadPoolTaskExecutor) {
-            return new ThreadPoolTaskExecutorAdapter().unwrap(executor);
-        }
-        return null;
+        return (ThreadPoolExecutor) unwrap;
     }
 
     @Override
