@@ -21,6 +21,9 @@ import cn.hippo4j.core.enable.EnableDynamicThreadPool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Config nacos spring boot 1.5 example application
+ */
 @EnableDynamicThreadPool
 @SpringBootApplication(scanBasePackages = "cn.hippo4j.example.core")
 public class ConfigNacosSpringBoot15ExampleApplication {

@@ -34,10 +34,15 @@ hippo4j/hippo4j-server
 方式一：
 
 ```shell
-# 进入到 hippo4j-server/hippo4j-bootstrap 工程路径下
+# 进入到 threadpool/server/bootstrap 工程路径下
 mvn clean package -Dskip.spotless.apply=true
+# 进入到  docker 工程路径下
 # 默认打包是打包的 tag 是 latest
-docker build -t hippo4j/hippo4j-server ../hippo4j-bootstrap
+docker build -t hippo4j/hippo4j-server ../docker 
+
+# 构建多平台版本 
+docker buildx build --platform linux/arm64 -t hippo4j/hippo4j-server ../docker 
+docker buildx build --platform linux/amd64 -t hippo4j/hippo4j-server ../docker 
 ```
 
 方式二：
@@ -45,6 +50,6 @@ docker build -t hippo4j/hippo4j-server ../hippo4j-bootstrap
 通过 `maven docker plugin`
 
 ```shell
-# 进入到 hippo4j-server 工程路径下
+# 进入到 threadpool/server/bootstrap 工程路径下
 mvn clean package -DskipTests -Dskip.spotless.apply=true docker:build
 ```

@@ -17,9 +17,9 @@
 
 package cn.hippo4j.springboot.starter.support;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapter;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import lombok.RequiredArgsConstructor;
@@ -71,21 +71,23 @@ public class AdaptedThreadPoolDestroyPostProcessor implements DestructionAwareBe
     @Override
     public void postProcessBeforeDestruction(Object bean, String beanName) throws BeansException {
         Optional.ofNullable(DynamicThreadPoolAdapterChoose.unwrap(bean))
-                .map(DynamicThreadPoolExecutor::getThreadPoolId)
+                .map(each -> ((DynamicThreadPoolExecutor) each).getThreadPoolId())
                 // the internal thread pool is also managed by spring, no manual destruction required
                 .filter(applicationContext::containsBeanDefinition)
-                .map(GlobalThreadPoolManage::getExecutorService)
-                .ifPresent(executor -> destroyAdaptedThreadPoolExecutor(beanName, executor));
+                .map(ThreadPoolExecutorRegistry::getHolder)
+                .ifPresent(executorHolder -> destroyAdaptedThreadPoolExecutor(beanName, executorHolder));
     }
 
-    private void destroyAdaptedThreadPoolExecutor(String beanName, DynamicThreadPoolWrapper executor) {
+    private void destroyAdaptedThreadPoolExecutor(String beanName, ThreadPoolExecutorHolder executorHolder) {
         try {
             if (log.isDebugEnabled()) {
-                log.debug("Destroy internal dynamic thread pool '{}' for bean '{}'", executor.getThreadPoolId(), beanName);
+                log.debug("Destroy internal dynamic thread pool '{}' for bean '{}'", executorHolder.getThreadPoolId(), beanName);
             }
-            executor.destroy();
+            if (executorHolder.getExecutor() instanceof DynamicThreadPoolExecutor) {
+                ((DynamicThreadPoolExecutor) executorHolder.getExecutor()).destroy();
+            }
         } catch (Exception e) {
-            log.warn("Failed to destroy internal dynamic thread pool '{}' for bean '{}'", executor.getThreadPoolId(), beanName);
+            log.warn("Failed to destroy internal dynamic thread pool '{}' for bean '{}'", executorHolder.getThreadPoolId(), beanName);
         }
     }
 }

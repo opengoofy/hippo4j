@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * Refresh listener abstract base class.
  */
 @Slf4j
-public abstract class AbstractRefreshListener<M> implements RefreshListener<Hippo4jConfigDynamicRefreshEvent, M> {
+public abstract class AbstractRefreshListener<M> implements RefreshListener<ThreadPoolConfigDynamicRefreshEvent, M> {
 
     /**
      * Matching nodes<br>

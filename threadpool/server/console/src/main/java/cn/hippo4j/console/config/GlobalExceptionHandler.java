@@ -19,10 +19,10 @@ package cn.hippo4j.console.config;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
-import cn.hippo4j.common.web.exception.AbstractException;
-import cn.hippo4j.common.web.exception.ServiceException;
+import cn.hippo4j.common.model.Result;
+import cn.hippo4j.server.common.base.Results;
+import cn.hippo4j.server.common.base.exception.AbstractException;
+import cn.hippo4j.server.common.base.exception.ServiceException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;

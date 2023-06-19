@@ -23,8 +23,7 @@ import cn.hippo4j.common.monitor.RuntimeMessage;
 import cn.hippo4j.common.toolkit.DateUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.MessageConvert;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.config.config.ServerBootstrapProperties;
 import cn.hippo4j.config.mapper.HisRunDataMapper;
 import cn.hippo4j.config.model.HisRunDataInfo;
@@ -35,6 +34,7 @@ import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.HisRunDataService;
 import cn.hippo4j.common.toolkit.BeanUtil;
+import cn.hippo4j.server.common.base.Results;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -47,6 +47,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_0;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_1;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_2;
+import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_3;
 import static cn.hippo4j.common.toolkit.DateUtil.NORM_TIME_PATTERN;
 
 /**
@@ -151,12 +155,12 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
         runtimeMessages.forEach(each -> {
             HisRunDataInfo hisRunDataInfo = BeanUtil.convert(each, HisRunDataInfo.class);
             String[] parseKey = GroupKey.parseKey(each.getGroupKey());
-            boolean checkFlag = ConfigCacheService.checkTpId(each.getGroupKey(), parseKey[0], parseKey[3]);
+            boolean checkFlag = ConfigCacheService.checkTpId(each.getGroupKey(), parseKey[INDEX_0], parseKey[INDEX_3]);
             if (checkFlag) {
-                hisRunDataInfo.setTpId(parseKey[0]);
-                hisRunDataInfo.setItemId(parseKey[1]);
-                hisRunDataInfo.setTenantId(parseKey[2]);
-                hisRunDataInfo.setInstanceId(parseKey[3]);
+                hisRunDataInfo.setTpId(parseKey[INDEX_0]);
+                hisRunDataInfo.setItemId(parseKey[INDEX_1]);
+                hisRunDataInfo.setTenantId(parseKey[INDEX_2]);
+                hisRunDataInfo.setInstanceId(parseKey[INDEX_3]);
                 hisRunDataInfos.add(hisRunDataInfo);
             }
         });

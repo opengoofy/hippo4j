@@ -27,7 +27,7 @@ import cn.hippo4j.auth.service.PermissionService;
 import cn.hippo4j.auth.service.UserService;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.web.exception.ServiceException;
+import cn.hippo4j.server.common.base.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;

@@ -17,23 +17,23 @@
 
 package cn.hippo4j.config.springboot.starter.support;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
+import cn.hippo4j.common.model.executor.ExecutorNotifyProperties;
+import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-import cn.hippo4j.common.config.ExecutorNotifyProperties;
-import cn.hippo4j.common.config.ExecutorProperties;
+import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.core.executor.DynamicThreadPool;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapterChoose;
 import cn.hippo4j.core.toolkit.DynamicThreadPoolAnnotationUtil;
-import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
-import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.message.core.service.GlobalNotifyAlarmManage;
+import cn.hippo4j.threadpool.message.core.service.ThreadPoolNotifyAlarm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -53,6 +53,14 @@ import java.util.concurrent.TimeUnit;
 public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
 
     private final BootstrapConfigProperties configProperties;
+
+    private static final int DEFAULT_ACTIVE_ALARM = 80;
+
+    private static final int DEFAULT_CAPACITY_ALARM = 80;
+
+    private static final int DEFAULT_INTERVAL = 5;
+
+    private static final String DEFAULT_RECEIVES = "";
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) {
@@ -76,18 +84,13 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 log.error("Failed to create dynamic thread pool in annotation mode.", ex);
                 return bean;
             }
-            DynamicThreadPoolExecutor dynamicThreadPoolExecutor;
-            if ((dynamicThreadPoolExecutor = DynamicThreadPoolAdapterChoose.unwrap(bean)) == null) {
+            ThreadPoolExecutor dynamicThreadPoolExecutor = DynamicThreadPoolAdapterChoose.unwrap(bean);
+            if (dynamicThreadPoolExecutor == null) {
                 dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) bean;
             }
-            DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(dynamicThreadPoolExecutor.getThreadPoolId(), dynamicThreadPoolExecutor);
-            ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(wrap);
+            ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(((DynamicThreadPoolExecutor) dynamicThreadPoolExecutor).getThreadPoolId(), dynamicThreadPoolExecutor);
             DynamicThreadPoolAdapterChoose.replace(bean, remoteThreadPoolExecutor);
             return DynamicThreadPoolAdapterChoose.match(bean) ? bean : remoteThreadPoolExecutor;
-        }
-        if (bean instanceof DynamicThreadPoolWrapper) {
-            DynamicThreadPoolWrapper wrap = (DynamicThreadPoolWrapper) bean;
-            fillPoolAndRegister(wrap);
         }
         return bean;
     }
@@ -95,11 +98,10 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     /**
      * Fill the thread pool and register.
      *
-     * @param dynamicThreadPoolWrapper dynamic thread-pool wrapper
+     * @param threadPoolId dynamic thread-pool id
+     * @param executor     dynamic thread-pool executor
      */
-    protected ThreadPoolExecutor fillPoolAndRegister(DynamicThreadPoolWrapper dynamicThreadPoolWrapper) {
-        String threadPoolId = dynamicThreadPoolWrapper.getThreadPoolId();
-        ThreadPoolExecutor executor = dynamicThreadPoolWrapper.getExecutor();
+    protected ThreadPoolExecutor fillPoolAndRegister(String threadPoolId, ThreadPoolExecutor executor) {
         ExecutorProperties executorProperties = null;
         if (configProperties.getExecutors() != null) {
             executorProperties = configProperties.getExecutors()
@@ -112,18 +114,20 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 threadPoolParamReplace(executor, executorProperties);
             } catch (Exception ex) {
                 log.error("Failed to initialize thread pool configuration.", ex);
-            } finally {
-                dynamicThreadPoolWrapper.setInitFlag(Boolean.TRUE);
             }
             ThreadPoolNotifyAlarm threadPoolNotifyAlarm = buildThreadPoolNotifyAlarm(executorProperties);
             GlobalNotifyAlarmManage.put(threadPoolId, threadPoolNotifyAlarm);
         }
-        GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrapper.getThreadPoolId(), dynamicThreadPoolWrapper);
-        GlobalCoreThreadPoolManage.register(
-                threadPoolId,
+        ThreadPoolExecutorRegistry.putHolder(threadPoolId, executor,
                 executorProperties == null
                         ? buildDefaultExecutorProperties(threadPoolId, executor)
                         : executorProperties);
+        // GlobalThreadPoolManage.registerPool(dynamicThreadPoolWrapper.getThreadPoolId(), dynamicThreadPoolWrapper);
+        // GlobalConfigThreadPoolManage.register(
+        // threadPoolId,
+        // executorProperties == null
+        // ? buildDefaultExecutorProperties(threadPoolId, executor)
+        // : executorProperties);
         return executor;
     }
 
@@ -156,7 +160,7 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                 .setAllowCoreThreadTimeOut(executor.allowsCoreThreadTimeOut())
                 .setKeepAliveTime(executor.getKeepAliveTime(TimeUnit.SECONDS))
                 .setBlockingQueue(queueType)
-                .setExecuteTimeOut(10000L)
+                .setExecuteTimeOut(Constants.EXECUTE_TIME_OUT)
                 .setQueueCapacity(queueCapacity)
                 .setRejectedHandler(executor.getRejectedExecutionHandler().getClass().getSimpleName())
                 .setThreadPoolId(threadPoolId);
@@ -233,15 +237,15 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         boolean isAlarm = Optional.ofNullable(executorProperties.getAlarm())
                 .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).orElse(true));
         int activeAlarm = Optional.ofNullable(executorProperties.getActiveAlarm())
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getActiveAlarm).orElse(80));
+                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getActiveAlarm).orElse(DEFAULT_ACTIVE_ALARM));
         int capacityAlarm = Optional.ofNullable(executorProperties.getCapacityAlarm())
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getCapacityAlarm).orElse(80));
+                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getCapacityAlarm).orElse(DEFAULT_CAPACITY_ALARM));
         int interval = Optional.ofNullable(notify)
                 .map(ExecutorNotifyProperties::getInterval)
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).map(ExecutorNotifyProperties::getInterval).orElse(5));
+                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).map(ExecutorNotifyProperties::getInterval).orElse(DEFAULT_INTERVAL));
         String receive = Optional.ofNullable(notify)
                 .map(ExecutorNotifyProperties::getReceives)
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).map(ExecutorNotifyProperties::getReceives).orElse(""));
+                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).map(ExecutorNotifyProperties::getReceives).orElse(DEFAULT_RECEIVES));
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(isAlarm, activeAlarm, capacityAlarm);
         threadPoolNotifyAlarm.setInterval(interval);
         threadPoolNotifyAlarm.setReceives(receive);

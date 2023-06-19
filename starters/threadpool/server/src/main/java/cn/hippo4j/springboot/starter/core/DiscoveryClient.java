@@ -18,13 +18,11 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.api.ClientCloseHookExecute;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.common.model.Result;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.model.InstanceInfo;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
-import cn.hippo4j.common.web.exception.ErrorCodeEnum;
-import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
+import cn.hippo4j.common.executor.ThreadFactoryBuilder;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
@@ -48,10 +46,12 @@ public class DiscoveryClient implements DisposableBean {
     private final ClientShutdown hippo4jClientShutdown;
 
     private volatile long lastSuccessfulHeartbeatTimestamp = -1;
+    private final int delayTime = 30;
+
     private static final String PREFIX = "DiscoveryClient_";
     private final String appPathIdentifier;
-
-    private final int delayTime = 30;
+    private final String SERVICE_ERROR_CODE = "3";
+    private final String SERVICE_NOT_FOUND_CODE = "404";
 
     public DiscoveryClient(HttpAgent httpAgent, InstanceInfo instanceInfo, ClientShutdown hippo4jClientShutdown) {
         this.httpAgent = httpAgent;
@@ -77,7 +77,7 @@ public class DiscoveryClient implements DisposableBean {
         try {
             registerResult = httpAgent.httpPostByDiscovery(urlPath, instanceInfo);
         } catch (Exception ex) {
-            registerResult = Results.failure(ErrorCodeEnum.SERVICE_ERROR);
+            registerResult = new Result<Void>().setCode(SERVICE_ERROR_CODE);
             log.error("{}{} - registration failed: {}", PREFIX, appPathIdentifier, ex.getMessage());
         }
         if (log.isInfoEnabled()) {
@@ -145,7 +145,7 @@ public class DiscoveryClient implements DisposableBean {
                     .setLastDirtyTimestamp(instanceInfo.getLastDirtyTimestamp().toString())
                     .setStatus(instanceInfo.getStatus().toString());
             renewResult = httpAgent.httpPostByDiscovery(BASE_PATH + "/apps/renew", instanceRenew);
-            if (Objects.equals(ErrorCodeEnum.NOT_FOUND.getCode(), renewResult.getCode())) {
+            if (Objects.equals(SERVICE_NOT_FOUND_CODE, renewResult.getCode())) {
                 long timestamp = instanceInfo.setIsDirtyWithTime();
                 boolean success = register();
                 // TODO Abstract server registration logic

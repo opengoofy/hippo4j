@@ -17,9 +17,9 @@
 
 package cn.hippo4j.example.core.inittest;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.example.core.constant.GlobalTestConstant;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.core.task.TaskDecorator;
@@ -37,6 +37,8 @@ import java.util.concurrent.TimeUnit;
 public class TaskDecoratorTest {
 
     public static final String PLACEHOLDER = "site";
+
+    private static final int SLEEP_TIME = 5000;
 
     private final ThreadPoolExecutor taskDecoratorTestExecutor = new ThreadPoolExecutor(
             1,
@@ -60,9 +62,9 @@ public class TaskDecoratorTest {
         taskDecoratorTestExecutor.execute(() -> {
             MDC.put(PLACEHOLDER, "View the official website: https://www.hippo4j.cn");
             try {
-                Thread.sleep(5000);
-                DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
-                ThreadPoolExecutor threadPoolExecutor = poolWrapper.getExecutor();
+                Thread.sleep(SLEEP_TIME);
+                ThreadPoolExecutorHolder executorHolder = ThreadPoolExecutorRegistry.getHolder(GlobalTestConstant.MESSAGE_PRODUCE);
+                ThreadPoolExecutor threadPoolExecutor = executorHolder.getExecutor();
                 threadPoolExecutor.execute(() -> log.info("Pass context via taskDecorator MDC: {}", MDC.get(PLACEHOLDER)));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -70,6 +72,9 @@ public class TaskDecoratorTest {
         });
     }
 
+    /**
+     * Context Copying Decorator
+     */
     public static class ContextCopyingDecorator implements TaskDecorator {
 
         @Override

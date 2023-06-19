@@ -17,7 +17,6 @@
 
 package cn.hippo4j.rpc.model;
 
-import cn.hippo4j.common.web.exception.IllegalException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,12 +28,13 @@ import java.io.ObjectOutputStream;
 
 public class DefaultResponseTest {
 
+    static final String rid = "name";
+    static final Object o = "obj";
+    static final String errMsg = "test throwable";
+
     @Test
     public void testReadObject() throws IOException, ClassNotFoundException {
-        String key = "name";
-        Object o = "obj";
-        Class<?> cls = String.class;
-        Response response = new DefaultResponse(key, cls, o);
+        Response response = new DefaultResponse(rid, o);
         byte[] bytes;
         try (
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -50,19 +50,15 @@ public class DefaultResponseTest {
             response1 = (Response) objectInputStream.readObject();
         }
         Assert.assertEquals(response1.hashCode(), response.hashCode());
-        Assert.assertEquals(key, response1.getKey());
+        Assert.assertEquals(rid, response1.getRID());
         Assert.assertEquals(o, response1.getObj());
-        Assert.assertEquals(cls, response1.getCls());
         Assert.assertEquals(response1, response);
         Assert.assertFalse(response1.isErr());
     }
 
     @Test
     public void testWriteObject() throws IOException, ClassNotFoundException {
-        String key = "name";
-        Throwable throwable = new IllegalException("test throwable");
-        String errMsg = "test throwable";
-        Response response = new DefaultResponse(key, throwable, errMsg);
+        Response response = new DefaultResponse(rid, errMsg);
         byte[] bytes;
         try (
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -77,10 +73,7 @@ public class DefaultResponseTest {
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream)) {
             response1 = (Response) objectInputStream.readObject();
         }
-        Assert.assertEquals(key, response1.getKey());
-        Assert.assertThrows(IllegalException.class, () -> {
-            throw response1.getThrowable();
-        });
+        Assert.assertEquals(rid, response1.getRID());
         Assert.assertEquals(response1.hashCode(), response.hashCode());
         Assert.assertEquals(errMsg, response1.getErrMsg());
         Assert.assertEquals(response1, response);
@@ -88,11 +81,8 @@ public class DefaultResponseTest {
     }
 
     @Test
-    public void testEquals() throws NoSuchMethodException {
-        String key = "name";
-        Object o = "obj";
-        Class<?> cls = String.class;
-        Response response = new DefaultResponse(key, cls, o);
+    public void testEquals() {
+        Response response = new DefaultResponse(rid, o);
         Assert.assertTrue(response.equals(response));
         Assert.assertFalse(response.equals(null));
     }

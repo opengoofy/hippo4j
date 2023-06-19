@@ -18,8 +18,8 @@
 package cn.hippo4j.console.controller;
 
 import cn.hippo4j.common.constant.Constants;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.common.model.Result;
+import cn.hippo4j.server.common.base.Results;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

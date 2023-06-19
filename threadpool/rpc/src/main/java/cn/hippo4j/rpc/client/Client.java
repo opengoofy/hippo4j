@@ -30,8 +30,7 @@ import java.io.Closeable;
  * able to communicate with the server. Wait for the server's Response ({@link Response})
  * <h3>METHOD</h3>
  * <ul>
- *     <li>{@link #connection(Request)}</li>
- *     <li>{@link #isActive()}</li>
+ *     <li>{@link #connect(Request)}</li>
  *     <li>{@link #close()}</li>
  * </ul>
  * You can usually use the client in this way:
@@ -45,7 +44,7 @@ import java.io.Closeable;
  * <b>The client implements Closeable and supports automatic shutdown, However, you can manually
  * disable it when you want to use it</b>
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public interface Client extends Closeable {
 
@@ -55,13 +54,6 @@ public interface Client extends Closeable {
      * @param request Request information, Requested methods and parameters
      * @return response Response from server side
      */
-    Response connection(Request request);
-
-    /**
-     * Check whether the client is active
-     *
-     * @return Whether active
-     */
-    boolean isActive();
+    <R> R connect(Request request);
 
 }

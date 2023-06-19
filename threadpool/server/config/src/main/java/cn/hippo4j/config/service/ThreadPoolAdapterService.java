@@ -19,14 +19,14 @@ package cn.hippo4j.config.service;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
-import cn.hippo4j.common.design.observer.AbstractSubjectCenter;
-import cn.hippo4j.common.design.observer.Observer;
-import cn.hippo4j.common.design.observer.ObserverMessage;
+import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
+import cn.hippo4j.common.extension.design.Observer;
+import cn.hippo4j.common.extension.design.ObserverMessage;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.http.HttpUtil;
-import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterReqDTO;
 import cn.hippo4j.config.model.biz.adapter.ThreadPoolAdapterRespDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -140,6 +140,9 @@ public class ThreadPoolAdapterService {
         }
     }
 
+    /**
+     * Clear Thread Pool Adapter Cache
+     */
     static class ClearThreadPoolAdapterCache implements Observer<String> {
 
         @Override

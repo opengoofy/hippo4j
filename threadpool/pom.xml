@@ -13,7 +13,6 @@
 
     <modules>
         <module>adapter</module>
-        <module>common</module>
         <module>core</module>
         <module>message</module>
         <module>monitor</module>

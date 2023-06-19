@@ -19,11 +19,10 @@ package cn.hippo4j.springboot.starter.controller;
 
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.adapter.web.WebThreadPoolService;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.model.ThreadPoolBaseInfo;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,20 +47,19 @@ public class WebThreadPoolController {
     public Result<ThreadPoolBaseInfo> getPoolBaseState(@RequestParam(value = "mark") String mark) {
         WebThreadPoolService webThreadPoolService = webThreadPoolServiceChoose.choose();
         if (webThreadPoolService != null && webThreadPoolService.getClass().getSimpleName().contains(mark)) {
-            return Results.success(webThreadPoolService.simpleInfo());
+            return new Result<ThreadPoolBaseInfo>().setCode(Result.SUCCESS_CODE).setData(webThreadPoolService.simpleInfo());
         }
-        return Results.success(null);
+        return new Result<ThreadPoolBaseInfo>().setCode(Result.SUCCESS_CODE);
     }
 
     @GetMapping("/web/run/state")
     public Result<ThreadPoolRunStateInfo> getPoolRunState() {
-        ThreadPoolRunStateInfo result = webThreadPoolServiceChoose.choose().getWebRunStateInfo();
-        return Results.success(result);
+        return new Result<ThreadPoolRunStateInfo>().setCode(Result.SUCCESS_CODE).setData(webThreadPoolServiceChoose.choose().getWebRunStateInfo());
     }
 
     @PostMapping("/web/update/pool")
     public Result<Void> updateWebThreadPool(@RequestBody ThreadPoolParameterInfo threadPoolParameterInfo) {
         webThreadPoolServiceChoose.choose().updateWebThreadPool(threadPoolParameterInfo);
-        return Results.success();
+        return new Result<Void>().setCode(Result.SUCCESS_CODE);
     }
 }

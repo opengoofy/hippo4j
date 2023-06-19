@@ -26,6 +26,11 @@ import lombok.Data;
 public class LoginUser {
 
     /**
+     * encode key reverse
+     */
+    private String tag;
+
+    /**
      * username
      */
     private String username;

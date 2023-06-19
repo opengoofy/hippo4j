@@ -17,9 +17,9 @@
 
 package cn.hippo4j.example.core.inittest;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.example.core.constant.GlobalTestConstant;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +35,10 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class AlarmSendMessageTest {
 
+    private static final int SLEEP_TIME = 10240124;
+
+    private static final int INITIAL_DELAY = 3;
+
     /**
      * Test alarm notification.
      * If you need to run this single test, add @PostConstruct to the method.
@@ -43,12 +47,12 @@ public class AlarmSendMessageTest {
     public void alarmSendMessageTest() {
         ScheduledExecutorService scheduledThreadPool = Executors.newSingleThreadScheduledExecutor();
         scheduledThreadPool.scheduleWithFixedDelay(() -> {
-            DynamicThreadPoolWrapper poolWrapper = GlobalThreadPoolManage.getExecutorService(GlobalTestConstant.MESSAGE_PRODUCE);
-            ThreadPoolExecutor poolExecutor = poolWrapper.getExecutor();
+            ThreadPoolExecutorHolder executorHolder = ThreadPoolExecutorRegistry.getHolder(GlobalTestConstant.MESSAGE_PRODUCE);
+            ThreadPoolExecutor poolExecutor = executorHolder.getExecutor();
             try {
                 poolExecutor.execute(() -> {
                     try {
-                        Thread.sleep(10240124);
+                        Thread.sleep(SLEEP_TIME);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -56,6 +60,6 @@ public class AlarmSendMessageTest {
             } catch (Exception ex) {
                 log.error("Throw reject policy.", ex.getMessage());
             }
-        }, 3, 1, TimeUnit.SECONDS);
+        }, INITIAL_DELAY, 1, TimeUnit.SECONDS);
     }
 }

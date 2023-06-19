@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.support;
 
-import cn.hippo4j.common.design.builder.ThreadFactoryBuilder;
+import cn.hippo4j.common.executor.ThreadFactoryBuilder;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import lombok.Data;
@@ -66,7 +66,7 @@ public class AbstractBuildThreadPoolTemplate {
         Assert.notNull(initParam);
         ThreadPoolExecutor executorService;
         try {
-            executorService = new ThreadPoolExecutorTemplate(initParam.getCorePoolNum(),
+            executorService = new ThreadPoolExecutor(initParam.getCorePoolNum(),
                     initParam.getMaximumPoolSize(),
                     initParam.getKeepAliveTime(),
                     initParam.getTimeUnit(),
@@ -78,41 +78,6 @@ public class AbstractBuildThreadPoolTemplate {
         }
         executorService.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
         return executorService;
-    }
-
-    /**
-     * Build a fast-consuming task thread pool.
-     *
-     * @return fast thread-pool executor
-     */
-    public static ThreadPoolExecutor buildFastPool() {
-        ThreadPoolInitParam initParam = initParam();
-        return buildFastPool(initParam);
-    }
-
-    /**
-     * Build a fast-consuming task thread pool.
-     *
-     * @param initParam init param
-     * @return fast thread-pool executor
-     */
-    public static ThreadPoolExecutor buildFastPool(ThreadPoolInitParam initParam) {
-        TaskQueue<Runnable> taskQueue = new TaskQueue(initParam.getCapacity());
-        FastThreadPoolExecutor fastThreadPoolExecutor;
-        try {
-            fastThreadPoolExecutor = new FastThreadPoolExecutor(initParam.getCorePoolNum(),
-                    initParam.getMaximumPoolSize(),
-                    initParam.getKeepAliveTime(),
-                    initParam.getTimeUnit(),
-                    taskQueue,
-                    initParam.getThreadFactory(),
-                    initParam.rejectedExecutionHandler);
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Error creating thread pool parameter.", ex);
-        }
-        taskQueue.setExecutor(fastThreadPoolExecutor);
-        fastThreadPoolExecutor.allowCoreThreadTimeOut(initParam.allowCoreThreadTimeOut);
-        return fastThreadPoolExecutor;
     }
 
     /**

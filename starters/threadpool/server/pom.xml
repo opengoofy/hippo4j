@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.hippo4j</groupId>
-        <artifactId>hippo4j-threadpool-spring-boot-starter</artifactId>
+        <artifactId>hippo4j-threadpool-starters</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>hippo4j-threadpool-server-spring-boot-starter</artifactId>
+    <artifactId>hippo4j-threadpool-spring-boot-starter</artifactId>
 
     <dependencies>
         <dependency>
@@ -25,7 +25,7 @@
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-common</artifactId>
+            <artifactId>hippo4j-threadpool-infra-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -74,6 +74,16 @@
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-threadpool-monitor-base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-dynamic-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-kernel-alarm</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

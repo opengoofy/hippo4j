@@ -168,7 +168,7 @@ public class InetUtils implements Closeable {
         /**
          * Should override the host info.
          */
-        public boolean override;
+        private boolean override;
 
         private String ipAddress;
 

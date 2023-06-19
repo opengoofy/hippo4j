@@ -17,8 +17,6 @@
 
 package cn.hippo4j.core.executor.support.spi;
 
-import cn.hippo4j.core.executor.support.adpter.DynamicThreadPoolAdapter;
-
 /**
  * Dynamic thread-pool adapter SPI.
  */
@@ -32,5 +30,5 @@ public interface DynamicThreadPoolAdapterSPI {
     /**
      * Adapter.
      */
-    DynamicThreadPoolAdapter adapter();
+    // DynamicThreadPoolAdapter adapter();
 }

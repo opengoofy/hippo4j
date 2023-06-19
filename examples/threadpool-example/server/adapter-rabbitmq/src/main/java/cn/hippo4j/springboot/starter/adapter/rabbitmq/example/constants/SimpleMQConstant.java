@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.adapter.rabbitmq.example.constants;
 /**
  * Simple MQ constant.
  */
-public interface SimpleMQConstant {
+public class SimpleMQConstant {
 
-    String QUEUE_NAME = "framework_message-center_queue";
+    public static final String QUEUE_NAME = "framework_message-center_queue";
 }

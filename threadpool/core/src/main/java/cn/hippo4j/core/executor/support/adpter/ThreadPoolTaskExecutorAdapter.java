@@ -35,18 +35,12 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPoolTaskExecutorAdapter implements DynamicThreadPoolAdapter {
 
     private static final String EXECUTOR_FIELD_NAME = "threadPoolExecutor";
-
     private static final String WAIT_FOR_TASKS_TO_COMPLETE_ON_SHUTDOWN = "waitForTasksToCompleteOnShutdown";
-
     private static final String AWAIT_TERMINATION_MILLIS = "awaitTerminationMillis";
-
     private static final String TASK_DECORATOR = "taskDecorator";
-
     private static final String BEAN_NAME = "beanName";
-
     private static final String QUEUE_CAPACITY = "queueCapacity";
-
-    private static String MATCH_CLASS_NAME = "ThreadPoolTaskExecutor";
+    private static final String MATCH_CLASS_NAME = "ThreadPoolTaskExecutor";
 
     @Override
     public boolean match(Object executor) {
@@ -55,7 +49,7 @@ public class ThreadPoolTaskExecutorAdapter implements DynamicThreadPoolAdapter {
     }
 
     @Override
-    public DynamicThreadPoolExecutor unwrap(Object executor) {
+    public ThreadPoolExecutor unwrap(Object executor) {
         Object unwrap = ReflectUtil.getFieldValue(executor, EXECUTOR_FIELD_NAME);
         if (unwrap == null) {
             return null;

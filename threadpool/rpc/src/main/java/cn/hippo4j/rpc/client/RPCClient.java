@@ -17,8 +17,8 @@
 
 package cn.hippo4j.rpc.client;
 
+import cn.hippo4j.rpc.connection.ClientConnection;
 import cn.hippo4j.rpc.model.Request;
-import cn.hippo4j.rpc.model.Response;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ import java.io.IOException;
  * The client, which provides a closing mechanism, maintains a persistent connection if not closed<br>
  * Delegate the method to the {@link ClientConnection} for implementation
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public class RPCClient implements Client {
 
@@ -37,13 +37,8 @@ public class RPCClient implements Client {
     }
 
     @Override
-    public Response connection(Request request) {
+    public <R> R connect(Request request) {
         return clientConnection.connect(request);
-    }
-
-    @Override
-    public boolean isActive() {
-        return clientConnection.isActive();
     }
 
     /**

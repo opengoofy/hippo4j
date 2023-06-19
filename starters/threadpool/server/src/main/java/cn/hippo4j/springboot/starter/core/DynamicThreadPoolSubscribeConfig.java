@@ -17,10 +17,10 @@
 
 package cn.hippo4j.springboot.starter.core;
 
-import cn.hippo4j.common.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.core.executor.support.ThreadPoolBuilder;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
+import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;

@@ -20,7 +20,7 @@ package cn.hippo4j.rpc.discovery;
 /**
  * Gets the top-level interface of the instance port
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 @FunctionalInterface
 public interface ServerPort {

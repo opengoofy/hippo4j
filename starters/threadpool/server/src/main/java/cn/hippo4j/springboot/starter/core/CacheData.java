@@ -17,6 +17,7 @@
 
 package cn.hippo4j.springboot.starter.core;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.springboot.starter.wrapper.ManagerListenerWrapper;
 import cn.hippo4j.common.toolkit.ContentUtil;
@@ -57,7 +58,7 @@ public class CacheData {
         this.tenantId = tenantId;
         this.itemId = itemId;
         this.threadPoolId = threadPoolId;
-        this.content = ContentUtil.getPoolContent(GlobalThreadPoolManage.getPoolParameter(threadPoolId));
+        this.content = ContentUtil.getPoolContent(ThreadPoolExecutorRegistry.getHolder(threadPoolId).getParameterInfo());
         this.md5 = getMd5String(content);
         this.listeners = new CopyOnWriteArrayList<>();
     }

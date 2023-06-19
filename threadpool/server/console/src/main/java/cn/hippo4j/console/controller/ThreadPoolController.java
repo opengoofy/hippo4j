@@ -25,9 +25,8 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.UserContext;
 import cn.hippo4j.common.toolkit.http.HttpUtil;
-import cn.hippo4j.common.web.base.Result;
-import cn.hippo4j.common.web.base.Results;
-import cn.hippo4j.common.web.exception.ErrorCodeEnum;
+import cn.hippo4j.common.model.Result;
+import cn.hippo4j.server.common.base.Results;
 import cn.hippo4j.config.model.CacheItem;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
 import cn.hippo4j.config.model.biz.threadpool.ThreadPoolDelReqDTO;
@@ -42,6 +41,7 @@ import cn.hippo4j.console.model.WebThreadPoolReqDTO;
 import cn.hippo4j.console.model.WebThreadPoolRespDTO;
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
 import cn.hippo4j.discovery.core.Lease;
+import cn.hippo4j.server.common.base.exception.ErrorCodeEnum;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -214,7 +214,7 @@ public class ThreadPoolController {
         List<ThreadPoolInstanceInfo> returnThreadPool = new ArrayList<>();
         content.forEach((key, val) -> {
             ThreadPoolInstanceInfo threadPoolInstanceInfo =
-                    BeanUtil.convert(val.configAllInfo, ThreadPoolInstanceInfo.class);
+                    BeanUtil.convert(val.getConfigAllInfo(), ThreadPoolInstanceInfo.class);
             threadPoolInstanceInfo.setClientAddress(StringUtil.subBefore(key, Constants.IDENTIFY_SLICER_SYMBOL));
             threadPoolInstanceInfo.setActive(activeMap.get(key));
             threadPoolInstanceInfo.setIdentify(key);

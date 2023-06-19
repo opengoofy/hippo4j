@@ -17,15 +17,9 @@
 
 package cn.hippo4j.config.springboot.starter.config;
 
-import cn.hippo4j.config.springboot.starter.refresher.ApolloRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.BootstrapConfigPropertiesBinderAdapt;
-import cn.hippo4j.config.springboot.starter.refresher.ConsulRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.DefaultBootstrapConfigPropertiesBinderAdapt;
-import cn.hippo4j.config.springboot.starter.refresher.EtcdRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.NacosCloudRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.NacosRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.PolarisRefresherHandler;
-import cn.hippo4j.config.springboot.starter.refresher.ZookeeperRefresherHandler;
+import cn.hippo4j.config.springboot.starter.refresher.*;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.refresher.BootstrapConfigPropertiesBinderAdapter;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.tencent.polaris.configuration.api.core.ConfigFileService;
@@ -64,10 +58,13 @@ public class ConfigHandlerConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public BootstrapConfigPropertiesBinderAdapt bootstrapConfigPropertiesBinderAdapt() {
-        return new DefaultBootstrapConfigPropertiesBinderAdapt();
+    public BootstrapConfigPropertiesBinderAdapter bootstrapConfigPropertiesBinderAdapter() {
+        return new DefaultBootstrapConfigPropertiesBinderAdapter();
     }
 
+    /**
+     * Embedded Nacos
+     */
     @RequiredArgsConstructor
     @ConditionalOnClass(value = ConfigService.class, name = NACOS_INJECTED_BEAN_NAME)
     @ConditionalOnMissingClass(NACOS_CONFIG_MANAGER_KEY)
@@ -80,6 +77,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Nacos Cloud
+     */
     @ConditionalOnClass(NacosConfigProperties.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = NACOS_DATA_ID_KEY)
     static class EmbeddedNacosCloud {
@@ -90,6 +90,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Apollo
+     */
     @ConditionalOnClass(com.ctrip.framework.apollo.ConfigService.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = APOLLO_NAMESPACE_KEY)
     static class EmbeddedApollo {
@@ -100,6 +103,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Consul
+     */
     @ConditionalOnClass(ConsulConfigProperties.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = CONSUL_DATA_KEY)
     static class EmbeddedConsul {
@@ -110,6 +116,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Zookeeper
+     */
     @ConditionalOnClass(CuratorFramework.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ZOOKEEPER_CONNECT_STR_KEY)
     static class EmbeddedZookeeper {
@@ -120,6 +129,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Embedded Etcd
+     */
     @ConditionalOnClass(Client.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = ETCD)
     static class EmbeddedEtcd {
@@ -130,6 +142,9 @@ public class ConfigHandlerConfiguration {
         }
     }
 
+    /**
+     * Polaris
+     */
     @ConditionalOnClass(ConfigFileService.class)
     @ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, name = POLARIS)
     static class Polaris {

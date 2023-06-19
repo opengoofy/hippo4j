@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * System clock.<br>
  * Refer to cn.hutool.core.date.SystemClock<br>
  */
-public class SystemClock {
+public final class SystemClock {
 
     /**
      * Period

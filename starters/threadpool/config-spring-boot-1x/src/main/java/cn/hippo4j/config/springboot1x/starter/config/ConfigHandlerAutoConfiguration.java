@@ -17,8 +17,8 @@
 
 package cn.hippo4j.config.springboot1x.starter.config;
 
-import cn.hippo4j.config.springboot.starter.refresher.BootstrapConfigPropertiesBinderAdapt;
-import cn.hippo4j.config.springboot1x.starter.refresher.SpringBoot1xBootstrapConfigPropertiesBinderAdapt;
+import cn.hippo4j.config.springboot1x.starter.refresher.SpringBoot1xBootstrapConfigPropertiesBinderAdapter;
+import cn.hippo4j.threadpool.dynamic.mode.config.refresher.BootstrapConfigPropertiesBinderAdapter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.bind.RelaxedDataBinder;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +30,7 @@ public class ConfigHandlerAutoConfiguration {
 
     @Bean
     @ConditionalOnClass(RelaxedDataBinder.class)
-    public BootstrapConfigPropertiesBinderAdapt bootstrapConfigPropertiesBinderAdapt() {
-        return new SpringBoot1xBootstrapConfigPropertiesBinderAdapt();
+    public BootstrapConfigPropertiesBinderAdapter bootstrapConfigPropertiesBinderAdapter() {
+        return new SpringBoot1xBootstrapConfigPropertiesBinderAdapter();
     }
 }

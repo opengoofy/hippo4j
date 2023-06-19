@@ -19,16 +19,16 @@ package cn.hippo4j.config.springboot.starter.notify;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.api.IExecutorProperties;
-import cn.hippo4j.common.config.ExecutorNotifyProperties;
-import cn.hippo4j.common.config.ExecutorProperties;
+import cn.hippo4j.common.model.executor.ExecutorNotifyProperties;
+import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.config.springboot.starter.config.BootstrapConfigProperties;
-import cn.hippo4j.config.springboot.starter.config.NotifyPlatformProperties;
-import cn.hippo4j.config.springboot.starter.config.WebExecutorProperties;
-import cn.hippo4j.message.api.NotifyConfigBuilder;
-import cn.hippo4j.message.dto.NotifyConfigDTO;
-import cn.hippo4j.message.service.AlarmControlHandler;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.NotifyPlatformProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.WebExecutorProperties;
+import cn.hippo4j.threadpool.message.api.NotifyConfigBuilder;
+import cn.hippo4j.threadpool.message.api.NotifyConfigDTO;
+import cn.hippo4j.threadpool.message.core.service.AlarmControlHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,6 +52,8 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
     private final BootstrapConfigProperties configProperties;
 
     private final WebThreadPoolService webThreadPoolService;
+
+    private static final int DEFAULT_INTERVAL = 5;
 
     @Override
     public Map<String, List<NotifyConfigDTO>> buildNotify() {
@@ -145,7 +147,7 @@ public class ConfigModeNotifyConfigBuilder implements NotifyConfigBuilder {
                 .orElse(Optional.ofNullable(configProperties.getDefaultExecutor())
                         .map(ExecutorProperties::getNotify)
                         .map(ExecutorNotifyProperties::getInterval)
-                        .orElse(5));
+                        .orElse(DEFAULT_INTERVAL));
     }
 
     private String buildReceive(IExecutorProperties executorProperties) {

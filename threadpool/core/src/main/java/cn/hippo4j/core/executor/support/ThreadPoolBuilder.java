@@ -17,7 +17,7 @@
 
 package cn.hippo4j.core.executor.support;
 
-import cn.hippo4j.common.design.builder.Builder;
+import cn.hippo4j.common.extension.design.Builder;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.toolkit.Assert;
 import org.springframework.core.task.TaskDecorator;
@@ -412,16 +412,6 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     }
 
     /**
-     * Build a fast thread-pool with {@code builder}.
-     *
-     * @param builder thread-pool builder
-     * @return fast thread-pool executor
-     */
-    private static ThreadPoolExecutor buildFastPool(ThreadPoolBuilder builder) {
-        return AbstractBuildThreadPoolTemplate.buildFastPool(buildInitParam(builder));
-    }
-
-    /**
      * Build a dynamic thread-pool with {@code builder}.
      *
      * @param builder thread-pool builder
@@ -474,9 +464,6 @@ public class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
 
     @Override
     public ThreadPoolExecutor build() {
-        if (isDynamicPool) {
-            return buildDynamicPool(this);
-        }
-        return isFastPool ? buildFastPool(this) : buildPool(this);
+        return isDynamicPool ? buildDynamicPool(this) : buildPool(this);
     }
 }

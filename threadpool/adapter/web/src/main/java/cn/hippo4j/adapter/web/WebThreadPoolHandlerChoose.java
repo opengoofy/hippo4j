@@ -17,8 +17,7 @@
 
 package cn.hippo4j.adapter.web;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.web.exception.ServiceException;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,7 +36,7 @@ public class WebThreadPoolHandlerChoose {
         try {
             webThreadPoolService = ApplicationContextHolder.getBean(WebThreadPoolService.class);
         } catch (Exception ex) {
-            throw new ServiceException("Web thread pool service bean not found.", ex);
+            throw new RuntimeException("Web thread pool service bean not found.", ex);
         }
         return webThreadPoolService;
     }

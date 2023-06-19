@@ -50,6 +50,16 @@ public class DynamicThreadPoolConfig {
     public static final ThreadPoolExecutor FIELD2 = new ThreadPoolExecutor(10, 20,
             1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(20));
 
+    private static final long EXECUTE_TIMEOUT = 800L;
+
+    private static final long AWAIT_TERMINATION_MILLIS = 5000L;
+
+    private static final int MAX_QUEUE_CAPACITY = 200;
+
+    private static final int CORE_POOL_SIZE = AVAILABLE_PROCESSORS * 2;
+
+    private static final int MAX_POOL_SIZE = AVAILABLE_PROCESSORS * 4;
+
     @Bean
     @DynamicThreadPool
     public Executor messageConsumeTtlDynamicThreadPool() {
@@ -58,9 +68,9 @@ public class DynamicThreadPoolConfig {
                 .dynamicPool()
                 .threadFactory(threadPoolId)
                 .threadPoolId(threadPoolId)
-                .executeTimeOut(800L)
+                .executeTimeOut(EXECUTE_TIMEOUT)
                 .waitForTasksToCompleteOnShutdown(true)
-                .awaitTerminationMillis(5000L)
+                .awaitTerminationMillis(AWAIT_TERMINATION_MILLIS)
                 .taskDecorator(new TaskTraceBuilderHandler())
                 .build();
         // Ali ttl adaptation use case.
@@ -86,10 +96,9 @@ public class DynamicThreadPoolConfig {
     public ThreadPoolTaskExecutor testSpringThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         threadPoolTaskExecutor.setThreadNamePrefix("test-spring-task-executor_");
-        int maxQueueCapacity = 200;
-        threadPoolTaskExecutor.setCorePoolSize(AVAILABLE_PROCESSORS * 2);
-        threadPoolTaskExecutor.setMaxPoolSize(AVAILABLE_PROCESSORS * 4);
-        threadPoolTaskExecutor.setQueueCapacity(maxQueueCapacity);
+        threadPoolTaskExecutor.setCorePoolSize(CORE_POOL_SIZE);
+        threadPoolTaskExecutor.setMaxPoolSize(MAX_POOL_SIZE);
+        threadPoolTaskExecutor.setQueueCapacity(MAX_QUEUE_CAPACITY);
         threadPoolTaskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         threadPoolTaskExecutor.setTaskDecorator(new TaskDecoratorTest.ContextCopyingDecorator());
         return threadPoolTaskExecutor;

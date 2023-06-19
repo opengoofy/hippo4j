@@ -18,7 +18,7 @@
 package cn.hippo4j.config.service.biz.impl;
 
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
-import cn.hippo4j.common.enums.DelEnum;
+import cn.hippo4j.common.extension.enums.DelEnum;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;

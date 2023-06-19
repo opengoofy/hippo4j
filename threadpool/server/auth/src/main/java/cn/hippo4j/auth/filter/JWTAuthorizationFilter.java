@@ -22,8 +22,8 @@ import cn.hippo4j.auth.toolkit.JwtTokenUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.UserContext;
-import cn.hippo4j.common.web.base.Results;
-import cn.hippo4j.common.web.exception.ServiceException;
+import cn.hippo4j.server.common.base.Results;
+import cn.hippo4j.server.common.base.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 import static cn.hippo4j.common.constant.Constants.ACCESS_TOKEN;
-import static cn.hippo4j.common.web.exception.ErrorCodeEnum.LOGIN_TIMEOUT;
+import static cn.hippo4j.server.common.base.exception.ErrorCodeEnum.LOGIN_TIMEOUT;
 
 /**
  * JWT authorization filter.

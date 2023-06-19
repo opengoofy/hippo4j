@@ -17,7 +17,8 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
@@ -46,8 +47,9 @@ public class NacosCloudRefresherHandler extends AbstractConfigThreadPoolDynamicR
 
     @SneakyThrows(NacosException.class)
     @Override
-    public void initRegisterListener() {
-        Map<String, String> nacosConfig = bootstrapConfigProperties.getNacos();
+    public void registerListener() {
+        BootstrapConfigProperties actualBootstrapConfigProperties = (BootstrapConfigProperties) bootstrapConfigProperties;
+        Map<String, String> nacosConfig = actualBootstrapConfigProperties.getNacos();
         configService.addListener(nacosConfig.get(DATA_ID),
                 nacosConfig.get(GROUP), new Listener() {
 

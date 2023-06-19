@@ -18,7 +18,7 @@
 package cn.hippo4j.example.core.handler;
 
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.core.toolkit.ExecutorTraceContextUtil;
+import cn.hippo4j.threadpool.alarm.toolkit.ExecutorTraceContextUtil;
 import org.slf4j.MDC;
 import org.springframework.core.task.TaskDecorator;
 

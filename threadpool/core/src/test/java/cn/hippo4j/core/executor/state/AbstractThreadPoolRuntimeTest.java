@@ -17,24 +17,23 @@
 
 package cn.hippo4j.core.executor.state;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AbstractThreadPoolRuntimeTest {
 
     @Test
-    void testPoolRunState() {
+    public void testPoolRunState() {
         AbstractThreadPoolRuntime threadPoolRuntime = new AbstractThreadPoolRuntime() {
 
             @Override
@@ -42,24 +41,15 @@ public class AbstractThreadPoolRuntimeTest {
                 return threadPoolRunStateInfo;
             }
         };
-
         final String threadPoolId = "test";
         DynamicThreadPoolExecutor executor = new DynamicThreadPoolExecutor(
                 1, 1, 1000L, TimeUnit.MILLISECONDS,
                 1000L, true, 1000L,
                 new ArrayBlockingQueue<>(1), threadPoolId, Thread::new, new ThreadPoolExecutor.DiscardOldestPolicy());
-
-        DynamicThreadPoolWrapper dynamicThreadPoolWrapper = DynamicThreadPoolWrapper.builder()
-                .threadPoolId(threadPoolId)
-                .executor(executor)
-                .build();
-        GlobalThreadPoolManage.registerPool(threadPoolId, dynamicThreadPoolWrapper);
-
+        ThreadPoolExecutorRegistry.putHolder(threadPoolId, executor, null);
         ThreadPoolRunStateInfo threadPoolRunStateInfo = threadPoolRuntime.getPoolRunState(threadPoolId);
         Assertions.assertNotNull(threadPoolRunStateInfo);
-
         threadPoolRunStateInfo = threadPoolRuntime.getPoolRunState(threadPoolId, executor);
         Assertions.assertNotNull(threadPoolRunStateInfo);
     }
-
 }

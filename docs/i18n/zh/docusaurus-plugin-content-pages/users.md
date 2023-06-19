@@ -5,12 +5,12 @@ title: 采用公司
 
 ## 谁在使用 Hippo4j
 
-共计 33+ 家公司生产接入 Hippo4j，按照公司登记时间排序。
+共计 39+ 家公司生产接入 Hippo4j，按照公司登记时间排序。
 
 - [身边云](https://serviceshare.com)
 - [思派健康科技](https://www.medbanks.cn)
 - [北京智合联创科技有限公司](http://www.zhlc.com.cn)
-- [神州数码](http://www.digitalchina.com)
+- [神州数码（北京）](http://www.digitalchina.com)
 - [PayerMax](https://www.payermax.com/)
 - [轻松到家](http://www.uyess.com/index.html)
 - [某商业银行股份有限公司](https://github.com/opengoofy/hippo4j/issues/13)
@@ -40,6 +40,12 @@ title: 采用公司
 - [新华智云科技有限公司](https://www.xinhuazhiyun.com)
 - [银丰新融](https://www.ist.com.cn)
 - [深圳市帮客帮科技有限公司](https://www.bangkebang.com)
+- [重庆威爱云科技有限公司](https://51vive.com)
+- [网易有道信息技术（北京）有限公司](https://www.youdao.com)
+- [神州数码（西安）](https://www.digitalchina.com)
+- [广联达科技股份有限公司](https://www.glodon.com)
+- [天健联创控股集团有限公司](https://www.tjlc.com.cn)
+- [知乎](https://www.zhihu.com/)
 
 ## 登记
 

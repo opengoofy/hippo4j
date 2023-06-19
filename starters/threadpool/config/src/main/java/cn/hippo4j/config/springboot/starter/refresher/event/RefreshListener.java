@@ -17,7 +17,7 @@
 
 package cn.hippo4j.config.springboot.starter.refresher.event;
 
-import cn.hippo4j.common.function.Matcher;
+import cn.hippo4j.common.extension.function.Matcher;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 

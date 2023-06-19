@@ -17,9 +17,8 @@
 
 package cn.hippo4j.core.executor.support.adpter;
 
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Dynamic thread pool adapter.
@@ -42,7 +41,7 @@ public interface DynamicThreadPoolAdapter {
      *                 of dynamic thread pools
      * @return get the real dynamic thread pool instance
      */
-    DynamicThreadPoolExecutor unwrap(Object executor);
+    ThreadPoolExecutor unwrap(Object executor);
 
     /**
      * If the {@link DynamicThreadPoolAdapter#match(Object)} conditions are met,

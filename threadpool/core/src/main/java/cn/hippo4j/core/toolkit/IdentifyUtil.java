@@ -17,9 +17,10 @@
 
 package cn.hippo4j.core.toolkit;
 
-import cn.hippo4j.common.api.ClientNetworkService;
-import cn.hippo4j.common.config.ApplicationContextHolder;
-import cn.hippo4j.common.extension.support.ServiceLoaderRegistry;
+import cn.hippo4j.common.propertie.IdentifyProperties;
+import cn.hippo4j.core.api.ClientNetworkService;
+import cn.hippo4j.core.config.ApplicationContextHolder;
+import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.Joiner;
@@ -36,21 +37,21 @@ import static cn.hippo4j.common.constant.Constants.IDENTIFY_SLICER_SYMBOL;
 /**
  * Identify util.
  */
-public class IdentifyUtil {
+public class IdentifyUtil extends IdentifyProperties {
 
     static {
         ServiceLoaderRegistry.register(ClientNetworkService.class);
     }
 
     /**
-     * Identify
-     */
-    private static String IDENTIFY;
-
-    /**
      * Client identification value
      */
     public static final String CLIENT_IDENTIFICATION_VALUE = IdUtil.simpleUUID();
+
+    /**
+     * Get identify sleep time
+     */
+    private static final int SLEEP_TIME = 500;
 
     /**
      * Generate identify.
@@ -96,7 +97,7 @@ public class IdentifyUtil {
                 String identify = generate(environment, inetUtils);
                 return identify;
             }
-            ThreadUtil.sleep(500);
+            ThreadUtil.sleep(SLEEP_TIME);
         }
         return IDENTIFY;
     }

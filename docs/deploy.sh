@@ -16,7 +16,6 @@ git add -A
 git commit -m "auto commit"
 
 # github
-git branch -m master main
 GIT_SSH_COMMAND="ssh -i ~/.ssh/hippo4j" git remote add origin git@github.com:hippo4j/hippo4j.github.io.git
 GIT_SSH_COMMAND="ssh -i ~/.ssh/hippo4j" git push -u origin main -f
 

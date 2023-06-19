@@ -19,7 +19,7 @@ package cn.hippo4j.springboot.starter.adapter.dubbo;
 
 import cn.hippo4j.adapter.dubbo.DubboThreadPoolAdapter;
 import cn.hippo4j.adapter.dubbo.DubboxThreadPoolAdapter;
-import cn.hippo4j.common.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

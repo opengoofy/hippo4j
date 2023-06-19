@@ -43,13 +43,14 @@
     </scm>
 
     <modules>
+        <module>agent</module>
         <module>dependencies</module>
-        <module>threadpool</module>
-        <module>common</module>
+        <module>examples</module>
+        <module>infra</module>
+        <module>kernel</module>
         <module>starters</module>
         <module>tests</module>
-        <module>examples</module>
-        <module>agents</module>
+        <module>threadpool</module>
     </modules>
 
     <properties>

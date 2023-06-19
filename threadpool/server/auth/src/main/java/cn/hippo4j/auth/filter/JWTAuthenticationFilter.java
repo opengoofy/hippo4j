@@ -19,12 +19,14 @@ package cn.hippo4j.auth.filter;
 
 import cn.hippo4j.auth.model.biz.user.JwtUser;
 import cn.hippo4j.auth.model.biz.user.LoginUser;
+import cn.hippo4j.auth.toolkit.AESUtil;
 import cn.hippo4j.auth.toolkit.JwtTokenUtil;
 import cn.hippo4j.auth.toolkit.ReturnT;
 import cn.hippo4j.common.toolkit.JSONUtil;
-import cn.hippo4j.common.web.base.Results;
+import cn.hippo4j.server.common.base.Results;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.codec.DecodingException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,6 +40,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -69,10 +72,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Authentication authenticate = null;
         try {
             LoginUser loginUser = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
+            String key = new StringBuffer(loginUser.getTag()).reverse().toString();
+            String password = AESUtil.decrypt(loginUser.getPassword(), key);
+            loginUser.setPassword(password);
+
             request.setAttribute("loginUser", loginUser);
             rememberMe.set(loginUser.getRememberMe());
             authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList()));
+        } catch (GeneralSecurityException e) {
+            log.warn("Password decode exception: {}", e.getMessage());
+            throw new DecodingException(e.getMessage());
         } catch (UsernameNotFoundException e) {
             log.warn("User {} not found", e.getMessage());
             throw e;

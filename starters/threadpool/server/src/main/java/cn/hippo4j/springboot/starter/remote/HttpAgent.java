@@ -17,7 +17,7 @@
 
 package cn.hippo4j.springboot.starter.remote;
 
-import cn.hippo4j.common.web.base.Result;
+import cn.hippo4j.common.model.Result;
 
 import java.util.Map;
 

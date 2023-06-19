@@ -22,29 +22,19 @@ import java.io.Serializable;
 /**
  * request
  *
- * @since 1.5.1
+ * @since 2.0.0
  */
 public interface Request extends Serializable {
+
+    /**
+     * the request id, Used to specify an executable handler
+     */
+    String getRID();
 
     /**
      * The unique identity of the current request
      */
     String getKey();
-
-    /**
-     * The Class name of the current request
-     */
-    String getClassName();
-
-    /**
-     * The Method name of the current request
-     */
-    String getMethodName();
-
-    /**
-     * The parameter type of the current request
-     */
-    Class<?>[] getParameterTypes();
 
     /**
      * The parameters of the current request

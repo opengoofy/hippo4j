@@ -17,8 +17,8 @@
 
 package cn.hippo4j.monitor.base;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 
 import javax.annotation.Resource;
@@ -41,7 +41,7 @@ public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadP
 
     @Override
     public void collect() {
-        List<String> listDynamicThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
+        List<String> listDynamicThreadPoolId = ThreadPoolExecutorRegistry.listThreadPoolExecutorId();
         listDynamicThreadPoolId.forEach(each -> execute(threadPoolRunStateHandler.getPoolRunState(each)));
     }
 }

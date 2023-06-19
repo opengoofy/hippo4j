@@ -39,6 +39,7 @@ public class MessageConsume {
         long startTime = System.currentTimeMillis();
         try {
             // ignore
+            log.info("Message: {}", JSONUtil.toJSONString(message));
         } finally {
             log.info("Keys: {}, Msg id: {}, Execute time: {} ms, Message: {}", headers.get("rocketmq_KEYS"), headers.get("rocketmq_MESSAGE_ID"), System.currentTimeMillis() - startTime,
                     JSONUtil.toJSONString(message));
@@ -51,6 +52,7 @@ public class MessageConsume {
         long startTime = System.currentTimeMillis();
         try {
             // ignore
+            log.info("Message: {}", JSONUtil.toJSONString(message));
         } finally {
             log.info("Keys: {}, Msg id: {}, Execute time: {} ms, Message: {}", headers.get("rocketmq_KEYS"), headers.get("rocketmq_MESSAGE_ID"), System.currentTimeMillis() - startTime,
                     JSONUtil.toJSONString(message));

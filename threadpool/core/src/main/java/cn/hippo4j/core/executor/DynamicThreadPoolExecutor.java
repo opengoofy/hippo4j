@@ -18,12 +18,13 @@
 package cn.hippo4j.core.executor;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
-import cn.hippo4j.core.plugin.impl.TaskDecoratorPlugin;
-import cn.hippo4j.core.plugin.impl.TaskRejectCountRecordPlugin;
-import cn.hippo4j.core.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
-import cn.hippo4j.core.plugin.impl.ThreadPoolExecutorShutdownPlugin;
-import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginManager;
-import cn.hippo4j.core.plugin.manager.DefaultThreadPoolPluginRegistrar;
+import cn.hippo4j.core.executor.plugin.impl.TaskDecoratorPlugin;
+import cn.hippo4j.core.executor.plugin.impl.TaskRejectCountRecordPlugin;
+import cn.hippo4j.core.executor.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
+import cn.hippo4j.core.executor.plugin.impl.ThreadPoolExecutorShutdownPlugin;
+import cn.hippo4j.core.executor.plugin.manager.DefaultThreadPoolPluginManager;
+import cn.hippo4j.core.executor.plugin.manager.DefaultThreadPoolPluginRegistrar;
+import cn.hippo4j.threadpool.alarm.handler.DefaultThreadPoolCheckAlarmHandler;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -40,8 +41,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static cn.hippo4j.common.constant.Constants.NO_REJECT_COUNT_NUM;
+
 /**
  * Enhanced dynamic and monitored thread pool.
+ *
+ * @see DefaultThreadPoolCheckAlarmHandler#buildAlarmNotifyRequest
  */
 @Slf4j
 public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor implements DisposableBean {
@@ -57,7 +62,17 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
      */
     @Getter
     @Setter
-    public boolean waitForTasksToCompleteOnShutdown;
+    private boolean waitForTasksToCompleteOnShutdown;
+
+    /**
+     * The default await termination millis
+     */
+    private static final Long DEFAULT_AWAIT_TERMINATION_MILLIS = -1L;
+
+    /**
+     * The default execute timeout
+     */
+    private static final Long DEFAULT_EXECUTE_TIMEOUT = -1L;
 
     /**
      * Creates a new {@code DynamicThreadPoolExecutor} with the given initial parameters.
@@ -149,7 +164,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
     public long getAwaitTerminationMillis() {
         return getPluginOfType(ThreadPoolExecutorShutdownPlugin.PLUGIN_NAME, ThreadPoolExecutorShutdownPlugin.class)
                 .map(ThreadPoolExecutorShutdownPlugin::getAwaitTerminationMillis)
-                .orElse(-1L);
+                .orElse(DEFAULT_AWAIT_TERMINATION_MILLIS);
     }
 
     /**
@@ -170,13 +185,14 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
      * Get reject count num.
      *
      * @return reject count num
+     * @see DefaultThreadPoolCheckAlarmHandler#buildAlarmNotifyRequest
      * @deprecated use {@link TaskRejectCountRecordPlugin}
      */
     @Deprecated
     public Long getRejectCountNum() {
         return getPluginOfType(TaskRejectCountRecordPlugin.PLUGIN_NAME, TaskRejectCountRecordPlugin.class)
                 .map(TaskRejectCountRecordPlugin::getRejectCountNum)
-                .orElse(-1L);
+                .orElse(NO_REJECT_COUNT_NUM);
     }
 
     /**
@@ -201,7 +217,7 @@ public class DynamicThreadPoolExecutor extends ExtensibleThreadPoolExecutor impl
     public Long getExecuteTimeOut() {
         return getPluginOfType(TaskTimeoutNotifyAlarmPlugin.PLUGIN_NAME, TaskTimeoutNotifyAlarmPlugin.class)
                 .map(TaskTimeoutNotifyAlarmPlugin::getExecuteTimeOut)
-                .orElse(-1L);
+                .orElse(DEFAULT_EXECUTE_TIMEOUT);
     }
 
     /**

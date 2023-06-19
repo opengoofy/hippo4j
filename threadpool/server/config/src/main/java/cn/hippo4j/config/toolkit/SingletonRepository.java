@@ -24,8 +24,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SingletonRepository<T> {
 
+    /**
+     * initialCapacity: 1 << 16
+     */
+    private static final int INITIAL_CAPACITY = 65536;
+
     public SingletonRepository() {
-        shared = new ConcurrentHashMap(1 << 16);
+        shared = new ConcurrentHashMap(INITIAL_CAPACITY);
     }
 
     public T getSingleton(T obj) {
@@ -43,6 +48,9 @@ public class SingletonRepository<T> {
 
     private final ConcurrentHashMap<T, T> shared;
 
+    /**
+     * Data Id Group Id Cache
+     */
     public static class DataIdGroupIdCache {
 
         public static String getSingleton(String str) {
