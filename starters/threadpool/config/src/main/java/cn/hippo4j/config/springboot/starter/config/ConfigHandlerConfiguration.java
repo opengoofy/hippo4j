@@ -38,6 +38,7 @@ import org.springframework.context.annotation.Configuration;
  * Config handler configuration.
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 public class ConfigHandlerConfiguration {
 
     private static final String NACOS_CONFIG_MANAGER_KEY = "com.alibaba.cloud.nacos.NacosConfigManager";

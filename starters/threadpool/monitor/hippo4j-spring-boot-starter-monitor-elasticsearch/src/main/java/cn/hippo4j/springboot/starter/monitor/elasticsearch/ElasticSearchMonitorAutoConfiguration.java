@@ -18,6 +18,7 @@
 package cn.hippo4j.springboot.starter.monitor.elasticsearch;
 
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.monitor.elasticsearch.AdapterThreadPoolElasticSearchMonitorHandler;
 import cn.hippo4j.monitor.elasticsearch.DynamicThreadPoolElasticSearchMonitorHandler;
 import cn.hippo4j.monitor.elasticsearch.WebThreadPoolElasticSearchMonitorHandler;
@@ -36,19 +37,19 @@ public class ElasticSearchMonitorAutoConfiguration {
 
     @Bean
     @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('dynamic')")
-    public DynamicThreadPoolElasticSearchMonitorHandler dynamicThreadPoolElasticSearchMonitorHandler() {
-        return new DynamicThreadPoolElasticSearchMonitorHandler();
+    public DynamicThreadPoolElasticSearchMonitorHandler dynamicThreadPoolElasticSearchMonitorHandler(ThreadPoolRunStateHandler handler) {
+        return new DynamicThreadPoolElasticSearchMonitorHandler(handler);
     }
 
     @Bean
     @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('web')")
-    public WebThreadPoolElasticSearchMonitorHandler webThreadPoolElasticSearchMonitorHandler() {
-        return new WebThreadPoolElasticSearchMonitorHandler();
+    public WebThreadPoolElasticSearchMonitorHandler webThreadPoolElasticSearchMonitorHandler(ThreadPoolRunStateHandler handler) {
+        return new WebThreadPoolElasticSearchMonitorHandler(handler);
     }
 
     @Bean
     @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('adapter')")
-    public AdapterThreadPoolElasticSearchMonitorHandler adapterThreadPoolElasticSearchMonitorHandler() {
-        return new AdapterThreadPoolElasticSearchMonitorHandler();
+    public AdapterThreadPoolElasticSearchMonitorHandler adapterThreadPoolElasticSearchMonitorHandler(ThreadPoolRunStateHandler handler) {
+        return new AdapterThreadPoolElasticSearchMonitorHandler(handler);
     }
 }

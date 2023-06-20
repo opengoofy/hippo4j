@@ -21,6 +21,7 @@ import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.core.toolkit.FileUtil;
 import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
 import cn.hippo4j.threadpool.monitor.support.MonitorTypeEnum;
@@ -54,6 +55,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class DynamicThreadPoolElasticSearchMonitorHandler extends AbstractDynamicThreadPoolMonitor {
 
     private AtomicBoolean isIndexExist = null;
+
+    public DynamicThreadPoolElasticSearchMonitorHandler(ThreadPoolRunStateHandler handler) {
+        super(handler);
+    }
 
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {

@@ -30,8 +30,11 @@ import java.util.List;
  */
 public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadPoolMonitor {
 
-    @Resource
     private ThreadPoolRunStateHandler threadPoolRunStateHandler;
+
+    public AbstractDynamicThreadPoolMonitor(ThreadPoolRunStateHandler handler) {
+        this.threadPoolRunStateHandler = handler;
+    }
 
     /**
      * Execute collection thread pool running data.

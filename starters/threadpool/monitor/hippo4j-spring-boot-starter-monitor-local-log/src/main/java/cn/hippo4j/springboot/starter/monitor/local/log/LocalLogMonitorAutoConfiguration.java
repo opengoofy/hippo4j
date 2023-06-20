@@ -19,6 +19,7 @@ package cn.hippo4j.springboot.starter.monitor.local.log;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.monitor.local.log.AdapterThreadPoolLocalLogMonitorHandler;
 import cn.hippo4j.monitor.local.log.DynamicThreadPoolLocalLogMonitorHandler;
 import cn.hippo4j.monitor.local.log.WebThreadPoolLocalLogMonitorHandler;
@@ -38,8 +39,8 @@ public class LocalLogMonitorAutoConfiguration {
 
     @Bean
     @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('dynamic')")
-    public DynamicThreadPoolLocalLogMonitorHandler dynamicThreadPoolLocalLogMonitorHandler() {
-        return new DynamicThreadPoolLocalLogMonitorHandler();
+    public DynamicThreadPoolLocalLogMonitorHandler dynamicThreadPoolLocalLogMonitorHandler(ThreadPoolRunStateHandler handler) {
+        return new DynamicThreadPoolLocalLogMonitorHandler(handler);
     }
 
     @Bean

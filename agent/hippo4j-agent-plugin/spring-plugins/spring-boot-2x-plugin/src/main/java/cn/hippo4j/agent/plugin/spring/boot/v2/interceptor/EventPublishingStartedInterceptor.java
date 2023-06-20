@@ -23,28 +23,15 @@ import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
 import cn.hippo4j.agent.plugin.spring.boot.v2.DynamicThreadPoolChangeHandlerSpring2x;
-import cn.hippo4j.agent.plugin.spring.common.conf.SpringBootConfig;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSupport;
-import cn.hippo4j.common.executor.ThreadFactoryBuilder;
-import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
-import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
-import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.threadpool.dynamic.mode.config.refresher.event.DynamicThreadPoolRefreshListener;
-import cn.hippo4j.threadpool.monitor.api.DynamicThreadPoolMonitor;
-import cn.hippo4j.threadpool.monitor.api.ThreadPoolMonitor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Event publishing started interceptor
@@ -65,7 +52,6 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
         if (context.getParent() != null) {
             // After the child container is started, the thread pool registration will be carried out
             SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
-            // registerMonitor(context);
             return ret;
         }
         SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
@@ -80,43 +66,5 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
     @Override
     public void handleMethodException(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Throwable t) {
 
-    }
-
-    private void registerMonitor(ConfigurableApplicationContext context) {
-        if (!SpringBootConfig.Spring.Dynamic.Thread_Pool.Monitor.enable
-                || StringUtil.isBlank(SpringBootConfig.Spring.Dynamic.Thread_Pool.Monitor.threadPoolTypes)
-                || StringUtil.isBlank(SpringBootConfig.Spring.Dynamic.Thread_Pool.Monitor.collectTypes)) {
-            return;
-        }
-        log.info("Start monitoring the running status of dynamic thread pool.");
-        List<ThreadPoolMonitor> threadPoolMonitors = new ArrayList<>();
-        ScheduledThreadPoolExecutor collectScheduledExecutor = new ScheduledThreadPoolExecutor(
-                1,
-                ThreadFactoryBuilder.builder().daemon(true).prefix("client.scheduled.collect.data").build());
-        // Get dynamic thread pool monitoring component.
-        List<String> collectTypes = Arrays.asList(SpringBootConfig.Spring.Dynamic.Thread_Pool.Monitor.collectTypes.split(","));
-        context.getBeansOfType(ThreadPoolMonitor.class).forEach((beanName, bean) -> threadPoolMonitors.add(bean));
-        Collection<DynamicThreadPoolMonitor> dynamicThreadPoolMonitors =
-                ServiceLoaderRegistry.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
-        dynamicThreadPoolMonitors.stream().filter(each -> collectTypes.contains(each.getType())).forEach(each -> threadPoolMonitors.add(each));
-        // Execute dynamic thread pool monitoring component.
-        collectScheduledExecutor.scheduleWithFixedDelay(
-                () -> scheduleRunnable(threadPoolMonitors),
-                SpringBootConfig.Spring.Dynamic.Thread_Pool.Monitor.initialDelay,
-                SpringBootConfig.Spring.Dynamic.Thread_Pool.Monitor.collectInterval,
-                TimeUnit.MILLISECONDS);
-        if (ThreadPoolExecutorRegistry.getThreadPoolExecutorSize() > 0) {
-            log.info("Dynamic thread pool: [{}]. The dynamic thread pool starts data collection and reporting.", ThreadPoolExecutorRegistry.getThreadPoolExecutorSize());
-        }
-    }
-
-    public void scheduleRunnable(List<ThreadPoolMonitor> threadPoolMonitors) {
-        for (ThreadPoolMonitor each : threadPoolMonitors) {
-            try {
-                each.collect();
-            } catch (Exception ex) {
-                log.error("Error monitoring the running status of dynamic thread pool. Type: {}", each.getType(), ex);
-            }
-        }
     }
 }
