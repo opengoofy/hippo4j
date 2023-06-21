@@ -18,25 +18,23 @@
 package cn.hippo4j.springboot.starter.monitor.micrometer;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
-import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.monitor.micrometer.AdapterThreadPoolMicrometerMonitorHandler;
 import cn.hippo4j.monitor.micrometer.DynamicThreadPoolMicrometerMonitorHandler;
 import cn.hippo4j.monitor.micrometer.WebThreadPoolMicrometerMonitorHandler;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 
 /**
  * Micrometer monitor auto configuration.
  */
 @Configuration
 @AutoConfigureBefore
+@ConditionalOnBean(MarkerConfiguration.Marker.class)
 @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.collect-types:}'.contains('micrometer')")
 public class MicrometerMonitorAutoConfiguration {
 
