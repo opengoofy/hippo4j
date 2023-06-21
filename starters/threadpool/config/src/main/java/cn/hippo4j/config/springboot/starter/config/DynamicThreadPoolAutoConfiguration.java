@@ -53,6 +53,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -112,6 +113,7 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
+    @DependsOn("hippo4jApplicationContextHolder")
     public DynamicThreadPoolPostProcessor dynamicThreadPoolPostProcessor() {
         return new DynamicThreadPoolPostProcessor(bootstrapConfigProperties);
     }
