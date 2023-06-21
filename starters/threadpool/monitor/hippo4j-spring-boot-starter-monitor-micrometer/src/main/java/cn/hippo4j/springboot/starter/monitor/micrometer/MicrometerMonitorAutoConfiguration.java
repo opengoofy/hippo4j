@@ -33,7 +33,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
  * Micrometer monitor auto configuration.
  */
 @Configuration
-@AutoConfigureBefore
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
 @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.collect-types:}'.contains('micrometer')")
 public class MicrometerMonitorAutoConfiguration {
