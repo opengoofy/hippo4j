@@ -52,6 +52,23 @@ public class SpringBootConfig {
                     public static List<String> NAMESPACE = Arrays.asList("application");
                 }
 
+                /**
+                 * Monitor
+                 */
+                @SpringBootConfigNode(root = SpringBootConfig.class)
+                public static class Monitor {
+
+                    public static Boolean enable = Boolean.TRUE;
+
+                    public static String collectTypes = "micrometer";
+
+                    public static String threadPoolTypes = "dynamic";
+
+                    public static Long initialDelay = 10000L;
+
+                    public static Long collectInterval = 5000L;
+                }
+
                 public static String CONFIG_FILE_TYPE;
             }
         }

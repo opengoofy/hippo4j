@@ -15,16 +15,17 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.state;
+package cn.hippo4j.common.support;
 
 import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.CalculateUtil;
-import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.common.toolkit.ReflectUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -68,7 +69,13 @@ public abstract class AbstractThreadPoolRuntime {
         int activeCount = actualExecutor.getActiveCount();
         int largestPoolSize = actualExecutor.getLargestPoolSize();
         BlockingQueue<Runnable> blockingQueue = actualExecutor.getQueue();
-        long rejectCount = actualExecutor instanceof DynamicThreadPoolExecutor ? ((DynamicThreadPoolExecutor) actualExecutor).getRejectCountNum() : NO_REJECT_COUNT_NUM;
+        long rejectCount = NO_REJECT_COUNT_NUM;
+        if (Objects.equals(actualExecutor.getClass().getName(), "cn.hippo4j.core.executor.DynamicThreadPoolExecutor")) {
+            Object actualRejectCountNum = ReflectUtil.invoke(actualExecutor, "getRejectCountNum");
+            if (actualRejectCountNum != null) {
+                rejectCount = (long) actualRejectCountNum;
+            }
+        }
         ThreadPoolRunStateInfo stateInfo = ThreadPoolRunStateInfo.builder()
                 .tpId(threadPoolId)
                 .activeSize(activeCount)

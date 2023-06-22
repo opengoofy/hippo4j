@@ -21,6 +21,7 @@ import cn.hippo4j.agent.core.util.ReflectUtil;
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
+import cn.hippo4j.common.handler.DynamicThreadPoolAdapterChoose;
 import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.common.toolkit.BooleanUtil;
 import org.slf4j.Logger;
@@ -64,13 +65,12 @@ public class SpringThreadPoolRegisterSupport {
         for (Map.Entry<String, Executor> entry : beansWithAnnotation.entrySet()) {
             String beanName = entry.getKey();
             Executor bean = entry.getValue();
-            ThreadPoolExecutor executor = (ThreadPoolExecutor) bean;
-            // TODO
-            // if (DynamicThreadPoolAdapterChoose.match(bean)) {
-            // executor = DynamicThreadPoolAdapterChoose.unwrap(bean);
-            // } else {
-            // executor = (ThreadPoolExecutor) bean;
-            // }
+            ThreadPoolExecutor executor;
+            if (DynamicThreadPoolAdapterChoose.match(bean)) {
+                executor = DynamicThreadPoolAdapterChoose.unwrap(bean);
+            } else {
+                executor = (ThreadPoolExecutor) bean;
+            }
             if (executor == null) {
                 LOGGER.warn("[Hippo4j-Agent] Thread pool is null, ignore bean registration. beanName={}, beanClass={}", beanName, bean.getClass().getName());
             } else {

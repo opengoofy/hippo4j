@@ -138,6 +138,7 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = Constants.CONFIGURATION_PROPERTIES_PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
     @SuppressWarnings("all")
     public DynamicThreadPoolPostProcessor threadPoolBeanPostProcessor(HttpAgent httpAgent,
                                                                       ApplicationContextHolder hippo4jApplicationContextHolder,

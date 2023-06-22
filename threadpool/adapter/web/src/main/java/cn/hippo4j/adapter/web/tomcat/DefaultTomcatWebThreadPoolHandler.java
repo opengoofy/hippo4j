@@ -18,7 +18,7 @@
 package cn.hippo4j.adapter.web.tomcat;
 
 import cn.hippo4j.adapter.web.DefaultAbstractWebThreadPoolService;
-import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
+import cn.hippo4j.common.support.AbstractThreadPoolRuntime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.server.WebServer;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.core.executor.support.adpter;
+package cn.hippo4j.common.api;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;

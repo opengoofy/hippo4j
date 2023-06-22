@@ -21,7 +21,7 @@ import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.ByteConvertUtil;
 import cn.hippo4j.common.toolkit.MemoryUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
+import cn.hippo4j.common.support.AbstractThreadPoolRuntime;
 import lombok.extern.slf4j.Slf4j;
 
 /**

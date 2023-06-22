@@ -24,11 +24,13 @@ import cn.hippo4j.threadpool.message.core.platform.WeChatSendMessageHandler;
 import cn.hippo4j.threadpool.message.core.service.AlarmControlHandler;
 import cn.hippo4j.threadpool.message.core.service.SendMessageHandler;
 import cn.hippo4j.threadpool.message.core.service.ThreadPoolBaseSendMessageService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 /**
  * Message configuration.
  */
+@ConditionalOnProperty(prefix = "spring.dynamic.thread-pool", value = "enable", matchIfMissing = true, havingValue = "true")
 public class MessageConfiguration {
 
     @Bean

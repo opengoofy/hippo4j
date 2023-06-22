@@ -24,7 +24,7 @@ import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageTypeEnum;
 import cn.hippo4j.common.monitor.RuntimeMessage;
 import cn.hippo4j.common.toolkit.BeanUtil;
-import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
+import cn.hippo4j.common.support.AbstractThreadPoolRuntime;
 import cn.hippo4j.springboot.starter.config.BootstrapProperties;
 import lombok.AllArgsConstructor;
 
