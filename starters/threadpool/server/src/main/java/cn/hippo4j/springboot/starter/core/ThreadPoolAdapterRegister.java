@@ -20,7 +20,7 @@ package cn.hippo4j.springboot.starter.core;
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterRegisterAction;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
 import cn.hippo4j.common.model.Result;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.common.toolkit.CollectionUtil;

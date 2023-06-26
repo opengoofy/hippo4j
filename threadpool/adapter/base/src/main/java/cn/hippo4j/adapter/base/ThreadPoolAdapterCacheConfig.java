@@ -17,6 +17,7 @@
 
 package cn.hippo4j.adapter.base;
 
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
 import lombok.Data;
 
 import java.util.List;

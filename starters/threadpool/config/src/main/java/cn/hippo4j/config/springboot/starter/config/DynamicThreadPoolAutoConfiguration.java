@@ -19,7 +19,6 @@ package cn.hippo4j.config.springboot.starter.config;
 
 import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.config.springboot.starter.monitor.ThreadPoolMonitorExecutor;
 import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;
 import cn.hippo4j.config.springboot.starter.refresher.event.AdapterExecutorsRefreshListener;
 import cn.hippo4j.config.springboot.starter.refresher.event.DynamicThreadPoolRefreshListener;
@@ -29,12 +28,9 @@ import cn.hippo4j.config.springboot.starter.support.DynamicThreadPoolAdapterRegi
 import cn.hippo4j.config.springboot.starter.support.DynamicThreadPoolConfigService;
 import cn.hippo4j.config.springboot.starter.support.DynamicThreadPoolPostProcessor;
 import cn.hippo4j.core.config.ApplicationContextHolder;
-import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.enable.MarkerConfiguration;
 import cn.hippo4j.core.executor.handler.DynamicThreadPoolBannerHandler;
 import cn.hippo4j.core.extension.initialize.Hippo4jDynamicThreadPoolInitializer;
-import cn.hippo4j.message.config.MessageConfiguration;
-import cn.hippo4j.springboot.starter.adapter.web.WebAdapterConfiguration;
 import cn.hippo4j.threadpool.alarm.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.threadpool.alarm.handler.DefaultThreadPoolCheckAlarmHandler;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
@@ -46,7 +42,6 @@ import cn.hippo4j.threadpool.message.core.service.ThreadPoolSendMessageService;
 import cn.hippo4j.threadpool.message.core.service.WebThreadPoolConfigChangeHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -54,6 +49,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -70,10 +66,9 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @AllArgsConstructor
 @ConditionalOnBean(MarkerConfiguration.Marker.class)
-@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 @EnableConfigurationProperties(SpringBootstrapConfigProperties.class)
 @Import(ConfigHandlerConfiguration.class)
-@ImportAutoConfiguration({WebAdapterConfiguration.class, UtilAutoConfiguration.class, MessageConfiguration.class})
+@ConditionalOnProperty(prefix = BootstrapConfigProperties.PREFIX, value = "enable", matchIfMissing = true, havingValue = "true")
 public class DynamicThreadPoolAutoConfiguration {
 
     private final BootstrapConfigProperties bootstrapConfigProperties;
@@ -114,13 +109,9 @@ public class DynamicThreadPoolAutoConfiguration {
     }
 
     @Bean
-    public DynamicThreadPoolPostProcessor dynamicThreadPoolPostProcessor(ApplicationContextHolder hippo4jApplicationContextHolder) {
+    @DependsOn("hippo4jApplicationContextHolder")
+    public DynamicThreadPoolPostProcessor dynamicThreadPoolPostProcessor() {
         return new DynamicThreadPoolPostProcessor(bootstrapConfigProperties);
-    }
-
-    @Bean
-    public ThreadPoolMonitorExecutor hippo4jDynamicThreadPoolMonitorExecutor() {
-        return new ThreadPoolMonitorExecutor(bootstrapConfigProperties);
     }
 
     @Bean

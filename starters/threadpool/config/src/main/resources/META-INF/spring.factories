@@ -1,1 +1,5 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.config.springboot.starter.config.DynamicThreadPoolAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.hippo4j.config.springboot.starter.config.DynamicThreadPoolAutoConfiguration,\
+cn.hippo4j.core.config.UtilAutoConfiguration,\
+cn.hippo4j.message.config.MessageConfiguration,\
+cn.hippo4j.springboot.starter.adapter.web.WebAdapterConfiguration,\
+cn.hippo4j.config.springboot.starter.config.MonitorConfiguration

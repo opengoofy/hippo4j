@@ -18,7 +18,7 @@
 package cn.hippo4j.config.service;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapterCacheConfig;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
 import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
 import cn.hippo4j.common.extension.design.Observer;
 import cn.hippo4j.common.extension.design.ObserverMessage;

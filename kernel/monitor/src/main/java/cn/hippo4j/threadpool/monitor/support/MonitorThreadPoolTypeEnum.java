@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.base;
+package cn.hippo4j.threadpool.monitor.support;
 
 /**
  * Monitor thread-pool type enum.

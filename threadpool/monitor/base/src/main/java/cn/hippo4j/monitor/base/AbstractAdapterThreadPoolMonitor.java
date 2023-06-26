@@ -18,8 +18,9 @@
 package cn.hippo4j.monitor.base;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
 import cn.hippo4j.core.config.ApplicationContextHolder;
+import cn.hippo4j.threadpool.monitor.api.AdapterThreadPoolMonitor;
 
 import java.util.Map;
 
