@@ -25,8 +25,11 @@ import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.CalculateUtil;
+import cn.hippo4j.common.toolkit.ReflectUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
+import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
 import lombok.extern.slf4j.Slf4j;
+import org.jboss.threads.EnhancedQueueExecutor;
 import org.springframework.util.ReflectionUtils;
 import org.xnio.Options;
 import org.xnio.XnioWorker;
@@ -44,7 +47,13 @@ import java.util.concurrent.Executor;
 @Slf4j
 public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandlerSupport {
 
+    private final AbstractThreadPoolRuntime runtime;
+
     private Executor executor;
+
+    public UndertowWebThreadPoolHandlerSupport(AbstractThreadPoolRuntime runtime) {
+        this.runtime = runtime;
+    }
 
     /**
      * A callback will be invoked and the Executor will be set up when the web container has been started.
@@ -67,8 +76,13 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
             poolBaseInfo.setCoreSize(coreSize);
             poolBaseInfo.setMaximumSize(maximumPoolSize);
             poolBaseInfo.setKeepAliveTime((long) keepAliveTime);
-            poolBaseInfo.setRejectedName("-");
-            poolBaseInfo.setQueueType("-");
+            poolBaseInfo.setRejectedName("RejectedExecutionException");
+            poolBaseInfo.setQueueType("org.jboss.threads.EnhancedQueueExecutor.TaskNode:FIFO");
+
+            EnhancedQueueExecutor enhancedQueueExecutor =
+                    (EnhancedQueueExecutor) ReflectUtil.getFieldValue(
+                            ReflectUtil.getFieldValue(xnioWorker, "taskPool"), "executor");
+            poolBaseInfo.setQueueCapacity(enhancedQueueExecutor.getQueueSize());
         } catch (Exception ex) {
             log.error("The undertow container failed to get thread pool parameters.", ex);
         }
@@ -127,7 +141,7 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
         stateInfo.setRejectCount(rejectCount);
         stateInfo.setClientLastRefreshTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         stateInfo.setTimestamp(System.currentTimeMillis());
-        return stateInfo;
+        return runtime.supplement(stateInfo);
     }
 
     @Override

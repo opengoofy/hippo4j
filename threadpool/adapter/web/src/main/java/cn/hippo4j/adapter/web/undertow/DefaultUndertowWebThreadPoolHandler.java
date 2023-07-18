@@ -17,6 +17,7 @@
 
 package cn.hippo4j.adapter.web.undertow;
 
+import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
 import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -39,8 +40,8 @@ public class DefaultUndertowWebThreadPoolHandler extends DefaultAbstractWebThrea
 
     private static final String UNDERTOW_NAME = "undertow";
 
-    public DefaultUndertowWebThreadPoolHandler() {
-        super(new UndertowWebThreadPoolHandlerSupport());
+    public DefaultUndertowWebThreadPoolHandler(AbstractThreadPoolRuntime runtime) {
+        super(new UndertowWebThreadPoolHandlerSupport(runtime));
     }
 
     /**
