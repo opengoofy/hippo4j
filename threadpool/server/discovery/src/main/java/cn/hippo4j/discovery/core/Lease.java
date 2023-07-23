@@ -47,8 +47,8 @@ public class Lease<T> {
     public Lease(T r) {
         holder = r;
         registrationTimestamp = System.currentTimeMillis();
-        lastUpdateTimestamp = registrationTimestamp;
         duration = DEFAULT_DURATION_IN_SECS;
+        lastUpdateTimestamp = registrationTimestamp + duration;
     }
 
     public void renew() {
