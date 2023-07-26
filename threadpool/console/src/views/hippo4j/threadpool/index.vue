@@ -170,6 +170,7 @@
         :model="temp"
         :label-width="$langMatch({ zh: '100px', en: '150px' })"
       >
+      //租户， 项目， 线程池
         <template v-if="isEdit">
           <el-form-item :label="$t('tenantManage.tenant')" prop="tenantId">
             <el-select
@@ -496,6 +497,7 @@ export default {
       },
       temp: {
         id: undefined,
+        queueType: 9,
         tenantId: '',
         itemId: '',
         rejectedType: null,
@@ -744,6 +746,7 @@ export default {
       } else if (value === 5) {
         this.temp.capacity = 2147483647;
       }
+      this.$forceUpdate();
     },
 
     tenantSelectList() {
