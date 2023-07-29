@@ -82,7 +82,6 @@ public class ThreadPoolExecutorUtilTest {
 
     @Test
     public void testException(){
-        // Test n
         int newCorePoolSize4 = 6;
         int newMaxPoolSize4 = 4;
         try {
