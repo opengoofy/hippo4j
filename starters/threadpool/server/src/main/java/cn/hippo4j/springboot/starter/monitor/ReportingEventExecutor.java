@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -136,7 +137,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
                     properties.getCollectInterval(),
                     TimeUnit.MILLISECONDS);
             Integer bufferSize = properties.getTaskBufferSize();
-            messageCollectVessel = new ArrayBlockingQueue(bufferSize);
+            messageCollectVessel = new LinkedBlockingQueue(bufferSize);
             // Get all data collection components, currently only historical operation data collection.
             collectors = ApplicationContextHolder.getBeansOfType(Collector.class);
             // Start reporting monitoring data thread.
