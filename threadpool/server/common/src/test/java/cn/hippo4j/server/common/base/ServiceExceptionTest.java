@@ -24,12 +24,10 @@ import cn.hippo4j.server.common.base.exception.ServiceException;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
-
 import java.util.Objects;
 
 /**
  * Service exception test
- *
  */
 public class ServiceExceptionTest {
 
@@ -99,13 +97,4 @@ public class ServiceExceptionTest {
         Assert.isTrue(Objects.equals(serviceException.getErrorCode().getCode(), ErrorCodeEnum.LOGIN_TIMEOUT.getCode()));
         Assert.isTrue(Objects.equals(serviceException.getMessage(), message));
     }
-
-
-
-
-
-
-
-
-
 }
