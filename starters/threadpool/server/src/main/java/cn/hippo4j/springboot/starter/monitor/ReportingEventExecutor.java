@@ -136,7 +136,7 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
                     properties.getCollectInterval(),
                     TimeUnit.MILLISECONDS);
             Integer bufferSize = properties.getTaskBufferSize();
-            messageCollectVessel = new ArrayBlockingQueue(bufferSize);
+            messageCollectVessel = new LinkedBlockingQueue(bufferSize);
             // Get all data collection components, currently only historical operation data collection.
             collectors = ApplicationContextHolder.getBeansOfType(Collector.class);
             // Start reporting monitoring data thread.
