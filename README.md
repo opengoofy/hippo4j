@@ -120,7 +120,8 @@ For full documentation & more details, visit: [Docs](https://www.hippo4j.cn)
 - [[ JavaGuide ]](https://github.com/Snailclimb/JavaGuide)：一份涵盖大部分 Java 程序员所需要掌握的核心知识。
 - [[ toBeBetterJavaer ]](https://github.com/itwanger/toBeBetterJavaer)：一份通俗易懂、风趣幽默的 Java 学习指南。
 - [[ Jpom ]](https://gitee.com/dromara/Jpom)：简而轻的低侵入式在线构建、自动部署、日常运维、项目监控软件。
-- [[ CongoMall ]](https://gitee.com/opengoofy/congomall)：作者的另一个开源项目刚果商城，包含了商城业务和基础架构两大模块。
+- [[ 12306 ]](https://gitee.com/nageoffer/12306)：完成高仿 12306 用户+抢票+订单+支付服务，帮助学生主打就业的项目。
+- [[ CongoMall ]](https://gitee.com/nageoffer/congomall)：企业级商城，基于 DDD 领域驱动模型开发，包含商城业务和基础架构。
 
 ### 贡献者
 
