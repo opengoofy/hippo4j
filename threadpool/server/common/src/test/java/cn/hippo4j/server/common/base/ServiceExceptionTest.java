@@ -32,14 +32,14 @@ import java.util.Objects;
 public class ServiceExceptionTest {
 
     @Test
-    public void ServiceExceptionTest1(){
+    public void ServiceExceptionTest1() {
         ServiceException serviceException = new ServiceException();
         Assert.isTrue(Objects.equals(serviceException.getErrorCode().getCode(), "3"));
         Assert.isTrue(Objects.equals(serviceException.getMessage(), "SERVICE_ERROR"));
     }
 
     @Test
-    public void ServiceExceptionTest2(){
+    public void ServiceExceptionTest2() {
         ErrorCode errorCode = ErrorCodeEnum.LOGIN_TIMEOUT;
         ServiceException serviceException = new ServiceException(errorCode);
         Assert.isTrue(Objects.equals(serviceException.getErrorCode().getCode(), ErrorCodeEnum.LOGIN_TIMEOUT.getCode()));
@@ -47,21 +47,21 @@ public class ServiceExceptionTest {
     }
 
     @Test
-    public void ServiceExceptionTest3(){
+    public void ServiceExceptionTest3() {
         String message = ErrorCodeEnum.SERVICE_ERROR.getMessage();
         ServiceException serviceException = new ServiceException(message);
         Assert.isTrue(Objects.equals(serviceException.getMessage(), message));
     }
 
     @Test
-    public void ServiceExceptionTest4(){
+    public void ServiceExceptionTest4() {
         Throwable cause = new Throwable();
         ServiceException serviceException = new ServiceException(cause);
         Assert.isTrue(Objects.equals(serviceException.getCause().getMessage(), cause.getMessage()));
     }
 
     @Test
-    public void ServiceExceptionTest5(){
+    public void ServiceExceptionTest5() {
         String message = ErrorCodeEnum.SERVICE_ERROR.getMessage();
         Throwable cause = new Throwable();
         ServiceException serviceException = new ServiceException(message, cause);
@@ -70,7 +70,7 @@ public class ServiceExceptionTest {
     }
 
     @Test
-    public void ServiceExceptionTest6(){
+    public void ServiceExceptionTest6() {
         String message = ErrorCodeEnum.SERVICE_ERROR.getMessage();
         Throwable cause = new Throwable();
         ServiceException serviceException = new ServiceException(cause, message);
@@ -79,7 +79,7 @@ public class ServiceExceptionTest {
     }
 
     @Test
-    public void ServiceExceptionTest7(){
+    public void ServiceExceptionTest7() {
         Throwable cause = new Throwable();
         ErrorCode errorCode = ErrorCodeEnum.LOGIN_TIMEOUT;
         ServiceException serviceException = new ServiceException(cause, errorCode);
@@ -88,7 +88,7 @@ public class ServiceExceptionTest {
     }
 
     @Test
-    public void ServiceExceptionTest8(){
+    public void ServiceExceptionTest8() {
         Throwable cause = new Throwable();
         ErrorCode errorCode = ErrorCodeEnum.LOGIN_TIMEOUT;
         String message = ErrorCodeEnum.SERVICE_ERROR.getMessage();

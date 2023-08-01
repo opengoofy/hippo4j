@@ -45,12 +45,11 @@ public class ThreadPoolExecutorUtilTest {
                 maxPoolSize,
                 1L,
                 TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(10)
-        );
+                new ArrayBlockingQueue<>(10));
     }
 
     @Test
-    public void testEquals(){
+    public void testEquals() {
         // Test when the new core pool size equals the original maximum pool size.
         int newCorePoolSize1 = maxPoolSize;
         int newMaxPoolSize1 = 6;
@@ -60,7 +59,7 @@ public class ThreadPoolExecutorUtilTest {
     }
 
     @Test
-    public void testGreater(){
+    public void testGreater() {
         // Test when the new core pool size is greater than the original maximum pool size.
         int newCorePoolSize2 = 8;
         int newMaxPoolSize2 = 10;
@@ -70,7 +69,7 @@ public class ThreadPoolExecutorUtilTest {
     }
 
     @Test
-    public void testLess(){
+    public void testLess() {
         // Test when the new core pool size is less than the original maximum pool size.
         int newCorePoolSize3 = 3;
         int newMaxPoolSize3 = 5;
@@ -80,7 +79,7 @@ public class ThreadPoolExecutorUtilTest {
     }
 
     @Test
-    public void testException(){
+    public void testException() {
         // Test when the new core pool size is greater than the new maximum pool size, which should throw an IllegalArgumentException.
         int newCorePoolSize4 = 6;
         int newMaxPoolSize4 = 4;
@@ -89,7 +88,7 @@ public class ThreadPoolExecutorUtilTest {
         } catch (IllegalArgumentException e) {
             // Expected to throw an exception.
             Assert.assertEquals("newCorePoolSize must be smaller than newMaximumPoolSize", e.getMessage());
-            log.error("newCorePoolSize must be smaller than newMaximumPoolSize;{}",e.getMessage());
+            log.error("newCorePoolSize must be smaller than newMaximumPoolSize;{}", e.getMessage());
         }
     }
 }

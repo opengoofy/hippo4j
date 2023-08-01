@@ -58,7 +58,9 @@ public class AdapterThreadPoolMicrometerMonitorHandler extends AbstractAdapterTh
                 Tag.of(APPLICATION_NAME_TAG, applicationName));
         Metrics.gauge(metricName("core.size"), tags, threadPoolAdapterState, ThreadPoolAdapterState::getCoreSize);
         Metrics.gauge(metricName("maximum.size"), tags, threadPoolAdapterState, ThreadPoolAdapterState::getMaximumSize);
-        Metrics.gauge(metricName("queue.capacity"), tags, threadPoolAdapterState, ThreadPoolAdapterState::getBlockingQueueCapacity);
+        if (threadPoolAdapterState.getBlockingQueueCapacity() != null) {
+            Metrics.gauge(metricName("queue.capacity"), tags, threadPoolAdapterState, ThreadPoolAdapterState::getBlockingQueueCapacity);
+        }
     }
 
     private String metricName(String name) {
