@@ -159,9 +159,7 @@ export default {
       });
     },
     handleLogin() {
-      console.log('111111')
       this.$refs.loginForm.validate((valid) => {
-        console.log('22222', valid)
         if (valid) {
           this.loading = true;
           this.$store
