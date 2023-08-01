@@ -128,6 +128,7 @@ export default {
     if (hostname === 'console.hippo4j.cn') {
       this.loginForm.username = 'hippo4j';
       this.loginForm.password = 'hippo4j';
+      this.rememberMe = 1;
     }
     console.log(hostname);
   },

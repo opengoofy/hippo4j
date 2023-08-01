@@ -1,4 +1,5 @@
 'use strict';
+const { debug } = require('console');
 const path = require('path');
 const defaultSettings = require('./src/settings.js');
 
@@ -35,9 +36,10 @@ module.exports = {
     },
     proxy: {
       '/hippo4j/v1/cs': {
-        target: `http://127.0.0.1:6691/hippo4j/v1/cs`,
+        target: `http://console.hippo4j.cn/hippo4j/v1/cs/`,
         changOrigin: true,
         secure: false,
+        logLevel: 'debug',
         pathRewrite: {
           '^/hippo4j/v1/cs': '',
         },
