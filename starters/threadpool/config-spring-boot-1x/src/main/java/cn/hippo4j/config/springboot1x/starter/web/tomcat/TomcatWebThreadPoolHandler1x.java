@@ -19,7 +19,7 @@ package cn.hippo4j.config.springboot1x.starter.web.tomcat;
 
 import cn.hippo4j.adapter.web.tomcat.TomcatWebThreadPoolHandlerSupport;
 import cn.hippo4j.config.springboot1x.starter.web.AbstractWebThreadPoolService1x;
-import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
+import cn.hippo4j.common.support.AbstractThreadPoolRuntime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer;
 

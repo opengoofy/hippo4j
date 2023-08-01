@@ -17,8 +17,8 @@
 
 package cn.hippo4j.springboot.starter.config;
 
-import cn.hippo4j.monitor.base.MonitorThreadPoolTypeEnum;
-import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import cn.hippo4j.threadpool.monitor.support.MonitorThreadPoolTypeEnum;
+import cn.hippo4j.threadpool.monitor.support.MonitorTypeEnum;
 import lombok.Data;
 
 /**

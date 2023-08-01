@@ -19,7 +19,7 @@ package cn.hippo4j.adapter.dubbo;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import lombok.extern.slf4j.Slf4j;

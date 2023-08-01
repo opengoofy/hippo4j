@@ -28,6 +28,7 @@ import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSup
 import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
 import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
 import cn.hippo4j.threadpool.dynamic.mode.config.refresher.event.DynamicThreadPoolRefreshListener;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.lang.reflect.Method;
@@ -35,6 +36,7 @@ import java.lang.reflect.Method;
 /**
  * Event publishing started interceptor
  */
+@Slf4j
 public class EventPublishingStartedInterceptor implements InstanceMethodsAroundInterceptor {
 
     private static final ILog LOGGER = LogManager.getLogger(EventPublishingStartedInterceptor.class);
@@ -57,6 +59,7 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
         dynamicRefresh.registerListener();
         AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH,
                 new DynamicThreadPoolRefreshListener());
+
         return ret;
     }
 

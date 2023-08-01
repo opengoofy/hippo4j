@@ -19,6 +19,7 @@ package cn.hippo4j.core.executor.state;
 
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.support.AbstractThreadPoolRuntime;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

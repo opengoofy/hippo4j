@@ -16,5 +16,6 @@
         <module>alarm</module>
         <module>dynamic</module>
         <module>message</module>
+        <module>monitor</module>
     </modules>
 </project>

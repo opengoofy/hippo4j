@@ -17,6 +17,8 @@
 
 package cn.hippo4j.adapter.base;
 
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
+
 import java.util.List;
 
 /**

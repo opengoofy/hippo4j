@@ -20,13 +20,19 @@ package cn.hippo4j.springboot.starter.adapter.web;
 import cn.hippo4j.adapter.web.WebThreadPoolHandlerChoose;
 import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
 import cn.hippo4j.core.config.ApplicationContextHolder;
+import cn.hippo4j.core.config.UtilAutoConfiguration;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.core.toolkit.inet.InetUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
@@ -37,6 +43,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
         WebThreadPoolHandlerConfiguration.EmbeddedJetty.class,
         WebThreadPoolHandlerConfiguration.EmbeddedUndertow.class})
 @RequiredArgsConstructor
+@AutoConfigureAfter(UtilAutoConfiguration.class)
 public class WebAdapterConfiguration {
 
     private final ConfigurableEnvironment environment;

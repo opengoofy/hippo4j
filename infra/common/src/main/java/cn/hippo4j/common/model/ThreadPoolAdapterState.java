@@ -15,22 +15,53 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.monitor.base;
+package cn.hippo4j.common.model;
+
+import lombok.Data;
 
 /**
- * Thread-pool runtime monitor.
+ * Thread pool adapter state info.
  */
-public interface ThreadPoolMonitor {
+@Data
+public class ThreadPoolAdapterState {
 
     /**
-     * Get thread-pool monitoring type.
-     *
-     * @return monitoring type
+     * Thread-pool keu
      */
-    String getType();
+    private String threadPoolKey;
 
     /**
-     * Collect thread-pool runtime data.
+     * Active
      */
-    void collect();
+    private String active;
+
+    /**
+     * identify
+     */
+    private String identify;
+
+    /**
+     * Client address
+     */
+    private String clientAddress;
+
+    /**
+     * Core size
+     */
+    private Integer coreSize;
+
+    /**
+     * Maximum size
+     */
+    private Integer maximumSize;
+
+    /**
+     * Blocking queue type
+     */
+    private String blockingQueueType;
+
+    /**
+     * Blocking queue capacity
+     */
+    private Integer blockingQueueCapacity;
 }

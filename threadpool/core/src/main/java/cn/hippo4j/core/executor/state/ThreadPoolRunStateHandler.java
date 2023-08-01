@@ -19,8 +19,10 @@ package cn.hippo4j.core.executor.state;
 
 import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
+import cn.hippo4j.common.handler.ThreadPoolStatusHandler;
 import cn.hippo4j.common.model.ManyThreadPoolRunStateInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
+import cn.hippo4j.common.support.AbstractThreadPoolRuntime;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.ByteConvertUtil;
 import cn.hippo4j.common.toolkit.MemoryUtil;
@@ -66,12 +68,40 @@ public class ThreadPoolRunStateHandler extends AbstractThreadPoolRuntime {
         String rejectedName;
         rejectedName = pool.getRejectedExecutionHandler().getClass().getSimpleName();
         poolRunStateInfo.setRejectedName(rejectedName);
-        ManyThreadPoolRunStateInfo manyThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, ManyThreadPoolRunStateInfo.class);
+
+        ManyThreadPoolRunStateInfo manyThreadPoolRunStateInfo = convert(poolRunStateInfo);
         manyThreadPoolRunStateInfo.setIdentify(CLIENT_IDENTIFICATION_VALUE);
         String active = environment.getProperty("spring.profiles.active", "UNKNOWN");
         manyThreadPoolRunStateInfo.setActive(active.toUpperCase());
         String threadPoolState = ThreadPoolStatusHandler.getThreadPoolState(pool);
         manyThreadPoolRunStateInfo.setState(threadPoolState);
+        return manyThreadPoolRunStateInfo;
+    }
+
+    private ManyThreadPoolRunStateInfo convert(ThreadPoolRunStateInfo poolRunStateInfo) {
+        ManyThreadPoolRunStateInfo manyThreadPoolRunStateInfo = new ManyThreadPoolRunStateInfo();
+        manyThreadPoolRunStateInfo.setCurrentLoad(poolRunStateInfo.getCurrentLoad());
+        manyThreadPoolRunStateInfo.setPeakLoad(poolRunStateInfo.getPeakLoad());
+        manyThreadPoolRunStateInfo.setTpId(poolRunStateInfo.getTpId());
+        manyThreadPoolRunStateInfo.setActiveCount(poolRunStateInfo.getActiveCount());
+        manyThreadPoolRunStateInfo.setPoolSize(poolRunStateInfo.getPoolSize());
+        manyThreadPoolRunStateInfo.setActiveSize(poolRunStateInfo.getActiveSize());
+        manyThreadPoolRunStateInfo.setLargestPoolSize(poolRunStateInfo.getLargestPoolSize());
+        manyThreadPoolRunStateInfo.setQueueSize(poolRunStateInfo.getQueueSize());
+        manyThreadPoolRunStateInfo.setQueueRemainingCapacity(poolRunStateInfo.getQueueRemainingCapacity());
+        manyThreadPoolRunStateInfo.setCompletedTaskCount(poolRunStateInfo.getCompletedTaskCount());
+        manyThreadPoolRunStateInfo.setRejectCount(poolRunStateInfo.getRejectCount());
+        manyThreadPoolRunStateInfo.setHost(poolRunStateInfo.getHost());
+        manyThreadPoolRunStateInfo.setMemoryProportion(poolRunStateInfo.getMemoryProportion());
+        manyThreadPoolRunStateInfo.setFreeMemory(poolRunStateInfo.getFreeMemory());
+        manyThreadPoolRunStateInfo.setClientLastRefreshTime(poolRunStateInfo.getClientLastRefreshTime());
+        manyThreadPoolRunStateInfo.setTimestamp(poolRunStateInfo.getTimestamp());
+        manyThreadPoolRunStateInfo.setCoreSize(poolRunStateInfo.getCoreSize());
+        manyThreadPoolRunStateInfo.setMaximumSize(poolRunStateInfo.getMaximumSize());
+        manyThreadPoolRunStateInfo.setQueueType(poolRunStateInfo.getQueueType());
+        manyThreadPoolRunStateInfo.setQueueCapacity(poolRunStateInfo.getQueueCapacity());
+        manyThreadPoolRunStateInfo.setRejectedName(poolRunStateInfo.getRejectedName());
+        manyThreadPoolRunStateInfo.setKeepAliveTime(poolRunStateInfo.getKeepAliveTime());
         return manyThreadPoolRunStateInfo;
     }
 }
