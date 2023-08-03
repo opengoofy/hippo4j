@@ -744,6 +744,7 @@ export default {
       } else if (value === 5) {
         this.temp.capacity = 2147483647;
       }
+      this.$forceUpdate();
     },
 
     tenantSelectList() {
