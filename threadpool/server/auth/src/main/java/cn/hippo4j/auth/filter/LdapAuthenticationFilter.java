@@ -25,10 +25,9 @@ import cn.hippo4j.auth.toolkit.ReturnT;
 import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.server.common.base.Results;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.codec.DecodingException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -43,7 +42,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,56 +51,62 @@ import static cn.hippo4j.common.constant.Constants.BASE_PATH;
 import static cn.hippo4j.common.constant.Constants.MAP_INITIAL_CAPACITY;
 
 /**
- * JWT authentication filter.
+ * Ldap Filter
  */
 @Slf4j
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class LdapAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final AuthenticationManager authenticationManager;
+    private final ThreadLocal<Integer> rememberMe = new ThreadLocal<>();
 
-    private final ThreadLocal<Integer> rememberMe = new ThreadLocal();
+    private UserDetailsService ldapUserDetailsService;
 
-    private UserDetailsService userDetailsService;
-
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-        super.setFilterProcessesUrl(BASE_PATH + "/auth/login");
+    public void setLdapUserDetailsService(UserDetailsService ldapUserDetailsServiceImpl) {
+        this.ldapUserDetailsService = ldapUserDetailsServiceImpl;
     }
 
-    public void setLdapUserDetailsService(UserDetailsService userDetailsServiceImpl) {
-        this.userDetailsService = userDetailsServiceImpl;
+    public LdapAuthenticationFilter(AuthenticationManager authenticationManager) {
+        super.setFilterProcessesUrl(BASE_PATH + "/auth/ldap/login");
     }
 
-    @SneakyThrows
+    /**
+     * Whether it's just the post way
+     */
+    private boolean postOnly = true;
+
+
+    /**
+     * filter obtains the username and password of LDAP and assembles it on the token.
+     * Then give the token for authorization
+     */
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-                                                HttpServletResponse response) throws AuthenticationException {
-        // Get logged in information from the input stream.
-        Authentication authenticate = null;
-        try {
-            LoginUser loginUser = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
-            String key = new StringBuffer(loginUser.getTag()).reverse().toString();
-            String password = AESUtil.decrypt(loginUser.getPassword(), key);
-            loginUser.setPassword(password);
-
-            request.setAttribute("loginUser", loginUser);
-            rememberMe.set(loginUser.getRememberMe());
-            UserDetails userDetails = userDetailsService.loadUserByUsername(loginUser.getUsername());
-            authenticate = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-        } catch (GeneralSecurityException e) {
-            log.warn("Password decode exception: {}", e.getMessage());
-            throw new DecodingException(e.getMessage());
-        } catch (UsernameNotFoundException e) {
-            log.warn("User {} not found", e.getMessage());
-            throw e;
-        } catch (BadCredentialsException e) {
-            log.warn("Bad credentials exception: {}", e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            log.error("Attempt authentication error", e);
+    public Authentication attemptAuthentication(HttpServletRequest request
+            , HttpServletResponse response) throws AuthenticationException {
+        if (postOnly && !"POST".equals(request.getMethod())) {
+            throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
+        } else {
+            // Get logged in information from the input stream.
+            Authentication authenticate = null;
+            try {
+                LoginUser loginUser = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
+                String key = new StringBuffer(loginUser.getTag()).reverse().toString();
+                String password = AESUtil.decrypt(loginUser.getPassword(), key);
+                loginUser.setPassword(password);
+                request.setAttribute("loginUser", loginUser);
+                rememberMe.set(loginUser.getRememberMe());
+                // ldap validated
+                UserDetails userDetails = ldapUserDetailsService.loadUserByUsername(loginUser.getUsername());
+                authenticate = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            } catch (UsernameNotFoundException e) {
+                log.debug("User {} not found", e.getMessage());
+                throw e;
+            } catch (BadCredentialsException e) {
+                log.debug("Bad credentials exception: {}", e.getMessage());
+                throw e;
+            } catch (Exception e) {
+                log.debug("Attempt authentication error", e);
+            }
+            return authenticate;
         }
-        return authenticate;
     }
 
     @Override
@@ -133,7 +137,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(JSONUtil.toJSONString(new ReturnT(ReturnT.JWT_FAIL_CODE, getMessage(failed))));
+        response.getWriter().write(JSONUtil.toJSONString(new ReturnT<>(ReturnT.JWT_FAIL_CODE, getMessage(failed))));
     }
 
     /**

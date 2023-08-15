@@ -21,10 +21,10 @@ import cn.hippo4j.auth.mapper.UserMapper;
 import cn.hippo4j.auth.model.UserInfo;
 import cn.hippo4j.auth.model.biz.user.JwtUser;
 import cn.hippo4j.auth.model.biz.user.LoginUser;
+import cn.hippo4j.auth.service.LdapService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,7 +46,7 @@ import java.util.Set;
  */
 @Slf4j
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class LdapUserDetailsServiceImpl implements UserDetailsService {
 
     @Value("${hippo4j.core.auth.enabled:true}")
     private Boolean enableAuthentication;
@@ -54,30 +54,37 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private LdapService ldapService;
+
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         JwtUser anonymous = dealWithAnonymous();
         if (!Objects.isNull(anonymous)) {
             return anonymous;
         }
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(requestAttributes)).getRequest();
         LoginUser loginUser = (LoginUser) request.getAttribute("loginUser");
-        String loginPassword = loginUser.getPassword();
+        // ldap authentication
+        ldapService.login(userName, loginUser.getPassword());
+        // By querying the data inventory this user does not exist
         UserInfo userInfo = userMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
                 .eq(UserInfo::getUserName, userName)
         );
+        // the database does not, create a ROLE_USER permission to the default user, password is empty
         if (Objects.isNull(userInfo)) {
-            throw new UsernameNotFoundException(userName);
+            userInfo = new UserInfo();
+            userInfo.setPassword("");
+            userInfo.setUserName(loginUser.getUsername());
+            userInfo.setRole("ROLE_USER");
+            userMapper.insert(userInfo);
         }
-        // Validation password
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        if (!bCryptPasswordEncoder.matches(loginPassword, userInfo.getPassword())) {
-            throw new BadCredentialsException(userName + "密码错误，请重新输入");
-        }
+        // structure jwtUser
         JwtUser jwtUser = new JwtUser();
         jwtUser.setId(userInfo.getId());
         jwtUser.setUsername(userName);
-        jwtUser.setPassword(userInfo.getPassword());
+        jwtUser.setPassword("");
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(userInfo.getRole() + ""));
         jwtUser.setAuthorities(authorities);
         return jwtUser;
