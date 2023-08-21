@@ -20,6 +20,7 @@ package cn.hippo4j.auth.config;
 import cn.hippo4j.auth.constant.Constants;
 import cn.hippo4j.auth.filter.JWTAuthenticationFilter;
 import cn.hippo4j.auth.filter.JWTAuthorizationFilter;
+import cn.hippo4j.auth.filter.LdapAuthenticationFilter;
 import cn.hippo4j.auth.security.JwtTokenManager;
 import cn.hippo4j.auth.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +29,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -54,8 +56,11 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${hippo4j.core.auth.enabled:true}")
     private Boolean enableAuthentication;
 
-    @Resource
+    @Resource(name = "userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
+
+    @Resource(name = "ldapUserDetailsServiceImpl")
+    private UserDetailsService ldapUserDetailsService;
 
     @Resource
     private JwtTokenManager tokenManager;
@@ -93,7 +98,9 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/static/**", "/index.html", "/favicon.ico", "/avatar.jpg").permitAll()
                 .antMatchers("/doc.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs").anonymous()
                 .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                // .addFilter(new JWTAuthenticationFilter(authenticationManager())).authenticationProvider(authenticationProvider())
+                .addFilter(JWTAuthenticationFilter()).authenticationProvider(ldapAuthenticationProvider())
+                .addFilter(LdapAuthenticationFilter()).authenticationProvider(ldapAuthenticationProvider())
                 .addFilter(new JWTAuthorizationFilter(tokenManager, authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         disableAuthenticationIfNeeded(http);
@@ -104,6 +111,20 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         String[] ignores = Stream.of("/hippo4j/v1/cs/auth/users/apply/token/**").toArray(String[]::new);
         web.ignoring().antMatchers(ignores);
+    }
+
+    private LdapAuthenticationFilter LdapAuthenticationFilter() throws Exception {
+        LdapAuthenticationFilter filter = new LdapAuthenticationFilter(authenticationManager());
+        filter.setLdapUserDetailsService(ldapUserDetailsService);
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
+    }
+
+    private JWTAuthenticationFilter JWTAuthenticationFilter() throws Exception {
+        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManager());
+        filter.setLdapUserDetailsService(userDetailsService);
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
     }
 
     /**
@@ -118,6 +139,20 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(bCryptPasswordEncoder());
         return provider;
+    }
+
+    @Bean
+    public DaoAuthenticationProvider ldapAuthenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(ldapUserDetailsService);
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        return authProvider;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider())
+                .authenticationProvider(ldapAuthenticationProvider());
     }
 
     private void disableAuthenticationIfNeeded(HttpSecurity http) throws Exception {

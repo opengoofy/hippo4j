@@ -78,6 +78,20 @@ public class AdaptedThreadPoolDestroyPostProcessor implements DestructionAwareBe
                 .ifPresent(executorHolder -> destroyAdaptedThreadPoolExecutor(beanName, executorHolder));
     }
 
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        // forked default implementation from spring-beans-5.1.14.RELEASE.jar
+        // org.springframework.beans.factory.config.BeanPostProcessor#postProcessBeforeInitialization
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        // forked default implementation from spring-beans-5.1.14.RELEASE.jar
+        // org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization
+        return bean;
+    }
+
     private void destroyAdaptedThreadPoolExecutor(String beanName, ThreadPoolExecutorHolder executorHolder) {
         try {
             if (log.isDebugEnabled()) {
