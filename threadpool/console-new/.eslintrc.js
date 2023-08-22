@@ -1,3 +1,5 @@
+const { off } = require("process");
+
 module.exports = {
   env: {
     browser: true,
@@ -20,6 +22,7 @@ module.exports = {
     eqeqeq: 2,
     'no-alert': 2,
     'no-undef': 2,
+    'prefer-const': 0,
     'no-use-before-define': 2,
     'react-hooks/exhaustive-deps': 2,
     '@typescript-eslint/no-explicit-any': 0,
