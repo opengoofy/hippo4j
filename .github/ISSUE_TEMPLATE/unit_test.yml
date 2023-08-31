@@ -41,7 +41,7 @@ body:
     attributes:
       label: Read the unit testing guidelines
       description: >
-        Read the [develop guidelines](https://hippo4j.cn/community/category/贡献规约) before writing unit test code.
+        Read the [develop guidelines](https://hippo4j.cn/community/dev_convention/code) before writing unit test code.
       options:
         - label: >
             I have read.

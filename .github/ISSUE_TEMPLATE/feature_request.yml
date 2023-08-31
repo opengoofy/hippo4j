@@ -42,7 +42,7 @@ body:
       label: Feature Request
       description: Describe the feature.
       placeholder: >
-        First of all: Have you checked the docs https://hippo4j.cn/community/category/贡献规约,
+        First of all: Have you checked the docs https://hippo4j.cn/community/dev_convention/code,
         or GitHub issues whether someone else has already reported your issue?
         Maybe the feature already exists?
     validations:

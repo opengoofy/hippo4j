@@ -42,7 +42,7 @@ body:
       label: Enhancement Request
       description: Describe the suggestion.
       placeholder: >
-        First of all: Have you checked the docs https://hippo4j.cn/community/category/贡献规约,
+        First of all: Have you checked the docs https://hippo4j.cn/community/dev_convention/code,
         or GitHub issues whether someone else has already reported your issue?
     validations:
       required: true
