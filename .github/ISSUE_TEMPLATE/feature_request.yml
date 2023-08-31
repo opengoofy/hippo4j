@@ -18,7 +18,7 @@
 name: Feature Request
 title: "[Feature] Feature title "
 description: I want to suggest a feature for this project.
-labels: [ "feature" ]
+labels: [ "type: feature" ]
 body:
   - type: markdown
     attributes:
