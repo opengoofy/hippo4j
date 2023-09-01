@@ -96,6 +96,24 @@ public class BeforeCheckConfiguration {
                 default:
             }
         }
+        checkFlag = properties != null && Objects.equals(bootstrapConfigPropertiesClassName, properties.getClass().getName()) && properties.getEnable();
+        if (checkFlag) {
+            Map<String, String> nacos = properties.getNacos();
+            if (MapUtil.isNotEmpty(nacos)) {
+                String group = nacos.get("group");
+                if (StringUtil.isBlank(group)) {
+                    throw new ConfigEmptyException(
+                            "Web server failed to start. The dynamic thread pool config nacos group is empty.",
+                            "Please check whether the [spring.dynamic.thread-pool.config-nacos-group] configuration is empty or an empty string.");
+                }
+                String dataId = nacos.get("data-id");
+                if (StringUtil.isBlank(dataId)) {
+                    throw new ConfigEmptyException(
+                            "Web server failed to start. The dynamic thread pool config nacos data-id is empty.",
+                            "Please check whether the [spring.dynamic.thread-pool.config-nacos-data-id] configuration is empty or an empty string.");
+                }
+            }
+        }
         return new BeforeCheckConfiguration.BeforeCheck();
     }
 
