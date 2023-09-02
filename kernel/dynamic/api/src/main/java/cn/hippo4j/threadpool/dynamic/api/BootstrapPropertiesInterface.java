@@ -79,4 +79,11 @@ public interface BootstrapPropertiesInterface {
     default Map<String, String> getNacos() {
         return null;
     }
+
+    /**
+     * Get etcd.
+     */
+    default Map<String, String> getEtcd() {
+        return null;
+    }
 }
