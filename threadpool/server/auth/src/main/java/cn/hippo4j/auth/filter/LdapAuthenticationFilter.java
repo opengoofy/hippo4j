@@ -73,14 +73,12 @@ public class LdapAuthenticationFilter extends UsernamePasswordAuthenticationFilt
      */
     private boolean postOnly = true;
 
-
     /**
      * filter obtains the username and password of LDAP and assembles it on the token.
      * Then give the token for authorization
      */
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request
-            , HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         if (postOnly && !"POST".equals(request.getMethod())) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         } else {
