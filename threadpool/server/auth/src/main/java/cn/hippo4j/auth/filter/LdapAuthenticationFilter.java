@@ -79,8 +79,7 @@ public class LdapAuthenticationFilter extends UsernamePasswordAuthenticationFilt
      * Then give the token for authorization
      */
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request
-            , HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         if (postOnly && !"POST".equals(request.getMethod())) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         } else {

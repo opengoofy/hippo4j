@@ -64,8 +64,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         LoginUser loginUser = (LoginUser) request.getAttribute("loginUser");
         String loginPassword = loginUser.getPassword();
         UserInfo userInfo = userMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
-                .eq(UserInfo::getUserName, userName)
-        );
+                .eq(UserInfo::getUserName, userName));
         if (Objects.isNull(userInfo)) {
             throw new UsernameNotFoundException(userName);
         }

@@ -52,9 +52,8 @@ public class LdapServiceImpl implements LdapService {
     public void login(String username, String password) {
         try {
             ldapTemplate.authenticate(LdapQueryBuilder.query()
-                            .where(accountAttribute).is(username)
-                            .and(query().where("objectClass").is(objectClassName))
-                    , password);
+                    .where(accountAttribute).is(username)
+                    .and(query().where("objectClass").is(objectClassName)), password);
             log.debug("{} ldap Login successful", username);
         } catch (EmptyResultDataAccessException e) {
             throw new UsernameNotFoundException("ldap Can't find the user information ");
