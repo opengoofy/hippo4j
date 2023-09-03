@@ -54,7 +54,7 @@ public class LdapConfiguration {
         contextSource.setBase(base);
         contextSource.setUserDn(username);
         contextSource.setPassword(password);
-        //  fix garbled characters
+        // fix garbled characters
         config.put("java.naming.ldap.attributes.binary", "objectGUID");
 
         contextSource.setPooled(true);
