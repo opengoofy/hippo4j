@@ -73,7 +73,6 @@ public class LdapAuthenticationFilter extends UsernamePasswordAuthenticationFilt
      */
     private boolean postOnly = true;
 
-
     /**
      * filter obtains the username and password of LDAP and assembles it on the token.
      * Then give the token for authorization
