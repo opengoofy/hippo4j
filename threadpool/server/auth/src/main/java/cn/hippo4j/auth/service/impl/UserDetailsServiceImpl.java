@@ -24,6 +24,7 @@ import cn.hippo4j.auth.model.biz.user.LoginUser;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,6 +47,7 @@ import java.util.Set;
  */
 @Slf4j
 @Service
+@Primary
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Value("${hippo4j.core.auth.enabled:true}")
