@@ -17,13 +17,19 @@
 
 package cn.hippo4j.auth.security;
 
+import cn.hippo4j.auth.model.biz.user.LoginUser;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.expression.AccessException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Auth manager.
@@ -36,6 +42,8 @@ public class AuthManager {
 
     private final AuthenticationManager authenticationManager;
 
+    private final UserDetailsService userDetailsService;
+
     /**
      * Resolve token from user.
      *
@@ -47,9 +55,11 @@ public class AuthManager {
     @SneakyThrows
     public String resolveTokenFromUser(String userName, String rawPassword) {
         try {
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userName, rawPassword);
-            authenticationManager.authenticate(authenticationToken);
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            LoginUser loginUser = new LoginUser();
+            loginUser.setPassword(rawPassword);
+            request.setAttribute("loginUser", loginUser);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
         } catch (AuthenticationException e) {
             throw new AccessException("Unknown user.");
         }

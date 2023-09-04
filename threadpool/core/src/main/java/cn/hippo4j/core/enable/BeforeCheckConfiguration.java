@@ -28,7 +28,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Before check configuration.
@@ -92,15 +91,15 @@ public class BeforeCheckConfiguration {
                         }
                     }
                     Map<String, String> etcd = properties.getEtcd();
-                    if (MapUtil.isNotEmpty(etcd)){
+                    if (MapUtil.isNotEmpty(etcd)) {
                         String endpoints = etcd.get("endpoints");
-                        if ((StringUtil.isBlank(endpoints))){
+                        if ((StringUtil.isBlank(endpoints))) {
                             throw new ConfigEmptyException(
                                     "Web server failed to start. The dynamic thread pool etcd endpoints is empty.",
                                     "Please check whether the [spring.dynamic.thread-pool.etcd.endpoints] configuration is empty or an empty string.");
                         }
                         String key = etcd.get("key");
-                        if ((StringUtil.isBlank(key))){
+                        if ((StringUtil.isBlank(key))) {
                             throw new ConfigEmptyException(
                                     "Web server failed to start. The dynamic thread pool etcd key is empty.",
                                     "Please check whether the [spring.dynamic.thread-pool.etcd.key] configuration is empty or an empty string.");
