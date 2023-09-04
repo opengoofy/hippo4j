@@ -18,5 +18,17 @@
   "item.label.🥇代码实战课": {
     "message": "🥇代码实战课",
     "description": "Navbar item with label 🥇代码实战课"
+  },
+  "item.label.采用公司": {
+    "message": "采用公司",
+    "description": "Navbar item with label 采用公司"
+  },
+  "item.label.加群沟通": {
+    "message": "加群沟通",
+    "description": "Navbar item with label 加群沟通"
+  },
+  "item.label.🚀 拿个offer": {
+    "message": "🚀 拿个offer",
+    "description": "Navbar item with label 🚀 拿个offer"
   }
 }
