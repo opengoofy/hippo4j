@@ -1,4 +1,3 @@
-import React from 'react';
 import LayoutCom from './components/layout-com';
 
 function App() {

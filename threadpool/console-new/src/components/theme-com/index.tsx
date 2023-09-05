@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { DefaultTheme, ThemeProvider, useTheme } from 'styled-components';
+import { DefaultTheme, ThemeProvider } from 'styled-components';
 import { ConfigProvider, theme } from 'antd';
 
 import { darkAlgorithm } from '../../theme/dark-algorithm';
@@ -17,7 +17,7 @@ const ThemeComponent = ({ children }: ThemeProps) => {
   const [myThemes, setMyThemes] = useState<DefaultTheme>(lightDefaultTheme);
   const { themeName } = useContext<any>(MyThemeContext);
 
-  const changeColor = (themeName: THEME_NAME) => {
+  const changeMode = (themeName: THEME_NAME) => {
     if (themeName === THEME_NAME.DARK) {
       darkAlgorithm.algorithm = theme.darkAlgorithm;
       setThemes(darkAlgorithm);
@@ -30,7 +30,7 @@ const ThemeComponent = ({ children }: ThemeProps) => {
   };
 
   useEffect(() => {
-    changeColor(themeName);
+    changeMode(themeName);
   }, [themeName]);
 
   return (
