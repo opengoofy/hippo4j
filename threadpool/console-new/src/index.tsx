@@ -11,7 +11,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+      {/* 全局配置主体context */}
       <ThemeStore>
+        {/* 提供主体色配置 */}
         <ThemeComponent>
           <App />
         </ThemeComponent>

@@ -2,6 +2,10 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": [
+      "node_modules/@types",
+      "src/typings"
+   ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,7 +23,7 @@
     "paths": {
       // 路径映射，相对于baseUrl
       "@/*": ["src/*"],
-    }
+    },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"]
 }
