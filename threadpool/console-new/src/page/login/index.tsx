@@ -1,12 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { DefaultTheme, ThemeContext } from 'styled-components';
-
-import { Form, Tooltip, Input, Button } from 'antd';
-import { Routes, Route, Link } from 'react-router-dom';
-import style from './index.module.less';
-
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
-import { THEME_NAME, MyThemeContext } from '@/context/themeContext';
+import { Form, Input, Button } from 'antd';
 
 const Login = () => {
   const [form] = Form.useForm();
@@ -58,24 +50,21 @@ const Login = () => {
   };
   return (
     <div className="login-container">
-      <Form name="loginForm" form={form} onFinish={onFinish}
-      style={{ maxWidth: 600 }}>
+      <Form name="loginForm" form={form} onFinish={onFinish} style={{ maxWidth: 600 }}>
         <div className="title-container">
           <h3 className="title">你好呀</h3>
           {/* <h3 className="title">{{ $t('system.login') }}</h3> */}
         </div>
-        <Form.Item name="username" label="用户名"
-          rules={[{ required: true, message: 'Username is required' }]}
-        >
+        <Form.Item name="username" label="用户名" rules={[{ required: true, message: 'Username is required' }]}>
           <Input placeholder="用户名" />
         </Form.Item>
-        <Form.Item name="password" label="密码"
-          rules={[{ required: true, message: 'Street is required' }]}
-        >
+        <Form.Item name="password" label="密码" rules={[{ required: true, message: 'Street is required' }]}>
           <Input placeholder="密码" />
         </Form.Item>
         <Form.Item name="submit">
-          <Button type="primary" htmlType="submit" className="login-button">登录</Button>
+          <Button type="primary" htmlType="submit" className="login-button">
+            登录
+          </Button>
         </Form.Item>
       </Form>
     </div>
