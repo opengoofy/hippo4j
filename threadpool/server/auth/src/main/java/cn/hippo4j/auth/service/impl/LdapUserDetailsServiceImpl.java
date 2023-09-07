@@ -70,8 +70,7 @@ public class LdapUserDetailsServiceImpl implements UserDetailsService {
         ldapService.login(userName, loginUser.getPassword());
         // By querying the data inventory this user does not exist
         UserInfo userInfo = userMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
-                .eq(UserInfo::getUserName, userName)
-        );
+                .eq(UserInfo::getUserName, userName));
         // the database does not, create a ROLE_USER permission to the default user, password is empty
         if (Objects.isNull(userInfo)) {
             userInfo = new UserInfo();

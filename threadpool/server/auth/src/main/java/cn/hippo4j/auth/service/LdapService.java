@@ -21,6 +21,7 @@ package cn.hippo4j.auth.service;
  * Ldap service.
  */
 public interface LdapService {
+
     /**
      * Login ldap
      */

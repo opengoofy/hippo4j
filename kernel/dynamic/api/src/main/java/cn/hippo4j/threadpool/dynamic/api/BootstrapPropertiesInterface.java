@@ -17,6 +17,8 @@
 
 package cn.hippo4j.threadpool.dynamic.api;
 
+import java.util.Map;
+
 /**
  * Bootstrap properties interface.
  */
@@ -68,6 +70,20 @@ public interface BootstrapPropertiesInterface {
      * Get banner.
      */
     default Boolean getBanner() {
+        return null;
+    }
+
+    /**
+     * Get nacos.
+     */
+    default Map<String, String> getNacos() {
+        return null;
+    }
+
+    /**
+     * Get etcd.
+     */
+    default Map<String, String> getEtcd() {
         return null;
     }
 }

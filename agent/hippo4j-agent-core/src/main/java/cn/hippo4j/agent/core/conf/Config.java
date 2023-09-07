@@ -76,12 +76,6 @@ public class Config {
         public static String CLUSTER = "";
 
         /**
-         * Authentication active is based on backend setting, see application.yml for more details. For most scenarios,
-         * this needs backend extensions, only basic match auth provided in default implementation.
-         */
-        public static String AUTHENTICATION = "";
-
-        /**
          * If true, Hippo4j agent will save all instrumented classes files in `/debugging` folder. Hippo4j team
          * may ask for these files in order to resolve compatible problem.
          */
@@ -99,177 +93,6 @@ public class Config {
          * folder, automatically clean up cached class files when the application exits
          */
         public static ClassCacheMode CLASS_CACHE_MODE = ClassCacheMode.MEMORY;
-
-        /**
-         * The identifier of the instance
-         */
-        @Length(50)
-        public volatile static String INSTANCE_NAME = "";
-
-        /**
-         * service instance properties in json format. e.g. agent.instance_properties_json = {"org":
-         * "cn.hippo4j"}
-         */
-        public static String INSTANCE_PROPERTIES_JSON = "";
-
-        /**
-         * How depth the agent goes, when log cause exceptions.
-         */
-        public static int CAUSE_EXCEPTION_DEPTH = 5;
-
-        /**
-         * Force reconnection period of grpc, based on grpc_channel_check_interval. If count of check grpc channel
-         * status more than this number. The channel check will call channel.getState(true) to requestConnection.
-         */
-        public static long FORCE_RECONNECTION_PERIOD = 1;
-
-        /**
-         * Limit the length of the operationName to prevent the overlength issue in the storage.
-         *
-         * <p>NOTICE</p>
-         * In the current practice, we don't recommend the length over 190.
-         */
-        public static int OPERATION_NAME_THRESHOLD = 150;
-
-        /**
-         * Keep tracing even the backend is not available.
-         */
-        public static boolean KEEP_TRACING = false;
-
-        /**
-         * Force open TLS for gRPC channel if true.
-         */
-        public static boolean FORCE_TLS = false;
-
-        /**
-         * SSL trusted ca file. If it exists, will enable TLS for gRPC channel.
-         */
-        public static String SSL_TRUSTED_CA_PATH = "ca" + Constants.PATH_SEPARATOR + "ca.crt";
-
-        /**
-         * Key cert chain file. If ssl_cert_chain and ssl_key exist, will enable mTLS for gRPC channel.
-         */
-        public static String SSL_CERT_CHAIN_PATH;
-
-        /**
-         * Private key file. If ssl_cert_chain and ssl_key exist, will enable mTLS for gRPC channel.
-         */
-        public static String SSL_KEY_PATH;
-    }
-
-    public static class OsInfo {
-
-        /**
-         * Limit the length of the ipv4 list size.
-         */
-        public static int IPV4_LIST_SIZE = 10;
-    }
-
-    public static class Collector {
-
-        /**
-         * grpc channel status check interval
-         */
-        public static long GRPC_CHANNEL_CHECK_INTERVAL = 30;
-        /**
-         * The period in which the agent report a heartbeat to the backend.
-         */
-        public static long HEARTBEAT_PERIOD = 30;
-        /**
-         * The agent sends the instance properties to the backend every `collector.heartbeat_period *
-         * collector.properties_report_period_factor` seconds
-         */
-        public static int PROPERTIES_REPORT_PERIOD_FACTOR = 10;
-        /**
-         * Collector hippo4j trace receiver service addresses.
-         */
-        public static String BACKEND_SERVICE = "";
-        /**
-         * How long grpc client will timeout in sending data to upstream.
-         */
-        public static int GRPC_UPSTREAM_TIMEOUT = 30;
-        /**
-         * Get profile task list interval
-         */
-        public static int GET_PROFILE_TASK_INTERVAL = 20;
-        /**
-         * Get agent dynamic config interval
-         */
-        public static int GET_AGENT_DYNAMIC_CONFIG_INTERVAL = 20;
-        /**
-         * If true, hippo4j agent will enable periodically resolving DNS to update receiver service addresses.
-         */
-        public static boolean IS_RESOLVE_DNS_PERIODICALLY = false;
-    }
-
-    public static class Profile {
-
-        /**
-         * If true, hippo4j agent will enable profile when user create a new profile task. Otherwise disable
-         * profile.
-         */
-        public static boolean ACTIVE = true;
-
-        /**
-         * Parallel monitor segment count
-         */
-        public static int MAX_PARALLEL = 5;
-
-        /**
-         * Max monitor segment time(minutes), if current segment monitor time out of limit, then stop it.
-         */
-        public static int MAX_DURATION = 10;
-
-        /**
-         * Max dump thread stack depth
-         */
-        public static int DUMP_MAX_STACK_DEPTH = 500;
-
-        /**
-         * Snapshot transport to backend buffer size
-         */
-        public static int SNAPSHOT_TRANSPORT_BUFFER_SIZE = 500;
-    }
-
-    public static class Meter {
-
-        /**
-         * If true, Hippo4j agent will enable sending meters. Otherwise disable meter report.
-         */
-        public static boolean ACTIVE = true;
-
-        /**
-         * Report meters interval
-         */
-        public static Integer REPORT_INTERVAL = 20;
-
-        /**
-         * Max size of the meter count.
-         */
-        public static Integer MAX_METER_SIZE = 500;
-    }
-
-    public static class Jvm {
-
-        /**
-         * The buffer size of collected JVM info.
-         */
-        public static int BUFFER_SIZE = 60 * 10;
-    }
-
-    public static class Log {
-
-        /**
-         * The max size of message to send to server.Default is 10 MB.
-         */
-        public static int MAX_MESSAGE_SIZE = 10 * 1024 * 1024;
-    }
-
-    public static class Buffer {
-
-        public static int CHANNEL_SIZE = 5;
-
-        public static int BUFFER_SIZE = 300;
     }
 
     public static class Logging {
@@ -326,22 +149,6 @@ public class Config {
         public static String PATTERN = "%level %timestamp %thread %class : %msg %throwable";
     }
 
-    public static class StatusCheck {
-
-        /**
-         * Listed exceptions would not be treated as an error. Because in some codes, the exception is being used as a
-         * way of controlling business flow.
-         */
-        public static String IGNORED_EXCEPTIONS = "";
-
-        /**
-         * The max recursive depth when checking the exception traced by the agent. Typically, we don't recommend
-         * setting this more than 10, which could cause a performance issue. Negative value and 0 would be ignored,
-         * which means all exceptions would make the span tagged in error status.
-         */
-        public static Integer MAX_RECURSIVE_DEPTH = 1;
-    }
-
     public static class Plugin {
 
         /**
@@ -384,23 +191,5 @@ public class Config {
                 public static List<String> NAMESPACES;
             }
         }
-    }
-
-    public static class Correlation {
-
-        /**
-         * Max element count in the correlation context.
-         */
-        public static int ELEMENT_MAX_NUMBER = 3;
-
-        /**
-         * Max value length of each element.
-         */
-        public static int VALUE_MAX_LENGTH = 128;
-
-        /**
-         * Tag the span by the key/value in the correlation context, when the keys listed here exist.
-         */
-        public static String AUTO_TAG_KEYS = "";
     }
 }

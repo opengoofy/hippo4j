@@ -256,5 +256,61 @@
   },
   "Community": {
     "message": "社区"
+  },
+  "homepage.titleDescription1": {
+    "message": "Java线程池框架",
+    "description": "The homepage title description"
+  },
+  "homepage.titleDescription2": {
+    "message": "动态可观测线程池框架，为业务系统提高线上运行保障能力。",
+    "description": "The homepage title description"
+  },
+  "homepage.startButton": {
+    "message": "快速开始",
+    "description": "The homepage start button text"
+  },
+  "homepage.secondTitle": {
+    "message": "Hippo4j能做什么？",
+    "description": "a title for introduciton part"
+  },
+  "homepage.introduction.fristPartTitle": {
+    "message": "动态变更",
+    "description": "the title for the first introduction part"
+  },
+  "homepage.introduction.fristPartDesc": {
+    "message": "应用运行时动态变更线程池参数，包括不限于核心、最大线程、阻塞队列大小和拒绝策略等，支持应用集群下不同节点线程池配置差异化",
+    "description": "the desc for the first introduction part"
+  },
+  "homepage.introduction.secondPartTitle": {
+    "message": "自定义报警",
+    "description": "the title for the second introduction part"
+  },
+  "homepage.introduction.secondPartDesc": {
+    "message": "应用线程池运行时埋点，提供四种报警维度，线程池过载、阻塞队列容量、运行超长以及拒绝策略报警，并支持自定义时间内不重复报警",
+    "description": "the desc for the second introduction part"
+  },
+  "homepage.introduction.thirdPartTitle": {
+    "message": "运行监控",
+    "description": "the title for the third introduction part"
+  },
+  "homepage.introduction.thirdPartDesc": {
+    "message": "支持自定义时长线程池运行数据采集存储，同时也支持 Prometheus、InfluxDB 等采集监控，通过 Grafana 或内置监控页面提供可视化大屏监控运行指标",
+    "description": "the desc for the third introduction part"
+  },
+  "companyPage.title": {
+    "message": "谁在使用 Hippo4j ?",
+    "description": "the title for the company page"
+  },
+  "companyPage.descriptionText": {
+    "message": "非常感谢大家对 Hippo4j 的关注和支持，这是我们前进最大的动力。",
+    "description": "the description for the company page"
+  },
+  "companyPage.questionText": {
+    "message": "正在使用Hippo4j ?",
+    "description": "the text for the company question"
+  },
+  "companyPage.linkText": {
+    "message": "点击进行登记",
+    "description": "the text for the company page link"
   }
 }
