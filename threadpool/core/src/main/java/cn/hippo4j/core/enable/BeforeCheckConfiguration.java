@@ -105,6 +105,16 @@ public class BeforeCheckConfiguration {
                                     "Please check whether the [spring.dynamic.thread-pool.etcd.key] configuration is empty or an empty string.");
                         }
                     }
+
+                    Map<String, String> apollo = properties.getApollo();
+                    if (MapUtil.isNotEmpty(apollo)) {
+                        String namespace = apollo.get("namespace");
+                        if (StringUtil.isBlank(namespace)) {
+                            throw new ConfigEmptyException(
+                                    "Web server failed to start. The dynamic thread pool apollo namespace is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.apollo.namespace] configuration is empty or an empty string.");
+                        }
+                    }
                     break;
                 }
                 default:
