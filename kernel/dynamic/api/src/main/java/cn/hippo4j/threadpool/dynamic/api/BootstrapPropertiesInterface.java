@@ -90,7 +90,7 @@ public interface BootstrapPropertiesInterface {
     /**
      * Get apollo.
      */
-    default  Map<String, String> getApollo(){
+    default Map<String, String> getApollo() {
         return null;
     }
 

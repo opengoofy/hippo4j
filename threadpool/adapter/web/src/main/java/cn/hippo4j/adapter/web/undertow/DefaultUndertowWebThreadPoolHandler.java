@@ -17,12 +17,12 @@
 
 package cn.hippo4j.adapter.web.undertow;
 
-import cn.hippo4j.core.executor.state.AbstractThreadPoolRuntime;
 import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import cn.hippo4j.adapter.web.DefaultAbstractWebThreadPoolService;
+import cn.hippo4j.common.support.AbstractThreadPoolRuntime;
 import io.undertow.Undertow;
 import lombok.extern.slf4j.Slf4j;
 
