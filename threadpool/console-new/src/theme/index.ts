@@ -2,7 +2,6 @@ import { DefaultTheme } from 'styled-components';
 
 export const lightDefaultTheme: DefaultTheme = {
   primary: '#0d68a8',
-
   baseColor: {
     // 前两个是固定的，用于，有颜色按钮 字体颜色等固定不会变的颜色值
     bc1: '#fff',
@@ -25,8 +24,10 @@ export const lightDefaultTheme: DefaultTheme = {
     bl3: '#B5BDCE',
   },
   backgroundColor: {
-    bg1: '#FFFFFF',
-    bg2: '#EEEFF4',
+    // main bgc
+    bg1: '#ebebf2',
+    // app or head bgc
+    bg2: '#fff',
     // title的及表格头部背景极
     bg3: '#EDEDED',
     bg5: '#F8F8F8',
