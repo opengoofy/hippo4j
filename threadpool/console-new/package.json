@@ -19,8 +19,7 @@
     "build": "craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint -c .eslintrc.js src --ext .ts,.tsx,.js,.jsx --fix",
-    "prepare": "husky install"
+    "lint": "eslint -c .eslintrc.js src --ext .ts,.tsx,.js,.jsx --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -42,6 +41,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
+    "@types/http-errors": "^2.0.1",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.26",
     "@types/react": "^18.2.6",

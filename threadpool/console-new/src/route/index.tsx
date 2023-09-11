@@ -1,5 +1,6 @@
-import React from 'react';
+import { IRouterList } from '@/typings';
+import homeRouter from '@/page/home/router';
+import aboutRouter from '@/page/about/router';
 
-const Fc = () => {
-  return <div>hhh</div>;
-};
+const routerList: IRouterList[] = [...homeRouter, ...aboutRouter];
+export default routerList;
