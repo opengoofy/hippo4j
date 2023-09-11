@@ -32,11 +32,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Dynamic thread-pool wrapper.
+ *
+ * @deprecated 2.0.0
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Deprecated
 public class DynamicThreadPoolWrapper implements DisposableBean {
 
     /**

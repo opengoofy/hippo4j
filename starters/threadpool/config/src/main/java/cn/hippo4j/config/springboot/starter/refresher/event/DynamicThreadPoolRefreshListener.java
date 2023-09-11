@@ -18,22 +18,22 @@
 package cn.hippo4j.config.springboot.starter.refresher.event;
 
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
+import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
+import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
-import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
-import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.config.springboot.starter.notify.ConfigModeNotifyConfigBuilder;
-import cn.hippo4j.threadpool.dynamic.core.executor.manage.GlobalConfigThreadPoolManage;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.message.dto.NotifyConfigDTO;
-import cn.hippo4j.message.request.ChangeParameterNotifyRequest;
-import cn.hippo4j.message.service.GlobalNotifyAlarmManage;
-import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
-import cn.hippo4j.message.service.ThreadPoolNotifyAlarm;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.message.api.NotifyConfigDTO;
+import cn.hippo4j.threadpool.message.core.request.ChangeParameterNotifyRequest;
+import cn.hippo4j.threadpool.message.core.service.GlobalNotifyAlarmManage;
+import cn.hippo4j.threadpool.message.core.service.ThreadPoolBaseSendMessageService;
+import cn.hippo4j.threadpool.message.core.service.ThreadPoolNotifyAlarm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit;
 
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_DELIMITER;
 import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD_POOL_TEXT;
-import static cn.hippo4j.config.springboot.starter.refresher.event.Hippo4jConfigDynamicRefreshEventOrder.EXECUTORS_LISTENER;
+import static cn.hippo4j.config.springboot.starter.refresher.event.ThreadPoolConfigDynamicRefreshEventOrder.EXECUTORS_LISTENER;
 
 /**
  * Dynamic thread-pool refresh listener.
@@ -63,7 +63,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
 
     private final ConfigModeNotifyConfigBuilder configModeNotifyConfigBuilder;
 
-    private final Hippo4jBaseSendMessageService hippo4jBaseSendMessageService;
+    private final ThreadPoolBaseSendMessageService threadPoolBaseSendMessageService;
 
     @Override
     public String getNodes(ExecutorProperties properties) {
@@ -71,7 +71,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
     }
 
     @Override
-    public void onApplicationEvent(Hippo4jConfigDynamicRefreshEvent event) {
+    public void onApplicationEvent(ThreadPoolConfigDynamicRefreshEvent event) {
         BootstrapConfigProperties bindableConfigProperties = event.getBootstrapConfigProperties();
         List<ExecutorProperties> executors = bindableConfigProperties.getExecutors();
         for (ExecutorProperties properties : executors) {
@@ -87,8 +87,9 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
                 continue;
             }
             dynamicRefreshPool(threadPoolId, properties);
-            ExecutorProperties beforeProperties = GlobalConfigThreadPoolManage.getProperties(properties.getThreadPoolId());
-            GlobalConfigThreadPoolManage.refresh(threadPoolId, failDefaultExecutorProperties(beforeProperties, properties));
+            ThreadPoolExecutorHolder executorHolder = ThreadPoolExecutorRegistry.getHolder(properties.getThreadPoolId());
+            ExecutorProperties beforeProperties = executorHolder.getExecutorProperties();
+            executorHolder.setExecutorProperties(failDefaultExecutorProperties(beforeProperties, properties));
             ChangeParameterNotifyRequest changeRequest = buildChangeRequest(beforeProperties, properties);
             log.info(CHANGE_THREAD_POOL_TEXT,
                     threadPoolId,
@@ -168,7 +169,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
         List<String> changeKeys = new ArrayList<>();
         Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap =
                 configModeNotifyConfigBuilder.buildSingleNotifyConfig(executorProperties);
-        Map<String, List<NotifyConfigDTO>> notifyConfigs = hippo4jBaseSendMessageService.getNotifyConfigs();
+        Map<String, List<NotifyConfigDTO>> notifyConfigs = threadPoolBaseSendMessageService.getNotifyConfigs();
         if (CollectionUtil.isNotEmpty(notifyConfigs)) {
             for (Map.Entry<String, List<NotifyConfigDTO>> each : newDynamicThreadPoolNotifyMap.entrySet()) {
                 if (checkNotifyConfig) {
@@ -186,7 +187,7 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
         }
         if (checkNotifyConfig) {
             configModeNotifyConfigBuilder.initCacheAndLock(newDynamicThreadPoolNotifyMap);
-            hippo4jBaseSendMessageService.putPlatform(newDynamicThreadPoolNotifyMap);
+            threadPoolBaseSendMessageService.putPlatform(newDynamicThreadPoolNotifyMap);
         }
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = GlobalNotifyAlarmManage.get(executorProperties.getThreadPoolId());
         if (threadPoolNotifyAlarm != null) {
@@ -215,8 +216,9 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
      * @param properties
      */
     private boolean checkConsistency(String threadPoolId, ExecutorProperties properties) {
-        ExecutorProperties beforeProperties = GlobalConfigThreadPoolManage.getProperties(properties.getThreadPoolId());
-        ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutor(threadPoolId);
+        ThreadPoolExecutorHolder executorHolder = ThreadPoolExecutorRegistry.getHolder(threadPoolId);
+        ExecutorProperties beforeProperties = executorHolder.getExecutorProperties();
+        ThreadPoolExecutor executor = executorHolder.getExecutor();
         if (executor == null) {
             return false;
         }
@@ -239,8 +241,8 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
      * @param properties
      */
     private void dynamicRefreshPool(String threadPoolId, ExecutorProperties properties) {
-        ExecutorProperties beforeProperties = GlobalConfigThreadPoolManage.getProperties(properties.getThreadPoolId());
-        ThreadPoolExecutor executor = GlobalThreadPoolManage.getExecutorService(threadPoolId).getExecutor();
+        ExecutorProperties beforeProperties = ThreadPoolExecutorRegistry.getHolder(threadPoolId).getExecutorProperties();
+        ThreadPoolExecutor executor = ThreadPoolExecutorRegistry.getHolder(threadPoolId).getExecutor();
         if (properties.getMaximumPoolSize() != null && properties.getCorePoolSize() != null) {
             ThreadPoolExecutorUtil.safeSetPoolSize(executor, properties.getCorePoolSize(), properties.getMaximumPoolSize());
         } else {

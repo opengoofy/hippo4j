@@ -19,7 +19,7 @@ package cn.hippo4j.springboot.starter.controller;
 
 import cn.hippo4j.adapter.base.ThreadPoolAdapter;
 import cn.hippo4j.adapter.base.ThreadPoolAdapterParameter;
-import cn.hippo4j.adapter.base.ThreadPoolAdapterState;
+import cn.hippo4j.common.model.ThreadPoolAdapterState;
 import cn.hippo4j.common.model.Result;
 import cn.hippo4j.core.api.ClientNetworkService;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;

@@ -18,7 +18,11 @@
 package cn.hippo4j.threadpool.dynamic.mode.config.parser;
 
 import cn.hippo4j.common.toolkit.CollectionUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
+import org.springframework.core.io.ByteArrayResource;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,12 +33,12 @@ public class YamlConfigParser extends AbstractConfigParser {
 
     @Override
     public Map<Object, Object> doParse(String content) {
-        // TODO
-        /*
-         * if (StringUtils.isEmpty(content)) { return new HashMap<>(1); } YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
-         * yamlPropertiesFactoryBean.setResources(new ByteArrayResource(content.getBytes())); return yamlPropertiesFactoryBean.getObject();
-         */
-        return null;
+        if (StringUtils.isEmpty(content)) {
+            return new HashMap<>(1);
+        }
+        YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
+        yamlPropertiesFactoryBean.setResources(new ByteArrayResource(content.getBytes()));
+        return yamlPropertiesFactoryBean.getObject();
     }
 
     @Override

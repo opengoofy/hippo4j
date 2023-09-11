@@ -17,6 +17,7 @@
 
 package cn.hippo4j.core.executor.support.adpter;
 
+import cn.hippo4j.common.api.DynamicThreadPoolAdapter;
 import cn.hippo4j.common.toolkit.ReflectUtil;
 import cn.hippo4j.core.executor.DynamicThreadPoolExecutor;
 

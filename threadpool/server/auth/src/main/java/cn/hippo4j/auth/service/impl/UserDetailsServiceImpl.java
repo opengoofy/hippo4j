@@ -24,11 +24,14 @@ import cn.hippo4j.auth.model.biz.user.LoginUser;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -43,6 +46,8 @@ import java.util.Set;
  * User details service impl.
  */
 @Slf4j
+@Service
+@Primary
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Value("${hippo4j.core.auth.enabled:true}")
@@ -57,9 +62,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (!Objects.isNull(anonymous)) {
             return anonymous;
         }
-        UserInfo userInfo = userMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class).eq(UserInfo::getUserName, userName));
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        LoginUser loginUser = (LoginUser) request.getAttribute("loginUser");
+        String loginPassword = loginUser.getPassword();
+        UserInfo userInfo = userMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
+                .eq(UserInfo::getUserName, userName));
         if (Objects.isNull(userInfo)) {
             throw new UsernameNotFoundException(userName);
+        }
+        // Validation password
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        if (!bCryptPasswordEncoder.matches(loginPassword, userInfo.getPassword())) {
+            throw new BadCredentialsException(userName + "密码错误，请重新输入");
         }
         JwtUser jwtUser = new JwtUser();
         jwtUser.setId(userInfo.getId());

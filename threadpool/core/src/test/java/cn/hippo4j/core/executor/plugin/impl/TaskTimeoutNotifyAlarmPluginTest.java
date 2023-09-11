@@ -17,11 +17,10 @@
 
 package cn.hippo4j.core.executor.plugin.impl;
 
-import cn.hippo4j.core.api.ThreadPoolCheckAlarm;
 import cn.hippo4j.common.toolkit.ThreadUtil;
 import cn.hippo4j.core.executor.ExtensibleThreadPoolExecutor;
-import cn.hippo4j.core.executor.plugin.impl.TaskTimeoutNotifyAlarmPlugin;
 import cn.hippo4j.core.executor.plugin.manager.DefaultThreadPoolPluginManager;
+import cn.hippo4j.threadpool.alarm.api.ThreadPoolCheckAlarm;
 import lombok.Getter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -89,25 +88,25 @@ public class TaskTimeoutNotifyAlarmPluginTest {
 
         @Getter
         private final AtomicInteger numberOfAlarms = new AtomicInteger(0);
+
         @Override
         public void checkPoolCapacityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
             // do noting
         }
+
         @Override
         public void checkPoolActivityAlarm(String threadPoolId, ThreadPoolExecutor threadPoolExecutor) {
             // do noting
         }
+
         @Override
         public void asyncSendRejectedAlarm(String threadPoolId) {
             // do noting
         }
+
         @Override
         public void asyncSendExecuteTimeOutAlarm(String threadPoolId, long executeTime, long executeTimeOut, ThreadPoolExecutor threadPoolExecutor) {
             numberOfAlarms.incrementAndGet();
-        }
-        @Override
-        public void run(String... args) throws Exception {
-
         }
     }
 

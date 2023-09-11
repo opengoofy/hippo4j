@@ -1,29 +1,31 @@
-import { Layout } from 'antd';
-import { Routes, Route, Link } from 'react-router-dom';
-import Home from './page/home';
-import About from './page/about';
-import style from './index.module.less';
+import LayoutCom from './components/layout-com';
+import { Routes, Route } from 'react-router-dom';
+import routeList from './route';
+import { AppstoreOutlined, MailOutlined } from '@ant-design/icons';
 
-const { Header, Sider, Content } = Layout;
+const sideMenuList = [
+  {
+    label: <a href="/about">about</a>,
+    key: 'mail',
+    icon: <MailOutlined />,
+  },
+  {
+    label: <a href="/home">主页</a>,
+    key: 'app',
+    icon: <AppstoreOutlined />,
+  },
+];
 
-function App() {
+const App = () => {
   return (
-    <div className={style.container}>
-      <Header className={style.header}>header</Header>
-      <Layout>
-        <Sider className={style.sider}>
-          <Link to="/home">home</Link>
-          <Link to="/about">about</Link>
-        </Sider>
-        <Content className={style.content}>
-          <Routes>
-            <Route path="/home" Component={Home}></Route>
-            <Route path="/about" Component={About}></Route>
-          </Routes>
-        </Content>
-      </Layout>
-    </div>
+    <LayoutCom sideMenuList={sideMenuList} isSider={false}>
+      <Routes>
+        {routeList.map(item => (
+          <Route key={item.path} path={item.path} Component={item.component} />
+        ))}
+      </Routes>
+    </LayoutCom>
   );
-}
+};
 
 export default App;

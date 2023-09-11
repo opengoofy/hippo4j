@@ -49,6 +49,7 @@ import java.util.zip.GZIPOutputStream;
  * test for {@link IoUtil}
  */
 public class IoUtilTest {
+
     private Path tempDir;
     private File sourceFile;
 

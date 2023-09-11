@@ -25,7 +25,7 @@
               <span>{{ temp.role }}</span>
             </el-form-item>
             <el-form-item :label="$t('report.tenants')" label-width="120px">
-              <span></span>
+              <span>{{ temp.tempResources }}</span>
             </el-form-item>
             <el-form-item :label="$t('common.createTime')" label-width="120px">
               <span> {{ temp.gmtCreate }}</span>

@@ -1,0 +1,82 @@
+{
+  "version.label": {
+    "message": "1.4.2",
+    "description": "The label for version 1.4.2"
+  },
+  "sidebar.tutorialSidebar.category.user_docs": {
+    "message": "user_docs",
+    "description": "The label for category user_docs in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.用户指南": {
+    "message": "用户指南",
+    "description": "The label for category 用户指南 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.用户指南.link.generated-index.description": {
+    "message": "帮助想要了解 Hippo4j 的用户快速掌握核心开发理念。",
+    "description": "The generated-index page description for category 用户指南 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.快速开始": {
+    "message": "快速开始",
+    "description": "The label for category 快速开始 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.依赖配置中心": {
+    "message": "依赖配置中心",
+    "description": "The label for category 依赖配置中心 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.无中间件依赖": {
+    "message": "无中间件依赖",
+    "description": "The label for category 无中间件依赖 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.运维指南": {
+    "message": "运维指南",
+    "description": "The label for category 运维指南 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.开发者手册": {
+    "message": "开发者手册",
+    "description": "The label for category 开发者手册 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.开发者手册.link.generated-index.description": {
+    "message": "Hippo4j 留给使用者能够扩展的知识点。",
+    "description": "The generated-index page description for category 开发者手册 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.其它": {
+    "message": "其它",
+    "description": "The label for category 其它 in sidebar tutorialSidebar"
+  },
+  "sidebar.user_docs.category.用户指南": {
+    "message": "用户指南",
+    "description": "The label for category 用户指南 in sidebar user_docs"
+  },
+  "sidebar.user_docs.category.用户指南.link.generated-index.description": {
+    "message": "帮助想要了解 Hippo4j 的用户快速掌握核心开发理念。",
+    "description": "The generated-index page description for category 用户指南 in sidebar user_docs"
+  },
+  "sidebar.user_docs.category.快速开始": {
+    "message": "快速开始",
+    "description": "The label for category 快速开始 in sidebar user_docs"
+  },
+  "sidebar.user_docs.category.依赖配置中心": {
+    "message": "依赖配置中心",
+    "description": "The label for category 依赖配置中心 in sidebar user_docs"
+  },
+  "sidebar.user_docs.category.无中间件依赖": {
+    "message": "无中间件依赖",
+    "description": "The label for category 无中间件依赖 in sidebar user_docs"
+  },
+  "sidebar.user_docs.category.运维指南": {
+    "message": "运维指南",
+    "description": "The label for category 运维指南 in sidebar user_docs"
+  },
+  "sidebar.user_docs.category.开发者手册": {
+    "message": "开发者手册",
+    "description": "The label for category 开发者手册 in sidebar user_docs"
+  },
+  "sidebar.user_docs.category.开发者手册.link.generated-index.description": {
+    "message": "Hippo4j 留给使用者能够扩展的知识点。",
+    "description": "The generated-index page description for category 开发者手册 in sidebar user_docs"
+  },
+  "sidebar.user_docs.category.其它": {
+    "message": "其它",
+    "description": "The label for category 其它 in sidebar user_docs"
+  }
+}

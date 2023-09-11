@@ -17,14 +17,15 @@
 
 package cn.hippo4j.core.executor.state;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorHolder;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
+import cn.hippo4j.common.handler.ThreadPoolStatusHandler;
 import cn.hippo4j.common.model.ManyThreadPoolRunStateInfo;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.ByteConvertUtil;
 import cn.hippo4j.common.toolkit.MemoryUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.core.executor.DynamicThreadPoolWrapper;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,15 +79,15 @@ public class ThreadPoolRunStateHandlerTest {
 
         String threadPoolId = poolRunStateInfo.getTpId();
 
-        try (final MockedStatic<GlobalThreadPoolManage> globalThreadPoolManage = mockStatic(GlobalThreadPoolManage.class)) {
-            globalThreadPoolManage.when(() -> GlobalThreadPoolManage.getExecutorService("1")).thenReturn(new DynamicThreadPoolWrapper());
-            DynamicThreadPoolWrapper executorService = GlobalThreadPoolManage.getExecutorService(threadPoolId);
-            Assertions.assertNotNull(executorService);
+        try (final MockedStatic<ThreadPoolExecutorRegistry> globalThreadPoolManage = mockStatic(ThreadPoolExecutorRegistry.class)) {
+            globalThreadPoolManage.when(() -> ThreadPoolExecutorRegistry.getHolder("1")).thenReturn(new ThreadPoolExecutorHolder());
+            ThreadPoolExecutorHolder executorHolder = ThreadPoolExecutorRegistry.getHolder(threadPoolId);
+            Assertions.assertNotNull(executorHolder);
         }
 
-        DynamicThreadPoolWrapper dynamicThreadPoolWrapperMock = mock(DynamicThreadPoolWrapper.class);
-        when(dynamicThreadPoolWrapperMock.getExecutor()).thenReturn(new ThreadPoolExecutor(2, 2, 2000, TimeUnit.SECONDS, new SynchronousQueue<>()));
-        ThreadPoolExecutor pool = dynamicThreadPoolWrapperMock.getExecutor();
+        ThreadPoolExecutorHolder threadPoolExecutorHolderMock = mock(ThreadPoolExecutorHolder.class);
+        when(threadPoolExecutorHolderMock.getExecutor()).thenReturn(new ThreadPoolExecutor(2, 2, 2000, TimeUnit.SECONDS, new SynchronousQueue<>()));
+        ThreadPoolExecutor pool = threadPoolExecutorHolderMock.getExecutor();
         Assertions.assertNotNull(pool);
 
         String rejectedName;
@@ -123,5 +124,4 @@ public class ThreadPoolRunStateHandlerTest {
                 ByteConvertUtil.getPrintSize(max));
         Assertions.assertEquals("Allocation: 54.87MB / Maximum available: 7.98GB", memoryProportion);
     }
-
 }

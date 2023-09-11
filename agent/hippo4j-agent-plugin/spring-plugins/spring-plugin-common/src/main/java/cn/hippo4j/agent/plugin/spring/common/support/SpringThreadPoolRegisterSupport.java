@@ -18,9 +18,10 @@
 package cn.hippo4j.agent.plugin.spring.common.support;
 
 import cn.hippo4j.agent.core.util.ReflectUtil;
-import cn.hippo4j.common.executor.ThreadPoolRegistry;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
+import cn.hippo4j.common.handler.DynamicThreadPoolAdapterChoose;
 import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.common.toolkit.BooleanUtil;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class SpringThreadPoolRegisterSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringThreadPoolRegisterSupport.class);
 
     public static void registerThreadPoolInstances(ApplicationContext context) {
-        Map<ThreadPoolExecutor, Class<?>> referencedClassMap = ThreadPoolRegistry.REFERENCED_CLASS_MAP;
+        Map<ThreadPoolExecutor, Class<?>> referencedClassMap = ThreadPoolExecutorRegistry.REFERENCED_CLASS_MAP;
         for (Map.Entry<ThreadPoolExecutor, Class<?>> entry : referencedClassMap.entrySet()) {
             ThreadPoolExecutor enhancedInstance = entry.getKey();
             Class<?> declaredClass = entry.getValue();
@@ -64,13 +65,12 @@ public class SpringThreadPoolRegisterSupport {
         for (Map.Entry<String, Executor> entry : beansWithAnnotation.entrySet()) {
             String beanName = entry.getKey();
             Executor bean = entry.getValue();
-            ThreadPoolExecutor executor = (ThreadPoolExecutor) bean;
-            // TODO
-            // if (DynamicThreadPoolAdapterChoose.match(bean)) {
-            // executor = DynamicThreadPoolAdapterChoose.unwrap(bean);
-            // } else {
-            // executor = (ThreadPoolExecutor) bean;
-            // }
+            ThreadPoolExecutor executor;
+            if (DynamicThreadPoolAdapterChoose.match(bean)) {
+                executor = DynamicThreadPoolAdapterChoose.unwrap(bean);
+            } else {
+                executor = (ThreadPoolExecutor) bean;
+            }
             if (executor == null) {
                 LOGGER.warn("[Hippo4j-Agent] Thread pool is null, ignore bean registration. beanName={}, beanClass={}", beanName, bean.getClass().getName());
             } else {
@@ -93,6 +93,6 @@ public class SpringThreadPoolRegisterSupport {
                 .queueCapacity(executor.getQueue().remainingCapacity())
                 .rejectedHandler(RejectedPolicyTypeEnum.getRejectedPolicyTypeEnumByName(executor.getRejectedExecutionHandler().getClass().getSimpleName()).getName())
                 .build();
-        ThreadPoolRegistry.putHolder(threadPoolId, executor, executorProperties);
+        ThreadPoolExecutorRegistry.putHolder(threadPoolId, executor, executorProperties);
     }
 }

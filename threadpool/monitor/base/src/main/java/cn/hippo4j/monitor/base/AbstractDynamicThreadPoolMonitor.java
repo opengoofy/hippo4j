@@ -17,9 +17,10 @@
 
 package cn.hippo4j.monitor.base;
 
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
+import cn.hippo4j.threadpool.monitor.api.DynamicThreadPoolMonitor;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -29,8 +30,11 @@ import java.util.List;
  */
 public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadPoolMonitor {
 
-    @Resource
     private ThreadPoolRunStateHandler threadPoolRunStateHandler;
+
+    public AbstractDynamicThreadPoolMonitor(ThreadPoolRunStateHandler handler) {
+        this.threadPoolRunStateHandler = handler;
+    }
 
     /**
      * Execute collection thread pool running data.
@@ -41,7 +45,7 @@ public abstract class AbstractDynamicThreadPoolMonitor implements DynamicThreadP
 
     @Override
     public void collect() {
-        List<String> listDynamicThreadPoolId = GlobalThreadPoolManage.listThreadPoolId();
+        List<String> listDynamicThreadPoolId = ThreadPoolExecutorRegistry.listThreadPoolExecutorId();
         listDynamicThreadPoolId.forEach(each -> execute(threadPoolRunStateHandler.getPoolRunState(each)));
     }
 }

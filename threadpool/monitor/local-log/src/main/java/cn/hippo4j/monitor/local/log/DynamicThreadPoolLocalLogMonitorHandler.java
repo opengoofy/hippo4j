@@ -19,8 +19,9 @@ package cn.hippo4j.monitor.local.log;
 
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
 import cn.hippo4j.monitor.base.AbstractDynamicThreadPoolMonitor;
-import cn.hippo4j.monitor.base.MonitorTypeEnum;
+import cn.hippo4j.threadpool.monitor.support.MonitorTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,6 +29,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class DynamicThreadPoolLocalLogMonitorHandler extends AbstractDynamicThreadPoolMonitor {
+
+    public DynamicThreadPoolLocalLogMonitorHandler(ThreadPoolRunStateHandler handler) {
+        super(handler);
+    }
 
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {

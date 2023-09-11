@@ -37,7 +37,7 @@
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-server-spring-boot-starter</artifactId>
+            <artifactId>hippo4j-threadpool-spring-boot-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

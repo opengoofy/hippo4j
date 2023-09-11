@@ -17,25 +17,31 @@
 
 package cn.hippo4j.message.config;
 
-import cn.hippo4j.message.api.NotifyConfigBuilder;
-import cn.hippo4j.message.platform.DingSendMessageHandler;
-import cn.hippo4j.message.platform.LarkSendMessageHandler;
-import cn.hippo4j.message.platform.WeChatSendMessageHandler;
-import cn.hippo4j.message.service.AlarmControlHandler;
-import cn.hippo4j.message.service.Hippo4jBaseSendMessageService;
-import cn.hippo4j.message.service.Hippo4jSendMessageService;
-import cn.hippo4j.message.service.SendMessageHandler;
+import cn.hippo4j.threadpool.message.api.NotifyConfigBuilder;
+import cn.hippo4j.threadpool.message.core.platform.DingSendMessageHandler;
+import cn.hippo4j.threadpool.message.core.platform.LarkSendMessageHandler;
+import cn.hippo4j.threadpool.message.core.platform.WeChatSendMessageHandler;
+import cn.hippo4j.threadpool.message.core.service.AlarmControlHandler;
+import cn.hippo4j.threadpool.message.core.service.SendMessageHandler;
+import cn.hippo4j.threadpool.message.core.service.ThreadPoolBaseSendMessageService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 /**
  * Message configuration.
  */
+@ConditionalOnProperty(prefix = "spring.dynamic.thread-pool", value = "enable", matchIfMissing = true, havingValue = "true")
 public class MessageConfiguration {
 
     @Bean
-    public Hippo4jSendMessageService hippo4jSendMessageService(NotifyConfigBuilder serverNotifyConfigBuilder,
-                                                               AlarmControlHandler alarmControlHandler) {
-        return new Hippo4jBaseSendMessageService(serverNotifyConfigBuilder, alarmControlHandler);
+    public ThreadPoolBaseSendMessageService threadPoolSendMessageService(AlarmControlHandler alarmControlHandler) {
+        return new ThreadPoolBaseSendMessageService(alarmControlHandler);
+    }
+
+    @Bean
+    public ThreadPoolBaseSendMessageServiceInitializer threadPoolBaseSendMessageServiceInitializer(NotifyConfigBuilder notifyConfigBuilder,
+                                                                                                   ThreadPoolBaseSendMessageService threadPoolBaseSendMessageService) {
+        return new ThreadPoolBaseSendMessageServiceInitializer(notifyConfigBuilder, threadPoolBaseSendMessageService);
     }
 
     @Bean

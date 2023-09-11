@@ -1,0 +1,10 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.community.category.贡献规约": {
+    "message": "贡献规约",
+    "description": "The label for category 贡献规约 in sidebar community"
+  }
+}

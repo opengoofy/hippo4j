@@ -17,6 +17,21 @@
 
 package cn.hippo4j.config.springboot.starter.monitor;
 
+import cn.hippo4j.common.executor.ThreadFactoryBuilder;
+import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
+import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.core.config.ApplicationContextHolder;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
+import cn.hippo4j.threadpool.dynamic.mode.config.properties.MonitorProperties;
+import cn.hippo4j.threadpool.monitor.api.DynamicThreadPoolMonitor;
+import cn.hippo4j.threadpool.monitor.api.ThreadPoolMonitor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,24 +39,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import cn.hippo4j.core.config.ApplicationContextHolder;
-import cn.hippo4j.common.executor.ThreadFactoryBuilder;
-import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
-import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
-import cn.hippo4j.threadpool.dynamic.mode.config.properties.MonitorProperties;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
-import cn.hippo4j.monitor.base.DynamicThreadPoolMonitor;
-import cn.hippo4j.monitor.base.ThreadPoolMonitor;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-
-import static cn.hippo4j.core.executor.manage.GlobalThreadPoolManage.getThreadPoolNum;
 
 /**
  * Thread-pool monitor executor.
@@ -82,8 +79,8 @@ public class ThreadPoolMonitorExecutor implements ApplicationRunner, DisposableB
                 monitor.getInitialDelay(),
                 monitor.getCollectInterval(),
                 TimeUnit.MILLISECONDS);
-        if (GlobalThreadPoolManage.getThreadPoolNum() > 0) {
-            log.info("Dynamic thread pool: [{}]. The dynamic thread pool starts data collection and reporting.", getThreadPoolNum());
+        if (ThreadPoolExecutorRegistry.getThreadPoolExecutorSize() > 0) {
+            log.info("Dynamic thread pool: [{}]. The dynamic thread pool starts data collection and reporting.", ThreadPoolExecutorRegistry.getThreadPoolExecutorSize());
         }
     }
 

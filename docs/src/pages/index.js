@@ -1,20 +1,22 @@
-import React from 'react';
-import clsx from 'clsx';
-import Link from '@docusaurus/Link';
-import Translate from '@docusaurus/Translate';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
+import React from "react";
+import clsx from "clsx";
+import Link from "@docusaurus/Link";
+// import Translate from "@docusaurus/Translate";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Layout from "@theme/Layout";
+// import HomepageFeatures from "@site/src/components/HomepageFeatures";
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
 
-import styles from './index.module.css';
+import LandingLayout from "@site/src/components/LandingPage";
+
+import styles from "./index.module.css";
 
 if (ExecutionEnvironment.canUseDOM) {
   var _hmt = _hmt || [];
   (function () {
-    var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?473eaadc06f3d63771f303df1fc29b58';
-    var s = document.getElementsByTagName('script')[0];
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?473eaadc06f3d63771f303df1fc29b58";
+    var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(hm, s);
   })();
 }
@@ -22,12 +24,15 @@ if (ExecutionEnvironment.canUseDOM) {
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
+    <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link className="button button--secondary button--lg" to="/docs/user_docs/intro">
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs/user_docs/intro"
+          >
             快速开始 - 5min ⏱️
           </Link>
         </div>
@@ -43,9 +48,10 @@ export default function Home() {
       title={`${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
-      <HomepageHeader />
+      {/* <HomepageHeader /> */}
       <main>
-        <HomepageFeatures />
+        {/* <HomepageFeatures /> */}
+        <LandingLayout />
       </main>
     </Layout>
   );
