@@ -115,6 +115,35 @@ public class BeforeCheckConfiguration {
                                     "Please check whether the [spring.dynamic.thread-pool.apollo.namespace] configuration is empty or an empty string.");
                         }
                     }
+
+                    Map<String, String> zookeeper = properties.getZookeeper();
+                    if (MapUtil.isNotEmpty(zookeeper)) {
+                        String zkConnectStr = zookeeper.get("zk-connect-str");
+                        if ((StringUtil.isBlank(zkConnectStr))) {
+                            throw new ConfigEmptyException(
+                                    "Web server failed to start. The dynamic thread pool zookeeper zk-connect-str is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.zookeeper.zk-connect-str] configuration is empty or an empty string.");
+                        }
+                        String configVersion = zookeeper.get("config-version");
+                        if ((StringUtil.isBlank(configVersion))) {
+                            throw new ConfigEmptyException(
+                                    "Web server failed to start. The dynamic thread pool zookeeper config-version is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.zookeeper.config-version] configuration is empty or an empty string.");
+                        }
+                        String rootNode = zookeeper.get("root-node");
+                        if ((StringUtil.isBlank(rootNode))) {
+                            throw new ConfigEmptyException(
+                                    "Web server failed to start. The dynamic thread pool zookeeper root-node is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.zookeeper.root-node] configuration is empty or an empty string.");
+                        }
+                        String node = zookeeper.get("node");
+                        if ((StringUtil.isBlank(node))) {
+                            throw new ConfigEmptyException(
+                                    "Web server failed to start. The dynamic thread pool zookeeper node is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.zookeeper.node] configuration is empty or an empty string.");
+                        }
+                    }
+
                     break;
                 }
                 default:

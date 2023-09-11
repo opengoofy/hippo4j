@@ -94,4 +94,11 @@ public interface BootstrapPropertiesInterface {
         return null;
     }
 
+    /**
+     * Get Zookeeper.
+     */
+    default Map<String, String> getZookeeper() {
+        return null;
+    }
+
 }
