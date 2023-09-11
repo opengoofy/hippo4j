@@ -3,6 +3,7 @@ import { DefaultTheme, ThemeContext } from 'styled-components';
 
 import { Layout, Button, Menu, Table } from 'antd';
 import { Routes, Route, Link } from 'react-router-dom';
+import { useLocalStorageState } from 'ahooks';
 import Home from '@/page/home';
 import About from '@/page/about';
 import Login from '@/page/login';
@@ -12,6 +13,7 @@ import Search from '@/page/search';
 
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { THEME_NAME, MyThemeContext } from '@/context/themeContext';
+import useThemeMode from '@/hooks/useThemeMode';
 
 const { Header, Sider, Content } = Layout;
 
@@ -83,27 +85,24 @@ const items = [
 
 const LayoutCom = () => {
   const myThemes: DefaultTheme = useContext<any>(ThemeContext);
-  const { themeName, setThemeName } = useContext<any>(MyThemeContext);
   const [current, setCurrent] = useState('mail');
   const onClick = (e: any) => {
-    console.log('click ', e);
     setCurrent(e.key);
   };
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    isDark ? setThemeName(THEME_NAME.DARK) : setThemeName(THEME_NAME.DEFAULT);
-  }, [isDark, setThemeName]);
+  const [isSider, setIsSider] = useState(true);
+  const [setIsDark] = useThemeMode();
 
   return (
     <main className={style.container} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
-      <Header className={style.header} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
+      <Header className={style.header} style={{ backgroundColor: myThemes.backgroundColor.bg2 }}>
         <Button onClick={() => setIsDark(pre => !pre)}>切换主题</Button>
       </Header>
-      <Layout>
-        <Sider className={style.sider} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
-          <Menu onClick={onClick} selectedKeys={[current]} mode="inline" items={items} />
-        </Sider>
+      <Layout style={{ backgroundColor: myThemes.backgroundColor.bg1, height: 'calc(100vh - 64px)' }}>
+        {isSider && (
+          <Sider className={style.sider} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
+            <Menu onClick={onClick} selectedKeys={[current]} mode="inline" items={items} />
+          </Sider>
+        )}
         <Content className={style.content}>
           <Routes>
             <Route path="/Search" Component={Search}></Route>
