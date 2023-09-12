@@ -21,7 +21,7 @@ const App = () => {
   return (
     <LayoutCom sideMenuList={sideMenuList} isSider={false}>
       <Routes>
-            <Route path="/Login" Component={Login}></Route>
+        <Route path="/Login" Component={Login}></Route>
         {routeList.map(item => (
           <Route key={item.path} path={item.path} Component={item.component} />
         ))}

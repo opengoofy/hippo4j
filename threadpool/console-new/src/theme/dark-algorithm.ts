@@ -7,6 +7,10 @@ export const darkAlgorithm = {
     fontSize: 14,
   },
   components: {
+    Layout: {
+      bodyBg: darkDefaultTheme.backgroundColor.bg1,
+      headerBg: darkDefaultTheme.backgroundColor.bgHeader,
+    },
     Button: {
       fontSize: 14,
     },
