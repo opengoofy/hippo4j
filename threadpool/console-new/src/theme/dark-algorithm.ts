@@ -28,6 +28,15 @@ export const darkAlgorithm = {
       paddingContentHorizontalLG: 0,
       paddingMD: 0,
     },
+    Menu: {
+      itemBg: darkDefaultTheme.backgroundColor.bg1,
+      activeBarWidth: 0,
+      activeBarHeight: 0,
+      activeBarBorderWidth: 0,
+      subMenuItemBorderRadius: 8,
+      horizontalItemBorderRadius: 8,
+      itemBorderRadius: 8,
+    },
   },
   algorithm: theme.darkAlgorithm,
 };

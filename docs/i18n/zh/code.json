@@ -296,5 +296,21 @@
   "homepage.introduction.thirdPartDesc": {
     "message": "支持自定义时长线程池运行数据采集存储，同时也支持 Prometheus、InfluxDB 等采集监控，通过 Grafana 或内置监控页面提供可视化大屏监控运行指标",
     "description": "the desc for the third introduction part"
+  },
+  "companyPage.title": {
+    "message": "谁在使用 Hippo4j ?",
+    "description": "the title for the company page"
+  },
+  "companyPage.descriptionText": {
+    "message": "非常感谢大家对 Hippo4j 的关注和支持，这是我们前进最大的动力。",
+    "description": "the description for the company page"
+  },
+  "companyPage.questionText": {
+    "message": "正在使用Hippo4j ?",
+    "description": "the text for the company question"
+  },
+  "companyPage.linkText": {
+    "message": "点击进行登记",
+    "description": "the text for the company page link"
   }
 }

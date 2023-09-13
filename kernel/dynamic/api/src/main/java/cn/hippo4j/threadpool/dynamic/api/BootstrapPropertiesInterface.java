@@ -86,4 +86,12 @@ public interface BootstrapPropertiesInterface {
     default Map<String, String> getEtcd() {
         return null;
     }
+
+    /**
+     * Get apollo.
+     */
+    default  Map<String, String> getApollo(){
+        return null;
+    }
+
 }
