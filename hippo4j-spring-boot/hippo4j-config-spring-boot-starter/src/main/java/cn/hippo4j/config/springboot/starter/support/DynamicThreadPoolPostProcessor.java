@@ -61,15 +61,14 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DynamicThreadPoolExecutor || DynamicThreadPoolAdapterChoose.match(bean)) {
-            DynamicThreadPool dynamicThreadPool;
             try {
-                dynamicThreadPool = ApplicationContextHolder.findAnnotationOnBean(beanName, DynamicThreadPool.class);
+                DynamicThreadPool dynamicThreadPool =
+                        Optional.ofNullable(ApplicationContextHolder.findAnnotationOnBean(beanName,
+                                        DynamicThreadPool.class))
+                                .orElse(DynamicThreadPoolAnnotationUtil.findAnnotationOnBean(beanName,
+                                        DynamicThreadPool.class));
                 if (Objects.isNull(dynamicThreadPool)) {
-                    // Adapt to lower versions of SpringBoot.
-                    dynamicThreadPool = DynamicThreadPoolAnnotationUtil.findAnnotationOnBean(beanName, DynamicThreadPool.class);
-                    if (Objects.isNull(dynamicThreadPool)) {
-                        return bean;
-                    }
+                    return bean;
                 }
             } catch (Exception ex) {
                 log.error("Failed to create dynamic thread pool in annotation mode.", ex);
@@ -79,7 +78,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             if ((dynamicThreadPoolExecutor = DynamicThreadPoolAdapterChoose.unwrap(bean)) == null) {
                 dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) bean;
             }
-            DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(dynamicThreadPoolExecutor.getThreadPoolId(), dynamicThreadPoolExecutor);
+            DynamicThreadPoolWrapper wrap = new DynamicThreadPoolWrapper(dynamicThreadPoolExecutor.getThreadPoolId(),
+                    dynamicThreadPoolExecutor);
             ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(wrap);
             DynamicThreadPoolAdapterChoose.replace(bean, remoteThreadPoolExecutor);
             return DynamicThreadPoolAdapterChoose.match(bean) ? bean : remoteThreadPoolExecutor;
@@ -168,7 +168,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      * @param executorProperties executor properties
      */
     private void threadPoolParamReplace(ThreadPoolExecutor executor, ExecutorProperties executorProperties) {
-        BlockingQueue workQueue = BlockingQueueTypeEnum.createBlockingQueue(executorProperties.getBlockingQueue(), executorProperties.getQueueCapacity());
+        BlockingQueue workQueue = BlockingQueueTypeEnum.createBlockingQueue(executorProperties.getBlockingQueue(),
+                executorProperties.getQueueCapacity());
         ReflectUtil.setFieldValue(executor, "workQueue", workQueue);
         executor.setCorePoolSize(executorProperties.getCorePoolSize());
         executor.setMaximumPoolSize(executorProperties.getMaximumPoolSize());
@@ -205,7 +206,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
                         .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getQueueCapacity()).get()))
                 .rejectedHandler(Optional.ofNullable(executorProperties.getRejectedHandler())
                         .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(each -> each.getRejectedHandler()).get()))
-                .threadNamePrefix(StringUtil.isBlank(executorProperties.getThreadNamePrefix()) ? executorProperties.getThreadPoolId() : executorProperties.getThreadNamePrefix())
+                .threadNamePrefix(StringUtil.isBlank(executorProperties.getThreadNamePrefix()) ?
+                        executorProperties.getThreadPoolId() : executorProperties.getThreadNamePrefix())
                 .threadPoolId(executorProperties.getThreadPoolId())
                 .build();
         return newExecutorProperties;
@@ -218,7 +220,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      * @return thread-pool notify alarm
      */
     private ThreadPoolNotifyAlarm buildThreadPoolNotifyAlarm(ExecutorProperties executorProperties) {
-        DynamicThreadPoolNotifyProperties notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
+        DynamicThreadPoolNotifyProperties notify =
+                Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
         boolean isAlarm = Optional.ofNullable(executorProperties.getAlarm())
                 .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).orElse(true));
         int activeAlarm = Optional.ofNullable(executorProperties.getActiveAlarm())
