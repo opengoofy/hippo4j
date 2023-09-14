@@ -78,15 +78,14 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DynamicThreadPoolExecutor || DynamicThreadPoolAdapterChoose.match(bean)) {
-            DynamicThreadPool dynamicThreadPool;
             try {
-                dynamicThreadPool = ApplicationContextHolder.findAnnotationOnBean(beanName, DynamicThreadPool.class);
+                DynamicThreadPool dynamicThreadPool =
+                        Optional.ofNullable(ApplicationContextHolder.findAnnotationOnBean(beanName,
+                                        DynamicThreadPool.class))
+                                .orElse(DynamicThreadPoolAnnotationUtil.findAnnotationOnBean(beanName,
+                                        DynamicThreadPool.class));
                 if (Objects.isNull(dynamicThreadPool)) {
-                    // Adapt to lower versions of SpringBoot.
-                    dynamicThreadPool = DynamicThreadPoolAnnotationUtil.findAnnotationOnBean(beanName, DynamicThreadPool.class);
-                    if (Objects.isNull(dynamicThreadPool)) {
-                        return bean;
-                    }
+                    return bean;
                 }
             } catch (Exception ex) {
                 log.error("Failed to create dynamic thread pool in annotation mode.", ex);
@@ -96,7 +95,9 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
             if ((dynamicThreadPoolExecutor = DynamicThreadPoolAdapterChoose.unwrap(bean)) == null) {
                 dynamicThreadPoolExecutor = (DynamicThreadPoolExecutor) bean;
             }
-            DynamicThreadPoolWrapper dynamicThreadPoolWrapper = new DynamicThreadPoolWrapper(dynamicThreadPoolExecutor.getThreadPoolId(), dynamicThreadPoolExecutor);
+            DynamicThreadPoolWrapper dynamicThreadPoolWrapper =
+                    new DynamicThreadPoolWrapper(dynamicThreadPoolExecutor.getThreadPoolId(),
+                            dynamicThreadPoolExecutor);
             ThreadPoolExecutor remoteThreadPoolExecutor = fillPoolAndRegister(dynamicThreadPoolWrapper);
             DynamicThreadPoolAdapterChoose.replace(bean, remoteThreadPoolExecutor);
             subscribeConfig(dynamicThreadPoolWrapper);
@@ -165,7 +166,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
         } catch (Exception ex) {
             log.error("Failed to initialize thread pool configuration. error message: {}", ex.getMessage());
         }
-        GlobalThreadPoolManage.register(dynamicThreadPoolWrapper.getThreadPoolId(), threadPoolParameterInfo, dynamicThreadPoolWrapper);
+        GlobalThreadPoolManage.register(dynamicThreadPoolWrapper.getThreadPoolId(), threadPoolParameterInfo,
+                dynamicThreadPoolWrapper);
         return executor;
     }
 
@@ -176,7 +178,8 @@ public final class DynamicThreadPoolPostProcessor implements BeanPostProcessor {
      * @param threadPoolParameterInfo thread-pool parameter info
      */
     private void threadPoolParamReplace(ThreadPoolExecutor executor, ThreadPoolParameterInfo threadPoolParameterInfo) {
-        BlockingQueue workQueue = BlockingQueueTypeEnum.createBlockingQueue(threadPoolParameterInfo.getQueueType(), threadPoolParameterInfo.getCapacity());
+        BlockingQueue workQueue = BlockingQueueTypeEnum.createBlockingQueue(threadPoolParameterInfo.getQueueType(),
+                threadPoolParameterInfo.getCapacity());
         ReflectUtil.setFieldValue(executor, "workQueue", workQueue);
         executor.setCorePoolSize(threadPoolParameterInfo.corePoolSizeAdapt());
         executor.setMaximumPoolSize(threadPoolParameterInfo.maximumPoolSizeAdapt());

@@ -98,7 +98,7 @@ public class DynamicThreadPoolAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public ApplicationContextHolder hippo4JApplicationContextHolder() {
+    public ApplicationContextHolder hippo4jApplicationContextHolder() {
         return new ApplicationContextHolder();
     }
 
