@@ -20,7 +20,7 @@ module.exports = {
 
         // A callback function that receives two arguments: the webpack rule,
         // and the context. You must return an updated rule object.
-        modifyLessRule: (lessRule, context) => {
+        modifyLessRule: lessRule => {
           lessRule.test = lessModuleRegex;
           lessRule.exclude = /node_modules|antd\.css/;
           return lessRule;
@@ -36,6 +36,7 @@ module.exports = {
   webpack: {
     alias: {
       '@': resolve('src'),
+      '@i18': resolve('public/locales'),
     },
   },
   devServer: {
