@@ -29,6 +29,8 @@ declare module 'styled-components' {
     };
     // 背景色
     backgroundColor: {
+      bgHeader: string;
+      bgContent: string;
       bg1: string;
       bg2: string;
       bg3: string;
