@@ -22,7 +22,7 @@ const LayoutCom = (props: ILayoutCom) => {
   const [setIsDark] = useThemeMode();
   return (
     <main className={style.container} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
-      <Header className={style.header} style={{ backgroundColor: myThemes.backgroundColor.bg2 }}>
+      <Header className={style.header}>
         <Button onClick={() => setIsDark(pre => !pre)}>切换主题</Button>
       </Header>
       <Layout style={{ backgroundColor: myThemes.backgroundColor.bg1, height: 'calc(100vh - 64px)' }}>

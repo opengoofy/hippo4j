@@ -8,6 +8,10 @@ export const defaultAlgorithm = {
     // colorBgBase: lightDefaultTheme.backgroundColor.bg1,
   },
   components: {
+    Layout: {
+      bodyBg: lightDefaultTheme.backgroundColor.bg1,
+      headerBg: lightDefaultTheme.backgroundColor.bgHeader,
+    },
     Button: {
       fontSize: 14,
     },

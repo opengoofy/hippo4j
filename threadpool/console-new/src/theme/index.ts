@@ -24,6 +24,8 @@ export const lightDefaultTheme: DefaultTheme = {
     bl3: '#B5BDCE',
   },
   backgroundColor: {
+    bgHeader: '#fff',
+    bgContent: '#fff',
     // main bgc
     bg1: '#ebebf2',
     // app or head bgc
@@ -65,6 +67,8 @@ export const darkDefaultTheme: DefaultTheme = {
     bl3: '#424242',
   },
   backgroundColor: {
+    bgHeader: '#141414',
+    bgContent: '#141414',
     // 大面积色
     bg1: '#141414',
     // tab顶部颜色
