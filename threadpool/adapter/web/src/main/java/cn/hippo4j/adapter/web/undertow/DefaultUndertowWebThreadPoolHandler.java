@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import cn.hippo4j.adapter.web.DefaultAbstractWebThreadPoolService;
+import cn.hippo4j.common.support.AbstractThreadPoolRuntime;
 import io.undertow.Undertow;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,8 +40,8 @@ public class DefaultUndertowWebThreadPoolHandler extends DefaultAbstractWebThrea
 
     private static final String UNDERTOW_NAME = "undertow";
 
-    public DefaultUndertowWebThreadPoolHandler() {
-        super(new UndertowWebThreadPoolHandlerSupport());
+    public DefaultUndertowWebThreadPoolHandler(AbstractThreadPoolRuntime runtime) {
+        super(new UndertowWebThreadPoolHandlerSupport(runtime));
     }
 
     /**
