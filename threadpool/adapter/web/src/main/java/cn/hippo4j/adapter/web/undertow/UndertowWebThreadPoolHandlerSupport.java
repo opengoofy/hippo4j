@@ -65,6 +65,7 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
     }
 
     private final long noRejectCount = -1L;
+
     @Override
     public ThreadPoolBaseInfo simpleInfo() {
         ThreadPoolBaseInfo poolBaseInfo = new ThreadPoolBaseInfo();
@@ -82,7 +83,11 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
             EnhancedQueueExecutor enhancedQueueExecutor =
                     (EnhancedQueueExecutor) ReflectUtil.getFieldValue(
                             ReflectUtil.getFieldValue(xnioWorker, "taskPool"), "executor");
-            poolBaseInfo.setQueueCapacity(enhancedQueueExecutor.getQueueSize());
+
+            Method getMaximumQueueSize = ReflectionUtils.findMethod(enhancedQueueExecutor.getClass(), "getMaximumQueueSize");
+            ReflectionUtils.makeAccessible(getMaximumQueueSize);
+            int queueCapacity = (int) ReflectionUtils.invokeMethod(getMaximumQueueSize, enhancedQueueExecutor);
+            poolBaseInfo.setQueueCapacity(queueCapacity);
         } catch (Exception ex) {
             log.error("The undertow container failed to get thread pool parameters.", ex);
         }
@@ -126,6 +131,33 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
         Method getActiveCount = ReflectionUtils.findMethod(fieldObject.getClass(), "getActiveCount");
         ReflectionUtils.makeAccessible(getActiveCount);
         int activeCount = (int) ReflectionUtils.invokeMethod(getActiveCount, fieldObject);
+
+        Field executorFiled = ReflectionUtils.findField(fieldObject.getClass(), "executor");
+        ReflectionUtils.makeAccessible(executorFiled);
+        EnhancedQueueExecutor enhancedQueueExecutor = (EnhancedQueueExecutor) ReflectionUtils.getField(executorFiled, fieldObject);
+
+        Method getLargestPoolSize = ReflectionUtils.findMethod(enhancedQueueExecutor.getClass(), "getLargestPoolSize");
+        ReflectionUtils.makeAccessible(getLargestPoolSize);
+        int largestPoolSize = (int) ReflectionUtils.invokeMethod(getLargestPoolSize, enhancedQueueExecutor);
+
+        Method getQueueSize = ReflectionUtils.findMethod(enhancedQueueExecutor.getClass(), "getQueueSize");
+        ReflectionUtils.makeAccessible(getQueueSize);
+        int queueSize = (int) ReflectionUtils.invokeMethod(getQueueSize, enhancedQueueExecutor);
+
+        Method getMaximumQueueSize = ReflectionUtils.findMethod(enhancedQueueExecutor.getClass(), "getMaximumQueueSize");
+        ReflectionUtils.makeAccessible(getMaximumQueueSize);
+        int queueCapacity = (int) ReflectionUtils.invokeMethod(getMaximumQueueSize, enhancedQueueExecutor);
+
+        int remainingCapacity = queueCapacity - queueSize;
+
+        Method getCompletedTaskCount = ReflectionUtils.findMethod(enhancedQueueExecutor.getClass(), "getCompletedTaskCount");
+        ReflectionUtils.makeAccessible(getCompletedTaskCount);
+        long completedTaskCount = (long) ReflectionUtils.invokeMethod(getCompletedTaskCount, enhancedQueueExecutor);
+
+        Method getHandoffExecutor = ReflectionUtils.findMethod(enhancedQueueExecutor.getClass(), "getHandoffExecutor");
+        ReflectionUtils.makeAccessible(getHandoffExecutor);
+        Executor handoffExecutor = (Executor) ReflectionUtils.invokeMethod(getHandoffExecutor, enhancedQueueExecutor);
+
         activeCount = Math.max(activeCount, 0);
         String currentLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
         String peakLoad = CalculateUtil.divide(activeCount, maximumPoolSize) + "";
@@ -141,6 +173,15 @@ public class UndertowWebThreadPoolHandlerSupport implements IWebThreadPoolHandle
         stateInfo.setRejectCount(rejectCount);
         stateInfo.setClientLastRefreshTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         stateInfo.setTimestamp(System.currentTimeMillis());
+
+        stateInfo.setQueueType("org.jboss.threads.EnhancedQueueExecutor.TaskNode:FIFO");
+        stateInfo.setQueueSize(queueSize);
+        stateInfo.setQueueCapacity(queueCapacity);
+        stateInfo.setQueueRemainingCapacity(remainingCapacity);
+        stateInfo.setLargestPoolSize(largestPoolSize);
+        stateInfo.setCompletedTaskCount(completedTaskCount);
+        stateInfo.setRejectedName(handoffExecutor.getClass().getName());
+
         return runtime.supplement(stateInfo);
     }
 
