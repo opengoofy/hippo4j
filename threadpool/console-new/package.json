@@ -8,8 +8,11 @@
     "@testing-library/user-event": "^13.5.0",
     "ahooks": "^3.7.8",
     "antd": "^5.4.7",
+    "i18next": "^23.5.1",
+    "qs": "^6.11.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^13.2.2",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
