@@ -1,16 +1,16 @@
 import { useContext, useEffect } from 'react';
 import { useLocalStorageState } from 'ahooks';
-import { MyThemeContext, THEME_NAME } from '@/context/themeContext';
+import { MyContext, THEME_NAME } from '@/context';
 
-const useThemeMode = () => {
+const useThemeMode = (): { isDark: boolean | undefined; setIsDark: (isDark: boolean) => void } => {
   const [isDark, setIsDark] = useLocalStorageState<boolean>('current-mode', { defaultValue: false });
-  const { setThemeName } = useContext<any>(MyThemeContext);
+  const { setThemeName } = useContext<any>(MyContext);
 
   useEffect(() => {
     isDark ? setThemeName(THEME_NAME.DARK) : setThemeName(THEME_NAME.DEFAULT);
   }, [isDark, setThemeName]);
 
-  return [setIsDark];
+  return { isDark, setIsDark };
 };
 
 export default useThemeMode;
