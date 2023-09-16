@@ -2,7 +2,6 @@ import { theme } from 'antd';
 import { lightDefaultTheme } from '.';
 export const defaultAlgorithm = {
   token: {
-    borderRadius: 6,
     colorPrimary: lightDefaultTheme.primary,
     fontSize: 14,
     // colorBgBase: lightDefaultTheme.backgroundColor.bg1,
