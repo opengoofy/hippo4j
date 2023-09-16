@@ -51,3 +51,6 @@ docs/.docusaurus
 ### Docker ###
 docker/conf
 docker/target
+
+### OS ###
+.DS_Store

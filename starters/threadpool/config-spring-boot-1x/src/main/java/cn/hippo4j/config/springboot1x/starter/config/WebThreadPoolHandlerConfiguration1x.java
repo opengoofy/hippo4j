@@ -89,8 +89,8 @@ public class WebThreadPoolHandlerConfiguration1x {
     static class EmbeddedUndertow {
 
         @Bean
-        public WebThreadPoolService undertowWebThreadPoolHandler() {
-            return new UndertowWebThreadPoolHandler1x();
+        public WebThreadPoolService undertowWebThreadPoolHandler(WebThreadPoolRunStateHandler webThreadPoolRunStateHandler) {
+            return new UndertowWebThreadPoolHandler1x(webThreadPoolRunStateHandler);
         }
     }
 }

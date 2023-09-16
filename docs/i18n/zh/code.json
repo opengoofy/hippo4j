@@ -271,7 +271,7 @@
   },
   "homepage.secondTitle": {
     "message": "Hippo4j能做什么？",
-    "description": "a title for introduciton part"
+    "description": "The title for the introduction part"
   },
   "homepage.introduction.fristPartTitle": {
     "message": "动态变更",
@@ -312,5 +312,49 @@
   "companyPage.linkText": {
     "message": "点击进行登记",
     "description": "the text for the company page link"
+  },
+  "homepage.introduction.fristPartDesc1": {
+    "message": "应用程序运行时动态更改线程池参数。",
+    "description": "The first desc for fristPart "
+  },
+  "homepage.introduction.fristPartDesc2": {
+    "message": "包括但不限于核心大小、最大线程数、阻塞队列大小和拒绝策略。",
+    "description": "The second desc for fristPart "
+  },
+  "homepage.introduction.fristPartDesc3": {
+    "message": "支持应用集群中不同节点的差异化线程池配置。",
+    "description": "The third desc for fristPart "
+  },
+  "homepage.introduction.secondPartDesc1": {
+    "message": "应用程序线程池运行时点，提供四个告警维度。",
+    "description": "The first desc for secondPart "
+  },
+  "homepage.introduction.secondPartDesc2": {
+    "message": "线程池超载，阻塞队列容量，运行时间过长以及拒绝策略警报。",
+    "description": "The second desc for secondPart "
+  },
+  "homepage.introduction.secondPartDesc3": {
+    "message": "它还支持在自定义时间段内的非重复闹钟。",
+    "description": "The third desc for secondPart "
+  },
+  "homepage.introduction.thirdPartDesc1": {
+    "message": "支持为数据收集和存储设置自定义持续时间的线程池。",
+    "description": "The first desc for thirdPart "
+  },
+  "homepage.introduction.thirdPartDesc2": {
+    "message": "同时还支持Prometheus、InfluxDB和其他监控系统。",
+    "description": "The second desc for thirdPart "
+  },
+  "homepage.introduction.thirdPartDesc3": {
+    "message": "通过Grafana或内置的监控页面提供可视化仪表盘监控指标。",
+    "description": "The third desc for thirdPart "
+  },
+  "homepage.secondTitleDesc1": {
+    "message": "Hippo4j是一个Java线程池框架。",
+    "description": "The p1 for the secondTitle part"
+  },
+  "homepage.secondTitleDesc2": {
+    "message": "提供了线程池动态调整、自定义警报和操作监控等功能，以帮助提高业务系统的运营支持能力。",
+    "description": "The p2 for the secondTitle part"
   }
 }
