@@ -1,7 +1,7 @@
 import { useState, useContext, ReactNode } from 'react';
 import { DefaultTheme, ThemeContext } from 'styled-components';
-import { Layout, Button, Menu } from 'antd';
-import useThemeMode from '@/hooks/useThemeMode';
+import { Layout, Menu } from 'antd';
+import HeaderChild from '../header';
 import { IMenuList } from '@/typings';
 import style from './index.module.less';
 
@@ -19,11 +19,11 @@ const LayoutCom = (props: ILayoutCom) => {
   const onClick = (e: any) => {
     setCurrent(e.key);
   };
-  const [setIsDark] = useThemeMode();
+
   return (
     <main className={style.container} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
       <Header className={style.header}>
-        <Button onClick={() => setIsDark(pre => !pre)}>切换主题</Button>
+        <HeaderChild />
       </Header>
       <Layout style={{ backgroundColor: myThemes.backgroundColor.bg1, height: 'calc(100vh - 64px)' }}>
         {isSider && (

@@ -33,6 +33,11 @@ module.exports = {
       },
     },
   ],
+  // style: {
+  //   modules: {
+  //     localIdentName: '[local]_[hash:base64:5]', // 可以自定义你的类名生成规则
+  //   },
+  // },
   webpack: {
     alias: {
       '@': resolve('src'),
