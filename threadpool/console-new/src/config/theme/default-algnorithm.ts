@@ -2,7 +2,6 @@ import { theme } from 'antd';
 import { lightDefaultTheme } from '.';
 export const defaultAlgorithm = {
   token: {
-    borderRadius: 6,
     colorPrimary: lightDefaultTheme.primary,
     fontSize: 14,
     fontSizeHeading1: 18,
@@ -11,6 +10,8 @@ export const defaultAlgorithm = {
     Layout: {
       bodyBg: lightDefaultTheme.backgroundColor.bg1,
       headerBg: lightDefaultTheme.backgroundColor.bgHeader,
+      triggerBg: lightDefaultTheme.backgroundColor.bg1,
+      triggerColor: lightDefaultTheme.fontColor.fc1,
     },
     Button: {
       // fontSize: 14,
@@ -33,12 +34,14 @@ export const defaultAlgorithm = {
     },
     Menu: {
       itemBg: lightDefaultTheme.backgroundColor.bg1,
+      // itemSelectedBg: lightDefaultTheme.primary,
+      // itemSelectedColor: lightDefaultTheme.fontColor.fc1,
       activeBarWidth: 0,
       activeBarHeight: 0,
       activeBarBorderWidth: 0,
-      subMenuItemBorderRadius: 8,
-      horizontalItemBorderRadius: 8,
-      itemBorderRadius: 8,
+      // subMenuItemBorderRadius: 8,
+      // horizontalItemBorderRadius: 8,
+      // itemBorderRadius: 8,
     },
   },
   algorithm: theme.defaultAlgorithm,

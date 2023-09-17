@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import style from './index.module.less';
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Dropdown, Row, Switch, Tag } from 'antd';
+import { Avatar, Button, Col, Dropdown, Row, Switch } from 'antd';
 import { useThemeMode } from '@/hooks';
 import { MyContext } from '@/context';
 import IconFont from '@/components/icon';

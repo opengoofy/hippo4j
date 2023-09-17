@@ -5,7 +5,7 @@ interface Props {
 }
 
 const MyIcon = createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/c/font_4254722_1xl4w1k5c53.js', // 在 iconfont.cn 上生成
+  scriptUrl: '//at.alicdn.com/t/c/font_4254722_3l4m6by7h34.js', // 在 iconfont.cn 上生成
 });
 
 const IconFont = (props: Props) => {

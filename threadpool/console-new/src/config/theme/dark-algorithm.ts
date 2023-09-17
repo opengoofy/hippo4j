@@ -2,7 +2,6 @@ import { theme } from 'antd';
 import { darkDefaultTheme } from '.';
 export const darkAlgorithm = {
   token: {
-    borderRadius: 6,
     colorPrimary: darkDefaultTheme.primary,
     fontSize: 14,
     fontSizeHeading1: 18,
@@ -11,6 +10,8 @@ export const darkAlgorithm = {
     Layout: {
       bodyBg: darkDefaultTheme.backgroundColor.bg1,
       headerBg: darkDefaultTheme.backgroundColor.bgHeader,
+      triggerBg: darkDefaultTheme.backgroundColor.bg1,
+      triggerColor: darkDefaultTheme.fontColor.fc1,
     },
     Button: {
       // fontSize: 14,
@@ -35,12 +36,14 @@ export const darkAlgorithm = {
     },
     Menu: {
       itemBg: darkDefaultTheme.backgroundColor.bg1,
+      // itemSelectedBg: darkDefaultTheme.primary,
+      // itemSelectedColor: darkDefaultTheme.fontColor.fc1,
       activeBarWidth: 0,
       activeBarHeight: 0,
       activeBarBorderWidth: 0,
-      subMenuItemBorderRadius: 8,
-      horizontalItemBorderRadius: 8,
-      itemBorderRadius: 8,
+      // subMenuItemBorderRadius: 8,
+      // horizontalItemBorderRadius: 8,
+      // itemBorderRadius: 8,
     },
   },
   algorithm: theme.darkAlgorithm,
