@@ -49,5 +49,11 @@ module.exports = {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
+    proxy: {
+      '/hippo4j': {
+        target: 'http://console.hippo4j.cn',
+        changeOrigin: true,
+      },
+    },
   },
 };

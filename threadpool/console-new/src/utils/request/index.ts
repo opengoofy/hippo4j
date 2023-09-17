@@ -32,7 +32,7 @@ type Response<T = any> = {
   code?: string | number;
 };
 
-let baseURL = 'http://127.0.0.1:9999';
+let baseURL = 'http://console.hippo4j.cn';
 
 const inital: RequestOptions = {
   method: 'GET',
@@ -104,6 +104,7 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
   method = method.toUpperCase();
   responseType = responseType.toUpperCase();
   config = {
+    ...config,
     method,
     credentials,
     responseType,
@@ -113,6 +114,7 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
   } else {
     config.body = null;
   }
+
   return fetch(url, config as any).then(function onfulfilled(response) {
     let { status, statusText } = response;
     if (status >= 200 && status < 400) {

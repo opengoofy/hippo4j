@@ -1,6 +1,6 @@
 import { useState, useContext, ReactNode } from 'react';
 import { DefaultTheme, ThemeContext } from 'styled-components';
-import { Layout, Menu } from 'antd';
+import { Breadcrumb, Layout, Menu } from 'antd';
 import HeaderChild from '../header';
 import { IMenuList } from '@/typings';
 import style from './index.module.less';
@@ -25,13 +25,26 @@ const LayoutCom = (props: ILayoutCom) => {
       <Header className={style.header}>
         <HeaderChild />
       </Header>
-      <Layout style={{ backgroundColor: myThemes.backgroundColor.bg1, height: 'calc(100vh - 64px)' }}>
+      <Layout style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
         {isSider && (
           <Sider className={style.sider} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
-            <Menu onClick={onClick} selectedKeys={[current]} mode="inline" items={sideMenuList} />
+            <Menu
+              className={style.menu}
+              onClick={onClick}
+              selectedKeys={[current]}
+              mode="inline"
+              items={sideMenuList}
+            />
           </Sider>
         )}
-        <Content className={style.content}>{children}</Content>
+        <Layout style={{ padding: '0 24px 24px' }}>
+          <Breadcrumb className={style.breadcrumb}>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>List</Breadcrumb.Item>
+            <Breadcrumb.Item>App</Breadcrumb.Item>
+          </Breadcrumb>
+          <Content className={style.content}>{children}</Content>
+        </Layout>
       </Layout>
     </main>
   );
