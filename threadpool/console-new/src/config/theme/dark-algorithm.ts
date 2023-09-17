@@ -5,6 +5,7 @@ export const darkAlgorithm = {
     borderRadius: 6,
     colorPrimary: darkDefaultTheme.primary,
     fontSize: 14,
+    fontSizeHeading1: 18,
   },
   components: {
     Layout: {
@@ -12,17 +13,17 @@ export const darkAlgorithm = {
       headerBg: darkDefaultTheme.backgroundColor.bgHeader,
     },
     Button: {
-      fontSize: 14,
+      // fontSize: 14,
     },
     Table: {
       // borderRadius: 0,
       // borderRadiusLG: 0,
-      padding: 10,
-      paddingXS: 5,
-      margin: 0,
-      fontSize: 14,
-      colorBorderSecondary: darkDefaultTheme.borderColor.bl1,
-      paddingContentVerticalLG: 4,
+      // padding: 10,
+      // paddingXS: 5,
+      // margin: 0,
+      // fontSize: 14,
+      // colorBorderSecondary: darkDefaultTheme.borderColor.bl1,
+      // paddingContentVerticalLG: 4,
     },
     Modal: {
       borderRadiusLG: 2,

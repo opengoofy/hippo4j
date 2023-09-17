@@ -1,15 +1,16 @@
 import { useState, useContext, ReactNode } from 'react';
 import { DefaultTheme, ThemeContext } from 'styled-components';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, MenuProps } from 'antd';
 import HeaderChild from '../header';
 import { IMenuList } from '@/typings';
 import style from './index.module.less';
+type MenuItem = Required<MenuProps>['items'][number];
 
 const { Header, Sider, Content } = Layout;
 
 interface ILayoutCom {
   children?: ReactNode;
-  sideMenuList: IMenuList[];
+  sideMenuList: MenuItem[];
   isSider?: boolean;
 }
 const LayoutCom = (props: ILayoutCom) => {
@@ -31,7 +32,9 @@ const LayoutCom = (props: ILayoutCom) => {
             <Menu onClick={onClick} selectedKeys={[current]} mode="inline" items={sideMenuList} />
           </Sider>
         )}
-        <Content className={style.content}>{children}</Content>
+        <Content className={style.content} style={{ backgroundColor: myThemes.backgroundColor.bgContent }}>
+          {children}
+        </Content>
       </Layout>
     </main>
   );
