@@ -2,7 +2,6 @@ import { theme } from 'antd';
 import { darkDefaultTheme } from '.';
 export const darkAlgorithm = {
   token: {
-    borderRadius: 6,
     colorPrimary: darkDefaultTheme.primary,
     fontSize: 14,
   },
@@ -14,16 +13,16 @@ export const darkAlgorithm = {
     Button: {
       fontSize: 14,
     },
-    Table: {
-      // borderRadius: 0,
-      // borderRadiusLG: 0,
-      padding: 10,
-      paddingXS: 5,
-      margin: 0,
-      fontSize: 14,
-      colorBorderSecondary: darkDefaultTheme.borderColor.bl1,
-      paddingContentVerticalLG: 4,
-    },
+    // Table: {
+    //   borderRadius: 0,
+    //   borderRadiusLG: 0,
+    //   padding: 10,
+    //   paddingXS: 5,
+    //   margin: 0,
+    //   fontSize: 14,
+    //   colorBorderSecondary: darkDefaultTheme.borderColor.bl1,
+    //   paddingContentVerticalLG: 4,
+    // },
     Modal: {
       borderRadiusLG: 2,
       borderRadiusSM: 2,

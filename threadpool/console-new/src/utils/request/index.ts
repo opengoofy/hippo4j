@@ -12,8 +12,8 @@ interface HeaderConfig extends Record<string, any> {
 interface RequestOptions {
   headers?: HeaderConfig;
   method?: HttpMethods;
-  params?: { [key: string]: string } | null;
-  body?: { [key: string]: string } | null;
+  params?: { [key: string]: any } | null;
+  body?: { [key: string]: any } | null;
   timeout?: number;
   credentials?: boolean;
   moda?: 'cors' | 'same-origin';
