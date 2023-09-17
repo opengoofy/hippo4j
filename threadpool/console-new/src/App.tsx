@@ -1,25 +1,29 @@
 import LayoutCom from './components/layout-com';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
+
 import routeList from './route';
 import Login from '@/page/login';
-import { AppstoreOutlined, MailOutlined } from '@ant-design/icons';
+import { MenuProps } from 'antd';
+import { useTran } from './hooks';
+import { STR_MAP } from './config/i18n/locales/constants';
+import IconFont from './components/icon';
 
-const sideMenuList = [
-  {
-    label: <a href="/about">about</a>,
-    key: 'mail',
-    icon: <MailOutlined />,
-  },
-  {
-    label: <a href="/home">主页</a>,
-    key: 'app',
-    icon: <AppstoreOutlined />,
-  },
-];
+type MenuItem = Required<MenuProps>['items'][number];
 
 const App = () => {
+  const sideMenuList: MenuItem[] = [
+    {
+      label: useTran(STR_MAP.DYNAMIC_THREAD_POOL),
+      key: STR_MAP.DYNAMIC_THREAD_POOL,
+      icon: <IconFont type="icon-hot-for-ux"></IconFont>,
+      children: [
+        { label: <Link to={'/thread-poll/index'}>{useTran(STR_MAP.THREAD_POOL)}</Link>, key: '/thread-poll/index' },
+      ],
+    },
+  ];
+
   return (
-    <LayoutCom sideMenuList={sideMenuList} isSider={false}>
+    <LayoutCom sideMenuList={sideMenuList} isSider={true} isHeader={true}>
       <Routes>
         <Route path="/Login" Component={Login}></Route>
         {routeList.map(item => (
