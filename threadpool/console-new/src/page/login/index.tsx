@@ -1,10 +1,10 @@
 import { Form, Input, Button } from 'antd';
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { getLogin } from './service';
 import { MyContext } from '@/context';
 
 const Login = (props: any) => {
-  const { userInfo, setUserInfo } = useContext<any>(MyContext);
+  const { setUserInfo } = useContext<any>(MyContext);
 
   const data = {
     passwordType: 'password',
