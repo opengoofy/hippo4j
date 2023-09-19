@@ -18,7 +18,7 @@ i18n
         translation: en,
       },
     },
-    debug: true,
+    // debug: true,
     fallbackLng: 'zh', // 默认语言
     interpolation: {
       escapeValue: false, // 不转义HTML标签

@@ -32,7 +32,7 @@ type Response<T = any> = {
   code?: string | number;
 };
 
-let baseURL = 'http://127.0.0.1:9999';
+let baseURL = '';
 
 const inital: RequestOptions = {
   method: 'GET',
@@ -40,6 +40,8 @@ const inital: RequestOptions = {
   body: null,
   headers: {
     'Content-Type': 'application/json',
+    Authorization:
+      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMCxiYW94aW55aV91c2VyIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTU3MzAwNzYsImlhdCI6MTY5NTEyNTI3Niwicm9sIjoiUk9MRV9VU0VSIn0.4cWyhllP7u-aoRAIHs3nMggsgl4-LUCVBas8WE0FJYIe-YNS0wGf1_0RJq3TUGw00KmSaSRPKdoPgRTFqEphZA',
   },
   credentials: true,
   responseType: 'JSON',
@@ -115,6 +117,7 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
   }
   return fetch(url, config as any).then(function onfulfilled(response) {
     let { status, statusText } = response;
+    console.log('status:::', status, response);
     if (status >= 200 && status < 400) {
       let result;
       switch (responseType) {
