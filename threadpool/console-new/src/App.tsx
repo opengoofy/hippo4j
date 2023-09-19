@@ -21,6 +21,30 @@ const App = () => {
         { label: <Link to={'/thread-poll/index'}>{useTran(STR_MAP.THREAD_POOL)}</Link>, key: '/thread-poll/index' },
       ],
     },
+    {
+      // label: <Link to={'/tenant'}>{useTran(STR_MAP.LOG_MANAGE)}</Link>,
+      label: <Link to={'/tenant'}>租户管理</Link>,
+      key: STR_MAP.TENANT_MANAGE,
+      icon: <IconFont type="icon-hot-for-ux"></IconFont>,
+    },
+    {
+      // label: <Link to={'/item'}>{useTran(STR_MAP.PROJECT_MANAGE)}</Link>,
+      label: <Link to={'/item'}>项目管理</Link>,
+      key: STR_MAP.PROJECT_MANAGE,
+      icon: <IconFont type="icon-hot-for-ux"></IconFont>,
+    },
+    {
+      // label: <Link to={'/user'}>{useTran(STR_MAP.USE_RIGHT)}</Link>,
+      label: <Link to={'/user'}>用户权限</Link>,
+      key: STR_MAP.USE_RIGHT,
+      icon: <IconFont type="icon-hot-for-ux"></IconFont>,
+    },
+    {
+      // label: <Link to={'/log'}>{useTran(STR_MAP.LOG_MANAGE)}</Link>,
+      label: <Link to={'/log'}>日志管理</Link>,
+      key: STR_MAP.LOG_MANAGE,
+      icon: <IconFont type="icon-hot-for-ux"></IconFont>,
+    },
   ];
 
   return (
