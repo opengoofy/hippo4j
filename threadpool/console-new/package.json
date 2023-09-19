@@ -5,6 +5,7 @@
   "dependencies": {
     "@ahooksjs/use-url-state": "^3.5.1",
     "@ant-design/icons": "^5.2.6",
+    "@tanem/react-nprogress": "^5.0.51",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -14,6 +15,7 @@
     "dayjs": "^1.11.9",
     "i18next": "^23.5.1",
     "i18next-browser-languagedetector": "^7.1.0",
+    "lodash": "^4.17.21",
     "qs": "^6.11.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -51,6 +53,7 @@
     "@craco/craco": "^7.1.0",
     "@types/http-errors": "^2.0.1",
     "@types/jest": "^27.5.2",
+    "@types/lodash": "^4.14.198",
     "@types/node": "^16.18.26",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",

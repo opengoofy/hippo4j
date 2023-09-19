@@ -106,6 +106,7 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
   method = method.toUpperCase();
   responseType = responseType.toUpperCase();
   config = {
+    ...config,
     method,
     credentials,
     responseType,
@@ -115,6 +116,7 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
   } else {
     config.body = null;
   }
+
   return fetch(url, config as any).then(function onfulfilled(response) {
     let { status, statusText } = response;
     console.log('status:::', status, response);
