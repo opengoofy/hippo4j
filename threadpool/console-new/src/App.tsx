@@ -1,3 +1,4 @@
+// import { Suspense } from 'react';
 import LayoutCom from './components/layout-com';
 import { Routes, Route, Link } from 'react-router-dom';
 

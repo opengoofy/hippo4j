@@ -1,7 +1,7 @@
 import { DefaultTheme } from 'styled-components';
 
 export const lightDefaultTheme: DefaultTheme = {
-  primary: '#0d68a8',
+  primary: '#1890ff',
   baseColor: {
     // 前两个是固定的，用于，有颜色按钮 字体颜色等固定不会变的颜色值
     bc1: '#fff',
