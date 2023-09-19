@@ -24,13 +24,23 @@ export type USER_INFO = {
   rememberMe?: number;
 };
 
+export type TENANT_INFO = {
+  id: undefined;
+  tenantId: '';
+  tenantName: '';
+  owner: '';
+  tenantDesc: '';
+};
+
 export const MyContext = createContext<{
   themeName: string;
   lang: LANG_NAME;
   userInfo: object;
+  tenantInfo: object;
   setThemeName: (name: THEME_NAME) => void;
   setLang: (lang: LANG_NAME) => void;
   setUserInfo: (userInfo: USER_INFO) => void;
+  setTenantInfo: (tenantInfo: TENANT_INFO) => void;
 } | null>(null);
 
 export const MyStore: React.FC<{
@@ -42,6 +52,13 @@ export const MyStore: React.FC<{
     userName: '',
     passWord: '',
     rememberMe: 1,
+  });
+  const [tenantInfo, setTenantInfo] = useState<TENANT_INFO>({
+    id: undefined,
+    tenantId: '',
+    tenantName: '',
+    owner: '',
+    tenantDesc: '',
   });
   const [themes, setThemes] = useState(defaultAlgorithm);
   const [myThemes, setMyThemes] = useState<DefaultTheme>(lightDefaultTheme);
@@ -65,6 +82,10 @@ export const MyStore: React.FC<{
     setUserInfo(userInfo);
   };
 
+  const changeTenantInfo = (tenantInfo: TENANT_INFO) => {
+    setTenantInfo(tenantInfo);
+  };
+
   useEffect(() => {
     changeMode(themeName);
   }, [themeName]);
@@ -78,8 +99,14 @@ export const MyStore: React.FC<{
     changeUserInfo(userInfo);
   }, [userInfo]);
 
+  useEffect(() => {
+    changeTenantInfo(tenantInfo);
+  }, [tenantInfo]);
+
   return (
-    <MyContext.Provider value={{ themeName, lang, userInfo, setThemeName, setLang, setUserInfo }}>
+    <MyContext.Provider
+      value={{ themeName, lang, userInfo, tenantInfo, setThemeName, setLang, setUserInfo, setTenantInfo }}
+    >
       <ConfigProvider locale={lang === LANG_NAME.ZH ? zhCN : enUS} theme={themes}>
         <ThemeProvider theme={myThemes}>{children}</ThemeProvider>
       </ConfigProvider>

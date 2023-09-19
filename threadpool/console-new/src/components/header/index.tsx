@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
 import style from './index.module.less';
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Dropdown, Row, Switch } from 'antd';
-import { useThemeMode } from '@/hooks';
+import { Avatar, Button, Col, Dropdown, Row, Switch, Select, Space } from 'antd';
+import { getTenantList } from '../../api/tenant';
+import { useThemeMode } from '@/hooks/useThemeMode';
 import { MyContext } from '@/context';
 import IconFont from '@/components/icon';
 
 const HeaderChild = () => {
   const { isDark, setIsDark } = useThemeMode();
   const { lang, setLang } = useContext<any>(MyContext);
+  const { setTenantInfo } = useContext<any>(MyContext);
 
   const items = [
     {
@@ -37,6 +39,36 @@ const HeaderChild = () => {
     },
   ];
 
+  const tenantList = [
+    {
+      value: 'option1',
+      key: 1,
+      id: undefined,
+      tenantId: '',
+      tenantName: '',
+      owner: '',
+      tenantDesc: '',
+    },
+    {
+      value: 'option2',
+      key: 2,
+      id: undefined,
+      tenantId: '',
+      tenantName: '',
+      owner: '',
+      tenantDesc: '',
+    },
+  ];
+
+  const handleTenantChange = (value: string) => {
+    setTenantInfo(tenantList[0]);
+  };
+
+  getTenantList().then((resolve: any) => {
+    console.log('tenantList', resolve);
+    // this.tenantList = resolve;
+  });
+
   return (
     <div className={style['header-wrapper']}>
       <div className={style['logo']}>
@@ -44,7 +76,16 @@ const HeaderChild = () => {
       </div>
       <div className={style['edit-container']}>
         <Row gutter={[16, 16]}>
-          <Col></Col>
+          <Col>
+            <Space wrap>
+              <Select
+                defaultValue={tenantList[0].value}
+                style={{ width: 120 }}
+                onChange={handleTenantChange}
+                options={tenantList.map(tenant => ({ label: tenant.value, value: tenant.value }))}
+              />
+            </Space>
+          </Col>
           <Col>
             <Dropdown menu={{ items }} placement="bottomRight" trigger={['click']}>
               <Avatar size={30} icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
