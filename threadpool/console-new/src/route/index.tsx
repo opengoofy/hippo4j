@@ -3,17 +3,9 @@ import homeRouter from '@/page/home/router';
 import aboutRouter from '@/page/about/router';
 import ThreadPoolRouter from '@/page/thread-pool/router';
 import tenantRouter from '@/page/tenant/router';
-import itemRouter from '@/page/item/router';
-import userRouter from '@/page/user/router';
-import logRouter from '@/page/log/router';
+// import itemRouter from '@/page/item/router';
+// import userRouter from '@/page/user/router';
+// import logRouter from '@/page/log/router';
 
-const routerList: IRouterList[] = [
-  ...homeRouter,
-  ...aboutRouter,
-  ...tenantRouter,
-  ...ThreadPoolRouter,
-  ...itemRouter,
-  ...userRouter,
-  ...logRouter,
-];
+const routerList: IRouterList[] = [...homeRouter, ...aboutRouter, ...tenantRouter, ...ThreadPoolRouter];
 export default routerList;
