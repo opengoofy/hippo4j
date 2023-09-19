@@ -101,4 +101,11 @@ public interface BootstrapPropertiesInterface {
         return null;
     }
 
+    /**
+     * Get Polaris.
+     */
+    default Map<String, String> getPolaris() {
+        return null;
+    }
+
 }
