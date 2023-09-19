@@ -18,11 +18,19 @@ export enum LANG_NAME {
   EN = 'en',
 }
 
+export type USER_INFO = {
+  userName?: string;
+  passWord?: string | number;
+  rememberMe?: number;
+};
+
 export const MyContext = createContext<{
   themeName: string;
   lang: LANG_NAME;
+  userInfo: object;
   setThemeName: (name: THEME_NAME) => void;
   setLang: (lang: LANG_NAME) => void;
+  setUserInfo: (userInfo: USER_INFO) => void;
 } | null>(null);
 
 export const MyStore: React.FC<{
@@ -30,6 +38,11 @@ export const MyStore: React.FC<{
 }> = ({ children }) => {
   const [themeName, setThemeName] = useState<THEME_NAME>(THEME_NAME.DEFAULT);
   const [lang, setLang] = useState<LANG_NAME>(LANG_NAME.ZH);
+  const [userInfo, setUserInfo] = useState<USER_INFO>({
+    userName: '',
+    passWord: '',
+    rememberMe: 1,
+  });
   const [themes, setThemes] = useState(defaultAlgorithm);
   const [myThemes, setMyThemes] = useState<DefaultTheme>(lightDefaultTheme);
   const { i18n } = useTranslation();
@@ -48,6 +61,10 @@ export const MyStore: React.FC<{
     }
   };
 
+  const changeUserInfo = (userInfo: USER_INFO) => {
+    setUserInfo(userInfo);
+  };
+
   useEffect(() => {
     changeMode(themeName);
   }, [themeName]);
@@ -57,8 +74,12 @@ export const MyStore: React.FC<{
     i18n.changeLanguage(lang);
   }, [lang, i18n]);
 
+  useEffect(() => {
+    changeUserInfo(userInfo);
+  }, [userInfo]);
+
   return (
-    <MyContext.Provider value={{ themeName, lang, setThemeName, setLang }}>
+    <MyContext.Provider value={{ themeName, lang, userInfo, setThemeName, setLang, setUserInfo }}>
       <ConfigProvider locale={lang === LANG_NAME.ZH ? zhCN : enUS} theme={themes}>
         <ThemeProvider theme={myThemes}>{children}</ThemeProvider>
       </ConfigProvider>
