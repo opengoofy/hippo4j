@@ -41,7 +41,6 @@ module.exports = {
   webpack: {
     alias: {
       '@': resolve('src'),
-      '@i18': resolve('public/locales'),
     },
   },
   devServer: {
