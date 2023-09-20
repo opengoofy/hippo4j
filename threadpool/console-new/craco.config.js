@@ -1,4 +1,3 @@
-// craco.config.js
 const CracoLessPlugin = require('craco-less');
 const lessModuleRegex = /\.module\.less$/;
 const path = require('path');
@@ -33,25 +32,28 @@ module.exports = {
       },
     },
   ],
-  // style: {
-  //   modules: {
-  //     localIdentName: '[local]_[hash:base64:5]', // 可以自定义你的类名生成规则
-  //   },
-  // },
   webpack: {
     alias: {
       '@': resolve('src'),
     },
   },
   devServer: {
-    port: 3001,
+    port: 3000,
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
     proxy: {
-      '/hippo4j': {
-        target: 'http://console.hippo4j.cn',
+      '/hippo4j/v1/cs': {
+        target: 'http://console.hippo4j.cn:6691/hippo4j/v1/cs',
+        pathRewrite: { '^/hippo4j/v1/cs': '' },
         changeOrigin: true,
+        secure: false,
+        onProxyReq: proxyReq => {
+          console.log(`Proxying request to: ${proxyReq.path}`);
+        },
+        onProxyRes: proxyRes => {
+          console.log(`Received response with status: ${proxyRes.statusCode}`);
+        },
       },
     },
   },

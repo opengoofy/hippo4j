@@ -1,9 +1,6 @@
-// import { Suspense } from 'react';
 import LayoutCom from './components/layout-com';
 import { Routes, Route, Link } from 'react-router-dom';
-
 import routeList from './route';
-import Login from '@/page/login';
 import { MenuProps } from 'antd';
 import { useTran } from './hooks';
 import { STR_MAP } from './config/i18n/locales/constants';
@@ -24,9 +21,8 @@ const App = () => {
   ];
 
   return (
-    <LayoutCom sideMenuList={sideMenuList} isSider={true} isHeader={true}>
+    <LayoutCom sideMenuList={sideMenuList}>
       <Routes>
-        <Route path="/Login" Component={Login}></Route>
         {routeList.map(item => (
           <Route key={item.path} path={item.path} Component={item.component} />
         ))}
