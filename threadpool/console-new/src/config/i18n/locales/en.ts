@@ -19,6 +19,7 @@ const enTranslationMap: { [key: string]: string } = {
   [STR_MAP.CREATION_TIME]: 'creation time',
   [STR_MAP.UPDATE_TIME]: 'update time',
   [STR_MAP.EDIT]: 'edit',
+  [STR_MAP.CHANGE_TENANT]: 'Select Tenant',
 };
 
 export default enTranslationMap;

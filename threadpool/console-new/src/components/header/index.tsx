@@ -1,16 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import style from './index.module.less';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Col, Dropdown, Row, Switch, Select, Space } from 'antd';
-import { getTenantList } from '../../api/tenant';
+import { getTenantList, updataTenant } from '../../api/tenant';
+import { STR_MAP } from '../../config/i18n/locales/constants';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { MyContext } from '@/context';
 import IconFont from '@/components/icon';
+import { useSetState } from 'ahooks';
+import { useTran } from '../../hooks';
+import { resolve } from 'path';
 
 const HeaderChild = () => {
   const { isDark, setIsDark } = useThemeMode();
   const { lang, setLang } = useContext<any>(MyContext);
-  const { setTenantInfo } = useContext<any>(MyContext);
+  const { tenantInfo, setTenantInfo } = useContext<any>(MyContext);
 
   const items = [
     {
@@ -39,35 +43,56 @@ const HeaderChild = () => {
     },
   ];
 
-  const tenantList = [
+  let tenantTitle = useTran(STR_MAP.CHANGE_TENANT);
+  let tenantList = [
     {
-      value: 'option1',
-      key: 1,
-      id: undefined,
-      tenantId: '',
-      tenantName: '',
-      owner: '',
-      tenantDesc: '',
+      gmtCreate: '2023-09-20 11:08:37',
+      gmtModified: '2023-09-20 21:34:40',
+      id: 8,
+      owner: 'test',
+      tenantDesc: 'test',
+      tenantId: 'test',
+      tenantName: 'test1',
     },
     {
-      value: 'option2',
-      key: 2,
-      id: undefined,
-      tenantId: '',
-      tenantName: '',
-      owner: '',
-      tenantDesc: '',
+      gmtCreate: '2023-09-20 11:08:37',
+      gmtModified: '2023-09-20 21:34:40',
+      id: 8,
+      owner: 'abc',
+      tenantDesc: 'abc',
+      tenantId: 'tesabct',
+      tenantName: 'abc',
     },
   ];
 
   const handleTenantChange = (value: string) => {
-    setTenantInfo(tenantList[0]);
+    let formData = {
+      id: tenantInfo.id,
+      tenantId: tenantInfo.tenantId,
+      tenantName: value,
+      tenantDesc: tenantInfo.tenantDesc,
+      owner: tenantInfo.owner,
+    };
+    updataTenant(formData).then((resolve: any) => {
+      console.log('tenantList', resolve);
+      setTenantInfo(formData);
+    });
   };
 
-  getTenantList().then((resolve: any) => {
-    console.log('tenantList', resolve);
-    // this.tenantList = resolve;
-  });
+  useEffect(() => {
+    let formData = {
+      current: 1,
+      desc: true,
+      size: 10,
+      tenantId: '',
+    };
+    getTenantList(formData).then((resolve: any) => {
+      console.log('tenantList', resolve);
+      // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks
+      tenantList = useSetState(resolve.records);
+    });
+    console.log('use effect');
+  }, [setTenantInfo, tenantList]);
 
   return (
     <div className={style['header-wrapper']}>
@@ -79,10 +104,10 @@ const HeaderChild = () => {
           <Col>
             <Space wrap>
               <Select
-                defaultValue={tenantList[0].value}
+                defaultValue={tenantList[0].tenantName}
                 style={{ width: 120 }}
                 onChange={handleTenantChange}
-                options={tenantList.map(tenant => ({ label: tenant.value, value: tenant.value }))}
+                options={tenantList.map(tenant => ({ label: tenant.tenantName, value: tenant.tenantName }))}
               />
             </Space>
           </Col>
