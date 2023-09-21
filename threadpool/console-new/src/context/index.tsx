@@ -18,12 +18,6 @@ export enum LANG_NAME {
   EN = 'en',
 }
 
-export type USER_INFO = {
-  userName?: string;
-  passWord?: string | number;
-  rememberMe?: number;
-};
-
 export type TENANT_INFO = {
   id: undefined;
   tenantId: '';
@@ -35,11 +29,9 @@ export type TENANT_INFO = {
 export const MyContext = createContext<{
   themeName: string;
   lang: LANG_NAME;
-  userInfo: object;
   tenantInfo: object;
   setThemeName: (name: THEME_NAME) => void;
   setLang: (lang: LANG_NAME) => void;
-  setUserInfo: (userInfo: USER_INFO) => void;
   setTenantInfo: (tenantInfo: TENANT_INFO) => void;
 } | null>(null);
 
@@ -48,11 +40,6 @@ export const MyStore: React.FC<{
 }> = ({ children }) => {
   const [themeName, setThemeName] = useState<THEME_NAME>(THEME_NAME.DEFAULT);
   const [lang, setLang] = useState<LANG_NAME>(LANG_NAME.ZH);
-  const [userInfo, setUserInfo] = useState<USER_INFO>({
-    userName: '',
-    passWord: '',
-    rememberMe: 1,
-  });
   const [tenantInfo, setTenantInfo] = useState<TENANT_INFO>({
     id: undefined,
     tenantId: '',
@@ -78,10 +65,6 @@ export const MyStore: React.FC<{
     }
   };
 
-  const changeUserInfo = (userInfo: USER_INFO) => {
-    setUserInfo(userInfo);
-  };
-
   const changeTenantInfo = (tenantInfo: TENANT_INFO) => {
     setTenantInfo(tenantInfo);
   };
@@ -96,17 +79,11 @@ export const MyStore: React.FC<{
   }, [lang, i18n]);
 
   useEffect(() => {
-    changeUserInfo(userInfo);
-  }, [userInfo]);
-
-  useEffect(() => {
     changeTenantInfo(tenantInfo);
   }, [tenantInfo]);
 
   return (
-    <MyContext.Provider
-      value={{ themeName, lang, userInfo, tenantInfo, setThemeName, setLang, setUserInfo, setTenantInfo }}
-    >
+    <MyContext.Provider value={{ themeName, lang, tenantInfo, setThemeName, setLang, setTenantInfo }}>
       <ConfigProvider locale={lang === LANG_NAME.ZH ? zhCN : enUS} theme={themes}>
         <ThemeProvider theme={myThemes}>{children}</ThemeProvider>
       </ConfigProvider>
