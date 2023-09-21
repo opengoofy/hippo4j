@@ -1,10 +1,10 @@
-import { useState, useContext, ReactNode, useEffect } from 'react';
+import { useState, useContext, ReactNode, useEffect, useMemo } from 'react';
 import { DefaultTheme, ThemeContext } from 'styled-components';
 import { Layout, Menu, MenuProps } from 'antd';
 import HeaderChild from '../header';
 import style from './index.module.less';
 import { useLocation } from 'react-router-dom';
-import { useThemeMode } from '@/hooks';
+import classNames from 'classnames';
 type MenuItem = Required<MenuProps>['items'][number];
 
 const { Header, Sider, Content } = Layout;
@@ -12,14 +12,11 @@ const { Header, Sider, Content } = Layout;
 interface ILayoutCom {
   children?: ReactNode;
   sideMenuList: MenuItem[];
-  isSider?: boolean;
-  isHeader?: boolean;
 }
 const LayoutCom = (props: ILayoutCom) => {
-  const { sideMenuList, children, isSider = true, isHeader = true } = props;
+  const { sideMenuList, children } = props;
   const myThemes: DefaultTheme = useContext<any>(ThemeContext);
   const [currentKey, setCurrentKey] = useState<string>('');
-  const { isDark } = useThemeMode();
 
   const location = useLocation();
   useEffect(() => {
@@ -32,7 +29,17 @@ const LayoutCom = (props: ILayoutCom) => {
 
   useEffect(() => {
     document.body.style.backgroundColor = myThemes.backgroundColor.bg1;
-  }, [isDark, myThemes]);
+  }, [myThemes]);
+
+  const isHeader = useMemo(() => {
+    const isHeader = location.pathname !== '/login';
+    return isHeader;
+  }, [location]);
+
+  const isSider = useMemo(() => {
+    const isSider = location.pathname !== '/login';
+    return isSider;
+  }, [location]);
 
   return (
     <main className={style.container} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
@@ -42,7 +49,11 @@ const LayoutCom = (props: ILayoutCom) => {
         </Header>
       )}
       <Layout
-        style={{ backgroundColor: myThemes.backgroundColor.bg1, height: `calc(100vh - ${isHeader ? '64px' : 0})` }}
+        style={{
+          backgroundColor: myThemes.backgroundColor.bg1,
+          height: `calc(100vh - ${isHeader ? '64px' : '0px'})`,
+          margin: isHeader ? '10px 10px 0px' : '0px',
+        }}
       >
         {isSider && (
           <Sider className={style.sider} style={{ backgroundColor: myThemes.backgroundColor.bg1 }} collapsible>
@@ -50,7 +61,9 @@ const LayoutCom = (props: ILayoutCom) => {
           </Sider>
         )}
         <Content
-          className={style.content}
+          className={classNames(style.content, {
+            [style.pureContent]: location.pathname === '/login',
+          })}
           style={{
             backgroundColor: myThemes.backgroundColor.bgContent,
             height: `calc(100vh - ${isHeader ? '64px' : 0})`,

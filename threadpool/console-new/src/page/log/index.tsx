@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
 import { useAntdTable } from 'ahooks';
 import { Button, Form, Input, Row, Space, Table, Col, Modal } from 'antd';
 import { SearchOutlined, EditOutlined } from '@ant-design/icons';
-import { useUrlSet } from '@/hooks/useUrlSet';
+import React, { useState } from 'react';
 import { fetchTenantList } from './service';
-
+import { useUrlSet } from '@/hooks/useUrlSet';
 import style from './index.module.less';
 
 const baseColumns = [

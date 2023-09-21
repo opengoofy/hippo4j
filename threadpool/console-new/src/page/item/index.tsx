@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
 import { useAntdTable } from 'ahooks';
-import { Button, Form, Input, Row, Space, Table, Col, Modal } from 'antd';
+import { Button, Form, Input, Row, Space, Table, Col } from 'antd';
 import { SearchOutlined, EditOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { fetchItemList } from './service';
 import { useUrlSet } from '@/hooks/useUrlSet';
-import { fetchTenantList } from './service';
-
 import style from './index.module.less';
 
 const baseColumns = [
   {
     title: '序号',
-    dataIndex: 'id',
+    dataIndex: 'index',
   },
   {
     title: '租户',
     dataIndex: 'tenantId',
   },
   {
-    title: '租户名称',
-    dataIndex: 'tenantName',
+    title: '项目名称',
+    dataIndex: 'itemName',
   },
   {
     title: '负责人',
@@ -35,7 +34,7 @@ const Tenant: React.FC = () => {
   const [type, setType] = useState('add');
   const [form] = Form.useForm();
   const { setUrl } = useUrlSet({ form });
-  const { tableProps, search } = useAntdTable(fetchTenantList, { form });
+  const { tableProps, search } = useAntdTable(fetchItemList, { form });
   // const {run: delete} = useRequest(fetchDeleteTenant, { manual: true });
   const actions = (type: string, item?: any) => {
     switch (type) {
@@ -71,7 +70,7 @@ const Tenant: React.FC = () => {
         <Row>
           <Col span={6}>
             <Form.Item name="note">
-              <Input placeholder="租户" />
+              <Input placeholder="项目" />
             </Form.Item>
           </Col>
           <Col span={18}>
@@ -93,7 +92,7 @@ const Tenant: React.FC = () => {
       <Table
         {...tableProps}
         bordered
-        rowKey="id"
+        rowKey="index"
         columns={[
           ...baseColumns,
           {

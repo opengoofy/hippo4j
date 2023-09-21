@@ -1,10 +1,10 @@
 import request from '@/utils';
 
-const fetchTenantList = async (
+const fetchItemList = async (
   pageProps: { current: number; pageSize: number },
   formData: { tencent: string | number }
 ): Promise<{ total: number; list: Array<any> }> => {
-  const res: any = await request('/hippo4j/v1/cs/tenant/query/page', {
+  const res: any = await request('/hippo4j/v1/cs/item/query/page', {
     method: 'POST',
     headers: {
       Authorization:
@@ -22,16 +22,24 @@ const fetchTenantList = async (
   if (res && res.success) {
     return {
       total: res.data.total,
-      list: res.data.records,
+      list: res.data.records.map((item: any, index: number) => ({ index: index + 1, ...item })),
     };
   }
   throw new Error(res.msg || '服务器开小差啦~');
 };
 
-const fetchAddTenant = async (id: string) => {
+const fetchAddTenant = async (params: {
+  itemDesc: string; // 项目简介
+  itemId: string; // 项目
+  itemName: string; // 项目名称
+  owner: string; // 负责人
+  tenantId: string; // 租户
+  tenantDesc?: string;
+  tenantName?: string;
+}) => {
   const res = await request('/hippo4j/v1/cs/tenant/save', {
     method: 'POST',
-    params: { id },
+    body: { ...params },
   });
 
   if (res && res.success) {
@@ -40,8 +48,20 @@ const fetchAddTenant = async (id: string) => {
   throw new Error(res.msg || '服务器开小差啦~');
 };
 
-const fetchDeleteTenant = async (id: string) => {
-  const res = await request('/tenants', {
+const fetchDeleteItem = async (id: string) => {
+  const url = 'hippo4j/v1/cs/item/delete/prescription/' + id;
+  const res = await request(url, {
+    method: 'DELETE',
+  });
+
+  if (res && res.success) {
+    return res;
+  }
+  throw new Error(res.msg || '服务器开小差啦~');
+};
+
+const fetchUpdateItem = async (id: string) => {
+  const res = await request('/hippo4j/v1/cs/item/update', {
     method: 'POST',
     params: { id },
   });
@@ -52,28 +72,4 @@ const fetchDeleteTenant = async (id: string) => {
   throw new Error(res.msg || '服务器开小差啦~');
 };
 
-const fetchUpdateTenant = async (id: string) => {
-  const res = await request('hippo4j/v1/cs/tenant/update', {
-    method: 'POST',
-    params: { id },
-  });
-
-  if (res && res.success) {
-    return res;
-  }
-  throw new Error(res.msg || '服务器开小差啦~');
-};
-
-const fetchTenantDetail = async (id: string) => {
-  const res = await request('/tenants', {
-    method: 'POST',
-    params: { id },
-  });
-
-  if (res && res.success) {
-    return res;
-  }
-  throw new Error(res.msg || '服务器开小差啦~');
-};
-
-export { fetchTenantList, fetchAddTenant, fetchDeleteTenant, fetchUpdateTenant, fetchTenantDetail };
+export { fetchItemList, fetchAddTenant, fetchDeleteItem, fetchUpdateItem };
