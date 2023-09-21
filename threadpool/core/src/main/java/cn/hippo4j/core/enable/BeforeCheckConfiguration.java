@@ -144,31 +144,38 @@ public class BeforeCheckConfiguration {
                         }
                     }
 
-                    Map<String, String> polaris = properties.getPolaris();
+                    Map<String, Object> polaris = properties.getPolaris();
                     if (MapUtil.isNotEmpty(polaris)) {
-                        String namespace = polaris.get("namespace");
+                        String namespace = polaris.get("namespace").toString();
                         if (StringUtil.isBlank(namespace)) {
                             throw new ConfigEmptyException(
-                                    "Web server failed to start. The dynamic thread pool polaris namespace is empty.",
+                                    "Web server maybe fail to start. The dynamic thread pool polaris namespace is empty.",
                                     "Please check whether the [spring.dynamic.thread-pool.polaris.namespace] configuration is empty or an empty string.");
                         }
-                        String fileGroup = polaris.get("file.group");
-                        if (StringUtil.isBlank(fileGroup)) {
+                        if (polaris.get("file") instanceof Map) {
+                            Map<String, String> polarisFile = (Map<String, String>)polaris.get("file");
+                            String fileGroup = polarisFile.get("group");
+                            if (StringUtil.isBlank(fileGroup)) {
+                                throw new ConfigEmptyException(
+                                        "Web server maybe fail to start. The dynamic thread pool polaris file group is empty.",
+                                        "Please check whether the [spring.dynamic.thread-pool.polaris.file.group] configuration is empty or an empty string.");
+                            }
+                            String fileName = polarisFile.get("name");
+                            if (StringUtil.isBlank(fileName)) {
+                                throw new ConfigEmptyException(
+                                        "Web server maybe fail to start. The dynamic thread pool polaris file name is empty.",
+                                        "Please check whether the [spring.dynamic.thread-pool.polaris.file.name] configuration is empty or an empty string.");
+                            }
+                            String fileType = polarisFile.get("type");
+                            if (StringUtil.isBlank(fileType)) {
+                                throw new ConfigEmptyException(
+                                        "Web server maybe fail to start. The dynamic thread pool polaris file type is empty.",
+                                        "Please check whether the [spring.dynamic.thread-pool.polaris.file.type] configuration is empty or an empty string.");
+                            }
+                        } else {
                             throw new ConfigEmptyException(
-                                    "Web server failed to start. The dynamic thread pool polaris file group is empty.",
-                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.group] configuration is empty or an empty string.");
-                        }
-                        String fileName = polaris.get("file.name");
-                        if (StringUtil.isBlank(fileName)) {
-                            throw new ConfigEmptyException(
-                                    "Web server failed to start. The dynamic thread pool polaris file name is empty.",
-                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.name] configuration is empty or an empty string.");
-                        }
-                        String fileType = polaris.get("file.type");
-                        if (StringUtil.isBlank(fileType)) {
-                            throw new ConfigEmptyException(
-                                    "Web server failed to start. The dynamic thread pool polaris file type is empty.",
-                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.type] configuration is empty or an empty string.");
+                                    "Web server maybe fail to start. Lack of the dynamic thread pool polaris file configuration.",
+                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.*] configuration is complete.");
                         }
                     }
                     break;

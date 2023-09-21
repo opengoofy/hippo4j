@@ -79,7 +79,7 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
     /**
      * polaris config
      */
-    private Map<String, String> polaris;
+    private Map<String, Object> polaris;
 
     /**
      * Web config

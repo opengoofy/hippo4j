@@ -104,7 +104,7 @@ public interface BootstrapPropertiesInterface {
     /**
      * Get Polaris.
      */
-    default Map<String, String> getPolaris() {
+    default Map<String, Object> getPolaris() {
         return null;
     }
 
