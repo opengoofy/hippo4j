@@ -37,13 +37,7 @@ public final class ThreadPoolExecutorUtil {
      */
     public static void safeSetPoolSize(ThreadPoolExecutor executor, int newCorePoolSize, int newMaximumPoolSize) {
         Assert.isTrue(newCorePoolSize <= newMaximumPoolSize, "newCorePoolSize must be smaller than newMaximumPoolSize");
-        int originalMaximumPoolSize = executor.getMaximumPoolSize();
-        if (newCorePoolSize > originalMaximumPoolSize) {
-            executor.setMaximumPoolSize(newMaximumPoolSize);
-            executor.setCorePoolSize(newCorePoolSize);
-        } else {
-            executor.setCorePoolSize(newCorePoolSize);
-            executor.setMaximumPoolSize(newMaximumPoolSize);
-        }
+        executor.setMaximumPoolSize(newMaximumPoolSize);
+        executor.setCorePoolSize(newCorePoolSize);
     }
 }
