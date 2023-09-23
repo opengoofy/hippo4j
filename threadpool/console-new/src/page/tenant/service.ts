@@ -6,12 +6,6 @@ const fetchTenantList = async (
 ): Promise<{ total: number; list: Array<any> }> => {
   const res: any = await request('/hippo4j/v1/cs/tenant/query/page', {
     method: 'POST',
-    headers: {
-      Authorization:
-        'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3LGJhb3hpbnlpX2FkbWluIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTUzOTg4NDksImlhdCI6MTY5NDc5NDA0OSwicm9sIjoiUk9MRV9BRE1JTiJ9.syRDshKpd-xETsSdeMPRtk956f4BJkPt4utVsUl4smgH71Woj8SUq4w2RX1YtGTC4aTZRJYdKOfkTqwK0g_dHQ',
-      cookie:
-        'Admin-Token=Bearer%20eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3LGJhb3hpbnlpX2FkbWluIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTUzOTg4NDksImlhdCI6MTY5NDc5NDA0OSwicm9sIjoiUk9MRV9BRE1JTiJ9.syRDshKpd-xETsSdeMPRtk956f4BJkPt4utVsUl4smgH71Woj8SUq4w2RX1YtGTC4aTZRJYdKOfkTqwK0g_dHQ; userName=baoxinyi_admin',
-    },
     body: {
       ...formData,
       current: pageProps.current,
