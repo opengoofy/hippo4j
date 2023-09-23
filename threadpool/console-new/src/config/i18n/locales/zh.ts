@@ -19,6 +19,10 @@ const zhTranslationMap: { [key: string]: string } = {
   [STR_MAP.CREATION_TIME]: '创建时间',
   [STR_MAP.UPDATE_TIME]: '更新时间',
   [STR_MAP.EDIT]: '操作',
+  [STR_MAP.TENANT_MANAGE]: '租户管理',
+  [STR_MAP.PROJECT_MANAGE]: '项目管理',
+  [STR_MAP.USER_MANAGE]: '用户管理',
+  [STR_MAP.LOG_MANAGE]: '日志管理',
 };
 
 export default zhTranslationMap;
