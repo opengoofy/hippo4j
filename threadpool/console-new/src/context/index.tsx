@@ -7,31 +7,23 @@ import { darkDefaultTheme, lightDefaultTheme } from '@/config/theme';
 import { defaultAlgorithm } from '@/config/theme/default-algnorithm';
 import { darkAlgorithm } from '@/config/theme/dark-algorithm';
 import { useTranslation } from 'react-i18next';
+import { useLocalStorageState } from 'ahooks';
+import { LANG_NAME, MyStoreValues, THEME_NAME } from '@/typings';
 
-export enum THEME_NAME {
-  DEFAULT = 'default',
-  DARK = 'dark',
-}
-
-export enum LANG_NAME {
-  ZH = 'zh',
-  EN = 'en',
-}
-
-export const MyContext = createContext<{
-  themeName: string;
-  lang: LANG_NAME;
-  setThemeName: (name: THEME_NAME) => void;
-  setLang: (lang: LANG_NAME) => void;
-} | null>(null);
+export const MyContext = createContext<MyStoreValues>({});
 
 export const MyStore: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const [themeName, setThemeName] = useState<THEME_NAME>(THEME_NAME.DEFAULT);
-  const [lang, setLang] = useState<LANG_NAME>(LANG_NAME.ZH);
+  const [themeName, setThemeName] = useLocalStorageState<THEME_NAME>('current-mode', {
+    defaultValue: THEME_NAME.DEFAULT,
+  });
+  const [lang, setLang] = useLocalStorageState<LANG_NAME>('current-lang', {
+    defaultValue: LANG_NAME.ZH,
+  });
   const [themes, setThemes] = useState(defaultAlgorithm);
   const [myThemes, setMyThemes] = useState<DefaultTheme>(lightDefaultTheme);
+
   const { i18n } = useTranslation();
 
   const changeMode = (themeName: THEME_NAME) => {
@@ -49,11 +41,10 @@ export const MyStore: React.FC<{
   };
 
   useEffect(() => {
-    changeMode(themeName);
+    changeMode(themeName as THEME_NAME);
   }, [themeName]);
 
   useEffect(() => {
-    // change lang
     i18n.changeLanguage(lang);
   }, [lang, i18n]);
 

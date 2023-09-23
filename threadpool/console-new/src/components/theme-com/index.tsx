@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
 import { ConfigProvider, theme } from 'antd';
-
 import { darkAlgorithm } from '../../config/theme/dark-algorithm';
 import { defaultAlgorithm } from '../../config/theme/default-algnorithm';
 import { lightDefaultTheme, darkDefaultTheme } from '../../config/theme';
-import { MyContext, THEME_NAME } from '../../context';
+import { MyContext } from '../../context';
 import zhCN from 'antd/es/locale/zh_CN';
+import { THEME_NAME } from '@/typings';
 
 interface ThemeProps {
   children: React.ReactNode;
