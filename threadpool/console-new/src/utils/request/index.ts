@@ -1,4 +1,4 @@
-import { isPlainObject } from '../common';
+import { getToken, isPlainObject } from '../common';
 import { notification, message } from 'antd';
 import Qs from 'qs';
 
@@ -40,10 +40,6 @@ const inital: RequestOptions = {
   body: null,
   headers: {
     'Content-Type': 'application/json',
-    Authorization:
-      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMCxiYW94aW55aV91c2VyIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTU4MjY1ODQsImlhdCI6MTY5NTIyMTc4NCwicm9sIjoiUk9MRV9VU0VSIn0.HQx33P1hlZK2-0omlUt58kpa77OxiGdW-jLV4GWbbLIFf86y8-0IOdeu8gzMwMWUTRtrwp2_YWMl_05TVlDJbA',
-    cookie:
-      'Admin-Token=Bearer%20eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3LGJhb3hpbnlpX2FkbWluIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTUzOTg4NDksImlhdCI6MTY5NDc5NDA0OSwicm9sIjoiUk9MRV9BRE1JTiJ9.syRDshKpd-xETsSdeMPRtk956f4BJkPt4utVsUl4smgH71Woj8SUq4w2RX1YtGTC4aTZRJYdKOfkTqwK0g_dHQ; userName=baoxinyi_admin',
   },
   // headers,
   credentials: true,
@@ -88,8 +84,11 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
   }
   if (config.headers && isPlainObject(config.headers)) {
     config.headers = Object.assign({}, inital.headers, config.headers);
+    if (!config.headers?.Authorization) {
+      config.headers.Authorization = getToken();
+    }
   } else {
-    config.headers = inital.headers;
+    config.headers = { Authorization: getToken(), 'Content-Type': 'application/json' };
   }
 
   let { method, params, body, headers, credentials, responseType } = Object.assign({}, inital, config) as any;

@@ -4,7 +4,8 @@ import { STR_MAP } from '@/config/i18n/locales/constants';
 import { ColumnProps } from 'antd/es/table';
 import { SearchButton, AddButton } from '@/components/with-button';
 import { useAntdTable } from 'ahooks';
-import service, { Result, ThreadPoolTableBody } from './service';
+import service from './service';
+import { Result } from './type';
 const { Title } = Typography;
 const { Item } = Form;
 const paramsType = { project: 0, thpool: 0 };
@@ -73,7 +74,7 @@ const ThreadPoll = () => {
     });
   };
 
-  const { tableProps, search } = useAntdTable<Result, ThreadPoolTableBody>(getTableData, {
+  const { tableProps, search } = useAntdTable<Result, any>(getTableData, {
     defaultPageSize: 5,
     form: form,
   });

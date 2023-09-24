@@ -4,7 +4,6 @@ import { Button, Form, Input, Row, Space, Table, Col, Modal } from 'antd';
 import { SearchOutlined, EditOutlined } from '@ant-design/icons';
 import { useUrlSet } from '@/hooks/useUrlSet';
 import { fetchTenantList } from './service';
-
 import style from './index.module.less';
 
 const baseColumns = [
@@ -37,6 +36,19 @@ const Tenant: React.FC = () => {
   const { setUrl } = useUrlSet({ form });
   const { tableProps, search } = useAntdTable(fetchTenantList, { form });
   // const {run: delete} = useRequest(fetchDeleteTenant, { manual: true });
+  const handleSearch = () => {
+    setUrl();
+    search.submit();
+  };
+  const handleDelete = (item: any) => {
+    Modal.confirm({
+      title: '提示',
+      content: `此操作将删除${item.tenantName}，是否继续？`,
+      onOk: () => {
+        search.submit();
+      },
+    });
+  };
   const actions = (type: string, item?: any) => {
     switch (type) {
       case 'add':
@@ -46,24 +58,12 @@ const Tenant: React.FC = () => {
         setEditVisible(true);
         break;
       case 'delete':
-        // handleDelete();
+        handleDelete(item);
         break;
       default:
         break;
     }
   };
-  const handleSearch = () => {
-    setUrl();
-    search.submit();
-  };
-  // const handleDelete = (item: any) => {
-  //   Modal.confirm({
-  //     title: `此操作将删除${item.tenantName}, 是否继续?`,
-  //     onOk: () => {
-  //       search.submit();
-  //     },
-  //   });
-  // };
 
   return (
     <div className={style.tenant_wrapper}>
@@ -105,7 +105,7 @@ const Tenant: React.FC = () => {
                   <Button onClick={() => actions('edit', record)} type="link" className={style.opreate_btn}>
                     编辑
                   </Button>
-                  <Button onClick={() => actions('edit', record)} type="link" className={style.opreate_btn}>
+                  <Button onClick={() => actions('delete', record)} type="link" className={style.opreate_btn}>
                     删除
                   </Button>
                 </Space>

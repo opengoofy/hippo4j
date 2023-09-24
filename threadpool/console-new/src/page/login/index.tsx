@@ -93,7 +93,7 @@ const Login = () => {
             >
               记住密码
             </Checkbox>
-            <Button type="link">忘记密码</Button>
+            <a>忘记密码</a>
           </div>
         </Form.Item>
         <Form.Item>

@@ -49,7 +49,17 @@ const isPlainObject = (obj: { [key: string]: any }): boolean => {
 };
 
 const setToken = (token: string) => {
+  localStorage.setItem(TokenKey, token);
   Cookie.set(TokenKey, token);
+};
+
+const removeToken = () => {
+  localStorage.removeItem(TokenKey);
+  Cookie.remove(TokenKey);
+};
+
+const getToken = () => {
+  return localStorage.getItem(TokenKey) || Cookie.get(TokenKey);
 };
 
 /**
@@ -79,4 +89,4 @@ const isEmpty = (value: any) => {
   return typeof value === 'object' ? _.isEmpty(value) : isNilValue(value);
 };
 
-export { isPlainObject, isEmpty, filterEmptyField, setToken };
+export { isPlainObject, isEmpty, filterEmptyField, setToken, removeToken, getToken };

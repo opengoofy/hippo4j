@@ -1,7 +1,7 @@
 import { Params } from 'ahooks/lib/useAntdTable/types';
 
 // body
-export interface ThreadPoolTableBody extends Params {
+export interface ThreadPoolTableBody {
   /**
    * current page
    */
