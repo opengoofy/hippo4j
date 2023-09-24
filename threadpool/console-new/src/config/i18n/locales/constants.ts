@@ -17,4 +17,8 @@ export enum STR_MAP {
   CREATION_TIME = 'creationTime',
   UPDATE_TIME = 'update time',
   EDIT = 'edit',
+  TENANT_MANAGE = 'tenantManage',
+  LOG_MANAGE = 'logManage',
+  PROJECT_MANAGE = 'projectManage',
+  USER_MANAGE = 'userManage',
 }

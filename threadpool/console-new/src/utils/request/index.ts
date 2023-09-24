@@ -1,4 +1,4 @@
-import { isPlainObject } from '../common';
+import { getToken, isPlainObject } from '../common';
 import { notification, message } from 'antd';
 import Qs from 'qs';
 
@@ -40,8 +40,6 @@ const inital: RequestOptions = {
   body: null,
   headers: {
     'Content-Type': 'application/json',
-    Authorization:
-      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMCxiYW94aW55aV91c2VyIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTU3MzAwNzYsImlhdCI6MTY5NTEyNTI3Niwicm9sIjoiUk9MRV9VU0VSIn0.4cWyhllP7u-aoRAIHs3nMggsgl4-LUCVBas8WE0FJYIe-YNS0wGf1_0RJq3TUGw00KmSaSRPKdoPgRTFqEphZA',
   },
   credentials: true,
   responseType: 'JSON',
@@ -85,6 +83,11 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
   }
   if (config.headers && isPlainObject(config.headers)) {
     config.headers = Object.assign({}, inital.headers, config.headers);
+    if (!config.headers?.Authorization) {
+      config.headers.Authorization = getToken();
+    }
+  } else {
+    config.headers = { Authorization: getToken(), 'Content-Type': 'application/json' };
   }
   let { method, params, body, headers, credentials, responseType } = Object.assign({}, inital, config) as any;
   if (typeof url !== 'string') throw new TypeError('url is not an string');

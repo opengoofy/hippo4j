@@ -1,3 +1,4 @@
+// import { Suspense } from 'react';
 import LayoutCom from './components/layout-com';
 import { Routes, Route, Link } from 'react-router-dom';
 import routeList from './route';
@@ -17,6 +18,26 @@ const App = () => {
       children: [
         { label: <Link to={'/thread-poll/index'}>{useTran(STR_MAP.THREAD_POOL)}</Link>, key: '/thread-poll/index' },
       ],
+    },
+    {
+      label: <Link to={'/tenant'}>{useTran(STR_MAP.TENANT_MANAGE)}</Link>,
+      key: STR_MAP.TENANT_MANAGE,
+      icon: <IconFont type="icon-hot-for-ux"></IconFont>,
+    },
+    {
+      label: <Link to={'/item'}>{useTran(STR_MAP.PROJECT_MANAGE)}</Link>,
+      key: STR_MAP.PROJECT_MANAGE,
+      icon: <IconFont type="icon-hot-for-ux"></IconFont>,
+    },
+    {
+      label: <Link to={'/user'}>{useTran(STR_MAP.USER_MANAGE)}</Link>,
+      key: STR_MAP.USER_MANAGE,
+      icon: <IconFont type="icon-hot-for-ux"></IconFont>,
+    },
+    {
+      label: <Link to={'/log'}>{useTran(STR_MAP.LOG_MANAGE)}</Link>,
+      key: STR_MAP.LOG_MANAGE,
+      icon: <IconFont type="icon-hot-for-ux"></IconFont>,
     },
   ];
 

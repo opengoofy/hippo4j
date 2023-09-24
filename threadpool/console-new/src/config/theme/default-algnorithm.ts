@@ -25,12 +25,12 @@ export const defaultAlgorithm = {
       // paddingContentVerticalLG: 4,
     },
     Modal: {
-      borderRadiusLG: 2,
-      borderRadiusSM: 2,
-      colorText: lightDefaultTheme.fontColor.fc3,
-      borderRadius: 2,
-      paddingContentHorizontalLG: 0,
-      paddingMD: 0,
+      // borderRadiusLG: 2,
+      // borderRadiusSM: 2,
+      // colorText: lightDefaultTheme.fontColor.fc3,
+      // borderRadius: 2,
+      // paddingContentHorizontalLG: 0,
+      // paddingMD: 0,
     },
     Menu: {
       itemBg: lightDefaultTheme.backgroundColor.bg1,
