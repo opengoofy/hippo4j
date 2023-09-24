@@ -24,7 +24,7 @@ interface RequestOptions {
 
 type Response<T = any> = {
   success: boolean;
-  data?: T;
+  data: T;
   module?: T;
   msg?: string;
   status?: number;
@@ -41,8 +41,11 @@ const inital: RequestOptions = {
   headers: {
     'Content-Type': 'application/json',
     Authorization:
-      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMCxiYW94aW55aV91c2VyIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTU3MzAwNzYsImlhdCI6MTY5NTEyNTI3Niwicm9sIjoiUk9MRV9VU0VSIn0.4cWyhllP7u-aoRAIHs3nMggsgl4-LUCVBas8WE0FJYIe-YNS0wGf1_0RJq3TUGw00KmSaSRPKdoPgRTFqEphZA',
+      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMCxiYW94aW55aV91c2VyIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTU4MjY1ODQsImlhdCI6MTY5NTIyMTc4NCwicm9sIjoiUk9MRV9VU0VSIn0.HQx33P1hlZK2-0omlUt58kpa77OxiGdW-jLV4GWbbLIFf86y8-0IOdeu8gzMwMWUTRtrwp2_YWMl_05TVlDJbA',
+    cookie:
+      'Admin-Token=Bearer%20eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3LGJhb3hpbnlpX2FkbWluIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTUzOTg4NDksImlhdCI6MTY5NDc5NDA0OSwicm9sIjoiUk9MRV9BRE1JTiJ9.syRDshKpd-xETsSdeMPRtk956f4BJkPt4utVsUl4smgH71Woj8SUq4w2RX1YtGTC4aTZRJYdKOfkTqwK0g_dHQ; userName=baoxinyi_admin',
   },
+  // headers,
   credentials: true,
   responseType: 'JSON',
   cache: 'no-cache',
@@ -85,7 +88,10 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
   }
   if (config.headers && isPlainObject(config.headers)) {
     config.headers = Object.assign({}, inital.headers, config.headers);
+  } else {
+    config.headers = inital.headers;
   }
+
   let { method, params, body, headers, credentials, responseType } = Object.assign({}, inital, config) as any;
   if (typeof url !== 'string') throw new TypeError('url is not an string');
   if (!/^http(s?):\/\//i.test(url)) url = baseURL + url;
