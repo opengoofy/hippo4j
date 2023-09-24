@@ -1,8 +1,8 @@
 import { useRequest } from 'ahooks';
-import { Form, Modal, Input, Select, notification } from 'antd';
+import { Form, Modal, Input, notification, Select, Checkbox, message } from 'antd';
 import React, { useEffect } from 'react';
+import { fetchAddUser, fetchUpdateUser } from './service';
 import { fetchTenantOptions } from '../tenant/service';
-import { fetchAddItem, fetchUpdateItem } from './service';
 
 interface IProps {
   type: string;
@@ -12,13 +12,28 @@ interface IProps {
   reset: () => void;
 }
 
-const ItemCreate: React.FC<IProps> = props => {
+const ROLE_OPTIONS = [
+  {
+    label: 'ROLE_USER',
+    value: 'ROLE_USER',
+  },
+  {
+    label: 'ROLE_ADMIN',
+    value: 'ROLE_ADMIN',
+  },
+  {
+    label: 'ROLE_MANAGE',
+    value: 'ROLE_MANAGE',
+  },
+];
+
+const UserCreate: React.FC<IProps> = props => {
   const { visible, onClose, data, type, reset } = props;
   const [form] = Form.useForm();
   const tenantRequest = useRequest(fetchTenantOptions, {
     ready: !!type,
   });
-  const updateRequest = useRequest(fetchUpdateItem, {
+  const updateRequest = useRequest(fetchUpdateUser, {
     manual: true,
     onSuccess: () => {
       notification.success({ message: '更新成功' });
@@ -27,10 +42,10 @@ const ItemCreate: React.FC<IProps> = props => {
       reset();
     },
     onError: err => {
-      notification.error({ message: err.message });
+      message.error(err.message);
     },
   });
-  const addRequest = useRequest(fetchAddItem, {
+  const addRequest = useRequest(fetchAddUser, {
     manual: true,
     onSuccess: () => {
       notification.success({ message: '创建成功' });
@@ -39,7 +54,7 @@ const ItemCreate: React.FC<IProps> = props => {
       reset();
     },
     onError: err => {
-      notification.error({ message: err.message });
+      message.error(err.message);
     },
   });
   const onSave = () => {
@@ -80,29 +95,21 @@ const ItemCreate: React.FC<IProps> = props => {
       confirmLoading={addRequest.loading || updateRequest.loading}
     >
       <Form labelAlign="right" labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} form={form}>
-        <Form.Item label="租户" name="tenantId" rules={[{ required: true }]}>
-          <Select
-            options={tenantRequest.data}
-            placeholder="请选择"
-            loading={tenantRequest.loading}
-            disabled={type === 'edit'}
-          />
-        </Form.Item>
-        <Form.Item label="项目" name="itemId" rules={[{ required: true }]}>
+        <Form.Item label="用户名" name="userName" rules={[{ required: true }]}>
           <Input placeholder="请输入" disabled={type === 'edit'} />
         </Form.Item>
-        <Form.Item label="项目名称" name="itemName" rules={[{ required: true }]}>
+        <Form.Item label="密码" name="password" rules={[{ required: true }]}>
           <Input placeholder="请输入" />
         </Form.Item>
-        <Form.Item label="负责人" name="owner" rules={[{ required: true }]}>
-          <Input placeholder="请输入" />
+        <Form.Item label="角色" name="role" rules={[{ required: true }]}>
+          <Select options={ROLE_OPTIONS} placeholder="请选择" disabled={type === 'edit'} />
         </Form.Item>
-        <Form.Item label="项目简介" name="itemDesc" rules={[{ required: true }]}>
-          <Input.TextArea placeholder="请输入" />
+        <Form.Item label="租户" name="tempResources">
+          <Checkbox.Group options={tenantRequest.data} />
         </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-export default ItemCreate;
+export default UserCreate;
