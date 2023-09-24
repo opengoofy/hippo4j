@@ -21,22 +21,22 @@ const App = () => {
     },
     {
       label: <Link to={'/tenant'}>{useTran(STR_MAP.TENANT_MANAGE)}</Link>,
-      key: STR_MAP.TENANT_MANAGE,
+      key: '/tenant',
       icon: <IconFont type="icon-hot-for-ux"></IconFont>,
     },
     {
       label: <Link to={'/item'}>{useTran(STR_MAP.PROJECT_MANAGE)}</Link>,
-      key: STR_MAP.PROJECT_MANAGE,
+      key: '/item',
       icon: <IconFont type="icon-hot-for-ux"></IconFont>,
     },
     {
       label: <Link to={'/user'}>{useTran(STR_MAP.USER_MANAGE)}</Link>,
-      key: STR_MAP.USER_MANAGE,
+      key: '/user',
       icon: <IconFont type="icon-hot-for-ux"></IconFont>,
     },
     {
       label: <Link to={'/log'}>{useTran(STR_MAP.LOG_MANAGE)}</Link>,
-      key: STR_MAP.LOG_MANAGE,
+      key: '/log',
       icon: <IconFont type="icon-hot-for-ux"></IconFont>,
     },
   ];
