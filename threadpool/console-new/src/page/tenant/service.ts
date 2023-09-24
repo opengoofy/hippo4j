@@ -1,5 +1,21 @@
 import request from '@/utils';
 
+const fetchTenantOptions = async (tencent: string) => {
+  const res: any = await request('/hippo4j/v1/cs/tenant/query/page', {
+    method: 'POST',
+    body: {
+      tencent,
+      current: 1,
+      size: 10,
+      desc: true,
+    },
+  });
+  if (res && res.success) {
+    return res.data && res.data.records.map((item: any) => ({ value: item.tenantId, label: item.tenantName }));
+  }
+  throw new Error(res.msg || '服务器开小差啦~');
+};
+
 const fetchTenantList = async (
   pageProps: { current: number; pageSize: number },
   formData: { tencent: string | number }
@@ -70,4 +86,4 @@ const fetchTenantDetail = async (id: string) => {
   throw new Error(res.msg || '服务器开小差啦~');
 };
 
-export { fetchTenantList, fetchAddTenant, fetchDeleteTenant, fetchUpdateTenant, fetchTenantDetail };
+export { fetchTenantOptions, fetchTenantList, fetchAddTenant, fetchDeleteTenant, fetchUpdateTenant, fetchTenantDetail };

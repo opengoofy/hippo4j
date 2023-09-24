@@ -1,8 +1,8 @@
-import { useAntdTable } from 'ahooks';
-import { Button, Form, Input, Row, Space, Table, Col, Modal } from 'antd';
+import { useAntdTable, useRequest } from 'ahooks';
+import { Button, Form, Input, Row, Space, Table, Col, Modal, notification } from 'antd';
 import { SearchOutlined, EditOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
-import { fetchItemList } from './service';
+import { fetchDeleteItem, fetchItemList } from './service';
 import { useUrlSet } from '@/hooks/useUrlSet';
 import style from './index.module.less';
 import ItemCreate from './create';
@@ -11,17 +11,16 @@ const baseColumns = [
   {
     title: '序号',
     dataIndex: 'index',
-    with: 200,
   },
   {
     title: '租户',
     dataIndex: 'tenantId',
-    with: 200,
+    // with: 200,
   },
   {
     title: '项目',
     dataIndex: 'itemId',
-    with: 200,
+    // with: 200,
   },
   {
     title: '项目名称',
@@ -46,16 +45,26 @@ const Tenant: React.FC = () => {
   const [form] = Form.useForm();
   const { setUrl } = useUrlSet({ form });
   const { tableProps, search } = useAntdTable(fetchItemList, { form });
-  // const {run: delete} = useRequest(fetchDeleteTenant, { manual: true });
+  const deleteRequest = useRequest(fetchDeleteItem, { manual: true });
+
   const handleSearch = () => {
     setUrl();
     search.submit();
   };
   const handleDelete = (item: any) => {
     Modal.confirm({
-      title: `此操作将删除${item.itemName}, 是否继续?`,
-      onOk: () => {
-        search.submit();
+      title: '提示',
+      content: `此操作将删除${item.itemName}, 是否继续?`,
+      onOk: async () => {
+        try {
+          const res = await deleteRequest.runAsync(item.itemId);
+          if (res && res.success) {
+            notification.success({ message: '删除成功' });
+            search.reset();
+          }
+        } catch (e) {
+          notification.error({ message: '删除失败' });
+        }
       },
     });
   };
@@ -95,7 +104,7 @@ const Tenant: React.FC = () => {
               <Button onClick={() => handleSearch()} type="primary" icon={<SearchOutlined />}>
                 搜索
               </Button>
-              <Button onClick={() => setEditVisible(true)} type="primary" icon={<EditOutlined />}>
+              <Button onClick={() => actions('add')} type="primary" icon={<EditOutlined />}>
                 添加
               </Button>
             </Space>
@@ -131,7 +140,15 @@ const Tenant: React.FC = () => {
           },
         ]}
       />
-      <ItemCreate data={curItem} onClose={handleClose} visible={editVisible} type={type} />
+      {editVisible && (
+        <ItemCreate
+          data={curItem}
+          onClose={handleClose}
+          visible={editVisible}
+          type={type}
+          reset={() => search.reset()}
+        />
+      )}
     </div>
   );
 };
