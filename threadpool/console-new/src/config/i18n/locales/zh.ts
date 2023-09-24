@@ -31,6 +31,10 @@ const zhTranslationMap: { [key: string]: string } = {
   [STR_MAP.FORGOT_PASSWORD]: '忘记密码',
   [STR_MAP.ACCOUNT_PASSWORD_LOGIN]: '账号密码登录',
   [STR_MAP.GLOBAL_TITLE]: `全球最好用的线程池管理工具`,
+  [STR_MAP.PASSWOR]: '密码',
+  [STR_MAP.LOGIN]: '登录',
+  [STR_MAP.PHONE_LOGIN]: '手机号登录',
+  [STR_MAP.ALARM_EDITING_SUCCESS]: '报警编辑成功',
 };
 
 export default zhTranslationMap;

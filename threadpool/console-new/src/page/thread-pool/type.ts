@@ -56,7 +56,7 @@ export interface Record {
   /**
    * ID
    */
-  id?: string;
+  id: string;
   /**
    * 是否报警
    */

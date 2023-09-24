@@ -81,7 +81,6 @@
       <el-table-column :label="$t('common.num')" fixed="left" width="95">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-
       <el-table-column :label="$t('threadPoolInstance.instanceID')" width="260">
         <template slot-scope="scope">
           <el-link type="primary" :underline="false">{{ scope.row.identify }}</el-link>

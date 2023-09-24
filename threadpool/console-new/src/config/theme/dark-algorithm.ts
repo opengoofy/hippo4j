@@ -22,7 +22,7 @@ export const darkAlgorithm = {
       // padding: 10,
       // paddingXS: 5,
       // margin: 0,
-      // fontSize: 14,
+      // cellFontSize: 12,
       // colorBorderSecondary: darkDefaultTheme.borderColor.bl1,
       // paddingContentVerticalLG: 4,
     },

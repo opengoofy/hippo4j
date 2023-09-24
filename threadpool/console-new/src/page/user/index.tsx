@@ -91,7 +91,6 @@ const Tenant: React.FC = () => {
       </Form>
       <Table
         {...tableProps}
-        bordered
         rowKey="index"
         columns={[
           ...baseColumns,

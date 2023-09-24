@@ -29,4 +29,8 @@ export enum STR_MAP {
   REMERBER_PASSWORD = 'rememberPassWord',
   FORGOT_PASSWORD = 'forgotPassword',
   ACCOUNT_PASSWORD_LOGIN = 'accountPasswordLogin',
+  PASSWOR = 'password',
+  LOGIN = 'login',
+  PHONE_LOGIN = 'phoneLogin',
+  ALARM_EDITING_SUCCESS = 'alarmEditingSuccess',
 }

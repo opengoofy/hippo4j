@@ -108,7 +108,6 @@ const Tenant: React.FC = () => {
       </Form>
       <Table
         {...tableProps}
-        bordered
         rowKey="index"
         scroll={{ x: 1000 }}
         columns={[

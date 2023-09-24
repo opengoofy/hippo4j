@@ -31,6 +31,10 @@ const enTranslationMap: { [key: string]: string } = {
   [STR_MAP.FORGOT_PASSWORD]: 'forgot password',
   [STR_MAP.ACCOUNT_PASSWORD_LOGIN]: 'account password login',
   [STR_MAP.GLOBAL_TITLE]: `The world's best thread pool management tool`,
+  [STR_MAP.PASSWOR]: 'password',
+  [STR_MAP.LOGIN]: 'login',
+  [STR_MAP.PHONE_LOGIN]: 'Mobile login',
+  [STR_MAP.ALARM_EDITING_SUCCESS]: 'alarm editing success',
 };
 
 export default enTranslationMap;

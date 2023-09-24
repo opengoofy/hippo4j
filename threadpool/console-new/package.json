@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ahooksjs/use-url-state": "^3.5.1",
+    "@ant-design/happy-work-theme": "^1.0.0",
     "@ant-design/icons": "^5.2.6",
     "@tanem/react-nprogress": "^5.0.51",
     "@testing-library/jest-dom": "^5.16.5",
