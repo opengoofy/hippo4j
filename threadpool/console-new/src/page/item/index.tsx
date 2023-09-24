@@ -11,10 +11,17 @@ const baseColumns = [
   {
     title: '序号',
     dataIndex: 'index',
+    with: 200,
   },
   {
     title: '租户',
     dataIndex: 'tenantId',
+    with: 200,
+  },
+  {
+    title: '项目',
+    dataIndex: 'itemId',
+    with: 200,
   },
   {
     title: '项目',
@@ -23,10 +30,12 @@ const baseColumns = [
   {
     title: '项目名称',
     dataIndex: 'itemName',
+    with: 200,
   },
   {
     title: '负责人',
     dataIndex: 'owner',
+    with: 200,
   },
   {
     title: '修改时间',
