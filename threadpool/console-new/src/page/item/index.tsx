@@ -1,5 +1,5 @@
 import { useAntdTable, useRequest } from 'ahooks';
-import { Button, Form, Input, Row, Space, Table, Col, Modal, notification } from 'antd';
+import { Button, Form, Input, Row, Space, Table, Col, Modal, notification, message } from 'antd';
 import { SearchOutlined, EditOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { fetchDeleteItem, fetchItemList } from './service';
@@ -15,22 +15,18 @@ const baseColumns = [
   {
     title: '租户',
     dataIndex: 'tenantId',
-    // with: 200,
   },
   {
     title: '项目',
     dataIndex: 'itemId',
-    // with: 200,
   },
   {
     title: '项目名称',
     dataIndex: 'itemName',
-    with: 200,
   },
   {
     title: '负责人',
     dataIndex: 'owner',
-    with: 200,
   },
   {
     title: '修改时间',
@@ -54,7 +50,7 @@ const Tenant: React.FC = () => {
   const handleDelete = (item: any) => {
     Modal.confirm({
       title: '提示',
-      content: `此操作将删除${item.itemName}, 是否继续?`,
+      content: `此操作将删除 ${item.itemId}, 是否继续?`,
       onOk: async () => {
         try {
           const res = await deleteRequest.runAsync(item.itemId);
@@ -62,8 +58,8 @@ const Tenant: React.FC = () => {
             notification.success({ message: '删除成功' });
             search.reset();
           }
-        } catch (e) {
-          notification.error({ message: '删除失败' });
+        } catch (e: any) {
+          message.error(e.message || '服务器开小差啦~');
         }
       },
     });
@@ -96,7 +92,7 @@ const Tenant: React.FC = () => {
         <Row>
           <Col span={6}>
             <Form.Item name="note">
-              <Input placeholder="项目" />
+              <Input placeholder="项目" allowClear />
             </Form.Item>
           </Col>
           <Col span={18}>
