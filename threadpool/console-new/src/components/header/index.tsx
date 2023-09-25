@@ -39,7 +39,7 @@ const HeaderChild = () => {
   return (
     <div className={style['header-wrapper']}>
       <div className={style['logo']} onClick={() => navigate('/home')}>
-        <img src="https://nageoffer.com/img/logo3.png" alt="" />
+        <img src="https://nageoffer.com/img/logo3.png" alt="" style={{ cursor: 'pointer' }} />
       </div>
       <div className={style['edit-container']}>
         <Row gutter={[16, 16]}>

@@ -109,7 +109,6 @@ const Tenant: React.FC = () => {
       </Form>
       <Table
         {...tableProps}
-        bordered
         rowKey="id"
         columns={[
           ...baseColumns,
