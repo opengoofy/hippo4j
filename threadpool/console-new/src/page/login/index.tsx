@@ -6,6 +6,8 @@ import style from './index.module.less';
 import { useRequest } from 'ahooks';
 import { setToken } from '@/utils';
 import { useNavigate } from 'react-router-dom';
+import { STR_MAP } from '@/config/i18n/locales/constants';
+import { useTranslation } from 'react-i18next';
 
 const { Paragraph } = Typography;
 
@@ -19,12 +21,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { validateFields } = form;
   const [remenberMe, setRemenberMe] = useState(0);
+  const { t } = useTranslation();
 
   const { run, loading } = useRequest(service.fetchLogin, {
     manual: true,
     onSuccess: res => {
       if (res) {
-        message.success('登陆成功');
+        message.success(t(STR_MAP.LOGIN_SUCCESSFUL));
         navigate('/thread-poll/index');
         setToken(res?.data);
       }
@@ -54,12 +57,12 @@ const Login = () => {
           rules={[
             {
               required: true,
-              message: '请输入用户名!',
+              message: t(STR_MAP.USER_INPUT_MESSAGE),
             },
           ]}
         >
           <Input
-            placeholder="用户名"
+            placeholder={t(STR_MAP.USER_INPUT_MESSAGE)}
             prefix={<UserOutlined className={'prefixIcon'} />}
             size="large"
             allowClear
@@ -71,12 +74,12 @@ const Login = () => {
           rules={[
             {
               required: true,
-              message: '请输入密码！',
+              message: t(STR_MAP.PASSWORD_INPUT_MESSAGE),
             },
           ]}
         >
           <Input.Password
-            placeholder="密码"
+            placeholder={t(STR_MAP.PASSWORD_INPUT_MESSAGE)}
             prefix={<LockOutlined className={'prefixIcon'} />}
             size="large"
             allowClear
@@ -91,9 +94,9 @@ const Login = () => {
                 setRemenberMe(e.target.checked ? 1 : 0);
               }}
             >
-              记住密码
+              {t(STR_MAP.REMERBER_PASSWORD)}
             </Checkbox>
-            <Button type="link">忘记密码</Button>
+            <a>{t(STR_MAP.FORGOT_PASSWORD)}</a>
           </div>
         </Form.Item>
         <Form.Item>
@@ -105,23 +108,23 @@ const Login = () => {
             onClick={handleLogin}
             loading={loading}
           >
-            登陆
+            {t(STR_MAP.LOGIN)}
           </Button>
         </Form.Item>
       </Form>
     ),
-    [form, loading, handleLogin]
+    [form, loading, handleLogin, t]
   );
 
   const items: TabsProps['items'] = [
     {
       key: TABS_KEY.LOGIN,
-      label: '账号密码登陆',
+      label: t(STR_MAP.ACCOUNT_PASSWORD_LOGIN),
       children: formNode,
     },
     {
       key: TABS_KEY.PHONE,
-      label: '手机号登陆',
+      label: t(STR_MAP.PHONE_LOGIN),
       children: formNode,
     },
   ];
@@ -132,7 +135,7 @@ const Login = () => {
         <div className={style['img-wrapper']}>
           <img src="https://nageoffer.com/img/logo3.png" alt="" />
         </div>
-        <Paragraph className={style['tip']}>全球最好用的线程池管理工具</Paragraph>
+        <Paragraph className={style['tip']}>{t(STR_MAP.GLOBAL_TITLE)}</Paragraph>
         <div className={style['form-content']}>
           <Tabs centered defaultActiveKey={TABS_KEY.LOGIN} items={items} />
         </div>

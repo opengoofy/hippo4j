@@ -19,6 +19,22 @@ const enTranslationMap: { [key: string]: string } = {
   [STR_MAP.CREATION_TIME]: 'creation time',
   [STR_MAP.UPDATE_TIME]: 'update time',
   [STR_MAP.EDIT]: 'edit',
+  [STR_MAP.TENANT_MANAGE]: 'tenant management',
+  [STR_MAP.PROJECT_MANAGE]: 'project management',
+  [STR_MAP.USER_MANAGE]: 'user management',
+  [STR_MAP.LOG_MANAGE]: 'log management',
+  [STR_MAP.LOGIN_SUCCESSFUL]: 'login successful',
+  [STR_MAP.USER_INPUT_MESSAGE]: 'please enter your username',
+  [STR_MAP.USRE_NAME]: 'username',
+  [STR_MAP.PASSWORD_INPUT_MESSAGE]: 'please enter password',
+  [STR_MAP.REMERBER_PASSWORD]: 'remember the password',
+  [STR_MAP.FORGOT_PASSWORD]: 'forgot password',
+  [STR_MAP.ACCOUNT_PASSWORD_LOGIN]: 'account password login',
+  [STR_MAP.GLOBAL_TITLE]: `The world's best thread pool management tool`,
+  [STR_MAP.PASSWOR]: 'password',
+  [STR_MAP.LOGIN]: 'login',
+  [STR_MAP.PHONE_LOGIN]: 'Mobile login',
+  [STR_MAP.ALARM_EDITING_SUCCESS]: 'alarm editing success',
 };
 
 export default enTranslationMap;

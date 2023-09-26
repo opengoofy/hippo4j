@@ -26,7 +26,7 @@
   },
   {
     "name": "轻松到家",
-    "logo": "",
+    "logo": "/img/company_logos/uyess.jpg",
     "url": "http://www.uyess.com/index.html"
   },
   {
@@ -41,7 +41,7 @@
   },
   {
     "name": "萨科（深圳）科技有限公司",
-    "logo": "/img/company_logos/lbdj.png",
+    "logo": "/img/company_logos/lbdj.svg",
     "url": "https://www.lbdj.com/"
   },
   {
@@ -66,8 +66,8 @@
   },
   {
     "name": "众合云科（51社保）",
-    "logo": "",
-    "url": "https://home.101hr.com/"
+    "logo": "/img/company_logos/51shebao.png",
+    "url": "https://www.51shebao.com/?baidupz&guanfang/"
   },
   {
     "name": "好货云店",
@@ -96,7 +96,7 @@
   },
   {
     "name": "浙江吉利控股集团有限公司",
-    "logo": "/img/company_logos/geely.png",
+    "logo": "/img/company_logos/geely.jpg",
     "url": "https://www.geely.com/"
   },
   {
@@ -111,7 +111,7 @@
   },
   {
     "name": "郑州力通水务",
-    "logo": "/img/company_logos/zzltsw.png",
+    "logo": "/img/company_logos/zzltsw.jpg",
     "url": "http://www.zzltsw.com/"
   },
   {
@@ -126,7 +126,7 @@
   },
   {
     "name": "中新软件（上海）有限公司",
-    "logo": "",
+    "logo": "/img/company_logos/5000m.jpg",
     "url": "http://www.5000m.com"
   },
   {
@@ -136,12 +136,12 @@
   },
   {
     "name": "兰亭集势(成都)科技有限公司",
-    "logo": "/img/company_logos/lightinthebox.png",
+    "logo": "/img/company_logos/lightinthebox.avif",
     "url": "https://www.lightinthebox.com/"
   },
   {
     "name": "杭州数理大数据有限公司",
-    "logo": "",
+    "logo": "/img/company_logos/data4truth.jpg",
     "url": "https://www.data4truth.com/#/"
   },
   {
@@ -151,7 +151,7 @@
   },
   {
     "name": "新华智云科技有限公司",
-    "logo": "/img/company_logos/xinhuazhiyun.png",
+    "logo": "/img/company_logos/xinhuazhiyun.svg",
     "url": "https://www.xinhuazhiyun.com"
   },
   {
@@ -161,7 +161,7 @@
   },
   {
     "name": "深圳市帮客帮科技有限公司",
-    "logo": "/img/company_logos/bangkebang.png",
+    "logo": "/img/company_logos/bangkebang.jpg",
     "url": "https://www.bangkebang.com"
   },
   {
@@ -181,7 +181,7 @@
   },
   {
     "name": "广联达科技股份有限公司",
-    "logo": "/img/company_logos/glodon.png",
+    "logo": "/img/company_logos/glodon.jpg",
     "url": "https://www.glodon.com"
   },
   {
@@ -201,12 +201,12 @@
   },
   {
     "name": "成都全域智旅科技有限公司",
-    "logo": "/img/company_logos/qyzl.png",
+    "logo": "/img/company_logos/qyzl.jpg",
     "url": "http://qyzl.com"
   },
   {
     "name": "深圳市华云中盛科技股份有限公司",
-    "logo": "/img/company_logos/hua-cloud.png",
+    "logo": "/img/company_logos/hua-cloud.jpg",
     "url": "http://www.hua-cloud.cn"
   },
   {

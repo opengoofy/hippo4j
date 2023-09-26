@@ -1,73 +1,162 @@
-import { Button, Form, Select, Space, Table, Typography } from 'antd';
+import { Button, Form, Select, Space, Switch, Table, Typography, message } from 'antd';
 import { useFormStateToUrl, useTran } from '@/hooks';
 import { STR_MAP } from '@/config/i18n/locales/constants';
 import { ColumnProps } from 'antd/es/table';
+import { SearchButton, AddButton } from '@/components/with-button';
+import { useAntdTable } from 'ahooks';
+import service from './service';
+import { Result, Record } from './type';
+import { QUEUE_TYPE_MAP, REJECT_TYPE_MAP, eBtnStyle, paramsType } from './constants';
+import { useTranslation } from 'react-i18next';
+import request from '@/utils';
 const { Title } = Typography;
 const { Item } = Form;
 
-const params = { project: 0, thpool: 0 };
+interface CustomTableParams {
+  pageSize: number;
+  current: number;
+  tpId: string;
+  itemId: string;
+}
+
 const ThreadPoll = () => {
   const [form] = Form.useForm();
-  const { handleSetUrlState } = useFormStateToUrl<{ project: number; thpool: number }>(form, params);
-  const columns: ColumnProps<any>[] = [
+  const { handleSetUrlState } = useFormStateToUrl<{ project: number; thpool: number }>(form, paramsType);
+  const { t } = useTranslation();
+
+  const columns: ColumnProps<Record>[] = [
     {
       title: useTran(STR_MAP.SERIAL_NUMBER),
-      dataIndex: 'order',
+      dataIndex: '',
+      render: (col, num, index) => {
+        return index + 1;
+      },
+      fixed: 'left',
+      width: 80,
     },
     {
       title: useTran(STR_MAP.PROJECT),
-      dataIndex: 'project',
-    },
-    {
-      title: useTran(STR_MAP.TENANTRY),
-      dataIndex: 'tenantry',
+      dataIndex: 'tenantId',
+      width: 150,
     },
     {
       title: useTran(STR_MAP.THREAD_POOL),
-      dataIndex: 'thread_pool',
+      dataIndex: 'tpId',
+      width: 150,
+    },
+    {
+      title: useTran(STR_MAP.CORE_THREAD),
+      dataIndex: 'coreSize',
+      render: col => <span style={{ color: 'green' }}>{col}</span>,
+      width: 100,
     },
     {
       title: useTran(STR_MAP.MAXIMUM_THREAD),
-      dataIndex: 'maximum_thread',
+      dataIndex: 'maxSize',
+      render: col => <span style={{ color: 'red' }}>{col}</span>,
+      width: 100,
     },
     {
       title: useTran(STR_MAP.QUEUE_TYPE),
-      dataIndex: 'queue_type',
+      dataIndex: 'queueType',
+      render: (col: number) => QUEUE_TYPE_MAP[String(col)],
+      width: 150,
+    },
+    {
+      title: useTran(STR_MAP.QUEUE_CAPACITY),
+      dataIndex: 'capacity',
+      width: 150,
     },
     {
       title: useTran(STR_MAP.REJECTION_STRATEGY),
-      dataIndex: 'tenantry',
+      dataIndex: 'rejectedType',
+      render: (col: number) => REJECT_TYPE_MAP[String(col)] ?? 'CustomRejectedPolicy_' + col,
+      width: 150,
     },
     {
       title: useTran(STR_MAP.EXECUTION_TIMEOUT),
-      dataIndex: 'tenantry',
+      dataIndex: 'executeTimeOut',
+      render: (col: number) => col ?? 0,
+      width: 100,
     },
     {
       title: useTran(STR_MAP.ALARM_OR_NOT),
-      dataIndex: 'tenantry',
+      dataIndex: 'isAlarm',
+      render: (col: number, row) => (
+        <Switch checked={Boolean(col)} onChange={() => handleAlarm({ id: row?.id, alarm: Number(!col) })} />
+      ),
+      width: 100,
     },
     {
       title: useTran(STR_MAP.CREATION_TIME),
-      dataIndex: 'tenantry',
+      dataIndex: 'gmtCreate',
+      width: 150,
+      align: 'center',
     },
     {
       title: useTran(STR_MAP.UPDATE_TIME),
-      dataIndex: 'tenantry',
+      dataIndex: 'gmtModified',
+      width: 150,
+      align: 'center',
     },
     {
       title: useTran(STR_MAP.EDIT),
-      dataIndex: 'tenantry',
+      dataIndex: 'eidt',
+      fixed: 'right',
+      width: 150,
+      render: () => (
+        <>
+          <Button type="link" style={eBtnStyle}>
+            编辑
+          </Button>
+          <Button type="link" style={eBtnStyle}>
+            删除
+          </Button>
+        </>
+      ),
     },
   ];
 
-  const handleSubmit = () => {
-    handleSetUrlState();
+  const getTableData = (params: CustomTableParams): Promise<Result> => {
+    const { pageSize, current } = params;
+    return service.fetchThreadPoolTable({
+      current,
+      size: pageSize,
+      tpId: '',
+      itemId: '',
+    });
+  };
+
+  const { tableProps, search } = useAntdTable(getTableData, {
+    defaultPageSize: 5,
+    form: form,
+  });
+
+  const { submit } = search;
+
+  const handleAlarm = async (params: { id: string; alarm: number }) => {
+    const { id, alarm } = params;
+    request(`/hippo4j/v1/cs/thread/pool/alarm/enable/${id}/${alarm}`, {
+      method: 'post',
+    })
+      .then(res => {
+        if (res.success) {
+          message.success(t(STR_MAP.ALARM_EDITING_SUCCESS));
+          submit();
+        }
+      })
+      .catch(err => {
+        console.log('err:::', err);
+      });
   };
 
   return (
-    <Space direction="vertical" style={{ width: '100%' }} size="large">
-      <Title>{useTran(STR_MAP.THREAD_POOL)}</Title>
+    <Space direction="vertical" size="large" style={{ display: 'flex' }}>
+      <Title>{useTran(STR_MAP.THREAD_POOL_MANAGE)}</Title>
       <Form form={form} layout="inline">
+        <Item name="tenatIds" style={{ flex: 1 }}>
+          <Select options={[{ label: '哈哈哈', value: 1 }]} placeholder={useTran(STR_MAP.PROJECT)}></Select>
+        </Item>
         <Item name="project" style={{ flex: 1 }}>
           <Select options={[{ label: '哈哈哈', value: 1 }]} placeholder={useTran(STR_MAP.PROJECT)}></Select>
         </Item>
@@ -76,14 +165,21 @@ const ThreadPoll = () => {
         </Item>
         <Item style={{ flex: 4 }}>
           <Space>
-            <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+            <SearchButton
+              type="primary"
+              htmlType="submit"
+              onClick={() => {
+                submit();
+                handleSetUrlState();
+              }}
+            >
               {useTran(STR_MAP.SEARCH)}
-            </Button>
-            <Button type="primary">{useTran(STR_MAP.ADD)}</Button>
+            </SearchButton>
+            <AddButton type="primary">{useTran(STR_MAP.ADD)}</AddButton>
           </Space>
         </Item>
       </Form>
-      <Table columns={columns}></Table>
+      <Table scroll={{ x: 1300 }} columns={columns} {...tableProps}></Table>
     </Space>
   );
 };

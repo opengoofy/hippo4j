@@ -19,6 +19,22 @@ const zhTranslationMap: { [key: string]: string } = {
   [STR_MAP.CREATION_TIME]: '创建时间',
   [STR_MAP.UPDATE_TIME]: '更新时间',
   [STR_MAP.EDIT]: '操作',
+  [STR_MAP.TENANT_MANAGE]: '租户管理',
+  [STR_MAP.PROJECT_MANAGE]: '项目管理',
+  [STR_MAP.USER_MANAGE]: '用户权限',
+  [STR_MAP.LOG_MANAGE]: '日志管理',
+  [STR_MAP.LOGIN_SUCCESSFUL]: '登录成功',
+  [STR_MAP.USER_INPUT_MESSAGE]: '请输入用户名',
+  [STR_MAP.USRE_NAME]: '用户名',
+  [STR_MAP.PASSWORD_INPUT_MESSAGE]: '请输入密码',
+  [STR_MAP.REMERBER_PASSWORD]: '记住密码',
+  [STR_MAP.FORGOT_PASSWORD]: '忘记密码',
+  [STR_MAP.ACCOUNT_PASSWORD_LOGIN]: '账号密码登录',
+  [STR_MAP.GLOBAL_TITLE]: `全球最好用的线程池管理工具`,
+  [STR_MAP.PASSWOR]: '密码',
+  [STR_MAP.LOGIN]: '登录',
+  [STR_MAP.PHONE_LOGIN]: '手机号登录',
+  [STR_MAP.ALARM_EDITING_SUCCESS]: '报警编辑成功',
 };
 
 export default zhTranslationMap;
