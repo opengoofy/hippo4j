@@ -6,12 +6,6 @@ const fetchUserList = async (
 ): Promise<{ total: number; list: Array<any> }> => {
   const res: any = await request('/hippo4j/v1/cs/auth/users/page', {
     method: 'POST',
-    headers: {
-      Authorization:
-        'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3LGJhb3hpbnlpX2FkbWluIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTUzOTg4NDksImlhdCI6MTY5NDc5NDA0OSwicm9sIjoiUk9MRV9BRE1JTiJ9.syRDshKpd-xETsSdeMPRtk956f4BJkPt4utVsUl4smgH71Woj8SUq4w2RX1YtGTC4aTZRJYdKOfkTqwK0g_dHQ',
-      cookie:
-        'Admin-Token=Bearer%20eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3LGJhb3hpbnlpX2FkbWluIiwiaXNzIjoiYWRtaW4iLCJleHAiOjE2OTUzOTg4NDksImlhdCI6MTY5NDc5NDA0OSwicm9sIjoiUk9MRV9BRE1JTiJ9.syRDshKpd-xETsSdeMPRtk956f4BJkPt4utVsUl4smgH71Woj8SUq4w2RX1YtGTC4aTZRJYdKOfkTqwK0g_dHQ; userName=baoxinyi_admin',
-    },
     body: {
       ...formData,
       current: pageProps.current,
@@ -24,55 +18,67 @@ const fetchUserList = async (
       list: res.data.records.map((item: any, index: number) => ({ index: index + 1, ...item })),
     };
   }
-  throw new Error(res.msg || '服务器开小差啦~');
+  throw new Error(res.message || '服务器开小差啦~');
 };
 
-const fetchAddTenant = async (id: string) => {
-  const res = await request('/hippo4j/v1/cs/tenant/save', {
+const fetchAddUser = async (params: {
+  password?: string;
+  permission?: string;
+  role: string;
+  userName: string;
+  tempResources: Array<string>;
+  tenant: Array<string>;
+  resources?: Array<{ resource: string; action: 'rw' }>;
+}) => {
+  const { tempResources = [] } = params;
+  const res = await request('/hippo4j/v1/cs/auth/users/add', {
     method: 'POST',
-    params: { id },
+    body: {
+      ...params,
+      tempResources: tempResources.length > 0 ? true : false,
+      resources: tempResources.map(item => ({ resource: item, action: 'rw' })),
+    },
   });
 
   if (res && res.success) {
     return res;
   }
-  throw new Error(res.msg || '服务器开小差啦~');
+  throw new Error(res.message || '服务器开小差啦~');
 };
 
-const fetchDeleteTenant = async (id: string) => {
-  const res = await request('/tenants', {
-    method: 'POST',
-    params: { id },
+const fetchUpdateUser = async (params: {
+  password?: string;
+  permission?: string;
+  role: string;
+  userName: string;
+  tempResources: Array<any>;
+  resources?: Array<{ resource: string; action: 'rw' }>;
+}) => {
+  const { tempResources = [] } = params;
+  if (tempResources.length > 0) {
+    params.resources = tempResources.map(item => ({ resource: item, action: 'rw' }));
+  }
+  const res = await request('/hippo4j/v1/cs/auth/users/update', {
+    method: 'PUT',
+    body: { ...params },
   });
 
   if (res && res.success) {
     return res;
   }
-  throw new Error(res.msg || '服务器开小差啦~');
+  throw new Error(res.message || '服务器开小差啦~');
 };
 
-const fetchUpdateTenant = async (id: string) => {
-  const res = await request('hippo4j/v1/cs/tenant/update', {
-    method: 'POST',
-    params: { id },
+const fetchDeleteUser = async (id: string) => {
+  const url = '/hippo4j/v1/cs/auth/users/remove/' + id;
+  const res = await request(url, {
+    method: 'DELETE',
   });
 
   if (res && res.success) {
     return res;
   }
-  throw new Error(res.msg || '服务器开小差啦~');
+  throw new Error(res.message || '服务器开小差啦~');
 };
 
-const fetchTenantDetail = async (id: string) => {
-  const res = await request('/tenants', {
-    method: 'POST',
-    params: { id },
-  });
-
-  if (res && res.success) {
-    return res;
-  }
-  throw new Error(res.msg || '服务器开小差啦~');
-};
-
-export { fetchUserList, fetchAddTenant, fetchDeleteTenant, fetchUpdateTenant, fetchTenantDetail };
+export { fetchUserList, fetchAddUser, fetchDeleteUser, fetchUpdateUser };

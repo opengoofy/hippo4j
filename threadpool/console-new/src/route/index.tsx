@@ -7,6 +7,7 @@ import LoginRouter from '@/page/login/router';
 import itemRouter from '@/page/item/router';
 import userRouter from '@/page/user/router';
 import logRouter from '@/page/log/router';
+import ThreadPoolMonitorRouter from '@/page/thread-pool-monitor/router';
 
 const routerList: IRouterList[] = [
   ...homeRouter,
@@ -17,5 +18,6 @@ const routerList: IRouterList[] = [
   ...itemRouter,
   ...userRouter,
   ...logRouter,
+  ...ThreadPoolMonitorRouter,
 ];
 export default routerList;

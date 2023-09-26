@@ -24,7 +24,7 @@ interface RequestOptions {
 
 type Response<T = any> = {
   success: boolean;
-  data?: T;
+  data: T;
   module?: T;
   msg?: string;
   status?: number;
@@ -41,6 +41,7 @@ const inital: RequestOptions = {
   headers: {
     'Content-Type': 'application/json',
   },
+  // headers,
   credentials: true,
   responseType: 'JSON',
   cache: 'no-cache',
@@ -89,6 +90,7 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
   } else {
     config.headers = { Authorization: getToken(), 'Content-Type': 'application/json' };
   }
+
   let { method, params, body, headers, credentials, responseType } = Object.assign({}, inital, config) as any;
   if (typeof url !== 'string') throw new TypeError('url is not an string');
   if (!/^http(s?):\/\//i.test(url)) url = baseURL + url;
