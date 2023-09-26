@@ -19,9 +19,7 @@ package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.MockedStatic;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
