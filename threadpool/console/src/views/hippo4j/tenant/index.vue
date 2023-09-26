@@ -1,36 +1,9 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-input
-        v-model="listQuery.tenantId"
-        clearable
-        :placeholder="$t('tenantManage.tenant')"
-        style="width: 200px"
-        class="filter-item"
-      />
-      <el-button
-        v-waves
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="fetchData"
-      >
-        {{ $t('common.query') }}
-      </el-button>
-      <el-button
-        :disabled="isEditDisabled"
-        class="filter-item"
-        style="margin-left: 10px"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleCreate"
-      >
-        {{ $t('common.insert') }}
-      </el-button>
-    </div>
     <el-table
       v-loading="listLoading"
       :data="list"
+      :key="tableIsChange"
       border
       highlight-current-row
       element-loading-text="Loading"
@@ -134,6 +107,7 @@
 import * as jobProjectApi from '@/api/hippo4j-tenant';
 import waves from '@/directive/waves';
 import Pagination from '@/components/Pagination';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'JobProject',
@@ -167,6 +141,7 @@ export default {
         tenantId: '',
         desc: true,
       },
+      tableIsChange: false,
       pluginTypeOptions: ['reader', 'writer'],
       dialogPluginVisible: false,
       pluginData: [],
@@ -187,7 +162,16 @@ export default {
       visible: true,
     };
   },
+  watch: {
+    tenantInfo(newVal, oldVal) {
+      this.listQuery = newVal;
+      this.fetchData()
+    }
+  },
   computed:{
+    ...mapGetters([
+      'tenantInfo'
+    ]),
     rules(){
       return{
         tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
@@ -209,6 +193,10 @@ export default {
   },
   methods: {
     fetchData() {
+      // debugger
+      this.listQuery = this?.tenantInfo || this.listQuery
+      console.log("Quary", this.tenantInfo)
+      this.listQuery.tenantId = this.listQuery.tenantId == '所有租户' ? '' : this.listQuery.tenantId
       this.listLoading = true;
       jobProjectApi.list(this.listQuery).then((response) => {
         const { records } = response;
