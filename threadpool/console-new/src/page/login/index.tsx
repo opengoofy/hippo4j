@@ -4,7 +4,7 @@ import service from './service';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import style from './index.module.less';
 import { useRequest } from 'ahooks';
-import { setToken } from '@/utils';
+import { encrypt, genKey, setToken } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import { STR_MAP } from '@/config/i18n/locales/constants';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +20,7 @@ const Login = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { validateFields } = form;
-  const [remenberMe, setRemenberMe] = useState(0);
+  const [rememberMe, setRememberMe] = useState(1);
   const { t } = useTranslation();
 
   const { run, loading } = useRequest(service.fetchLogin, {
@@ -36,17 +36,20 @@ const Login = () => {
 
   const handleLogin = useCallback(() => {
     validateFields()
-      .then(values => {
-        console.log('value:::', values, remenberMe);
+      .then(async values => {
+        const { password, username } = values;
+        let key = genKey();
+        let encodePassword = await encrypt(password, key);
+        key = key.split('').reverse().join('');
         run({
-          password: '1BsL68bUgS52alKirqFprU1QfWJyPFlb3dA2AzEMc6kMTpTHN1doEN4=',
-          rememberMe: 1,
-          tag: 'lw4xNmj6QuamOFsy',
-          username: 'baoxinyi_user',
+          password: encodePassword,
+          tag: key,
+          username,
+          rememberMe,
         });
       })
       .catch(err => console.log('err:::', err));
-  }, [remenberMe, validateFields, run]);
+  }, [validateFields, run, rememberMe]);
 
   const formNode = useMemo(
     () => (
@@ -88,10 +91,9 @@ const Login = () => {
         <Form.Item name="rememberMe">
           <div className={style['login-edit']}>
             <Checkbox
-              value={1}
-              checked
+              checked={Boolean(rememberMe)}
               onChange={e => {
-                setRemenberMe(e.target.checked ? 1 : 0);
+                setRememberMe(Number(e.target.checked));
               }}
             >
               {t(STR_MAP.REMERBER_PASSWORD)}
@@ -113,7 +115,7 @@ const Login = () => {
         </Form.Item>
       </Form>
     ),
-    [form, loading, handleLogin, t]
+    [form, loading, rememberMe, handleLogin, t]
   );
 
   const items: TabsProps['items'] = [

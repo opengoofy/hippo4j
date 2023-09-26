@@ -124,7 +124,6 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
 
   return fetch(url, config as any).then(function onfulfilled(response) {
     let { status, statusText } = response;
-    console.log('status:::', status, response);
     if (status >= 200 && status < 400) {
       let result;
       switch (responseType) {
@@ -141,10 +140,11 @@ function request<T>(url: string, config: RequestOptions): Promise<Response<T>> {
           result = response.arrayBuffer();
           break;
       }
-      // business code
       result?.then(res => {
-        if (res?.code === 200) {
-          // console.log(':::');
+        if (!res?.success) {
+          notification.error({
+            message: res.message,
+          });
         }
       });
       return result;
