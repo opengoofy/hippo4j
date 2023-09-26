@@ -6,39 +6,31 @@ import Translate from "@docusaurus/Translate";
 function CompanyCards({ companies }) {
   return (
     <div className="grid sm:grid-cols-2 grid-cols-1 md:px-16 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-16 lg:px-2 px-10">
-      {companies.map((company) => (
-        <div
-          onClick={() => window.open(company.url)}
-          key={company.url}
-          className="bg-white rounded-lg overflow-hidden shadow-sm transform cursor-pointer transition-all duration-500 hover:scale-110"
-          style={{ border: "1px solid #E5E7EB" }}
-        >
-          <div className="flex dark:text-black items-center justify-center h-28">
-            <div
-              className="h-24 w-24 object-contain"
-              style={{ position: "relative" }}
-            >
-              <img
-                src={useBaseUrl(company.logo)}
-                alt={`${company.name}`}
-                className="h-24 w-24 object-contain"
-                onError={(e) => {
-                  e.target.style.display = "none"; // Hide the image if it fails to load
-                  e.target.nextSibling.style.display = "flex"; // Show the alt text
-                }}
-              />
+      {/* Filter out those without a logo. */}
+      {companies
+        .filter((comapny) => comapny.logo.length > 0)
+        .map((company) => (
+          <div
+            onClick={() => window.open(company.url)}
+            key={company.url}
+            // className="bg-white rounded-lg overflow-hidden shadow-sm transform cursor-pointer transition-all duration-500 hover:scale-110"
+            className="bg-white rounded-lg overflow-hidden shadow-sm transform cursor-pointer transition-all duration-500 hover:scale-110"
+            style={{ border: "1px solid #E5E7EB" }}
+          >
+            <div className="flex dark:text-black items-center justify-center h-28">
               <div
-                className="flex items-center justify-center absolute inset-0 text-center"
-                style={{
-                  display: "none", // Hide the alt text by default
-                }}
+                className="h-24 w-24 object-contain"
+                style={{ position: "relative" }}
               >
-                {company.name}
+                <img
+                  src={useBaseUrl(company.logo)}
+                  alt={`${company.name}`}
+                  className="h-24 w-24 object-contain"
+                />
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
@@ -81,7 +73,7 @@ export default function OurUsers() {
               </Translate>{" "}
               <a
                 href="https://github.com/opengoofy/hippo4j/issues/13"
-                className="text-blue-500 hover:text-blue-700 font-bold"
+                className="text-blue-400 hover:text-blue-500 font-medium"
               >
                 <Translate
                   id="companyPage.linkText"
