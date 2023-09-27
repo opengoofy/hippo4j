@@ -22,7 +22,7 @@ const Hero = () => {
             {/* title and desc */}
             <div>
               <h1 className="my-4 font-jakarta lg:my-4 md:my-4 text-5xl font-bold leading-tight ">
-                Hippo4j Thread Pool
+                Hippo4j ThreadPool
               </h1>
 
               {/* <p className="leading-normal dark:text-white font-bold text-gray-800 hero-image-url text-3xl md:text-3xl">
