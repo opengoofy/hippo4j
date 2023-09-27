@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 // import Translate from "@docusaurus/Translate";
@@ -43,6 +44,14 @@ function HomepageHeader() {
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
+  // useEffect(() => {
+  //   // Set the content of the banner based on the  URL.
+  //   let inner = location.href.includes("3000")
+  //     ? '⭐️ If you like hippo4j, give it a star on  &nbsp; <a target="_blank" rel="noopener noreferrer" href="https://github.com/opengoofy/hippo4j">GitHub</a> &nbsp;⭐️ '
+  //     : '⭐️ 源不易，如果 Hippo4j 对您有帮助，请在 <a target="_blank" rel="noopener noreferrer" href="https://github.com/opengoofy/hippo4j">GitHub</a> 上给它一个 Star 🌟';
+  //   let el = document.querySelector('[class^="announcementBar_"]');
+  //   el.innerHTML = inner;
+  // }, []);
   return (
     <Layout
       title={`${siteConfig.title}`}

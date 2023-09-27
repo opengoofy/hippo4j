@@ -23,15 +23,15 @@ const Introduction = () => {
                 What can Hippo4j do?
               </Translate>
             </h2>
-            <p className=" my-4 leading-relaxed dark:text-white text-xl font-medium text-gray-800 md:pr-20 ">
+            {/* <p className=" my-4 leading-relaxed dark:text-white text-xl font-medium text-gray-800 md:pr-20 ">
               <Translate
                 id="homepage.secondTitleDesc1"
                 description="The p1 for the secondTitle part"
               >
                 Hippo4j is a Java thread pool framework.
               </Translate>
-            </p>
-            <p className="leading-normal max-w-xl  md:pr-10 text-gray-600 dark:text-gray-100  mb-2">
+            </p> */}
+            <p className="leading-normal mt-8 max-w-xl  md:pr-10 text-gray-600 dark:text-gray-100  mb-2">
               <Translate
                 id="homepage.secondTitleDesc2"
                 description="The p2 for the secondTitle part"
