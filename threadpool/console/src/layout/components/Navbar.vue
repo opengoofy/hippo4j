@@ -16,8 +16,16 @@
         <!--        <el-tooltip content="Global Size" effect="dark" placement="bottom">-->
         <!--          <size-select id="size-select" class="right-menu-item hover-effect" />-->
         <!--        </el-tooltip>-->
-
+        
       </template>
+      <el-select class="select-tenant" v-model="tenant.resource" filterable @change="changeTenant">
+        <el-option
+          v-for="(item, index) in tenantList"
+          :key="index"
+          :label="item.resource"
+          :value="index">
+        </el-option>
+      </el-select>
       <langChange />
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
@@ -41,13 +49,24 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import * as jobProjectApi from '@/api/hippo4j-tenant';
+  import * as user from '@/api/hippo4j-user';
+  import { mapGetters, mapState } from 'vuex'
   import Breadcrumb from '@/components/Breadcrumb'
   import Hamburger from '@/components/Hamburger'
   import ErrorLog from '@/components/ErrorLog'
   import langChange from '@/locale/langChange'
 
   export default {
+    data() {
+      return {
+        tenant: {
+          action: '',
+          resource: '',
+          username: ''
+        }
+      }
+    },
     components: {
       Breadcrumb,
       Hamburger,
@@ -58,7 +77,9 @@
       ...mapGetters([
         'sidebar',
         'avatar',
-        'device'
+        'device',
+        'tenantList',
+        'tenantInfo'
       ])
     },
     methods: {
@@ -69,8 +90,45 @@
         this.$cookie.delete('userName')
         await this.$store.dispatch('user/logout')
         this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      },
+      async getTenantList() {
+        const userName = this.$cookie.get('userName')
+        await user
+        .getCurrentUser(userName)
+        .then((response) => {
+          const { resources } = response;
+          if (response.role == 'ROLE_ADMIN') {
+            resources.unshift({
+              action: "rw",
+              resource: "所有租户",
+              username: userName
+            })
+          }
+          this.$store.dispatch('tenant/setTenantList', resources)
+          this.$store.dispatch('tenant/setTenantInfo', this.tenantInfo || resources[0])
+          this.tenant = this.tenantInfo || resources[0]
+        })
+        .catch(() => {});
+        
+      },
+      async changeTenant(index) {
+        let tenant = {
+          tenantId: this.tenantList[index].resource,
+          current: 1,
+          desc: true,
+          size: 10,
+        }
+        this.$store.dispatch('tenant/setTenantInfo', tenant)
+        tenant.tenantId = tenant.tenantId == '所有租户' ? '' : tenant.tenantId
+        await jobProjectApi.list(tenant).then((response) => {
+          console.log("isRes", response)
+          // this.$store.dispatch('tenant/setTenantList', resources)
+        });
       }
-    }
+    },
+    async mounted() {
+      this.getTenantList()
+    },
   }
 </script>
 
@@ -111,6 +169,17 @@
       display: flex;
       &:focus {
         outline: none;
+      }
+
+      ::v-deep  .el-input__inner {
+        border: none;
+        box-shadow: none;
+      }
+
+      .select-tenant {
+        margin-right: 20px;
+        border: 0;
+        width: 150px;
       }
 
       .right-menu-item {
