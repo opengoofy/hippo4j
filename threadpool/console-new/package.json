@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "ahooks": "^3.7.8",
     "antd": "^5.4.7",
+    "buffer": "^6.0.3",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.9",
     "echarts": "^5.4.3",
@@ -32,7 +33,8 @@
     "build": "craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint -c .eslintrc.js src --ext .ts,.tsx,.js,.jsx --fix"
+    "lint": "eslint -c .eslintrc.js src --ext .ts,.tsx,.js,.jsx --fix",
+    "format": "prettier --write src/"
   },
   "eslintConfig": {
     "extends": [
