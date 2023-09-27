@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import Hero from "./Hero";
 import Introduction from "./Introduction";
 function LandingLayout(props) {

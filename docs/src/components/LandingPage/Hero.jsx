@@ -12,9 +12,9 @@ const Hero = () => {
     <div className=" h-[100vh] lg:h-[65vh]  relative text-black dark:text-white">
       <div
         // style={{ backgroundImage: `url(${bgUrl})` }}
-        className="bg-svg absolute inset-0 overflow-hidden bg-repeat"
+        className=" absolute inset-0 overflow-hidden bg-repeat"
       >
-        <div className="absolute inset-0 bg-gray-400 opacity-5 dark:opacity-0"></div>
+        {/* <div className="absolute inset-0 bg-gray-400 opacity-5 dark:opacity-0"></div> */}
 
         <div className=" container px-20 py-12 lg:py-16  md:py-8 lg:px-20 md:px-10  mx-auto flex flex-wrap flex-col lg:flex-row items-center">
           {/* <!--Left Col--> */}
