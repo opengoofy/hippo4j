@@ -8,7 +8,7 @@ const GithubInfo = ({ owner, repo }) => {
     <div className="github-info-container w-full md:justify-normal mb-4 justify-center gap-2 flex flex-wrap  items-center">
       <div className="flex items-center">
         <div className="dark:bg-gray-600 bg-gray-100 px-6 py-1">
-          <span className="text-sm">stars</span>
+          <span className="text-sm">star</span>
         </div>
         <div className="dark:bg-blue-600 bg-gray-200 font-medium px-6 py-1">
           <span id="repo-stars-count">{favorites || 4621}</span>
