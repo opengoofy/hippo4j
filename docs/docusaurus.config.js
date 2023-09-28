@@ -93,10 +93,6 @@ const config = {
       autoCollapseCategories: true,
       announcementBar: {
         id: "announcementBar-1", // Increment on change
-        // content: `⭐️ If you like hippo4j, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://gitee.com/mabaiwancn/hippo4j">Gitee</a>, thanks.`,
-        // content: `⭐️ 如果您喜欢 hippo4j，请在 <a target="_blank" rel="noopener noreferrer" href="https://gitee.com/mabaiwancn/hippo4j">Gitee</a> 和 <a target="_blank" rel="noopener noreferrer" href="https://github.com/opengoofy/hippo4j">GitHub</a> 上给它一个 star，谢谢！`,
-        // content: `⭐️ 开源不易，如果 Hippo4j 对您有帮助，请在 <a target="_blank" rel="noopener noreferrer" href="https://github.com/opengoofy/hippo4j">GitHub</a> 上给它一个 Star 🌟`,
-        // content: `<a target="_blank" rel="noopener noreferrer" href="https://xiaomage.info/knowledge-planet/">👉 《小马哥的代码实战课》官方知识星球来啦！！！</a>`,
         content:
           '⭐️ If you like hippo4j, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/opengoofy/hippo4j">GitHub</a> ⭐️',
         backgroundColor: "#fafbfc",

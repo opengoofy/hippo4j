@@ -39,7 +39,6 @@ html[data-theme="dark"] {
 }
 
 [data-theme="light"] {
-  /* --ifm-color-primary: hsl(var(--site-primary-hue-saturation) 30%); */
   --ifm-color-primary: #2160fd;
   --ifm-color-primary-dark: hsl(var(--site-primary-hue-saturation) 26%);
   --ifm-color-primary-darker: hsl(var(--site-primary-hue-saturation) 23%);
@@ -55,7 +54,6 @@ html[data-theme="dark"] {
 }
 
 [data-theme="dark"] {
-  /* --ifm-color-primary: hsl(var(--site-primary-hue-saturation) 45%); */
   --ifm-color-primary: #1a90ff;
   --ifm-color-primary-dark: hsl(var(--site-primary-hue-saturation) 41%);
   --ifm-color-primary-darker: hsl(var(--site-primary-hue-saturation) 38%);
@@ -68,6 +66,8 @@ html[data-theme="dark"] {
   --ifm-color-primary-lightest: hsl(
     var(--site-primary-hue-saturation-light) 73%
   );
+  --ifm-breadcrumb-item-background-active: #222222;
+  --ifm-breadcrumb-color-active: #1a90ff;
 }
 
 .docusaurus-highlight-code-line {
@@ -124,8 +124,6 @@ html[data-theme="dark"] {
 }
 
 [data-theme="light"] .DocSearch {
-  /* --docsearch-primary-color: var(--ifm-color-primary); */
-  /* --docsearch-text-color: var(--ifm-font-color-base); */
   --docsearch-muted-color: var(--ifm-color-emphasis-700);
   --docsearch-container-background: rgb(94 100 112 / 70%);
   /* Modal */
@@ -233,8 +231,6 @@ div[class^="announcementBar_"] {
 
 :root[data-theme="light"] {
   --hero-image-url: url("../../static/img/hero/hero-removebg.png");
-  /* --bg-background-color: #f9fafb; */
-  /* --bg-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='%23bfbfbf' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M5 3.59L1.46.05.05 1.46 3.59 5 .05 8.54l1.41 1.41L5 6.41l3.54 3.54 1.41-1.41L6.41 5l3.54-3.54L8.54.05 5 3.59zM17 2h24v2H17V2zm0 4h24v2H17V6zM2 17h2v24H2V17zm4 0h2v24H6V17z'/%3E%3C/g%3E%3C/svg%3E"); */
   --bg-background-color: #ffffff;
   --bg-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='199' viewBox='0 0 100 199'%3E%3Cg fill='%23dddddd' fill-opacity='0.4'%3E%3Cpath d='M0 199V0h1v1.99L100 199h-1.12L1 4.22V199H0zM100 2h-.12l-1-2H100v2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
 }
@@ -277,6 +273,7 @@ nav.menu {
   --ifm-menu-color-background-active: var(--docs-color-primary-tint);
 }
 
+/* other style */
 ::selection {
   --tw-text-opacity: 1;
   background-color: rgb(var(--docs-color-primary-200, 33 96 253) / 0.8);
@@ -295,4 +292,12 @@ div[class^="announcementBar_"] {
 div[class^="announcementBar_"] a {
   text-decoration: underline;
   color: #091e42;
+}
+
+.introduction-container {
+  color: #1c1e21;
+}
+.three-part-container p {
+  margin: 0;
+  line-height: 2;
 }

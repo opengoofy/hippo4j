@@ -5,7 +5,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import Translate from "@docusaurus/Translate";
 function CompanyCards({ companies }) {
   return (
-    <div className="grid sm:grid-cols-2 grid-cols-1 md:px-16 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-16 lg:px-2 px-10">
+    <div className="grid sm:grid-cols-2 grid-cols-1 md:px-16 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16 lg:px-2 px-10">
       {/* Filter out those without a logo. */}
       {companies
         .filter((comapny) => comapny.logo.length > 0)
@@ -19,13 +19,13 @@ function CompanyCards({ companies }) {
           >
             <div className="flex dark:text-black items-center justify-center h-28">
               <div
-                className="h-24 w-24 object-contain"
+                className="h-22 w-24 object-contain"
                 style={{ position: "relative" }}
               >
                 <img
                   src={useBaseUrl(company.logo)}
                   alt={`${company.name}`}
-                  className="h-24 w-24 object-contain"
+                  className="h-22 w-24 object-contain"
                 />
               </div>
             </div>
@@ -39,9 +39,9 @@ export default function OurUsers() {
     <Layout title="OurUsers" description="companies using our product">
       <div className="max-w-screen-lg mx-auto dark:text-white">
         {/* text description*/}
-        <div className="max-w-screen-sm sm:mx-auto mx-10 text-center my-8 ">
+        <div className="max-w-screen-sm sm:mx-auto mx-10 text-center my-8 mt-16 ">
           <div className="text-center mt-8">
-            <h2 className="text-3xl font-bold mb-4">
+            <h2 className="text-3xl font-bold my-4">
               <Translate
                 id="companyPage.title"
                 description="the title for the company page"
@@ -50,12 +50,12 @@ export default function OurUsers() {
               </Translate>
             </h2>
             <div
-              className="mx-auto h-1 bg-gradient-to-r from-green-400 to-blue-500 mb-4"
+              className="mx-auto h-1 bg-gradient-to-r from-green-400 to-blue-500 my-6"
               style={{ width: "30%" }}
             ></div>
           </div>
           <div className="flex flex-col items-center mx-auto">
-            <p className="text-lg mb-2 max-w-1/2" style={{ lineHeight: "1.5" }}>
+            <p className="text-lg leading-loose mb-2 max-w-1/2">
               <Translate
                 id="companyPage.descriptionText"
                 description="the description for the company page"
@@ -64,7 +64,7 @@ export default function OurUsers() {
                 This is our greatest motivation to move forward.
               </Translate>{" "}
             </p>
-            <p className="text-lg mb-4 max-w-1/2" style={{ lineHeight: "1.5" }}>
+            <p className="text-lg mb-4 max-w-1/2 leading-loose">
               <Translate
                 id="companyPage.questionText"
                 description="the text for the company question"

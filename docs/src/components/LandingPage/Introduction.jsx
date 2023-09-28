@@ -3,19 +3,19 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import Translate from "@docusaurus/Translate";
 const Introduction = () => {
   return (
-    <section className=" border-b  mb-28 dark:text-white">
-      <div className=" ">
-        <div className="title-container w-full bg-gray-50 p-4 mb-4 flex flex-wrap dark:bg-[#242526]">
+    <section className="mb-28 dark:text-white">
+      <div className="introduction-container ">
+        <div className="title-container w-full bg-[#EFEFEF] p-4 mb-12 flex flex-wrap dark:bg-[#242526]">
           <div className="left-image-container px-24  w-full md:w-1/2 sm:w-1/3">
             <img
-              className="w-full -mt-8 h-64 object-cover  lg:h-80 md:h-96 dark:rounded-lg "
+              className="w-full -mt-8 h-64 object-contain  lg:h-64 md:h-96 dark:rounded-lg "
               alt="Hippo4j System"
               src={useBaseUrl("/img/introduction/t2.svg")}
             />
             {/* <div className="introduction-title-image h-64 w-full img-div"></div> */}
           </div>
           <div className="right-title-container py-4 px-16 md:px-4 md:pt-8 w-full md:w-1/2 sm:w-2/3 sm:px-8">
-            <h2 className="w-full my-2 text-3xl font-medium leading-tight text-gray-800 dark:text-white ">
+            <h2 className="w-full my-2 text-3xl font-medium leading-tight  dark:text-white ">
               <Translate
                 id="homepage.secondTitle"
                 description="The title for the introduction part"
@@ -23,15 +23,8 @@ const Introduction = () => {
                 What can Hippo4j do?
               </Translate>
             </h2>
-            {/* <p className=" my-4 leading-relaxed dark:text-white text-xl font-medium text-gray-800 md:pr-20 ">
-              <Translate
-                id="homepage.secondTitleDesc1"
-                description="The p1 for the secondTitle part"
-              >
-                Hippo4j is a Java thread pool framework.
-              </Translate>
-            </p> */}
-            <p className="leading-normal mt-8 max-w-xl  md:pr-10 text-gray-600 dark:text-gray-100  mb-2">
+
+            <p className="leading-normal mt-8 max-w-xl  md:pr-10  dark:text-white  mb-2">
               <Translate
                 id="homepage.secondTitleDesc2"
                 description="The p2 for the secondTitle part"
@@ -44,10 +37,17 @@ const Introduction = () => {
           </div>
         </div>
 
-        <div class="container px-20 lg:px-36 md:px-10 three-part-container">
+        <div class="container px-20 lg:px-20 md:px-10 three-part-container">
           <div class="flex flex-wrap pt-6">
-            <div class="w-full pr-4 sm:w-2/3 md:w-1/2   ">
-              <h3 class="text-2xl md:pb-6 text-gray-800 dark:text-white font-medium leading-none mb-3">
+            <div class="w-full sm:w-1/3 md:w-1/4 ">
+              <img
+                className="w-full -mt-4 h-auto sm:h-64 object-contain  lg:h-52 md:h-72 dark:rounded-lg "
+                src={useBaseUrl("/img/introduction/p11.svg")}
+                alt="Hippo4j System"
+              />
+            </div>
+            <div class="w-full pr-4 sm:w-2/3 md:w-1/2  flex-grow  ">
+              <h3 class="text-2xl   dark:text-white font-normal leading-none ">
                 <Translate
                   id="homepage.introduction.fristPartTitle"
                   description="the title for the first introduction part"
@@ -55,10 +55,10 @@ const Introduction = () => {
                   Dynamic Change
                 </Translate>
               </h3>
-              <div class="dark:text-white text-gray-600 mb-8">
+              <div class="dark:text-white  mb-8 ">
                 <p>
                   <Translate
-                    className="cursor-pointer"
+                    className="cursor-pointer "
                     id="homepage.introduction.fristPartDesc1"
                     description="The first desc for fristPart "
                   >
@@ -66,48 +66,13 @@ const Introduction = () => {
                     parameters.
                   </Translate>{" "}
                 </p>
-                <p>
-                  <Translate
-                    className="cursor-pointer"
-                    id="homepage.introduction.fristPartDesc2"
-                    description="The second desc for fristPart "
-                  >
-                    Including but not limited to core size, maximum threads,
-                    blocking queue size, and rejection policy.
-                  </Translate>
-                </p>
-                <p>
-                  <Translate
-                    className="cursor-pointer"
-                    id="homepage.introduction.fristPartDesc3"
-                    description="The third desc for fristPart "
-                  >
-                    It supports differentiated thread pool configurations for
-                    different nodes in the application cluster.
-                  </Translate>
-                </p>
               </div>
             </div>
-            <div class="w-full sm:w-1/3 md:w-1/2 ">
-              {/* <img class="mx-auto w-4/5 z-50" src="f1.png" /> */}
-              <img
-                className="w-full -mt-4 h-auto sm:h-64 object-contain  lg:h-80 md:h-72 dark:rounded-lg "
-                src={useBaseUrl("/img/introduction/p11.svg")}
-                alt="Hippo4j System"
-              />
-            </div>
           </div>
-          <div class="flex flex-wrap pt-6 flex-col-reverse sm:flex-row">
-            <div class="w-full pr-16  sm:w-1/3 md:w-1/2  mt-6">
-              <img
-                className="w-full h-auto sm:h-64 object-contain  lg:h-80 md:h-96 dark:rounded-lg "
-                src={useBaseUrl("/img/introduction/p22.svg")}
-                alt="Hippo4j System"
-              />
-            </div>
-            <div class="w-full sm:w-2/3 md:w-1/2 md:pl-16 sm:pl-8 mt-6 lg:pt-8">
-              <div class="align-middle">
-                <h3 class="text-2xl md:pb-6 text-gray-800 dark:text-white font-medium leading-none mb-3">
+          <div class="flex flex-wrap md:-mt16  flex-col-reverse sm:flex-row">
+            <div class="w-full flex-grow sm:w-2/3 md:w-2/3 md:pl-[28rem] sm:pl-8 mt-6 lg:pt-8">
+              <div class="align-middle ">
+                <h3 class="text-2xl   dark:text-white font-normal leading-none mb-3">
                   <Translate
                     id="homepage.introduction.secondPartTitle"
                     description="the title for the second introduction part"
@@ -115,7 +80,7 @@ const Introduction = () => {
                     Custom Alarm
                   </Translate>
                 </h3>
-                <div class="dark:text-white text-gray-600 mb-8">
+                <div class="dark:text-white  mb-8">
                   <p>
                     <Translate
                       className="cursor-pointer"
@@ -126,33 +91,28 @@ const Introduction = () => {
                       alarm dimensions.
                     </Translate>
                   </p>
-                  <p>
-                    <Translate
-                      className="cursor-pointer"
-                      id="homepage.introduction.secondPartDesc2"
-                      description="The second desc for secondPart "
-                    >
-                      Thread pool overload, blocking queue capacity, running for
-                      too long, and rejection strategy alarm.
-                    </Translate>{" "}
-                  </p>
-                  <p>
-                    <Translate
-                      className="cursor-pointer"
-                      id="homepage.introduction.secondPartDesc3"
-                      description="The third desc for secondPart "
-                    >
-                      It also supports non-repetitive alarms within a custom
-                      time period.
-                    </Translate>
-                  </p>
                 </div>
               </div>
             </div>
+            <div class="w-full   sm:w-1/3 md:w-1/4  mt-6">
+              <img
+                className="w-full h-auto sm:h-64 object-contain  lg:h-52 md:h-96 dark:rounded-lg "
+                src={useBaseUrl("/img/introduction/p22.svg")}
+                alt="Hippo4j System"
+              />
+            </div>
           </div>
-          <div class="flex flex-wrap pt-6">
-            <div class="w-5/6 sm:w-2/3 md:w-1/2 sm:pr-8 md:pr-4">
-              <h3 class="text-2xl md:py-6 text-gray-800 dark:text-white font-medium leading-none mb-3">
+
+          <div class="flex mt-2 flex-wrap">
+            <div class="w-full sm:w-1/3 md:w-1/4 ">
+              <img
+                className="w-full -mt-4 h-auto sm:h-64 object-contain  lg:h-60 md:h-72 dark:rounded-lg "
+                src={useBaseUrl("/img/introduction/p33.svg")}
+                alt="Hippo4j System"
+              />
+            </div>
+            <div class="w-full pr-4 sm:w-2/3 md:w-1/2 md:mt-8 flex-grow  ">
+              <h3 class="text-2xl   dark:text-white font-normal  leading-none ">
                 <Translate
                   id="homepage.introduction.thirdPartTitle"
                   description="the title for the third introduction part"
@@ -160,8 +120,8 @@ const Introduction = () => {
                   Operation Monitoring
                 </Translate>
               </h3>
-              <div class="dark:text-white text-gray-600 mb-8 md:pr-6">
-                <p>
+              <div class="dark:text-white  mb-8">
+                <p className="m-0">
                   <Translate
                     className="cursor-pointer"
                     id="homepage.introduction.thirdPartDesc1"
@@ -171,35 +131,7 @@ const Introduction = () => {
                     storage.
                   </Translate>
                 </p>
-                <p>
-                  <Translate
-                    className="cursor-pointer"
-                    id="homepage.introduction.thirdPartDesc2"
-                    description="The second desc for thirdPart "
-                  >
-                    while also supporting Prometheus, InfluxDB, and other
-                    monitoring systems.
-                  </Translate>
-                </p>
-                <p>
-                  <Translate
-                    className="cursor-pointer"
-                    id="homepage.introduction.thirdPartDesc3"
-                    description="The third desc for thirdPart "
-                  >
-                    Provides visualized dashboard monitoring metrics through
-                    Grafana or built-in monitoring pages.
-                  </Translate>
-                </p>
               </div>
-            </div>
-            <div class="w-full sm:w-1/3 md:w-1/2 ">
-              {/* <img class="mx-auto w-4/5 z-50" src="f3_r.png" /> */}
-              <img
-                className="w-full -mt-16 -ml-16 h-auto sm:h-64 object-contain  lg:h-80 md:h-96 dark:rounded-lg  "
-                src={useBaseUrl("/img/introduction/p33.svg")}
-                alt="Hippo4j System"
-              />
             </div>
           </div>
         </div>
