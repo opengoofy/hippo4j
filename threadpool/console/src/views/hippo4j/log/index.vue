@@ -142,6 +142,8 @@
 import * as logApi from '@/api/hippo4j-log';
 import waves from '@/directive/waves';
 import Pagination from '@/components/Pagination';
+import { mapGetters } from 'vuex';
+import { i18nConfig } from '@/locale/config'
 
 export default {
   name: 'JobProject',
@@ -198,6 +200,9 @@ export default {
   },
   methods: {
     fetchData() {
+      // this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
+      // let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+      // this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
       this.listLoading = true;
       logApi.list(this.listQuery).then((response) => {
         const { records } = response;

@@ -56,6 +56,7 @@
   import Hamburger from '@/components/Hamburger'
   import ErrorLog from '@/components/ErrorLog'
   import langChange from '@/locale/langChange'
+  import { i18nConfig } from '@/locale/config'
 
   export default {
     data() {
@@ -82,6 +83,13 @@
         'tenantInfo'
       ])
     },
+    watch: {
+      tenantInfo(newVal) {
+        this.tenant.tenantId = newVal.tenantId
+        this.tenant.resource = newVal.resource
+        console.log("ischangLang", newVal)
+      }
+    },
     methods: {
       toggleSideBar() {
         this.$store.dispatch('app/toggleSideBar')
@@ -97,29 +105,38 @@
         .getCurrentUser(userName)
         .then((response) => {
           const { resources } = response;
+          resources.map((item) => ({
+            ...item,
+            tenantId: item.resource
+          }))
           if (response.role == 'ROLE_ADMIN') {
             resources.unshift({
               action: "rw",
-              resource: "所有租户",
-              username: userName
+              resource: this.$t('common.allTenant'),
+              username: userName,
+              tenantId: this.$t('common.allTenant'),
             })
           }
           this.$store.dispatch('tenant/setTenantList', resources)
           this.$store.dispatch('tenant/setTenantInfo', this.tenantInfo || resources[0])
           this.tenant = this.tenantInfo || resources[0]
+          console.log("isResour", resources[0], this.tenant)
         })
         .catch(() => {});
         
       },
       async changeTenant(index) {
+        console.log("isTenList", this.tenantList)
         let tenant = {
           tenantId: this.tenantList[index].resource,
+          resource: this.tenantList[index].resource,
           current: 1,
           desc: true,
           size: 10,
         }
         this.$store.dispatch('tenant/setTenantInfo', tenant)
-        tenant.tenantId = tenant.tenantId == '所有租户' ? '' : tenant.tenantId
+        let isAllTenant = tenant.tenantId == i18nConfig.messages.zh.common.allTenant || tenant.tenantId == i18nConfig.messages.en.common.allTenant
+        tenant.tenantId = isAllTenant ? '' : tenant.tenantId
         await jobProjectApi.list(tenant).then((response) => {
           console.log("isRes", response)
           // this.$store.dispatch('tenant/setTenantList', resources)

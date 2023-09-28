@@ -128,6 +128,7 @@ import * as user from '@/api/hippo4j-user';
 import waves from '@/directive/waves';
 import Pagination from '@/components/Pagination';
 import * as tenantApi from '@/api/hippo4j-tenant';
+
 export default {
   name: 'User',
   components: { Pagination },

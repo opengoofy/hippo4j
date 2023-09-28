@@ -18,7 +18,9 @@
   </div>
 </template>
 <script>
-import { langSelectList } from './config'
+import { langSelectList, i18nConfig } from './config'
+import * as user from '@/api/hippo4j-user';
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -31,6 +33,7 @@ export default {
     this.currentLang = lang || null
   },
   computed: {
+    ...mapGetters(['tenantInfo', 'tenantList']),
     currentLangName() {
       const langItem = this.langSelectList.find(item => item.lang === this.currentLang)
       return langItem?.name || '选择语言'
@@ -42,6 +45,42 @@ export default {
       this.currentLang = value
       this.$i18n.locale = value
       localStorage.setItem('locale_lang', value)
+      this.changeTenant()
+    },
+
+    changeTenant() {
+      const userName = this.$cookie.get('userName');
+      user.getCurrentUser(userName)
+      .then((response) => {
+        const { resources } = response;
+        resources.map((item) => ({
+          ...item,
+          tenantId: item.resource
+        }))
+
+        //change lang =》 change global tenantInfo
+        if (response.role == 'ROLE_ADMIN') {
+          //判断tenantInfo是否为所有租户选项
+          let tenantId = this.tenantInfo.resource
+          let isAllTenant = tenantId == i18nConfig.messages.zh.common.allTenant || tenantId == i18nConfig.messages.en.common.allTenant
+          let alreadyHasAll = resources[0] == i18nConfig.messages.zh.common.allTenant || resources[0] == i18nConfig.messages.en.common.allTenant        
+          if (alreadyHasAll) {
+            this.$set(resources[0], 'resource', this.$t('common.allTenant'))
+            this.$store.dispatch('tenant/setTenantList', resources)
+          } else {
+            resources.unshift({
+              action: "rw",
+              resource: this.$t('common.allTenant'),
+              username: userName,
+              tenantId: this.$t('common.allTenant'),
+            })
+            this.$store.dispatch('tenant/setTenantList', resources)
+          }
+          if (isAllTenant) {
+            this.$store.dispatch('tenant/setTenantInfo', resources[0])
+          }
+        }
+      })
     }
   }
 }

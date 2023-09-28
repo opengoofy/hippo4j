@@ -1,5 +1,33 @@
 <template>
   <div class="app-container">
+    <div class="filter-container">
+      <el-input
+        v-model="listQuery.tenantId"
+        clearable
+        :placeholder="$t('tenantManage.tenant')"
+        style="width: 200px"
+        class="filter-item"
+      />
+      <el-button
+        v-waves
+        class="filter-item"
+        type="primary"
+        icon="el-icon-search"
+        @click="fetchData"
+      >
+        {{ $t('common.query') }}
+      </el-button>
+      <el-button
+        :disabled="isEditDisabled"
+        class="filter-item"
+        style="margin-left: 10px"
+        type="primary"
+        icon="el-icon-edit"
+        @click="handleCreate"
+      >
+        {{ $t('common.insert') }}
+      </el-button>
+    </div>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -108,6 +136,7 @@ import * as jobProjectApi from '@/api/hippo4j-tenant';
 import waves from '@/directive/waves';
 import Pagination from '@/components/Pagination';
 import { mapGetters } from 'vuex';
+import { i18nConfig } from '@/locale/config'
 
 export default {
   name: 'JobProject',
@@ -164,7 +193,7 @@ export default {
   },
   watch: {
     tenantInfo(newVal, oldVal) {
-      this.listQuery = newVal;
+      this.listQuery.tenantId = newVal.tenantId;
       this.fetchData()
     }
   },
@@ -193,10 +222,9 @@ export default {
   },
   methods: {
     fetchData() {
-      // debugger
-      this.listQuery = this?.tenantInfo || this.listQuery
-      console.log("Quary", this.tenantInfo)
-      this.listQuery.tenantId = this.listQuery.tenantId == '所有租户' ? '' : this.listQuery.tenantId
+      this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
+      let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+      this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
       this.listLoading = true;
       jobProjectApi.list(this.listQuery).then((response) => {
         const { records } = response;

@@ -2,21 +2,6 @@
   <div class="dashboard-editor-container">
     <div class="filter-container">
       <el-select
-        v-model="listQuery.tenantId"
-        :placeholder="$t('tenantManage.tenantRequired')"
-        style="width: 220px"
-        filterable
-        class="filter-item"
-        @change="tenantSelectList()"
-      >
-        <el-option
-          v-for="item in tenantOptions"
-          :key="item.key"
-          :label="item.display_name"
-          :value="item.key"
-        />
-      </el-select>
-      <el-select
         v-model="listQuery.itemId"
         :placeholder="$t('projectManage.itemRequired')"
         style="width: 220px"
@@ -156,6 +141,8 @@ import * as tenantApi from '@/api/hippo4j-tenant';
 import * as threadPoolApi from '@/api/hippo4j-threadPool';
 import * as instanceApi from '@/api/hippo4j-instance';
 import * as monitorApi from '@/api/hippo4j-monitor';
+import { mapGetters } from 'vuex';
+import { i18nConfig } from '@/locale/config'
 
 export default {
   name: 'Monitor',
@@ -261,11 +248,25 @@ export default {
       lastTaskCount: null,
     };
   },
+  computed: {
+    ...mapGetters([
+      'tenantInfo'
+    ]),
+  },
+  watch: {
+    tenantInfo(newVal, oldVal) {
+      this.listQuery.tenantId = newVal.tenantId;
+      this.fetchData()
+    }
+  },
   async created() {
     this.initSelect();
   },
   methods: {
     fetchData() {
+      this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
+      let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+      this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
       if (!this.listQuery.tenantId) {
         this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('tenantManage.tenant') }));
         return;
