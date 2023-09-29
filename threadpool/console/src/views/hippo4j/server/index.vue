@@ -270,6 +270,8 @@ import * as itemApi from '@/api/hippo4j-item';
 import * as tenantApi from '@/api/hippo4j-tenant';
 import * as threadPoolApi from '@/api/hippo4j-threadPool';
 import waves from '@/directive/waves';
+import { mapGetters } from 'vuex';
+import { i18nConfig } from '@/locale/config'
 
 export default {
   name: 'JobProject',
@@ -366,6 +368,17 @@ export default {
       visible: true,
     };
   },
+  computed: {
+    ...mapGetters([
+      'tenantInfo'
+    ]),
+  },
+  watch: {
+    tenantInfo(newVal, oldVal) {
+      this.listQuery.tenantId = newVal.tenantId;
+      this.fetchData()
+    }
+  },
   created() {
     // 初始化租户、项目
     this.initSelect();
@@ -378,6 +391,9 @@ export default {
       this.$forceUpdate();
     },
     fetchData() {
+      this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
+      let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+      this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
       if (!this.listQuery.tenantId) {
         this.$message.warning('租户不允许为空');
         return;

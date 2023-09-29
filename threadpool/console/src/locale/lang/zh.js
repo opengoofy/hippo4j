@@ -49,6 +49,7 @@ export default {
     audit: '审核',
     yes: '是',
     no: '否',
+    allTenant: '所有租户'
   },
 
   // 运行报表

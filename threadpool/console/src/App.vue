@@ -18,11 +18,16 @@ export default {
       .getCurrentUser(userName)
       .then((response) => {
         const { resources } = response;
+        resources.map((item) => ({
+          ...item,
+          tenantId: item.resource
+        }))
         if (response.role == 'ROLE_ADMIN') {
           resources.unshift({
             action: "rw",
-            resource: "所有租户",
-            username: userName
+            resource: this.$t('common.allTenant'),
+            username: userName,
+            tenantId: this.$t('common.allTenant'),
           })
         }
         this.$store.dispatch('tenant/setTenantList', resources)
