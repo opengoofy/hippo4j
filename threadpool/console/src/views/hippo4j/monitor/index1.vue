@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-editor-container">
-    <!-- <div class="filter-container">
+    <div class="filter-container">
       <el-select
         v-model="listQuery.tenantId"
         :placeholder="$t('tenantManage.tenantRequired')"
@@ -144,7 +144,7 @@
           </el-card>
         </el-col>
       </el-row>
-    </section> -->
+    </section>
   </div>
 </template>
 
