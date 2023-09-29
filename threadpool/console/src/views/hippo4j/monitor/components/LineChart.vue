@@ -51,7 +51,6 @@ export default {
     chartData: {
       deep: true,
       handler(val) {
-        console.log('val:::', val)
         this.setOptions(val);
       },
     },
@@ -134,6 +133,7 @@ export default {
           ...cusFormatterObj
         },
         legend: {
+          show:false,
           data: this.chartData,
           icon: 'circle',
           top: 0,

@@ -5,20 +5,20 @@
     <div class="search-wrapper"></div>
     <div class="center-chart-wrapper">
 
-      <line-chart title="任务" :chart-data="lineChartData" :times="times" height="100%" :cus-formatter="true" />
+      <line-chart title="任务数" :chart-data="lineChartData" :times="times" height="100%" :cus-formatter="true" />
     </div>
     <div class="bottom-chart-wraper">
       <div class="inner-chart">
         <line-chart title="活跃线程数" :chart-data="activeSizeList" :times="times" height="100%" />
       </div>
       <div class="inner-chart">
-        <line-chart title="活跃线程数" :chart-data="poolSizeList" :times="times" height="100%" />
+        <line-chart title="线程数" :chart-data="poolSizeList" :times="times" height="100%" />
       </div>
       <div class="inner-chart">
-        <line-chart title="活跃线程数" :chart-data="queueSizeList" :times="times" height="100%" />
+        <line-chart title="队列元素数" :chart-data="queueSizeList" :times="times" height="100%" />
       </div>
       <div class="inner-chart">
-        <line-chart title="活跃线程数" :chart-data="rangeRejectCountList" :times="times" height="100%" />
+        <line-chart title="拒绝数" :chart-data="rangeRejectCountList" :times="times" height="100%" />
       </div>
     </div>
   </div>
@@ -126,7 +126,7 @@ export default {
   height: calc(100vh - 50px);
   display: grid;
   grid-template-rows: 60px 1fr 2fr;
-  grid-template-columns: 300px 2fr 1fr;
+  grid-template-columns: 240px 2fr 1fr;
   background-color: #ebebf3;
   gap: 10px;
   padding: 10px;
@@ -165,8 +165,7 @@ export default {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: 12px;
-
+    gap: 24px;
     .inner-chart {
       grid-column: span 1;
       grid-row: span 1;
