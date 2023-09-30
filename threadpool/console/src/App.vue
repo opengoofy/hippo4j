@@ -12,9 +12,9 @@ export default {
   computed: {
     ...mapGetters(['tenantInfo'])
   },
-  mounted() {
+  async mounted() {
     const userName = this.$cookie.get('userName');
-    user
+    await user
       .getCurrentUser(userName)
       .then((response) => {
         const { resources } = response;

@@ -39,10 +39,11 @@
           type="datetimerange"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="timestamp"
           v-model="timeValue"
-          @input="changeMonitorData">
+          :picker-options="pickerOptions">
         </el-date-picker>
+        <el-button class="button" @click="changeMonitorData">筛选</el-button>
     </div>
     <div class="center-chart-wrapper">
       <line-chart title="任务数" :chart-data="lineChartData" :times="times" height="100%" :cus-formatter="true" />
@@ -67,7 +68,9 @@
 import * as threadPoolApi from '@/api/hippo4j-threadPool';
 import * as monitorApi from '@/api/hippo4j-monitor';
 import * as instanceApi from '@/api/hippo4j-instance';
+import * as tenantApi from '@/api/hippo4j-tenant';
 import * as itemApi from '@/api/hippo4j-item';
+import * as user from '@/api/hippo4j-user';
 import { mapGetters } from 'vuex';
 import { i18nConfig } from '@/locale/config'
 import LineChart from './components/LineChart.vue';
@@ -78,74 +81,88 @@ export default {
     LineChart,
   },
   data() {
+    let that = this;
     return {
       lineChartData: [],
       times: [],
-      timeValue: new Date(),
       selectMonitorValue: {
         default: [0]
       },
-      selectMonitor: [{
-        value: 0,
-        label: '项目',
-        children: []
-      }, {
-        value: 1,
-        label: '线程池',
-        children: [],
-      }, {
-        value: 2,
-        label: '实例',
-        children: [],
-      }],
       activeSizeList: [],
       poolSizeList: [],
       queueSizeList: [],
       rangeRejectCountList: [],
       chooseData: {},
+      timeValue: new Date(),
       pickerOptions: {
         shortcuts: [{
+          text: '30 分钟',
+          onClick(picker) {
+            const end = new Date();
+            const start = that.getBeforeDate(new Date(), 0.5);
+            that.timeValue = [start, end]
+            picker.$emit("pick", [start, end]);
+          }
+        },{
+          text: '1 小时',
+          onClick(picker) {
+            const end = new Date();
+            const start = that.getBeforeDate(new Date(), 1);
+            picker.$emit("pick", [start, end]);
+          }
+        },{
+          text: '6 小时',
+          onClick(picker) {
+            const end = new Date();
+            const start = that.getBeforeDate(new Date(), 6);
+            picker.$emit("pick", [start, end]);
+          }
+        },{
           text: '今天',
           onClick(picker) {
-            picker.$emit('pick', new Date());
+            const end = new Date();
+            const start = that.getBeforeDate(new Date(), 24 * 6);
+            picker.$emit("pick", [start, end]);
           }
         }, {
           text: '昨天',
           onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24);
-            picker.$emit('pick', date);
+            const end = new Date();
+            const start = that.getBeforeDate(new Date(), 24*30);
+            picker.$emit("pick", [start, end]);
           }
         }, {
-          text: '一周前',
+          text: '一周内',
           onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', date);
+            const end = new Date();
+            const start = that.getBeforeDate(new Date(), 24*90);
+            picker.$emit("pick", [start, end]);
           }
-        }]
+        }],
+        onPick: ({ maxDate, minDate }) => {
+          this.timeValue = [maxDate, minDate]
+          this.choiceDate = minDate.getTime();//当选一个日期时 就是最小日期
+          // // 如何你选择了两个日期了，就把那个变量置空
+          if (maxDate) this.choiceDate = ''
+        },
+        disabledDate: time => {
+          return time.getTime() >  this.getDayStartOrEnd(new Date(),"end");
+        }
       },
       selectMonitor: [],
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-      }],
+      tableData: [],
       listQuery : {
         "current": 1,
         "size": 10,
+        // "itemId": "",
+        // "tpId": "",
+        // "tenantId": "", 
+        // "identify": "",
+        // "instanceId": "",
+        "identify": "127.0.0.1:8088_93bfe5307a844e07ada13cbfc3f16662",
         "itemId": "dynamic-threadpool-example",
         "tpId": "message-produce",
         "tenantId": "prescription",
-        "identify": "127.0.0.1:8088_93bfe5307a844e07ada13cbfc3f16662",
         "instanceId": "127.0.0.1:8088_93bfe5307a844e07ada13cbfc3f16662"
       }
     }
@@ -159,65 +176,80 @@ export default {
     tenantInfo(newVal, oldVal) {
       this.listQuery.tenantId = newVal.tenantId;
       this.fetchData()
+       this.fetchChartData()
     }
   },
-  created() {
-    this.fetchData()
-    this.fetchChartData()
-    this.getSelectMonitor()
+  async mounted() {
+    const end = new Date().getTime();
+    const start = this.getBeforeDate(new Date(), 0.5).getTime()
+    this.timeValue = [start, end]
+    this.listQuery.startTime = this.timeValue[0]
+    this.listQuery.endTime = this.timeValue[1]
+    await this.getTenantList()
+    await this.fetchData()
   },
   methods: {
-    fetchData() {
+    async fetchData() {
+      // debugger
       this.userName = this.$cookie.get('userName')
       this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
       let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
       this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
+      threadPoolApi.list(this.listQuery).then((res) => {
+        console.log("获取itemId， tpId", res)
+        this.listQuery.itemId = res.records[0].itemId
+        this.listQuery.tpId = res.records[0].tpId
+        this.listQuery.tenantId = res.records[0].tenantId
+      })
       threadPoolApi.info( this.listQuery).then((res) => {
         this.temp = res;
       });
+      await this.getSelectMonitor()
+      await this.fetchChartData()
+      await this.changeMonitorData()
     },
 
+    async getTenantList() {
+      const userName = this.$cookie.get('userName')
+      await user
+      .getCurrentUser(userName)
+      .then((response) => {
+        const { resources } = response;
+        resources.map((item) => ({
+          ...item,
+          tenantId: item.resource
+        }))
+        if (response.role == 'ROLE_ADMIN') {
+          resources.unshift({
+            action: "rw",
+            resource: this.$t('common.allTenant'),
+            username: userName,
+            tenantId: this.$t('common.allTenant'),
+          })
+        }
+        this.$store.dispatch('tenant/setTenantList', resources)
+        this.$store.dispatch('tenant/setTenantInfo', this.tenantInfo || resources[0])
+        this.listQuery.tenantId = this.tenantInfo.tenantId || resources[0].tenantId
+      })
+      .catch(() => {});
+      
+    },
+
+    //获取搜索框实例数据，数据面板展示
     getSelectMonitor() {
       this.selectMonitor = [{
         value: 0,
-        label: '项目',
-        children: []
-      }, {
-        value: 1,
-        label: '线程池',
-        children: [],
-      }, {
-        value: 2,
         label: '实例',
         children: [],
-      }]
-      //项目接口 itenId
-      itemApi.list(this.listQuery).then((res) => {
-        const { records } = res || {};
-        records && records.map((item) => {
-          item.value = item.tenantId
-          item.label = item.tenantId
-        });
-        this.selectMonitor[0].children = records
-        //初始化tenantId
-        this.selectMonitorValue = [0, records[0].tenantId ]
-        this.listQuery.tenantId = records[0].tenantId
-        this.listQuery.itemId = records[0].itemId
-        this.listQuery.current = records[0].current
-      });
-      //线程池接口tpId,itemId,tenantId
-      threadPoolApi.list( this.listQuery).then((res) => {
-        const { records } = res || {};
-        records && records.map((item) => {
-          item.value = item.tenantId
-          item.label = item.tenantId
-        });
-        this.selectMonitor[1].children = records
-        this.listQuery.tenantId = records[0].tenantId
-        this.listQuery.itemId = records[0].itemId
-        this.listQuery.current = records[0].current
-        this.listQuery.tpId = records[0].tpId
-      });
+      // },{
+      //   value: 0,
+      //   label: '项目',
+      //   children: []
+      // }, {
+      //   value: 1,
+      //   label: '线程池',
+      //   children: [],
+      }, ]
       let param = [
         this.listQuery.itemId,
         this.listQuery.tpId,
@@ -225,41 +257,83 @@ export default {
       //实例接口
       instanceApi.list(param).then((res) => {
         res.map((item) => {
-          item.value = item.tenantId
-          item.label = item.tenantId
+          item.value = item.identify
+          item.label = item.identify
         });
-        this.selectMonitor[2].children = res
+        this.selectMonitor[0].children = res
+        this.selectMonitorValue = [0, res[0].identify ]
         this.listQuery.tenantId = res[0].tenantId
         this.listQuery.itemId = res[0].itemId
-        this.listQuery.current = res[0].current
-        this.listQuery.tpId = res[0].tpId,
+        this.listQuery.tpId = res[0].tpId
         this.listQuery.identify = res[0].identify
+        this.listQuery.instanceId = res[0].identify
+
+        // this.fetchChartData()
       });
+      //项目接口 itenId
+      // debugger
+      // let query = this.listQuery
+      // itemApi.list(query).then((res) => {
+      //   console.log("sasasassSS----", this.listQuery)
+      //   const { records } = res || {};
+      //   records && records.map((item) => {
+      //     item.value = item.tenantId
+      //     item.label = item.tenantId
+      //   });
+      //   this.selectMonitor[0].children = records
+      //   //初始化tenantId
+      //   this.listQuery.tenantId = records[0].tenantId
+      //   this.listQuery.itemId = records[0].itemId
+      // });
+      //线程池接口tpId,itemId,tenantId
+      // threadPoolApi.list( this.listQuery).then((res) => {
+      //   const { records } = res || {};
+      //   records && records.map((item) => {
+      //     item.value = item.tenantId
+      //     item.label = item.tenantId
+      //   });
+      //   this.selectMonitor[1].children = records
+      //   this.listQuery.tenantId = records[0].tenantId
+      //   this.listQuery.itemId = records[0].itemId
+      //   this.listQuery.tpId = records[0].tpId
+      // });
       
       //线程池配置
       threadPoolApi.info(this.listQuery).then((res) => {
         this.temp = res;
         this.tableData = [{
-          name: '租户',
-          label: res.tenantId
-        }, {
           name: '线程池',
           label: res.tpId
         }, {
           name: '核心线程池',
           label: res.coreSize
         }, {
-        //   name: '项目',
-        //   label: res.itemId
-        // }, {
+          name: '最大线程数',
+          label: res.maxSize
+        }, {
+          name: '阻塞队列',
+          label: res.queueType
+        }, {
+          name: '队列容量',
+          label: res.capacity
+        }, {
+          name: '任务完成数',
+          label: res.allowCoreThreadTimeOut
+        }, {
+          name: '拒绝策略',
+          label: res.rejectedType
+        }, {
           name: '拒绝次数',
           label: res.rejectedType
         }]
       });
     },
 
+    //监控数据
     fetchChartData() {
-      monitorApi.active( this.listQuery).then(res => {
+      let query = this.listQuery
+      monitorApi.active(query).then(res => {
+        console.log("这是监控数据返回值", res)
         this.monitor = res
         this.lineChartData = [
           {
@@ -292,7 +366,6 @@ export default {
           list.pop()
           return list.join(':')
         })
-        console.log
         this.activeSizeList = [{
           name: '活跃线程数',
           data: res?.activeSizeList,
@@ -317,24 +390,37 @@ export default {
       })
     },
 
-    changeMonitorData(value, row) {
-      console.log("time", value)
-      this.listQuery.startTime = value[0]
-      this.listQuery.endTime = value[1]
-      this.fetchChartData()
-    },
-
     handleChangeMonitorSelect(value) {
-      console.log("asaksasa", value)
       this.selectMonitor[value[0]].map((item) => {
         if (item.children.label == value[1]) {
           this.listQuery.identify = item.identify || this.listQuery.identify
           this.listQuery.tenantId = item.tenantId || this.listQuery.tenantId
           this.listQuery.itemId = item.itemId || this.listQuery.itemId
-          this.listQuery.instanceId = item.current || this.listQuery.instanceId
+          this.listQuery.instanceId = item.instanceId || this.listQuery.instanceId
           this.listQuery.tpId = item.tpId || this.listQuery.tpId
         }
       })
+    },
+
+    //更新时间筛选
+    changeMonitorData() {
+      this.listQuery.startTime = this.timeValue[0]
+      this.listQuery.endTime = this.timeValue[1]
+      this.fetchChartData()
+    },
+
+    //返回几天前的毫秒数
+    getBeforeDate(date = new Date(), days = 7) {
+        date.setTime(date.getTime() - 3600 * 1000 * days);
+        return date;
+    },
+
+    getDayStartOrEnd(time,type = "start"){//end  返回毫秒数
+        if(type == "start"){
+            return new Date(time).setHours(0,0,0,0);//hourse、min、sec、millisec
+        }else{
+            return new Date(time).setHours(23,59,59,999);
+        }
     }
   }
 }
@@ -450,6 +536,11 @@ export default {
       margin: 0 10px;
       font-weight: 600;
       color: #3a3b3c;
+    }
+    .button {
+      background: rgba($color: #435f81, $alpha: 0.9);
+      color: white;
+      margin-left: 20px;
     }
   }
 
