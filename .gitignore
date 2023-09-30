@@ -3,6 +3,12 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/node_modules/
+!**/dist/
+
+### Agent ###
+hippo4j-agent/
+**/dependency-reduced-pom.xml
 
 ### STS ###
 .apt_generated
@@ -30,7 +36,7 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+# .vscode/
 
 # maven plugin ignore
 *.gpg
@@ -40,3 +46,11 @@ build/
 docs/node_modules
 docs/build
 docs/.docusaurus
+
+
+### Docker ###
+docker/conf
+docker/target
+
+### OS ###
+.DS_Store

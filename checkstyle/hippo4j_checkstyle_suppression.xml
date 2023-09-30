@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+<suppressions>
+    <suppress checks="MagicNumber" files="ResizableCapacityLinkedBlockingQueue.java"/>
+    <suppress checks="InnerAssignment" files="ResizableCapacityLinkedBlockingQueue.java"/>
+    <suppress checks="StaticVariableName" files="ApplicationContextHolder.java"/>
+    <suppress checks="StaticVariableName" files="JacksonHandler.java"/>
+    <suppress checks="MagicNumber" files="ByteConvertUtil.java"/>
+    <suppress checks="MagicNumber" files="DubboThreadPoolAdapter.java"/>
+    <suppress checks="MagicNumber" files="UndertowWebThreadPoolHandler.java"/>
+    <suppress checks="MagicNumber" files="DashboardServiceImpl.java"/>
+    <suppress checks="MagicNumber" files="DefaultThreadPoolCheckAlarmHandler.java"/>
+    <suppress checks="TypeName" files="SpringBootConfig.java"/>
+    <suppress checks="ReturnCount" files="Hippo4jAgent.java"/>
+    <suppress checks="StaticVariableName" files="Hippo4jAgent.java"/>
+    <suppress checks="MagicNumber" files="IdUtil.java"/>
+    <suppress checks="MagicNumber" files="IoUtil.java"/>
+    <suppress checks="ReturnCount" files="StringUtil.java"/>
+    <suppress checks="ReturnCount" files="MapUtil.java"/>
+    <suppress checks="ReturnCount" files="ReflectUtil.java"/>
+    <suppress checks="InnerAssignment" files="IoUtil.java"/>
+    <suppress checks="ParameterNumber" files="HttpUtil.java"/>
+</suppressions>

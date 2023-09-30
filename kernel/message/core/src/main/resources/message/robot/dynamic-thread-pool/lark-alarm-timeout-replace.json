@@ -1,0 +1,30 @@
+
+      {
+        "fields": [
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 任务执行时间：** %s",
+              "tag": "lark_md"
+            }
+          },
+          {
+            "is_short": true,
+            "text": {
+              "content": "** 超时时间：** %s",
+              "tag": "lark_md"
+            }
+          }
+          ,{
+            "is_short": true,
+            "text": {
+              "content": "** 链路信息：** %s",
+              "tag": "lark_md"
+            }
+          }
+        ],
+        "tag": "div"
+      },
+      {
+        "tag": "hr"
+      },

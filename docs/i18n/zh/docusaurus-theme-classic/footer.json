@@ -1,0 +1,70 @@
+{
+  "link.title.Docs": {
+    "message": "Docs",
+    "description": "The title of the footer links column with title=Docs in the footer"
+  },
+  "link.title.Community": {
+    "message": "Community",
+    "description": "The title of the footer links column with title=Community in the footer"
+  },
+  "link.title.More": {
+    "message": "More",
+    "description": "The title of the footer links column with title=More in the footer"
+  },
+  "link.item.label.简介": {
+    "message": "简介",
+    "description": "The label of footer link with label=简介 linking to /docs/user_docs/intro"
+  },
+  "link.item.label.加群沟通": {
+    "message": "加群沟通",
+    "description": "The label of footer link with label=加群沟通 linking to https://hippo4j.cn/group"
+  },
+  "link.item.label.微信公众号": {
+    "message": "微信公众号",
+    "description": "The label of footer link with label=微信公众号 linking to https://mp.weixin.qq.com/s/diVHYvwiuYH9aWpZDPc27g"
+  },
+  "link.item.label.Gitee": {
+    "message": "Gitee",
+    "description": "The label of footer link with label=Gitee linking to https://gitee.com/opengoofy/hippo4j"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/opengoofy/hippo4j"
+  },
+  "link.item.label.公司登记": {
+    "message": "公司登记",
+    "description": "The label of footer link with label=公司登记 linking to https://github.com/opengoofy/hippo4j/issues/13"
+  },
+  "copyright": {
+    "message": "Copyright © 2021-2023 马丁@版权所有 <a href=\"https://beian.miit.gov.cn\">京ICP备2021038095号-2\n</a>",
+    "description": "The footer copyright"
+  },
+  "link.title.Links": {
+    "message": "Links",
+    "description": "The title of the footer links column with title=Links in the footer"
+  },
+  "link.item.label.Intro": {
+    "message": "Intro",
+    "description": "The label of footer link with label=Intro linking to /docs/user_docs/intro"
+  },
+  "link.item.label.Config Mode": {
+    "message": "Config Mode",
+    "description": "The label of footer link with label=Config Mode linking to /docs/user_docs/getting_started/config/hippo4j-config-start"
+  },
+  "link.item.label.Server Mode": {
+    "message": "Server Mode",
+    "description": "The label of footer link with label=Server Mode linking to /docs/user_docs/getting_started/server/hippo4j-server-start"
+  },
+  "link.item.label.Group": {
+    "message": "Group",
+    "description": "The label of footer link with label=Group linking to https://hippo4j.cn/group"
+  },
+  "link.item.label.WeChat": {
+    "message": "WeChat",
+    "description": "The label of footer link with label=WeChat linking to https://mp.weixin.qq.com/s/diVHYvwiuYH9aWpZDPc27g"
+  },
+  "link.item.label.推广合作": {
+    "message": "推广合作",
+    "description": "The label of footer link with label=推广合作 linking to https://hippo4j.cn/docs/user_docs/other/operation"
+  }
+}

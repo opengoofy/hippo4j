@@ -1,0 +1,49 @@
+**<font color=#FF0000>[告警] </font>%s - 动态线程池运行告警（%s）**
+
+ ---
+ 
+<font color=#708090 size=2>线程池ID：%s</font> 
+
+<font color=#708090 size=2>应用名称：%s</font> 
+
+<font color=#778899 size=2>应用实例：%s</font> 
+
+ ---
+
+<font color=#708090 size=2>核心线程数：%d</font> 
+
+<font color=#708090 size=2>最大线程数：%d</font> 
+
+<font color=#708090 size=2>当前线程数：%d</font> 
+
+<font color=#708090 size=2>活跃线程数：%d</font> 
+
+<font color=#708090 size=2>同存最大线程数：%d</font> 
+
+<font color=#708090 size=2>线程池任务总量：%d</font> 
+
+ ---
+
+<font color=#708090 size=2>队列类型：%s</font> 
+
+<font color=#708090 size=2>队列容量：%d</font> 
+
+<font color=#708090 size=2>队列元素个数：%d</font> 
+
+<font color=#708090 size=2>队列剩余个数：%d</font> 
+
+ ---
+
+ ${timeout-content} 
+
+<font color=#708090 size=2>拒绝策略：%s</font> 
+
+<font color=#708090 size=2>拒绝策略执行次数：</font><font color=#FF0000 size=2>%d</font> 
+
+<font color=#708090 size=2>OWNER：@%s</font> 
+
+<font color=#708090 size=2>提示：%d 分钟内此线程池不会重复告警（可配置）</font> 
+
+ --- 
+
+**播报时间：%s**

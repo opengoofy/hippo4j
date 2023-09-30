@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.hippo4j.config.springboot1x.starter.config.ConfigHandlerAutoConfiguration,\
+  cn.hippo4j.config.springboot1x.starter.config.WebThreadPoolHandlerConfiguration1x

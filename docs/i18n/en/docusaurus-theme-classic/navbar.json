@@ -1,0 +1,26 @@
+{
+  "item.label.文档": {
+    "message": "Docs",
+    "description": "Navbar item with label 文档"
+  },
+  "item.label.社区": {
+    "message": "Community",
+    "description": "Navbar item with label 社区"
+  },
+  "item.label.采用公司": {
+    "message": "Users",
+    "description": "Navbar item with label 采用公司"
+  },
+  "item.label.加群沟通": {
+    "message": "Communication",
+    "description": "Navbar item with label 加群沟通"
+  },
+  "item.label.控制台样例": {
+    "message": "Example",
+    "description": "Navbar item with label 控制台样例"
+  },
+  "item.label.🚀 拿个offer": {
+    "message": "🚀 GetOffer",
+    "description": "Navbar item with label 🚀 拿个offer"
+  }
+}

@@ -1,8 +1,0 @@
-
-          {
-            "is_short": true,
-            "text": {
-              "content": "** 链路信息：** %s",
-              "tag": "lark_md"
-            }
-          }

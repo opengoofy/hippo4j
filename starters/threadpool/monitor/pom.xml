@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.hippo4j</groupId>
+        <artifactId>hippo4j-threadpool-starters</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <artifactId>hippo4j-threadpool-spring-boot-starter-monitor</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>hippo4j-spring-boot-starter-monitor-elasticsearch</module>
+        <module>hippo4j-spring-boot-starter-monitor-local-log</module>
+        <module>hippo4j-spring-boot-starter-monitor-micrometer</module>
+    </modules>
+</project>
