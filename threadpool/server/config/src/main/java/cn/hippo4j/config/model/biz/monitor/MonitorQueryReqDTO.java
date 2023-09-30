@@ -44,4 +44,14 @@ public class MonitorQueryReqDTO {
      * Instance id
      */
     private String instanceId;
+
+    /**
+     * Start time
+     */
+    private Long startTime;
+
+    /**
+     * End time
+     */
+    private Long endTime;
 }

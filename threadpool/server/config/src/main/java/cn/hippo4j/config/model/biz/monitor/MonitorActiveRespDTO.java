@@ -18,6 +18,7 @@
 package cn.hippo4j.config.model.biz.monitor;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,7 @@ import java.util.List;
  * Monitor active resp dto.
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MonitorActiveRespDTO {
@@ -52,9 +54,19 @@ public class MonitorActiveRespDTO {
     private List<Long> queueSizeList;
 
     /**
+     * Range completed task count list
+     */
+    private List<Long> rangeCompletedTaskCountList;
+
+    /**
      * Completed task count list
      */
     private List<Long> completedTaskCountList;
+
+    /**
+     * Range reject count list
+     */
+    private List<Long> rangeRejectCountList;
 
     /**
      * Reject count list
@@ -65,11 +77,6 @@ public class MonitorActiveRespDTO {
      * Queue remaining capacity list
      */
     private List<Long> queueRemainingCapacityList;
-
-    /**
-     * Current load list
-     */
-    private List<Long> currentLoadList;
 
     /**
      * Queue capacity list
