@@ -24,6 +24,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.junit.Assert;
 import org.junit.Test;
+import org.json.JSONException;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,7 +44,11 @@ public class JSONUtilTest {
     @Test
     public void assertToJSONString() {
         Assert.assertNull(JSONUtil.toJSONString(null));
-        Assert.assertEquals(EXPECTED_FOO_JSON, JSONUtil.toJSONString(EXPECTED_FOO));
+        try {
+            JSONAssert.assertEquals(EXPECTED_FOO_JSON, JSONUtil.toJSONString(EXPECTED_FOO), false);
+        } catch (JSONException jse) {
+            throw new RuntimeException(jse);
+        }
     }
 
     @Test
