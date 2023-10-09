@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 // import Translate from "@docusaurus/Translate";
@@ -43,6 +44,7 @@ function HomepageHeader() {
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
+
   return (
     <Layout
       title={`${siteConfig.title}`}

@@ -52,7 +52,7 @@ const LayoutCom = (props: ILayoutCom) => {
         style={{
           backgroundColor: myThemes.backgroundColor.bg1,
           height: `calc(100vh - ${isHeader ? '64px' : '0px'})`,
-          margin: isHeader ? '10px 10px 0px' : '0px',
+          margin: isHeader ? '10px 10px 0px 0px' : '0px',
         }}
       >
         {isSider && (

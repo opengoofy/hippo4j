@@ -1,40 +1,5 @@
 import Cookie from 'js-cookie';
-// import { Buffer } from 'buffer';
-// import crypto from 'crypto-browserify';
-
-// /**
-//  * generate key
-//  * @returns {string} key(length 16)
-//  */
-// export function genKey() {
-//   let chars = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-//   let result = '';
-//   for (let i = 16; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-//   return result;
-// }
-// /**
-//  * encode message
-//  * @param msg message
-//  * @param key key
-//  * @returns {string} encoded message
-//  */
-// export function encrypt(msg: string, key: string) {
-//   try {
-//     let pwd = Buffer.from(key);
-//     let iv = (crypto as any).randomBytes(12);
-//     let cipher = (crypto as any).createCipheriv('aes-128-gcm', pwd, iv);
-//     let enc = cipher.update(msg, 'utf8', 'base64');
-//     enc += cipher.final('base64');
-//     let tags = cipher.getAuthTag();
-//     enc = Buffer.from(enc, 'base64') as any;
-//     let totalLength = iv.length + enc.length + tags.length;
-//     let bufferMsg = Buffer.concat([iv, enc as any, tags], totalLength);
-//     return bufferMsg.toString('base64');
-//   } catch (e) {
-//     console.log('Encrypt is error', e);
-//     return null;
-//   }
-// }
+import { Buffer } from 'buffer';
 import _ from 'lodash';
 
 // is plain object
@@ -89,4 +54,36 @@ const isEmpty = (value: any) => {
   return typeof value === 'object' ? _.isEmpty(value) : isNilValue(value);
 };
 
-export { isPlainObject, isEmpty, filterEmptyField, setToken, removeToken, getToken };
+function genKey() {
+  let chars = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let result = '';
+  for (let i = 16; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+  return result;
+}
+
+async function encrypt(msg: string, key: any) {
+  try {
+    let pwd = Buffer.from(key);
+    const cryptoKey = await window.crypto.subtle.importKey('raw', pwd, { name: 'AES-GCM' }, false, ['encrypt']);
+    const iv = window.crypto.getRandomValues(new Uint8Array(12));
+    const encodedMsg = new TextEncoder().encode(msg);
+    const encryptedData = await window.crypto.subtle.encrypt(
+      {
+        name: 'AES-GCM',
+        iv: iv,
+      },
+      cryptoKey,
+      encodedMsg
+    );
+    const encryptedArray = new Uint8Array(encryptedData);
+    const totalLength = iv.length + encryptedArray.length;
+    const combinedArray = new Uint8Array(totalLength);
+    combinedArray.set(iv);
+    combinedArray.set(encryptedArray, iv.length);
+    return btoa(String.fromCharCode(...combinedArray));
+  } catch (e) {
+    return null;
+  }
+}
+
+export { isPlainObject, isEmpty, filterEmptyField, setToken, removeToken, getToken, genKey, encrypt };
