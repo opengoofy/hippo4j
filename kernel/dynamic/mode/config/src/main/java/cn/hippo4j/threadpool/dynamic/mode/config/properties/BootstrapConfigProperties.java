@@ -77,11 +77,6 @@ public class BootstrapConfigProperties implements BootstrapPropertiesInterface {
     private Map<String, String> etcd;
 
     /**
-     * polaris config
-     */
-    private Map<String, Object> polaris;
-
-    /**
      * Web config
      *
      * @since 1.5.0
