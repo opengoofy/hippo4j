@@ -36,13 +36,13 @@ public class PolarisRefresherHandler extends AbstractConfigThreadPoolDynamicRefr
 
     private final ConfigFileService configFileService;
 
-    private static final String POLARIS_NAMESPACE = "${spring.dynamic.thread-pool.polaris.namespace:dev}";
+    private static final String POLARIS_NAMESPACE = "${spring.dynamic.thread-pool.polaris.namespace}";
 
-    private static final String POLARIS_FILE_GROUP = "${spring.dynamic.thread-pool.polaris.file.group:dynamic}";
+    private static final String POLARIS_FILE_GROUP = "${spring.dynamic.thread-pool.polaris.file.group}";
 
-    private static final String POLARIS_FILE_NAME = "${spring.dynamic.thread-pool.polaris.file.name:root/bootstrap.yaml}";
+    private static final String POLARIS_FILE_NAME = "${spring.dynamic.thread-pool.polaris.file.name}";
 
-    private static final String POLARIS_FILE_TYPE = "${spring.dynamic.thread-pool.polaris.file.type:properties}";
+    private static final String POLARIS_FILE_TYPE = "${spring.dynamic.thread-pool.polaris.file.type}";
 
     @Value(POLARIS_NAMESPACE)
     private String namespace;
@@ -70,5 +70,21 @@ public class PolarisRefresherHandler extends AbstractConfigThreadPoolDynamicRefr
     private ConfigKVFile getConfigKVFile() {
         return Objects.equals(POLARIS_FILE_TYPE, "yaml") ? configFileService.getConfigYamlFile(namespace, fileGroup, fileName)
                 : configFileService.getConfigPropertiesFile(namespace, fileGroup, fileName);
+    }
+
+    public static String getPolarisNamespace() {
+        return POLARIS_NAMESPACE;
+    }
+
+    public static String getPolarisFileGroup() {
+        return POLARIS_FILE_GROUP;
+    }
+
+    public static String getPolarisFileName() {
+        return POLARIS_FILE_NAME;
+    }
+
+    public static String getPolarisFileType() {
+        return POLARIS_FILE_TYPE;
     }
 }
