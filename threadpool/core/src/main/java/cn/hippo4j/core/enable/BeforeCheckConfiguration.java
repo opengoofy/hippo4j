@@ -153,7 +153,7 @@ public class BeforeCheckConfiguration {
                                     "Web server maybe fail to start. The dynamic thread pool polaris namespace is empty.",
                                     "Please check whether the [spring.dynamic.thread-pool.polaris.namespace] configuration is empty or an empty string.");
                         }
-                        if (!(polaris.get("file") instanceof  Map)) {
+                        if (!(polaris.get("file") instanceof Map)) {
                             throw new ConfigEmptyException(
                                     "Web server maybe fail to start. Lack of the dynamic thread pool polaris file configuration.",
                                     "Please check whether the [spring.dynamic.thread-pool.polaris.file.*] configuration is complete.");
