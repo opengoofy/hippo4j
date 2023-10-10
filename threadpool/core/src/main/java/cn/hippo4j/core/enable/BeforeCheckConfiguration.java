@@ -153,30 +153,29 @@ public class BeforeCheckConfiguration {
                                     "Web server maybe fail to start. The dynamic thread pool polaris namespace is empty.",
                                     "Please check whether the [spring.dynamic.thread-pool.polaris.namespace] configuration is empty or an empty string.");
                         }
-                        if (polaris.get("file") instanceof Map) {
-                            Map<String, String> polarisFile = (Map<String, String>)polaris.get("file");
-                            String fileGroup = polarisFile.get("group");
-                            if (StringUtil.isBlank(fileGroup)) {
-                                throw new ConfigEmptyException(
-                                        "Web server maybe fail to start. The dynamic thread pool polaris file group is empty.",
-                                        "Please check whether the [spring.dynamic.thread-pool.polaris.file.group] configuration is empty or an empty string.");
-                            }
-                            String fileName = polarisFile.get("name");
-                            if (StringUtil.isBlank(fileName)) {
-                                throw new ConfigEmptyException(
-                                        "Web server maybe fail to start. The dynamic thread pool polaris file name is empty.",
-                                        "Please check whether the [spring.dynamic.thread-pool.polaris.file.name] configuration is empty or an empty string.");
-                            }
-                            String fileType = polarisFile.get("type");
-                            if (StringUtil.isBlank(fileType)) {
-                                throw new ConfigEmptyException(
-                                        "Web server maybe fail to start. The dynamic thread pool polaris file type is empty.",
-                                        "Please check whether the [spring.dynamic.thread-pool.polaris.file.type] configuration is empty or an empty string.");
-                            }
-                        } else {
+                        if (!(polaris.get("file") instanceof  Map)) {
                             throw new ConfigEmptyException(
                                     "Web server maybe fail to start. Lack of the dynamic thread pool polaris file configuration.",
                                     "Please check whether the [spring.dynamic.thread-pool.polaris.file.*] configuration is complete.");
+                        }
+                        Map<String, String> polarisFile = (Map<String, String>) polaris.get("file");
+                        String fileGroup = polarisFile.get("group");
+                        if (StringUtil.isBlank(fileGroup)) {
+                            throw new ConfigEmptyException(
+                                    "Web server maybe fail to start. The dynamic thread pool polaris file group is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.group] configuration is empty or an empty string.");
+                        }
+                        String fileName = polarisFile.get("name");
+                        if (StringUtil.isBlank(fileName)) {
+                            throw new ConfigEmptyException(
+                                    "Web server maybe fail to start. The dynamic thread pool polaris file name is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.name] configuration is empty or an empty string.");
+                        }
+                        String fileType = polarisFile.get("type");
+                        if (StringUtil.isBlank(fileType)) {
+                            throw new ConfigEmptyException(
+                                    "Web server maybe fail to start. The dynamic thread pool polaris file type is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.type] configuration is empty or an empty string.");
                         }
                     }
                     break;
