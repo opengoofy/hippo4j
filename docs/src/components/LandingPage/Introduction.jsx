@@ -6,11 +6,11 @@ const Introduction = () => {
     <section className="mb-28 dark:text-white">
       <div className="introduction-container ">
         <div className="title-container w-full bg-[#EFEFEF] p-4 mb-12 flex flex-wrap dark:bg-[#242526]">
-          <div className="left-image-container px-24  w-full md:w-1/2 sm:w-1/3">
+          <div className="left-image-container px-32  w-full md:w-1/2 sm:w-1/3">
             <img
-              className="w-full -mt-8 h-64 object-contain  lg:h-64 md:h-96 dark:rounded-lg "
+              className="w-full  h-64 object-fill  lg:h-56 md:h-96 dark:rounded-lg "
               alt="Hippo4j System"
-              src={useBaseUrl("/img/introduction/t2.svg")}
+              src={useBaseUrl("/img/introduction/t.jpg")}
             />
             {/* <div className="introduction-title-image h-64 w-full img-div"></div> */}
           </div>
