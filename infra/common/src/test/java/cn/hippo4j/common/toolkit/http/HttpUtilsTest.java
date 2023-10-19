@@ -37,7 +37,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class HttpUtilsTest {
@@ -169,7 +169,7 @@ public class HttpUtilsTest {
 
     @Test
     public void buildUrl() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new LinkedHashMap<>();
         map.put(password, passwordValue);
         map.put(username, usernameValue);
         String s = HttpUtil.buildUrl(url + PORT, map);
