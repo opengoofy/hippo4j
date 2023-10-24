@@ -17,6 +17,7 @@
  package cn.hippo4j.common.toolkit;
 
 <<<<<<< HEAD:infra/common/src/test/java/cn/hippo4j/common/toolkit/JSONUtilTest.java
+<<<<<<< HEAD:infra/common/src/test/java/cn/hippo4j/common/toolkit/JSONUtilTest.java
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -93,6 +94,8 @@ public class JSONUtilTest {
     }
 }
 =======
+=======
+>>>>>>> b720f264c81b2a05ab8b4b0a58f8f0282dcf0d2c:hippo4j-common/src/test/java/cn/hippo4j/common/toolkit/JSONUtilTest.java
  import com.fasterxml.jackson.core.type.TypeReference;
  import lombok.AllArgsConstructor;
  import lombok.Data;
@@ -163,5 +166,9 @@ public class JSONUtilTest {
  
      }
  }
+<<<<<<< HEAD:infra/common/src/test/java/cn/hippo4j/common/toolkit/JSONUtilTest.java
  
 >>>>>>> ed2db3f3 (potentially issue fixed):hippo4j-common/src/test/java/cn/hippo4j/common/toolkit/JSONUtilTest.java
+=======
+ 
+>>>>>>> b720f264c81b2a05ab8b4b0a58f8f0282dcf0d2c:hippo4j-common/src/test/java/cn/hippo4j/common/toolkit/JSONUtilTest.java
