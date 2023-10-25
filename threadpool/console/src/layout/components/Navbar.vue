@@ -18,12 +18,12 @@
         <!--        </el-tooltip>-->
         
       </template>
-      <el-select class="select-tenant" v-model="tenant.resource" filterable @change="changeTenant">
+      <el-select class="select-tenant" v-model="tenant.index" filterable @change="changeTenant">
         <el-option
           v-for="(item, index) in tenantList"
           :key="index"
           :label="item.resource"
-          :value="index">
+          :value="item.index">
         </el-option>
       </el-select>
       <langChange />
@@ -65,7 +65,7 @@
           action: '',
           resource: '',
           username: ''
-        }
+        },
       }
     },
     components: {
@@ -96,6 +96,7 @@
       },
       async logout() {
         this.$cookie.delete('userName')
+        this.$cookie.delete('tenantInfo')
         await this.$store.dispatch('user/logout')
         this.$router.push(`/login?redirect=${this.$route.fullPath}`)
       },
@@ -105,22 +106,24 @@
         .getCurrentUser(userName)
         .then((response) => {
           const { resources } = response;
-          resources.map((item) => ({
-            ...item,
-            tenantId: item.resource
-          }))
           if (response.role == 'ROLE_ADMIN') {
             resources.unshift({
               action: "rw",
               resource: this.$t('common.allTenant'),
               username: userName,
               tenantId: this.$t('common.allTenant'),
+              index: 0,
             })
           }
-          this.$store.dispatch('tenant/setTenantList', resources)
-          this.$store.dispatch('tenant/setTenantInfo', this.tenantInfo || resources[0])
-          this.tenant = this.tenantInfo || resources[0]
-          console.log("isResour", resources[0], this.tenant)
+          const resourcesRes = resources.map((item, index) => ({
+            ...item,
+            tenantId: item.resource,
+            index: index,
+          }))
+          this.$store.dispatch('tenant/setTenantList', resourcesRes)
+          this.tenant = JSON.parse(this.$cookie.get('tenantInfo')) || resourcesRes[0]
+          this.$store.dispatch('tenant/setTenantInfo', this.tenant || resourcesRes[0])
+          this.$cookie.set('tenantInfo', JSON.stringify(this.tenant));
         })
         .catch(() => {});
         
@@ -130,11 +133,13 @@
         let tenant = {
           tenantId: this.tenantList[index].resource,
           resource: this.tenantList[index].resource,
+          index: this.tenantList[index].index,
           current: 1,
           desc: true,
           size: 10,
         }
         this.$store.dispatch('tenant/setTenantInfo', tenant)
+        this.$cookie.set('tenantInfo', JSON.stringify(tenant));
         let isAllTenant = tenant.tenantId == i18nConfig.messages.zh.common.allTenant || tenant.tenantId == i18nConfig.messages.en.common.allTenant
         tenant.tenantId = isAllTenant ? '' : tenant.tenantId
         await jobProjectApi.list(tenant).then((response) => {
@@ -198,6 +203,7 @@
         border: 0;
         width: 150px;
       }
+
 
       .right-menu-item {
         display: inline-block;

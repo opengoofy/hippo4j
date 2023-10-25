@@ -11,7 +11,7 @@
           :key="item.lang"
           :command="item.lang"
         >
-          <span class="dropdown-item-text" :data-active="item.lang === currentLang">{{ item.name }}</span>
+          <span :data-active="item.lang === currentLang" :class="{chooseItem: item.lang === currentLang}" >{{ item.name }}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -53,11 +53,6 @@ export default {
       user.getCurrentUser(userName)
       .then((response) => {
         const { resources } = response;
-        resources.map((item) => ({
-          ...item,
-          tenantId: item.resource
-        }))
-
         //change lang =》 change global tenantInfo
         if (response.role == 'ROLE_ADMIN') {
           //判断tenantInfo是否为所有租户选项
@@ -66,18 +61,32 @@ export default {
           let alreadyHasAll = resources[0] == i18nConfig.messages.zh.common.allTenant || resources[0] == i18nConfig.messages.en.common.allTenant        
           if (alreadyHasAll) {
             this.$set(resources[0], 'resource', this.$t('common.allTenant'))
-            this.$store.dispatch('tenant/setTenantList', resources)
+            const resourcesRes = resources.map((item, index) => ({
+              ...item,
+              tenantId: item.resource,
+              index: index,
+            }))
+            this.$store.dispatch('tenant/setTenantList', resourcesRes)
+            if (isAllTenant) {
+              this.$store.dispatch('tenant/setTenantInfo', resources[0])
+            }
           } else {
             resources.unshift({
               action: "rw",
               resource: this.$t('common.allTenant'),
               username: userName,
               tenantId: this.$t('common.allTenant'),
+              index: 0,
             })
-            this.$store.dispatch('tenant/setTenantList', resources)
-          }
-          if (isAllTenant) {
-            this.$store.dispatch('tenant/setTenantInfo', resources[0])
+            const resourcesRes = resources.map((item, index) => ({
+              ...item,
+              tenantId: item.resource,
+              index: index,
+            }))
+            this.$store.dispatch('tenant/setTenantList', resourcesRes)
+            if (isAllTenant) {
+              this.$store.dispatch('tenant/setTenantInfo', resources[0])
+            }
           }
         }
       })
@@ -93,9 +102,17 @@ export default {
       cursor: pointer;
     }
   }
-  .dropdown-item-text{
-    &[data-active=true] {
-      color: var(--jjext-color-dropdown-text) !important;
-    }
+  ::v-deep .el-dropdown-menu__item:not(.is-disabled):hover {
+    background: #f5f7fa;
+    color: #606266;
+  }
+
+  .el-icon--right {
+    color: #c0c4cc;
+  }
+
+  .chooseItem {
+    font-weight: bold;
+    color: #1890ff;
   }
 </style>

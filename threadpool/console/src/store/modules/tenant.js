@@ -26,17 +26,26 @@ const actions = {
           if (response.role == 'ROLE_ADMIN') {
             resources.unshift({
               action: "rw",
-              resource: "所有租户",
-              username: userName
+              resource: this.$t('common.allTenant'),
+              username: userName,
+              tenantId: this.$t('common.allTenant'),
+              index: 0,
             })
           }
-          commit('SET_TENANT_LIST', resources)
+          const resourcesRes = resources.map((item, index) => ({
+            ...item,
+            tenantId: item.resource,
+            index: index,
+          }))
+          console.log("asasxasxas==========", resourcesRes)
+          commit('SET_TENANT_LIST', resourcesRes)
           if (!state.tenantInfo) {
-            commit('SET_GLOBAL_TENANT', resources[0])
+            commit('SET_GLOBAL_TENANT', resourcesRes[0])
           }
         })
         .catch(() => {});
   },
+  
   setTenantList({commit}, log) {
     commit('SET_TENANT_LIST', log)
   },

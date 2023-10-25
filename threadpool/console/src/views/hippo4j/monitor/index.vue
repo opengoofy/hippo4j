@@ -10,8 +10,10 @@
       </div>
       <div class="query-monitoring">
         <div class="title">查询监控</div>
-        <el-cascader v-model="selectMonitorValue" class="el-cascader" learable :options="selectMonitor"
-          :props="{ expandTrigger: 'hover' }" @change="handleChangeMonitorSelect"></el-cascader>
+        <!-- <el-cascader v-model="selectMonitorValue" class="el-cascader" learable :options="selectMonitor"
+          :props="{ expandTrigger: 'hover' }" @change="handleChangeMonitorSelect"></el-cascader> -->
+        <el-cascader v-model="itemValue" class="el-cascader" learable :options="itemList"
+          @change="handleChangeMonitorSelect"></el-cascader>
       </div>
       <div class="info-card">
         <div class="info-card-title">{{ selectMonitor[0].label }}数量</div>
@@ -33,7 +35,7 @@
       <el-date-picker v-model="timeValue" type="datetimerange" start-placeholder="开始日期" end-placeholder="结束日期"
         value-format="timestamp" :picker-options="pickerOptions">
       </el-date-picker>
-      <el-button class="button" @click="changeMonitorData">筛选</el-button>
+      <el-button class="button" @click="changeMonitorData" v-loading.fullscreen.lock="fullscreenLoading">筛选</el-button>
     </div>
     <div class="center-chart-wrapper">
       <line-chart title="任务数" :chart-data="lineChartData" :times="times" height="100%" :cus-formatter="true" />
@@ -58,6 +60,7 @@
 import * as threadPoolApi from '@/api/hippo4j-threadPool';
 import * as monitorApi from '@/api/hippo4j-monitor';
 import * as instanceApi from '@/api/hippo4j-instance';
+import * as itemApi from '@/api/hippo4j-item';
 import { mapGetters } from 'vuex';
 import { i18nConfig } from '@/locale/config'
 import LineChart from './components/LineChart.vue';
@@ -81,6 +84,7 @@ export default {
       rangeRejectCountList: [],
       chooseData: {},
       timeValue: new Date(),
+      fullscreenLoading: false,
       pickerOptions: {
         shortcuts: [{
           text: '30 分钟',
@@ -108,21 +112,14 @@ export default {
           text: '今天',
           onClick(picker) {
             const end = new Date();
-            const start = that.getBeforeDate(new Date(), 24 * 6);
-            picker.$emit("pick", [start, end]);
-          }
-        }, {
-          text: '昨天',
-          onClick(picker) {
-            const end = new Date();
-            const start = that.getBeforeDate(new Date(), 24 * 30);
+            const start = that.getBeforeDate(new Date(), 24);
             picker.$emit("pick", [start, end]);
           }
         }, {
           text: '一周内',
           onClick(picker) {
             const end = new Date();
-            const start = that.getBeforeDate(new Date(), 24 * 90);
+            const start = that.getBeforeDate(new Date(), 24 * 7);
             picker.$emit("pick", [start, end]);
           }
         }],
@@ -136,6 +133,7 @@ export default {
           return time.getTime() > this.getDayStartOrEnd(new Date(), "end");
         }
       },
+      itemValue: [],
       selectMonitor: [],
       tableData: [],
       listQuery: {
@@ -148,7 +146,8 @@ export default {
         "instanceId": "",
         startTime:"",
         endTime:""
-      }
+      },
+      rejectCount: 0,
     }
   },
   computed: {
@@ -176,16 +175,63 @@ export default {
   },
   methods: {
     fetchData() {
-      // debugger
+      // next
       this.userName = this.$cookie.get('userName')
       this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
       let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
       this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
+
+      //请求项目-线程池-实例
+      itemApi.list(this.listQuery).then((itemRes) => {
+        this.itemList = itemRes.records.map((item) => {
+          this.listQuery.itemId = item.itemId
+          let tpList = []
+
+          threadPoolApi.list(this.listQuery).then((tpRes) => {
+            tpList = tpRes.records.map((tpItem) => {
+              this.listQuery.tpId = tpItem.tpId
+              let itList = []
+
+              instanceApi.list(param).then((instanceRes) => {
+                itList = instanceRes.records.map((itItem) => {
+                  this.listQuery.identify = itItem.identify
+                  this.listQuery.instanceId = itItem.identify
+                  return {
+                    ...itItem,
+                    value: itItem.identify,
+                    label: itItem.identify,
+                  }
+                });
+                return itList
+              });
+
+              return {
+                ...tpItem,
+                value: tpItem.tpId,
+                label: tpItem.tpId,
+                children: itList? itList : [{value: '暂无实例', label: '暂无实例'}]
+              }
+            })
+            return tpList
+          })
+
+          return {
+            ...item,
+            value: item.itemId,
+            label: item.itemId,
+            // children: tpList ? tpList : [{value: '暂无线程池', label: '暂无线程池'}]
+          }
+        })
+
+        console.log('============jjjjjj', this.itemList)
+      })
       threadPoolApi.list(this.listQuery).then((res) => {
         this.listQuery.itemId = res.records[0].itemId
         this.listQuery.tpId = res.records[0].tpId
         this.listQuery.tenantId = res.records[0].tenantId
         this.getSelectMonitor(res.records[0].itemId,res.records[0].tpId)
+
+        //查询租户所有项目
       })
     },
 
@@ -216,27 +262,28 @@ export default {
           name: '线程池',
           label: res.tpId
         }, {
-          name: '核心线程池',
+          name: '核心线程数',
           label: res.coreSize
         }, {
           name: '最大线程数',
           label: res.maxSize
         }, {
           name: '阻塞队列',
-          label: res.queueType
+          label: this.queueFilter(res.queueType)
         }, {
           name: '队列容量',
           label: res.capacity
         }, {
           name: '任务完成数',
-          label: res.allowCoreThreadTimeOut
+          label: this.completedTaskCount
         }, {
           name: '拒绝策略',
-          label: res.rejectedType
+          label: this.rejectedTypeFilter(res.rejectedType)
         }, {
           name: '拒绝次数',
-          label: res.rejectedType
+          label: this.rejectCount
         }]
+        console.log("sssss=========", this.rejectCount)
       });
     },
 
@@ -270,6 +317,11 @@ export default {
               opacity: 0,
             }
           },]
+        this.rejectCount = res?.rejectCountList[res.rejectCountList.length - 1]
+        this.tableData[7].label = res?.rejectCountList[res.rejectCountList.length - 1]
+        this.completedTaskCount = res?.completedTaskCountList[res.completedTaskCountList.length - 1]
+        this.tableData[5].label = res?.completedTaskCountList[res.completedTaskCountList.length - 1]
+        console.log("sssss=========", this.rejectCount)
         this.times = res?.times.map(item => {
           const list = item.split(':')
           list.pop()
@@ -296,10 +348,47 @@ export default {
           data: res?.rangeRejectCountList,
           show: true
         }]
+        this.fullscreenLoading = false
       })
     },
 
     handleChangeMonitorSelect(value) {
+
+      //////////next
+      console.log('asasasasas', value, this.itemList)
+      let tpList = []
+      threadPoolApi.list(this.listQuery).then((tpRes) => {
+      tpList = tpRes.records.map((tpItem) => {
+        this.listQuery.tpId = tpItem.tpId
+        let itList = []
+
+        // instanceApi.list(param).then((instanceRes) => {
+        //   itList = instanceRes.records.map((itItem) => {
+        //     this.listQuery.identify = itItem.identify
+        //     this.listQuery.instanceId = itItem.identify
+        //     return {
+        //       ...itItem,
+        //       value: itItem.identify,
+        //       label: itItem.identify,
+        //     }
+        //   });
+        //   return itList
+        // });
+
+        return {
+          ...tpItem,
+          value: tpItem.tpId,
+          label: tpItem.tpId,
+          // children: itList? itList : [{value: '暂无实例', label: '暂无实例'}]
+        }
+      })
+      return tpList
+    })
+    this.$set(this.itemList[0], 'children', tpList)
+      console.log('asasasasas', value, this.itemList, tpList)
+
+
+
       this.selectMonitor[value[0]].map((item) => {
         if (item.children.label == value[1]) {
           this.listQuery.identify = item.identify || this.listQuery.identify
@@ -312,6 +401,7 @@ export default {
     },
 
     changeMonitorData() {
+      this.fullscreenLoading = true
       console.log('this.timeVqlue:::',this.timeValue)
       this.listQuery.startTime = this.timeValue[0]
       this.listQuery.endTime = this.timeValue[1]
@@ -328,7 +418,43 @@ export default {
       } else {
         return new Date(time).setHours(23, 59, 59, 999);
       }
-    }
+    },
+
+
+    rejectedTypeFilter(type) {
+      if ('1' == type) {
+        return 'CallerRunsPolicy';
+      } else if ('2' == type) {
+        return 'AbortPolicy';
+      } else if ('3' == type) {
+        return 'DiscardPolicy';
+      } else if ('4' == type) {
+        return 'DiscardOldestPolicy';
+      } else if ('5' == type) {
+        return 'RunsOldestTaskPolicy';
+      } else if ('6' == type) {
+        return 'SyncPutQueuePolicy';
+      } else {
+        return 'CustomRejectedPolicy_' + type;
+      }
+    },
+    queueFilter(type) {
+      if ('1' == type) {
+        return 'ArrayBlockingQueue';
+      } else if ('2' == type) {
+        return 'LinkedBlockingQueue';
+      } else if ('3' == type) {
+        return 'LinkedBlockingDeque';
+      } else if ('4' == type) {
+        return 'SynchronousQueue';
+      } else if ('5' == type) {
+        return 'LinkedTransferQueue';
+      } else if ('6' == type) {
+        return 'PriorityBlockingQueue';
+      } else if ('9' == type) {
+        return 'ResizableLinkedBlockingQueue';
+      }
+    },
   }
 }
 </script>
@@ -441,7 +567,7 @@ export default {
         display: flex;
         justify-content: space-between;
         font-size: 14px;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         overflow: hidden;
 
         .tp-label {
