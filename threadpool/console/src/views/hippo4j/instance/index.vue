@@ -584,7 +584,7 @@ export default {
   created() {
     // this.fetchData()
     // 初始化项目
-    this.initSelect();
+    this.tenantSelectList();
   },
   methods: {
     onInput() {

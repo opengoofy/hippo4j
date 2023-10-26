@@ -10,21 +10,35 @@
       </div>
       <div class="query-monitoring">
         <div class="title">查询监控</div>
-        <!-- <el-cascader v-model="selectMonitorValue" class="el-cascader" learable :options="selectMonitor"
-          :props="{ expandTrigger: 'hover' }" @change="handleChangeMonitorSelect"></el-cascader> -->
-        <el-cascader v-model="itemValue" class="el-cascader" learable :options="itemList"
-          @change="handleChangeMonitorSelect"></el-cascader>
+        <el-cascader :props="props" v-model="selectMonitorValue" class="el-cascader" @change="handleChangeMonitorSelect" placeholder="项目/线程池/实例"></el-cascader>
       </div>
+
       <div class="info-card">
-        <div class="info-card-title">{{ selectMonitor[0].label }}数量</div>
-        <div class="data-num">
-          <span class="num">
-            {{ selectMonitor[0].children.length || "_" }}
-          </span>个
+        <div class="info-card-item">
+          <div class="info-card-show">{{ listQuery.tenantId }}</div>
+          <div class="data-num">租户：</div>
+          <div class="info-card-title">{{ listQuery.tenantId }}</div>
+        </div>
+        <div class="info-card-item">
+          <div class="info-card-show">{{ listQuery.itemId }}</div>
+          <div class="data-num">项目：</div>
+          <div class="info-card-title">{{ listQuery.itemId }}</div>
+        </div>
+        <div class="info-card-item">
+          <div class="info-card-show">{{ listQuery.tpId }}</div>
+          <div class="data-num">线程池：</div>
+          <div class="info-card-title">{{ listQuery.tpId }}</div>
+        </div>
+        <div class="info-card-item">
+          <div class="info-card-show">{{ listQuery.identify }}</div>
+          <div class="data-num">实例：</div>
+          <div class="info-card-title">{{ listQuery.identify }}</div>
         </div>
       </div>
+
       <div class="tp-card">
         <div v-for="(item, index) in tableData" :key="index" class="tp-item">
+          <div class="info-card-show">{{ item.label }}</div>
           <div>{{ item.name }}</div>
           <div class="tp-label">{{ item.label }}</div>
         </div>
@@ -37,22 +51,23 @@
       </el-date-picker>
       <el-button class="button" @click="changeMonitorData" v-loading.fullscreen.lock="fullscreenLoading">筛选</el-button>
     </div>
-    <div class="center-chart-wrapper">
-      <line-chart title="任务数" :chart-data="lineChartData" :times="times" height="100%" :cus-formatter="true" />
-    </div>
-    <div class="bottom-chart-wraper">
-      <div class="inner-chart">
-        <line-chart title="活跃线程数" :chart-data="activeSizeList" :times="times" height="100%" />
+    <div class="center-chart-wrapper" v-if="listQuery.identify">
+        <line-chart title="任务数" :chart-data="lineChartData" :times="times" height="100%" :cus-formatter="true" />
       </div>
-      <div class="inner-chart">
-        <line-chart title="线程数" :chart-data="poolSizeList" :times="times" height="100%" />
-      </div>
-      <div class="inner-chart">
-        <line-chart title="队列元素数" :chart-data="queueSizeList" :times="times" height="100%" />
-      </div>
-      <div class="inner-chart">
-        <line-chart title="拒绝数" :chart-data="rangeRejectCountList" :times="times" height="100%" />
-      </div>
+      <div v-else class="center-chart-wrapper bottom-no-wraper">请选择实例～</div>
+    <div class="bottom-chart-wraper" >
+        <div class="inner-chart">
+          <line-chart title="活跃线程数" :chart-data="activeSizeList" :times="times" height="100%" />
+        </div>
+        <div class="inner-chart">
+          <line-chart title="线程数" :chart-data="poolSizeList" :times="times" height="100%" />
+        </div>
+        <div class="inner-chart">
+          <line-chart title="队列元素数" :chart-data="queueSizeList" :times="times" height="100%" />
+        </div>
+        <div class="inner-chart">
+          <line-chart title="拒绝数" :chart-data="rangeRejectCountList" :times="times" height="100%" />
+        </div>
     </div>
   </div>
 </template>
@@ -73,6 +88,64 @@ export default {
   data() {
     let that = this;
     return {
+      props: {
+        lazy: true,
+        lazyLoad (node, resolve) {
+          const { level } = node;
+          setTimeout(() => {
+            if (level == 0) {
+              that.userName = that.$cookie.get('userName')
+              that.listQuery.tenantId = that?.tenantInfo?.tenantId || that.listQuery.tenantId
+              let isAllTenant = that.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || that.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+              that.listQuery.tenantId = isAllTenant ? '' : that.listQuery.tenantId
+
+              //请求项目-线程池-实例
+              itemApi.list(that.listQuery).then((itemRes) => {
+                let itemList = itemRes.records.map((item) => {
+                  return {
+                    ...item,
+                    value: item.itemId,
+                    label: item.itemId,
+                    leaf: level >= 2
+                  }
+                })
+                resolve(itemList)
+              })
+            } else if (level == 1) {
+              that.listQuery.itemId = node.value
+              threadPoolApi.list(that.listQuery).then((tpRes) => {
+                let tpList = tpRes.records.map((tpItem) => {
+                  return {
+                    ...tpItem,
+                    value: tpItem.tpId,
+                    label: tpItem.tpId,
+                    leaf: level >= 2
+                  }
+                })
+                resolve(tpList)
+              })
+            } else if (level == 2) {
+              that.listQuery.tpId = node.value
+              let param = [
+                that.listQuery.itemId,
+                that.listQuery.tpId
+              ]
+              instanceApi.list(param).then((instanceRes) => {
+                let itList = instanceRes.map((itItem) => {
+                  return {
+                    ...itItem,
+                    value: itItem.identify,
+                    label: itItem.identify,
+                    leaf: level >= 2
+                  }
+                });
+                resolve(itList ? itList : [{value: '暂无实例', label: '暂无实例'}])
+              });
+            }
+          }, 1000);
+        }
+      },
+
       lineChartData: [],
       times: [],
       selectMonitorValue: {
@@ -133,7 +206,7 @@ export default {
           return time.getTime() > this.getDayStartOrEnd(new Date(), "end");
         }
       },
-      itemValue: [],
+      itemList: [],
       selectMonitor: [],
       tableData: [],
       listQuery: {
@@ -158,9 +231,14 @@ export default {
   watch: {
     listQuery:{
       handler(newVal) {
-       this.fetchChartData(newVal)
+       this.getSelectMonitor()
       },
       deep: true
+    },
+    selectMonitorValue(newVal) {
+      this.listQuery.identify = newVal[2]
+      this.listQuery.instanceId = newVal[2]
+       this.fetchChartData(this.listQuery)
     }
 
   },
@@ -171,6 +249,7 @@ export default {
     this.listQuery.startTime = this.timeValue[0]
     this.listQuery.endTime = this.timeValue[1]
     this.fetchData()
+    this.fetchChartData(this.listQuery)
 
   },
   methods: {
@@ -180,82 +259,11 @@ export default {
       this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
       let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
       this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
-
-      //请求项目-线程池-实例
-      itemApi.list(this.listQuery).then((itemRes) => {
-        this.itemList = itemRes.records.map((item) => {
-          this.listQuery.itemId = item.itemId
-          let tpList = []
-
-          threadPoolApi.list(this.listQuery).then((tpRes) => {
-            tpList = tpRes.records.map((tpItem) => {
-              this.listQuery.tpId = tpItem.tpId
-              let itList = []
-
-              instanceApi.list(param).then((instanceRes) => {
-                itList = instanceRes.records.map((itItem) => {
-                  this.listQuery.identify = itItem.identify
-                  this.listQuery.instanceId = itItem.identify
-                  return {
-                    ...itItem,
-                    value: itItem.identify,
-                    label: itItem.identify,
-                  }
-                });
-                return itList
-              });
-
-              return {
-                ...tpItem,
-                value: tpItem.tpId,
-                label: tpItem.tpId,
-                children: itList? itList : [{value: '暂无实例', label: '暂无实例'}]
-              }
-            })
-            return tpList
-          })
-
-          return {
-            ...item,
-            value: item.itemId,
-            label: item.itemId,
-            // children: tpList ? tpList : [{value: '暂无线程池', label: '暂无线程池'}]
-          }
-        })
-
-        console.log('============jjjjjj', this.itemList)
-      })
-      threadPoolApi.list(this.listQuery).then((res) => {
-        this.listQuery.itemId = res.records[0].itemId
-        this.listQuery.tpId = res.records[0].tpId
-        this.listQuery.tenantId = res.records[0].tenantId
-        this.getSelectMonitor(res.records[0].itemId,res.records[0].tpId)
-
-        //查询租户所有项目
-      })
     },
 
 
-    getSelectMonitor(itemId,tpId) {
-      this.selectMonitor = [{
-        value: 0,
-        label: '实例',
-        children: [],
-      },]
-      let param = [
-      itemId,
-      tpId
-      ]
-      instanceApi.list(param).then((res) => {
-        res.map((item) => {
-          item.value = item.identify
-          item.label = item.identify
-        });
-        this.selectMonitor[0].children = res
-        this.selectMonitorValue = [0, res[0].identify]
-        this.listQuery.identify = res[0].identify
-        this.listQuery.instanceId = res[0].identify
-      });
+    //获取面板信息
+    getSelectMonitor() {
       threadPoolApi.info(this.listQuery).then((res) => {
         this.temp = res;
         this.tableData = [{
@@ -283,10 +291,10 @@ export default {
           name: '拒绝次数',
           label: this.rejectCount
         }]
-        console.log("sssss=========", this.rejectCount)
       });
     },
 
+    //监控数据
     fetchChartData(value) {
       let query = value
       monitorApi.active({ ...query }).then(res => {
@@ -318,10 +326,12 @@ export default {
             }
           },]
         this.rejectCount = res?.rejectCountList[res.rejectCountList.length - 1]
-        this.tableData[7].label = res?.rejectCountList[res.rejectCountList.length - 1]
         this.completedTaskCount = res?.completedTaskCountList[res.completedTaskCountList.length - 1]
-        this.tableData[5].label = res?.completedTaskCountList[res.completedTaskCountList.length - 1]
-        console.log("sssss=========", this.rejectCount)
+        if (this.tableData.length > 1) {
+          this.tableData[7].label = res?.rejectCountList[res.rejectCountList.length - 1]
+          this.tableData[5].label = res?.completedTaskCountList[res.completedTaskCountList.length - 1]
+
+        }
         this.times = res?.times.map(item => {
           const list = item.split(':')
           list.pop()
@@ -353,42 +363,6 @@ export default {
     },
 
     handleChangeMonitorSelect(value) {
-
-      //////////next
-      console.log('asasasasas', value, this.itemList)
-      let tpList = []
-      threadPoolApi.list(this.listQuery).then((tpRes) => {
-      tpList = tpRes.records.map((tpItem) => {
-        this.listQuery.tpId = tpItem.tpId
-        let itList = []
-
-        // instanceApi.list(param).then((instanceRes) => {
-        //   itList = instanceRes.records.map((itItem) => {
-        //     this.listQuery.identify = itItem.identify
-        //     this.listQuery.instanceId = itItem.identify
-        //     return {
-        //       ...itItem,
-        //       value: itItem.identify,
-        //       label: itItem.identify,
-        //     }
-        //   });
-        //   return itList
-        // });
-
-        return {
-          ...tpItem,
-          value: tpItem.tpId,
-          label: tpItem.tpId,
-          // children: itList? itList : [{value: '暂无实例', label: '暂无实例'}]
-        }
-      })
-      return tpList
-    })
-    this.$set(this.itemList[0], 'children', tpList)
-      console.log('asasasasas', value, this.itemList, tpList)
-
-
-
       this.selectMonitor[value[0]].map((item) => {
         if (item.children.label == value[1]) {
           this.listQuery.identify = item.identify || this.listQuery.identify
@@ -402,9 +376,9 @@ export default {
 
     changeMonitorData() {
       this.fullscreenLoading = true
-      console.log('this.timeVqlue:::',this.timeValue)
       this.listQuery.startTime = this.timeValue[0]
       this.listQuery.endTime = this.timeValue[1]
+      this.fetchChartData(this.listQuery)
     },
 
     getBeforeDate(date = new Date(), days = 7) {
@@ -536,16 +510,23 @@ export default {
       color: #fefefe;
       font-family: HelveticaNeue-Medium, Helvetica Medium, PingFangSC-Medium, STHeitiSC-Medium, Microsoft YaHei Bold, Arial, sans-serif;
 
-      .info-card-title,
-      .data-num {
+      .info-card-title, .data-num {
         font-size: 14px;
         font-weight: 500;
         padding-bottom: 10px;
       }
-
-      .num {
-        font-family: DIDIFD-Regular;
-        font-size: 40px;
+      .info-card-show {
+        display: none;
+      }
+      .info-card-item:hover .info-card-show {
+        display: block;
+        position: absolute;
+        left: 30px;
+        background: #313131;
+        border-radius: 4px;
+        padding: 5px 8px 6px 8px;
+        box-shadow: 1px 1px 5px red($color: #efecec);
+        z-index: 9999;
       }
 
       .operation-list {
@@ -573,6 +554,18 @@ export default {
         .tp-label {
           width: 600;
         }
+      }
+      .info-card-show {
+        display: none;
+      }
+      .tp-item:hover .info-card-show {
+        display: block;
+        position: absolute;
+        background: #313131;
+        border-radius: 4px;
+        padding: 5px 8px 6px 8px;
+        box-shadow: 1px 1px 5px red($color: #efecec);
+        z-index: 9999;
       }
     }
   }
@@ -614,6 +607,18 @@ export default {
       grid-row: span 1;
 
     }
+  }
+
+  .bottom-no-wraper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #818689;
+    font-family: 'Courier New', Courier, monospace;
   }
 }
 </style>
