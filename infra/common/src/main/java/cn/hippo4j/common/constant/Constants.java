@@ -78,8 +78,6 @@ public class Constants {
 
     public static final String HEALTH_CHECK_PATH = BASE_PATH + "/health/check";
 
-    public static final String PROBE_MODIFY_REQUEST = "Listening-Configs";
-
     public static final String LONG_PULLING_TIMEOUT = "Long-Pulling-Timeout";
 
     public static final String LONG_PULLING_TIMEOUT_NO_HANGUP = "Long-Pulling-Timeout-No-Hangup";
