@@ -262,7 +262,7 @@
     "description": "The homepage title description"
   },
   "homepage.titleDescription2": {
-    "message": "动态可观测线程池框架，为业务系统提高线上运行保障能力。",
+    "message": "动态可观测Java线程池框架，为你的业务系统提高线上运行保障能力",
     "description": "The homepage title description"
   },
   "homepage.startButton": {
@@ -326,7 +326,7 @@
     "description": "The third desc for fristPart "
   },
   "homepage.introduction.secondPartDesc1": {
-    "message": "应用程序线程池运行时点，提供四个告警维度。",
+    "message": "应用程序线程池运行时点，提供四个告警维度，并支持自定义时间内不重复报警。",
     "description": "The first desc for secondPart "
   },
   "homepage.introduction.secondPartDesc2": {
@@ -354,7 +354,11 @@
     "description": "The p1 for the secondTitle part"
   },
   "homepage.secondTitleDesc2": {
-    "message": "提供了线程池动态调整、自定义警报和操作监控等功能，以帮助提高业务系统的运营支持能力。",
+    "message": "提供了线程池动态调整、自定义警报和操作监控等功能。",
+    "description": "The p1 for the secondTitle part"
+  },
+  "homepage.secondTitleDesc3": {
+    "message": "帮助提高你的业务系统的运营支持能力。",
     "description": "The p2 for the secondTitle part"
   }
 }
