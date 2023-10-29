@@ -87,7 +87,7 @@
       tenantInfo(newVal) {
         this.tenant.tenantId = newVal.tenantId
         this.tenant.resource = newVal.resource
-        console.log("ischangLang", newVal)
+        console.log("ischangLang", newVal, this.tenantList)
       }
     },
     methods: {
@@ -106,6 +106,7 @@
         .getCurrentUser(userName)
         .then((response) => {
           const { resources } = response;
+        console.log("isTenList1", resources, this.tenantList)
           if (response.role == 'ROLE_ADMIN') {
             resources.unshift({
               action: "rw",
@@ -115,15 +116,22 @@
               index: 0,
             })
           }
-          const resourcesRes = resources.map((item, index) => ({
-            ...item,
+        console.log("isTenList1111111", this.$t('common.allTenant'), resources, this.tenantList)
+          const resourcesRes = resources.map((item, index) => {
+            let query = {
+              ...item,
             tenantId: item.resource,
             index: index,
-          }))
+            }
+            console.log("=============", index, query, item)
+            return query
+        })
+        console.log("isTenList22222", resourcesRes, this.tenantList)
           this.$store.dispatch('tenant/setTenantList', resourcesRes)
           this.tenant = JSON.parse(this.$cookie.get('tenantInfo')) || resourcesRes[0]
           this.$store.dispatch('tenant/setTenantInfo', this.tenant || resourcesRes[0])
           this.$cookie.set('tenantInfo', JSON.stringify(this.tenant));
+        console.log("isTenList2", this.tenantList)
         })
         .catch(() => {});
         
