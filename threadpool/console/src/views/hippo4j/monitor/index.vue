@@ -15,24 +15,19 @@
 
       <div class="info-card">
         <div class="info-card-item">
-          <div class="info-card-show">{{ listQuery.tenantId }}</div>
-          <div class="data-num">租户：</div>
-          <div class="info-card-title">{{ listQuery.tenantId }}</div>
-        </div>
-        <div class="info-card-item">
-          <div class="info-card-show">{{ listQuery.itemId }}</div>
+          <div v-if="listQuery.itemId" class="info-card-show">{{ listQuery.itemId }}</div>
           <div class="data-num">项目：</div>
-          <div class="info-card-title">{{ listQuery.itemId }}</div>
+          <div v-if="listQuery.itemId" class="info-card-title">{{ listQuery.itemId }}</div>
         </div>
         <div class="info-card-item">
-          <div class="info-card-show">{{ listQuery.tpId }}</div>
+          <div v-if="listQuery.itemId" class="info-card-show">{{ listQuery.tpId }}</div>
           <div class="data-num">线程池：</div>
-          <div class="info-card-title">{{ listQuery.tpId }}</div>
+          <div v-if="listQuery.itemId" class="info-card-title">{{ listQuery.tpId }}</div>
         </div>
         <div class="info-card-item">
-          <div class="info-card-show">{{ listQuery.identify }}</div>
+          <div v-if="listQuery.itemId" class="info-card-show">{{ listQuery.identify }}</div>
           <div class="data-num">实例：</div>
-          <div class="info-card-title">{{ listQuery.identify }}</div>
+          <div v-if="listQuery.itemId" class="info-card-title">{{ listQuery.identify }}</div>
         </div>
       </div>
 
@@ -146,6 +141,7 @@ export default {
         }
       },
 
+      isFirstShow: true,
       lineChartData: [],
       times: [],
       selectMonitorValue: {
@@ -231,7 +227,9 @@ export default {
   watch: {
     listQuery:{
       handler(newVal) {
-       this.getSelectMonitor()
+        if (!this.isFirstShow) {
+          this.getSelectMonitor()
+        }
       },
       deep: true
     },
@@ -363,6 +361,7 @@ export default {
     },
 
     handleChangeMonitorSelect(value) {
+      this.isFirstShow = false
       this.selectMonitor[value[0]].map((item) => {
         if (item.children.label == value[1]) {
           this.listQuery.identify = item.identify || this.listQuery.identify
