@@ -48,7 +48,7 @@ import static cn.hippo4j.common.constant.Constants.CONFIG_LONG_POLL_TIMEOUT;
 import static cn.hippo4j.common.constant.Constants.GROUP_KEY_DELIMITER_TRANSLATION;
 import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
 import static cn.hippo4j.common.constant.Constants.LINE_SEPARATOR;
-import static cn.hippo4j.common.constant.Constants.PROBE_MODIFY_REQUEST;
+import static cn.hippo4j.common.constant.Constants.LISTENING_CONFIGS;
 import static cn.hippo4j.common.constant.Constants.WEIGHT_CONFIGS;
 import static cn.hippo4j.common.constant.Constants.LONG_PULLING_TIMEOUT;
 import static cn.hippo4j.common.constant.Constants.LONG_PULLING_CLIENT_IDENTIFICATION;
@@ -195,7 +195,7 @@ public class ClientWorker implements DisposableBean {
             return Collections.emptyList();
         }
         Map<String, String> params = new HashMap<>(2);
-        params.put(PROBE_MODIFY_REQUEST, probeUpdateString);
+        params.put(LISTENING_CONFIGS, probeUpdateString);
         params.put(WEIGHT_CONFIGS, IdUtil.simpleUUID());
         Map<String, String> headers = new HashMap<>(2);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
