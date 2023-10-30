@@ -66,7 +66,7 @@ public class WeChatSendMessageHandler extends AbstractRobotSendMessageHandler {
             weChatReq.setMarkdown(markdown);
             String responseBody = HttpUtil.post(serverUrl, weChatReq);
             WeChatRobotResponse response = JSONUtil.parseObject(responseBody, WeChatRobotResponse.class);
-            Assert.isTrue(response != null, "Response is null.");
+            Assert.notNull(response, "Response is null.");
             if (response.getErrcode() != 0) {
                 log.error("WeChat failed to send message, reason : {}", response.errmsg);
             }

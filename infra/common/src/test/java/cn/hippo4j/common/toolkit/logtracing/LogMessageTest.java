@@ -73,7 +73,8 @@ public class LogMessageTest {
     public void testKvShouldPutAllKeyAndValuePairs() {
         logMessage.kv("key1", "value1");
         logMessage.kv("key2", "value2");
-        assertEquals("key1=value1||key2=value2", logMessage.toString());
+        String output = logMessage.toString();
+        assertTrue(output.equals("key1=value1||key2=value2") || output.equals("key2=value2||key1=value1"));
     }
 
     @Test

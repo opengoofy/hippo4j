@@ -71,4 +71,5 @@ public class PolarisRefresherHandler extends AbstractConfigThreadPoolDynamicRefr
         return Objects.equals(POLARIS_FILE_TYPE, "yaml") ? configFileService.getConfigYamlFile(namespace, fileGroup, fileName)
                 : configFileService.getConfigPropertiesFile(namespace, fileGroup, fileName);
     }
+
 }

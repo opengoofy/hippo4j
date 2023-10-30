@@ -19,11 +19,15 @@ package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import org.junit.Test;
+import org.mockito.MockedStatic;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.mockStatic;
 
 public class Md5UtilTest {
 
@@ -50,12 +54,15 @@ public class Md5UtilTest {
 
     @Test
     public void assetGetTpContentMd5() {
-        String md5Result = "ef5ea7cb47377fb9fb85a7125e76715d";
-        ThreadPoolParameterInfo threadPoolParameterInfo = ThreadPoolParameterInfo.builder().tenantId("prescription")
-                .itemId("dynamic-threadpool-example").tpId("message-consume").content("描述信息").corePoolSize(1)
-                .maximumPoolSize(2).queueType(1).capacity(4).keepAliveTime(513L).executeTimeOut(null).rejectedType(4)
-                .isAlarm(1).capacityAlarm(80).livenessAlarm(80).allowCoreThreadTimeOut(1).build();
-        Assert.isTrue(md5Result.equals(Md5Util.getTpContentMd5(threadPoolParameterInfo)));
+        final ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
+        final String mockContent = "mockContent";
+        final String mockContentMd5 = "34cf17bc632ece6e4c81a4ce8aa97d5e";
+        try (final MockedStatic<ContentUtil> mockedContentUtil = mockStatic(ContentUtil.class)) {
+            mockedContentUtil.when(() -> ContentUtil.getPoolContent(threadPoolParameterInfo)).thenReturn(mockContent);
+            final String result = Md5Util.getTpContentMd5(threadPoolParameterInfo);
+            Assert.isTrue(result.equals(mockContentMd5));
+            mockedContentUtil.verify(() -> ContentUtil.getPoolContent(threadPoolParameterInfo), times(1));
+        }
     }
 
     @Test
