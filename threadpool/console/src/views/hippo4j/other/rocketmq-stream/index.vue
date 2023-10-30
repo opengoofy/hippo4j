@@ -280,7 +280,7 @@ export default {
   },
   created() {
     // 初始化租户、项目
-    this.initSelect();
+    this.tenantSelectList();
   },
   methods: {
     onInput() {

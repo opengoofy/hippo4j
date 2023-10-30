@@ -489,7 +489,7 @@ export default {
   },
   created() {
     this.fetchData();
-    this.initSelect();
+    this.tenantSelectList();
   },
   mounted() {
     this.isEditDisabled = localStorage.getItem('USER_ROLE') !== 'ROLE_ADMIN';

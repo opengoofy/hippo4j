@@ -537,7 +537,7 @@ export default {
   created() {
     this.fetchData();
     // 初始化租户、项目
-    this.initSelect();
+    this.tenantSelectList();
   },
   mounted() {
     this.isEditDisabled =
@@ -757,6 +757,7 @@ export default {
       this.threadPoolOptions = [];
       const tenantId = { tenantId: this.listQuery.tenantId, size: this.size };
       itemApi.list(tenantId).then((response) => {
+        console.log('--------OOOOOOO', tenantId, response)
         const { records = [] } = response;
         for (let i = 0; i < records.length; i++) {
           this.itemOptions.push({

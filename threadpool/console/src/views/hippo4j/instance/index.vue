@@ -584,7 +584,10 @@ export default {
   created() {
     // this.fetchData()
     // 初始化项目
-    this.initSelect();
+      this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
+      let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+      this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
+    this.tenantSelectList();
   },
   methods: {
     onInput() {
@@ -819,6 +822,7 @@ export default {
       this.itemOptions = [];
       this.threadPoolOptions = [];
       const tenantId = { tenantId: this.listQuery.tenantId, size: this.size };
+      console.log("XXXXXXXXXXXXXXX", tenantId)
       itemApi
         .list(tenantId)
         .then((response) => {
