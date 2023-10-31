@@ -50,9 +50,6 @@ export default function Home() {
       title={`${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
-      <Head>
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
-      </Head>
       {/* <HomepageHeader /> */}
       <main>
         {/* <HomepageFeatures /> */}
