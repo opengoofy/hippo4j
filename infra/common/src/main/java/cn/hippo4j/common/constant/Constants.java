@@ -120,8 +120,6 @@ public class Constants {
 
     public static final String DEFAULT_GROUP = "default group";
 
-    public static final String UNKNOWN = "unknown";
-
     public static final String EXECUTE_TIMEOUT_TRACE = "executeTimeoutTrace";
 
     public static final long HTTP_EXECUTE_TIMEOUT = 5000L;
