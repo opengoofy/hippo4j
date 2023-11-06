@@ -51,6 +51,7 @@ export default {
     audit: 'Audit',
     yes: 'Yes',
     no: 'No',
+    allTenant: 'ALL TENANT'
   },
 
   // 运行报表

@@ -1,4 +1,3 @@
-// craco.config.js
 const CracoLessPlugin = require('craco-less');
 const lessModuleRegex = /\.module\.less$/;
 const path = require('path');
@@ -20,7 +19,7 @@ module.exports = {
 
         // A callback function that receives two arguments: the webpack rule,
         // and the context. You must return an updated rule object.
-        modifyLessRule: (lessRule, context) => {
+        modifyLessRule: lessRule => {
           lessRule.test = lessModuleRegex;
           lessRule.exclude = /node_modules|antd\.css/;
           return lessRule;
@@ -39,9 +38,23 @@ module.exports = {
     },
   },
   devServer: {
-    port: 3001,
+    port: 3000,
     headers: {
       'Access-Control-Allow-Origin': '*',
+    },
+    proxy: {
+      '/hippo4j/v1/cs': {
+        target: 'http://console.hippo4j.cn:6691/hippo4j/v1/cs',
+        pathRewrite: { '^/hippo4j/v1/cs': '' },
+        changeOrigin: true,
+        secure: false,
+        onProxyReq: proxyReq => {
+          console.log(`Proxying request to: ${proxyReq.path}`);
+        },
+        onProxyRes: proxyRes => {
+          console.log(`Received response with status: ${proxyRes.statusCode}`);
+        },
+      },
     },
   },
 };

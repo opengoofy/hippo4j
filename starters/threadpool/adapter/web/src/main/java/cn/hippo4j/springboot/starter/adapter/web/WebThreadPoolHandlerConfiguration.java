@@ -105,8 +105,8 @@ public class WebThreadPoolHandlerConfiguration {
          * the Web embedded server loads the {@link ServletWebServerFactory} top-level interface type at the same time
          */
         @Bean
-        public UndertowWebThreadPoolHandlerAdapt undertowWebThreadPoolHandler() {
-            return new DefaultUndertowWebThreadPoolHandler();
+        public UndertowWebThreadPoolHandlerAdapt undertowWebThreadPoolHandler(WebThreadPoolRunStateHandler webThreadPoolRunStateHandler) {
+            return new DefaultUndertowWebThreadPoolHandler(webThreadPoolRunStateHandler);
         }
     }
 }

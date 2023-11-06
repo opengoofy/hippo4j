@@ -1,6 +1,6 @@
-import React from "react";
-import Hero from "./Hero";
-import Introduction from "./Introduction";
+import React from 'react';
+import Hero from './Hero';
+import Introduction from './Introduction';
 function LandingLayout(props) {
   return (
     <div className="leading-normal tracking-normal text-white">

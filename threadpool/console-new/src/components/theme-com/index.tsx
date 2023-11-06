@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
 import { ConfigProvider, theme } from 'antd';
-
-import { darkAlgorithm } from '../../theme/dark-algorithm';
-import { defaultAlgorithm } from '../../theme/default-algnorithm';
-import { lightDefaultTheme, darkDefaultTheme } from '../../theme';
-import { MyThemeContext, THEME_NAME } from '../../context/themeContext';
+import { darkAlgorithm } from '../../config/theme/dark-algorithm';
+import { defaultAlgorithm } from '../../config/theme/default-algnorithm';
+import { lightDefaultTheme, darkDefaultTheme } from '../../config/theme';
+import { MyContext } from '../../context';
 import zhCN from 'antd/es/locale/zh_CN';
+import { THEME_NAME } from '@/typings';
 
 interface ThemeProps {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ interface ThemeProps {
 const ThemeComponent = ({ children }: ThemeProps) => {
   const [themes, setThemes] = useState(defaultAlgorithm);
   const [myThemes, setMyThemes] = useState<DefaultTheme>(lightDefaultTheme);
-  const { themeName } = useContext<any>(MyThemeContext);
+  const { themeName } = useContext<any>(MyContext);
 
   const changeMode = (themeName: THEME_NAME) => {
     if (themeName === THEME_NAME.DARK) {

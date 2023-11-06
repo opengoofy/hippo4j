@@ -2,21 +2,6 @@
   <div class="app-container">
     <div class="filter-container">
       <el-select
-        v-model="listQuery.tenantId"
-        :placeholder="$t('tenantManage.tenantRequired')"
-        style="width: 220px"
-        filterable
-        class="filter-item"
-        @change="tenantSelectList()"
-      >
-        <el-option
-          v-for="item in tenantOptions"
-          :key="item.key"
-          :label="item.display_name"
-          :value="item.key"
-        />
-      </el-select>
-      <el-select
         v-model="listQuery.itemId"
         :placeholder="$t('projectManage.itemRequired')"
         style="width: 220px"
@@ -81,7 +66,6 @@
       <el-table-column :label="$t('common.num')" fixed="left" width="95">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-
       <el-table-column :label="$t('threadPoolInstance.instanceID')" width="260">
         <template slot-scope="scope">
           <el-link type="primary" :underline="false">{{ scope.row.identify }}</el-link>
@@ -444,6 +428,8 @@ import * as instanceApi from '@/api/hippo4j-instance';
 import waves from '@/directive/waves';
 import Pagination from '@/components/Pagination';
 import axios from 'axios';
+import { mapGetters } from 'vuex';
+import { i18nConfig } from '@/locale/config'
 
 export default {
   components: { Pagination },
@@ -568,6 +554,9 @@ export default {
     };
   },
   computed:{
+    ...mapGetters([
+      'tenantInfo'
+    ]),
     rules(){
       return{
         tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
@@ -586,16 +575,28 @@ export default {
       }
     },
   },
+  watch: {
+    tenantInfo(newVal, oldVal) {
+      this.listQuery.tenantId = newVal.tenantId;
+      this.fetchData()
+    }
+  },
   created() {
     // this.fetchData()
     // 初始化项目
-    this.initSelect();
+      this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
+      let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+      this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
+    this.tenantSelectList();
   },
   methods: {
     onInput() {
       this.$forceUpdate();
     },
     fetchData() {
+      this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
+      let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+      this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
       if (!this.listQuery.tenantId) {
         this.$message.warning(this.$t('message.emptyWarning', { name: this.$t('tenantManage.tenant') }));
         return;
@@ -821,6 +822,7 @@ export default {
       this.itemOptions = [];
       this.threadPoolOptions = [];
       const tenantId = { tenantId: this.listQuery.tenantId, size: this.size };
+      console.log("XXXXXXXXXXXXXXX", tenantId)
       itemApi
         .list(tenantId)
         .then((response) => {

@@ -16,8 +16,16 @@
         <!--        <el-tooltip content="Global Size" effect="dark" placement="bottom">-->
         <!--          <size-select id="size-select" class="right-menu-item hover-effect" />-->
         <!--        </el-tooltip>-->
-
+        
       </template>
+      <el-select class="select-tenant" v-model="tenant.index" filterable @change="changeTenant">
+        <el-option
+          v-for="(item, index) in tenantList"
+          :key="index"
+          :label="item.resource"
+          :value="item.index">
+        </el-option>
+      </el-select>
       <langChange />
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
@@ -41,13 +49,25 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import * as jobProjectApi from '@/api/hippo4j-tenant';
+  import * as user from '@/api/hippo4j-user';
+  import { mapGetters, mapState } from 'vuex'
   import Breadcrumb from '@/components/Breadcrumb'
   import Hamburger from '@/components/Hamburger'
   import ErrorLog from '@/components/ErrorLog'
   import langChange from '@/locale/langChange'
+  import { i18nConfig } from '@/locale/config'
 
   export default {
+    data() {
+      return {
+        tenant: {
+          action: '',
+          resource: '',
+          username: ''
+        },
+      }
+    },
     components: {
       Breadcrumb,
       Hamburger,
@@ -58,8 +78,17 @@
       ...mapGetters([
         'sidebar',
         'avatar',
-        'device'
+        'device',
+        'tenantList',
+        'tenantInfo'
       ])
+    },
+    watch: {
+      tenantInfo(newVal) {
+        this.tenant.tenantId = newVal.tenantId
+        this.tenant.resource = newVal.resource
+        console.log("ischangLang", newVal, this.tenantList)
+      }
     },
     methods: {
       toggleSideBar() {
@@ -67,10 +96,69 @@
       },
       async logout() {
         this.$cookie.delete('userName')
+        this.$cookie.delete('tenantInfo')
         await this.$store.dispatch('user/logout')
         this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      },
+      async getTenantList() {
+        const userName = this.$cookie.get('userName')
+        await user
+        .getCurrentUser(userName)
+        .then((response) => {
+          const { resources } = response;
+        console.log("isTenList1", resources, this.tenantList)
+          if (response.role == 'ROLE_ADMIN') {
+            resources.unshift({
+              action: "rw",
+              resource: this.$t('common.allTenant'),
+              username: userName,
+              tenantId: this.$t('common.allTenant'),
+              index: 0,
+            })
+          }
+        console.log("isTenList1111111", this.$t('common.allTenant'), resources, this.tenantList)
+          const resourcesRes = resources.map((item, index) => {
+            let query = {
+              ...item,
+            tenantId: item.resource,
+            index: index,
+            }
+            console.log("=============", index, query, item)
+            return query
+        })
+        console.log("isTenList22222", resourcesRes, this.tenantList)
+          this.$store.dispatch('tenant/setTenantList', resourcesRes)
+          this.tenant = JSON.parse(this.$cookie.get('tenantInfo')) || resourcesRes[0]
+          this.$store.dispatch('tenant/setTenantInfo', this.tenant || resourcesRes[0])
+          this.$cookie.set('tenantInfo', JSON.stringify(this.tenant));
+        console.log("isTenList2", this.tenantList)
+        })
+        .catch(() => {});
+        
+      },
+      async changeTenant(index) {
+        console.log("isTenList", this.tenantList)
+        let tenant = {
+          tenantId: this.tenantList[index].resource,
+          resource: this.tenantList[index].resource,
+          index: this.tenantList[index].index,
+          current: 1,
+          desc: true,
+          size: 10,
+        }
+        this.$store.dispatch('tenant/setTenantInfo', tenant)
+        this.$cookie.set('tenantInfo', JSON.stringify(tenant));
+        let isAllTenant = tenant.tenantId == i18nConfig.messages.zh.common.allTenant || tenant.tenantId == i18nConfig.messages.en.common.allTenant
+        tenant.tenantId = isAllTenant ? '' : tenant.tenantId
+        await jobProjectApi.list(tenant).then((response) => {
+          console.log("isRes", response)
+          // this.$store.dispatch('tenant/setTenantList', resources)
+        });
       }
-    }
+    },
+    async mounted() {
+      this.getTenantList()
+    },
   }
 </script>
 
@@ -112,6 +200,18 @@
       &:focus {
         outline: none;
       }
+
+      ::v-deep  .el-input__inner {
+        border: none;
+        box-shadow: none;
+      }
+
+      .select-tenant {
+        margin-right: 20px;
+        border: 0;
+        width: 150px;
+      }
+
 
       .right-menu-item {
         display: inline-block;

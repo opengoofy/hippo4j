@@ -78,8 +78,6 @@ public class Constants {
 
     public static final String HEALTH_CHECK_PATH = BASE_PATH + "/health/check";
 
-    public static final String PROBE_MODIFY_REQUEST = "Listening-Configs";
-
     public static final String LONG_PULLING_TIMEOUT = "Long-Pulling-Timeout";
 
     public static final String LONG_PULLING_TIMEOUT_NO_HANGUP = "Long-Pulling-Timeout-No-Hangup";
@@ -121,8 +119,6 @@ public class Constants {
     public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
 
     public static final String DEFAULT_GROUP = "default group";
-
-    public static final String UNKNOWN = "unknown";
 
     public static final String EXECUTE_TIMEOUT_TRACE = "executeTimeoutTrace";
 

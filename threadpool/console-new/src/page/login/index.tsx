@@ -1,81 +1,148 @@
-import { Form, Input, Button } from 'antd' 
-import userLogin from '../../API/user'
+import { useCallback, useMemo, useState } from 'react';
+import { Typography, Tabs, TabsProps, Form, Input, Checkbox, Button, message } from 'antd';
+import service from './service';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import style from './index.module.less';
+import { useRequest } from 'ahooks';
+import { encrypt, genKey, setToken } from '@/utils';
+import { useNavigate } from 'react-router-dom';
+import { STR_MAP } from '@/config/i18n/locales/constants';
+import { useTranslation } from 'react-i18next';
 
-const Login = (props: any) => {
-  const data = {
-    passwordType: 'password',
-    capsTooltip: false,
-    loading: false,
-    showDialog: false,
-    redirect: undefined,
-    otherQuery: {},
-    loginForm: {
-      username: '',
-      password: '',
+const { Paragraph } = Typography;
+
+enum TABS_KEY {
+  LOGIN = 'login',
+  PHONE = 'phoneLogin',
+}
+
+const Login = () => {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const { validateFields } = form;
+  const [rememberMe, setRememberMe] = useState(1);
+  const { t } = useTranslation();
+
+  const { run, loading } = useRequest(service.fetchLogin, {
+    manual: true,
+    onSuccess: res => {
+      if (res) {
+        message.success(t(STR_MAP.LOGIN_SUCCESSFUL));
+        navigate('/thread-poll/index');
+        setToken(res?.data);
+      }
     },
-    // loginRules: {
-    //   // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-    //   // password: [{ required: true, trigger: 'blur', validator: this.validatePassword }],
-    // },
-  };
+  });
 
-  const validatePassword = (_: any, value: any) => {
-    if (value.length < 6) {
-      return Promise.reject(new Error('The password can not be less than 6 digits'))
-    } else if (value.length > 72) {
-      return Promise.reject(new Error('The password can not be greater than 72 digits'))
-    }
-    return Promise.resolve()
-  };
-  
-  const [form] = Form.useForm() 
-  const onFinish = () => {
-    let loginParams = {
-      username: form.getFieldValue('username'),
-      password: form.getFieldValue('password'),
-      // username: 'baoxinyi_admin',
-      // password: 'baoxinyi_admin',
-      rememberMe: 1,
-    } 
-    data.loginForm.username = form.getFieldValue('username') 
-    console.log('loginParams: ', loginParams)
+  const handleLogin = useCallback(() => {
+    validateFields()
+      .then(async values => {
+        const { password, username } = values;
+        let key = genKey();
+        let encodePassword = await encrypt(password, key);
+        key = key.split('').reverse().join('');
+        run({
+          password: encodePassword,
+          tag: key,
+          username,
+          rememberMe,
+        });
+      })
+      .catch(err => console.log('err:::', err));
+  }, [validateFields, run, rememberMe]);
 
-    data.loading = true 
-    userLogin(loginParams)
-    .then((resolve: any) => {
-      console.log(resolve)
-      //登录成功后将当前登录用户写入cookie
-      // this.$cookie.set('userName', this.loginForm.username) 
-      // console.log('success submit.') 
-      // this.$router.push({ path: this.redirect || '/', query: this.otherQuery }) 
-      data.loading = false 
-    })
-    .catch((e: any) => {
-      console.log('login error.',e) 
-      data.loading = false 
-    }) 
-  };
-  return (
-    <div className="login-container">
-      <Form name="loginForm" form={form} onFinish={onFinish} style={{ maxWidth: 600 }}>
-        <div className="title-container">
-          <h3 className="title">你好呀</h3>
-          {/* <h3 className="title">{{ $t('system.login') }}</h3> */}
-        </div>
-        <Form.Item name="username" label="用户名" rules={[{ required: true, message: 'Username is required' }]}>
-          <Input placeholder="用户名" />
+  const formNode = useMemo(
+    () => (
+      <Form form={form}>
+        <Form.Item
+          name="username"
+          initialValue={'baoxinyi_user'}
+          rules={[
+            {
+              required: true,
+              message: t(STR_MAP.USER_INPUT_MESSAGE),
+            },
+          ]}
+        >
+          <Input
+            placeholder={t(STR_MAP.USER_INPUT_MESSAGE)}
+            prefix={<UserOutlined className={'prefixIcon'} />}
+            size="large"
+            allowClear
+          ></Input>
         </Form.Item>
-        <Form.Item name="password" label="密码" rules={[{validator: validatePassword}, {required: true, message: 'Street is required'}]}>
-          <Input placeholder="密码" />
+        <Form.Item
+          name="password"
+          initialValue={'baoxinyi_user'}
+          rules={[
+            {
+              required: true,
+              message: t(STR_MAP.PASSWORD_INPUT_MESSAGE),
+            },
+          ]}
+        >
+          <Input.Password
+            placeholder={t(STR_MAP.PASSWORD_INPUT_MESSAGE)}
+            prefix={<LockOutlined className={'prefixIcon'} />}
+            size="large"
+            allowClear
+          ></Input.Password>
         </Form.Item>
-        <Form.Item name="submit">
-          <Button type="primary" htmlType="submit" className="login-button">
-            登录
+        <Form.Item name="rememberMe">
+          <div className={style['login-edit']}>
+            <Checkbox
+              checked={Boolean(rememberMe)}
+              onChange={e => {
+                setRememberMe(Number(e.target.checked));
+              }}
+            >
+              {t(STR_MAP.REMERBER_PASSWORD)}
+            </Checkbox>
+            <a>{t(STR_MAP.FORGOT_PASSWORD)}</a>
+          </div>
+        </Form.Item>
+        <Form.Item>
+          <Button
+            htmlType="submit"
+            type="primary"
+            style={{ width: '100%' }}
+            size="large"
+            onClick={handleLogin}
+            loading={loading}
+          >
+            {t(STR_MAP.LOGIN)}
           </Button>
         </Form.Item>
       </Form>
+    ),
+    [form, loading, rememberMe, handleLogin, t]
+  );
+
+  const items: TabsProps['items'] = [
+    {
+      key: TABS_KEY.LOGIN,
+      label: t(STR_MAP.ACCOUNT_PASSWORD_LOGIN),
+      children: formNode,
+    },
+    {
+      key: TABS_KEY.PHONE,
+      label: t(STR_MAP.PHONE_LOGIN),
+      children: formNode,
+    },
+  ];
+  return (
+    <div className={style['login-wrapper']}>
+      <div className={style['login-bgi']}></div>
+      <div className={style['login-form-wrapper']}>
+        <div className={style['img-wrapper']}>
+          <img src="https://nageoffer.com/img/logo3.png" alt="" />
+        </div>
+        <Paragraph className={style['tip']}>{t(STR_MAP.GLOBAL_TITLE)}</Paragraph>
+        <div className={style['form-content']}>
+          <Tabs centered defaultActiveKey={TABS_KEY.LOGIN} items={items} />
+        </div>
+      </div>
     </div>
   );
 };
-
-export default Login; 
+export default Login;

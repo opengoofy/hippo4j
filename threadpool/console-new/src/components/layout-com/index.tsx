@@ -1,37 +1,76 @@
-import { useState, useContext, ReactNode } from 'react';
+import { useState, useContext, ReactNode, useEffect, useMemo } from 'react';
 import { DefaultTheme, ThemeContext } from 'styled-components';
-import { Layout, Button, Menu } from 'antd';
-import useThemeMode from '@/hooks/useThemeMode';
-import { IMenuList } from '@/typings';
+import { Layout, Menu, MenuProps } from 'antd';
+import HeaderChild from '../header';
 import style from './index.module.less';
+import { useLocation } from 'react-router-dom';
+import classNames from 'classnames';
+type MenuItem = Required<MenuProps>['items'][number];
 
 const { Header, Sider, Content } = Layout;
 
 interface ILayoutCom {
   children?: ReactNode;
-  sideMenuList: IMenuList[];
-  isSider?: boolean;
+  sideMenuList: MenuItem[];
 }
 const LayoutCom = (props: ILayoutCom) => {
-  const { sideMenuList, children, isSider = true } = props;
+  const { sideMenuList, children } = props;
   const myThemes: DefaultTheme = useContext<any>(ThemeContext);
-  const [current, setCurrent] = useState('mail');
+  const [currentKey, setCurrentKey] = useState<string>('');
+
+  const location = useLocation();
+  useEffect(() => {
+    setCurrentKey(location.pathname);
+  }, [location]);
+
   const onClick = (e: any) => {
-    setCurrent(e.key);
+    setCurrentKey(e.key);
   };
-  const [setIsDark] = useThemeMode();
+
+  useEffect(() => {
+    document.body.style.backgroundColor = myThemes.backgroundColor.bg1;
+  }, [myThemes]);
+
+  const isHeader = useMemo(() => {
+    const isHeader = location.pathname !== '/login';
+    return isHeader;
+  }, [location]);
+
+  const isSider = useMemo(() => {
+    const isSider = location.pathname !== '/login';
+    return isSider;
+  }, [location]);
+
   return (
     <main className={style.container} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
-      <Header className={style.header} style={{ backgroundColor: myThemes.backgroundColor.bg2 }}>
-        <Button onClick={() => setIsDark(pre => !pre)}>切换主题</Button>
-      </Header>
-      <Layout style={{ backgroundColor: myThemes.backgroundColor.bg1, height: 'calc(100vh - 64px)' }}>
+      {isHeader && (
+        <Header className={style.header}>
+          <HeaderChild />
+        </Header>
+      )}
+      <Layout
+        style={{
+          backgroundColor: myThemes.backgroundColor.bg1,
+          height: `calc(100vh - ${isHeader ? '64px' : '0px'})`,
+          margin: isHeader ? '10px 10px 0px 0px' : '0px',
+        }}
+      >
         {isSider && (
-          <Sider className={style.sider} style={{ backgroundColor: myThemes.backgroundColor.bg1 }}>
-            <Menu onClick={onClick} selectedKeys={[current]} mode="inline" items={sideMenuList} />
+          <Sider className={style.sider} style={{ backgroundColor: myThemes.backgroundColor.bg1 }} collapsible>
+            <Menu onClick={onClick} selectedKeys={[currentKey]} mode="inline" items={sideMenuList} />
           </Sider>
         )}
-        <Content className={style.content}>{children}</Content>
+        <Content
+          className={classNames(style.content, {
+            [style.pureContent]: location.pathname === '/login',
+          })}
+          style={{
+            backgroundColor: myThemes.backgroundColor.bgContent,
+            height: `calc(100vh - ${isHeader ? '64px' : 0})`,
+          }}
+        >
+          {children}
+        </Content>
       </Layout>
     </main>
   );

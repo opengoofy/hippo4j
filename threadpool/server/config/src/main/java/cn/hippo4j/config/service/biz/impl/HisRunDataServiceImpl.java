@@ -17,13 +17,14 @@
 
 package cn.hippo4j.config.service.biz.impl;
 
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.monitor.Message;
 import cn.hippo4j.common.monitor.MessageWrapper;
 import cn.hippo4j.common.monitor.RuntimeMessage;
+import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.DateUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.MessageConvert;
-import cn.hippo4j.common.model.Result;
 import cn.hippo4j.config.config.ServerBootstrapProperties;
 import cn.hippo4j.config.mapper.HisRunDataMapper;
 import cn.hippo4j.config.model.HisRunDataInfo;
@@ -33,7 +34,6 @@ import cn.hippo4j.config.model.biz.monitor.MonitorRespDTO;
 import cn.hippo4j.config.monitor.QueryMonitorExecuteChoose;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.service.biz.HisRunDataService;
-import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.server.common.base.Results;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_0;
 import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_1;
@@ -84,15 +83,20 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
 
     @Override
     public MonitorActiveRespDTO queryInfoThreadPoolMonitor(MonitorQueryReqDTO reqDTO) {
-        LocalDateTime currentDate = LocalDateTime.now();
-        LocalDateTime dateTime = currentDate.plusMinutes(-properties.getCleanHistoryDataPeriod());
-        long startTime = DateUtil.getTime(dateTime);
+        Long startTime = reqDTO.getStartTime();
+        Long endTime = reqDTO.getEndTime();
+        if (startTime == null || endTime == null) {
+            LocalDateTime currentDate = LocalDateTime.now();
+            LocalDateTime dateTime = currentDate.plusMinutes(-properties.getCleanHistoryDataPeriod());
+            startTime = DateUtil.getTime(dateTime);
+            endTime = DateUtil.getTime(currentDate);
+        }
         List<HisRunDataInfo> hisRunDataInfos = this.lambdaQuery()
                 .eq(HisRunDataInfo::getTenantId, reqDTO.getTenantId())
                 .eq(HisRunDataInfo::getItemId, reqDTO.getItemId())
                 .eq(HisRunDataInfo::getTpId, reqDTO.getTpId())
                 .eq(HisRunDataInfo::getInstanceId, reqDTO.getInstanceId())
-                .between(HisRunDataInfo::getTimestamp, startTime, DateUtil.getTime(currentDate))
+                .between(HisRunDataInfo::getTimestamp, startTime, endTime)
                 .orderByAsc(HisRunDataInfo::getTimestamp)
                 .list();
         List<String> times = new ArrayList<>();
@@ -100,34 +104,48 @@ public class HisRunDataServiceImpl extends ServiceImpl<HisRunDataMapper, HisRunD
         List<Long> activeSizeList = new ArrayList<>();
         List<Long> queueCapacityList = new ArrayList<>();
         List<Long> queueSizeList = new ArrayList<>();
+        List<Long> rangeCompletedTaskCountList = new ArrayList<>();
         List<Long> completedTaskCountList = new ArrayList<>();
+        List<Long> rangeRejectCountList = new ArrayList<>();
         List<Long> rejectCountList = new ArrayList<>();
         List<Long> queueRemainingCapacityList = new ArrayList<>();
-        List<Long> currentLoadList = new ArrayList<>();
-        long countTemp = 0L;
-        AtomicBoolean firstFlag = new AtomicBoolean(Boolean.TRUE);
+        long completedTaskCountTemp = 0L;
+        long rejectCountTemp = 0L;
+        boolean firstFlag = true;
         for (HisRunDataInfo each : hisRunDataInfos) {
             String time = DateUtil.format(new Date(each.getTimestamp()), NORM_TIME_PATTERN);
             times.add(time);
             poolSizeList.add(each.getPoolSize());
             activeSizeList.add(each.getActiveSize());
             queueSizeList.add(each.getQueueSize());
-            rejectCountList.add(each.getRejectCount());
             queueRemainingCapacityList.add(each.getQueueRemainingCapacity());
-            currentLoadList.add(each.getCurrentLoad());
             queueCapacityList.add(each.getQueueCapacity());
-            if (firstFlag.get()) {
+            if (firstFlag) {
+                firstFlag = false;
                 completedTaskCountList.add(0L);
-                firstFlag.set(Boolean.FALSE);
-                countTemp = each.getCompletedTaskCount();
+                completedTaskCountTemp = each.getCompletedTaskCount();
+                rejectCountTemp = each.getRejectCount();
                 continue;
             }
-            long completedTaskCount = each.getCompletedTaskCount();
-            long countTask = completedTaskCount - countTemp;
-            completedTaskCountList.add(countTask);
-            countTemp = each.getCompletedTaskCount();
+            rangeCompletedTaskCountList.add(each.getCompletedTaskCount() - completedTaskCountTemp);
+            completedTaskCountList.add(each.getCompletedTaskCount());
+            rangeRejectCountList.add(each.getRejectCount() - rejectCountTemp);
+            rejectCountList.add(each.getRejectCount());
+            completedTaskCountTemp = each.getCompletedTaskCount();
+            rejectCountTemp = each.getRejectCount();
         }
-        return new MonitorActiveRespDTO(times, poolSizeList, activeSizeList, queueSizeList, completedTaskCountList, rejectCountList, queueRemainingCapacityList, currentLoadList, queueCapacityList);
+        return MonitorActiveRespDTO.builder()
+                .times(times)
+                .poolSizeList(poolSizeList)
+                .activeSizeList(activeSizeList)
+                .queueSizeList(queueSizeList)
+                .queueCapacityList(queueCapacityList)
+                .rangeRejectCountList(rangeRejectCountList)
+                .rejectCountList(rejectCountList)
+                .completedTaskCountList(completedTaskCountList)
+                .rangeCompletedTaskCountList(rangeCompletedTaskCountList)
+                .queueRemainingCapacityList(queueRemainingCapacityList)
+                .build();
     }
 
     @Override

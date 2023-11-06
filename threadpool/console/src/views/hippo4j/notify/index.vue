@@ -2,21 +2,6 @@
   <div class="app-container">
     <div class="filter-container">
       <el-select
-        v-model="listQuery.tenantId"
-        :placeholder="$t('tenantManage.tenant')"
-        style="width: 220px"
-        filterable
-        class="filter-item"
-        @change="tenantSelectList()"
-      >
-        <el-option
-          v-for="item in tenantOptions"
-          :key="item.key"
-          :label="item.display_name"
-          :value="item.key"
-        />
-      </el-select>
-      <el-select
         v-model="listQuery.itemId"
         :placeholder="$t('projectManage.item')"
         style="width: 220px"
@@ -307,6 +292,8 @@ import * as notifyApi from '@/api/hippo4j-notify';
 import * as threadPoolApi from '@/api/hippo4j-threadPool';
 import waves from '@/directive/waves';
 import Pagination from '@/components/Pagination';
+import { mapGetters } from 'vuex';
+import { i18nConfig } from '@/locale/config'
 
 export default {
   name: 'JobProject',
@@ -392,6 +379,9 @@ export default {
     };
   },
   computed:{
+    ...mapGetters([
+      'tenantInfo'
+    ]),
     rules(){
       return{
         tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
@@ -407,13 +397,22 @@ export default {
       }
     },
   },
+  watch: {
+    tenantInfo(newVal, oldVal) {
+      this.listQuery.tenantId = newVal.tenantId;
+      this.fetchData()
+    }
+  },
   created() {
     this.fetchData();
     // 初始化租户、项目
-    this.initSelect();
+    this.tenantSelectList();
   },
   methods: {
     fetchData() {
+      this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
+      let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+      this.listQuery.tenantId = isAllTenant ? undefined : this.listQuery.tenantId
       this.listLoading = true;
       notifyApi.list(this.listQuery).then((response) => {
         const { records } = response;
@@ -421,6 +420,8 @@ export default {
         this.total = total;
         this.list = records;
         this.listLoading = false;
+      }).catch((err) => {
+        console.log("isAError", err)
       });
     },
     initSelect() {

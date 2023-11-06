@@ -1,84 +1,81 @@
-import React from "react";
-import { Icon } from "@iconify/react";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import GithubInfo from "./GithubInfo";
-import Translate, { translate } from "@docusaurus/Translate";
-import Link from "@docusaurus/Link";
-
+import React from 'react';
+import { useEffect } from 'react';
+import { Icon } from '@iconify/react';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import GithubInfo from './GithubInfo';
+import Translate, { translate } from '@docusaurus/Translate';
+import Link from '@docusaurus/Link';
 const Hero = () => {
   return (
-    <div className="hero-container text-black dark:text-white">
-      <div className="py-10 mb-10">
-        <div className="container px-20 lg:px-20 md:px-10  mx-auto flex flex-wrap flex-col md:flex-row items-center">
-          {/* <!--Left Col--> */}
-          <div className="flex flex-col w-full md:w-3/5 justify-center items-start text-center md:text-left">
-            {/* title and desc */}
-            <div>
-              <h1 className="my-4 lg:my-8 md:my-6 text-5xl font-bold leading-tight text-transparent bg-gradient-to-r from-orange-400 via-orange-400 to-orange-500 bg-clip-text">
-                Hippo4j
-              </h1>
-
-              <p className="leading-normal dark:text-white font-bold text-gray-800 md:pr-20 text-3xl md:text-3xl">
-                <Translate
-                  id="homepage.titleDescription1"
-                  description="The homepage title description"
-                >
-                  Thread Pool Framework For Java
-                </Translate>
-              </p>
-              <p className="leading-normal font-medium md:pr-20 text-gray-600 dark:text-gray-100 text-2xl mb-2">
-                <Translate
-                  id="homepage.titleDescription2"
-                  description="The homepage title description"
-                >
-                  Enhancing the Operational Assurance Capability for Business
-                  Systems Online.
-                </Translate>
-              </p>
-            </div>
-
-            {/* button group */}
-            <div className="flex my-4 lg:my-8 md:my-6  w-full justify-center md:justify-start">
-              <Link to="/docs/user_docs/intro" className="">
-                <button className="mr-2 lg:mr-4 text-base lg:text-lg w-32 lg:w-40 hover:bg-orange-500 bg-orange-400 font-medium  py-2 px-4 rounded-md focus:outline-none shadow-none border-none cursor-pointer transition-all duration-300 ease-in-out">
-                  <Translate
-                    className="cursor-pointer"
-                    id="homepage.startButton"
-                    description="The homepage start button text"
-                  >
-                    Quick Start
-                  </Translate>
-                </button>
-              </Link>
-              <a href="https://github.com/opengoofy/hippo4j">
-                <button className="ml-2 lg:mx-0 w-32 lg:w-40 border border-solid dark:border-gray-100 border-gray-200 bg-transparent hover:bg-gray-300 hover:bg-opacity-50 font-medium py-2 px-4 rounded-md focus:outline-none shadow-none cursor-pointer transition-all duration-300 ease-in-out">
-                  <div className="flex cursor-pointer items-center justify-center">
-                    <Icon
-                      className="w-6 h-6 mr-2 rounded-full flex-shrink-0 dark:bg-white"
-                      icon="devicon:github"
-                    />
-                    <span className="text-base lg:text-lg">GitHub</span>
-                  </div>
-                </button>
-              </a>
-            </div>
-            {/* github info */}
-            <div className="github-info w-full">
+    <header className="hero hero--primary heroBanner_UJJx dark:bg-[#1B1B1D]">
+      <div className="my-container dark:text-white">
+        <div className="row">
+          <div className="col col--6">
+            <h1 className="hero__logo text-5xl font-medium dark:text-white">
+              Hippo4j Thread Pool
+            </h1>
+            <p className="hero__subtitle">
+              <Translate
+                id="homepage.titleDescription2"
+                description="The homepage title description"
+              >
+                Enhancing the Operational Assurance Capability for Business
+                Systems Online.
+              </Translate>
+            </p>
+            <div className="social_VnSH">
               <GithubInfo owner="opengoofy" repo="hippo4j" />
             </div>
-          </div>
+            <div className="buttons_pzbO">
+              {/* button group */}
+              <div className="flex  w-full justify-center">
+                <Link
+                  to="/docs/user_docs/intro"
+                  className="relative mr-4 w-32 text-center lg:w-48 hover:no-underline inline-flex items-center justify-start py-4  overflow-hidden font-semibold text-white transition-all duration-150 ease-in-out rounded  bg-blue-500 group"
+                >
+                  <span className="absolute bottom-0 left-0 w-full h-1 transition-all duration-150 ease-in-out bg-blue-600 group-hover:h-full"></span>
 
-          {/* <!--Right image--> */}
-          <div className="w-full md:w-2/5 text-center">
-            <img
-              className="w-full h-auto object-cover md:shadow-sm lg:h-80 md:h-96 dark:rounded-lg dark:shadow-lg dark:filter-brightness-75"
-              src={useBaseUrl("/img/hero.svg")}
-              alt="Hippo4j System"
-            />
+                  <span className="relative w-full text-center transition-colors duration-200 ease-in-out group-hover:text-white">
+                    Start Learning
+                  </span>
+                </Link>
+
+                <a
+                  href="https://github.com/opengoofy/hippo4j"
+                  className="relative w-32 hover:no-underline lg:w-48 inline-block text-lg group"
+                >
+                  <span className="relative z-10 block px-5 py-4 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
+                    <span className="absolute inset-0 w-full h-full px-5 py-4 rounded-lg bg-gray-100"></span>
+                    <span className="absolute left-0 w-52 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
+                    <span className="relative flex items-center justify-center">
+                      {' '}
+                      <Icon
+                        className="w-6 h-6 mr-2 rounded-full flex-shrink-0 bg-white text-white"
+                        icon="devicon:github"
+                      />
+                      Github
+                    </span>
+                  </span>
+                  <span
+                    className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
+                    data-rounded="rounded-lg"
+                  ></span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="col col--6">
+            <h1 className="hero__title">
+              <img
+                className="homeImg_cEyn max-w-[440px] mt-12 -ml-8"
+                src={useBaseUrl('/img/hero/hero-removebg.png')}
+                alt="homepage"
+              />
+            </h1>
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

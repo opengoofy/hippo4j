@@ -31,6 +31,7 @@
     <el-table
       v-loading="listLoading"
       :data="list"
+      :key="tableIsChange"
       border
       highlight-current-row
       element-loading-text="Loading"
@@ -134,6 +135,8 @@
 import * as jobProjectApi from '@/api/hippo4j-tenant';
 import waves from '@/directive/waves';
 import Pagination from '@/components/Pagination';
+import { mapGetters } from 'vuex';
+import { i18nConfig } from '@/locale/config'
 
 export default {
   name: 'JobProject',
@@ -167,6 +170,7 @@ export default {
         tenantId: '',
         desc: true,
       },
+      tableIsChange: false,
       pluginTypeOptions: ['reader', 'writer'],
       dialogPluginVisible: false,
       pluginData: [],
@@ -187,7 +191,16 @@ export default {
       visible: true,
     };
   },
+  watch: {
+    tenantInfo(newVal, oldVal) {
+      this.listQuery.tenantId = newVal.tenantId;
+      this.fetchData()
+    }
+  },
   computed:{
+    ...mapGetters([
+      'tenantInfo'
+    ]),
     rules(){
       return{
         tenantId: [{ required: true, message: this.$t('message.requiredError'), trigger: 'blur' }],
@@ -209,6 +222,9 @@ export default {
   },
   methods: {
     fetchData() {
+      this.listQuery.tenantId = this?.tenantInfo?.tenantId || this.listQuery.tenantId
+      let isAllTenant = this.listQuery.tenantId == i18nConfig.messages.zh.common.allTenant || this.listQuery.tenantId == i18nConfig.messages.en.common.allTenant
+      this.listQuery.tenantId = isAllTenant ? '' : this.listQuery.tenantId
       this.listLoading = true;
       jobProjectApi.list(this.listQuery).then((response) => {
         const { records } = response;

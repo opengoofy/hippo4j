@@ -23,6 +23,7 @@ import cn.hippo4j.core.config.ConfigEmptyException;
 import cn.hippo4j.threadpool.dynamic.api.BootstrapPropertiesInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -113,6 +114,68 @@ public class BeforeCheckConfiguration {
                             throw new ConfigEmptyException(
                                     "Web server failed to start. The dynamic thread pool apollo namespace is empty.",
                                     "Please check whether the [spring.dynamic.thread-pool.apollo.namespace] configuration is empty or an empty string.");
+                        }
+                    }
+
+                    Map<String, String> zookeeper = properties.getZookeeper();
+                    if (MapUtil.isNotEmpty(zookeeper)) {
+                        String zkConnectStr = zookeeper.get("zk-connect-str");
+                        if ((StringUtil.isBlank(zkConnectStr))) {
+                            throw new ConfigEmptyException(
+                                    "Web server failed to start. The dynamic thread pool zookeeper zk-connect-str is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.zookeeper.zk-connect-str] configuration is empty or an empty string.");
+                        }
+                        String configVersion = zookeeper.get("config-version");
+                        if ((StringUtil.isBlank(configVersion))) {
+                            throw new ConfigEmptyException(
+                                    "Web server failed to start. The dynamic thread pool zookeeper config-version is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.zookeeper.config-version] configuration is empty or an empty string.");
+                        }
+                        String rootNode = zookeeper.get("root-node");
+                        if ((StringUtil.isBlank(rootNode))) {
+                            throw new ConfigEmptyException(
+                                    "Web server failed to start. The dynamic thread pool zookeeper root-node is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.zookeeper.root-node] configuration is empty or an empty string.");
+                        }
+                        String node = zookeeper.get("node");
+                        if ((StringUtil.isBlank(node))) {
+                            throw new ConfigEmptyException(
+                                    "Web server failed to start. The dynamic thread pool zookeeper node is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.zookeeper.node] configuration is empty or an empty string.");
+                        }
+                    }
+
+                    Map<String, Object> polaris = properties.getPolaris();
+                    if (MapUtil.isNotEmpty(polaris)) {
+                        String namespace = polaris.get("namespace").toString();
+                        if (StringUtil.isBlank(namespace)) {
+                            throw new ConfigEmptyException(
+                                    "Web server maybe fail to start. The dynamic thread pool polaris namespace is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.polaris.namespace] configuration is empty or an empty string.");
+                        }
+                        if (!(polaris.get("file") instanceof Map)) {
+                            throw new ConfigEmptyException(
+                                    "Web server maybe fail to start. Lack of the dynamic thread pool polaris file configuration.",
+                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.*] configuration is complete.");
+                        }
+                        Map<String, String> polarisFile = (Map<String, String>) polaris.get("file");
+                        String fileGroup = polarisFile.get("group");
+                        if (StringUtil.isBlank(fileGroup)) {
+                            throw new ConfigEmptyException(
+                                    "Web server maybe fail to start. The dynamic thread pool polaris file group is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.group] configuration is empty or an empty string.");
+                        }
+                        String fileName = polarisFile.get("name");
+                        if (StringUtil.isBlank(fileName)) {
+                            throw new ConfigEmptyException(
+                                    "Web server maybe fail to start. The dynamic thread pool polaris file name is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.name] configuration is empty or an empty string.");
+                        }
+                        String fileType = polarisFile.get("type");
+                        if (StringUtil.isBlank(fileType)) {
+                            throw new ConfigEmptyException(
+                                    "Web server maybe fail to start. The dynamic thread pool polaris file type is empty.",
+                                    "Please check whether the [spring.dynamic.thread-pool.polaris.file.type] configuration is empty or an empty string.");
                         }
                     }
                     break;
