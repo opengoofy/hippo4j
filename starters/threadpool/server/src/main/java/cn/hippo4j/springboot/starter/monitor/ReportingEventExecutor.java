@@ -59,13 +59,10 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class ReportingEventExecutor implements Runnable, CommandLineRunner, DisposableBean {
 
-    @NonNull
     private final BootstrapProperties properties;
 
-    @NonNull
     private final MessageSender messageSender;
 
-    @NonNull
     private final ServerHealthCheck serverHealthCheck;
 
     /**
