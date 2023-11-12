@@ -24,12 +24,12 @@ import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
 import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.extension.design.Observer;
 import cn.hippo4j.common.extension.design.ObserverMessage;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.common.model.executor.ExecutorProperties;
 import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +46,7 @@ import static cn.hippo4j.common.constant.ChangeThreadPoolConstants.CHANGE_THREAD
 @RequiredArgsConstructor
 public class DynamicThreadPoolRefreshListener implements Observer<BootstrapConfigProperties> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicThreadPoolRefreshListener.class);
+    private static final ILog LOG = LogManager.getLogger(DynamicThreadPoolRefreshListener.class);
 
     @Override
     public void accept(ObserverMessage<BootstrapConfigProperties> observerMessage) {
@@ -127,15 +127,14 @@ public class DynamicThreadPoolRefreshListener implements Observer<BootstrapConfi
                 ResizableCapacityLinkedBlockingQueue<?> queue = (ResizableCapacityLinkedBlockingQueue<?>) executor.getQueue();
                 queue.setCapacity(properties.getQueueCapacity());
             } else {
-                LOGGER.warn("The queue length cannot be modified. Queue type mismatch. Current queue type: {}", executor.getQueue().getClass().getSimpleName());
+                LOG.warn("The queue length cannot be modified. Queue type mismatch. Current queue type: {}", executor.getQueue().getClass().getSimpleName());
             }
         }
     }
 
     private void sendChangeNotificationMessage(ThreadPoolExecutorHolder executorHolder, ExecutorProperties properties) {
         ExecutorProperties executorProperties = executorHolder.getExecutorProperties();
-        // TODO log cannot be printed
-        LOGGER.info(CHANGE_THREAD_POOL_TEXT,
+        LOG.info(CHANGE_THREAD_POOL_TEXT,
                 executorHolder.getThreadPoolId(),
                 String.format(CHANGE_DELIMITER, executorProperties.getCorePoolSize(), properties.getCorePoolSize()),
                 String.format(CHANGE_DELIMITER, executorProperties.getMaximumPoolSize(), properties.getMaximumPoolSize()),

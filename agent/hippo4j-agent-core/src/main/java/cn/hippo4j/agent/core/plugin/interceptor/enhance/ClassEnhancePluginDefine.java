@@ -17,20 +17,16 @@
 
 package cn.hippo4j.agent.core.plugin.interceptor.enhance;
 
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.AbstractClassEnhancePluginDefine;
 import cn.hippo4j.agent.core.plugin.EnhanceContext;
 import cn.hippo4j.agent.core.plugin.PluginException;
 import cn.hippo4j.agent.core.plugin.bootstrap.BootstrapInstrumentBoost;
-import cn.hippo4j.agent.core.plugin.interceptor.ConstructorInterceptPoint;
-import cn.hippo4j.agent.core.plugin.interceptor.DeclaredInstanceMethodsInterceptPoint;
-import cn.hippo4j.agent.core.plugin.interceptor.EnhanceException;
-import cn.hippo4j.agent.core.plugin.interceptor.InstanceMethodsInterceptPoint;
-import cn.hippo4j.agent.core.plugin.interceptor.StaticMethodsInterceptPoint;
+import cn.hippo4j.agent.core.plugin.interceptor.*;
 import cn.hippo4j.agent.core.plugin.interceptor.v2.InstanceMethodsInterceptV2Point;
 import cn.hippo4j.agent.core.plugin.interceptor.v2.StaticMethodsInterceptV2Point;
 import cn.hippo4j.agent.core.util.StringUtil;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;

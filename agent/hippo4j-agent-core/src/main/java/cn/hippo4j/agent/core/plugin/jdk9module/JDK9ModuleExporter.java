@@ -17,8 +17,8 @@
 
 package cn.hippo4j.agent.core.plugin.jdk9module;
 
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.ByteBuddyCoreClasses;
 import net.bytebuddy.agent.builder.AgentBuilder;
 

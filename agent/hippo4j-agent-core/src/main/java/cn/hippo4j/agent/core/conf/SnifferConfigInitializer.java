@@ -17,15 +17,17 @@
 
 package cn.hippo4j.agent.core.conf;
 
-import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
-import cn.hippo4j.agent.core.boot.AgentPackagePath;
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
-import cn.hippo4j.agent.core.logging.core.JsonLogResolver;
-import cn.hippo4j.agent.core.logging.core.PatternLogResolver;
-import cn.hippo4j.agent.core.util.ConfigInitializer;
-import cn.hippo4j.agent.core.util.PropertyPlaceholderHelper;
-import cn.hippo4j.agent.core.util.StringUtil;
+import cn.hippo4j.common.boot.AgentPackageNotFoundException;
+import cn.hippo4j.common.boot.AgentPackagePath;
+import cn.hippo4j.common.conf.Config;
+import cn.hippo4j.common.conf.ConfigNotFoundException;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
+import cn.hippo4j.common.logging.core.JsonLogResolver;
+import cn.hippo4j.common.logging.core.PatternLogResolver;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.agent.ConfigInitializer;
+import cn.hippo4j.common.toolkit.agent.PropertyPlaceholderHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static cn.hippo4j.agent.core.conf.Constants.SERVICE_NAME_PART_CONNECTOR;
+import static cn.hippo4j.common.conf.Constants.SERVICE_NAME_PART_CONNECTOR;
 
 /**
  * The <code>SnifferConfigInitializer</code> initializes all configs in several way.
@@ -204,7 +206,7 @@ public class SnifferConfigInitializer {
      *
      * @return the config file {@link InputStream}, or null if not needEnhance.
      */
-    private static InputStreamReader loadConfig() throws AgentPackageNotFoundException, ConfigNotFoundException {
+    private static InputStreamReader loadConfig() throws AgentPackageNotFoundException, cn.hippo4j.common.conf.ConfigNotFoundException {
         String specifiedConfigPath = System.getProperty(SPECIFIED_CONFIG_PATH);
         File configFile = StringUtil.isEmpty(specifiedConfigPath) ? new File(
                 AgentPackagePath.getPath(), DEFAULT_CONFIG_FILE_NAME) : new File(specifiedConfigPath);

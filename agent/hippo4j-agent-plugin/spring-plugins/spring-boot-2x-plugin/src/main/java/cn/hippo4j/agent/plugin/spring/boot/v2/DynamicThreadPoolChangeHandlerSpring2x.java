@@ -17,8 +17,8 @@
 
 package cn.hippo4j.agent.plugin.spring.boot.v2;
 
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.agent.plugin.spring.common.conf.SpringBootConfig;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.refresher.AbstractConfigThreadPoolDynamicRefresh;

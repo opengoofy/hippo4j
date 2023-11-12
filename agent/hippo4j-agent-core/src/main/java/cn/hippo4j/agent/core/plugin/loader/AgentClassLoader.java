@@ -17,16 +17,16 @@
 
 package cn.hippo4j.agent.core.plugin.loader;
 
-import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
 import cn.hippo4j.agent.core.boot.AgentPackagePath;
 import cn.hippo4j.agent.core.boot.PluginConfig;
-import cn.hippo4j.agent.core.boot.SpringBootConfigNode;
 import cn.hippo4j.agent.core.boot.SpringBootConfigInitializer;
-import cn.hippo4j.agent.core.conf.Config;
+import cn.hippo4j.agent.core.boot.SpringBootConfigNode;
 import cn.hippo4j.agent.core.conf.SnifferConfigInitializer;
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.PluginBootstrap;
+import cn.hippo4j.common.boot.AgentPackageNotFoundException;
+import cn.hippo4j.common.conf.Config;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 import lombok.RequiredArgsConstructor;
 
 import java.io.BufferedInputStream;
@@ -62,7 +62,7 @@ public class AgentClassLoader extends ClassLoader {
     private static AgentClassLoader DEFAULT_LOADER;
 
     private List<File> classpath;
-    private List<Jar> allJars;
+    private static List<Jar> allJars;
     private ReentrantLock jarScanLock = new ReentrantLock();
 
     public static AgentClassLoader getDefault() {
@@ -192,7 +192,6 @@ public class AgentClassLoader extends ClassLoader {
                 jarScanLock.unlock();
             }
         }
-
         return allJars;
     }
 
