@@ -20,7 +20,12 @@ package cn.hippo4j.agent.bootstrap;
 import cn.hippo4j.agent.core.boot.ServiceManager;
 import cn.hippo4j.agent.core.conf.SnifferConfigInitializer;
 import cn.hippo4j.agent.core.jvm.LoadedLibraryCollector;
-import cn.hippo4j.agent.core.plugin.*;
+import cn.hippo4j.agent.core.plugin.AbstractClassEnhancePluginDefine;
+import cn.hippo4j.agent.core.plugin.EnhanceContext;
+import cn.hippo4j.agent.core.plugin.InstrumentDebuggingClass;
+import cn.hippo4j.agent.core.plugin.PluginBootstrap;
+import cn.hippo4j.agent.core.plugin.PluginException;
+import cn.hippo4j.agent.core.plugin.PluginFinder;
 import cn.hippo4j.agent.core.plugin.bootstrap.BootstrapInstrumentBoost;
 import cn.hippo4j.agent.core.plugin.bytebuddy.CacheableTransformerDecorator;
 import cn.hippo4j.agent.core.plugin.jdk9module.JDK9ModuleExporter;
@@ -44,7 +49,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
+import static net.bytebuddy.matcher.ElementMatchers.nameContains;
+import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
+import static net.bytebuddy.matcher.ElementMatchers.not;
 
 /**
  * Hippo4j Agent

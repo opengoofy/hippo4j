@@ -19,7 +19,11 @@ package cn.hippo4j.common.toolkit.agent;
 
 import cn.hippo4j.common.toolkit.StringUtil;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Utility class for working with Strings that have placeholder values in them. A placeholder takes the form {@code
