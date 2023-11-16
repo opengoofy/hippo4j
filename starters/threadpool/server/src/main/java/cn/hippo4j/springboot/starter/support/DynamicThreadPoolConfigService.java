@@ -62,7 +62,6 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
     @Override
     public ThreadPoolExecutor registerDynamicThreadPool(DynamicThreadPoolRegisterWrapper registerWrapper) {
         ThreadPoolExecutor dynamicThreadPoolExecutor = registerExecutor(registerWrapper);
-        subscribeConfig(registerWrapper);
         putNotifyAlarmConfig(registerWrapper);
         return dynamicThreadPoolExecutor;
     }
