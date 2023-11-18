@@ -166,7 +166,6 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
     private void checkNotifyConsistencyAndReplace(ExecutorProperties executorProperties) {
         boolean checkNotifyConfig = false;
         boolean checkNotifyAlarm = false;
-        List<String> changeKeys = new ArrayList<>();
         Map<String, List<NotifyConfigDTO>> newDynamicThreadPoolNotifyMap =
                 configModeNotifyConfigBuilder.buildSingleNotifyConfig(executorProperties);
         Map<String, List<NotifyConfigDTO>> notifyConfigs = threadPoolBaseSendMessageService.getNotifyConfigs();
@@ -179,7 +178,6 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
                 for (NotifyConfigDTO notifyConfig : each.getValue()) {
                     if (!notifyConfigDTOS.contains(notifyConfig)) {
                         checkNotifyConfig = true;
-                        changeKeys.add(each.getKey());
                         break;
                     }
                 }
