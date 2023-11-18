@@ -194,10 +194,9 @@ public class DynamicThreadPoolRefreshListener extends AbstractRefreshListener<Ex
             Boolean isAlarm = executorProperties.getAlarm();
             Integer activeAlarm = executorProperties.getActiveAlarm();
             Integer capacityAlarm = executorProperties.getCapacityAlarm();
-            // FIXME Compare using Objects.equals
-            if ((isAlarm != null && isAlarm != threadPoolNotifyAlarm.getAlarm())
-                    || (activeAlarm != null && activeAlarm != threadPoolNotifyAlarm.getActiveAlarm())
-                    || (capacityAlarm != null && capacityAlarm != threadPoolNotifyAlarm.getCapacityAlarm())) {
+            if ((isAlarm != null && !Objects.equals(isAlarm,threadPoolNotifyAlarm.getAlarm()))
+                    || (activeAlarm != null && !Objects.equals(activeAlarm,threadPoolNotifyAlarm.getActiveAlarm()))
+                    || (capacityAlarm != null && !Objects.equals(capacityAlarm,threadPoolNotifyAlarm.getCapacityAlarm()))) {
                 checkNotifyAlarm = true;
                 threadPoolNotifyAlarm.setAlarm(Optional.ofNullable(isAlarm).orElse(threadPoolNotifyAlarm.getAlarm()));
                 threadPoolNotifyAlarm.setActiveAlarm(Optional.ofNullable(activeAlarm).orElse(threadPoolNotifyAlarm.getActiveAlarm()));
