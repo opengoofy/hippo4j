@@ -90,6 +90,10 @@ public class ReportingEventExecutor implements Runnable, CommandLineRunner, Disp
      */
     private ScheduledThreadPoolExecutor collectVesselExecutor;
 
+    static {
+        ServiceLoaderRegistry.register(ThreadPoolMonitor.class);
+    }
+
     @SneakyThrows
     @Override
     public void run() {

@@ -24,7 +24,6 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.MonitorProperties;
-import cn.hippo4j.threadpool.monitor.api.DynamicThreadPoolMonitor;
 import cn.hippo4j.threadpool.monitor.api.ThreadPoolMonitor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +52,10 @@ public class ThreadPoolMonitorExecutor implements ApplicationRunner, DisposableB
 
     private List<ThreadPoolMonitor> threadPoolMonitors;
 
+    static {
+        ServiceLoaderRegistry.register(ThreadPoolMonitor.class);
+    }
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         MonitorProperties monitor = properties.getMonitor();
@@ -70,8 +73,8 @@ public class ThreadPoolMonitorExecutor implements ApplicationRunner, DisposableB
         // Get dynamic thread pool monitoring component.
         List<String> collectTypes = Arrays.asList(monitor.getCollectTypes().split(","));
         ApplicationContextHolder.getBeansOfType(ThreadPoolMonitor.class).forEach((beanName, bean) -> threadPoolMonitors.add(bean));
-        Collection<DynamicThreadPoolMonitor> dynamicThreadPoolMonitors =
-                ServiceLoaderRegistry.getSingletonServiceInstances(DynamicThreadPoolMonitor.class);
+        Collection<ThreadPoolMonitor> dynamicThreadPoolMonitors =
+                ServiceLoaderRegistry.getSingletonServiceInstances(ThreadPoolMonitor.class);
         dynamicThreadPoolMonitors.stream().filter(each -> collectTypes.contains(each.getType())).forEach(each -> threadPoolMonitors.add(each));
         // Execute dynamic thread pool monitoring component.
         collectScheduledExecutor.scheduleWithFixedDelay(
