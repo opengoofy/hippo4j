@@ -234,6 +234,8 @@ public class ConfigServiceImpl implements ConfigService {
             synchronized (ConfigService.class) {
                 ConfigAllInfo configAllInfo = configInfoMapper.selectOne(
                         Wrappers.lambdaQuery(ConfigAllInfo.class)
+                                .eq(ConfigAllInfo::getTenantId, config.getTenantId())
+                                .eq(ConfigAllInfo::getItemId, config.getItemId())
                                 .eq(ConfigAllInfo::getTpId, config.getTpId())
                                 .eq(ConfigAllInfo::getDelFlag, DelEnum.NORMAL.getIntCode()));
                 Assert.isNull(configAllInfo, "线程池配置已存在");
