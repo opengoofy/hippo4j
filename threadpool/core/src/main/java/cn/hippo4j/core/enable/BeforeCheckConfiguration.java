@@ -46,7 +46,7 @@ public class BeforeCheckConfiguration {
         // TODO test
         boolean checkFlag = properties != null && properties.getEnable();
         if (checkFlag) {
-            String propertiesClassName = properties.getClass().getName();
+            String propertiesClassName = properties.getClass().getSuperclass() == Object.class ? properties.getClass().getName() : properties.getClass().getSuperclass().getName();
             switch (propertiesClassName) {
                 case bootstrapPropertiesClassName: {
                     String namespace = properties.getNamespace();
