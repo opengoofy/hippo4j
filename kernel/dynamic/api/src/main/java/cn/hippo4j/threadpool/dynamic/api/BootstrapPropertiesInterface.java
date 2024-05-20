@@ -114,5 +114,4 @@ public interface BootstrapPropertiesInterface {
     default Map<String, String> getConsul() {
         return null;
     }
-
 }
