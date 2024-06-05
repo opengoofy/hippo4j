@@ -41,6 +41,8 @@ public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
 
     private static final int INITIAL_CAPACITY = 64;
 
+    private static final String DEFAULT_CONTEXT = "spring.cloud.consul.config.default-context";
+
     @EventListener(EnvironmentChangeEvent.class)
     public void refreshed(EnvironmentChangeEvent event) {
         Map<String, Object> configInfo = extractLatestConfigInfo(event);
@@ -70,7 +72,7 @@ public class ConsulRefresherHandler extends AbstractConfigThreadPoolDynamicRefre
     private CharSequence getApplicationConfigDefaultContext(AbstractEnvironment environment) {
         return environment.getPropertySources().stream()
                 .filter(propertySource -> propertySource instanceof OriginTrackedMapPropertySource)
-                .map(propertySource -> ((Map<String, CharSequence>) propertySource.getSource()).get("spring.cloud.consul.config.default-context"))
+                .map(propertySource -> ((Map<String, CharSequence>) propertySource.getSource()).get(DEFAULT_CONTEXT))
                 .findFirst().orElse(StringUtils.EMPTY);
     }
 
