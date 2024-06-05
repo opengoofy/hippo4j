@@ -48,7 +48,7 @@
         <maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
         <maven-shade-plugin.version>3.1.1</maven-shade-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
-        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
         <maven-resource-plugin.version>3.1.0</maven-resource-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <versions-maven-plugin.version>2.5</versions-maven-plugin.version>

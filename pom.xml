@@ -67,7 +67,7 @@
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+        <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
         <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
@@ -120,7 +120,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
