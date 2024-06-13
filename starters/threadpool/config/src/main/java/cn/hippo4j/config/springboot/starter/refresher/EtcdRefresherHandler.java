@@ -77,12 +77,10 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
             public void onNext(WatchResponse response) {
                 WatchEvent watchEvent = response.getEvents().get(0);
                 WatchEvent.EventType eventType = watchEvent.getEventType();
-                // todo Currently only supports json
                 if (Objects.equals(eventType, WatchEvent.EventType.PUT)) {
                     KeyValue keyValue1 = watchEvent.getKeyValue();
                     String value = keyValue1.getValue().toString(charset);
-                    Map map = JSONUtil.parseObject(value, Map.class);
-                    dynamicRefresh(keyValue1.getKey().toString(charset), map);
+                    dynamicRefresh(value);
                 }
             }
 
