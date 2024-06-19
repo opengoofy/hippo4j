@@ -23,7 +23,12 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Json config parser.
