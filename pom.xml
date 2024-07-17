@@ -57,6 +57,7 @@
         <revision>2.0.0-SNAPSHOT</revision>
         <mockito.version>3.12.4</mockito.version>
         <java.version>1.8</java.version>
+        <lombok-version>1.18.24</lombok-version>
         <skip.maven.gpg.plugin>true</skip.maven.gpg.plugin>
         <skip.spotless.apply>false</skip.spotless.apply>
         <skip.checkstyle.check>true</skip.checkstyle.check>
@@ -82,6 +83,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok-version}</version>
+            </dependency>
             <dependency>
                 <groupId>cn.hippo4j</groupId>
                 <artifactId>hippo4j-dependencies</artifactId>
