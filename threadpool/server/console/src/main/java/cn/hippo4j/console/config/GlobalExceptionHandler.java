@@ -17,12 +17,13 @@
 
 package cn.hippo4j.console.config;
 
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.common.model.Result;
 import cn.hippo4j.server.common.base.Results;
 import cn.hippo4j.server.common.base.exception.AbstractException;
 import cn.hippo4j.server.common.base.exception.ServiceException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -32,7 +33,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 /**

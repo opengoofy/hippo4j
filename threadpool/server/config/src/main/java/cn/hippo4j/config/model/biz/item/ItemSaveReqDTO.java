@@ -17,9 +17,9 @@
 
 package cn.hippo4j.config.model.biz.item;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
-import javax.validation.constraints.Pattern;
 
 /**
  * Item save req dto.

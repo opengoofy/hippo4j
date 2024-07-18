@@ -15,6 +15,6 @@
         <module>server</module>
         <module>adapter</module>
         <module>monitor</module>
-        <module>config-spring-boot-1x</module>
+<!--        <module>config-spring-boot-1x</module>-->
     </modules>
 </project>

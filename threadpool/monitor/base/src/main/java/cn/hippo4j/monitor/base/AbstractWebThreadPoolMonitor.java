@@ -20,8 +20,7 @@ package cn.hippo4j.monitor.base;
 import cn.hippo4j.adapter.web.WebThreadPoolService;
 import cn.hippo4j.common.model.ThreadPoolRunStateInfo;
 import cn.hippo4j.threadpool.monitor.api.WebThreadPoolMonitor;
-
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * Abstract web thread-pool monitor.

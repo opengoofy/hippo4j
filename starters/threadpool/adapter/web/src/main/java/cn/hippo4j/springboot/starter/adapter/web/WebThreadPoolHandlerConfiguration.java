@@ -17,14 +17,15 @@
 
 package cn.hippo4j.springboot.starter.adapter.web;
 
+import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
 import cn.hippo4j.adapter.web.jetty.DefaultJettyWebThreadPoolHandler;
 import cn.hippo4j.adapter.web.jetty.JettyWebThreadPoolHandlerAdapt;
 import cn.hippo4j.adapter.web.tomcat.DefaultTomcatWebThreadPoolHandler;
 import cn.hippo4j.adapter.web.tomcat.TomcatWebThreadPoolHandlerAdapt;
 import cn.hippo4j.adapter.web.undertow.DefaultUndertowWebThreadPoolHandler;
-import cn.hippo4j.adapter.web.WebThreadPoolRunStateHandler;
 import cn.hippo4j.adapter.web.undertow.UndertowWebThreadPoolHandlerAdapt;
 import io.undertow.Undertow;
+import jakarta.servlet.Servlet;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.coyote.UpgradeProtocol;
 import org.eclipse.jetty.server.Server;
@@ -41,8 +42,6 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.xnio.SslClientAuthMode;
-
-import javax.servlet.Servlet;
 
 /**
  * Web Thread Pool Handler Configuration

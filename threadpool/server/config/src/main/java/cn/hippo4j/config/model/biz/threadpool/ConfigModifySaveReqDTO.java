@@ -17,9 +17,9 @@
 
 package cn.hippo4j.config.model.biz.threadpool;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
-import javax.validation.constraints.Pattern;
 
 /**
  * Config Modify Save Req DTO

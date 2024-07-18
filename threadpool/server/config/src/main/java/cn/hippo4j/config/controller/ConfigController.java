@@ -17,19 +17,13 @@
 
 package cn.hippo4j.config.controller;
 
-import java.net.URLDecoder;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import cn.hippo4j.common.constant.ConfigModifyTypeConstants;
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.UserContext;
-import cn.hippo4j.common.model.Result;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import cn.hippo4j.config.model.ConfigInfoBase;
 import cn.hippo4j.config.model.biz.threadpool.ConfigModifySaveReqDTO;
@@ -39,16 +33,15 @@ import cn.hippo4j.config.service.biz.ConfigService;
 import cn.hippo4j.config.toolkit.Md5ConfigUtil;
 import cn.hippo4j.config.verify.ConfigModificationVerifyServiceChoose;
 import cn.hippo4j.server.common.base.Results;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URLDecoder;
+import java.util.Map;
 
 /**
  * Server configuration controller.

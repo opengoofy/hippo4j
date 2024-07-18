@@ -23,26 +23,27 @@ import cn.hippo4j.auth.filter.JWTAuthorizationFilter;
 import cn.hippo4j.auth.filter.LdapAuthenticationFilter;
 import cn.hippo4j.auth.security.JwtTokenManager;
 import cn.hippo4j.auth.service.impl.UserDetailsServiceImpl;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.annotation.Resource;
 import java.util.stream.Stream;
 
 /**
@@ -51,7 +52,7 @@ import java.util.stream.Stream;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
+public class GlobalSecurityConfig {
 
     @Value("${hippo4j.core.auth.enabled:true}")
     private Boolean enableAuthentication;
@@ -65,6 +66,8 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private JwtTokenManager tokenManager;
 
+    private AuthenticationConfiguration authenticationConfiguration;
+
     @Bean
     public UserDetailsService customUserService() {
         return new UserDetailsServiceImpl();
@@ -76,9 +79,10 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    @Autowired
+    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        this.authenticationConfiguration = authenticationConfiguration;
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
@@ -91,39 +95,43 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/static/**", "/index.html", "/favicon.ico", "/avatar.jpg").permitAll()
-                .antMatchers("/doc.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs").anonymous()
+                .requestMatchers("/static/**", "/index.html", "/favicon.ico", "/avatar.jpg").permitAll()
+                .requestMatchers("/doc.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs").anonymous()
+
                 .and()
+                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(ldapAuthenticationProvider())
                 // .addFilter(new JWTAuthenticationFilter(authenticationManager())).authenticationProvider(authenticationProvider())
                 .addFilter(JWTAuthenticationFilter()).authenticationProvider(ldapAuthenticationProvider())
                 .addFilter(LdapAuthenticationFilter()).authenticationProvider(ldapAuthenticationProvider())
-                .addFilter(new JWTAuthorizationFilter(tokenManager, authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(tokenManager, authenticationManagerBean(authenticationConfiguration)))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         disableAuthenticationIfNeeded(http);
         http.authorizeRequests().anyRequest().authenticated();
+        return http.build();
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
         String[] ignores = Stream.of("/hippo4j/v1/cs/auth/users/apply/token/**").toArray(String[]::new);
-        web.ignoring().antMatchers(ignores);
+        return (web) -> web.ignoring().requestMatchers(ignores);
     }
 
     private LdapAuthenticationFilter LdapAuthenticationFilter() throws Exception {
-        LdapAuthenticationFilter filter = new LdapAuthenticationFilter(authenticationManager());
+        LdapAuthenticationFilter filter = new LdapAuthenticationFilter(authenticationManagerBean(authenticationConfiguration));
         filter.setLdapUserDetailsService(ldapUserDetailsService);
-        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setAuthenticationManager(authenticationManagerBean(authenticationConfiguration));
         return filter;
     }
 
     private JWTAuthenticationFilter JWTAuthenticationFilter() throws Exception {
-        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManager());
+        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManagerBean(authenticationConfiguration));
         filter.setLdapUserDetailsService(userDetailsService);
-        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setAuthenticationManager(authenticationManagerBean(authenticationConfiguration));
         return filter;
     }
 
@@ -149,15 +157,9 @@ public class GlobalSecurityConfig extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider())
-                .authenticationProvider(ldapAuthenticationProvider());
-    }
-
     private void disableAuthenticationIfNeeded(HttpSecurity http) throws Exception {
         if (Boolean.FALSE.equals(enableAuthentication)) {
-            http.authorizeRequests().antMatchers("/hippo4j/v1/cs/**").permitAll();
+            http.authorizeRequests().requestMatchers("/hippo4j/v1/cs/**").permitAll();
         }
     }
 }

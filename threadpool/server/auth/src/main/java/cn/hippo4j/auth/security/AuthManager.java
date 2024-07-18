@@ -18,6 +18,7 @@
 package cn.hippo4j.auth.security;
 
 import cn.hippo4j.auth.model.biz.user.LoginUser;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.expression.AccessException;
@@ -28,8 +29,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Auth manager.

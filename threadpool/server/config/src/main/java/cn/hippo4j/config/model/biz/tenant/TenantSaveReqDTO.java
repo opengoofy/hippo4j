@@ -17,9 +17,9 @@
 
 package cn.hippo4j.config.model.biz.tenant;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
-import javax.validation.constraints.Pattern;
 
 /**
  * Tenant save req DTO.

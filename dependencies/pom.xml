@@ -20,11 +20,11 @@
         <mockito.version>3.12.4</mockito.version>
         <dubbo.version>3.0.5</dubbo.version>
         <alibaba-dubbo.version>2.6.12</alibaba-dubbo.version>
-        <slf4j-api.version>1.7.7</slf4j-api.version>
-        <micrometer-core.version>1.8.4</micrometer-core.version>
+        <slf4j-api.version>2.0.9</slf4j-api.version>
+        <micrometer-core.version>1.10.13</micrometer-core.version>
         <nacos-client.version>2.0.4</nacos-client.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
-        <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+        <spring-boot.version>3.0.13</spring-boot.version>
         <apollo.version>1.9.1</apollo.version>
         <consul.version>2.2.4.RELEASE</consul.version>
         <jetcd.version>0.7.3</jetcd.version>
@@ -32,7 +32,7 @@
         <rocketmq.version>2.2.2</rocketmq.version>
         <netty.version>4.1.56.Final</netty.version>
         <elasticsearch.version>6.8.17</elasticsearch.version>
-        <tomcat-embed-core.version>9.0.55</tomcat-embed-core.version>
+        <tomcat-embed-core.version>10.1.16</tomcat-embed-core.version>
         <curator-framework.version>5.1.0</curator-framework.version>
         <spring-cloud-starter-stream-rocketmq.version>2.2.6.RELEASE</spring-cloud-starter-stream-rocketmq.version>
         <spring-cloud-starter-stream-rabbitmq.version>3.1.0</spring-cloud-starter-stream-rabbitmq.version>

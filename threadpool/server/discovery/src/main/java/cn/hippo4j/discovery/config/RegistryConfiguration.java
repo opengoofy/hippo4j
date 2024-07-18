@@ -18,10 +18,9 @@
 package cn.hippo4j.discovery.config;
 
 import cn.hippo4j.discovery.core.BaseInstanceRegistry;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Registry configuration.

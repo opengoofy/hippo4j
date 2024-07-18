@@ -18,11 +18,11 @@
 package cn.hippo4j.springboot.starter.event;
 
 import cn.hippo4j.springboot.starter.core.ClientWorker;
+import jakarta.annotation.Resource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import javax.annotation.Resource;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**

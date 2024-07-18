@@ -18,8 +18,7 @@
 package cn.hippo4j.config.toolkit;
 
 import cn.hippo4j.common.toolkit.StringUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static cn.hippo4j.common.constant.Constants.LONG_PULLING_CLIENT_IDENTIFICATION;
 

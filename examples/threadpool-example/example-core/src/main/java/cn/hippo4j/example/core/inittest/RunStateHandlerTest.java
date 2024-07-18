@@ -17,12 +17,12 @@
 
 package cn.hippo4j.example.core.inittest;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.SynchronousQueue;

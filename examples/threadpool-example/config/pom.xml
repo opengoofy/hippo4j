@@ -21,7 +21,7 @@
         <module>config-zookeeper</module>
         <module>config-consul-spring-boot</module>
         <module>config-etcd</module>
-        <module>config-nacos-spring-boot-1x</module>
-        <module>config-apollo-spring-boot-1x</module>
+<!--        <module>config-nacos-spring-boot-1x</module>-->
+<!--        <module>config-apollo-spring-boot-1x</module>-->
     </modules>
 </project>

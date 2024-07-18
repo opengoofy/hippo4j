@@ -20,11 +20,11 @@ package cn.hippo4j.config.toolkit;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.common.toolkit.StringUtil;
-import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.model.ConfigAllInfo;
+import cn.hippo4j.config.service.ConfigCacheService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -34,11 +34,7 @@ import java.util.Map;
 
 import static cn.hippo4j.common.constant.Constants.LINE_SEPARATOR;
 import static cn.hippo4j.common.constant.Constants.WORD_SEPARATOR;
-import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_0;
-import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_1;
-import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_2;
-import static cn.hippo4j.common.constant.MagicNumberConstants.INDEX_3;
-import static cn.hippo4j.common.constant.MagicNumberConstants.SIZE_4;
+import static cn.hippo4j.common.constant.MagicNumberConstants.*;
 
 /**
  * Md5 config util.
