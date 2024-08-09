@@ -18,8 +18,8 @@
 package cn.hippo4j.agent.plugin.spring.common.support;
 
 import cn.hippo4j.agent.core.boot.SpringBootConfigInitializer;
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.PropertySource;

@@ -17,12 +17,13 @@
 
 package cn.hippo4j.agent.core.plugin.bytebuddy;
 
-import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
 import cn.hippo4j.agent.core.boot.AgentPackagePath;
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
 import cn.hippo4j.agent.core.util.FileUtils;
 import cn.hippo4j.agent.core.util.IOUtils;
+import cn.hippo4j.common.boot.AgentPackageNotFoundException;
+import cn.hippo4j.common.boot.ClassCacheMode;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.agent.builder.ResettableClassFileTransformer;
 import net.bytebuddy.utility.RandomString;

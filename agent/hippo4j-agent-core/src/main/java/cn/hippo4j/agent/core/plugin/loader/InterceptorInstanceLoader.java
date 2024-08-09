@@ -17,7 +17,7 @@
 
 package cn.hippo4j.agent.core.plugin.loader;
 
-import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
+import cn.hippo4j.common.boot.AgentPackageNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -17,8 +17,8 @@
 
 package cn.hippo4j.agent.plugin.spring.boot.v2.interceptor;
 
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult;

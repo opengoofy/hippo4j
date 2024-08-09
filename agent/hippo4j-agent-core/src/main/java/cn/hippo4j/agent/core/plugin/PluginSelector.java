@@ -20,9 +20,8 @@ package cn.hippo4j.agent.core.plugin;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import cn.hippo4j.agent.core.conf.Config;
 
-import static cn.hippo4j.agent.core.conf.Config.Plugin.EXCLUDE_PLUGINS;
+import static cn.hippo4j.common.conf.Config.Plugin.EXCLUDE_PLUGINS;
 
 /**
  * Select some plugins in activated plugins

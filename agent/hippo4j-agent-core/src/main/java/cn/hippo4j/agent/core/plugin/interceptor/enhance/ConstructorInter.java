@@ -17,8 +17,8 @@
 
 package cn.hippo4j.agent.core.plugin.interceptor.enhance;
 
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.PluginException;
 import cn.hippo4j.agent.core.plugin.loader.InterceptorInstanceLoader;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;

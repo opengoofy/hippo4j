@@ -17,8 +17,8 @@
 
 package cn.hippo4j.agent.core.plugin.bootstrap;
 
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 
 /**
  * The log bridge makes the ILog accessible inside bootstrap classloader, especially for internal interceptor.

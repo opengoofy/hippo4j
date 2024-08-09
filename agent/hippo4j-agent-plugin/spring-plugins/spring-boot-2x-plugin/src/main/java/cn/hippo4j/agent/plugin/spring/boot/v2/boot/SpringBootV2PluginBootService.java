@@ -19,8 +19,8 @@ package cn.hippo4j.agent.plugin.spring.boot.v2.boot;
 
 import cn.hippo4j.agent.core.boot.BootService;
 import cn.hippo4j.agent.core.boot.DefaultImplementor;
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
 
 /**
  * SpringBoot v1 plugin boot service

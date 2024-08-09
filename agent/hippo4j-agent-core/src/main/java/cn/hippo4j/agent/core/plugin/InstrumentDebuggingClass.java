@@ -17,11 +17,11 @@
 
 package cn.hippo4j.agent.core.plugin;
 
-import cn.hippo4j.agent.core.boot.AgentPackageNotFoundException;
 import cn.hippo4j.agent.core.boot.AgentPackagePath;
-import cn.hippo4j.agent.core.conf.Config;
-import cn.hippo4j.agent.core.logging.api.ILog;
-import cn.hippo4j.agent.core.logging.api.LogManager;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
+import cn.hippo4j.common.boot.AgentPackageNotFoundException;
+import cn.hippo4j.common.conf.Config;
 import net.bytebuddy.dynamic.DynamicType;
 
 import java.io.File;
