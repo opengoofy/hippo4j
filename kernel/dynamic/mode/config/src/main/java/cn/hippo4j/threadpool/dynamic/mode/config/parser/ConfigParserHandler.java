@@ -34,6 +34,7 @@ public final class ConfigParserHandler {
         }
         PARSERS.add(new PropertiesConfigParser());
         PARSERS.add(new YamlConfigParser());
+        PARSERS.add(new JsonConfigParser());
     }
 
     public Map<Object, Object> parseConfig(String content, String type) throws IOException {

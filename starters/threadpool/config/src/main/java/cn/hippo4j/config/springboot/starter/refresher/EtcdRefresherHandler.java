@@ -17,7 +17,6 @@
 
 package cn.hippo4j.config.springboot.starter.refresher;
 
-import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import io.etcd.jetcd.ByteSequence;
@@ -65,7 +64,6 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
         String key = etcd.get(KEY);
         Charset charset = StringUtil.isBlank(etcd.get(CHARSET)) ? StandardCharsets.UTF_8 : Charset.forName(etcd.get(CHARSET));
         initClient(etcd, charset);
-        // TODO Currently only supports json
         GetResponse getResponse = client.getKVClient().get(ByteSequence.from(key, charset)).get();
         KeyValue keyValue = getResponse.getKvs().get(0);
         if (Objects.isNull(keyValue)) {
@@ -77,12 +75,10 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
             public void onNext(WatchResponse response) {
                 WatchEvent watchEvent = response.getEvents().get(0);
                 WatchEvent.EventType eventType = watchEvent.getEventType();
-                // todo Currently only supports json
                 if (Objects.equals(eventType, WatchEvent.EventType.PUT)) {
                     KeyValue keyValue1 = watchEvent.getKeyValue();
                     String value = keyValue1.getValue().toString(charset);
-                    Map map = JSONUtil.parseObject(value, Map.class);
-                    dynamicRefresh(keyValue1.getKey().toString(charset), map);
+                    dynamicRefresh(value);
                 }
             }
 
@@ -105,7 +101,6 @@ public class EtcdRefresherHandler extends AbstractConfigThreadPoolDynamicRefresh
      * @param charset charset
      */
     private void initClient(Map<String, String> etcd, Charset charset) {
-        // TODO
         if (Objects.isNull(client)) {
             String user = etcd.get(USER);
             String password = etcd.get(PASSWORD);
