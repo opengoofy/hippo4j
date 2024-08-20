@@ -140,6 +140,7 @@ public class DynamicThreadPoolRefreshListener implements Observer<BootstrapConfi
                 String.format(CHANGE_DELIMITER, executorProperties.getMaximumPoolSize(), properties.getMaximumPoolSize()),
                 String.format(CHANGE_DELIMITER, executorProperties.getQueueCapacity(), properties.getQueueCapacity()),
                 String.format(CHANGE_DELIMITER, executorProperties.getKeepAliveTime(), properties.getKeepAliveTime()),
+                String.format(CHANGE_DELIMITER, executorProperties.getExecuteTimeOut(), properties.getExecuteTimeOut()),
                 String.format(CHANGE_DELIMITER, executorProperties.getRejectedHandler(), properties.getRejectedHandler()),
                 String.format(CHANGE_DELIMITER, executorProperties.getAllowCoreThreadTimeOut(), properties.getAllowCoreThreadTimeOut()));
     }
