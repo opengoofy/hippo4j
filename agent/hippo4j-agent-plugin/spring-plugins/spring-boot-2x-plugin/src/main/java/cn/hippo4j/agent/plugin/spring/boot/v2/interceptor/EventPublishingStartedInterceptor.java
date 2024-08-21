@@ -17,6 +17,7 @@
 
 package cn.hippo4j.agent.plugin.spring.boot.v2.interceptor;
 
+import cn.hippo4j.agent.plugin.spring.boot.v2.NacosDynamicThreadPoolChangeHandlerSpring2x;
 import cn.hippo4j.common.logging.api.ILog;
 import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
@@ -55,7 +56,9 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
             return ret;
         }
         SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
-        ThreadPoolDynamicRefresh dynamicRefresh = new DynamicThreadPoolChangeHandlerSpring2x();
+        // ThreadPoolDynamicRefresh dynamicRefresh = new DynamicThreadPoolChangeHandlerSpring2x();
+        // TODO Nacos配置
+        ThreadPoolDynamicRefresh dynamicRefresh = new NacosDynamicThreadPoolChangeHandlerSpring2x();
         dynamicRefresh.registerListener();
         AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH,
                 new DynamicThreadPoolRefreshListener());

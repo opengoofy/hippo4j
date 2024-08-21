@@ -52,6 +52,18 @@ public class SpringBootConfig {
                     public static List<String> NAMESPACE = Arrays.asList("application");
                 }
 
+                @SpringBootConfigNode(root = SpringBootConfig.class)
+                public static class Nacos {
+
+                    public static String SERVER_ADDR = "localhost";
+
+                    public static List<String> NAMESPACE = Arrays.asList("");
+
+                    public static String DATA_ID = "";
+
+                    public static String GROUP = "DEFAULT_GROUP";
+                }
+
                 /**
                  * Monitor
                  */
