@@ -17,8 +17,8 @@
 
 package cn.hippo4j.agent.core.conf;
 
+import cn.hippo4j.agent.core.boot.AgentPackagePath;
 import cn.hippo4j.common.boot.AgentPackageNotFoundException;
-import cn.hippo4j.common.boot.AgentPackagePath;
 import cn.hippo4j.common.conf.Config;
 import cn.hippo4j.common.conf.ConfigNotFoundException;
 import cn.hippo4j.common.logging.api.ILog;

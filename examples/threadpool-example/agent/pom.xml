@@ -18,5 +18,6 @@
 
     <modules>
         <module>config-apollo</module>
+        <module>config-nacos</module>
     </modules>
 </project>
