@@ -25,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Agent config Nacos example application.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.agent.core")
 @EnableNacosConfig
 public class AgentConfigNacosExampleApplication {
 

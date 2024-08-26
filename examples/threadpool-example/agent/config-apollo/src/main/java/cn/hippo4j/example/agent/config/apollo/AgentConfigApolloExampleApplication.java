@@ -23,7 +23,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Agent config apollo example application.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.agent.core")
 public class AgentConfigApolloExampleApplication {
 
     public static void main(String[] args) {

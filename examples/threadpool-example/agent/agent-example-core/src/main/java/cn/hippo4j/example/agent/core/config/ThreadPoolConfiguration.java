@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.example.agent.config.nacos;
+package cn.hippo4j.example.agent.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +46,7 @@ public class ThreadPoolConfiguration {
     // 演示 Agent 模式修改线程池
     // -------------------------------------------------------------------------
 
-    public static final ThreadPoolExecutor RUN_MESSAGE_SEND_TASK_EXECUTOR = new ThreadPoolExecutor(
+    public static final ThreadPoolExecutor AGENT_RUN_MESSAGE_SEND_TASK_EXECUTOR = new ThreadPoolExecutor(
             1,
             10,
             1024,
