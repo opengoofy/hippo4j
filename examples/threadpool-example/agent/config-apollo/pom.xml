@@ -17,6 +17,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-agent-example-core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>

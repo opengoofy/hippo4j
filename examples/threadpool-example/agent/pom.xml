@@ -19,5 +19,6 @@
     <modules>
         <module>config-apollo</module>
         <module>config-nacos</module>
+        <module>agent-example-core</module>
     </modules>
 </project>

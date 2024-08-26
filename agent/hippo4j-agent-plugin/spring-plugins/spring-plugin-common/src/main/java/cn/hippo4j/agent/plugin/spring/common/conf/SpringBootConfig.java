@@ -84,5 +84,19 @@ public class SpringBootConfig {
                 public static String CONFIG_FILE_TYPE;
             }
         }
+
+        @SpringBootConfigNode(root = SpringBootConfig.class)
+        public static class Application {
+
+            public static String name = "";
+
+        }
+
+        @SpringBootConfigNode(root = SpringBootConfig.class)
+        public static class Profiles {
+
+            public static String active = "";
+
+        }
     }
 }
