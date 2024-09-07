@@ -38,7 +38,6 @@ public class TaskRejectNotifyAlarmPlugin implements RejectedAwarePlugin {
     /**
      * Thread pool check alarm
      */
-    @NonNull
     private final ThreadPoolCheckAlarm threadPoolCheckAlarm;
 
     /**
