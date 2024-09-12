@@ -51,4 +51,9 @@ public class MonitorProperties {
      * Collect interval. unit: ms
      */
     private Long collectInterval = 5000L;
+
+    /**
+     * Agent micrometer exposed port
+     */
+    private Integer agentMicrometerPort;
 }
