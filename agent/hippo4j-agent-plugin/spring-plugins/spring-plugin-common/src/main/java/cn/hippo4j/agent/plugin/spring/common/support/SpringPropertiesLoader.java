@@ -21,6 +21,7 @@ import cn.hippo4j.agent.core.boot.SpringBootConfigInitializer;
 import cn.hippo4j.agent.plugin.spring.common.toolkit.SpringPropertyBinder;
 import cn.hippo4j.common.logging.api.ILog;
 import cn.hippo4j.common.logging.api.LogManager;
+import cn.hippo4j.core.toolkit.inet.InetUtilsProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
@@ -41,6 +42,8 @@ public class SpringPropertiesLoader {
     private static final ILog LOGGER = LogManager.getLogger(SpringPropertiesLoader.class);
 
     public static BootstrapConfigProperties BOOTSTRAP_CONFIG_PROPERTIES = new BootstrapConfigProperties();
+
+    public static InetUtilsProperties INET_UTILS_PROPERTIES = new InetUtilsProperties();
 
     public static void loadSpringProperties(ConfigurableEnvironment environment) {
         Iterator<PropertySource<?>> iterator = environment.getPropertySources().iterator();
@@ -83,8 +86,11 @@ public class SpringPropertiesLoader {
         environment.getPropertySources().addFirst(propertySource);
         // initialize BootstrapConfigProperties
         BOOTSTRAP_CONFIG_PROPERTIES = SpringPropertyBinder.bindProperties(environment, PREFIX, BootstrapConfigProperties.class);
-
+        INET_UTILS_PROPERTIES = SpringPropertyBinder.bindProperties(environment, InetUtilsProperties.PREFIX, InetUtilsProperties.class);
+        // Enable the thread pool check alert handler
         ThreadPoolCheckAlarmSupport.enableThreadPoolCheckAlarmHandler();
+        // Enable thread pool monitor handler
+        ThreadPoolMonitorSupport.enableThreadPoolMonitorHandler(environment);
     }
 
 }

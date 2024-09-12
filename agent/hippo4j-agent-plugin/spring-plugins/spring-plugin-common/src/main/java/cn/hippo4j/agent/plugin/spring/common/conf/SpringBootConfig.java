@@ -30,11 +30,13 @@ public class SpringBootConfig {
     /**
      *  Spring
      */
+    @SpringBootConfigNode(root = SpringBootConfig.class)
     public static class Spring {
 
         /**
          * Dynamic
          */
+        @SpringBootConfigNode(root = SpringBootConfig.class)
         public static class Dynamic {
 
             /**
@@ -79,6 +81,9 @@ public class SpringBootConfig {
                     public static Long initialDelay = 10000L;
 
                     public static Long collectInterval = 5000L;
+
+                    public static Integer AGENT_MICROMETER_PORT;
+
                 }
 
                 public static String CONFIG_FILE_TYPE;

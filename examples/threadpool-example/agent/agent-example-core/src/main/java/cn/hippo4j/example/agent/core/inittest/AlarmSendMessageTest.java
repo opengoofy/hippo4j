@@ -48,7 +48,7 @@ public class AlarmSendMessageTest {
      * If you need to run this single test, add @PostConstruct to the method.
      */
     @SuppressWarnings("all")
-    @PostConstruct
+    // @PostConstruct
     public void alarmSendMessageTest() {
         ScheduledExecutorService scheduledThreadPool = Executors.newSingleThreadScheduledExecutor();
         scheduledThreadPool.scheduleWithFixedDelay(() -> {
