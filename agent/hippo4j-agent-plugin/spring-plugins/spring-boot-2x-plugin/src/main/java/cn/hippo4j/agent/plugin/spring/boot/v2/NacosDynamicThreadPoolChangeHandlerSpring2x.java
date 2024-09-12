@@ -112,6 +112,7 @@ public class NacosDynamicThreadPoolChangeHandlerSpring2x extends AbstractConfigT
             };
             // Add the listener to the Nacos ConfigService
             configService.addListener(dataId, group, configChangeListener);
+            LOGGER.info("[Hippo4j-Agent] Dynamic thread pool refresher, add Nacos listener successfully. namespace: {} data-id: {} group: {}", namespace, dataId, group);
         } catch (Exception e) {
             LOGGER.error(e, "[Hippo4j-Agent] Dynamic thread pool refresher, add Nacos listener failure. namespace: {} data-id: {} group: {}", namespace, dataId, group);
         }
