@@ -17,19 +17,30 @@
 
 package cn.hippo4j.agent.plugin.spring.common.support;
 
+import cn.hippo4j.adapter.web.jetty.DefaultJettyWebThreadPoolHandler;
 import cn.hippo4j.agent.plugin.spring.common.alarm.AgentModeNotifyConfigBuilder;
 import cn.hippo4j.agent.plugin.spring.common.conf.SpringBootConfig;
+import cn.hippo4j.agent.plugin.spring.common.toolkit.SpringPropertyBinder;
+import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.propertie.EnvironmentProperties;
+import cn.hippo4j.core.config.ApplicationContextHolder;
+import cn.hippo4j.core.toolkit.IdentifyUtil;
+import cn.hippo4j.core.toolkit.inet.InetUtils;
+import cn.hippo4j.core.toolkit.inet.InetUtilsProperties;
 import cn.hippo4j.threadpool.alarm.handler.DefaultThreadPoolCheckAlarmHandler;
 import cn.hippo4j.threadpool.message.api.NotifyConfigDTO;
 import cn.hippo4j.threadpool.message.core.platform.DingSendMessageHandler;
 import cn.hippo4j.threadpool.message.core.platform.LarkSendMessageHandler;
 import cn.hippo4j.threadpool.message.core.platform.WeChatSendMessageHandler;
 import cn.hippo4j.threadpool.message.core.service.AlarmControlHandler;
+import cn.hippo4j.threadpool.message.core.service.DefaultThreadPoolConfigChangeHandler;
 import cn.hippo4j.threadpool.message.core.service.SendMessageHandler;
 import cn.hippo4j.threadpool.message.core.service.ThreadPoolBaseSendMessageService;
+import cn.hippo4j.threadpool.message.core.service.ThreadPoolSendMessageService;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.List;
 import java.util.Map;
@@ -44,6 +55,15 @@ import static cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoad
 public class ThreadPoolCheckAlarmSupport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThreadPoolCheckAlarmSupport.class);
+
+    @Getter
+    private static ThreadPoolBaseSendMessageService threadPoolBaseSendMessageService;
+
+    @Getter
+    private static DefaultThreadPoolConfigChangeHandler threadPoolConfigChangeHandler;
+
+    @Getter
+    private static AgentModeNotifyConfigBuilder agentNotifyConfigBuilder;
 
     /**
      * Enables the thread pool check alarm handler if the corresponding configuration property is set to {@code true}.
@@ -66,7 +86,8 @@ public class ThreadPoolCheckAlarmSupport {
 
             // Initialize the AlarmControlHandler and ThreadPoolBaseSendMessageService
             AlarmControlHandler alarmControlHandler = new AlarmControlHandler();
-            ThreadPoolBaseSendMessageService threadPoolBaseSendMessageService = createThreadPoolBaseSendMessageService(alarmControlHandler);
+            threadPoolBaseSendMessageService = createThreadPoolBaseSendMessageService(alarmControlHandler);
+            threadPoolConfigChangeHandler = new DefaultThreadPoolConfigChangeHandler(threadPoolBaseSendMessageService);
 
             // Initialize the alarm platform information
             initializeSendMessageHandlers(threadPoolBaseSendMessageService, alarmControlHandler);
@@ -89,6 +110,10 @@ public class ThreadPoolCheckAlarmSupport {
         EnvironmentProperties.itemId = BOOTSTRAP_CONFIG_PROPERTIES.getItemId();
         EnvironmentProperties.applicationName = SpringBootConfig.Spring.Application.name;
         EnvironmentProperties.active = SpringBootConfig.Spring.Profiles.active;
+        ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
+        InetUtilsProperties inetUtilsProperties = SpringPropertyBinder.bindProperties(environment, InetUtilsProperties.PREFIX, InetUtilsProperties.class);
+        InetUtils inetUtils = new InetUtils(inetUtilsProperties);
+        IdentifyUtil.generate(environment, inetUtils);
     }
 
     /**
@@ -123,8 +148,9 @@ public class ThreadPoolCheckAlarmSupport {
         threadPoolBaseSendMessageService.getSendMessageHandlers().put(larkSendMessageHandler.getType(), larkSendMessageHandler);
 
         // Construct and register notification configurations
-        AgentModeNotifyConfigBuilder notifyConfigBuilder = new AgentModeNotifyConfigBuilder(alarmControlHandler);
-        Map<String, List<NotifyConfigDTO>> notifyConfigs = notifyConfigBuilder.buildNotify();
+        // TODO : register notify config for web , null Can be replaced with tomcat, jetty, undertow, etc. implementation classes
+        agentNotifyConfigBuilder = new AgentModeNotifyConfigBuilder(alarmControlHandler, null);
+        Map<String, List<NotifyConfigDTO>> notifyConfigs = agentNotifyConfigBuilder.buildNotify();
         threadPoolBaseSendMessageService.getNotifyConfigs().putAll(notifyConfigs);
     }
 }
