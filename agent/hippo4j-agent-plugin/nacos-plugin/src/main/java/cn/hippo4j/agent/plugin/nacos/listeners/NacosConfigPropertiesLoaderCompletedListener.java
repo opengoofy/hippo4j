@@ -15,18 +15,21 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.example.agent.config.nacos;
+package cn.hippo4j.agent.plugin.nacos.listeners;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import cn.hippo4j.agent.plugin.nacos.NacosDynamicThreadPoolChangeHandler;
+import cn.hippo4j.common.extension.design.Observer;
+import cn.hippo4j.common.extension.design.ObserverMessage;
+import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
 
 /**
- * Agent config Nacos example application.
+ * Nacos Config Properties Loader Completed Listener
  */
-@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.agent.core")
-public class AgentConfigNacosExampleApplication {
+public class NacosConfigPropertiesLoaderCompletedListener implements Observer<String> {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AgentConfigNacosExampleApplication.class, args);
+    @Override
+    public void accept(ObserverMessage<String> observerMessage) {
+        ThreadPoolDynamicRefresh dynamicRefresh = new NacosDynamicThreadPoolChangeHandler();
+        dynamicRefresh.registerListener();
     }
 }

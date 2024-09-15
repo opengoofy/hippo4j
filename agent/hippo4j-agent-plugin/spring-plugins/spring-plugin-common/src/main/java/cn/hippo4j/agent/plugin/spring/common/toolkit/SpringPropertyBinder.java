@@ -73,6 +73,39 @@ public class SpringPropertyBinder {
     }
 
     /**
+     * Binds properties from a map to an instance of the specified configuration class.
+     *
+     * @param configInfo a map containing property paths and their values.
+     * @param prefix     the prefix to filter properties for binding (e.g., "spring.dynamic.thread-pool").
+     * @param clazz      the class type of the configuration object to bind properties to.
+     * @param <T>        the type of the configuration class.
+     * @return an instance of the configuration class with properties bound from the configInfo map.
+     */
+    public static <T> T bindProperties(Map<Object, Object> configInfo, String prefix, Class<T> clazz) {
+        try {
+            // Create an instance of the target class
+            T instance = clazz.getDeclaredConstructor().newInstance();
+            BeanWrapper beanWrapper = new BeanWrapperImpl(instance);
+
+            // Register custom editor for specific type conversions (if needed)
+            beanWrapper.registerCustomEditor(ConfigFileTypeEnum.class, new ConfigFileTypeEnumEditor());
+
+            // Iterate over all property keys that match the given prefix in the configInfo map
+            for (Map.Entry<Object, Object> entry : configInfo.entrySet()) {
+                String key = entry.getKey().toString();
+                if (key.startsWith(prefix)) {
+                    String propertyName = key.substring(prefix.length() + 1); // Remove prefix from the property key
+                    String[] tokens = propertyName.split("\\."); // Split the property name by dot for nested properties
+                    setPropertyValue(tokens, beanWrapper, entry.getValue().toString()); // Set the property value recursively
+                }
+            }
+            return instance;
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to bind properties to " + clazz.getName(), e);
+        }
+    }
+
+    /**
      * Recursively sets property values on the target object, handling nested properties and collections.
      *
      * @param tokens      an array of property path tokens (e.g., ["nested", "property", "name"]).

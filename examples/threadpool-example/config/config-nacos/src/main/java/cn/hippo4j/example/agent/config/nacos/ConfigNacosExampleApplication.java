@@ -17,16 +17,18 @@
 
 package cn.hippo4j.example.agent.config.nacos;
 
+import cn.hippo4j.core.enable.EnableDynamicThreadPool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Agent config Nacos example application.
+ * Config nacos example application
  */
-@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.agent.core")
-public class AgentConfigNacosExampleApplication {
+@EnableDynamicThreadPool
+@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.core")
+public class ConfigNacosExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AgentConfigNacosExampleApplication.class, args);
+        SpringApplication.run(ConfigNacosExampleApplication.class, args);
     }
 }

@@ -32,6 +32,6 @@ public class SpringEnvironmentSupport {
         Map<String, Object> map = new HashMap<>();
         map.put("spring.dynamic.thread-pool.enable", false); // Switch off in non-Agent mode
         MapPropertySource propertySource = new MapPropertySource("Hippo4j-Agent-Properties", map);
-        environment.getPropertySources().addFirst(propertySource);
+        environment.getPropertySources().addLast(propertySource);
     }
 }

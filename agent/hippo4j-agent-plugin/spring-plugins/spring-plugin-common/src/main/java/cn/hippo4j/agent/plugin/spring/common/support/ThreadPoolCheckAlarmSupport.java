@@ -17,11 +17,9 @@
 
 package cn.hippo4j.agent.plugin.spring.common.support;
 
-import cn.hippo4j.adapter.web.jetty.DefaultJettyWebThreadPoolHandler;
 import cn.hippo4j.agent.plugin.spring.common.alarm.AgentModeNotifyConfigBuilder;
 import cn.hippo4j.agent.plugin.spring.common.conf.SpringBootConfig;
 import cn.hippo4j.agent.plugin.spring.common.toolkit.SpringPropertyBinder;
-import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.propertie.EnvironmentProperties;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import cn.hippo4j.core.toolkit.IdentifyUtil;
@@ -36,7 +34,6 @@ import cn.hippo4j.threadpool.message.core.service.AlarmControlHandler;
 import cn.hippo4j.threadpool.message.core.service.DefaultThreadPoolConfigChangeHandler;
 import cn.hippo4j.threadpool.message.core.service.SendMessageHandler;
 import cn.hippo4j.threadpool.message.core.service.ThreadPoolBaseSendMessageService;
-import cn.hippo4j.threadpool.message.core.service.ThreadPoolSendMessageService;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +62,8 @@ public class ThreadPoolCheckAlarmSupport {
     @Getter
     private static AgentModeNotifyConfigBuilder agentNotifyConfigBuilder;
 
+    private static DefaultThreadPoolCheckAlarmHandler checkAlarmHandler;
+
     /**
      * Enables the thread pool check alarm handler if the corresponding configuration property is set to {@code true}.
      * <p>
@@ -92,11 +91,8 @@ public class ThreadPoolCheckAlarmSupport {
             // Initialize the alarm platform information
             initializeSendMessageHandlers(threadPoolBaseSendMessageService, alarmControlHandler);
 
-            // Initialize the thread pool check alarm handler with necessary services
-            DefaultThreadPoolCheckAlarmHandler checkAlarmHandler = new DefaultThreadPoolCheckAlarmHandler(threadPoolBaseSendMessageService);
-
-            // Run the check alarm handler to start monitoring the thread pool
-            checkAlarmHandler.scheduleExecute();
+            // Execute scheduled task to check an alarm
+            scheduleExecute(threadPoolBaseSendMessageService);
         }
     }
 
@@ -134,7 +130,7 @@ public class ThreadPoolCheckAlarmSupport {
      * It also constructs and registers notification configurations using the {@link AgentModeNotifyConfigBuilder}.
      *
      * @param threadPoolBaseSendMessageService The {@link ThreadPoolBaseSendMessageService} in which message handlers and notification configurations will be registered.
-     * @param alarmControlHandler The {@link AlarmControlHandler} used to handle alarms and notifications.
+     * @param alarmControlHandler              The {@link AlarmControlHandler} used to handle alarms and notifications.
      */
     private static void initializeSendMessageHandlers(ThreadPoolBaseSendMessageService threadPoolBaseSendMessageService, AlarmControlHandler alarmControlHandler) {
         // Initialize message handlers
@@ -152,5 +148,18 @@ public class ThreadPoolCheckAlarmSupport {
         agentNotifyConfigBuilder = new AgentModeNotifyConfigBuilder(alarmControlHandler, null);
         Map<String, List<NotifyConfigDTO>> notifyConfigs = agentNotifyConfigBuilder.buildNotify();
         threadPoolBaseSendMessageService.getNotifyConfigs().putAll(notifyConfigs);
+    }
+
+    // 启动或重新启动检查任务
+    public static void scheduleExecute(ThreadPoolBaseSendMessageService threadPoolBaseSendMessageService) {
+        // If a task is already running, cancel it first
+        if (checkAlarmHandler != null) {
+            // Shut down the thread pool and prepare to regenerate the listener thread pool
+            checkAlarmHandler.destroyScheduleExecute();
+        }
+        // Initialize the thread pool check alarm handler with necessary services
+        checkAlarmHandler = new DefaultThreadPoolCheckAlarmHandler(threadPoolBaseSendMessageService);
+        // Run the check alarm handler to start monitoring the thread pool
+        checkAlarmHandler.scheduleExecute();
     }
 }

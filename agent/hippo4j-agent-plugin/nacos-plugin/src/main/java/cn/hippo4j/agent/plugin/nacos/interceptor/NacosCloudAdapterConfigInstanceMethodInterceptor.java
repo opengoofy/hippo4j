@@ -15,49 +15,49 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.boot.v1.interceptor;
+package cn.hippo4j.agent.plugin.nacos.interceptor;
 
-import cn.hippo4j.agent.adapter.dubbo.DubboThreadPoolAdapter;
-import cn.hippo4j.common.logging.api.ILog;
-import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
-import cn.hippo4j.agent.plugin.spring.boot.v1.DynamicThreadPoolChangeHandlerSpring1x;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSupport;
-import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Event publishing finished interceptor
+ * Nacos Cloud config constructor interceptor
  */
-public class EventPublishingFinishedInterceptor implements InstanceMethodsAroundInterceptor {
+public class NacosCloudAdapterConfigInstanceMethodInterceptor implements InstanceMethodsAroundInterceptor {
 
-    private static final ILog FILE_LOGGER = LogManager.getLogger(EventPublishingFinishedInterceptor.class);
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventPublishingFinishedInterceptor.class);
+    private static final AtomicBoolean isExecuted = new AtomicBoolean(false);
 
     @Override
     public void beforeMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, MethodInterceptResult result) throws Throwable {
 
     }
 
+    /**
+     *
+     */
     @Override
     public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Object ret) throws Throwable {
-        ConfigurableApplicationContext context = (ConfigurableApplicationContext) allArguments[0];
-        if (context.getParent() != null) {
-            // After the child container is started, the thread pool registration will be carried out
-            SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
-            return ret;
+        // This logic will only be executed once
+        if (isExecuted.compareAndSet(false, true)) {
+            // Get the configurable Application Context
+            ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) allArguments[0];
+            ConfigurableEnvironment environment = configurableApplicationContext.getEnvironment();
+
+            // Remote Nacos configuration swiped into SpringPropertiesLoader
+            SpringPropertiesLoader.loadSpringProperties(environment);
+            // Refresh thread pool instances through configuration
+            SpringThreadPoolRegisterSupport.registerThreadPoolInstances(ApplicationContextHolder.getInstance());
+
         }
-        SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
-        ThreadPoolDynamicRefresh dynamicRefreshSpring1x = new DynamicThreadPoolChangeHandlerSpring1x(context);
-        dynamicRefreshSpring1x.registerListener();
-        DubboThreadPoolAdapter.registerExecutors();
         return ret;
     }
 
