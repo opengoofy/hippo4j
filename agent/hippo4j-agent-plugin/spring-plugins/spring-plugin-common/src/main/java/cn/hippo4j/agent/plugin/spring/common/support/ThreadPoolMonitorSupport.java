@@ -19,7 +19,6 @@ package cn.hippo4j.agent.plugin.spring.common.support;
 
 import cn.hippo4j.agent.plugin.spring.common.monitor.MonitorHandlersConfigurator;
 import cn.hippo4j.agent.plugin.spring.common.monitor.MonitorMetricEndpoint;
-import cn.hippo4j.common.executor.ThreadFactoryBuilder;
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.monitor.MonitorCollectTypeEnum;
@@ -27,6 +26,7 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.MonitorProperties;
 import cn.hippo4j.threadpool.monitor.api.ThreadPoolMonitor;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -36,10 +36,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader.BOOTSTRAP_CONFIG_PROPERTIES;
 
@@ -52,7 +52,16 @@ public class ThreadPoolMonitorSupport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThreadPoolMonitorSupport.class);
 
-    private static List<ThreadPoolMonitor> threadPoolMonitors;
+    /**
+     * A flag used to indicate whether enableThreadPoolMonitorHandler() method has been called,
+     * Used to determine whether the ThreadPoolMonitorHandler has been enable
+     */
+    @Getter
+    private static final AtomicBoolean active = new AtomicBoolean(Boolean.FALSE);
+
+    private static final ScheduledExecutorService collectScheduledExecutor = new ScheduledThreadPoolExecutor(1, r -> new Thread(r, "client.agent.scheduled.collect.data"));
+
+    private static final List<ThreadPoolMonitor> threadPoolMonitors = new ArrayList<>();
 
     static {
         // Register the ThreadPoolMonitor service with the ServiceLoaderRegistry
@@ -78,21 +87,18 @@ public class ThreadPoolMonitorSupport {
     public static void enableThreadPoolMonitorHandler(Environment environment) {
         BootstrapConfigProperties properties = BOOTSTRAP_CONFIG_PROPERTIES;
         MonitorProperties monitor = properties.getMonitor();
-        if (Objects.isNull(monitor)
-                || !monitor.getEnable()
-                || StringUtil.isBlank(monitor.getThreadPoolTypes())
-                || StringUtil.isBlank(monitor.getCollectTypes())) {
+        if (Objects.isNull(monitor) || !monitor.getEnable() || StringUtil.isBlank(monitor.getThreadPoolTypes()) || StringUtil.isBlank(monitor.getCollectTypes())) {
             return;
         }
 
         LOGGER.info("[Hippo4j-Agent] Start monitoring the running status of dynamic thread pools.");
-        threadPoolMonitors = new ArrayList<>();
-        ScheduledExecutorService collectScheduledExecutor = new ScheduledThreadPoolExecutor(
-                1,
-                r -> new Thread(r, "client.agent.scheduled.collect.data"));
 
         // Initialize monitoring components for the dynamic thread pools
         MonitorHandlersConfigurator.initializeMonitorHandlers(monitor, (ConfigurableEnvironment) environment, threadPoolMonitors);
+
+        // Determine whether the task is successfully enabled
+        // return directly if it has been enabled, and do not start the thread pool repeatedly
+        if (Boolean.TRUE.equals(active.get())) return;
 
         // Expose metric endpoints based on the configured collect types
         List<String> collectTypes = Arrays.asList(monitor.getCollectTypes().split(","));
@@ -101,12 +107,9 @@ public class ThreadPoolMonitorSupport {
         }
 
         // Schedule periodic collection of metrics from the thread pools
-        collectScheduledExecutor.scheduleWithFixedDelay(
-                scheduleRunnable(),
-                monitor.getInitialDelay(),
-                monitor.getCollectInterval(),
-                TimeUnit.MILLISECONDS);
+        collectScheduledExecutor.scheduleWithFixedDelay(scheduleRunnable(), monitor.getInitialDelay(), monitor.getCollectInterval(), TimeUnit.MILLISECONDS);
 
+        active.set(true);
         if (ThreadPoolExecutorRegistry.getThreadPoolExecutorSize() > 0) {
             LOGGER.info("[Hippo4j-Agent] Dynamic thread pool: [{}]. The dynamic thread pool starts data collection and reporting.", ThreadPoolExecutorRegistry.getThreadPoolExecutorSize());
         }

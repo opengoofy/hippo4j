@@ -57,6 +57,11 @@
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-infra-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-threadpool-monitor-elasticsearch</artifactId>
             <version>${project.version}</version>
         </dependency>

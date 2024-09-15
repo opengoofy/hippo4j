@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.boot.v2.interceptor;
+package cn.hippo4j.agent.plugin.spring.boot.v1.interceptor;
 
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
@@ -24,8 +24,6 @@ import cn.hippo4j.agent.plugin.spring.common.event.DynamicThreadPoolRefreshListe
 import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSupport;
 import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
-import cn.hippo4j.common.logging.api.ILog;
-import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -33,13 +31,11 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Event publishing started interceptor
+ * Application Context Refresh interceptor
  */
-public class EventPublishingStartedInterceptor implements InstanceMethodsAroundInterceptor {
+public class ApplicationContextInterceptor implements InstanceMethodsAroundInterceptor {
 
     private static final AtomicBoolean isExecuted = new AtomicBoolean(false);
-
-    private static final ILog LOGGER = LogManager.getLogger(EventPublishingStartedInterceptor.class);
 
     @Override
     public void beforeMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, MethodInterceptResult result) throws Throwable {
@@ -48,7 +44,10 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
 
     @Override
     public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Object ret) throws Throwable {
-        ConfigurableApplicationContext context = (ConfigurableApplicationContext) allArguments[0];
+        // Since the refresh() method is a method of the AbstractApplicationContext class,
+        // the AbstractApplicationContext itself is an implementation class of the ApplicationContext.
+        // Therefore, can treat the class instance itself as an ApplicationContext object.
+        ConfigurableApplicationContext context = (ConfigurableApplicationContext) objInst;
         if (context.getParent() != null) {
             // After the child container is started, the thread pool registration will be carried out
             SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
@@ -58,12 +57,9 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
         if (isExecuted.compareAndSet(false, true)) {
             ApplicationContextHolder contextHolder = new ApplicationContextHolder();
             contextHolder.setApplicationContext(context);
-            // Load Spring Properties
             SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
-            // register Dynamic ThreadPool Refresh Listener
             AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH, new DynamicThreadPoolRefreshListener());
         }
-
         return ret;
     }
 

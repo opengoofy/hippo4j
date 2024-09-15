@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.example.agent.config.nacos;
+package cn.hippo4j.example.agent.config.nacos.v1;
 
+import com.alibaba.nacos.api.exception.NacosException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -24,9 +25,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Agent config Nacos example application.
  */
 @SpringBootApplication(scanBasePackages = "cn.hippo4j.example.agent.core")
-public class AgentConfigNacosExampleApplication {
+public class AgentConfigNacosSpringBoot1xExampleApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AgentConfigNacosExampleApplication.class, args);
+    public static void main(String[] args) throws NacosException {
+        SpringApplication.run(AgentConfigNacosSpringBoot1xExampleApplication.class, args);
     }
 }

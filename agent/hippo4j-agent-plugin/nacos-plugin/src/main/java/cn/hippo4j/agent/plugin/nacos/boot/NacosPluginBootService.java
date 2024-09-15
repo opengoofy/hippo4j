@@ -15,20 +15,34 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.example.config.nacos;
+package cn.hippo4j.agent.plugin.nacos.boot;
 
-import cn.hippo4j.core.enable.EnableDynamicThreadPool;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import cn.hippo4j.agent.core.boot.BootService;
+import cn.hippo4j.agent.core.boot.DefaultImplementor;
 
 /**
- * Config nacos example application
+ * Nacos plugin boot service
  */
-@EnableDynamicThreadPool
-@SpringBootApplication(scanBasePackages = "cn.hippo4j.example.core")
-public class ConfigNacosExampleApplication {
+@DefaultImplementor
+public class NacosPluginBootService implements BootService {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ConfigNacosExampleApplication.class, args);
+    @Override
+    public void prepare() throws Throwable {
+
+    }
+
+    @Override
+    public void boot() throws Throwable {
+
+    }
+
+    @Override
+    public void onComplete() throws Throwable {
+
+    }
+
+    @Override
+    public void shutdown() throws Throwable {
+
     }
 }
