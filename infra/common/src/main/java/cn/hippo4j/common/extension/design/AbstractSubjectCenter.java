@@ -97,6 +97,15 @@ public class AbstractSubjectCenter {
     }
 
     /**
+     * get observer by subject.
+     *
+     * @param subject
+     */
+    public static List<Observer> get(SubjectType subjectType) {
+        return OBSERVERS_MAP.get(subjectType.name());
+    }
+
+    /**
      * Notify.
      *
      * @param subjectType
@@ -145,6 +154,11 @@ public class AbstractSubjectCenter {
         /**
          * Thread-pool dynamic refresh.
          */
-        THREAD_POOL_DYNAMIC_REFRESH
+        THREAD_POOL_DYNAMIC_REFRESH,
+
+        /**
+         * Agent Spring Properties Loader Completed.
+         */
+        AGENT_SPRING_PROPERTIES_LOADER_COMPLETED
     }
 }

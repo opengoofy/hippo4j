@@ -19,13 +19,29 @@ package cn.hippo4j.agent.plugin.apollo.interceptor;
 
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
+import cn.hippo4j.agent.plugin.apollo.listeners.ApolloConfigPropertiesLoaderCompletedListener;
+import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Default config constructor interceptor
  */
-public class DefaultConfigConstructorInterceptor implements InstanceConstructorInterceptor {
+public class ApolloConfigConstructorInterceptor implements InstanceConstructorInterceptor {
+
+    private static final AtomicBoolean isExecuted = new AtomicBoolean(false);
 
     @Override
     public void onConstruct(EnhancedInstance objInst, Object[] allArguments) throws Throwable {
+
+        // This logic will only be executed once
+        if (isExecuted.compareAndSet(false, true)) {
+            // The Apollo plugin triggers before the Spring configuration plug-in.
+            // This means that when the Apollo plug-in executes, Spring's Environment is not yet ready,
+            // so the configuration cannot be read
+            // After listening to the AGENT_SPRING_PROPERTIES_LOADER_COMPLETED event, register the listener for Apollo
+            AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.AGENT_SPRING_PROPERTIES_LOADER_COMPLETED,
+                    new ApolloConfigPropertiesLoaderCompletedListener());
+        }
     }
 }
