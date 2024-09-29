@@ -27,7 +27,6 @@ import cn.hippo4j.threadpool.dynamic.mode.config.parser.ConfigParserHandler;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.refresher.BootstrapConfigPropertiesBinderAdapter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
@@ -40,7 +39,7 @@ import java.util.concurrent.ExecutorService;
  * Abstract config thread-pool dynamic refresh.
  */
 @Slf4j
-public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, InitializingBean, ApplicationRunner {
+public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh, ApplicationRunner {
 
     private final BootstrapConfigPropertiesBinderAdapter bootstrapConfigPropertiesBinderAdapter;
     protected BootstrapPropertiesInterface bootstrapConfigProperties;
@@ -77,16 +76,12 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
     }
 
     @Override
-    public void afterPropertiesSet() {
+    public void run(ApplicationArguments args) {
         try {
             registerListener();
         } catch (Exception ex) {
             log.error("Hippo4j failed to initialize register listener.", ex);
         }
-    }
-
-    @Override
-    public void run(ApplicationArguments args) {
         try {
             publishDynamicThreadPoolEvent((BootstrapConfigProperties) bootstrapConfigProperties);
         } catch (Exception ex) {

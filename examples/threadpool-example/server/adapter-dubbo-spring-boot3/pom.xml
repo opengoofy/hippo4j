@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cn.hippo4j</groupId>
+    <artifactId>hippo4j-threadpool-adapter-dubbo-spring-boot3-example</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>adapter-dubbo-spring-boot3-consumer-example</module>
+        <module>adapter-dubbo-spring-boot3-provider-example</module>
+        <module>adapter-dubbo-spring-boot3-interface-example</module>
+    </modules>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <revision>2.0.0-SNAPSHOT</revision>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <spring-boot.version>3.3.3</spring-boot.version>
+        <dubbo.version>3.2.15</dubbo.version>
+        <zookeeper_version>3.8.1</zookeeper_version>
+        <curator.version>5.1.0</curator.version>
+        <java.version>1.17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

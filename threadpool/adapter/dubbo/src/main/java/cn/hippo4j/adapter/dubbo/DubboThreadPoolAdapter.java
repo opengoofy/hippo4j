@@ -109,9 +109,9 @@ public class DubboThreadPoolAdapter implements ThreadPoolAdapter, ApplicationLis
                 return;
             }
             ExecutorRepository executorRepository = ExtensionLoader.getExtensionLoader(ExecutorRepository.class).getDefaultExtension();
-            ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>> data =
-                    (ConcurrentMap<String, ConcurrentMap<Integer, ExecutorService>>) ReflectUtil.getFieldValue(executorRepository, "data");
-            ConcurrentMap<Integer, ExecutorService> executorServiceMap = data.get(poolKey);
+            ConcurrentMap<String, ConcurrentMap<Object, ExecutorService>> data =
+                    (ConcurrentMap<String, ConcurrentMap<Object, ExecutorService>>) ReflectUtil.getFieldValue(executorRepository, "data");
+            ConcurrentMap<Object, ExecutorService> executorServiceMap = data.get(poolKey);
             executorServiceMap.forEach((key, value) -> dubboProtocolExecutor.put(String.valueOf(key), (ThreadPoolExecutor) value));
         } catch (Exception ex) {
             log.error("Failed to get Dubbo {} protocol thread pool", Version.getVersion(), ex);
