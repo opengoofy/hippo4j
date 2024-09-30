@@ -16,7 +16,6 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-threadpool-core</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>

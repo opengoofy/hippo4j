@@ -16,6 +16,7 @@
         <module>threadpool-plugin</module>
         <module>adapter-plugins</module>
         <module>apollo-plugin</module>
+        <module>nacos-plugin</module>
     </modules>
 
     <properties>

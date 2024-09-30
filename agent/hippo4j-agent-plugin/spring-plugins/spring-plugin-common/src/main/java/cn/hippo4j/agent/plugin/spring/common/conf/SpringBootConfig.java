@@ -30,11 +30,13 @@ public class SpringBootConfig {
     /**
      *  Spring
      */
+    @SpringBootConfigNode(root = SpringBootConfig.class)
     public static class Spring {
 
         /**
          * Dynamic
          */
+        @SpringBootConfigNode(root = SpringBootConfig.class)
         public static class Dynamic {
 
             /**
@@ -52,6 +54,18 @@ public class SpringBootConfig {
                     public static List<String> NAMESPACE = Arrays.asList("application");
                 }
 
+                @SpringBootConfigNode(root = SpringBootConfig.class)
+                public static class Nacos {
+
+                    public static String SERVER_ADDR = "localhost";
+
+                    public static List<String> NAMESPACE = Arrays.asList("");
+
+                    public static String DATA_ID = "";
+
+                    public static String GROUP = "DEFAULT_GROUP";
+                }
+
                 /**
                  * Monitor
                  */
@@ -67,10 +81,27 @@ public class SpringBootConfig {
                     public static Long initialDelay = 10000L;
 
                     public static Long collectInterval = 5000L;
+
+                    public static Integer AGENT_MICROMETER_PORT;
+
                 }
 
                 public static String CONFIG_FILE_TYPE;
             }
+        }
+
+        @SpringBootConfigNode(root = SpringBootConfig.class)
+        public static class Application {
+
+            public static String name = "";
+
+        }
+
+        @SpringBootConfigNode(root = SpringBootConfig.class)
+        public static class Profiles {
+
+            public static String active = "";
+
         }
     }
 }

@@ -235,4 +235,14 @@ public class DefaultThreadPoolCheckAlarmHandler implements Runnable, ThreadPoolC
                 .rejectCountNum(rejectCount)
                 .build();
     }
+
+    /**
+     * Terminates the scheduled tasks and asynchronous alarm notifications by
+     * forcefully shutting down the respective thread pools.
+     */
+    public void destroyScheduleExecute() {
+        alarmNotifyExecutor.shutdownNow();
+        asyncAlarmNotifyExecutor.shutdownNow();
+    }
+
 }
