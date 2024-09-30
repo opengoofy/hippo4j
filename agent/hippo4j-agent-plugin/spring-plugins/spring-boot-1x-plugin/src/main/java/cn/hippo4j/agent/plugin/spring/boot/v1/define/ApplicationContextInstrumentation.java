@@ -36,7 +36,7 @@ import static net.bytebuddy.matcher.ElementMatchers.named;
  */
 public class ApplicationContextInstrumentation extends ClassInstanceMethodsEnhancePluginDefine {
 
-    private static final String ENHANCE_CLASS = "org.springframework.context.support.AbstractApplicationContext";
+    private static final String ENHANCE_CLASS = "org.springframework.boot.context.event.EventPublishingRunListener";
 
     private static final String APPLICATION_CONTEXT_REFRESH_INTERCEPTOR = "cn.hippo4j.agent.plugin.spring.boot.v1.interceptor.ApplicationContextInterceptor";
 
@@ -56,7 +56,7 @@ public class ApplicationContextInstrumentation extends ClassInstanceMethodsEnhan
 
             @Override
             public ElementMatcher<MethodDescription> getMethodsMatcher() {
-                return named("refresh");
+                return named("finished");
             }
 
             @Override
