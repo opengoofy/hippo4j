@@ -23,5 +23,7 @@
         <module>config-etcd</module>
         <module>config-nacos-spring-boot-1x</module>
         <module>config-apollo-spring-boot-1x</module>
+<!--        <module>config-nacos-spring-boot3</module>-->
+<!--        <module>config-apollo-spring-boot3</module>-->
     </modules>
 </project>
