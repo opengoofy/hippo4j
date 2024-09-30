@@ -17,27 +17,27 @@
 
 package cn.hippo4j.agent.plugin.spring.boot.v2.interceptor;
 
-import cn.hippo4j.common.logging.api.ILog;
-import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
-import cn.hippo4j.agent.plugin.spring.boot.v2.DynamicThreadPoolChangeHandlerSpring2x;
+import cn.hippo4j.agent.plugin.spring.common.event.DynamicThreadPoolRefreshListener;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSupport;
 import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
-import cn.hippo4j.threadpool.dynamic.api.ThreadPoolDynamicRefresh;
-import cn.hippo4j.threadpool.dynamic.mode.config.refresher.event.DynamicThreadPoolRefreshListener;
-import lombok.extern.slf4j.Slf4j;
+import cn.hippo4j.common.logging.api.ILog;
+import cn.hippo4j.common.logging.api.LogManager;
+import cn.hippo4j.core.config.ApplicationContextHolder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Event publishing started interceptor
  */
-@Slf4j
 public class EventPublishingStartedInterceptor implements InstanceMethodsAroundInterceptor {
+
+    private static final AtomicBoolean isExecuted = new AtomicBoolean(false);
 
     private static final ILog LOGGER = LogManager.getLogger(EventPublishingStartedInterceptor.class);
 
@@ -54,11 +54,15 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
             SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
             return ret;
         }
-        SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
-        ThreadPoolDynamicRefresh dynamicRefresh = new DynamicThreadPoolChangeHandlerSpring2x();
-        dynamicRefresh.registerListener();
-        AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH,
-                new DynamicThreadPoolRefreshListener());
+        // This logic will only be executed once
+        if (isExecuted.compareAndSet(false, true)) {
+            ApplicationContextHolder contextHolder = new ApplicationContextHolder();
+            contextHolder.setApplicationContext(context);
+            // Load Spring Properties
+            SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
+            // register Dynamic ThreadPool Refresh Listener
+            AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH, new DynamicThreadPoolRefreshListener());
+        }
 
         return ret;
     }

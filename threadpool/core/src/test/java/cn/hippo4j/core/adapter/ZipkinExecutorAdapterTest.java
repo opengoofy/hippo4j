@@ -68,7 +68,7 @@ public class ZipkinExecutorAdapterTest {
     @Test
     public void testReplace() {
         Object executor = new CustomWrappingExecutorService(Executors.newCachedThreadPool());
-        CustomWrappingExecutorService executorChange = (CustomWrappingExecutorService)executor;
+        CustomWrappingExecutorService executorChange = (CustomWrappingExecutorService) executor;
         ExecutorService beforeReplace = executorChange.delegate();
         zipkinExecutorAdapter.replace(executor, dynamicThreadPool);
         ExecutorService afterReplace = executorChange.delegate();

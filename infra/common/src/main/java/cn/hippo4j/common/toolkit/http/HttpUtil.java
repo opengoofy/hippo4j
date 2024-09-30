@@ -31,10 +31,13 @@ import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.BufferedWriter;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 
@@ -199,6 +202,18 @@ public class HttpUtil {
     }
 
     /**
+     * Send a post network request.
+     *
+     * @param url  target url
+     * @param json json data
+     * @param headers headers
+     * @return
+     */
+    public static String postJson(String url, String json, Map<String, String> headers) {
+        return executeJson(url, HttpMethod.POST, json, headers);
+    }
+
+    /**
      * Send a put network request.
      *
      * @param url  target url
@@ -310,8 +325,10 @@ public class HttpUtil {
                 byte[] b = bodyString.getBytes();
                 connection.setRequestProperty(CONTENT_LENGTH, String.valueOf(b.length));
                 OutputStream outputStream = connection.getOutputStream();
-                outputStream.write(b, 0, b.length);
-                outputStream.flush();
+                OutputStreamWriter osw = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+                BufferedWriter writer = new BufferedWriter(osw);
+                writer.write(bodyString);
+                writer.flush();
                 IoUtil.closeQuietly(outputStream);
             }
             connection.connect();

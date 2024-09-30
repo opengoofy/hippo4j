@@ -34,7 +34,7 @@ public class ApolloInstrumentation extends ClassInstanceMethodsEnhancePluginDefi
 
     private static final String ENHANCE_CLASS = "com.ctrip.framework.apollo.internals.DefaultConfig";
 
-    private static final String CONSTRUCTOR_INTERCEPT_CLASS = "cn.hippo4j.agent.plugin.apollo.interceptor.DefaultConfigConstructorInterceptor";
+    private static final String CONSTRUCTOR_INTERCEPT_CLASS = "cn.hippo4j.agent.plugin.apollo.interceptor.ApolloConfigConstructorInterceptor";
 
     @Override
     protected ClassMatch enhanceClass() {

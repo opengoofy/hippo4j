@@ -34,6 +34,7 @@ import java.util.List;
  * Json config parser.
  */
 public class JsonConfigParser extends AbstractConfigParser {
+
     private static final ObjectMapper MAPPER;
     private static final String DOT = ".";
     private static final String LEFT_BRACE = "{";
@@ -91,7 +92,7 @@ public class JsonConfigParser extends AbstractConfigParser {
             return new HashMap<>(1);
         }
 
-        return doParse(content,"");
+        return doParse(content, "");
     }
 
     @Override

@@ -17,17 +17,17 @@
 
 package cn.hippo4j.agent.core.conf;
 
+import cn.hippo4j.agent.core.boot.AgentPackagePath;
+import cn.hippo4j.agent.core.util.PropertyPlaceholderHelper;
+import cn.hippo4j.agent.core.util.StringUtil;
 import cn.hippo4j.common.boot.AgentPackageNotFoundException;
-import cn.hippo4j.common.boot.AgentPackagePath;
 import cn.hippo4j.common.conf.Config;
 import cn.hippo4j.common.conf.ConfigNotFoundException;
 import cn.hippo4j.common.logging.api.ILog;
 import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.common.logging.core.JsonLogResolver;
 import cn.hippo4j.common.logging.core.PatternLogResolver;
-import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.agent.ConfigInitializer;
-import cn.hippo4j.common.toolkit.agent.PropertyPlaceholderHelper;
 
 import java.io.File;
 import java.io.FileInputStream;

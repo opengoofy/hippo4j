@@ -56,6 +56,8 @@ public class Constants {
 
     public static final String GENERAL_SPLIT_SYMBOL = ",";
 
+    public static final String DOT_SPLIT_SYMBOL = ".";
+
     public static final String IDENTIFY_SLICER_SYMBOL = "_";
 
     public static final String LONG_POLLING_LINE_SEPARATOR = "\r\n";
@@ -128,5 +130,12 @@ public class Constants {
 
     public static final String CONFIGURATION_PROPERTIES_PREFIX = "spring.dynamic.thread-pool";
 
+    public static final String EXECUTORS = "executors";
+
     public static final long NO_REJECT_COUNT_NUM = -1L;
+
+    public static final String DYNAMIC_THREAD_POOL_EXECUTOR = "cn.hippo4j.core.executor.DynamicThreadPoolExecutor";
+
+    public static final int DEFAULT_INTERVAL = 5;
+
 }
