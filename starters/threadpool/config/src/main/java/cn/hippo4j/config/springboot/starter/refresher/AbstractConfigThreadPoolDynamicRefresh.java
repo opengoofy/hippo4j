@@ -29,6 +29,7 @@ import cn.hippo4j.threadpool.dynamic.mode.config.refresher.BootstrapConfigProper
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +75,7 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
     private void publishDynamicThreadPoolEvent(BootstrapConfigProperties configProperties) {
         ApplicationContextHolder.getInstance().publishEvent(new ThreadPoolConfigDynamicRefreshEvent(this, configProperties));
     }
+
 
     @Override
     public void run(ApplicationArguments args) {
