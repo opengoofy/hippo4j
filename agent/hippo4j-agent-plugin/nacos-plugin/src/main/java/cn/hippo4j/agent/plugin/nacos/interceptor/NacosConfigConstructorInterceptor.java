@@ -38,7 +38,7 @@ public class NacosConfigConstructorInterceptor implements InstanceConstructorInt
         // This logic will only be executed once
         if (isExecuted.compareAndSet(false, true)) {
 
-            // 判断 SpringPropertiesLoader 是否初始化
+            // Determine whether SpringPropertiesLoader is initialized
             AtomicBoolean active = SpringPropertiesLoader.getActive();
 
             // For Nacos-Cloud, the SpringPropertiesLoader environment initialization is triggered first, and then the logic to register listeners is triggered
@@ -51,7 +51,7 @@ public class NacosConfigConstructorInterceptor implements InstanceConstructorInt
             // The Nacos plugin triggers before the Spring configuration plug-in.
             // This means that when the Apollo plug-in executes, Spring's Environment is not yet ready,
             // so the configuration cannot be read
-            // After listening to the AGENT_SPRING_PROPERTIES_LOADER_COMPLETED event, register the listener for Apollo
+            // After listening to the AGENT_SPRING_PROPERTIES_LOADER_COMPLETED event, register the listener for Nacos
             AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.AGENT_SPRING_PROPERTIES_LOADER_COMPLETED, new NacosConfigPropertiesLoaderCompletedListener());
         }
     }

@@ -140,7 +140,6 @@
                 <groupId>org.objenesis</groupId>
                 <artifactId>objenesis</artifactId>
                 <version>${objenesis.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.github.tomakehurst</groupId>

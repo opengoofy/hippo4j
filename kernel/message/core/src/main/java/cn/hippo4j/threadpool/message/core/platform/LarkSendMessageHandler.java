@@ -43,6 +43,8 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -154,7 +156,9 @@ public class LarkSendMessageHandler implements SendMessageHandler {
     private void execute(String secretKey, String text) {
         String serverUrl = LarkAlarmConstants.LARK_BOT_URL + secretKey;
         try {
-            String responseBody = HttpUtil.postJson(serverUrl, text);
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/json; charset=UTF-8");
+            String responseBody = HttpUtil.postJson(serverUrl, text, headers);
             LarkRobotResponse response = JSONUtil.parseObject(responseBody, LarkRobotResponse.class);
             Assert.isTrue(response != null, "Response is null.");
             if (response.getCode() != 0) {

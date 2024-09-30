@@ -108,8 +108,8 @@ public class ThreadPoolCheckAlarmSupport {
         EnvironmentProperties.active = SpringBootConfig.Spring.Profiles.active;
         ConfigurableEnvironment environment = ApplicationContextHolder.getBean(ConfigurableEnvironment.class);
         InetUtilsProperties inetUtilsProperties = SpringPropertyBinder.bindProperties(environment, InetUtilsProperties.PREFIX, InetUtilsProperties.class);
-        InetUtils inetUtils = new InetUtils(inetUtilsProperties);
-        IdentifyUtil.generate(environment, inetUtils);
+        SpringPropertiesLoader.inetUtils = new InetUtils(inetUtilsProperties);
+        IdentifyUtil.generate(environment, SpringPropertiesLoader.inetUtils);
     }
 
     /**

@@ -17,11 +17,14 @@
 
 package cn.hippo4j.agent.plugin.nacos;
 
+import cn.hippo4j.agent.plugin.spring.common.conf.NacosCloudConfig;
+import cn.hippo4j.agent.plugin.spring.common.conf.NacosConfig;
 import cn.hippo4j.agent.plugin.spring.common.conf.SpringBootConfig;
 import cn.hippo4j.agent.plugin.spring.common.toolkit.SpringPropertyBinder;
 import cn.hippo4j.common.executor.ThreadFactoryBuilder;
 import cn.hippo4j.common.logging.api.ILog;
 import cn.hippo4j.common.logging.api.LogManager;
+import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.threadpool.dynamic.mode.config.parser.ConfigParserHandler;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.refresher.AbstractConfigThreadPoolDynamicRefresh;
@@ -34,6 +37,7 @@ import org.springframework.boot.context.properties.bind.Binder;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -64,7 +68,13 @@ public class NacosDynamicThreadPoolChangeHandler extends AbstractConfigThreadPoo
     public void registerListener() {
         // Retrieve necessary configuration properties
         String configFileType = SpringBootConfig.Spring.Dynamic.Thread_Pool.CONFIG_FILE_TYPE;
-        String serverAddr = SpringBootConfig.Spring.Dynamic.Thread_Pool.Nacos.SERVER_ADDR;
+        String serverAddr = Optional.ofNullable(NacosCloudConfig.Spring.Cloud.Nacos.Config.SERVER_ADDR).filter(s -> !StringUtil.isEmpty(s))
+                .orElse(Optional.ofNullable(NacosConfig.Nacos.Config.SERVER_ADDR).filter(s -> !StringUtil.isEmpty(s))
+                        .orElse(""));
+        if (StringUtil.isEmpty(serverAddr)) {
+            LOGGER.error("[Hippo4j-Agent] add Nacos listener failure. Nacos Registry address not configured");
+            return;
+        }
         String dataId = SpringBootConfig.Spring.Dynamic.Thread_Pool.Nacos.DATA_ID;
         String group = SpringBootConfig.Spring.Dynamic.Thread_Pool.Nacos.GROUP;
         String namespace = SpringBootConfig.Spring.Dynamic.Thread_Pool.Nacos.NAMESPACE.get(0);
@@ -105,9 +115,9 @@ public class NacosDynamicThreadPoolChangeHandler extends AbstractConfigThreadPoo
             };
             // Add the listener to the Nacos ConfigService
             configService.addListener(dataId, group, configChangeListener);
-            LOGGER.info("[Hippo4j-Agent] Dynamic thread pool refresher, add Nacos listener successfully. namespace: {} data-id: {} group: {}", namespace, dataId, group);
+            LOGGER.info("[Hippo4j-Agent] Dynamic thread pool refresher, add Nacos listener successfully. serverAddr: {} namespace: {} data-id: {} group: {}", serverAddr, namespace, dataId, group);
         } catch (Exception e) {
-            LOGGER.error(e, "[Hippo4j-Agent] Dynamic thread pool refresher, add Nacos listener failure. namespace: {} data-id: {} group: {}", namespace, dataId, group);
+            LOGGER.error(e, "[Hippo4j-Agent] Dynamic thread pool refresher, add Nacos listener failure. serverAddr: {} namespace: {} data-id: {} group: {}", serverAddr, namespace, dataId, group);
         }
     }
 

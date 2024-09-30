@@ -25,7 +25,9 @@ import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSupport;
 import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
 import cn.hippo4j.core.config.ApplicationContextHolder;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -50,7 +52,18 @@ public class ApplicationContextInterceptor implements InstanceMethodsAroundInter
         ConfigurableApplicationContext context = (ConfigurableApplicationContext) objInst;
         if (context.getParent() != null) {
             // After the child container is started, the thread pool registration will be carried out
-            SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
+            // IDEA's runtime environment or debugging mechanisms make context refresh speeds different.
+            // Ensure that thread pool registration logic is executed only after the context is fully started
+            if (context.isActive()) {
+                SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
+                return ret;
+            }
+            // However, the packaged JAR runtime may refresh the context faster
+            // resulting in the context not being refreshed yet when registerThreadPoolInstances is called
+            // Register listener to handle the registration after the context has been fully refreshed
+            context.addApplicationListener((ApplicationListener<ContextRefreshedEvent>) event -> {
+                SpringThreadPoolRegisterSupport.registerThreadPoolInstances(event.getApplicationContext());
+            });
             return ret;
         }
         // This logic will only be executed once

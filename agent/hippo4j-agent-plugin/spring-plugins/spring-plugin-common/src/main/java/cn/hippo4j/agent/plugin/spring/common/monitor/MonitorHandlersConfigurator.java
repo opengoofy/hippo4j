@@ -17,14 +17,13 @@
 
 package cn.hippo4j.agent.plugin.spring.common.monitor;
 
+import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
 import cn.hippo4j.common.extension.spi.ServiceLoaderRegistry;
 import cn.hippo4j.common.logging.api.ILog;
 import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.common.monitor.MonitorCollectTypeEnum;
 import cn.hippo4j.common.monitor.MonitorHandlerTypeEnum;
 import cn.hippo4j.core.executor.state.ThreadPoolRunStateHandler;
-import cn.hippo4j.core.toolkit.inet.InetUtils;
-import cn.hippo4j.core.toolkit.inet.InetUtilsProperties;
 import cn.hippo4j.monitor.elasticsearch.AdapterThreadPoolElasticSearchMonitorHandler;
 import cn.hippo4j.monitor.elasticsearch.DynamicThreadPoolElasticSearchMonitorHandler;
 import cn.hippo4j.monitor.elasticsearch.WebThreadPoolElasticSearchMonitorHandler;
@@ -44,8 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-
-import static cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader.INET_UTILS_PROPERTIES;
 
 /**
  * This class is responsible for configuring and initializing monitoring handlers
@@ -88,7 +85,7 @@ public class MonitorHandlersConfigurator {
         List<String> collectTypes = Arrays.asList(monitor.getCollectTypes().split(","));
         List<String> threadPoolTypes = Arrays.asList(monitor.getThreadPoolTypes().split(","));
         ThreadPoolRunStateHandler threadPoolRunStateHandler = new ThreadPoolRunStateHandler(
-                new InetUtils(INET_UTILS_PROPERTIES), environment);
+                SpringPropertiesLoader.inetUtils, environment);
 
         MonitorHandlerContext context = new MonitorHandlerContext(threadPoolMonitors, threadPoolRunStateHandler);
 
