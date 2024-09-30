@@ -239,9 +239,6 @@ public class DefaultThreadPoolCheckAlarmHandler implements Runnable, ThreadPoolC
     /**
      * Terminates the scheduled tasks and asynchronous alarm notifications by
      * forcefully shutting down the respective thread pools.
-     *
-     * @see alarmNotifyExecutor
-     * @see asyncAlarmNotifyExecutor
      */
     public void destroyScheduleExecute() {
         alarmNotifyExecutor.shutdownNow();

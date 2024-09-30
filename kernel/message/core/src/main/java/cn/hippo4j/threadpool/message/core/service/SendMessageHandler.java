@@ -17,12 +17,11 @@
 
 package cn.hippo4j.threadpool.message.core.service;
 
+import cn.hippo4j.threadpool.message.api.NotifyConfigDTO;
 import cn.hippo4j.threadpool.message.core.request.AlarmNotifyRequest;
 import cn.hippo4j.threadpool.message.core.request.ChangeParameterNotifyRequest;
 import cn.hippo4j.threadpool.message.core.request.WebChangeParameterNotifyRequest;
-import cn.hippo4j.threadpool.message.api.NotifyConfigDTO;
 import lombok.SneakyThrows;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -70,9 +69,9 @@ public interface SendMessageHandler {
     default String readUtf8String(String path) {
         int endFlagCode = -1;
         String resultReadStr;
-        ClassPathResource classPathResource = new ClassPathResource(path);
+        ClassLoader classLoader = this.getClass().getClassLoader();
         try (
-                InputStream inputStream = classPathResource.getInputStream();
+                InputStream inputStream = classLoader.getResourceAsStream(path);
                 BufferedInputStream bis = new BufferedInputStream(inputStream);
                 ByteArrayOutputStream buf = new ByteArrayOutputStream()) {
             int result = bis.read();

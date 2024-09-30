@@ -22,6 +22,7 @@ import cn.hippo4j.agent.plugin.spring.common.toolkit.SpringPropertyBinder;
 import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
 import cn.hippo4j.common.logging.api.ILog;
 import cn.hippo4j.common.logging.api.LogManager;
+import cn.hippo4j.core.toolkit.inet.InetUtils;
 import cn.hippo4j.core.toolkit.inet.InetUtilsProperties;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import lombok.Getter;
@@ -56,6 +57,8 @@ public class SpringPropertiesLoader {
     public static BootstrapConfigProperties BOOTSTRAP_CONFIG_PROPERTIES = new BootstrapConfigProperties();
 
     public static InetUtilsProperties INET_UTILS_PROPERTIES = new InetUtilsProperties();
+
+    public static InetUtils inetUtils;
 
     public static void loadSpringProperties(ConfigurableEnvironment environment) {
         Iterator<PropertySource<?>> iterator = environment.getPropertySources().iterator();

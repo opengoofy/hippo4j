@@ -67,7 +67,7 @@ public class MonitorMetricEndpoint {
         Integer port = SpringBootConfig.Spring.Dynamic.Thread_Pool.Monitor.AGENT_MICROMETER_PORT;
         if (port == null) {
             LOGGER.error(
-                    "[Hippo4j-Agent] Failed to start Prometheus metrics endpoint server. Please configure the exposed endpoint by adding: spring.dynamic.thread-pool.monitor.port=xxx to the configuration file");
+                    "[Hippo4j-Agent] Failed to start Prometheus metrics endpoint server. Please configure the exposed endpoint by adding: spring.dynamic.thread-pool.monitor.agent-micrometer-port=xxx to the configuration file");
             return;
         }
 

@@ -41,9 +41,6 @@ public class NacosCloudAdapterConfigInstanceMethodInterceptor implements Instanc
 
     }
 
-    /**
-     *
-     */
     @Override
     public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Object ret) throws Throwable {
         // This logic will only be executed once

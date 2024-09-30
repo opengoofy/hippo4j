@@ -98,7 +98,8 @@ public class ThreadPoolMonitorSupport {
 
         // Determine whether the task is successfully enabled
         // return directly if it has been enabled, and do not start the thread pool repeatedly
-        if (Boolean.TRUE.equals(active.get())) return;
+        if (Boolean.TRUE.equals(active.get()))
+            return;
 
         // Expose metric endpoints based on the configured collect types
         List<String> collectTypes = Arrays.asList(monitor.getCollectTypes().split(","));
@@ -107,7 +108,8 @@ public class ThreadPoolMonitorSupport {
         }
 
         // Schedule periodic collection of metrics from the thread pools
-        collectScheduledExecutor.scheduleWithFixedDelay(scheduleRunnable(), monitor.getInitialDelay(), monitor.getCollectInterval(), TimeUnit.MILLISECONDS);
+        Runnable scheduledTask = scheduleRunnable();
+        collectScheduledExecutor.scheduleWithFixedDelay(scheduledTask, monitor.getInitialDelay(), monitor.getCollectInterval(), TimeUnit.MILLISECONDS);
 
         active.set(true);
         if (ThreadPoolExecutorRegistry.getThreadPoolExecutorSize() > 0) {
@@ -130,7 +132,7 @@ public class ThreadPoolMonitorSupport {
             for (ThreadPoolMonitor each : threadPoolMonitors) {
                 try {
                     each.collect();
-                } catch (Exception ex) {
+                } catch (Throwable ex) {
                     LOGGER.error("[Hippo4j-Agent] Error monitoring the running status of dynamic thread pool. Type: {}", each.getType(), ex);
                 }
             }
