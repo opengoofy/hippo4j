@@ -36,6 +36,22 @@ import java.util.Set;
 public class BeanUtilTest {
 
     @Test
+    public void beanToBeanConvertTest(){
+        // Test BeanToAnotherBean
+        final Person person = new Person();
+        person.setName("Hippo4j");
+        person.setAge(1);
+        person.setAddress("hippo4j.cn");
+        person.setSize(999);
+        GoodPerson goodPerson = BeanUtil.convert(person, GoodPerson.class);
+        Assert.assertSame(goodPerson.getClass(), GoodPerson.class);
+        Assert.assertEquals("Hippo4j", person.getName());
+        Assert.assertEquals(1, person.getAge());
+        Assert.assertEquals("hippo4j.cn", person.getAddress());
+        Assert.assertEquals(999, person.getSize().intValue());
+    }
+
+    @Test
     public void beanToMapConvertTest() {
         // 测试BeanToMap
         final Person person = new Person();
@@ -170,5 +186,13 @@ public class BeanUtilTest {
 
         String name;
         Integer statusCode;
+    }
+
+    @Getter
+    @Setter
+    static class GoodPerson extends Person{
+
+        String gender;
+        String nature;
     }
 }
