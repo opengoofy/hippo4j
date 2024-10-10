@@ -17,6 +17,7 @@
 
 package cn.hippo4j.common.toolkit;
 
+import com.github.dozermapper.core.converters.ConversionException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,7 +38,6 @@ public class BeanUtilTest {
 
     @Test
     public void beanToBeanConvertTest(){
-        // Test BeanToAnotherBean
         final Person person = new Person();
         person.setName("Hippo4j");
         person.setAge(1);
@@ -53,7 +53,6 @@ public class BeanUtilTest {
 
     @Test
     public void beanToMapConvertTest() {
-        // 测试BeanToMap
         final Person person = new Person();
         person.setName("Hippo4j");
         person.setAge(1);
@@ -68,7 +67,6 @@ public class BeanUtilTest {
 
     @Test
     public void mapToBeanConvertTest() {
-        // 测试MapToBean
         final HashMap<String, Object> map = new HashMap<>();
         map.put("name", "Hippo4j");
         map.put("age", 1);
@@ -105,21 +103,16 @@ public class BeanUtilTest {
 
     @Test
     public void copyPropertiesBeanToMapTest() {
-        // 测试BeanToMap
         final Person person = new Person();
         person.setName("Hippo4j");
 
         final Map<?, ?> convert = BeanUtil.convert(person, Map.class);
         Assert.assertEquals("Hippo4j", convert.get("name"));
 
-        // static属性应被忽略
         Assert.assertFalse(convert.containsKey("STATIC_NAME"));
     }
 
-    /**
-     * 测试在不忽略错误情况下，转换失败需要报错。
-     */
-    // @Test(expected = ConversionException.class)
+    @Test(expected = ConversionException.class)
     public void mapToBeanWinErrorTest() {
         final Map<String, String> map = new HashMap<>();
         map.put("age", "Hippo4j");
@@ -157,18 +150,43 @@ public class BeanUtilTest {
     @NoArgsConstructor
     public static class Person {
 
+        /**
+         * STATIC_NAME
+         */
         public static final String STATIC_NAME = "STATIC_NAME";
 
+        /**
+         * name
+         */
         private String name;
+
+        /**
+         * age
+         */
         private int age;
+
+        /**
+         * address
+         */
         private String address;
+
+        /**
+         * size
+         */
         private Integer size;
     }
 
     @Setter
     public static class PersonVo {
 
+        /**
+         * name
+         */
         private String name;
+
+        /**
+         * age
+         */
         private int age;
     }
 
@@ -176,7 +194,14 @@ public class BeanUtilTest {
     @Setter
     static class Customer {
 
+        /**
+         * name
+         */
         String name;
+
+        /**
+         * statusCode
+         */
         Integer statusCode;
     }
 
@@ -184,7 +209,14 @@ public class BeanUtilTest {
     @Setter
     static class PreCustomer {
 
+        /**
+         * name
+         */
         String name;
+
+        /**
+         * statusCode
+         */
         Integer statusCode;
     }
 
@@ -192,7 +224,14 @@ public class BeanUtilTest {
     @Setter
     static class GoodPerson extends Person{
 
-        String gender;
-        String nature;
+        /**
+         * gender
+         */
+        private String gender;
+
+        /**
+         * nature
+         */
+        private String nature;
     }
 }
