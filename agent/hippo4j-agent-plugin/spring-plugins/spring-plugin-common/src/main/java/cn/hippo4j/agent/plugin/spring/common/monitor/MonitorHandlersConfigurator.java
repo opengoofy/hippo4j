@@ -159,10 +159,10 @@ public class MonitorHandlersConfigurator {
                 context.monitors.add(new DynamicThreadPoolElasticSearchMonitorHandler(context.threadPoolRunStateHandler));
                 break;
             case WEB:
-                context.monitors.add(new WebThreadPoolElasticSearchMonitorHandler(context.threadPoolRunStateHandler));
+                context.monitors.add(new WebThreadPoolElasticSearchMonitorHandler());
                 break;
             case ADAPTER:
-                context.monitors.add(new AdapterThreadPoolElasticSearchMonitorHandler(context.threadPoolRunStateHandler));
+                context.monitors.add(new AdapterThreadPoolElasticSearchMonitorHandler());
                 break;
         }
     }

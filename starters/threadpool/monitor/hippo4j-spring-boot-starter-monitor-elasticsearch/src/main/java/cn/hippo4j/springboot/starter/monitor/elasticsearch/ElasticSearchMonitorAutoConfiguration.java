@@ -44,12 +44,12 @@ public class ElasticSearchMonitorAutoConfiguration {
     @Bean
     @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('web')")
     public WebThreadPoolElasticSearchMonitorHandler webThreadPoolElasticSearchMonitorHandler(ThreadPoolRunStateHandler handler) {
-        return new WebThreadPoolElasticSearchMonitorHandler(handler);
+        return new WebThreadPoolElasticSearchMonitorHandler();
     }
 
     @Bean
     @ConditionalOnExpression("'${spring.dynamic.thread-pool.monitor.thread-pool-types:}'.contains('adapter')")
     public AdapterThreadPoolElasticSearchMonitorHandler adapterThreadPoolElasticSearchMonitorHandler(ThreadPoolRunStateHandler handler) {
-        return new AdapterThreadPoolElasticSearchMonitorHandler(handler);
+        return new AdapterThreadPoolElasticSearchMonitorHandler();
     }
 }
