@@ -56,6 +56,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class WebThreadPoolElasticSearchMonitorHandler extends AbstractWebThreadPoolMonitor {
 
     private AtomicBoolean isIndexExist = null;
+
     @Override
     protected void execute(ThreadPoolRunStateInfo poolRunStateInfo) {
         ElasticSearchThreadPoolRunStateInfo esThreadPoolRunStateInfo = BeanUtil.convert(poolRunStateInfo, ElasticSearchThreadPoolRunStateInfo.class);
@@ -147,11 +148,34 @@ public class WebThreadPoolElasticSearchMonitorHandler extends AbstractWebThreadP
     @Builder
     private static class EsIndex {
 
-        String index;
-        String type;
-        String mapping;
-        Integer shards;
-        Integer replicas;
-        String alias;
+        /**
+         * index
+         */
+        private String index;
+
+        /**
+         * type
+         */
+        private String type;
+
+        /**
+         * mapping
+         */
+        private String mapping;
+
+        /**
+         * shards
+         */
+        private Integer shards;
+
+        /**
+         * replicas
+         */
+        private Integer replicas;
+
+        /**
+         * alias
+         */
+        private String alias;
     }
 }
