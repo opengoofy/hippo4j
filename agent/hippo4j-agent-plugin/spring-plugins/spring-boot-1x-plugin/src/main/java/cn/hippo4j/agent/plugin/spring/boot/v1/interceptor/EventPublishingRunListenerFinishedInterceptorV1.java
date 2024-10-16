@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.hippo4j.agent.plugin.spring.boot.v2.interceptor;
+package cn.hippo4j.agent.plugin.spring.boot.v1.interceptor;
 
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import cn.hippo4j.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
@@ -24,22 +24,20 @@ import cn.hippo4j.agent.plugin.spring.common.event.DynamicThreadPoolRefreshListe
 import cn.hippo4j.agent.plugin.spring.common.support.SpringPropertiesLoader;
 import cn.hippo4j.agent.plugin.spring.common.support.SpringThreadPoolRegisterSupport;
 import cn.hippo4j.common.extension.design.AbstractSubjectCenter;
-import cn.hippo4j.common.logging.api.ILog;
-import cn.hippo4j.common.logging.api.LogManager;
 import cn.hippo4j.core.config.ApplicationContextHolder;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Event publishing started interceptor
+ * EventPublishingRunListener Finished interceptor
  */
-public class EventPublishingStartedInterceptor implements InstanceMethodsAroundInterceptor {
+public class EventPublishingRunListenerFinishedInterceptorV1 implements InstanceMethodsAroundInterceptor {
 
     private static final AtomicBoolean isExecuted = new AtomicBoolean(false);
-
-    private static final ILog LOGGER = LogManager.getLogger(EventPublishingStartedInterceptor.class);
 
     @Override
     public void beforeMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, MethodInterceptResult result) throws Throwable {
@@ -48,10 +46,23 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
 
     @Override
     public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Object ret) throws Throwable {
+        // Since the finished() method is a method of the EventPublishingRunListener class,
+        // the EventPublishingRunListener the first parameter is ConfigurableApplicationContext
         ConfigurableApplicationContext context = (ConfigurableApplicationContext) allArguments[0];
         if (context.getParent() != null) {
             // After the child container is started, the thread pool registration will be carried out
-            SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
+            // IDEA's runtime environment or debugging mechanisms make context refresh speeds different.
+            // Ensure that thread pool registration logic is executed only after the context is fully started
+            if (context.isActive()) {
+                SpringThreadPoolRegisterSupport.registerThreadPoolInstances(context);
+                return ret;
+            }
+            // However, the packaged JAR runtime may refresh the context faster
+            // resulting in the context not being refreshed yet when registerThreadPoolInstances is called
+            // Register listener to handle the registration after the context has been fully refreshed
+            context.addApplicationListener((ApplicationListener<ContextRefreshedEvent>) event -> {
+                SpringThreadPoolRegisterSupport.registerThreadPoolInstances(event.getApplicationContext());
+            });
             return ret;
         }
         // This logic will only be executed once
@@ -61,9 +72,10 @@ public class EventPublishingStartedInterceptor implements InstanceMethodsAroundI
             // Load Spring Properties
             SpringPropertiesLoader.loadSpringProperties(context.getEnvironment());
             // register Dynamic ThreadPool Refresh Listener
-            AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH, new DynamicThreadPoolRefreshListener());
+            if (AbstractSubjectCenter.get(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH) == null) {
+                AbstractSubjectCenter.register(AbstractSubjectCenter.SubjectType.THREAD_POOL_DYNAMIC_REFRESH, new DynamicThreadPoolRefreshListener());
+            }
         }
-
         return ret;
     }
 

@@ -78,16 +78,6 @@
             <artifactId>hippo4j-threadpool-infra-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-dynamic-mode-config</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-kernel-monitor</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -107,6 +97,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

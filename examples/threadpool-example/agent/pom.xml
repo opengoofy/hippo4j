@@ -22,5 +22,7 @@
         <module>agent-example-core</module>
         <module>config-nacos-spring-boot-1x</module>
         <module>config-apollo-spring-boot-1x</module>
+        <module>config-apollo-spring-boot-3x</module>
+        <module>config-naocs-spring-boot-3x</module>
     </modules>
 </project>

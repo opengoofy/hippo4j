@@ -76,7 +76,6 @@ public abstract class AbstractConfigThreadPoolDynamicRefresh implements ThreadPo
         ApplicationContextHolder.getInstance().publishEvent(new ThreadPoolConfigDynamicRefreshEvent(this, configProperties));
     }
 
-
     @Override
     public void run(ApplicationArguments args) {
         try {

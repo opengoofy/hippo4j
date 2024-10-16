@@ -21,7 +21,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Agent config Nacos example application.
+ * Agent config Apollo Spring Boot 1.x example application.
  */
 @SpringBootApplication(scanBasePackages = "cn.hippo4j.example.agent.core")
 public class AgentConfigApolloSpringBoot1xExampleApplication {

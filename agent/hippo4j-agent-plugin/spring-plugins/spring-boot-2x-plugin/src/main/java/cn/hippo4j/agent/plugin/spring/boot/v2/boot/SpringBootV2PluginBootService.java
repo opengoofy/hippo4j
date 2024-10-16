@@ -23,7 +23,7 @@ import cn.hippo4j.common.logging.api.ILog;
 import cn.hippo4j.common.logging.api.LogManager;
 
 /**
- * SpringBoot v1 plugin boot service
+ * SpringBoot v2 plugin boot service
  */
 @DefaultImplementor
 public class SpringBootV2PluginBootService implements BootService {

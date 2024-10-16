@@ -32,7 +32,6 @@ import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
-import org.springframework.boot.context.properties.bind.Binder;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -124,7 +123,7 @@ public class NacosDynamicThreadPoolChangeHandler extends AbstractConfigThreadPoo
     /**
      * Builds and binds the {@link BootstrapConfigProperties} from the given configuration map.
      * <p>
-     * This method uses Spring's {@link Binder} to bind the configuration values to an instance
+     * This method uses SpringPropertyBinder to bind the configuration values to an instance
      * of {@link BootstrapConfigProperties}, which can then be used to configure the thread pool
      * dynamically.
      *

@@ -13,7 +13,6 @@
 
     <properties>
         <spring.boot.version>1.5.22.RELEASE</spring.boot.version>
-        <apollo.version>1.9.1</apollo.version>
     </properties>
 
     <dependencyManagement>

@@ -93,6 +93,9 @@ public class ThreadPoolCheckAlarmSupport {
 
             // Execute scheduled task to check an alarm
             scheduleExecute(threadPoolBaseSendMessageService);
+
+            LOGGER.info("[Hippo4j-Agent] Start Check AlarmHandler the running status of dynamic thread pools.");
+
         }
     }
 
