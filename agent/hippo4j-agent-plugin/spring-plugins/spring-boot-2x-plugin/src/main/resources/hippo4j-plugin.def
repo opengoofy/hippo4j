@@ -14,4 +14,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-spring-boot-2.x=cn.hippo4j.agent.plugin.spring.boot.v2.define.EventPublishingRunListenerInstrumentation
+spring-boot-2.x=cn.hippo4j.agent.plugin.spring.boot.v2.define.EventPublishingRunListenerInstrumentationV2

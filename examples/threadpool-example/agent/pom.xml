@@ -22,5 +22,8 @@
         <module>agent-example-core</module>
         <module>config-nacos-spring-boot-1x</module>
         <module>config-apollo-spring-boot-1x</module>
+        <!--Because SpringBoot3 requires JDK17, if you need to run the boot3x example, you can remove the following comment-->
+        <!--<module>config-apollo-spring-boot-3x</module>
+        <module>config-naocs-spring-boot-3x</module>-->
     </modules>
 </project>

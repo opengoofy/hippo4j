@@ -29,6 +29,7 @@
         <shade.org.slf4j.source>org.slf4j</shade.org.slf4j.source>
         <shade.org.slf4j.target>${shade.package}.${shade.org.slf4j.source}</shade.org.slf4j.target>
         <ststem-rules.version>1.18.0</ststem-rules.version>
+        <jaxb.version>2.3.1</jaxb.version>
     </properties>
 
     <dependencies>
@@ -78,15 +79,16 @@
             <artifactId>hippo4j-threadpool-infra-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--To fix https://github.com/DozerMapper/dozer/issues/865 -->
         <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-dynamic-mode-config</artifactId>
-            <version>${project.version}</version>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb.version}</version>
         </dependency>
         <dependency>
-            <groupId>cn.hippo4j</groupId>
-            <artifactId>hippo4j-threadpool-kernel-monitor</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb.version}</version>
         </dependency>
     </dependencies>
 
@@ -107,6 +109,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

@@ -26,11 +26,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Event publishing run listener environment prepared interceptor
  */
 public class EventPublishingRunListenerEnvironmentPreparedInterceptor implements InstanceMethodsAroundInterceptor {
+
+    private static final AtomicBoolean isExecuted = new AtomicBoolean(false);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventPublishingRunListenerEnvironmentPreparedInterceptor.class);
 
@@ -41,9 +44,16 @@ public class EventPublishingRunListenerEnvironmentPreparedInterceptor implements
 
     @Override
     public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes, Object ret) throws Throwable {
-        ConfigurableEnvironment environment = (ConfigurableEnvironment) allArguments[0];
-        SpringEnvironmentSupport.disableNonAgentSwitch(environment);
-        LOGGER.info("[Hippo4j-Agent] Switch off in non-Agent mode.");
+        if (isExecuted.compareAndSet(false, true)) {
+            ConfigurableEnvironment environment = null;
+            try {
+                environment = (ConfigurableEnvironment) allArguments[0];
+            } catch (Exception e) {
+                environment = (ConfigurableEnvironment) allArguments[1];
+            }
+            SpringEnvironmentSupport.disableNonAgentSwitch(environment);
+            LOGGER.info("[Hippo4j-Agent] Switch off in non-Agent mode.");
+        }
         return ret;
     }
 

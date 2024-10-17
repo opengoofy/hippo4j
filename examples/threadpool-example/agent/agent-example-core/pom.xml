@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.hippo4j</groupId>
         <artifactId>hippo4j-threadpool-agent-example</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>hippo4j-agent-example-core</artifactId>

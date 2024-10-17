@@ -29,7 +29,6 @@ import cn.hippo4j.threadpool.dynamic.mode.config.properties.WebExecutorPropertie
 import cn.hippo4j.threadpool.message.api.NotifyConfigBuilder;
 import cn.hippo4j.threadpool.message.api.NotifyConfigDTO;
 import cn.hippo4j.threadpool.message.core.service.AlarmControlHandler;
-import cn.hippo4j.threadpool.message.core.service.ThreadPoolBaseSendMessageService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

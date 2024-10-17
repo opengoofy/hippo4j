@@ -29,7 +29,6 @@ import com.ctrip.framework.apollo.ConfigFile;
 import com.ctrip.framework.apollo.ConfigService;
 import com.ctrip.framework.apollo.core.enums.ConfigFileFormat;
 import com.ctrip.framework.apollo.model.ConfigChange;
-import org.springframework.boot.context.properties.bind.Binder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +71,7 @@ public class ApolloDynamicThreadPoolChangeHandler extends AbstractConfigThreadPo
     /**
      * Builds and binds the {@link BootstrapConfigProperties} from the given configuration map.
      * <p>
-     * This method uses Spring's {@link Binder} to bind the configuration values to an instance
+     * This method uses SpringPropertyBinder to bind the configuration values to an instance
      * of {@link BootstrapConfigProperties}, which can then be used to configure the thread pool
      * dynamically.
      *

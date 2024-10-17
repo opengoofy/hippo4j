@@ -25,20 +25,21 @@ import cn.hippo4j.agent.core.plugin.match.ClassMatch;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import static cn.hippo4j.agent.core.plugin.match.NameMatch.byName;
+import static net.bytebuddy.matcher.ElementMatchers.not;
 
 /**
- * Event publishing run listener instrumentation
+ * SpringBoot v2 Event publishing run listener instrumentation
  */
-public class EventPublishingRunListenerInstrumentation extends ClassInstanceMethodsEnhancePluginDefine {
+public class EventPublishingRunListenerInstrumentationV2 extends ClassInstanceMethodsEnhancePluginDefine {
 
     private static final String ENHANCE_CLASS = "org.springframework.boot.context.event.EventPublishingRunListener";
 
-    private static final String EVENT_PUBLISHING_FINISHED_INTERCEPTOR = "cn.hippo4j.agent.plugin.spring.boot.v2.interceptor.EventPublishingStartedInterceptor";
+    private static final String EVENT_PUBLISHING_STARTED_INTERCEPTOR_V2 = "cn.hippo4j.agent.plugin.spring.boot.v2.interceptor.EventPublishingStartedInterceptorV2";
     private static final String EVENT_PUBLISHING_ENVIRONMENT_PREPARED_INTERCEPTOR = "cn.hippo4j.agent.plugin.spring.common.interceptor.EventPublishingRunListenerEnvironmentPreparedInterceptor";
 
     @Override
@@ -63,7 +64,7 @@ public class EventPublishingRunListenerInstrumentation extends ClassInstanceMeth
 
                     @Override
                     public String getMethodsInterceptor() {
-                        return EVENT_PUBLISHING_FINISHED_INTERCEPTOR;
+                        return EVENT_PUBLISHING_STARTED_INTERCEPTOR_V2;
                     }
 
                     @Override
@@ -93,7 +94,17 @@ public class EventPublishingRunListenerInstrumentation extends ClassInstanceMeth
 
     @Override
     protected List<WitnessMethod> witnessMethods() {
-        return Collections.singletonList(new WitnessMethod("org.springframework.boot.context.event.EventPublishingRunListener",
-                named("started")));
+        return Arrays.asList(
+                new WitnessMethod("org.springframework.boot.context.event.EventPublishingRunListener", named("started")),
+                new WitnessMethod("org.springframework.boot.context.event.EventPublishingRunListener", named("running")),
+                new WitnessMethod("org.springframework.boot.context.event.EventPublishingRunListener", not(named("ready")))
+        // new WitnessMethod("org.springframework.boot.context.properties.ConstructorBinding", not(isAnnotatedWith(Deprecated.class)))
+        );
     }
+
+    @Override
+    protected String[] witnessClasses() {
+        return new String[]{"org.springframework.boot.context.properties.ConstructorBinding"};
+    }
+
 }

@@ -28,11 +28,11 @@ import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.common.toolkit.ThreadPoolExecutorUtil;
 import cn.hippo4j.threadpool.dynamic.mode.config.properties.BootstrapConfigProperties;
 import cn.hippo4j.threadpool.message.core.service.GlobalNotifyAlarmManage;
-
 import cn.hippo4j.threadpool.message.core.service.ThreadPoolNotifyAlarm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -83,21 +83,27 @@ public class SpringThreadPoolRegisterSupport {
         }
 
         Map<String, Executor> beansWithAnnotation = context.getBeansOfType(Executor.class);
-        for (Map.Entry<String, Executor> entry : beansWithAnnotation.entrySet()) {
-            String beanName = entry.getKey();
-            Executor bean = entry.getValue();
-            ThreadPoolExecutor executor;
+        beansWithAnnotation.forEach((beanName, bean) -> {
+            ThreadPoolExecutor executor = null;
+            // Get ThreadPoolExecutor Instance
             if (DynamicThreadPoolAdapterChoose.match(bean)) {
                 executor = DynamicThreadPoolAdapterChoose.unwrap(bean);
-            } else {
+            } else if (bean instanceof ThreadPoolTaskExecutor) {
+                ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) bean;
+                // Get a real instance of ThreadPoolExecutor
+                executor = taskExecutor.getThreadPoolExecutor();
+            } else if (bean instanceof ThreadPoolExecutor) {
                 executor = (ThreadPoolExecutor) bean;
+            } else {
+                LOGGER.warn("[Hippo4j-Agent] Thread pool ignore registered beanName={}, Now Unsupported thread pool executor type:{} ", beanName, bean.getClass().getName());
             }
             if (executor == null) {
                 LOGGER.warn("[Hippo4j-Agent] Thread pool is null, ignore bean registration. beanName={}, beanClass={}", beanName, bean.getClass().getName());
             } else {
                 register(beanName, executor, Boolean.FALSE);
             }
-        }
+        });
+
         LOGGER.info("[Hippo4j-Agent] Registered thread pool instances successfully.");
     }
 
@@ -105,10 +111,8 @@ public class SpringThreadPoolRegisterSupport {
         if (executor == null) {
             return;
         }
-        ExecutorProperties executorProperties = SpringPropertiesLoader.BOOTSTRAP_CONFIG_PROPERTIES.getExecutors().stream()
-                .filter(each -> Objects.equals(threadPoolId, each.getThreadPoolId()))
-                .findFirst()
-                .orElse(null);
+        ExecutorProperties executorProperties =
+                SpringPropertiesLoader.BOOTSTRAP_CONFIG_PROPERTIES.getExecutors().stream().filter(each -> Objects.equals(threadPoolId, each.getThreadPoolId())).findFirst().orElse(null);
 
         // Determines the thread pool that is currently obtained by bean scanning
         if (Objects.isNull(executorProperties)) {
@@ -198,16 +202,13 @@ public class SpringThreadPoolRegisterSupport {
                         .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getRejectedHandler).get()))
                 .threadNamePrefix(StringUtil.isBlank(executorProperties.getThreadNamePrefix()) ? executorProperties.getThreadPoolId() : executorProperties.getThreadNamePrefix())
                 .threadPoolId(executorProperties.getThreadPoolId())
-                .alarm(Optional.ofNullable(executorProperties.getAlarm())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).orElse(null)))
+                .alarm(Optional.ofNullable(executorProperties.getAlarm()).orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).orElse(null)))
                 .activeAlarm(Optional.ofNullable(executorProperties.getActiveAlarm())
                         .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getActiveAlarm).orElse(null)))
                 .capacityAlarm(Optional.ofNullable(executorProperties.getCapacityAlarm())
                         .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getCapacityAlarm).orElse(null)))
-                .notify(Optional.ofNullable(executorProperties.getNotify())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).orElse(null)))
-                .nodes(Optional.ofNullable(executorProperties.getNodes())
-                        .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNodes).orElse(null)))
+                .notify(Optional.ofNullable(executorProperties.getNotify()).orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).orElse(null)))
+                .nodes(Optional.ofNullable(executorProperties.getNodes()).orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNodes).orElse(null)))
                 .build();
     }
 
@@ -220,17 +221,14 @@ public class SpringThreadPoolRegisterSupport {
     private static ThreadPoolNotifyAlarm buildThreadPoolNotifyAlarm(ExecutorProperties executorProperties) {
         BootstrapConfigProperties configProperties = SpringPropertiesLoader.BOOTSTRAP_CONFIG_PROPERTIES;
         ExecutorNotifyProperties notify = Optional.ofNullable(executorProperties).map(ExecutorProperties::getNotify).orElse(null);
-        boolean isAlarm = Optional.ofNullable(executorProperties.getAlarm())
-                .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).orElse(true));
+        boolean isAlarm = Optional.ofNullable(executorProperties.getAlarm()).orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getAlarm).orElse(true));
         int activeAlarm = Optional.ofNullable(executorProperties.getActiveAlarm())
                 .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getActiveAlarm).orElse(DEFAULT_ACTIVE_ALARM));
         int capacityAlarm = Optional.ofNullable(executorProperties.getCapacityAlarm())
                 .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getCapacityAlarm).orElse(DEFAULT_CAPACITY_ALARM));
-        int interval = Optional.ofNullable(notify)
-                .map(ExecutorNotifyProperties::getInterval)
+        int interval = Optional.ofNullable(notify).map(ExecutorNotifyProperties::getInterval)
                 .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).map(ExecutorNotifyProperties::getInterval).orElse(DEFAULT_INTERVAL));
-        String receive = Optional.ofNullable(notify)
-                .map(ExecutorNotifyProperties::getReceives)
+        String receive = Optional.ofNullable(notify).map(ExecutorNotifyProperties::getReceives)
                 .orElseGet(() -> Optional.ofNullable(configProperties.getDefaultExecutor()).map(ExecutorProperties::getNotify).map(ExecutorNotifyProperties::getReceives).orElse(DEFAULT_RECEIVES));
         ThreadPoolNotifyAlarm threadPoolNotifyAlarm = new ThreadPoolNotifyAlarm(isAlarm, activeAlarm, capacityAlarm);
         threadPoolNotifyAlarm.setInterval(interval);

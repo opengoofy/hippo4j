@@ -15,6 +15,7 @@
     <modules>
         <module>spring-boot-1x-plugin</module>
         <module>spring-boot-2x-plugin</module>
+        <module>spring-boot-3x-plugin</module>
         <module>spring-plugin-common</module>
     </modules>
 

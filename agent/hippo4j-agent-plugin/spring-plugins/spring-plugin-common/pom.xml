@@ -45,6 +45,12 @@
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-threadpool-kernel-alarm</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
@@ -59,8 +65,25 @@
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
+            <artifactId>hippo4j-threadpool-dynamic-mode-config</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-threadpool-adapter-web</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
