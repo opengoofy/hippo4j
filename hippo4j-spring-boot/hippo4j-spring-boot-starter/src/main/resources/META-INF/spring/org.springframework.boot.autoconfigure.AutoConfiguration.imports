@@ -1,0 +1,2 @@
+cn.hippo4j.springboot.starter.config.DynamicThreadPoolAutoConfiguration
+cn.hippo4j.springboot.starter.core.ConfigEmptyAnalyzer

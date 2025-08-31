@@ -18,11 +18,11 @@
 package cn.hippo4j.springboot.starter.event;
 
 import cn.hippo4j.springboot.starter.core.ClientWorker;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import javax.annotation.Resource;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -30,10 +30,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class ApplicationContentPostProcessor implements ApplicationListener<ContextRefreshedEvent> {
 
-    @Resource
+    @Autowired
     private ApplicationContext applicationContext;
 
-    @Resource
+    @Autowired
     private ClientWorker clientWorker;
 
     private final AtomicBoolean executeOnlyOnce = new AtomicBoolean(false);
