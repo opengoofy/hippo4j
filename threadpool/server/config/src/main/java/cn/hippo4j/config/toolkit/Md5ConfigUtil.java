@@ -72,14 +72,34 @@ public class Md5ConfigUtil {
      */
     public static List<String> compareMd5(HttpServletRequest request, Map<String, String> clientMd5Map) {
         List<String> changedGroupKeys = new ArrayList();
+        int clientVersion = getClientVersion(request);
         clientMd5Map.forEach((key, val) -> {
             String clientIdentify = RequestUtil.getClientIdentify(request);
-            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify);
+            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify,clientVersion);
             if (!isUpdateData) {
                 changedGroupKeys.add(key);
             }
         });
         return changedGroupKeys;
+    }
+
+    /**
+     * Get client protocol version from request header
+     *
+     * @param request HTTP request
+     * @return client protocol version, default to 1 for backward compatibility
+     */
+    private static int getClientVersion(HttpServletRequest request) {
+        String versionHeader = request.getHeader("X-Hippo4j-Protocol-Version");
+        if (versionHeader != null && !versionHeader.isEmpty()) {
+            try {
+                return Integer.parseInt(versionHeader);
+            } catch (NumberFormatException e) {
+                // Default to version 1 for backward compatibility
+                return 1;
+            }
+        }
+        return 1;
     }
 
     public static Map<String, String> getClientMd5Map(String configKeysString) {
