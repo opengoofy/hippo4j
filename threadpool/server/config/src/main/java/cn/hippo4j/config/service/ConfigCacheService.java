@@ -27,6 +27,7 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Joiner;
 import cn.hippo4j.common.toolkit.MapUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
+import cn.hippo4j.common.toolkit.IncrementalMd5Util;
 import cn.hippo4j.common.toolkit.StringUtil;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.model.CacheItem;
@@ -70,7 +71,30 @@ public class ConfigCacheService {
     private static final ConcurrentHashMap<String, Map<String, CacheItem>> CLIENT_CONFIG_CACHE = new ConcurrentHashMap();
 
     public static boolean isUpdateData(String groupKey, String md5, String clientIdentify) {
+        // Default to version 1 for backward compatibility
+        return isUpdateData(groupKey, md5, clientIdentify, 1);
+    }
+
+    /**
+     * Check if data needs update with version support
+     *
+     * @param groupKey group key
+     * @param md5 client MD5
+     * @param clientIdentify client identifier
+     * @param clientVersion client version
+     * @return true if data is up to date
+     */
+    public static boolean isUpdateData(String groupKey, String md5, String clientIdentify, int clientVersion) {
         String contentMd5 = ConfigCacheService.getContentMd5IsNullPut(groupKey, clientIdentify);
+        if (clientVersion >= 2) {
+            String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
+            ConfigAllInfo config = configService.findConfigRecentInfo(params);
+            if (config != null) {
+                String incrementalMd5 = IncrementalMd5Util.getVersionedMd5(config, clientVersion);
+                return Objects.equals(incrementalMd5, md5);
+            }
+        }
+        // Fallback to full MD5 comparison for version 1 clients
         return Objects.equals(contentMd5, md5);
     }
 
