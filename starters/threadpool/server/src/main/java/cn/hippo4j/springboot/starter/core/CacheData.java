@@ -18,10 +18,10 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
-import cn.hippo4j.core.executor.manage.GlobalThreadPoolManage;
 import cn.hippo4j.springboot.starter.wrapper.ManagerListenerWrapper;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
+import cn.hippo4j.common.toolkit.IncrementalContentUtil;
 import cn.hippo4j.common.constant.Constants;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,7 +58,9 @@ public class CacheData {
         this.tenantId = tenantId;
         this.itemId = itemId;
         this.threadPoolId = threadPoolId;
-        this.content = ContentUtil.getPoolContent(ThreadPoolExecutorRegistry.getHolder(threadPoolId).getParameterInfo());
+        this.content = IncrementalContentUtil.getIncrementalContent(
+                ThreadPoolExecutorRegistry.getHolder(threadPoolId).getParameterInfo(),
+                IncrementalContentUtil.PROTOCOL_VERSION);
         this.md5 = getMd5String(content);
         this.listeners = new CopyOnWriteArrayList<>();
     }

@@ -20,6 +20,7 @@ package cn.hippo4j.springboot.starter.core;
 import cn.hippo4j.common.executor.ThreadFactoryBuilder;
 import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import cn.hippo4j.common.toolkit.IncrementalContentUtil;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.IdUtil;
@@ -69,6 +70,7 @@ public class ClientWorker implements DisposableBean {
     private final long timeout;
     private final String identify;
     private final String version;
+    private static final int PROTOCOL_VERSION = 2;
 
     private final HttpAgent agent;
     private final ServerHealthCheck serverHealthCheck;
@@ -156,7 +158,9 @@ public class ClientWorker implements DisposableBean {
                 try {
                     String content = getServerConfig(namespace, itemId, tpId, defaultTimedOut);
                     CacheData cacheData = cacheMap.get(tpId);
-                    String poolContent = ContentUtil.getPoolContent(JSONUtil.parseObject(content, ThreadPoolParameterInfo.class));
+                    ThreadPoolParameterInfo poolInfo = JSONUtil.parseObject(content, ThreadPoolParameterInfo.class);
+                    // Use incremental content for protocol version 2+ clients
+                    String poolContent = IncrementalContentUtil.getIncrementalContent(poolInfo, PROTOCOL_VERSION);
                     cacheData.setContent(poolContent);
                 } catch (Exception ignored) {
                     log.error("Failed to get the latest thread pool configuration.", ignored);
@@ -197,7 +201,7 @@ public class ClientWorker implements DisposableBean {
         Map<String, String> params = new HashMap<>(2);
         params.put(LISTENING_CONFIGS, probeUpdateString);
         params.put(WEIGHT_CONFIGS, IdUtil.simpleUUID());
-        Map<String, String> headers = new HashMap<>(2);
+        Map<String, String> headers = new HashMap<>(3);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
         // Confirm the identity of the client, and can be modified separately when modifying the thread pool configuration.
         headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, identify);
@@ -206,6 +210,8 @@ public class ClientWorker implements DisposableBean {
             headers.put(LONG_PULLING_TIMEOUT_NO_HANGUP, "true");
         }
         headers.put(CLIENT_VERSION, version);
+        // Add protocol version header for incremental updates
+        headers.put("X-Hippo4j-Protocol-Version", String.valueOf(PROTOCOL_VERSION));
         try {
             long readTimeoutMs = timeout + Math.round(timeout >> 1);
             Result result = agent.httpPostByConfig(LISTENER_PATH, headers, params, readTimeoutMs);
@@ -283,7 +289,9 @@ public class ClientWorker implements DisposableBean {
             try {
                 serverConfig = getServerConfig(namespace, itemId, threadPoolId, defaultTimedOut);
                 ThreadPoolParameterInfo poolInfo = JSONUtil.parseObject(serverConfig, ThreadPoolParameterInfo.class);
-                cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
+                // Use incremental content for protocol version 2+ clients
+                String content = IncrementalContentUtil.getIncrementalContent(poolInfo, PROTOCOL_VERSION);
+                cacheData.setContent(content);
             } catch (Exception ex) {
                 log.error("Cache Data Error. Service Unavailable: {}", ex.getMessage());
             }
