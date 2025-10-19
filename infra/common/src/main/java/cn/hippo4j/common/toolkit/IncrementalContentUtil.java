@@ -62,18 +62,10 @@ public class IncrementalContentUtil {
         ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
         threadPoolParameterInfo.setTenantId(parameter.getTenantId())
                 .setItemId(parameter.getItemId())
-                .setTpId(parameter.getTpId());
-        if (parameter instanceof ThreadPoolParameterInfo) {
-            ThreadPoolParameterInfo info = (ThreadPoolParameterInfo) parameter;
-            threadPoolParameterInfo.setCorePoolSize(info.corePoolSizeAdapt())
-                    .setMaximumPoolSize(info.maximumPoolSizeAdapt());
-        } else {
-            // Fallback to deprecated methods for non-ThreadPoolParameterInfo implementations
-            threadPoolParameterInfo.setCorePoolSize(parameter.getCoreSize())
-                    .setMaximumPoolSize(parameter.getMaxSize());
-        }
-
-        threadPoolParameterInfo.setQueueType(parameter.getQueueType())
+                .setTpId(parameter.getTpId())
+                .setCorePoolSize(getCorePoolSize(parameter))
+                .setMaximumPoolSize(getMaximumPoolSize(parameter))
+                .setQueueType(parameter.getQueueType())
                 .setCapacity(parameter.getCapacity())
                 .setKeepAliveTime(parameter.getKeepAliveTime())
                 .setRejectedType(parameter.getRejectedType())
@@ -107,6 +99,32 @@ public class IncrementalContentUtil {
     }
 
     /**
+     * Get core pool size with version compatibility handling
+     *
+     * @param parameter thread pool parameter
+     * @return core pool size
+     */
+    private static Integer getCorePoolSize(ThreadPoolParameter parameter) {
+        if (parameter instanceof ThreadPoolParameterInfo) {
+            return ((ThreadPoolParameterInfo) parameter).corePoolSizeAdapt();
+        }
+        return parameter.getCoreSize();
+    }
+
+    /**
+     * Get maximum pool size with version compatibility handling
+     *
+     * @param parameter thread pool parameter
+     * @return maximum pool size
+     */
+    private static Integer getMaximumPoolSize(ThreadPoolParameter parameter) {
+        if (parameter instanceof ThreadPoolParameterInfo) {
+            return ((ThreadPoolParameterInfo) parameter).maximumPoolSizeAdapt();
+        }
+        return parameter.getMaxSize();
+    }
+
+    /**
      * Check if parameters have core changes that require thread pool refresh
      *
      * @param oldParameter old parameter
@@ -117,13 +135,8 @@ public class IncrementalContentUtil {
         if (oldParameter == null || newParameter == null) {
             return true;
         }
-        // Use adapt methods for ThreadPoolParameterInfo, fallback to deprecated methods for other implementations
-        Integer oldCoreSize = (oldParameter instanceof ThreadPoolParameterInfo) ? ((ThreadPoolParameterInfo) oldParameter).corePoolSizeAdapt() : oldParameter.getCoreSize();
-        Integer newCoreSize = (newParameter instanceof ThreadPoolParameterInfo) ? ((ThreadPoolParameterInfo) newParameter).corePoolSizeAdapt() : newParameter.getCoreSize();
-        Integer oldMaxSize = (oldParameter instanceof ThreadPoolParameterInfo) ? ((ThreadPoolParameterInfo) oldParameter).maximumPoolSizeAdapt() : oldParameter.getMaxSize();
-        Integer newMaxSize = (newParameter instanceof ThreadPoolParameterInfo) ? ((ThreadPoolParameterInfo) newParameter).maximumPoolSizeAdapt() : newParameter.getMaxSize();
-        return !Objects.equals(oldCoreSize, newCoreSize) ||
-                !Objects.equals(oldMaxSize, newMaxSize) ||
+        return !Objects.equals(getCorePoolSize(oldParameter), getCorePoolSize(newParameter)) ||
+                !Objects.equals(getMaximumPoolSize(oldParameter), getMaximumPoolSize(newParameter)) ||
                 !Objects.equals(oldParameter.getQueueType(), newParameter.getQueueType()) ||
                 !Objects.equals(oldParameter.getCapacity(), newParameter.getCapacity()) ||
                 !Objects.equals(oldParameter.getKeepAliveTime(), newParameter.getKeepAliveTime()) ||

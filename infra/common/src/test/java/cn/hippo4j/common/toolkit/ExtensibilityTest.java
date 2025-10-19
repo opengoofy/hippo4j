@@ -18,9 +18,10 @@
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import lombok.var;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Map;
 
 /**
  * Extensibility issue test: verify that adding new extended parameters does not trigger invalid refresh.
@@ -264,7 +265,7 @@ public class ExtensibilityTest {
         extendedOnlyConfig.setQueueType(2);
         extendedOnlyConfig.setExecuteTimeOut(5000L);
 
-        var extendedOnlySummary = IncrementalContentUtil.getChangesSummary(baseConfig, extendedOnlyConfig);
+        Map<String, Object> extendedOnlySummary = IncrementalContentUtil.getChangesSummary(baseConfig, extendedOnlyConfig);
         System.out.println("Only extended parameter change summary: " + extendedOnlySummary);
         Assert.assertEquals("extended", extendedOnlySummary.get("type"));
 
@@ -275,7 +276,7 @@ public class ExtensibilityTest {
         coreChangedConfig.setQueueType(2);
         coreChangedConfig.setExecuteTimeOut(3000L);
 
-        var coreChangedSummary = IncrementalContentUtil.getChangesSummary(baseConfig, coreChangedConfig);
+        Map<String, Object> coreChangedSummary = IncrementalContentUtil.getChangesSummary(baseConfig, coreChangedConfig);
         System.out.println("Core parameter change summary: " + coreChangedSummary);
         Assert.assertEquals("core", coreChangedSummary.get("type"));
 
