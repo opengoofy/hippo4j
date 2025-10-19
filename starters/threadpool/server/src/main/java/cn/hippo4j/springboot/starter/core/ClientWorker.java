@@ -71,8 +71,6 @@ public class ClientWorker implements DisposableBean {
     private final String identify;
     private final String version;
 
-    // Client protocol version for incremental updates
-    private static final int PROTOCOL_VERSION = 2;
     private final HttpAgent agent;
     private final ServerHealthCheck serverHealthCheck;
     private final ScheduledExecutorService executorService;
@@ -161,7 +159,7 @@ public class ClientWorker implements DisposableBean {
                     CacheData cacheData = cacheMap.get(tpId);
                     ThreadPoolParameterInfo poolInfo = JSONUtil.parseObject(content, ThreadPoolParameterInfo.class);
                     // Use incremental content for protocol version 2+ clients
-                    String poolContent = IncrementalContentUtil.getIncrementalContent(poolInfo, PROTOCOL_VERSION);
+                    String poolContent = IncrementalContentUtil.getIncrementalContent(poolInfo, IncrementalContentUtil.PROTOCOL_VERSION);
                     cacheData.setContent(poolContent);
                 } catch (Exception ignored) {
                     log.error("Failed to get the latest thread pool configuration.", ignored);
@@ -212,7 +210,7 @@ public class ClientWorker implements DisposableBean {
         }
         headers.put(CLIENT_VERSION, version);
         // Add protocol version header for incremental updates
-        headers.put("X-Hippo4j-Protocol-Version", String.valueOf(PROTOCOL_VERSION));
+        headers.put("X-Hippo4j-Protocol-Version", String.valueOf(IncrementalContentUtil.PROTOCOL_VERSION));
         try {
             long readTimeoutMs = timeout + Math.round(timeout >> 1);
             Result result = agent.httpPostByConfig(LISTENER_PATH, headers, params, readTimeoutMs);
@@ -291,7 +289,7 @@ public class ClientWorker implements DisposableBean {
                 serverConfig = getServerConfig(namespace, itemId, threadPoolId, defaultTimedOut);
                 ThreadPoolParameterInfo poolInfo = JSONUtil.parseObject(serverConfig, ThreadPoolParameterInfo.class);
                 // Use incremental content for protocol version 2+ clients
-                String content = IncrementalContentUtil.getIncrementalContent(poolInfo, PROTOCOL_VERSION);
+                String content = IncrementalContentUtil.getIncrementalContent(poolInfo, IncrementalContentUtil.PROTOCOL_VERSION);
                 cacheData.setContent(content);
             } catch (Exception ex) {
                 log.error("Cache Data Error. Service Unavailable: {}", ex.getMessage());
