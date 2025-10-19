@@ -22,18 +22,6 @@ import org.junit.Test;
 
 public class ContentUtilTest {
 
-//    @Test
-//    public void assertGetPoolContent() {
-//        String testText = "{\"tenantId\":\"prescription\",\"itemId\":\"dynamic-threadpool-example\",\"tpId\":" +
-//                "\"message-consume\",\"queueType\":1,\"capacity\":4,\"keepAliveTime\":513,\"rejectedType\":4,\"isAlarm\"" +
-//                ":1,\"capacityAlarm\":80,\"livenessAlarm\":80,\"allowCoreThreadTimeOut\":1}";
-//        ThreadPoolParameterInfo threadPoolParameterInfo = ThreadPoolParameterInfo.builder().tenantId("prescription")
-//                .itemId("dynamic-threadpool-example").tpId("message-consume").content("描述信息").corePoolSize(1)
-//                .maximumPoolSize(2).queueType(1).capacity(4).keepAliveTime(513L).executeTimeOut(null).rejectedType(4)
-//                .isAlarm(1).capacityAlarm(80).livenessAlarm(80).allowCoreThreadTimeOut(1).build();
-//        Assert.isTrue(testText.equals(ContentUtil.getPoolContent(threadPoolParameterInfo)));
-//    }
-
     @Test
     public void assertGetPoolContent() {
         // Since field adapter is used, ContentUtil.getPoolContent() converts new fields to old fields for JSON generation
