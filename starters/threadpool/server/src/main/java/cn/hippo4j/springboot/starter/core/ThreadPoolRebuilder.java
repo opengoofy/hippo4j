@@ -55,7 +55,11 @@ public final class ThreadPoolRebuilder {
         try {
             return doRebuildAndSwitch(oldExecutor, newQueueType, capacity, threadPoolId);
         } finally {
-            lock.unlock();
+            try {
+                lock.unlock();
+            } finally {
+                REBUILD_LOCKS.remove(threadPoolId, lock);
+            }
         }
     }
 
@@ -98,22 +102,18 @@ public final class ThreadPoolRebuilder {
             newExecutor.prestartAllCoreThreads();
         } catch (Throwable ignore) {
         }
-        ThreadPoolExecutorHolder oldHolder = switchRegistry(threadPoolId, newExecutor);
         boolean transferSuccess = false;
         try {
             transferQueuedTasks(oldExecutor, newExecutor);
             transferSuccess = true;
         } catch (Throwable ex) {
-            log.error("Queue transfer failed for thread pool [{}], attempting to rollback.", threadPoolId, ex);
+            log.error("Queue transfer failed for thread pool [{}], keeping old executor unchanged.", threadPoolId, ex);
         }
         if (!transferSuccess) {
-            if (oldHolder != null) {
-                ThreadPoolExecutorRegistry.putHolder(oldHolder);
-                log.info("Rolled back to old thread pool [{}]", threadPoolId);
-            }
             safeShutdownNow(newExecutor);
             return false;
         }
+        ThreadPoolExecutorHolder oldHolder = switchRegistry(threadPoolId, newExecutor);
         oldExecutor.shutdown();
         awaitQuietly(oldExecutor, 500, TimeUnit.MILLISECONDS);
         if (!oldExecutor.isTerminated()) {
@@ -136,7 +136,14 @@ public final class ThreadPoolRebuilder {
                     transferredCount++;
                 } catch (Throwable ex) {
                     failedCount++;
-                    log.error("Failed to transfer task during queue switch, may cause task loss.", ex);
+                    try {
+                        from.execute(r);
+                        log.warn("Failed to transfer task to new executor, restored to old executor.", ex);
+                    } catch (Throwable reEnqueueEx) {
+                        if (!fromQueue.offer(r)) {
+                            log.error("Failed to restore task to old executor, task may be lost.", reEnqueueEx);
+                        }
+                    }
                 }
             }
         } catch (Throwable ex) {
@@ -149,11 +156,18 @@ public final class ThreadPoolRebuilder {
                 transferredCount++;
             } catch (Throwable ex) {
                 failedCount++;
-                log.error("Failed to transfer remaining task during queue switch.", ex);
+                try {
+                    from.execute(task);
+                    log.warn("Failed to transfer remaining task to new executor, restored to old executor.", ex);
+                } catch (Throwable reEnqueueEx) {
+                    if (!fromQueue.offer(task)) {
+                        log.error("Failed to restore remaining task to old executor, task may be lost.", reEnqueueEx);
+                    }
+                }
             }
         }
         if (transferredCount > 0 || failedCount > 0) {
-            log.info("Task transfer completed: {} tasks transferred, {} tasks failed.", transferredCount, failedCount);
+            log.info("Task transfer completed: {} tasks transferred, {} tasks failed (restored to old executor).", transferredCount, failedCount);
         }
         if (failedCount > 0) {
             throw new RuntimeException("Task transfer failed: " + failedCount + " tasks could not be transferred.");
