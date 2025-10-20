@@ -127,37 +127,6 @@ public class BlockingQueueManager {
     }
 
     /**
-     * Replace queue in thread pool executor
-     *
-     * @param executor thread pool executor
-     * @param newQueue new queue instance
-     * @param <T> queue element type
-     * @return true if queue was replaced
-     */
-    public static <T> boolean replaceQueue(ThreadPoolExecutor executor, BlockingQueue<T> newQueue) {
-        if (executor == null || newQueue == null) {
-            return false;
-        }
-        try {
-            if (executor.getActiveCount() > 0 || !executor.getQueue().isEmpty()) {
-                return false;
-            }
-            try {
-                java.lang.reflect.Field field = ThreadPoolExecutor.class.getDeclaredField("workQueue");
-                field.setAccessible(true);
-                field.set(executor, newQueue);
-                return true;
-            } catch (Throwable ignore) {
-                log.warn("JDK security prevents replacing workQueue; skip.");
-                return false;
-            }
-        } catch (Exception e) {
-            log.error("Failed to replace queue", e);
-            return false;
-        }
-    }
-
-    /**
      * Get queue type from queue instance
      *
      * @param queue queue instance
