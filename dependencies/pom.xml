@@ -17,7 +17,8 @@
         <jjwt.version>0.9.0</jjwt.version>
         <jackson-bom.version>2.11.1</jackson-bom.version>
         <h2.version>2.1.214</h2.version>
-        <mockito.version>3.12.4</mockito.version>
+        <mockito.version>4.11.0</mockito.version>
+        <bytebuddy.version>1.12.23</bytebuddy.version>
         <dubbo.version>3.0.5</dubbo.version>
         <alibaba-dubbo.version>2.6.12</alibaba-dubbo.version>
         <slf4j-api.version>1.7.7</slf4j-api.version>
@@ -111,6 +112,16 @@
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>${bytebuddy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy-agent</artifactId>
+                <version>${bytebuddy.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>

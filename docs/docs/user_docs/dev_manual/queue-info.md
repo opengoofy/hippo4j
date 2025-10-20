@@ -2,27 +2,27 @@
 sidebar_position: 3
 ---
 
-# Built-in Blocking Queues
+# 内置阻塞队列
 
-Hippo4j provides multiple built-in blocking queue types that are ready to use out of the box. You can also extend custom queue types through SPI.
+Hippo4j 内置多种常用阻塞队列类型，支持开箱即用，亦可通过 SPI 扩展自定义队列类型。
 
-## Built-in Queue Types
+## 内置类型清单
 
-The following types can be directly selected in the server or configuration (Enum: `BlockingQueueTypeEnum`):
+以下类型可直接在服务端或配置中选择（枚举：`BlockingQueueTypeEnum`）：
 
-- ArrayBlockingQueue (bounded array-based queue)
-- LinkedBlockingQueue (linked list queue)
-- LinkedBlockingDeque (double-ended queue)
-- SynchronousQueue (synchronous handoff queue)
-- LinkedTransferQueue (transferable queue)
-- PriorityBlockingQueue (priority queue)
-- ResizableCapacityLinkedBlockingQueue (dynamically resizable linked list queue)
+- ArrayBlockingQueue（数组有界队列）
+- LinkedBlockingQueue（链表队列）
+- LinkedBlockingDeque（双端队列）
+- SynchronousQueue（同步移交队列）
+- LinkedTransferQueue（可转移队列）
+- PriorityBlockingQueue（优先级队列）
+- ResizableCapacityLinkedBlockingQueue（可在线动态调容量的链表队列）
 
-Among them, `ResizableCapacityLinkedBlockingQueue` supports online capacity changes without rebuilding the thread pool, making it suitable for dynamic tuning scenarios.
+其中 `ResizableCapacityLinkedBlockingQueue` 支持在线变更 `capacity`，无需重建线程池，适合动态调优场景。
 
-## Code Reference
+## 代码对应
 
-Enum definition:
+枚举定义：
 
 ```java
 // cn.hippo4j.common.executor.support.BlockingQueueTypeEnum
@@ -38,7 +38,7 @@ RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockingQueue") {
 }
 ```
 
-Creation and validation:
+创建与验证：
 
 ```java
 // cn.hippo4j.common.executor.support.BlockingQueueManager
@@ -47,13 +47,14 @@ boolean valid = BlockingQueueManager.validateQueueConfig(queueType, capacity);
 boolean ok = BlockingQueueManager.changeQueueCapacity(executor.getQueue(), newCapacity);
 ```
 
-## Usage Recommendations
+## 使用建议
 
-- Need online capacity adjustment: prioritize `ResizableCapacityLinkedBlockingQueue`
-- Need strictly bounded: choose `ArrayBlockingQueue`
-- Need unbounded throughput: choose `LinkedBlockingQueue`
-- Need priority: choose `PriorityBlockingQueue`
-- Need synchronous handoff: choose `SynchronousQueue`
+- 需要在线调容量：优先选择 `ResizableCapacityLinkedBlockingQueue`
+- 需要严格有界：选择 `ArrayBlockingQueue`
+- 需要无界吞吐：选择 `LinkedBlockingQueue`
+- 需要优先级：选择 `PriorityBlockingQueue`
+- 需要同步移交：选择 `SynchronousQueue`
 
-For custom queue types, please refer to "Custom Blocking Queue".
+如需自定义队列类型，请参考《阻塞队列自定义》。
+
 
