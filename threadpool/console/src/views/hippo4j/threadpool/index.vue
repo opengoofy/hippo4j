@@ -231,6 +231,17 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item
+          v-if="isQueueShow"
+          :label="$t('threadPool.customQueueType')"
+          prop="customQueueType"
+        >
+          <el-input
+            v-model="temp.customQueueType"
+            :placeholder="$t('threadPool.customQueueTypeTip')"
+            @input="onInput()"
+          />
+        </el-form-item>
         <el-form-item :label="$t('threadPool.queueCapacity')" prop="capacity">
           <el-input-number
             v-model="temp.capacity"
@@ -406,6 +417,8 @@ export default {
         return 'PriorityBlockingQueue';
       } else if ('9' == type) {
         return 'ResizableLinkedBlockingQueue';
+      } else {
+        return 'CustomBlockingQueue_' + type;
       }
     },
     rejectedTypeFilter(type) {
@@ -429,6 +442,7 @@ export default {
   data() {
     return {
       isRejectShow: false, // 是否显示spi拒绝策略
+      isQueueShow: false, // 是否显示spi自定义队列
       isEdit: false,
       list: null,
       listLoading: true,
@@ -457,6 +471,7 @@ export default {
         { key: 5, display_name: 'LinkedTransferQueue' },
         { key: 6, display_name: 'PriorityBlockingQueue' },
         { key: 9, display_name: 'ResizableLinkedBlockingQueue (动态修改队列大小)' },
+        { key: 99, display_name: 'CustomBlockingQueue（自定义 SPI 队列）' },
       ],
       rejectedOptions: [
         { key: 1, display_name: 'CallerRunsPolicy' },
@@ -487,6 +502,8 @@ export default {
         itemId: '',
         rejectedType: null,
         customRejectedType: null,
+        queueType: null,
+        customQueueType: null,
         coreSize: 4,
         maxSize: 8,
       },
@@ -585,6 +602,7 @@ export default {
     },
     resetTemp() {
       this.isRejectShow = false;
+      this.isQueueShow = false;
       this.isEdit = false;
       this.temp = {
         id: undefined,
@@ -592,6 +610,8 @@ export default {
         itemId: '',
         rejectedType: null,
         customRejectedType: null,
+        queueType: null,
+        customQueueType: null,
         isAlarm: '',
         allowCoreThreadTimeOut: '',
         livenessAlarm: '',
@@ -636,6 +656,13 @@ export default {
               this.temp.rejectedType = this.temp.customRejectedType;
             }
           }
+          if (this.isQueueShow) {
+            if (this.temp.customQueueType == null) {
+              this.temp.queueType = 9;
+            } else {
+              this.temp.queueType = this.temp.customQueueType;
+            }
+          }
           threadPoolApi.created(this.temp).then(() => {
             this.fetchData();
             this.dialogFormVisible = false;
@@ -666,6 +693,25 @@ export default {
       } else {
         this.isRejectShow = false;
       }
+      
+      // 处理自定义队列类型
+      let queueType = this.temp.queueType;
+      if (
+        queueType != 1 &&
+        queueType != 2 &&
+        queueType != 3 &&
+        queueType != 4 &&
+        queueType != 5 &&
+        queueType != 6 &&
+        queueType != 9
+      ) {
+        this.isQueueShow = true;
+        this.temp.customQueueType = this.temp.queueType;
+        this.temp.queueType = 99;
+      } else {
+        this.isQueueShow = false;
+      }
+      
       this.dialogStatus = 'update';
       this.dialogFormVisible = true;
       this.isEdit = false;
@@ -697,6 +743,23 @@ export default {
               this.temp.rejectedType = this.temp.customRejectedType;
             }
           }
+          
+          // 处理自定义队列类型
+          let queueType = this.temp.queueType;
+          if (
+            queueType != 1 &&
+            queueType != 2 &&
+            queueType != 3 &&
+            queueType != 4 &&
+            queueType != 5 &&
+            queueType != 6 &&
+            queueType != 9
+          ) {
+            if (this.temp.customQueueType != null) {
+              this.temp.queueType = this.temp.customQueueType;
+            }
+          }
+          
           const tempData = Object.assign({}, this.temp);
           threadPoolApi.updated(tempData).then(() => {
             this.fetchData();
@@ -743,6 +806,8 @@ export default {
       } else if (value === 5) {
         this.temp.capacity = 2147483647;
       }
+      // 判断是否显示自定义队列输入框
+      this.isQueueShow = value === 99 ? true : false;
       this.$forceUpdate();
     },
 

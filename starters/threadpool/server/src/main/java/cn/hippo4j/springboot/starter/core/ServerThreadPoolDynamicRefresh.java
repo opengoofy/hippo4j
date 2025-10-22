@@ -22,7 +22,6 @@ import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.executor.support.BlockingQueueManager;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
-import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.extension.enums.EnableEnum;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
