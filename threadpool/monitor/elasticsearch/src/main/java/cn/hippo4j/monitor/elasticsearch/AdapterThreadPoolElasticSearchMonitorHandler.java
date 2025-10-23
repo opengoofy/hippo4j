@@ -181,4 +181,3 @@ public class AdapterThreadPoolElasticSearchMonitorHandler extends AbstractAdapte
         private String alias;
     }
 }
-

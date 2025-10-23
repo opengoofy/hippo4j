@@ -37,7 +37,7 @@ import java.util.Set;
 public class BeanUtilTest {
 
     @Test
-    public void beanToBeanConvertTest(){
+    public void beanToBeanConvertTest() {
         final Person person = new Person();
         person.setName("Hippo4j");
         person.setAge(1);
@@ -222,7 +222,7 @@ public class BeanUtilTest {
 
     @Getter
     @Setter
-    static class GoodPerson extends Person{
+    static class GoodPerson extends Person {
 
         /**
          * gender

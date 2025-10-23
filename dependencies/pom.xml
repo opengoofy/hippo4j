@@ -18,7 +18,7 @@
         <jackson-bom.version>2.11.1</jackson-bom.version>
         <h2.version>2.1.214</h2.version>
         <mockito.version>4.11.0</mockito.version>
-        <bytebuddy.version>1.12.23</bytebuddy.version>
+        <bytebuddy.version>1.14.11</bytebuddy.version>
         <dubbo.version>3.0.5</dubbo.version>
         <alibaba-dubbo.version>2.6.12</alibaba-dubbo.version>
         <slf4j-api.version>1.7.7</slf4j-api.version>
