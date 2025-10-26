@@ -26,8 +26,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Blocking queue manager for dynamic queue type switching.
- * Supports SPI extension and dynamic queue replacement.
+ * Blocking queue manager for queue operations.
+ * Supports SPI extension, queue creation, capacity management, and type recognition.
  */
 @Slf4j
 public class BlockingQueueManager {
@@ -64,27 +64,6 @@ public class BlockingQueueManager {
             queueName = BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE.getName();
         }
         return BlockingQueueTypeEnum.createBlockingQueue(queueName, capacity);
-    }
-
-    /**
-     * Check if queue type can be dynamically changed
-     *
-     * @param currentQueue current queue instance
-     * @param newQueueType new queue type
-     * @return true if can be changed
-     */
-    public static boolean canChangeQueueType(BlockingQueue<?> currentQueue, Integer newQueueType) {
-        if (currentQueue == null || newQueueType == null) {
-            return true;
-        }
-        // Special case: ResizableCapacityLinkedBlockingQueue can only change capacity
-        if (currentQueue instanceof ResizableCapacityLinkedBlockingQueue) {
-            return Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getType(), newQueueType);
-        }
-        // For other queue types, check if they are the same type
-        String currentQueueName = currentQueue.getClass().getSimpleName();
-        String newQueueName = BlockingQueueTypeEnum.getBlockingQueueNameByType(newQueueType);
-        return !Objects.equals(currentQueueName, newQueueName);
     }
 
     /**

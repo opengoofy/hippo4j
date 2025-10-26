@@ -61,38 +61,27 @@ boolean valid = BlockingQueueManager.validateQueueConfig(queueType, capacity);
 boolean ok = BlockingQueueManager.changeQueueCapacity(executor.getQueue(), newCapacity);
 ```
 
-### 3.2 队列类型切换
+### 3.2 队列类型何时生效
 
-当需要切换队列类型时，使用 `ThreadPoolRebuilder.rebuildAndSwitch` 方法，该方法会创建新的线程池实例并安全地迁移任务：
+**重要说明**：队列类型（queueType）的变更需要客户端应用重启后生效。
 
-```java
-boolean ok = ThreadPoolRebuilder.rebuildAndSwitch(
-    executor,           // 当前线程池
-    newQueueType,      // 新队列类型
-    capacity,          // 队列容量
-    threadPoolId       // 线程池ID
-);
-```
+- **配置模板**：在线程池管理页面编辑队列类型，会保存到数据库，但不会推送到运行中的客户端。
+- **生效时机**：客户端应用重启时，会从服务端读取最新配置，并使用反射替换线程池的 `workQueue` 字段。
+- **运行时调整**：运行时仅支持队列容量的动态调整（仅限 `ResizableCapacityLinkedBlockingQueue`），不支持队列类型切换。
 
 服务端动态刷新处的实现：
 
 ```java
 // ServerThreadPoolDynamicRefresh#handleQueueChanges
-boolean queueTypeChanged = parameter.getQueueType() != null && 
-    !Objects.equals(BlockingQueueManager.getQueueType(executor.getQueue()), parameter.getQueueType());
-
-if (queueTypeChanged) {
-    // 使用安全的重建方式切换队列
-    boolean ok = ThreadPoolRebuilder.rebuildAndSwitch(
-        executor,
-        parameter.getQueueType(),
-        parameter.getCapacity(),
-        threadPoolId
-    );
-    if (ok) {
-        log.info("Queue type rebuilt and switched to: {}", 
-                 BlockingQueueTypeEnum.getBlockingQueueNameByType(parameter.getQueueType()));
+// 仅支持容量调整，不支持队列类型切换
+if (parameter.getCapacity() != null) {
+    if (BlockingQueueManager.canChangeCapacity(executor.getQueue())) {
+        boolean success = BlockingQueueManager.changeQueueCapacity(
+            executor.getQueue(), parameter.getCapacity());
+        if (success) {
+            log.info("Queue capacity changed to: {}", parameter.getCapacity());
         }
+    }
 }
 ```
 

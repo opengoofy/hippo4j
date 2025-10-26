@@ -30,10 +30,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Queue SPI Integration Test: Verifies the full flow from parameters to queue creation
  * This test simulates a real scenario:
- * 1. Config center pushes a queue type change (queueType)
- * 2. ServerThreadPoolDynamicRefresh.handleQueueChanges() detects the change
- * 3. ThreadPoolRebuilder.rebuildAndSwitch() creates a new queue (via SPI)
- * 4. BlockingQueueTypeEnum.createBlockingQueue() calls SPI loader
+ * 1. Config center pushes queue configuration (queueType, capacity)
+ * 2. Thread pool is created with the specified queue type
+ * 3. BlockingQueueTypeEnum.createBlockingQueue() calls SPI loader
+ * 4. Custom queues can be used via SPI mechanism
  */
 public class QueueSpiIntegrationTest {
 
@@ -149,8 +149,8 @@ public class QueueSpiIntegrationTest {
         Assert.assertEquals("New queue capacity should be 512", 512, newQueue.remainingCapacity());
         System.out.println("Step 4: Verified new queue - Type: ArrayBlockingQueue, Capacity: 512");
 
-        System.out.println("Complete queue switch flow verified");
-        System.out.println("Proves: ServerThreadPoolDynamicRefresh → ThreadPoolRebuilder → BlockingQueueTypeEnum → SPI");
+        System.out.println("Complete queue creation flow verified");
+        System.out.println("Proves: Config → BlockingQueueTypeEnum → SPI → Custom Queue");
     }
 
     /**

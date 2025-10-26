@@ -147,43 +147,26 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
     }
 
     /**
-     * Handle queue changes using the new SPI mechanism
+     * Handle queue capacity changes
      *
      * @param executor thread pool executor
      * @param parameter thread pool parameter
      */
     private void handleQueueChanges(ThreadPoolExecutor executor, ThreadPoolParameter parameter) {
-        if (parameter.getQueueType() == null && parameter.getCapacity() == null) {
+        if (parameter.getCapacity() == null) {
             return;
         }
-        if (parameter.getQueueType() != null && !BlockingQueueManager.validateQueueConfig(parameter.getQueueType(), parameter.getCapacity())) {
-            log.warn("Invalid queue configuration - Type: {}, Capacity: {}", parameter.getQueueType(), parameter.getCapacity());
-            return;
-        }
-        boolean queueTypeChanged = parameter.getQueueType() != null &&
-                !Objects.equals(BlockingQueueManager.getQueueType(executor.getQueue()), parameter.getQueueType());
-
-        boolean capacityChanged = parameter.getCapacity() != null &&
-                BlockingQueueManager.canChangeCapacity(executor.getQueue());
-        if (queueTypeChanged) {
-            boolean ok = ThreadPoolRebuilder.rebuildAndSwitch(executor, parameter.getQueueType(), parameter.getCapacity(), parameter.getTpId());
-            if (ok) {
-                log.info("Queue type rebuilt and switched to: {}", BlockingQueueTypeEnum.getBlockingQueueNameByType(parameter.getQueueType()));
-            } else {
-                log.warn("Queue type rebuild skipped or failed. Current: {}, Requested: {}",
-                        BlockingQueueManager.getQueueName(executor.getQueue()),
-                        BlockingQueueTypeEnum.getBlockingQueueNameByType(parameter.getQueueType()));
-            }
-        } else if (capacityChanged) {
-            // Only change capacity if queue type is the same or not specified
+        // Only support capacity adjustment for queues that support it
+        if (BlockingQueueManager.canChangeCapacity(executor.getQueue())) {
             boolean success = BlockingQueueManager.changeQueueCapacity(executor.getQueue(), parameter.getCapacity());
             if (success) {
                 log.info("Queue capacity changed to: {}", parameter.getCapacity());
             } else {
                 log.warn("Failed to change queue capacity to: {}", parameter.getCapacity());
             }
-        } else if (parameter.getCapacity() != null) {
-            log.warn("Queue capacity cannot be changed for current queue type: {}",
+        } else {
+            log.warn("Queue capacity cannot be changed for current queue type: {}. " +
+                    "Only ResizableCapacityLinkedBlockingQueue supports dynamic capacity changes.",
                     BlockingQueueManager.getQueueName(executor.getQueue()));
         }
     }
