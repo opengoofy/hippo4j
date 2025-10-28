@@ -75,7 +75,7 @@ public class Md5ConfigUtil {
         int clientVersion = getClientVersion(request);
         clientMd5Map.forEach((key, val) -> {
             String clientIdentify = RequestUtil.getClientIdentify(request);
-            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify,clientVersion);
+            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify, clientVersion);
             if (!isUpdateData) {
                 changedGroupKeys.add(key);
             }
