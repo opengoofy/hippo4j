@@ -143,28 +143,28 @@ public class BlockingQueueSpiTest {
     }
 
     /**
-     * Test Case 3: BlockingQueueManager unified creation entry
+     * Test Case 3: Queue creation via BlockingQueueTypeEnum
      */
     @Test
-    public void testBlockingQueueManagerCreation() {
-        System.out.println("\n========== Test Case 3: BlockingQueueManager unified creation entry ==========");
+    public void testBlockingQueueCreation() {
+        System.out.println("\n========== Test Case 3: Queue creation via BlockingQueueTypeEnum ==========");
 
-        // Create built-in queue via BlockingQueueManager
-        BlockingQueue<Runnable> queue1 = BlockingQueueManager.createQueue(1, 512);
+        // Create built-in queue via BlockingQueueTypeEnum
+        BlockingQueue<Runnable> queue1 = BlockingQueueTypeEnum.createBlockingQueue(1, 512);
         Assert.assertNotNull("Should successfully create queue", queue1);
         Assert.assertTrue("Should create ArrayBlockingQueue", queue1 instanceof ArrayBlockingQueue);
 
         // Create by type name
-        BlockingQueue<Runnable> queue2 = BlockingQueueManager.createQueue("ArrayBlockingQueue", 1024);
+        BlockingQueue<Runnable> queue2 = BlockingQueueTypeEnum.createBlockingQueue("ArrayBlockingQueue", 1024);
         Assert.assertNotNull("Should successfully create queue by name", queue2);
         Assert.assertTrue("Should create ArrayBlockingQueue", queue2 instanceof ArrayBlockingQueue);
 
-        // Test default queue (null type)
-        BlockingQueue<Runnable> defaultQueue = BlockingQueueManager.createQueue("", 1024);
-        Assert.assertNotNull("Null type should create default queue", defaultQueue);
+        // Test default queue with null type - falls back to LinkedBlockingQueue
+        BlockingQueue<Runnable> defaultQueue = BlockingQueueTypeEnum.createBlockingQueue("", 1024);
+        Assert.assertNotNull("Empty name should create default queue", defaultQueue);
         System.out.println("Default queue type: " + defaultQueue.getClass().getSimpleName());
 
-        System.out.println("Passed: BlockingQueueManager unified entry works");
+        System.out.println("Passed: BlockingQueueTypeEnum queue creation works");
     }
 
     /**

@@ -51,13 +51,15 @@ com.example.queue.MyArrayBlockingQueue
 ### 3.1 队列创建与验证
 
 ```java
-// 创建队列
-BlockingQueue<T> q = BlockingQueueManager.createQueue(queueType, capacity);
+// 创建队列 - 使用 BlockingQueueTypeEnum
+BlockingQueue<T> q = BlockingQueueTypeEnum.createBlockingQueue(queueType, capacity);
+// 或者通过队列名称创建
+BlockingQueue<T> q2 = BlockingQueueTypeEnum.createBlockingQueue("ArrayBlockingQueue", capacity);
 
-// 验证队列配置
+// 验证队列配置 - 使用 BlockingQueueManager
 boolean valid = BlockingQueueManager.validateQueueConfig(queueType, capacity);
 
-// 动态调整容量（仅 ResizableCapacityLinkedBlockingQueue 支持）
+// 动态调整容量（仅 ResizableCapacityLinkedBlockingQueue 支持）- 使用 BlockingQueueManager
 boolean ok = BlockingQueueManager.changeQueueCapacity(executor.getQueue(), newCapacity);
 ```
 

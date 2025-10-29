@@ -23,48 +23,16 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Blocking queue manager for queue operations.
- * Supports SPI extension, queue creation, capacity management, and type recognition.
+ * Blocking queue runtime manager.
+ * Provides queue management operations: capacity adjustment, type recognition, and configuration validation.
+ * 
+ * <p>Note: For queue creation, use {@link BlockingQueueTypeEnum#createBlockingQueue(int, Integer)} 
+ * or {@link BlockingQueueTypeEnum#createBlockingQueue(String, Integer)} directly.</p>
  */
 @Slf4j
 public class BlockingQueueManager {
-
-    static {
-        ServiceLoaderRegistry.register(CustomBlockingQueue.class);
-    }
-
-    /**
-     * Create blocking queue by type and capacity
-     *
-     * @param queueType queue type
-     * @param capacity queue capacity
-     * @param <T> queue element type
-     * @return blocking queue instance
-     */
-    public static <T> BlockingQueue<T> createQueue(Integer queueType, Integer capacity) {
-        if (queueType == null) {
-            queueType = BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE.getType();
-        }
-        return BlockingQueueTypeEnum.createBlockingQueue(queueType, capacity);
-    }
-
-    /**
-     * Create blocking queue by name and capacity
-     *
-     * @param queueName queue name
-     * @param capacity queue capacity
-     * @param <T> queue element type
-     * @return blocking queue instance
-     */
-    public static <T> BlockingQueue<T> createQueue(String queueName, Integer capacity) {
-        if (queueName == null || queueName.isEmpty()) {
-            queueName = BlockingQueueTypeEnum.LINKED_BLOCKING_QUEUE.getName();
-        }
-        return BlockingQueueTypeEnum.createBlockingQueue(queueName, capacity);
-    }
 
     /**
      * Check if queue capacity can be dynamically changed

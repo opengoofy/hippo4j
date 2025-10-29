@@ -160,9 +160,9 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         if (BlockingQueueManager.canChangeCapacity(executor.getQueue())) {
             boolean success = BlockingQueueManager.changeQueueCapacity(executor.getQueue(), parameter.getCapacity());
             if (success) {
-                log.info("Queue capacity changed to: {}", parameter.getCapacity());
+                log.info("Queue capacity changed to: {} for thread pool: {}", parameter.getCapacity(), parameter.getTpId());
             } else {
-                log.warn("Failed to change queue capacity to: {}", parameter.getCapacity());
+                log.warn("Failed to change queue capacity to: {} for thread pool: {}", parameter.getCapacity(), parameter.getTpId());
             }
         } else {
             log.warn("Queue capacity cannot be changed for current queue type: {}. " +
