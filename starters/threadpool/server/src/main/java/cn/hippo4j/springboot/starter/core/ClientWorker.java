@@ -157,9 +157,7 @@ public class ClientWorker implements DisposableBean {
                 try {
                     String content = getServerConfig(namespace, itemId, tpId, defaultTimedOut);
                     CacheData cacheData = cacheMap.get(tpId);
-                    ThreadPoolParameterInfo poolInfo = JSONUtil.parseObject(content, ThreadPoolParameterInfo.class);
-                    // Use incremental content for protocol version 2+ clients
-                    String poolContent = IncrementalContentUtil.getIncrementalContent(poolInfo, IncrementalContentUtil.PROTOCOL_VERSION);
+                    String poolContent = ContentUtil.getPoolContent(JSONUtil.parseObject(content, ThreadPoolParameterInfo.class));
                     cacheData.setContent(poolContent);
                 } catch (Exception ignored) {
                     log.error("Failed to get the latest thread pool configuration.", ignored);
@@ -288,9 +286,7 @@ public class ClientWorker implements DisposableBean {
             try {
                 serverConfig = getServerConfig(namespace, itemId, threadPoolId, defaultTimedOut);
                 ThreadPoolParameterInfo poolInfo = JSONUtil.parseObject(serverConfig, ThreadPoolParameterInfo.class);
-                // Use incremental content for protocol version 2+ clients
-                String content = IncrementalContentUtil.getIncrementalContent(poolInfo, IncrementalContentUtil.PROTOCOL_VERSION);
-                cacheData.setContent(content);
+                cacheData.setContent(ContentUtil.getPoolContent(poolInfo));
             } catch (Exception ex) {
                 log.error("Cache Data Error. Service Unavailable: {}", ex.getMessage());
             }

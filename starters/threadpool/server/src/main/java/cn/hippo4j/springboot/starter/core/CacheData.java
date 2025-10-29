@@ -18,8 +18,10 @@
 package cn.hippo4j.springboot.starter.core;
 
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
+import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import cn.hippo4j.springboot.starter.wrapper.ManagerListenerWrapper;
 import cn.hippo4j.common.toolkit.ContentUtil;
+import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.common.toolkit.IncrementalContentUtil;
 import cn.hippo4j.common.constant.Constants;
@@ -58,10 +60,12 @@ public class CacheData {
         this.tenantId = tenantId;
         this.itemId = itemId;
         this.threadPoolId = threadPoolId;
-        this.content = IncrementalContentUtil.getIncrementalContent(
-                ThreadPoolExecutorRegistry.getHolder(threadPoolId).getParameterInfo(),
-                IncrementalContentUtil.PROTOCOL_VERSION);
-        this.md5 = getMd5String(content);
+        // Store full content for listeners to receive complete configuration
+        ThreadPoolParameterInfo parameterInfo = ThreadPoolExecutorRegistry.getHolder(threadPoolId).getParameterInfo();
+        this.content = ContentUtil.getPoolContent(parameterInfo);
+        // Calculate MD5 based on incremental content for version compatibility
+        String incrementalContent = IncrementalContentUtil.getIncrementalContent(parameterInfo, IncrementalContentUtil.PROTOCOL_VERSION);
+        this.md5 = getMd5String(incrementalContent);
         this.listeners = new CopyOnWriteArrayList<>();
     }
 
@@ -97,8 +101,17 @@ public class CacheData {
     }
 
     public void setContent(String content) {
+        // Store full content for listeners
         this.content = content;
-        this.md5 = getMd5String(this.content);
+        // Calculate MD5 based on incremental content for version compatibility
+        try {
+            ThreadPoolParameterInfo parameterInfo = JSONUtil.parseObject(content, ThreadPoolParameterInfo.class);
+            String incrementalContent = IncrementalContentUtil.getIncrementalContent(parameterInfo, IncrementalContentUtil.PROTOCOL_VERSION);
+            this.md5 = getMd5String(incrementalContent);
+        } catch (Exception e) {
+            // Fallback to full content MD5 if parsing fails
+            this.md5 = getMd5String(content);
+        }
     }
 
     public static String getMd5String(String config) {
