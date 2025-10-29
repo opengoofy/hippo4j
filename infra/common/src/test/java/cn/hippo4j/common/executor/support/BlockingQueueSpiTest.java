@@ -23,6 +23,7 @@ import org.junit.Test;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Blocking Queue SPI Test: Verify that custom queues can be supported via SPI just like rejection policies
@@ -36,6 +37,10 @@ public class BlockingQueueSpiTest {
      */
     public static class TestCustomQueue implements CustomBlockingQueue<Runnable> {
 
+        private static final int DEFAULT_CAPACITY = 512;
+
+        private static final AtomicReference<Integer> LAST_REQUESTED_CAPACITY = new AtomicReference<>();
+
         @Override
         public Integer getType() {
             return 10001; // Custom type ID
@@ -48,10 +53,18 @@ public class BlockingQueueSpiTest {
 
         @Override
         public BlockingQueue<Runnable> generateBlockingQueue() {
-            // SPI implementation note: capacity should be passed from outside
-            // For simplicity in test, use fixed capacity 512
-            // In real project, capacity can be passed via constructor or other ways
-            return new ArrayBlockingQueue<>(512);
+            return generateBlockingQueue(DEFAULT_CAPACITY);
+        }
+
+        @Override
+        public BlockingQueue<Runnable> generateBlockingQueue(Integer capacity) {
+            int effectiveCapacity = capacity == null || capacity <= 0 ? DEFAULT_CAPACITY : capacity;
+            LAST_REQUESTED_CAPACITY.set(effectiveCapacity);
+            return new ArrayBlockingQueue<>(effectiveCapacity);
+        }
+
+        public static Integer getLastRequestedCapacity() {
+            return LAST_REQUESTED_CAPACITY.get();
         }
     }
 
@@ -100,6 +113,7 @@ public class BlockingQueueSpiTest {
         Assert.assertTrue("Should create ArrayBlockingQueue instance (TestCustomQueue implementation)",
                 spiQueue instanceof ArrayBlockingQueue);
         Assert.assertEquals("Queue capacity should be 512", 512, spiQueue.remainingCapacity());
+        Assert.assertEquals("Custom queue should receive requested capacity", Integer.valueOf(512), TestCustomQueue.getLastRequestedCapacity());
 
         System.out.println("Successfully created custom queue via SPI type ID 10001");
         System.out.println("Queue type: " + spiQueue.getClass().getSimpleName());
@@ -165,6 +179,23 @@ public class BlockingQueueSpiTest {
         System.out.println("Default queue type: " + defaultQueue.getClass().getSimpleName());
 
         System.out.println("Passed: BlockingQueueTypeEnum queue creation works");
+    }
+
+    /**
+     * Test Case 3.5: SPI queue default capacity when config missing
+     */
+    @Test
+    public void testSpiQueueDefaultCapacity() {
+        System.out.println("\n========== Test Case 3.5: SPI queue default capacity ==========");
+
+        BlockingQueue<Runnable> queue = BlockingQueueTypeEnum.createBlockingQueue(10001, null);
+        Assert.assertNotNull("Should create custom queue when capacity missing", queue);
+        Assert.assertTrue("Should still be ArrayBlockingQueue", queue instanceof ArrayBlockingQueue);
+        Assert.assertEquals("Default capacity should fallback to 1024", 1024, queue.remainingCapacity());
+        Assert.assertEquals("Custom queue should receive normalized capacity", Integer.valueOf(1024), TestCustomQueue.getLastRequestedCapacity());
+
+        System.out.println("SPI queue default capacity -> " + queue.remainingCapacity());
+        System.out.println("Passed: Custom queue receives normalized capacity");
     }
 
     /**

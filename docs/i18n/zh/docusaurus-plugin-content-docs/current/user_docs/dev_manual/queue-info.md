@@ -18,11 +18,9 @@ Hippo4j 内置多种常用阻塞队列类型，支持开箱即用，亦可通过
 - PriorityBlockingQueue（优先级队列）
 - ResizableCapacityLinkedBlockingQueue（可在线动态调容量的链表队列）
 
-其中 `ResizableCapacityLinkedBlockingQueue` 支持在线变更 `capacity`，无需重建线程池，适合动态调优场景。
+## 枚举定义
 
-## 代码对应
-
-枚举定义：
+**ResizableCapacityLinkedBlockingQueue**：支持在线变更 `capacity`。
 
 ```java
 // cn.hippo4j.common.executor.support.BlockingQueueTypeEnum
@@ -38,15 +36,6 @@ RESIZABLE_LINKED_BLOCKING_QUEUE(9, "ResizableCapacityLinkedBlockingQueue") {
 }
 ```
 
-创建与验证：
-
-```java
-// cn.hippo4j.common.executor.support.BlockingQueueManager
-BlockingQueue<T> q = BlockingQueueManager.createQueue(queueType, capacity);
-boolean valid = BlockingQueueManager.validateQueueConfig(queueType, capacity);
-boolean ok = BlockingQueueManager.changeQueueCapacity(executor.getQueue(), newCapacity);
-```
-
 ## 使用建议
 
 - 需要在线调容量：优先选择 `ResizableCapacityLinkedBlockingQueue`
@@ -56,5 +45,3 @@ boolean ok = BlockingQueueManager.changeQueueCapacity(executor.getQueue(), newCa
 - 需要同步移交：选择 `SynchronousQueue`
 
 如需自定义队列类型，请参考《阻塞队列自定义》。
-
-

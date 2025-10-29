@@ -24,48 +24,48 @@ public class MyArrayBlockingQueue implements CustomBlockingQueue<Runnable> {
     }
 
     @Override
-    public BlockingQueue<Runnable> generateBlockingQueue() {
-        return new ArrayBlockingQueue<>(256);
+    public BlockingQueue<Runnable> generateBlockingQueue(Integer capacity) {
+        int effectiveCapacity = capacity == null || capacity <= 0 ? 1024 : capacity;
+        return new ArrayBlockingQueue<>(effectiveCapacity);
     }
 }
 ```
 
+> 兼容提示：旧版只需实现 `generateBlockingQueue()` 的实现仍然有效，框架会在未覆写新方法时回退到旧逻辑，但推荐改为覆写带 `capacity` 入参的方法，以便直接复用服务端配置。
+
 ## 2. 声明 SPI 文件
 
 在 `src/main/resources/META-INF/services/` 目录下新增文件：
-
 ```
 cn.hippo4j.common.executor.support.CustomBlockingQueue
 ```
 
 文件内容仅一行：
-
 ```
 com.example.queue.MyArrayBlockingQueue
 ```
 
 ## 3. 服务端生效方式
 
-当服务端下发的 `queueType` 与 `capacity` 命中自定义类型时，框架会通过 SPI 自动创建队列。
+当服务端下发的 `queueType` 与 `capacity` 命中自定义类型时，框架会通过 SPI 自动创建队列，并将服务端配置的容量参数传入 `generateBlockingQueue(Integer capacity)`。
 
 ### 3.1 队列创建与验证
 
 ```java
-// 创建队列 - 使用 BlockingQueueTypeEnum
+// 创建队列
 BlockingQueue<T> q = BlockingQueueTypeEnum.createBlockingQueue(queueType, capacity);
+
 // 或者通过队列名称创建
 BlockingQueue<T> q2 = BlockingQueueTypeEnum.createBlockingQueue("ArrayBlockingQueue", capacity);
 
-// 验证队列配置 - 使用 BlockingQueueManager
+// 验证队列配置
 boolean valid = BlockingQueueManager.validateQueueConfig(queueType, capacity);
 
-// 动态调整容量（仅 ResizableCapacityLinkedBlockingQueue 支持）- 使用 BlockingQueueManager
+// 动态调整容量（仅 ResizableCapacityLinkedBlockingQueue 支持）
 boolean ok = BlockingQueueManager.changeQueueCapacity(executor.getQueue(), newCapacity);
 ```
 
-### 3.2 队列类型何时生效
-
-**重要说明**：队列类型（queueType）的变更需要客户端应用重启后生效。
+### 3.2 队列类型生效
 
 - **配置模板**：在线程池管理页面编辑队列类型，会保存到数据库，但不会推送到运行中的客户端。
 - **生效时机**：客户端应用重启时，会从服务端读取最新配置，并使用反射替换线程池的 `workQueue` 字段。
@@ -81,10 +81,9 @@ if (parameter.getCapacity() != null) {
         boolean success = BlockingQueueManager.changeQueueCapacity(
             executor.getQueue(), parameter.getCapacity());
         if (success) {
-            log.info("Queue capacity changed to: {}", parameter.getCapacity());
+            log.info("Queue capacity changed to: {} for thread pool: {}", 
+                     parameter.getCapacity(), parameter.getTpId());
         }
     }
 }
 ```
-
-

@@ -26,6 +26,7 @@ import org.junit.Test;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Queue SPI Integration Test: Verifies the full flow from parameters to queue creation
@@ -42,6 +43,8 @@ public class QueueSpiIntegrationTest {
      */
     public static class IntegrationTestQueue implements CustomBlockingQueue<Runnable> {
 
+        private static final AtomicInteger LAST_REQUESTED_CAPACITY = new AtomicInteger();
+
         @Override
         public Integer getType() {
             return 20001; // Integration test specific type ID
@@ -54,7 +57,22 @@ public class QueueSpiIntegrationTest {
 
         @Override
         public BlockingQueue<Runnable> generateBlockingQueue() {
-            return new ArrayBlockingQueue<>(256);
+            return generateBlockingQueue(256);
+        }
+
+        @Override
+        public BlockingQueue<Runnable> generateBlockingQueue(Integer capacity) {
+            int effectiveCapacity = capacity == null || capacity <= 0 ? 1024 : capacity;
+            LAST_REQUESTED_CAPACITY.set(effectiveCapacity);
+            return new ArrayBlockingQueue<>(effectiveCapacity);
+        }
+
+        public static int getLastRequestedCapacity() {
+            return LAST_REQUESTED_CAPACITY.get();
+        }
+
+        public static void resetLastRequestedCapacity() {
+            LAST_REQUESTED_CAPACITY.set(0);
         }
     }
 
@@ -112,10 +130,21 @@ public class QueueSpiIntegrationTest {
         Assert.assertNotNull("SPI custom queue should be created", spiQueue);
         Assert.assertTrue("Should be instance of ArrayBlockingQueue (TestCustomQueue implementation)",
                 spiQueue instanceof ArrayBlockingQueue);
+        Assert.assertEquals("Custom queue capacity should match server value", 512, spiQueue.remainingCapacity());
+
+        QueueSpiIntegrationTest.IntegrationTestQueue.resetLastRequestedCapacity();
+        BlockingQueue<Runnable> integrationQueue = BlockingQueueTypeEnum.createBlockingQueue(20001, 2048);
+        Assert.assertNotNull("Integration test custom queue should be created", integrationQueue);
+        Assert.assertTrue("Integration queue should be ArrayBlockingQueue", integrationQueue instanceof ArrayBlockingQueue);
+        Assert.assertEquals("Integration queue capacity should honor config", 2048, integrationQueue.remainingCapacity());
+        Assert.assertEquals("Integration custom queue should receive normalized capacity", 2048,
+                QueueSpiIntegrationTest.IntegrationTestQueue.getLastRequestedCapacity());
 
         System.out.println("SPI queue can be created via type ID");
         System.out.println("   Type 10001 (TestCustomQueue): " + spiQueue.getClass().getSimpleName());
         System.out.println("   Queue capacity: " + spiQueue.remainingCapacity());
+        System.out.println("   Type 20001 (IntegrationTestQueue): " + integrationQueue.getClass().getSimpleName());
+        System.out.println("   Queue capacity: " + integrationQueue.remainingCapacity());
     }
 
     /**
@@ -129,8 +158,8 @@ public class QueueSpiIntegrationTest {
         newParameter.setTenantId("default");
         newParameter.setItemId("item-001");
         newParameter.setTpId("test-pool");
-        newParameter.setQueueType(10001); // Switch to SPI custom queue
-        newParameter.setCapacity(512);
+        newParameter.setQueueType(20001); // Switch to IntegrationTestQueue
+        newParameter.setCapacity(768);
 
         System.out.println("Step 1: Config pushed - queueType=" + newParameter.getQueueType());
 
@@ -138,6 +167,7 @@ public class QueueSpiIntegrationTest {
         Assert.assertTrue("Should detect queue type change", queueTypeChanged);
         System.out.println("Step 2: Detected queue type change");
 
+        IntegrationTestQueue.resetLastRequestedCapacity();
         BlockingQueue<Runnable> newQueue = BlockingQueueTypeEnum.createBlockingQueue(
                 newParameter.getQueueType(),
                 newParameter.getCapacity());
@@ -146,8 +176,10 @@ public class QueueSpiIntegrationTest {
 
         Assert.assertTrue("New queue should be SPI custom implementation (ArrayBlockingQueue)",
                 newQueue instanceof ArrayBlockingQueue);
-        Assert.assertEquals("New queue capacity should be 512", 512, newQueue.remainingCapacity());
-        System.out.println("Step 4: Verified new queue - Type: ArrayBlockingQueue, Capacity: 512");
+        Assert.assertEquals("New queue capacity should be 768", 768, newQueue.remainingCapacity());
+        Assert.assertEquals("Custom queue should see normalized capacity", 768,
+                IntegrationTestQueue.getLastRequestedCapacity());
+        System.out.println("Step 4: Verified new queue - Type: ArrayBlockingQueue, Capacity: 768");
 
         System.out.println("Complete queue creation flow verified");
         System.out.println("Proves: Config → BlockingQueueTypeEnum → SPI → Custom Queue");
@@ -160,7 +192,7 @@ public class QueueSpiIntegrationTest {
     public void testQueueSwitchNotHardcoded() {
         System.out.println("\n========== Integration Test Scenario 5: Queue switch not hardcoded ==========");
 
-        int[] queueTypes = {1, 2, 3, 9, 10001};
+        int[] queueTypes = {1, 2, 3, 9, 10001, 20001};
         for (int queueType : queueTypes) {
             BlockingQueue<Runnable> queue = BlockingQueueTypeEnum.createBlockingQueue(queueType, 512);
             Assert.assertNotNull("Queue type " + queueType + " should be created", queue);
@@ -180,13 +212,16 @@ public class QueueSpiIntegrationTest {
 
         ThreadPoolParameterInfo parameter = new ThreadPoolParameterInfo();
         parameter.setRejectedType(1); // AbortPolicy
-        parameter.setQueueType(10001); // SPI custom queue
-        parameter.setCapacity(512);
+        parameter.setQueueType(20001); // SPI custom queue (IntegrationTestQueue)
+        parameter.setCapacity(640);
 
         BlockingQueue<Runnable> queue = BlockingQueueTypeEnum.createBlockingQueue(
                 parameter.getQueueType(),
                 parameter.getCapacity());
         Assert.assertNotNull("Queue should be created", queue);
+        Assert.assertEquals("Queue should reflect configured capacity", 640, queue.remainingCapacity());
+        Assert.assertEquals("Integration queue should receive normalized capacity", 640,
+                IntegrationTestQueue.getLastRequestedCapacity());
 
         System.out.println("Rejected policy and blocking queue design are consistent:");
         System.out.println("   - Rejected policy: created dynamically via type ID (rejectedType)");
