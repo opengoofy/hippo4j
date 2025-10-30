@@ -40,7 +40,7 @@ public class ProtocolRigidityTest {
         clientConfig.setItemId("item-001");
         clientConfig.setTpId("test-pool");
         clientConfig.setCoreSize(10); // old field
-        clientConfig.setMaxSize(20);  // old field
+        clientConfig.setMaxSize(20); // old field
         clientConfig.setQueueType(2);
         clientConfig.setCapacity(1024);
         clientConfig.setKeepAliveTime(60L);
@@ -52,8 +52,8 @@ public class ProtocolRigidityTest {
         serverConfig.setTenantId("default");
         serverConfig.setItemId("item-001");
         serverConfig.setTpId("test-pool");
-        serverConfig.setCorePoolSize(10);     // new field
-        serverConfig.setMaximumPoolSize(20);  // new field
+        serverConfig.setCorePoolSize(10); // new field
+        serverConfig.setMaximumPoolSize(20); // new field
         serverConfig.setQueueType(2);
         serverConfig.setCapacity(1024);
         serverConfig.setKeepAliveTime(60L);
@@ -126,9 +126,9 @@ public class ProtocolRigidityTest {
         System.out.println("\n========== Scenario 3: Field Adapter Priority ==========");
 
         ThreadPoolParameterInfo config = new ThreadPoolParameterInfo();
-        config.setCoreSize(10);      // old field
-        config.setMaxSize(20);       // old field
-        config.setCorePoolSize(15);  // new field (should take priority)
+        config.setCoreSize(10); // old field
+        config.setMaxSize(20); // old field
+        config.setCorePoolSize(15); // new field (should take priority)
         config.setMaximumPoolSize(30); // new field (should take priority)
 
         Integer adaptedCore = config.corePoolSizeAdapt();

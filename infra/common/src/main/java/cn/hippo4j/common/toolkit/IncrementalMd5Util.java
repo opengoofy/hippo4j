@@ -56,19 +56,25 @@ public class IncrementalMd5Util {
      * @return versioned MD5 hash
      */
     public static String getVersionedMd5(ThreadPoolParameter config, int clientVersion) {
-        if (clientVersion >= IncrementalContentUtil.PROTOCOL_VERSION) {
-            String coreMd5 = getCoreMd5(config);
-            if (log.isDebugEnabled()) {
-                log.debug("Protocol v{}: Using incremental MD5 (core parameters only), MD5={}", clientVersion, coreMd5);
-            }
-            return coreMd5;
-        } else {
-            String fullMd5 = getFullMd5(config);
-            if (log.isDebugEnabled()) {
-                log.debug("Protocol v{}: Using full MD5 (all parameters), MD5={}", clientVersion, fullMd5);
-            }
-            return fullMd5;
+        return getVersionedMd5(config, clientVersion, null);
+    }
+
+    /**
+     * Get versioned MD5 based on client version information.
+     *
+     * @param config thread pool parameter
+     * @param clientProtocolVersion client protocol version
+     * @param clientVersion explicit semantic client version, optional
+     * @return versioned MD5 hash
+     */
+    public static String getVersionedMd5(ThreadPoolParameter config, int clientProtocolVersion, String clientVersion) {
+        String versionedContent = IncrementalContentUtil.getVersionedContent(config, clientProtocolVersion, clientVersion);
+        String md5 = Md5Util.md5Hex(versionedContent, "UTF-8");
+        if (log.isDebugEnabled()) {
+            log.debug("Protocol v{} (clientVersion={}): Using versioned MD5={}",
+                    clientProtocolVersion, clientVersion, md5);
         }
+        return md5;
     }
 
     /**
@@ -83,8 +89,8 @@ public class IncrementalMd5Util {
         if (oldConfig == null || newConfig == null) {
             return true;
         }
-        String oldMd5 = getVersionedMd5(oldConfig, clientVersion);
-        String newMd5 = getVersionedMd5(newConfig, clientVersion);
+        String oldMd5 = getVersionedMd5(oldConfig, clientVersion, null);
+        String newMd5 = getVersionedMd5(newConfig, clientVersion, null);
         boolean different = !oldMd5.equals(newMd5);
         if (different) {
             log.debug("Configuration changed - Old MD5: {}, New MD5: {}, Client Version: {}",

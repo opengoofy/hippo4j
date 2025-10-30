@@ -17,9 +17,11 @@
 
 package cn.hippo4j.config.toolkit;
 
+import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.VersionUtil;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import org.springframework.util.StringUtils;
@@ -72,10 +74,11 @@ public class Md5ConfigUtil {
      */
     public static List<String> compareMd5(HttpServletRequest request, Map<String, String> clientMd5Map) {
         List<String> changedGroupKeys = new ArrayList();
-        int clientVersion = getClientVersion(request);
+        String clientVersionHeader = request.getHeader(Constants.CLIENT_VERSION);
+        int clientProtocolVersion = getClientProtocolVersion(request, clientVersionHeader);
         clientMd5Map.forEach((key, val) -> {
             String clientIdentify = RequestUtil.getClientIdentify(request);
-            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify, clientVersion);
+            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify, clientProtocolVersion, clientVersionHeader);
             if (!isUpdateData) {
                 changedGroupKeys.add(key);
             }
@@ -89,17 +92,16 @@ public class Md5ConfigUtil {
      * @param request HTTP request
      * @return client protocol version, default to 1 for backward compatibility
      */
-    private static int getClientVersion(HttpServletRequest request) {
+    private static int getClientProtocolVersion(HttpServletRequest request, String clientVersionHeader) {
         String versionHeader = request.getHeader("X-Hippo4j-Protocol-Version");
-        if (versionHeader != null && !versionHeader.isEmpty()) {
+        if (StringUtil.isNotBlank(versionHeader)) {
             try {
-                return Integer.parseInt(versionHeader);
-            } catch (NumberFormatException e) {
-                // Default to version 1 for backward compatibility
+                return Integer.parseInt(versionHeader.trim());
+            } catch (NumberFormatException ignored) {
                 return 1;
             }
         }
-        return 1;
+        return VersionUtil.resolveProtocolVersion(clientVersionHeader, 1);
     }
 
     public static Map<String, String> getClientMd5Map(String configKeysString) {

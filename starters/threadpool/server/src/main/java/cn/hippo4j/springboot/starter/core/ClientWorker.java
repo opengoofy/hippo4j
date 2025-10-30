@@ -20,11 +20,12 @@ package cn.hippo4j.springboot.starter.core;
 import cn.hippo4j.common.executor.ThreadFactoryBuilder;
 import cn.hippo4j.common.model.Result;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
-import cn.hippo4j.common.toolkit.IncrementalContentUtil;
 import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.IdUtil;
+import cn.hippo4j.common.toolkit.IncrementalContentUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.VersionUtil;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import lombok.SneakyThrows;
@@ -70,7 +71,7 @@ public class ClientWorker implements DisposableBean {
     private final long timeout;
     private final String identify;
     private final String version;
-
+    private final int protocolVersion;
     private final HttpAgent agent;
     private final ServerHealthCheck serverHealthCheck;
     private final ScheduledExecutorService executorService;
@@ -91,7 +92,9 @@ public class ClientWorker implements DisposableBean {
         this.agent = httpAgent;
         this.identify = identify;
         this.timeout = CONFIG_LONG_POLL_TIMEOUT;
-        this.version = version;
+        this.version = VersionUtil.resolveClientVersion(version, ClientWorker.class);
+        int resolvedProtocol = VersionUtil.resolveProtocolVersion(this.version, IncrementalContentUtil.PROTOCOL_VERSION);
+        this.protocolVersion = VersionUtil.UNKNOWN_VERSION.equals(this.version) ? IncrementalContentUtil.PROTOCOL_VERSION : resolvedProtocol;
         this.serverHealthCheck = serverHealthCheck;
         this.hippo4jClientShutdown = hippo4jClientShutdown;
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1, runnable -> {
@@ -208,7 +211,7 @@ public class ClientWorker implements DisposableBean {
         }
         headers.put(CLIENT_VERSION, version);
         // Add protocol version header for incremental updates
-        headers.put("X-Hippo4j-Protocol-Version", String.valueOf(IncrementalContentUtil.PROTOCOL_VERSION));
+        headers.put("X-Hippo4j-Protocol-Version", String.valueOf(protocolVersion));
         try {
             long readTimeoutMs = timeout + Math.round(timeout >> 1);
             Result result = agent.httpPostByConfig(LISTENER_PATH, headers, params, readTimeoutMs);
@@ -279,7 +282,7 @@ public class ClientWorker implements DisposableBean {
         if (cacheData != null) {
             return cacheData;
         }
-        cacheData = new CacheData(namespace, itemId, threadPoolId);
+        cacheData = new CacheData(namespace, itemId, threadPoolId, protocolVersion, version);
         CacheData lastCacheData = cacheMap.putIfAbsent(threadPoolId, cacheData);
         if (lastCacheData == null) {
             String serverConfig;

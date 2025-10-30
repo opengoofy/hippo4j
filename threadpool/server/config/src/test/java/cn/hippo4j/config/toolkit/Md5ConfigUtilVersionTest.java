@@ -17,6 +17,7 @@
 
 package cn.hippo4j.config.toolkit;
 
+import cn.hippo4j.common.constant.Constants;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -193,11 +194,30 @@ public class Md5ConfigUtilVersionTest {
     }
 
     /**
+     * Test: Fallback to semantic client version when protocol header is missing.
+     */
+    @Test
+    public void testGetClientVersion_FromClientVersionHeader() throws Exception {
+        System.out.println("\n========== Test 9: Fallback to client version header ==========");
+
+        when(request.getHeader(PROTOCOL_VERSION_HEADER)).thenReturn(null);
+        when(request.getHeader(Constants.CLIENT_VERSION)).thenReturn("2.0.1");
+
+        int version = invokeGetClientVersion(request);
+
+        System.out.println("Client-Version header: 2.0.1");
+        System.out.println("Detected protocol version: v" + version);
+
+        Assert.assertEquals("Semantic version should map to protocol v2", 2, version);
+        System.out.println("Test passed: Fallback resolved protocol from client version header");
+    }
+
+    /**
      * Helper method to invoke private getClientVersion method via reflection
      */
     private int invokeGetClientVersion(HttpServletRequest request) throws Exception {
-        Method method = Md5ConfigUtil.class.getDeclaredMethod("getClientVersion", HttpServletRequest.class);
+        Method method = Md5ConfigUtil.class.getDeclaredMethod("getClientProtocolVersion", HttpServletRequest.class, String.class);
         method.setAccessible(true);
-        return (int) method.invoke(null, request);
+        return (int) method.invoke(null, request, request.getHeader(Constants.CLIENT_VERSION));
     }
 }

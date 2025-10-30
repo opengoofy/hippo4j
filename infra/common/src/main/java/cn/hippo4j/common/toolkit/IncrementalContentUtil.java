@@ -19,9 +19,14 @@ package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -51,6 +56,34 @@ public class IncrementalContentUtil {
     private static final String[] EXTENDED_PARAMETERS = {
             "executeTimeOut", "isAlarm", "capacityAlarm", "livenessAlarm"
     };
+
+    private static final List<String> IDENTIFIER_FIELDS = Collections.unmodifiableList(Arrays.asList("tenantId", "itemId", "tpId"));
+
+    private static final List<String> CORE_PARAMETER_LIST = Collections.unmodifiableList(Arrays.asList(CORE_PARAMETERS));
+
+    private static final List<String> EXTENDED_PARAMETER_LIST = Collections.unmodifiableList(Arrays.asList(EXTENDED_PARAMETERS));
+
+    /**
+     * Mapping of field name to the minimum protocol version that should observe it. Clients whose
+     * protocol version is lower than the mapped value will skip the field when generating MD5s, so
+     * they never refresh on data they do not understand.
+     */
+    private static final Map<String, Integer> FIELD_MIN_PROTOCOL_VERSION;
+
+    static {
+        Map<String, Integer> fieldVersion = new HashMap<>();
+        // Identifiers are required regardless of protocol version.
+        IDENTIFIER_FIELDS.forEach(field -> fieldVersion.put(field, 1));
+        // Core parameters affect pool behaviour, therefore protocol v1 clients must see them.
+        CORE_PARAMETER_LIST.forEach(field -> fieldVersion.put(field, 1));
+
+        // Initial new/extended fields with the next protocol version so current clients (v2)
+        // automatically skip them when generating MD5 values. Once a field is ready to be exposed
+        // to protocol v2 (or higher) clients, simply lower its minimum version accordingly.
+        EXTENDED_PARAMETER_LIST.forEach(field -> fieldVersion.put(field, PROTOCOL_VERSION + 1));
+
+        FIELD_MIN_PROTOCOL_VERSION = Collections.unmodifiableMap(fieldVersion);
+    }
 
     /**
      * Get core content for MD5 calculation (only essential parameters)
@@ -84,18 +117,42 @@ public class IncrementalContentUtil {
     }
 
     /**
-     * Get incremental content for version compatibility
+     * Build content string according to client protocol version. Fields introduced in newer protocol
+     * versions will be excluded automatically for older clients to avoid unnecessary refresh.
      *
-     * @param parameter thread-pool parameter
-     * @param version client version
-     * @return incremental content string
+     * @param parameter      thread-pool parameter
+     * @param protocolVersion client protocol version
+     * @param clientVersion   semantic client version (optional, reserved for fine-grained rules)
+     * @return version-aware content string
      */
-    public static String getIncrementalContent(ThreadPoolParameter parameter, int version) {
-        if (version >= PROTOCOL_VERSION) {
-            return getCoreContent(parameter);
-        } else {
-            return getFullContent(parameter);
+    public static String getVersionedContent(ThreadPoolParameter parameter, int protocolVersion, String clientVersion) {
+        String fullContent = getFullContent(parameter);
+        if (protocolVersion < PROTOCOL_VERSION) {
+            return fullContent;
         }
+        LinkedHashMap<String, Object> raw = JSONUtil.parseObject(fullContent, new TypeReference<LinkedHashMap<String, Object>>() {
+        });
+        if (raw == null) {
+            return fullContent;
+        }
+        int normalizedProtocol = Math.max(protocolVersion, PROTOCOL_VERSION);
+        LinkedHashMap<String, Object> filtered = new LinkedHashMap<>();
+        for (String field : IDENTIFIER_FIELDS) {
+            if (raw.containsKey(field)) {
+                filtered.put(field, raw.get(field));
+            }
+        }
+        for (String field : CORE_PARAMETER_LIST) {
+            if (raw.containsKey(field)) {
+                filtered.put(field, raw.get(field));
+            }
+        }
+        raw.forEach((field, value) -> {
+            if (!filtered.containsKey(field) && shouldIncludeField(field, normalizedProtocol)) {
+                filtered.put(field, value);
+            }
+        });
+        return JSONUtil.toJSONString(filtered);
     }
 
     /**
@@ -191,18 +248,12 @@ public class IncrementalContentUtil {
     }
 
     /**
-     * Create versioned content for backward compatibility
-     *
-     * @param parameter thread-pool parameter
-     * @param clientVersion client protocol version
-     * @return versioned content
+     * Decide whether the given field should be included when generating MD5 for a client that uses
+     * the specified protocol version. If the field requires a higher protocol, it will be ignored
+     * so older clients remain unaware of unsupported parameters.
      */
-    public static String createVersionedContent(ThreadPoolParameter parameter, int clientVersion) {
-        Map<String, Object> versionedContent = new HashMap<>();
-        versionedContent.put("version", PROTOCOL_VERSION);
-        versionedContent.put("clientVersion", clientVersion);
-        versionedContent.put("content", getIncrementalContent(parameter, clientVersion));
-        versionedContent.put("changes", getChangesSummary(null, parameter));
-        return JSONUtil.toJSONString(versionedContent);
+    private static boolean shouldIncludeField(String field, int protocolVersion) {
+        int minProtocol = FIELD_MIN_PROTOCOL_VERSION.getOrDefault(field, Integer.MAX_VALUE);
+        return protocolVersion >= minProtocol;
     }
 }

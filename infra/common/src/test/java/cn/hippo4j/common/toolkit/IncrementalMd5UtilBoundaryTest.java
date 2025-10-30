@@ -124,9 +124,16 @@ public class IncrementalMd5UtilBoundaryTest {
         System.out.println("\n========== Test 5: getVersionedMd5 with very large version ==========");
 
         ThreadPoolParameterInfo config = new ThreadPoolParameterInfo();
+        config.setTenantId("test");
+        config.setItemId("test");
+        config.setTpId("test");
         config.setCorePoolSize(10);
         config.setMaximumPoolSize(20);
-        config.setExecuteTimeOut(5000L);
+        config.setQueueType(1);
+        config.setCapacity(1024);
+        config.setKeepAliveTime(60L);
+        config.setRejectedType(1);
+        config.setAllowCoreThreadTimeOut(0);
 
         String vLargeMd5 = IncrementalMd5Util.getVersionedMd5(config, 999999);
         String v2Md5 = IncrementalMd5Util.getVersionedMd5(config, 2);

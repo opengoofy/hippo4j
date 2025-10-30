@@ -17,12 +17,14 @@
 
 package cn.hippo4j.config.model;
 
+import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.config.toolkit.SimpleReadWriteLock;
 import cn.hippo4j.config.toolkit.SingletonRepository;
-import cn.hippo4j.common.constant.Constants;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Cache item.
@@ -41,6 +43,8 @@ public class CacheItem {
 
     private SimpleReadWriteLock rwLock = new SimpleReadWriteLock();
 
+    private final ConcurrentHashMap<Integer, String> versionMd5Cache = new ConcurrentHashMap<>();
+
     public CacheItem(String groupKey) {
         this.groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
     }
@@ -48,11 +52,36 @@ public class CacheItem {
     public CacheItem(String groupKey, String md5) {
         this.md5 = md5;
         this.groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
+        this.versionMd5Cache.put(1, md5);
     }
 
     public CacheItem(String groupKey, ConfigAllInfo configAllInfo) {
         this.configAllInfo = configAllInfo;
         this.md5 = Md5Util.getTpContentMd5(configAllInfo);
         this.groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
+        this.versionMd5Cache.put(1, this.md5);
+    }
+
+    public String getMd5(int protocolVersion) {
+        if (protocolVersion <= 0) {
+            return md5;
+        }
+        return versionMd5Cache.get(protocolVersion);
+    }
+
+    public void setMd5(int protocolVersion, String value) {
+        if (protocolVersion <= 0) {
+            this.md5 = value;
+            return;
+        }
+        if (value == null) {
+            versionMd5Cache.remove(protocolVersion);
+        } else {
+            versionMd5Cache.put(protocolVersion, value);
+        }
+    }
+
+    public void clearVersionMd5() {
+        versionMd5Cache.clear();
     }
 }
