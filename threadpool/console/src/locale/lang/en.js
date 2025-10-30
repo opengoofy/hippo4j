@@ -106,6 +106,8 @@ export default {
     capacityAlarm: 'Capacity Alarm',
     customRejectedHandler: 'Custom Rejected Handler',
     customRejectedHandlerTip: 'Please enter a custom SPI Deny Policy ID',
+    customQueueType: 'Custom Queue Type',
+    customQueueTypeTip: 'Please enter a custom SPI Queue ID',
     threadsNumErrorTip: 'The maximum thread must be greater than or equal to the core thread',
   },
 

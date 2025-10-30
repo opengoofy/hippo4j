@@ -459,6 +459,8 @@ export default {
         return 'PriorityBlockingQueue';
       } else if ('9' == type) {
         return 'ResizableLinkedBlockingQueue';
+      } else {
+        return 'CustomBlockingQueue_' + type;
       }
     },
 
@@ -516,6 +518,7 @@ export default {
           key: 9,
           display_name: 'ResizableLinkedBlockingQueue (动态修改队列大小)',
         },
+        { key: 99, display_name: 'CustomBlockingQueue（自定义 SPI 队列）' },
       ],
       rejectedOptions: [
         { key: 1, display_name: 'CallerRunsPolicy' },

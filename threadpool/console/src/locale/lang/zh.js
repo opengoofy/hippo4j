@@ -104,6 +104,8 @@ export default {
     capacityAlarm: '容量报警',
     customRejectedHandler: '自定义拒绝策略',
     customRejectedHandlerTip: '请输入自定义 SPI 拒绝策略标识',
+    customQueueType: '自定义队列类型',
+    customQueueTypeTip: '请输入自定义 SPI 队列标识',
     threadsNumErrorTip: '最大线程必须大于等于核心线程',
   },
 

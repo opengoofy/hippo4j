@@ -238,17 +238,17 @@ public enum BlockingQueueTypeEnum {
         Collection<CustomBlockingQueue> customBlockingQueues = ServiceLoaderRegistry
                 .getSingletonServiceInstances(CustomBlockingQueue.class);
 
+        Integer resolvedCapacity = capacity;
+        if (resolvedCapacity == null || resolvedCapacity <= 0) {
+            resolvedCapacity = DEFAULT_CAPACITY;
+        }
+
+        Integer finalResolvedCapacity = resolvedCapacity;
         return customBlockingQueues.stream()
                 .filter(predicate)
-                .map(each -> each.generateBlockingQueue())
+                .map(each -> each.generateBlockingQueue(finalResolvedCapacity))
                 .findFirst()
-                .orElseGet(() -> {
-                    Integer tempCapacity = capacity;
-                    if (capacity == null || capacity <= 0) {
-                        tempCapacity = DEFAULT_CAPACITY;
-                    }
-                    return new LinkedBlockingQueue<T>(tempCapacity);
-                });
+                .orElseGet(() -> new LinkedBlockingQueue<T>(finalResolvedCapacity));
     }
 
     /**

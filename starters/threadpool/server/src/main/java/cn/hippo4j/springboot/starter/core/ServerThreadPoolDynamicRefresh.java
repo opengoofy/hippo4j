@@ -20,8 +20,8 @@ package cn.hippo4j.springboot.starter.core;
 import cn.hippo4j.common.api.ThreadPoolConfigChange;
 import cn.hippo4j.common.executor.ThreadPoolExecutorRegistry;
 import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
+import cn.hippo4j.common.executor.support.BlockingQueueManager;
 import cn.hippo4j.common.executor.support.RejectedPolicyTypeEnum;
-import cn.hippo4j.common.executor.support.ResizableCapacityLinkedBlockingQueue;
 import cn.hippo4j.common.extension.enums.EnableEnum;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
@@ -109,25 +109,27 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
     }
 
     private void changePoolInfo(ThreadPoolExecutor executor, ThreadPoolParameter parameter) {
-        if (parameter.getCoreSize() != null && parameter.getMaxSize() != null) {
-            ThreadPoolExecutorUtil.safeSetPoolSize(executor, parameter.getCoreSize(), parameter.getMaxSize());
+        Integer desiredCore = null;
+        Integer desiredMax = null;
+        if (parameter instanceof ThreadPoolParameterInfo) {
+            ThreadPoolParameterInfo info = (ThreadPoolParameterInfo) parameter;
+            desiredCore = info.corePoolSizeAdapt();
+            desiredMax = info.maximumPoolSizeAdapt();
         } else {
-            if (parameter.getMaxSize() != null) {
-                executor.setMaximumPoolSize(parameter.getMaxSize());
+            desiredCore = parameter.getCoreSize();
+            desiredMax = parameter.getMaxSize();
+        }
+        if (desiredCore != null && desiredMax != null) {
+            ThreadPoolExecutorUtil.safeSetPoolSize(executor, desiredCore, desiredMax);
+        } else {
+            if (desiredMax != null) {
+                executor.setMaximumPoolSize(desiredMax);
             }
-            if (parameter.getCoreSize() != null) {
-                executor.setCorePoolSize(parameter.getCoreSize());
+            if (desiredCore != null) {
+                executor.setCorePoolSize(desiredCore);
             }
         }
-        if (parameter.getCapacity() != null
-                && Objects.equals(BlockingQueueTypeEnum.RESIZABLE_LINKED_BLOCKING_QUEUE.getType(), parameter.getQueueType())) {
-            if (executor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
-                ResizableCapacityLinkedBlockingQueue queue = (ResizableCapacityLinkedBlockingQueue) executor.getQueue();
-                queue.setCapacity(parameter.getCapacity());
-            } else {
-                log.warn("The queue length cannot be modified. Queue type mismatch. Current queue type: {}", executor.getQueue().getClass().getSimpleName());
-            }
-        }
+        handleQueueChanges(executor, parameter);
         if (parameter.getKeepAliveTime() != null) {
             executor.setKeepAliveTime(parameter.getKeepAliveTime(), TimeUnit.SECONDS);
         }
@@ -141,6 +143,31 @@ public class ServerThreadPoolDynamicRefresh implements ThreadPoolDynamicRefresh 
         }
         if (parameter.getAllowCoreThreadTimeOut() != null) {
             executor.allowCoreThreadTimeOut(EnableEnum.getBool(parameter.getAllowCoreThreadTimeOut()));
+        }
+    }
+
+    /**
+     * Handle queue capacity changes
+     *
+     * @param executor thread pool executor
+     * @param parameter thread pool parameter
+     */
+    private void handleQueueChanges(ThreadPoolExecutor executor, ThreadPoolParameter parameter) {
+        if (parameter.getCapacity() == null) {
+            return;
+        }
+        // Only support capacity adjustment for queues that support it
+        if (BlockingQueueManager.canChangeCapacity(executor.getQueue())) {
+            boolean success = BlockingQueueManager.changeQueueCapacity(executor.getQueue(), parameter.getCapacity());
+            if (success) {
+                log.info("Queue capacity changed to: {} for thread pool: {}", parameter.getCapacity(), parameter.getTpId());
+            } else {
+                log.warn("Failed to change queue capacity to: {} for thread pool: {}", parameter.getCapacity(), parameter.getTpId());
+            }
+        } else {
+            log.warn("Queue capacity cannot be changed for current queue type: {}. " +
+                    "Only ResizableCapacityLinkedBlockingQueue supports dynamic capacity changes.",
+                    BlockingQueueManager.getQueueName(executor.getQueue()));
         }
     }
 }

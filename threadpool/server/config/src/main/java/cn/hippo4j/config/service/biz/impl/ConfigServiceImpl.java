@@ -22,6 +22,7 @@ import cn.hippo4j.common.extension.enums.DelEnum;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterParameter;
 import cn.hippo4j.common.model.register.DynamicThreadPoolRegisterWrapper;
 import cn.hippo4j.common.model.register.notify.DynamicThreadPoolRegisterServerNotifyParameter;
+import cn.hippo4j.common.executor.support.BlockingQueueTypeEnum;
 import cn.hippo4j.common.toolkit.Assert;
 import cn.hippo4j.common.toolkit.BeanUtil;
 import cn.hippo4j.common.toolkit.CollectionUtil;
@@ -305,7 +306,7 @@ public class ConfigServiceImpl implements ConfigService {
      * @return
      */
     private Integer getQueueCapacityByType(ConfigAllInfo config) {
-        int queueCapacity;
+        Integer queueCapacity;
         if (LINKED_TRANSFER_QUEUE.getType().equals(config.getQueueType())) {
             queueCapacity = Integer.MAX_VALUE;
         } else {
@@ -317,7 +318,16 @@ public class ConfigServiceImpl implements ConfigService {
                 LINKED_BLOCKING_DEQUE.getType(),
                 PRIORITY_BLOCKING_QUEUE.getType(),
                 RESIZABLE_LINKED_BLOCKING_QUEUE.getType()).collect(Collectors.toList());
-        boolean setDefaultFlag = queueTypes.contains(config.getQueueType()) && (config.getCapacity() == null || Objects.equals(config.getCapacity(), 0));
+        boolean setDefaultFlag = queueTypes.contains(config.getQueueType()) && (queueCapacity == null || Objects.equals(queueCapacity, 0));
+
+        // Apply default capacity for custom queue types as well
+        if (!setDefaultFlag && (queueCapacity == null || Objects.equals(queueCapacity, 0))) {
+            String queueName = BlockingQueueTypeEnum.getBlockingQueueNameByType(config.getQueueType());
+            if (queueName.isEmpty()) {
+                setDefaultFlag = true;
+            }
+        }
+
         if (setDefaultFlag) {
             queueCapacity = DEFAULT_QUEUE_CAPACITY;
         }

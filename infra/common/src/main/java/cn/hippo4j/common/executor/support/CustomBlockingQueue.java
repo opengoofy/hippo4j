@@ -42,8 +42,20 @@ public interface CustomBlockingQueue<T> {
 
     /**
      * Get custom blocking queue.
+     * Deprecated: override {@link #generateBlockingQueue(Integer)} to access capacity info.
      *
-     * @return
+     * @return blocking queue instance
      */
+    @Deprecated
     BlockingQueue<T> generateBlockingQueue();
+
+    /**
+     * Get custom blocking queue with capacity info from server configuration.
+     *
+     * @param capacity configured queue capacity (may be null or non-positive when not configured by user)
+     * @return blocking queue instance
+     */
+    default BlockingQueue<T> generateBlockingQueue(Integer capacity) {
+        return generateBlockingQueue();
+    }
 }

@@ -426,6 +426,8 @@ export default {
         return 'PriorityBlockingQueue';
       } else if ('9' == type) {
         return 'ResizableLinkedBlockingQueue';
+      } else {
+        return 'CustomBlockingQueue_' + type;
       }
     },
   }
