@@ -21,6 +21,8 @@ import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.config.toolkit.SimpleReadWriteLock;
 import cn.hippo4j.config.toolkit.SingletonRepository;
+import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.VersionUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,7 +45,7 @@ public class CacheItem {
 
     private SimpleReadWriteLock rwLock = new SimpleReadWriteLock();
 
-    private final ConcurrentHashMap<Integer, String> versionMd5Cache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, String> versionMd5Cache = new ConcurrentHashMap<>();
 
     public CacheItem(String groupKey) {
         this.groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
@@ -52,36 +54,38 @@ public class CacheItem {
     public CacheItem(String groupKey, String md5) {
         this.md5 = md5;
         this.groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
-        this.versionMd5Cache.put(1, md5);
+        this.versionMd5Cache.put(VersionUtil.UNKNOWN_VERSION, md5);
     }
 
     public CacheItem(String groupKey, ConfigAllInfo configAllInfo) {
         this.configAllInfo = configAllInfo;
         this.md5 = Md5Util.getTpContentMd5(configAllInfo);
         this.groupKey = SingletonRepository.DataIdGroupIdCache.getSingleton(groupKey);
-        this.versionMd5Cache.put(1, this.md5);
+        this.versionMd5Cache.put(VersionUtil.UNKNOWN_VERSION, this.md5);
     }
 
-    public String getMd5(int protocolVersion) {
-        if (protocolVersion <= 0) {
-            return md5;
-        }
-        return versionMd5Cache.get(protocolVersion);
+    public String getMd5(String clientVersion) {
+        String key = normalizeVersionKey(clientVersion);
+        return versionMd5Cache.getOrDefault(key, md5);
     }
 
-    public void setMd5(int protocolVersion, String value) {
-        if (protocolVersion <= 0) {
-            this.md5 = value;
-            return;
-        }
+    public void setMd5(String clientVersion, String value) {
+        String key = normalizeVersionKey(clientVersion);
         if (value == null) {
-            versionMd5Cache.remove(protocolVersion);
+            versionMd5Cache.remove(key);
         } else {
-            versionMd5Cache.put(protocolVersion, value);
+            versionMd5Cache.put(key, value);
         }
     }
 
     public void clearVersionMd5() {
         versionMd5Cache.clear();
+    }
+
+    private String normalizeVersionKey(String clientVersion) {
+        if (StringUtil.isBlank(clientVersion)) {
+            return VersionUtil.UNKNOWN_VERSION;
+        }
+        return clientVersion.trim();
     }
 }

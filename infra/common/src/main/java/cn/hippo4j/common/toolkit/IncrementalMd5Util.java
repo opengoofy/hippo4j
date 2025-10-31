@@ -49,52 +49,35 @@ public class IncrementalMd5Util {
     }
 
     /**
-     * Get versioned MD5 based on client version
+     * Get versioned MD5 based on client semantic version.
      *
-     * @param config thread pool parameter
-     * @param clientVersion client protocol version
+     * @param config        thread pool parameter
+     * @param clientVersion semantic client version string (can be blank)
      * @return versioned MD5 hash
      */
-    public static String getVersionedMd5(ThreadPoolParameter config, int clientVersion) {
-        String semanticVersion = VersionUtil.resolveSemanticVersionForProtocol(clientVersion);
-        return getVersionedMd5(config, clientVersion, semanticVersion);
-    }
-
-    /**
-     * Get versioned MD5 based on client version information.
-     *
-     * @param config thread pool parameter
-     * @param clientProtocolVersion client protocol version
-     * @param clientVersion explicit semantic client version, optional
-     * @return versioned MD5 hash
-     */
-    public static String getVersionedMd5(ThreadPoolParameter config, int clientProtocolVersion, String clientVersion) {
-        String versionedContent = IncrementalContentUtil.getVersionedContent(config, clientProtocolVersion, clientVersion);
+    public static String getVersionedMd5(ThreadPoolParameter config, String clientVersion) {
+        String normalizedVersion = StringUtil.isNotBlank(clientVersion)
+                ? clientVersion.trim()
+                : VersionUtil.UNKNOWN_VERSION;
+        String versionedContent = IncrementalContentUtil.getVersionedContent(config, normalizedVersion);
         String md5 = Md5Util.md5Hex(versionedContent, "UTF-8");
         if (log.isDebugEnabled()) {
-            log.debug("Protocol v{} (clientVersion={}): Using versioned MD5={}",
-                    clientProtocolVersion, clientVersion, md5);
+            log.debug("ClientVersion={}: Using versioned MD5={}", normalizedVersion, md5);
         }
         return md5;
     }
 
     /**
-     * Compare MD5 with version support
-     *
-     * @param oldConfig old configuration
-     * @param newConfig new configuration
-     * @param clientVersion client version
-     * @return true if configurations are different
+     * Compare MD5 with version support using semantic version string.
      */
-    public static boolean isDifferent(ThreadPoolParameter oldConfig, ThreadPoolParameter newConfig, int clientVersion) {
+    public static boolean isDifferent(ThreadPoolParameter oldConfig, ThreadPoolParameter newConfig, String clientVersion) {
         if (oldConfig == null || newConfig == null) {
             return true;
         }
-        String semanticVersion = VersionUtil.resolveSemanticVersionForProtocol(clientVersion);
-        String oldMd5 = getVersionedMd5(oldConfig, clientVersion, semanticVersion);
-        String newMd5 = getVersionedMd5(newConfig, clientVersion, semanticVersion);
+        String oldMd5 = getVersionedMd5(oldConfig, clientVersion);
+        String newMd5 = getVersionedMd5(newConfig, clientVersion);
         boolean different = !oldMd5.equals(newMd5);
-        if (different) {
+        if (different && log.isDebugEnabled()) {
             log.debug("Configuration changed - Old MD5: {}, New MD5: {}, Client Version: {}",
                     oldMd5, newMd5, clientVersion);
         }

@@ -51,8 +51,6 @@ public class CacheData {
     @Getter
     private final String threadPoolId;
 
-    private final int protocolVersion;
-
     private final String clientVersion;
 
     @Setter
@@ -60,17 +58,16 @@ public class CacheData {
 
     private final CopyOnWriteArrayList<ManagerListenerWrapper> listeners;
 
-    public CacheData(String tenantId, String itemId, String threadPoolId, int protocolVersion, String clientVersion) {
+    public CacheData(String tenantId, String itemId, String threadPoolId, String clientVersion) {
         this.tenantId = tenantId;
         this.itemId = itemId;
         this.threadPoolId = threadPoolId;
-        this.protocolVersion = protocolVersion;
         this.clientVersion = clientVersion;
         // Store full content for listeners to receive complete configuration
         ThreadPoolParameterInfo parameterInfo = ThreadPoolExecutorRegistry.getHolder(threadPoolId).getParameterInfo();
         this.content = ContentUtil.getPoolContent(parameterInfo);
         // Calculate MD5 based on incremental content for version compatibility
-        String incrementalContent = IncrementalContentUtil.getVersionedContent(parameterInfo, protocolVersion, clientVersion);
+        String incrementalContent = IncrementalContentUtil.getVersionedContent(parameterInfo, clientVersion);
         this.md5 = getMd5String(incrementalContent);
         this.listeners = new CopyOnWriteArrayList<>();
     }
@@ -112,7 +109,7 @@ public class CacheData {
         // Calculate MD5 based on incremental content for version compatibility
         try {
             ThreadPoolParameterInfo parameterInfo = JSONUtil.parseObject(content, ThreadPoolParameterInfo.class);
-            String incrementalContent = IncrementalContentUtil.getVersionedContent(parameterInfo, protocolVersion, clientVersion);
+            String incrementalContent = IncrementalContentUtil.getVersionedContent(parameterInfo, clientVersion);
             this.md5 = getMd5String(incrementalContent);
         } catch (Exception e) {
             // Fallback to full content MD5 if parsing fails

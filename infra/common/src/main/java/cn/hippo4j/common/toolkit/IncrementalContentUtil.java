@@ -33,11 +33,6 @@ import java.util.*;
 public class IncrementalContentUtil {
 
     /**
-     * Version of the incremental protocol
-     */
-    public static final int PROTOCOL_VERSION = 2;
-
-    /**
      * Core parameters that affect thread pool behavior
      */
     private static final String[] CORE_PARAMETERS = {
@@ -89,11 +84,10 @@ public class IncrementalContentUtil {
      * versions will be excluded automatically for older clients to avoid unnecessary refresh.
      *
      * @param parameter      thread-pool parameter
-     * @param protocolVersion client protocol version
      * @param clientVersion   semantic client version (optional, reserved for fine-grained rules)
      * @return version-aware content string
      */
-    public static String getVersionedContent(ThreadPoolParameter parameter, int protocolVersion, String clientVersion) {
+    public static String getVersionedContent(ThreadPoolParameter parameter, String clientVersion) {
         String fullContent = getFullContent(parameter);
         LinkedHashMap<String, Object> raw = JSONUtil.parseObject(fullContent, new TypeReference<LinkedHashMap<String, Object>>() {
         });
@@ -102,7 +96,7 @@ public class IncrementalContentUtil {
         }
         String normalizedClientVersion = StringUtil.isNotBlank(clientVersion)
                 ? clientVersion.trim()
-                : VersionUtil.resolveSemanticVersionForProtocol(protocolVersion);
+                : VersionUtil.UNKNOWN_VERSION;
         Map<String, String> fieldRules = resolveFieldRules(parameter, raw);
         LinkedHashMap<String, Object> filtered = new LinkedHashMap<>();
         for (String field : IDENTIFIER_FIELDS) {
@@ -250,10 +244,10 @@ public class IncrementalContentUtil {
         mergeFieldMetadata(fieldRules, extractMetadataFromPayload(raw));
 
         // Assign default version to unconfigured fields (prevents old clients from seeing new fields)
-        String defaultVisibleVersion = VersionUtil.resolveSemanticVersionForProtocol(PROTOCOL_VERSION);
+        // Default to "2.0.0" for new fields to maintain backward compatibility
         raw.keySet().forEach(field -> {
             if (!fieldRules.containsKey(field)) {
-                fieldRules.put(field, defaultVisibleVersion);
+                fieldRules.put(field, "2.0.0"); // Default: visible to clients >= 2.0
             }
         });
 

@@ -35,17 +35,7 @@ public final class VersionUtil {
 
     public static final String UNKNOWN_VERSION = "0.0.0";
 
-    public static final int LEGACY_PROTOCOL_VERSION = 1;
-
     private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)(?:\\.(\\d+))?(?:\\.(\\d+))?.*");
-
-    private static final NavigableMap<SemanticVersion, Integer> PROTOCOL_VERSION_MAPPINGS = new TreeMap<>();
-
-    static {
-        registerProtocolVersion(UNKNOWN_VERSION, LEGACY_PROTOCOL_VERSION);
-        registerProtocolVersion("1.0.0", LEGACY_PROTOCOL_VERSION);
-        registerProtocolVersion("2.0.0", IncrementalContentUtil.PROTOCOL_VERSION);
-    }
 
     private VersionUtil() {
     }
@@ -71,69 +61,6 @@ public final class VersionUtil {
             return UNKNOWN_VERSION;
         }
         return candidate.trim();
-    }
-
-    /**
-     * Resolve protocol version from a semantic version string. If the provided version is blank
-     * or cannot be parsed, {@code defaultVersion} will be returned.
-     *
-     * @param version        semantic version string
-     * @param defaultVersion default protocol version fallback
-     * @return resolved protocol version number
-     */
-    public static int resolveProtocolVersion(String version, int defaultVersion) {
-        if (StringUtil.isBlank(version)) {
-            return defaultVersion;
-        }
-        SemanticVersion semanticVersion = SemanticVersion.parse(version);
-        if (semanticVersion == null) {
-            return defaultVersion;
-        }
-        Map.Entry<SemanticVersion, Integer> entry = PROTOCOL_VERSION_MAPPINGS.floorEntry(semanticVersion);
-        if (entry == null) {
-            return defaultVersion;
-        }
-        Integer mapped = entry.getValue();
-        return mapped != null ? mapped : defaultVersion;
-    }
-
-    /**
-     * Resolve protocol version using default value {@link IncrementalContentUtil#PROTOCOL_VERSION}.
-     *
-     * @param version semantic version string
-     * @return resolved protocol version number
-     */
-    public static int resolveProtocolVersion(String version) {
-        return resolveProtocolVersion(version, IncrementalContentUtil.PROTOCOL_VERSION);
-    }
-
-    /**
-     * Resolve a representative semantic version string for a given protocol version. If the
-     * protocol version has been registered explicitly, the lowest semantic version mapped to the
-     * protocol will be returned. Otherwise, a best-effort placeholder in the form of
-     * {@code <protocol>.0.0} is produced.
-     *
-     * @param protocolVersion protocol version number
-     * @return semantic version string representing the protocol capabilities
-     */
-    public static String resolveSemanticVersionForProtocol(int protocolVersion) {
-        if (protocolVersion <= 0) {
-            return UNKNOWN_VERSION;
-        }
-        SemanticVersion candidate = null;
-        for (Map.Entry<SemanticVersion, Integer> entry : PROTOCOL_VERSION_MAPPINGS.entrySet()) {
-            Integer mapped = entry.getValue();
-            if (mapped != null && mapped == protocolVersion) {
-                SemanticVersion semanticVersion = entry.getKey();
-                if (candidate == null || semanticVersion.compareTo(candidate) < 0) {
-                    candidate = semanticVersion;
-                }
-            }
-        }
-        if (candidate != null) {
-            return candidate.toString();
-        }
-        return protocolVersion + ".0.0";
     }
 
     /**
@@ -173,20 +100,6 @@ public final class VersionUtil {
             }
         }
         return null;
-    }
-
-    /**
-     * Register a semantic version to protocol version mapping. This is used during static
-     * initialization to define which client versions map to which protocol capabilities.
-     *
-     * @param version         semantic version string (e.g., "2.0.0")
-     * @param protocolVersion protocol capability number (e.g., 2)
-     */
-    private static void registerProtocolVersion(String version, int protocolVersion) {
-        SemanticVersion semanticVersion = SemanticVersion.parse(version);
-        if (semanticVersion != null) {
-            PROTOCOL_VERSION_MAPPINGS.put(semanticVersion, protocolVersion);
-        }
     }
 
     /**

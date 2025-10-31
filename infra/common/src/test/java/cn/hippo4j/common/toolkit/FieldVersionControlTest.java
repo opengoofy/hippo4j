@@ -60,17 +60,17 @@ public class FieldVersionControlTest {
         serverConfig.setFieldVersionMetadata(Collections.singletonMap("executeTimeOut", "2.1.0"));
 
         // Protocol v1 client content generation
-        String v1Content = IncrementalContentUtil.getVersionedContent(serverConfig, 1, "1.9.0");
+        String v1Content = IncrementalContentUtil.getVersionedContent(serverConfig, "1.9.0");
         LinkedHashMap<String, Object> v1Fields = JSONUtil.parseObject(v1Content, new TypeReference<LinkedHashMap<String, Object>>() {
         });
 
         // Protocol v2 client content generation
-        String v2Content = IncrementalContentUtil.getVersionedContent(serverConfig, 2, "2.0.0");
+        String v2Content = IncrementalContentUtil.getVersionedContent(serverConfig, "2.0.0");
         LinkedHashMap<String, Object> v2Fields = JSONUtil.parseObject(v2Content, new TypeReference<LinkedHashMap<String, Object>>() {
         });
 
         // Protocol v3 client content generation
-        String v3Content = IncrementalContentUtil.getVersionedContent(serverConfig, 3, "2.1.0");
+        String v3Content = IncrementalContentUtil.getVersionedContent(serverConfig, "2.1.0");
         LinkedHashMap<String, Object> v3Fields = JSONUtil.parseObject(v3Content, new TypeReference<LinkedHashMap<String, Object>>() {
         });
 
@@ -109,9 +109,9 @@ public class FieldVersionControlTest {
         config.setIsAlarm(1); // Extended field, minimum version = 2.1.0
         config.setFieldVersionMetadata(Collections.singletonMap("isAlarm", "2.1.0"));
 
-        String v1Content = IncrementalContentUtil.getVersionedContent(config, 1, "1.9.0");
-        String v2Content = IncrementalContentUtil.getVersionedContent(config, 2, "2.0.0");
-        String v3Content = IncrementalContentUtil.getVersionedContent(config, 3, "2.1.0");
+        String v1Content = IncrementalContentUtil.getVersionedContent(config, "1.9.0");
+        String v2Content = IncrementalContentUtil.getVersionedContent(config, "2.0.0");
+        String v3Content = IncrementalContentUtil.getVersionedContent(config, "2.1.0");
 
         LinkedHashMap<String, Object> v1Fields = JSONUtil.parseObject(v1Content, new TypeReference<LinkedHashMap<String, Object>>() {
         });
@@ -163,8 +163,8 @@ public class FieldVersionControlTest {
         newConfig.setExecuteTimeOut(5000L); // Added field (min version = 2.1.0)
         newConfig.setFieldVersionMetadata(Collections.singletonMap("executeTimeOut", "2.1.0"));
 
-        String oldV2Md5 = IncrementalMd5Util.getVersionedMd5(oldConfig, 2, "2.0.0");
-        String newV2Md5 = IncrementalMd5Util.getVersionedMd5(newConfig, 2, "2.0.0");
+        String oldV2Md5 = IncrementalMd5Util.getVersionedMd5(oldConfig, "2.0.0");
+        String newV2Md5 = IncrementalMd5Util.getVersionedMd5(newConfig, "2.0.0");
 
         System.out.println("Old config executeTimeOut: " + oldConfig.getExecuteTimeOut());
         System.out.println("New config executeTimeOut: " + newConfig.getExecuteTimeOut());
@@ -197,10 +197,10 @@ public class FieldVersionControlTest {
         newConfig.setCorePoolSize(15); // Core field changed
         newConfig.setMaximumPoolSize(20);
 
-        String oldV1Md5 = IncrementalMd5Util.getVersionedMd5(oldConfig, 1, "1.9.0");
-        String newV1Md5 = IncrementalMd5Util.getVersionedMd5(newConfig, 1, "1.9.0");
-        String oldV2Md5 = IncrementalMd5Util.getVersionedMd5(oldConfig, 2, "2.0.0");
-        String newV2Md5 = IncrementalMd5Util.getVersionedMd5(newConfig, 2, "2.0.0");
+        String oldV1Md5 = IncrementalMd5Util.getVersionedMd5(oldConfig, "1.9.0");
+        String newV1Md5 = IncrementalMd5Util.getVersionedMd5(newConfig, "1.9.0");
+        String oldV2Md5 = IncrementalMd5Util.getVersionedMd5(oldConfig, "2.0.0");
+        String newV2Md5 = IncrementalMd5Util.getVersionedMd5(newConfig, "2.0.0");
 
         System.out.println("Core field changed: corePoolSize 10 -> 15");
         System.out.println("Protocol v1: " + (oldV1Md5.equals(newV1Md5) ? "same" : "different"));
@@ -258,9 +258,9 @@ public class FieldVersionControlTest {
         clientV20Config.setIsAlarm(1);
 
         // Generate MD5 for different protocol versions
-        String v1ClientMd5 = IncrementalMd5Util.getVersionedMd5(clientV19Config, 1, "1.9.0");
-        String v2ClientWithoutFieldMd5 = IncrementalMd5Util.getVersionedMd5(clientV19Config, 2, "2.0.0");
-        String v2ServerWithFieldMd5 = IncrementalMd5Util.getVersionedMd5(serverV20Config, 2, "2.0.0");
+        String v1ClientMd5 = IncrementalMd5Util.getVersionedMd5(clientV19Config, "1.9.0");
+        String v2ClientWithoutFieldMd5 = IncrementalMd5Util.getVersionedMd5(clientV19Config, "2.0.0");
+        String v2ServerWithFieldMd5 = IncrementalMd5Util.getVersionedMd5(serverV20Config, "2.0.0");
 
         System.out.println("Client v1.9 (protocol 1) MD5: " + v1ClientMd5);
         System.out.println("Client v2.0 without 'xxx' (protocol 2) MD5: " + v2ClientWithoutFieldMd5);
@@ -296,9 +296,9 @@ public class FieldVersionControlTest {
         serverV21Config.setCapacityAlarm(80); // New field 'yyy' introduced in v2.1 (min version = 2.1.0)
         serverV21Config.setFieldVersionMetadata(Collections.singletonMap("capacityAlarm", "2.1.0"));
 
-        String v1Content = IncrementalContentUtil.getVersionedContent(serverV21Config, 1, "1.9.0");
-        String v2Content = IncrementalContentUtil.getVersionedContent(serverV21Config, 2, "2.0.0");
-        String v3Content = IncrementalContentUtil.getVersionedContent(serverV21Config, 3, "2.1.0");
+        String v1Content = IncrementalContentUtil.getVersionedContent(serverV21Config, "1.9.0");
+        String v2Content = IncrementalContentUtil.getVersionedContent(serverV21Config, "2.0.0");
+        String v3Content = IncrementalContentUtil.getVersionedContent(serverV21Config, "2.1.0");
 
         LinkedHashMap<String, Object> v1Fields = JSONUtil.parseObject(v1Content, new TypeReference<LinkedHashMap<String, Object>>() {
         });
@@ -362,9 +362,9 @@ public class FieldVersionControlTest {
         config3.setExecuteTimeOut(8000L); // Changed from 5000 to 8000
         config3.setFieldVersionMetadata(Collections.singletonMap("executeTimeOut", "2.1.0"));
 
-        String md51 = IncrementalMd5Util.getVersionedMd5(config1, 2, "2.0.0");
-        String md52 = IncrementalMd5Util.getVersionedMd5(config2, 2, "2.0.0");
-        String md53 = IncrementalMd5Util.getVersionedMd5(config3, 2, "2.0.0");
+        String md51 = IncrementalMd5Util.getVersionedMd5(config1, "2.0.0");
+        String md52 = IncrementalMd5Util.getVersionedMd5(config2, "2.0.0");
+        String md53 = IncrementalMd5Util.getVersionedMd5(config3, "2.0.0");
 
         System.out.println("Config 1 executeTimeOut: null");
         System.out.println("Config 2 executeTimeOut: 5000");
@@ -410,9 +410,9 @@ public class FieldVersionControlTest {
         metadata.put("livenessAlarm", "2.1.0");
         fullConfig.setFieldVersionMetadata(metadata);
 
-        String v1Content = IncrementalContentUtil.getVersionedContent(fullConfig, 1, "1.9.0");
-        String v2Content = IncrementalContentUtil.getVersionedContent(fullConfig, 2, "2.0.0");
-        String v3Content = IncrementalContentUtil.getVersionedContent(fullConfig, 3, "2.1.0");
+        String v1Content = IncrementalContentUtil.getVersionedContent(fullConfig, "1.9.0");
+        String v2Content = IncrementalContentUtil.getVersionedContent(fullConfig, "2.0.0");
+        String v3Content = IncrementalContentUtil.getVersionedContent(fullConfig, "2.1.0");
 
         LinkedHashMap<String, Object> v1Fields = JSONUtil.parseObject(v1Content, new TypeReference<LinkedHashMap<String, Object>>() {
         });

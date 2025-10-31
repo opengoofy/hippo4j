@@ -72,11 +72,11 @@ public class ConfigCacheService {
     private static final ConcurrentHashMap<String, Map<String, CacheItem>> CLIENT_CONFIG_CACHE = new ConcurrentHashMap();
 
     public static boolean isUpdateData(String groupKey, String md5, String clientIdentify) {
-        return isUpdateData(groupKey, md5, clientIdentify, 1, null);
+        return isUpdateData(groupKey, md5, clientIdentify, VersionUtil.UNKNOWN_VERSION);
     }
 
-    public static boolean isUpdateData(String groupKey, String md5, String clientIdentify, int clientProtocolVersion, String clientVersion) {
-        String contentMd5 = ConfigCacheService.getContentMd5IsNullPut(groupKey, clientIdentify, clientProtocolVersion, clientVersion);
+    public static boolean isUpdateData(String groupKey, String md5, String clientIdentify, String clientVersion) {
+        String contentMd5 = ConfigCacheService.getContentMd5IsNullPut(groupKey, clientIdentify, clientVersion);
         return Objects.equals(contentMd5, md5);
     }
 
@@ -106,11 +106,11 @@ public class ConfigCacheService {
      * @param clientIdentify
      * @return
      */
-    private static synchronized String getContentMd5IsNullPut(String groupKey, String clientIdentify, int clientProtocolVersion, String clientVersion) {
+    private static synchronized String getContentMd5IsNullPut(String groupKey, String clientIdentify, String clientVersion) {
         Map<String, CacheItem> cacheItemMap = CLIENT_CONFIG_CACHE.computeIfAbsent(groupKey, key -> new ConcurrentHashMap<>());
         CacheItem cacheItem = cacheItemMap.get(clientIdentify);
         if (cacheItem != null) {
-            String versionMd5 = cacheItem.getMd5(clientProtocolVersion);
+            String versionMd5 = cacheItem.getMd5(clientVersion);
             if (StringUtil.isNotBlank(versionMd5)) {
                 return versionMd5;
             }
@@ -127,11 +127,8 @@ public class ConfigCacheService {
             } else {
                 cacheItem.setConfigAllInfo(config);
             }
-            String versionedMd5 = IncrementalMd5Util.getVersionedMd5(config, clientProtocolVersion, clientVersion);
-            cacheItem.setMd5(clientProtocolVersion, versionedMd5);
-            if (clientProtocolVersion <= VersionUtil.LEGACY_PROTOCOL_VERSION || StringUtil.isBlank(cacheItem.getMd5())) {
-                cacheItem.setMd5(versionedMd5);
-            }
+            String versionedMd5 = IncrementalMd5Util.getVersionedMd5(config, clientVersion);
+            cacheItem.setMd5(clientVersion, versionedMd5);
             return versionedMd5;
         }
         return Constants.NULL;
@@ -154,8 +151,7 @@ public class ConfigCacheService {
         CacheItem cache = makeSure(groupKey, identify);
         if (cache.getMd5() == null || !cache.getMd5().equals(md5)) {
             cache.clearVersionMd5();
-            cache.setMd5(md5);
-            cache.setMd5(VersionUtil.LEGACY_PROTOCOL_VERSION, md5);
+            cache.setMd5(VersionUtil.UNKNOWN_VERSION, md5);
             String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
             ConfigAllInfo config = configService.findConfigRecentInfo(params);
             cache.setConfigAllInfo(config);

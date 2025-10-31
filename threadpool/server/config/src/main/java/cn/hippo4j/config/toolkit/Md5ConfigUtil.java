@@ -75,33 +75,19 @@ public class Md5ConfigUtil {
     public static List<String> compareMd5(HttpServletRequest request, Map<String, String> clientMd5Map) {
         List<String> changedGroupKeys = new ArrayList();
         String clientVersionHeader = request.getHeader(Constants.CLIENT_VERSION);
-        int clientProtocolVersion = getClientProtocolVersion(request, clientVersionHeader);
+        String normalizedClientVersion = VersionUtil.resolveClientVersion(clientVersionHeader, null);
+        if (StringUtil.isBlank(normalizedClientVersion)) {
+            normalizedClientVersion = VersionUtil.UNKNOWN_VERSION;
+        }
+        final String effectiveClientVersion = normalizedClientVersion; // Make it effectively final
         clientMd5Map.forEach((key, val) -> {
             String clientIdentify = RequestUtil.getClientIdentify(request);
-            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify, clientProtocolVersion, clientVersionHeader);
+            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify, effectiveClientVersion);
             if (!isUpdateData) {
                 changedGroupKeys.add(key);
             }
         });
         return changedGroupKeys;
-    }
-
-    /**
-     * Get client protocol version from request header
-     *
-     * @param request HTTP request
-     * @return client protocol version, default to 1 for backward compatibility
-     */
-    private static int getClientProtocolVersion(HttpServletRequest request, String clientVersionHeader) {
-        String versionHeader = request.getHeader("X-Hippo4j-Protocol-Version");
-        if (StringUtil.isNotBlank(versionHeader)) {
-            try {
-                return Integer.parseInt(versionHeader.trim());
-            } catch (NumberFormatException ignored) {
-                return 1;
-            }
-        }
-        return VersionUtil.resolveProtocolVersion(clientVersionHeader, 1);
     }
 
     public static Map<String, String> getClientMd5Map(String configKeysString) {
