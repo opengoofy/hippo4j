@@ -17,6 +17,7 @@
 
 package cn.hippo4j.config.model;
 
+import cn.hippo4j.common.model.IncrementalFieldMetadataProvider;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -26,12 +27,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Config info base.
  */
 @Data
-public class ConfigInfoBase implements Serializable {
+public class ConfigInfoBase implements Serializable, IncrementalFieldMetadataProvider {
 
     private static final long serialVersionUID = -1892597426099265730L;
 
@@ -125,4 +127,16 @@ public class ConfigInfoBase implements Serializable {
      */
     @JsonIgnore
     private String content;
+
+    /**
+     * Field-to-minimum-version mapping (transient field).
+     */
+    @TableField(exist = false)
+    private Map<String, String> fieldVersionMetadata;
+
+    /**
+     * Metadata version identifier (transient field).
+     */
+    @TableField(exist = false)
+    private String fieldMetadataVersion;
 }

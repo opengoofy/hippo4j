@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
  * incremental protocol version used for MD5 comparison.</p>
  */
 public final class VersionUtil {
+
     public static final String UNKNOWN_VERSION = "0.0.0";
 
     public static final int LEGACY_PROTOCOL_VERSION = 1;
@@ -106,6 +107,62 @@ public final class VersionUtil {
         return resolveProtocolVersion(version, IncrementalContentUtil.PROTOCOL_VERSION);
     }
 
+    /**
+     * Resolve a representative semantic version string for a given protocol version. If the
+     * protocol version has been registered explicitly, the lowest semantic version mapped to the
+     * protocol will be returned. Otherwise, a best-effort placeholder in the form of
+     * {@code <protocol>.0.0} is produced.
+     *
+     * @param protocolVersion protocol version number
+     * @return semantic version string representing the protocol capabilities
+     */
+    public static String resolveSemanticVersionForProtocol(int protocolVersion) {
+        if (protocolVersion <= 0) {
+            return UNKNOWN_VERSION;
+        }
+        SemanticVersion candidate = null;
+        for (Map.Entry<SemanticVersion, Integer> entry : PROTOCOL_VERSION_MAPPINGS.entrySet()) {
+            Integer mapped = entry.getValue();
+            if (mapped != null && mapped == protocolVersion) {
+                SemanticVersion semanticVersion = entry.getKey();
+                if (candidate == null || semanticVersion.compareTo(candidate) < 0) {
+                    candidate = semanticVersion;
+                }
+            }
+        }
+        if (candidate != null) {
+            return candidate.toString();
+        }
+        return protocolVersion + ".0.0";
+    }
+
+    /**
+     * Compare two semantic versions using {@link SemanticVersion}. Returns {@code true} if
+     * {@code version1} is greater than or equal to {@code version2}. Blank or unparsable versions
+     * are treated conservatively and will return {@code false}.
+     *
+     * @param version1 the client version
+     * @param version2 the minimum version requirement
+     * @return {@code true} if version1 >= version2
+     */
+    public static boolean isVersionGreaterOrEqual(String version1, String version2) {
+        if (StringUtil.isBlank(version1) || StringUtil.isBlank(version2)) {
+            return false;
+        }
+        SemanticVersion v1 = SemanticVersion.parse(version1);
+        SemanticVersion v2 = SemanticVersion.parse(version2);
+        if (v1 == null || v2 == null) {
+            return false;
+        }
+        return v1.compareTo(v2) >= 0;
+    }
+
+    /**
+     * Return the first non-blank value from the provided arguments.
+     *
+     * @param values variable arguments to check
+     * @return first non-blank value, or {@code null} if all are blank
+     */
     private static String firstNonBlank(String... values) {
         if (values == null) {
             return null;
@@ -118,6 +175,13 @@ public final class VersionUtil {
         return null;
     }
 
+    /**
+     * Register a semantic version to protocol version mapping. This is used during static
+     * initialization to define which client versions map to which protocol capabilities.
+     *
+     * @param version         semantic version string (e.g., "2.0.0")
+     * @param protocolVersion protocol capability number (e.g., 2)
+     */
     private static void registerProtocolVersion(String version, int protocolVersion) {
         SemanticVersion semanticVersion = SemanticVersion.parse(version);
         if (semanticVersion != null) {
@@ -140,6 +204,12 @@ public final class VersionUtil {
             this.patch = patch;
         }
 
+        /**
+         * Parse a semantic version string into a SemanticVersion instance.
+         *
+         * @param version version string (e.g., "2.1.5", "2.0.0-SNAPSHOT")
+         * @return parsed SemanticVersion, or {@code null} if format is invalid
+         */
         private static SemanticVersion parse(String version) {
             Matcher matcher = VERSION_PATTERN.matcher(version.trim());
             if (!matcher.matches()) {
@@ -151,6 +221,12 @@ public final class VersionUtil {
             return new SemanticVersion(major, minor, patch);
         }
 
+        /**
+         * Parse a version component string to integer, defaulting to 0 if blank.
+         *
+         * @param value version component string
+         * @return parsed integer, or 0 if blank
+         */
         private static int parseOrDefault(String value) {
             if (StringUtil.isBlank(value)) {
                 return 0;
@@ -187,6 +263,11 @@ public final class VersionUtil {
         @Override
         public int hashCode() {
             return Objects.hash(major, minor, patch);
+        }
+
+        @Override
+        public String toString() {
+            return major + "." + minor + "." + patch;
         }
     }
 }

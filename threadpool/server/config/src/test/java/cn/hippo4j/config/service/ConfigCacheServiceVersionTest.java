@@ -22,6 +22,8 @@ import cn.hippo4j.common.toolkit.IncrementalMd5Util;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.LinkedHashMap;
+
 /**
  * ConfigCacheService Version-Aware Test
  * Tests the version-aware MD5 comparison logic for cross-version compatibility
@@ -53,17 +55,25 @@ public class ConfigCacheServiceVersionTest {
         config.setAllowCoreThreadTimeOut(0);
         config.setExecuteTimeOut(5000L); // Extended parameter
         config.setIsAlarm(1); // Extended parameter
+        LinkedHashMap<String, String> metadata = new LinkedHashMap<>();
+        metadata.put("executeTimeOut", "2.1.0");
+        metadata.put("isAlarm", "2.1.0");
+        config.setFieldVersionMetadata(metadata);
 
         String v1Md5 = IncrementalMd5Util.getVersionedMd5(config, 1);
         String v2Md5 = IncrementalMd5Util.getVersionedMd5(config, 2);
+        String v3Md5 = IncrementalMd5Util.getVersionedMd5(config, 3);
 
         System.out.println("Config includes extended parameters: executeTimeOut, isAlarm");
         System.out.println("v1 MD5 (full): " + v1Md5);
         System.out.println("v2 MD5 (incremental): " + v2Md5);
-        System.out.println("Are they different? " + !v1Md5.equals(v2Md5));
+        System.out.println("v3 MD5 (supports extended): " + v3Md5);
+        System.out.println("v1 equals v2? " + v1Md5.equals(v2Md5));
+        System.out.println("v3 equals v2? " + v3Md5.equals(v2Md5));
 
-        Assert.assertNotEquals("v1 and v2 should produce different MD5", v1Md5, v2Md5);
-        System.out.println("Test passed: v1 and v2 use different MD5 strategies");
+        Assert.assertEquals("Protocols below field threshold should share same MD5", v1Md5, v2Md5);
+        Assert.assertNotEquals("Protocol v3 should include extended fields", v2Md5, v3Md5);
+        System.out.println("Test passed: Older protocols share MD5 while supported protocol diverges");
     }
 
     /**
@@ -84,6 +94,9 @@ public class ConfigCacheServiceVersionTest {
         oldConfig.setRejectedType(1);
         oldConfig.setAllowCoreThreadTimeOut(0);
         oldConfig.setExecuteTimeOut(3000L); // Extended
+        LinkedHashMap<String, String> metadata = new LinkedHashMap<>();
+        metadata.put("executeTimeOut", "2.1.0");
+        oldConfig.setFieldVersionMetadata(metadata);
 
         // New config (only extended param changed)
         ThreadPoolParameterInfo newConfig = new ThreadPoolParameterInfo();
@@ -95,6 +108,7 @@ public class ConfigCacheServiceVersionTest {
         newConfig.setRejectedType(1);
         newConfig.setAllowCoreThreadTimeOut(0);
         newConfig.setExecuteTimeOut(5000L); // Extended param changed!
+        newConfig.setFieldVersionMetadata(metadata);
 
         String oldV2Md5 = IncrementalMd5Util.getVersionedMd5(oldConfig, 2);
         String newV2Md5 = IncrementalMd5Util.getVersionedMd5(newConfig, 2);
@@ -113,7 +127,7 @@ public class ConfigCacheServiceVersionTest {
      * This verifies backward compatibility
      */
     @Test
-    public void testV1Client_ExtendedParamChange_ShouldRefresh() {
+    public void testV1Client_ExtendedParamChange_NoRefresh() {
         System.out.println("\n========== Test 3: v1 client - extended param change ==========");
 
         // Old config
@@ -123,6 +137,9 @@ public class ConfigCacheServiceVersionTest {
         oldConfig.setQueueType(2);
         oldConfig.setCapacity(1024);
         oldConfig.setExecuteTimeOut(3000L);
+        LinkedHashMap<String, String> metadata = new LinkedHashMap<>();
+        metadata.put("executeTimeOut", "2.1.0");
+        oldConfig.setFieldVersionMetadata(metadata);
 
         // New config (only extended param changed)
         ThreadPoolParameterInfo newConfig = new ThreadPoolParameterInfo();
@@ -131,6 +148,7 @@ public class ConfigCacheServiceVersionTest {
         newConfig.setQueueType(2);
         newConfig.setCapacity(1024);
         newConfig.setExecuteTimeOut(5000L); // Extended param changed!
+        newConfig.setFieldVersionMetadata(metadata);
 
         String oldV1Md5 = IncrementalMd5Util.getVersionedMd5(oldConfig, 1);
         String newV1Md5 = IncrementalMd5Util.getVersionedMd5(newConfig, 1);
@@ -138,10 +156,10 @@ public class ConfigCacheServiceVersionTest {
         System.out.println("Extended param change: executeTimeOut 3000 -> 5000");
         System.out.println("Old v1 MD5: " + oldV1Md5);
         System.out.println("New v1 MD5: " + newV1Md5);
-        System.out.println("Are they different? " + !oldV1Md5.equals(newV1Md5));
+        System.out.println("Are they same? " + oldV1Md5.equals(newV1Md5));
 
-        Assert.assertNotEquals("v1 MD5 should differ (uses full comparison)", oldV1Md5, newV1Md5);
-        System.out.println("Test passed: v1 client will refresh for extended param change");
+        Assert.assertEquals("v1 should now leverage metadata to skip unsupported fields", oldV1Md5, newV1Md5);
+        System.out.println("Test passed: v1 client no longer refreshes for unsupported fields");
     }
 
     /**

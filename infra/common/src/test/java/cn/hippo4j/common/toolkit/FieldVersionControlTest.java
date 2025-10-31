@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 
 /**
@@ -43,7 +44,7 @@ public class FieldVersionControlTest {
         System.out.println("========== Scenario 1: Server 2.0 adds new field, Protocol v1 client skips ==========");
 
         // Server configuration (v2.0) with a hypothetical new field 'executeTimeOut'
-        // In reality, 'executeTimeOut' is configured with minimum protocol = 3 in current code
+        // Explicitly mark that the field is only recognized by clients from protocol v3 onward
         ThreadPoolParameterInfo serverConfig = new ThreadPoolParameterInfo();
         serverConfig.setTenantId("tenant-001");
         serverConfig.setItemId("item-001");
@@ -55,7 +56,8 @@ public class FieldVersionControlTest {
         serverConfig.setKeepAliveTime(60L);
         serverConfig.setRejectedType(1);
         serverConfig.setAllowCoreThreadTimeOut(0);
-        serverConfig.setExecuteTimeOut(5000L); // New field introduced in v2.0 (minimum protocol = 3)
+        serverConfig.setExecuteTimeOut(5000L); // New field introduced in v2.0 (minimum version = 2.1.0)
+        serverConfig.setFieldVersionMetadata(Collections.singletonMap("executeTimeOut", "2.1.0"));
 
         // Protocol v1 client content generation
         String v1Content = IncrementalContentUtil.getVersionedContent(serverConfig, 1, "1.9.0");
@@ -67,16 +69,24 @@ public class FieldVersionControlTest {
         LinkedHashMap<String, Object> v2Fields = JSONUtil.parseObject(v2Content, new TypeReference<LinkedHashMap<String, Object>>() {
         });
 
+        // Protocol v3 client content generation
+        String v3Content = IncrementalContentUtil.getVersionedContent(serverConfig, 3, "2.1.0");
+        LinkedHashMap<String, Object> v3Fields = JSONUtil.parseObject(v3Content, new TypeReference<LinkedHashMap<String, Object>>() {
+        });
+
         System.out.println("Server config has executeTimeOut: " + serverConfig.getExecuteTimeOut());
         System.out.println("Protocol v1 content: " + v1Content);
         System.out.println("Protocol v2 content: " + v2Content);
+        System.out.println("Protocol v3 content: " + v3Content);
         System.out.println("Protocol v1 contains executeTimeOut: " + v1Fields.containsKey("executeTimeOut"));
         System.out.println("Protocol v2 contains executeTimeOut: " + v2Fields.containsKey("executeTimeOut"));
+        System.out.println("Protocol v3 contains executeTimeOut: " + v3Fields.containsKey("executeTimeOut"));
 
         // Assertions
-        Assert.assertTrue("Protocol v1 should include all fields (full content)", v1Fields.containsKey("executeTimeOut"));
+        Assert.assertFalse("Protocol v1 should skip executeTimeOut (min protocol = 3)", v1Fields.containsKey("executeTimeOut"));
         Assert.assertFalse("Protocol v2 should skip executeTimeOut (min protocol = 3)", v2Fields.containsKey("executeTimeOut"));
-        System.out.println("Test passed: Protocol v1 client uses full content, v2 client skips future fields");
+        Assert.assertTrue("Protocol v3 should include executeTimeOut", v3Fields.containsKey("executeTimeOut"));
+        System.out.println("Test passed: Protocol v1/v2 clients skip new field, v3 client observes it");
     }
 
     /**
@@ -88,7 +98,6 @@ public class FieldVersionControlTest {
         System.out.println("\n========== Scenario 2: Server 2.1 adds field requiring protocol v3 ==========");
 
         // Simulate a field that requires protocol v3 (e.g., a new alarm type)
-        // In current implementation, extended fields default to PROTOCOL_VERSION + 1 = 3
         ThreadPoolParameterInfo config = new ThreadPoolParameterInfo();
         config.setTenantId("tenant-001");
         config.setItemId("item-001");
@@ -97,7 +106,8 @@ public class FieldVersionControlTest {
         config.setMaximumPoolSize(20);
         config.setQueueType(2);
         config.setCapacity(1024);
-        config.setIsAlarm(1); // Extended field, minimum protocol = 3
+        config.setIsAlarm(1); // Extended field, minimum version = 2.1.0
+        config.setFieldVersionMetadata(Collections.singletonMap("isAlarm", "2.1.0"));
 
         String v1Content = IncrementalContentUtil.getVersionedContent(config, 1, "1.9.0");
         String v2Content = IncrementalContentUtil.getVersionedContent(config, 2, "2.0.0");
@@ -117,7 +127,7 @@ public class FieldVersionControlTest {
         System.out.println("v2 contains isAlarm: " + v2Fields.containsKey("isAlarm"));
         System.out.println("v3 contains isAlarm: " + v3Fields.containsKey("isAlarm"));
 
-        Assert.assertTrue("Protocol v1 uses full content, should contain isAlarm", v1Fields.containsKey("isAlarm"));
+        Assert.assertFalse("Protocol v1 should skip isAlarm (min protocol = 3)", v1Fields.containsKey("isAlarm"));
         Assert.assertFalse("Protocol v2 should skip isAlarm (min protocol = 3)", v2Fields.containsKey("isAlarm"));
         Assert.assertTrue("Protocol v3 should include isAlarm", v3Fields.containsKey("isAlarm"));
         System.out.println("Test passed: Field visibility controlled by minimum protocol version");
@@ -150,7 +160,8 @@ public class FieldVersionControlTest {
         newConfig.setMaximumPoolSize(20);
         newConfig.setQueueType(2);
         newConfig.setCapacity(1024);
-        newConfig.setExecuteTimeOut(5000L); // Added field (min protocol = 3)
+        newConfig.setExecuteTimeOut(5000L); // Added field (min version = 2.1.0)
+        newConfig.setFieldVersionMetadata(Collections.singletonMap("executeTimeOut", "2.1.0"));
 
         String oldV2Md5 = IncrementalMd5Util.getVersionedMd5(oldConfig, 2, "2.0.0");
         String newV2Md5 = IncrementalMd5Util.getVersionedMd5(newConfig, 2, "2.0.0");
@@ -231,7 +242,8 @@ public class FieldVersionControlTest {
         serverV20Config.setMaximumPoolSize(20);
         serverV20Config.setQueueType(2);
         serverV20Config.setCapacity(1024);
-        serverV20Config.setIsAlarm(1); // New field 'xxx' introduced in v2.0 (but min protocol = 3)
+        serverV20Config.setIsAlarm(1); // New field 'xxx' introduced in v2.0 (but min version = 2.1.0)
+        serverV20Config.setFieldVersionMetadata(Collections.singletonMap("isAlarm", "2.1.0"));
 
         // Client v2.0 (protocol 2) - should see 'xxx' if it's marked for protocol 2
         // But since isAlarm is marked protocol 3, even v2 clients skip it
@@ -281,7 +293,8 @@ public class FieldVersionControlTest {
         serverV21Config.setMaximumPoolSize(20);
         serverV21Config.setQueueType(2);
         serverV21Config.setCapacity(1024);
-        serverV21Config.setCapacityAlarm(80); // New field 'yyy' introduced in v2.1 (min protocol = 3)
+        serverV21Config.setCapacityAlarm(80); // New field 'yyy' introduced in v2.1 (min version = 2.1.0)
+        serverV21Config.setFieldVersionMetadata(Collections.singletonMap("capacityAlarm", "2.1.0"));
 
         String v1Content = IncrementalContentUtil.getVersionedContent(serverV21Config, 1, "1.9.0");
         String v2Content = IncrementalContentUtil.getVersionedContent(serverV21Config, 2, "2.0.0");
@@ -299,7 +312,7 @@ public class FieldVersionControlTest {
         System.out.println("Protocol v2 contains capacityAlarm: " + v2Fields.containsKey("capacityAlarm"));
         System.out.println("Protocol v3 contains capacityAlarm: " + v3Fields.containsKey("capacityAlarm"));
 
-        Assert.assertTrue("Protocol v1 uses full content, includes all fields", v1Fields.containsKey("capacityAlarm"));
+        Assert.assertFalse("Protocol v1 should skip 'yyy' (capacityAlarm)", v1Fields.containsKey("capacityAlarm"));
         Assert.assertFalse("Protocol v2 should skip 'yyy' (capacityAlarm)", v2Fields.containsKey("capacityAlarm"));
         Assert.assertTrue("Protocol v3 should include 'yyy' (capacityAlarm)", v3Fields.containsKey("capacityAlarm"));
 
@@ -335,6 +348,7 @@ public class FieldVersionControlTest {
         config2.setQueueType(2);
         config2.setCapacity(1024);
         config2.setExecuteTimeOut(5000L); // Changed from null to 5000
+        config2.setFieldVersionMetadata(Collections.singletonMap("executeTimeOut", "2.1.0"));
 
         // Config 3: extended field changed from 5000 to 8000
         ThreadPoolParameterInfo config3 = new ThreadPoolParameterInfo();
@@ -346,6 +360,7 @@ public class FieldVersionControlTest {
         config3.setQueueType(2);
         config3.setCapacity(1024);
         config3.setExecuteTimeOut(8000L); // Changed from 5000 to 8000
+        config3.setFieldVersionMetadata(Collections.singletonMap("executeTimeOut", "2.1.0"));
 
         String md51 = IncrementalMd5Util.getVersionedMd5(config1, 2, "2.0.0");
         String md52 = IncrementalMd5Util.getVersionedMd5(config2, 2, "2.0.0");
@@ -388,6 +403,12 @@ public class FieldVersionControlTest {
         fullConfig.setIsAlarm(1);
         fullConfig.setCapacityAlarm(80);
         fullConfig.setLivenessAlarm(90);
+        LinkedHashMap<String, String> metadata = new LinkedHashMap<>();
+        metadata.put("executeTimeOut", "2.1.0");
+        metadata.put("isAlarm", "2.1.0");
+        metadata.put("capacityAlarm", "2.1.0");
+        metadata.put("livenessAlarm", "2.1.0");
+        fullConfig.setFieldVersionMetadata(metadata);
 
         String v1Content = IncrementalContentUtil.getVersionedContent(fullConfig, 1, "1.9.0");
         String v2Content = IncrementalContentUtil.getVersionedContent(fullConfig, 2, "2.0.0");
@@ -412,11 +433,11 @@ public class FieldVersionControlTest {
 
         // Core assertions
         Assert.assertTrue("All protocols see core fields", v1Fields.containsKey("coreSize") && v2Fields.containsKey("coreSize") && v3Fields.containsKey("coreSize"));
-        Assert.assertTrue("Protocol v1 sees all fields (full content)", v1Fields.containsKey("executeTimeOut"));
-        Assert.assertFalse("Protocol v2 skips extended fields (min protocol = 3)", v2Fields.containsKey("executeTimeOut"));
-        Assert.assertTrue("Protocol v3 sees extended fields", v3Fields.containsKey("executeTimeOut"));
+        Assert.assertFalse("Protocol v1 (1.9.0) should skip executeTimeOut", v1Fields.containsKey("executeTimeOut"));
+        Assert.assertFalse("Protocol v2 (2.0.0) should skip executeTimeOut", v2Fields.containsKey("executeTimeOut"));
+        Assert.assertTrue("Protocol v3 (2.1.0) should include executeTimeOut", v3Fields.containsKey("executeTimeOut"));
 
-        System.out.println("\nTest passed: Field visibility correctly controlled by protocol version");
+        System.out.println("\nTest passed: Field visibility correctly controlled by semantic version");
         System.out.println("This is the foundation for mentor's requirement: version-aware field filtering");
     }
 }

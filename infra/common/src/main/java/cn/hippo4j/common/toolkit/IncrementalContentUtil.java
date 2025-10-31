@@ -17,18 +17,13 @@
 
 package cn.hippo4j.common.toolkit;
 
+import cn.hippo4j.common.model.IncrementalFieldMetadataProvider;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Incremental content util for thread pool parameter comparison.
@@ -50,40 +45,13 @@ public class IncrementalContentUtil {
             "keepAliveTime", "rejectedType", "allowCoreThreadTimeOut"
     };
 
-    /**
-     * Extended parameters that don't affect core behavior
-     */
-    private static final String[] EXTENDED_PARAMETERS = {
-            "executeTimeOut", "isAlarm", "capacityAlarm", "livenessAlarm"
-    };
-
     private static final List<String> IDENTIFIER_FIELDS = Collections.unmodifiableList(Arrays.asList("tenantId", "itemId", "tpId"));
 
     private static final List<String> CORE_PARAMETER_LIST = Collections.unmodifiableList(Arrays.asList(CORE_PARAMETERS));
 
-    private static final List<String> EXTENDED_PARAMETER_LIST = Collections.unmodifiableList(Arrays.asList(EXTENDED_PARAMETERS));
+    private static final String FIELD_VERSION_METADATA_KEY = "fieldVersionMetadata";
 
-    /**
-     * Mapping of field name to the minimum protocol version that should observe it. Clients whose
-     * protocol version is lower than the mapped value will skip the field when generating MD5s, so
-     * they never refresh on data they do not understand.
-     */
-    private static final Map<String, Integer> FIELD_MIN_PROTOCOL_VERSION;
-
-    static {
-        Map<String, Integer> fieldVersion = new HashMap<>();
-        // Identifiers are required regardless of protocol version.
-        IDENTIFIER_FIELDS.forEach(field -> fieldVersion.put(field, 1));
-        // Core parameters affect pool behaviour, therefore protocol v1 clients must see them.
-        CORE_PARAMETER_LIST.forEach(field -> fieldVersion.put(field, 1));
-
-        // Initial new/extended fields with the next protocol version so current clients (v2)
-        // automatically skip them when generating MD5 values. Once a field is ready to be exposed
-        // to protocol v2 (or higher) clients, simply lower its minimum version accordingly.
-        EXTENDED_PARAMETER_LIST.forEach(field -> fieldVersion.put(field, PROTOCOL_VERSION + 1));
-
-        FIELD_MIN_PROTOCOL_VERSION = Collections.unmodifiableMap(fieldVersion);
-    }
+    private static final String FIELD_METADATA_VERSION_KEY = "fieldMetadataVersion";
 
     /**
      * Get core content for MD5 calculation (only essential parameters)
@@ -127,15 +95,15 @@ public class IncrementalContentUtil {
      */
     public static String getVersionedContent(ThreadPoolParameter parameter, int protocolVersion, String clientVersion) {
         String fullContent = getFullContent(parameter);
-        if (protocolVersion < PROTOCOL_VERSION) {
-            return fullContent;
-        }
         LinkedHashMap<String, Object> raw = JSONUtil.parseObject(fullContent, new TypeReference<LinkedHashMap<String, Object>>() {
         });
         if (raw == null) {
             return fullContent;
         }
-        int normalizedProtocol = Math.max(protocolVersion, PROTOCOL_VERSION);
+        String normalizedClientVersion = StringUtil.isNotBlank(clientVersion)
+                ? clientVersion.trim()
+                : VersionUtil.resolveSemanticVersionForProtocol(protocolVersion);
+        Map<String, String> fieldRules = resolveFieldRules(parameter, raw);
         LinkedHashMap<String, Object> filtered = new LinkedHashMap<>();
         for (String field : IDENTIFIER_FIELDS) {
             if (raw.containsKey(field)) {
@@ -148,7 +116,7 @@ public class IncrementalContentUtil {
             }
         }
         raw.forEach((field, value) -> {
-            if (!filtered.containsKey(field) && shouldIncludeField(field, normalizedProtocol)) {
+            if (!filtered.containsKey(field) && shouldIncludeField(field, normalizedClientVersion, fieldRules)) {
                 filtered.put(field, value);
             }
         });
@@ -252,8 +220,114 @@ public class IncrementalContentUtil {
      * the specified protocol version. If the field requires a higher protocol, it will be ignored
      * so older clients remain unaware of unsupported parameters.
      */
-    private static boolean shouldIncludeField(String field, int protocolVersion) {
-        int minProtocol = FIELD_MIN_PROTOCOL_VERSION.getOrDefault(field, Integer.MAX_VALUE);
-        return protocolVersion >= minProtocol;
+    private static boolean shouldIncludeField(String field, String clientVersion, Map<String, String> fieldRules) {
+        String minVersion = fieldRules.get(field);
+        if (StringUtil.isBlank(minVersion)) {
+            return false;
+        }
+        String effectiveClientVersion = StringUtil.isBlank(clientVersion) ? VersionUtil.UNKNOWN_VERSION : clientVersion;
+        return VersionUtil.isVersionGreaterOrEqual(effectiveClientVersion, minVersion);
+    }
+
+    /**
+     * Resolve field-level version rules by combining default baseline, runtime metadata from the
+     * parameter object, and metadata embedded in the JSON payload. Fields without explicit metadata
+     * are assigned a default minimum version based on the current protocol.
+     *
+     * @param parameter thread pool parameter (may carry metadata)
+     * @param raw       parsed JSON payload (may contain fieldVersionMetadata)
+     * @return mapping of field name to minimum semantic version
+     */
+    private static Map<String, String> resolveFieldRules(ThreadPoolParameter parameter, Map<String, Object> raw) {
+        Map<String, String> fieldRules = new LinkedHashMap<>();
+        // Identifier and core fields visible to all clients (since version 1.0.0)
+        IDENTIFIER_FIELDS.forEach(field -> fieldRules.put(field, VersionUtil.UNKNOWN_VERSION));
+        CORE_PARAMETER_LIST.forEach(field -> fieldRules.put(field, VersionUtil.UNKNOWN_VERSION));
+
+        // Merge metadata from parameter object (e.g., Server-side configuration)
+        mergeFieldMetadata(fieldRules, extractMetadataFromParameter(parameter));
+        // Merge metadata from JSON payload (e.g., Client receiving Server's dynamic metadata)
+        mergeFieldMetadata(fieldRules, extractMetadataFromPayload(raw));
+
+        // Assign default version to unconfigured fields (prevents old clients from seeing new fields)
+        String defaultVisibleVersion = VersionUtil.resolveSemanticVersionForProtocol(PROTOCOL_VERSION);
+        raw.keySet().forEach(field -> {
+            if (!fieldRules.containsKey(field)) {
+                fieldRules.put(field, defaultVisibleVersion);
+            }
+        });
+
+        return fieldRules;
+    }
+
+    /**
+     * Extract field version metadata from the parameter object if it implements
+     * {@link IncrementalFieldMetadataProvider}. This is typically used on the Server side where
+     * configuration objects can dynamically declare which fields were introduced in which version.
+     *
+     * @param parameter thread pool parameter
+     * @return field-to-version mapping, or empty map if not available
+     */
+    private static Map<String, String> extractMetadataFromParameter(ThreadPoolParameter parameter) {
+        if (parameter instanceof IncrementalFieldMetadataProvider) {
+            Map<String, String> metadata = ((IncrementalFieldMetadataProvider) parameter).getFieldVersionMetadata();
+            if (metadata != null && !metadata.isEmpty()) {
+                Map<String, String> copied = new LinkedHashMap<>();
+                metadata.forEach((field, version) -> {
+                    if (StringUtil.isNotBlank(field) && StringUtil.isNotBlank(version)) {
+                        copied.put(field, version.trim());
+                    }
+                });
+                return copied;
+            }
+        }
+        return Collections.emptyMap();
+    }
+
+    /**
+     * Extract field version metadata from the JSON payload and remove metadata keys from the raw map
+     * so they do not participate in MD5 calculation. This is typically used on the Client side to
+     * receive dynamic metadata from the Server.
+     *
+     * @param raw parsed JSON map (will be modified: metadata keys removed)
+     * @return field-to-version mapping extracted from the payload, or empty map if not present
+     */
+    @SuppressWarnings("unchecked")
+    private static Map<String, String> extractMetadataFromPayload(Map<String, Object> raw) {
+        Object metadataObject = raw.remove(FIELD_VERSION_METADATA_KEY);
+        raw.remove(FIELD_METADATA_VERSION_KEY);
+        if (metadataObject instanceof Map<?, ?>) {
+            Map<String, String> metadata = new LinkedHashMap<>();
+            ((Map<?, ?>) metadataObject).forEach((key, value) -> {
+                if (key == null || value == null) {
+                    return;
+                }
+                String field = String.valueOf(key);
+                String version = String.valueOf(value).trim();
+                if (StringUtil.isNotBlank(field) && StringUtil.isNotBlank(version)) {
+                    metadata.put(field, version);
+                }
+            });
+            return metadata;
+        }
+        return Collections.emptyMap();
+    }
+
+    /**
+     * Merge additional field version metadata into the target map. Existing entries in the target
+     * will be overwritten by additions. This enables layered metadata resolution (base → parameter → payload).
+     *
+     * @param target    target map to merge into
+     * @param additions additional metadata to merge (may be null or empty)
+     */
+    private static void mergeFieldMetadata(Map<String, String> target, Map<String, String> additions) {
+        if (additions == null || additions.isEmpty()) {
+            return;
+        }
+        additions.forEach((field, version) -> {
+            if (StringUtil.isNotBlank(field) && StringUtil.isNotBlank(version)) {
+                target.put(field, version.trim());
+            }
+        });
     }
 }

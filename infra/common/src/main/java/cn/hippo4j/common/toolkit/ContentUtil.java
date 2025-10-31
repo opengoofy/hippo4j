@@ -18,8 +18,12 @@
 package cn.hippo4j.common.toolkit;
 
 import cn.hippo4j.common.constant.Constants;
+import cn.hippo4j.common.model.IncrementalFieldMetadataProvider;
 import cn.hippo4j.common.model.ThreadPoolParameter;
 import cn.hippo4j.common.model.ThreadPoolParameterInfo;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Content util.
@@ -52,6 +56,14 @@ public class ContentUtil {
                 .setLivenessAlarm(parameter.getLivenessAlarm())
                 .setAllowCoreThreadTimeOut(parameter.getAllowCoreThreadTimeOut())
                 .setRejectedType(parameter.getRejectedType());
+        if (parameter instanceof IncrementalFieldMetadataProvider) {
+            IncrementalFieldMetadataProvider provider = (IncrementalFieldMetadataProvider) parameter;
+            Map<String, String> metadata = provider.getFieldVersionMetadata();
+            if (metadata != null && !metadata.isEmpty()) {
+                threadPoolParameterInfo.setFieldVersionMetadata(new LinkedHashMap<>(metadata));
+            }
+            threadPoolParameterInfo.setFieldMetadataVersion(provider.getFieldMetadataVersion());
+        }
         return JSONUtil.toJSONString(threadPoolParameterInfo);
     }
 

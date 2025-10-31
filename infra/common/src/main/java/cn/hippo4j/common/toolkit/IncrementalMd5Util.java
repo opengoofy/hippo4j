@@ -56,7 +56,8 @@ public class IncrementalMd5Util {
      * @return versioned MD5 hash
      */
     public static String getVersionedMd5(ThreadPoolParameter config, int clientVersion) {
-        return getVersionedMd5(config, clientVersion, null);
+        String semanticVersion = VersionUtil.resolveSemanticVersionForProtocol(clientVersion);
+        return getVersionedMd5(config, clientVersion, semanticVersion);
     }
 
     /**
@@ -89,8 +90,9 @@ public class IncrementalMd5Util {
         if (oldConfig == null || newConfig == null) {
             return true;
         }
-        String oldMd5 = getVersionedMd5(oldConfig, clientVersion, null);
-        String newMd5 = getVersionedMd5(newConfig, clientVersion, null);
+        String semanticVersion = VersionUtil.resolveSemanticVersionForProtocol(clientVersion);
+        String oldMd5 = getVersionedMd5(oldConfig, clientVersion, semanticVersion);
+        String newMd5 = getVersionedMd5(newConfig, clientVersion, semanticVersion);
         boolean different = !oldMd5.equals(newMd5);
         if (different) {
             log.debug("Configuration changed - Old MD5: {}, New MD5: {}, Client Version: {}",

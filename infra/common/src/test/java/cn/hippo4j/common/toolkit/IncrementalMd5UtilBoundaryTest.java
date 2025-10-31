@@ -21,6 +21,9 @@ import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+
 /**
  * Incremental MD5 Utility Boundary Test
  * Tests edge cases and boundary conditions for version-aware MD5 calculation
@@ -79,6 +82,7 @@ public class IncrementalMd5UtilBoundaryTest {
         config.setCorePoolSize(10);
         config.setMaximumPoolSize(20);
         config.setExecuteTimeOut(5000L);
+        config.setFieldVersionMetadata(Collections.singletonMap("executeTimeOut", "2.1.0"));
 
         String v0Md5 = IncrementalMd5Util.getVersionedMd5(config, 0);
         String v1Md5 = IncrementalMd5Util.getVersionedMd5(config, 1);
@@ -103,6 +107,7 @@ public class IncrementalMd5UtilBoundaryTest {
         config.setCorePoolSize(10);
         config.setMaximumPoolSize(20);
         config.setExecuteTimeOut(5000L);
+        config.setFieldVersionMetadata(Collections.singletonMap("executeTimeOut", "2.1.0"));
 
         String vNegativeMd5 = IncrementalMd5Util.getVersionedMd5(config, -1);
         String v1Md5 = IncrementalMd5Util.getVersionedMd5(config, 1);
@@ -159,17 +164,25 @@ public class IncrementalMd5UtilBoundaryTest {
         config.setExecuteTimeOut(5000L);
         config.setIsAlarm(1);
         config.setCapacityAlarm(80);
+        LinkedHashMap<String, String> metadata = new LinkedHashMap<>();
+        metadata.put("executeTimeOut", "2.1.0");
+        metadata.put("isAlarm", "2.1.0");
+        metadata.put("capacityAlarm", "2.1.0");
+        config.setFieldVersionMetadata(metadata);
 
         String v1Md5 = IncrementalMd5Util.getVersionedMd5(config, 1);
         String v2Md5 = IncrementalMd5Util.getVersionedMd5(config, 2);
+        String v3Md5 = IncrementalMd5Util.getVersionedMd5(config, 3);
 
         System.out.println("Config: Only extended params (executeTimeOut, isAlarm, capacityAlarm)");
         System.out.println("v1 MD5: " + v1Md5);
         System.out.println("v2 MD5: " + v2Md5);
-        System.out.println("Are they different? " + !v1Md5.equals(v2Md5));
+        System.out.println("Are v1 and v2 same? " + v1Md5.equals(v2Md5));
+        System.out.println("Does v3 differ? " + !v2Md5.equals(v3Md5));
 
-        Assert.assertNotEquals("v1 and v2 should differ when only extended params exist", v1Md5, v2Md5);
-        System.out.println("Test passed: v2 excludes extended params");
+        Assert.assertEquals("Protocols below threshold skip extended params", v1Md5, v2Md5);
+        Assert.assertNotEquals("Supported protocol should include extended params", v2Md5, v3Md5);
+        System.out.println("Test passed: Metadata gates extended params by protocol");
     }
 
     /**
