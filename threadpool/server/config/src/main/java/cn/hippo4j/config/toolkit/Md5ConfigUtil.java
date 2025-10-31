@@ -17,9 +17,11 @@
 
 package cn.hippo4j.config.toolkit;
 
+import cn.hippo4j.common.constant.Constants;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.Md5Util;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.VersionUtil;
 import cn.hippo4j.config.service.ConfigCacheService;
 import cn.hippo4j.config.model.ConfigAllInfo;
 import org.springframework.util.StringUtils;
@@ -72,9 +74,15 @@ public class Md5ConfigUtil {
      */
     public static List<String> compareMd5(HttpServletRequest request, Map<String, String> clientMd5Map) {
         List<String> changedGroupKeys = new ArrayList();
+        String clientVersionHeader = request.getHeader(Constants.CLIENT_VERSION);
+        String normalizedClientVersion = VersionUtil.resolveClientVersion(clientVersionHeader, null);
+        if (StringUtil.isBlank(normalizedClientVersion)) {
+            normalizedClientVersion = VersionUtil.UNKNOWN_VERSION;
+        }
+        final String effectiveClientVersion = normalizedClientVersion; // Make it effectively final
         clientMd5Map.forEach((key, val) -> {
             String clientIdentify = RequestUtil.getClientIdentify(request);
-            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify);
+            boolean isUpdateData = ConfigCacheService.isUpdateData(key, val, clientIdentify, effectiveClientVersion);
             if (!isUpdateData) {
                 changedGroupKeys.add(key);
             }

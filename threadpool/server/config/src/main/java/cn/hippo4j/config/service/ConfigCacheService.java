@@ -27,7 +27,9 @@ import cn.hippo4j.common.toolkit.JSONUtil;
 import cn.hippo4j.common.toolkit.Joiner;
 import cn.hippo4j.common.toolkit.MapUtil;
 import cn.hippo4j.common.toolkit.Md5Util;
+import cn.hippo4j.common.toolkit.IncrementalMd5Util;
 import cn.hippo4j.common.toolkit.StringUtil;
+import cn.hippo4j.common.toolkit.VersionUtil;
 import cn.hippo4j.config.event.LocalDataChangeEvent;
 import cn.hippo4j.config.model.CacheItem;
 import cn.hippo4j.config.model.ConfigAllInfo;
@@ -70,7 +72,11 @@ public class ConfigCacheService {
     private static final ConcurrentHashMap<String, Map<String, CacheItem>> CLIENT_CONFIG_CACHE = new ConcurrentHashMap();
 
     public static boolean isUpdateData(String groupKey, String md5, String clientIdentify) {
-        String contentMd5 = ConfigCacheService.getContentMd5IsNullPut(groupKey, clientIdentify);
+        return isUpdateData(groupKey, md5, clientIdentify, VersionUtil.UNKNOWN_VERSION);
+    }
+
+    public static boolean isUpdateData(String groupKey, String md5, String clientIdentify, String clientVersion) {
+        String contentMd5 = ConfigCacheService.getContentMd5IsNullPut(groupKey, clientIdentify, clientVersion);
         return Objects.equals(contentMd5, md5);
     }
 
@@ -100,13 +106,13 @@ public class ConfigCacheService {
      * @param clientIdentify
      * @return
      */
-    private static synchronized String getContentMd5IsNullPut(String groupKey, String clientIdentify) {
-        Map<String, CacheItem> cacheItemMap = Optional.ofNullable(CLIENT_CONFIG_CACHE.get(groupKey)).orElse(new HashMap<>());
-        CacheItem cacheItem = null;
-        if (CollectionUtil.isNotEmpty(cacheItemMap)) {
-            cacheItem = cacheItemMap.get(clientIdentify);
-            if (cacheItem != null) {
-                return cacheItem.getMd5();
+    private static synchronized String getContentMd5IsNullPut(String groupKey, String clientIdentify, String clientVersion) {
+        Map<String, CacheItem> cacheItemMap = CLIENT_CONFIG_CACHE.computeIfAbsent(groupKey, key -> new ConcurrentHashMap<>());
+        CacheItem cacheItem = cacheItemMap.get(clientIdentify);
+        if (cacheItem != null) {
+            String versionMd5 = cacheItem.getMd5(clientVersion);
+            if (StringUtil.isNotBlank(versionMd5)) {
+                return versionMd5;
             }
         }
         if (configService == null) {
@@ -115,11 +121,17 @@ public class ConfigCacheService {
         String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
         ConfigAllInfo config = configService.findConfigRecentInfo(params);
         if (config != null && StringUtil.isNotBlank(config.getTpId())) {
-            cacheItem = new CacheItem(groupKey, config);
-            cacheItemMap.put(clientIdentify, cacheItem);
-            CLIENT_CONFIG_CACHE.put(groupKey, cacheItemMap);
+            if (cacheItem == null) {
+                cacheItem = new CacheItem(groupKey, config);
+                cacheItemMap.put(clientIdentify, cacheItem);
+            } else {
+                cacheItem.setConfigAllInfo(config);
+            }
+            String versionedMd5 = IncrementalMd5Util.getVersionedMd5(config, clientVersion);
+            cacheItem.setMd5(clientVersion, versionedMd5);
+            return versionedMd5;
         }
-        return (cacheItem != null) ? cacheItem.getMd5() : Constants.NULL;
+        return Constants.NULL;
     }
 
     public static String getContentMd5(String groupKey) {
@@ -138,7 +150,8 @@ public class ConfigCacheService {
     public static void updateMd5(String groupKey, String identify, String md5) {
         CacheItem cache = makeSure(groupKey, identify);
         if (cache.getMd5() == null || !cache.getMd5().equals(md5)) {
-            cache.setMd5(md5);
+            cache.clearVersionMd5();
+            cache.setMd5(VersionUtil.UNKNOWN_VERSION, md5);
             String[] params = groupKey.split(GROUP_KEY_DELIMITER_TRANSLATION);
             ConfigAllInfo config = configService.findConfigRecentInfo(params);
             cache.setConfigAllInfo(config);

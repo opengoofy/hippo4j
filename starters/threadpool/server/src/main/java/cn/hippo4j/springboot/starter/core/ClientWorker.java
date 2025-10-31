@@ -24,6 +24,7 @@ import cn.hippo4j.common.toolkit.ContentUtil;
 import cn.hippo4j.common.toolkit.GroupKey;
 import cn.hippo4j.common.toolkit.IdUtil;
 import cn.hippo4j.common.toolkit.JSONUtil;
+import cn.hippo4j.common.toolkit.VersionUtil;
 import cn.hippo4j.springboot.starter.remote.HttpAgent;
 import cn.hippo4j.springboot.starter.remote.ServerHealthCheck;
 import lombok.SneakyThrows;
@@ -69,7 +70,6 @@ public class ClientWorker implements DisposableBean {
     private final long timeout;
     private final String identify;
     private final String version;
-
     private final HttpAgent agent;
     private final ServerHealthCheck serverHealthCheck;
     private final ScheduledExecutorService executorService;
@@ -90,7 +90,7 @@ public class ClientWorker implements DisposableBean {
         this.agent = httpAgent;
         this.identify = identify;
         this.timeout = CONFIG_LONG_POLL_TIMEOUT;
-        this.version = version;
+        this.version = VersionUtil.resolveClientVersion(version, ClientWorker.class);
         this.serverHealthCheck = serverHealthCheck;
         this.hippo4jClientShutdown = hippo4jClientShutdown;
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1, runnable -> {
@@ -197,7 +197,7 @@ public class ClientWorker implements DisposableBean {
         Map<String, String> params = new HashMap<>(2);
         params.put(LISTENING_CONFIGS, probeUpdateString);
         params.put(WEIGHT_CONFIGS, IdUtil.simpleUUID());
-        Map<String, String> headers = new HashMap<>(2);
+        Map<String, String> headers = new HashMap<>(3);
         headers.put(LONG_PULLING_TIMEOUT, "" + timeout);
         // Confirm the identity of the client, and can be modified separately when modifying the thread pool configuration.
         headers.put(LONG_PULLING_CLIENT_IDENTIFICATION, identify);
@@ -276,7 +276,7 @@ public class ClientWorker implements DisposableBean {
         if (cacheData != null) {
             return cacheData;
         }
-        cacheData = new CacheData(namespace, itemId, threadPoolId);
+        cacheData = new CacheData(namespace, itemId, threadPoolId, version);
         CacheData lastCacheData = cacheMap.putIfAbsent(threadPoolId, cacheData);
         if (lastCacheData == null) {
             String serverConfig;
