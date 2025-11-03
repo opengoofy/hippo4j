@@ -17,9 +17,7 @@
 
 package cn.hippo4j.common.toolkit;
 
-import cn.hippo4j.common.model.IncrementalFieldMetadataProvider;
 import cn.hippo4j.common.model.ThreadPoolParameter;
-import cn.hippo4j.common.model.ThreadPoolParameterInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,62 +31,38 @@ import java.util.*;
 public class IncrementalContentUtil {
 
     /**
-     * Core parameters that affect thread pool behavior
+     * Default server version used when Implementation-Version cannot be read from MANIFEST.MF.
+     * This typically occurs in development/test environments before packaging.
+     */
+    private static final String DEFAULT_SERVER_VERSION = "2.0.0";
+
+    private static final String[] CORE_IDS = {
+            "tenantId", "itemId", "tpId"
+    };
+
+    /**
+     * Core thread pool parameters that must be visible to all client versions.
+     * These fields are essential for thread pool operation and should not be modified.
      */
     private static final String[] CORE_PARAMETERS = {
             "coreSize", "maxSize", "queueType", "capacity",
-            "keepAliveTime", "rejectedType", "allowCoreThreadTimeOut"
+            "keepAliveTime", "rejectedType"
     };
 
-    private static final List<String> IDENTIFIER_FIELDS = Collections.unmodifiableList(Arrays.asList("tenantId", "itemId", "tpId"));
+    private static final List<String> IDENTIFIER_FIELDS = Collections.unmodifiableList(Arrays.asList(CORE_IDS));
 
     private static final List<String> CORE_PARAMETER_LIST = Collections.unmodifiableList(Arrays.asList(CORE_PARAMETERS));
 
-    private static final String FIELD_VERSION_METADATA_KEY = "fieldVersionMetadata";
-
-    private static final String FIELD_METADATA_VERSION_KEY = "fieldMetadataVersion";
-
     /**
-     * Get core content for MD5 calculation (only essential parameters)
+     * Build version-aware content string for MD5 calculation.
+     * Fields introduced in newer versions are automatically excluded for older clients.
      *
-     * @param parameter thread-pool parameter
-     * @return core content string for MD5
-     */
-    public static String getCoreContent(ThreadPoolParameter parameter) {
-        ThreadPoolParameterInfo threadPoolParameterInfo = new ThreadPoolParameterInfo();
-        threadPoolParameterInfo.setTenantId(parameter.getTenantId())
-                .setItemId(parameter.getItemId())
-                .setTpId(parameter.getTpId())
-                .setCorePoolSize(getCorePoolSize(parameter))
-                .setMaximumPoolSize(getMaximumPoolSize(parameter))
-                .setQueueType(parameter.getQueueType())
-                .setCapacity(parameter.getCapacity())
-                .setKeepAliveTime(parameter.getKeepAliveTime())
-                .setRejectedType(parameter.getRejectedType())
-                .setAllowCoreThreadTimeOut(parameter.getAllowCoreThreadTimeOut());
-        return JSONUtil.toJSONString(threadPoolParameterInfo);
-    }
-
-    /**
-     * Get full content for MD5 calculation (all parameters)
-     *
-     * @param parameter thread-pool parameter
-     * @return full content string for MD5
-     */
-    public static String getFullContent(ThreadPoolParameter parameter) {
-        return ContentUtil.getPoolContent(parameter);
-    }
-
-    /**
-     * Build content string according to client protocol version. Fields introduced in newer protocol
-     * versions will be excluded automatically for older clients to avoid unnecessary refresh.
-     *
-     * @param parameter      thread-pool parameter
-     * @param clientVersion   semantic client version (optional, reserved for fine-grained rules)
-     * @return version-aware content string
+     * @param parameter     thread pool parameter
+     * @param clientVersion client semantic version (e.g., "1.5.0", null defaults to UNKNOWN_VERSION)
+     * @return filtered content string based on client version
      */
     public static String getVersionedContent(ThreadPoolParameter parameter, String clientVersion) {
-        String fullContent = getFullContent(parameter);
+        String fullContent = ContentUtil.getPoolContent(parameter);
         LinkedHashMap<String, Object> raw = JSONUtil.parseObject(fullContent, new TypeReference<LinkedHashMap<String, Object>>() {
         });
         if (raw == null) {
@@ -118,101 +92,8 @@ public class IncrementalContentUtil {
     }
 
     /**
-     * Get core pool size with version compatibility handling
-     *
-     * @param parameter thread pool parameter
-     * @return core pool size
-     */
-    private static Integer getCorePoolSize(ThreadPoolParameter parameter) {
-        if (parameter instanceof ThreadPoolParameterInfo) {
-            return ((ThreadPoolParameterInfo) parameter).corePoolSizeAdapt();
-        }
-        return parameter.getCoreSize();
-    }
-
-    /**
-     * Get maximum pool size with version compatibility handling
-     *
-     * @param parameter thread pool parameter
-     * @return maximum pool size
-     */
-    private static Integer getMaximumPoolSize(ThreadPoolParameter parameter) {
-        if (parameter instanceof ThreadPoolParameterInfo) {
-            return ((ThreadPoolParameterInfo) parameter).maximumPoolSizeAdapt();
-        }
-        return parameter.getMaxSize();
-    }
-
-    /**
-     * Check if parameters have core changes that require thread pool refresh
-     *
-     * @param oldParameter old parameter
-     * @param newParameter new parameter
-     * @return true if core parameters changed
-     */
-    public static boolean hasCoreChanges(ThreadPoolParameter oldParameter, ThreadPoolParameter newParameter) {
-        if (oldParameter == null || newParameter == null) {
-            return true;
-        }
-        return !Objects.equals(getCorePoolSize(oldParameter), getCorePoolSize(newParameter)) ||
-                !Objects.equals(getMaximumPoolSize(oldParameter), getMaximumPoolSize(newParameter)) ||
-                !Objects.equals(oldParameter.getQueueType(), newParameter.getQueueType()) ||
-                !Objects.equals(oldParameter.getCapacity(), newParameter.getCapacity()) ||
-                !Objects.equals(oldParameter.getKeepAliveTime(), newParameter.getKeepAliveTime()) ||
-                !Objects.equals(oldParameter.getRejectedType(), newParameter.getRejectedType()) ||
-                !Objects.equals(oldParameter.getAllowCoreThreadTimeOut(), newParameter.getAllowCoreThreadTimeOut());
-    }
-
-    /**
-     * Check if parameters have extended changes (non-core)
-     *
-     * @param oldParameter old parameter
-     * @param newParameter new parameter
-     * @return true if extended parameters changed
-     */
-    public static boolean hasExtendedChanges(ThreadPoolParameter oldParameter, ThreadPoolParameter newParameter) {
-        if (oldParameter == null || newParameter == null) {
-            return true;
-        }
-        return !Objects.equals(oldParameter.getExecuteTimeOut(), newParameter.getExecuteTimeOut()) ||
-                !Objects.equals(oldParameter.getIsAlarm(), newParameter.getIsAlarm()) ||
-                !Objects.equals(oldParameter.getCapacityAlarm(), newParameter.getCapacityAlarm()) ||
-                !Objects.equals(oldParameter.getLivenessAlarm(), newParameter.getLivenessAlarm());
-    }
-
-    /**
-     * Get parameter changes summary
-     *
-     * @param oldParameter old parameter
-     * @param newParameter new parameter
-     * @return changes summary map
-     */
-    public static Map<String, Object> getChangesSummary(ThreadPoolParameter oldParameter, ThreadPoolParameter newParameter) {
-        Map<String, Object> changes = new HashMap<>();
-        if (oldParameter == null || newParameter == null) {
-            changes.put("type", "full");
-            changes.put("reason", "initial_load");
-            return changes;
-        }
-        boolean coreChanges = hasCoreChanges(oldParameter, newParameter);
-        boolean extendedChanges = hasExtendedChanges(oldParameter, newParameter);
-        if (coreChanges) {
-            changes.put("type", "core");
-            changes.put("reason", "core_parameters_changed");
-        } else if (extendedChanges) {
-            changes.put("type", "extended");
-            changes.put("reason", "extended_parameters_changed");
-        } else {
-            changes.put("type", "none");
-            changes.put("reason", "no_changes");
-        }
-        return changes;
-    }
-
-    /**
-     * Decide whether the given field should be included when generating MD5 for a client that uses
-     * the specified protocol version. If the field requires a higher protocol, it will be ignored
-     * so older clients remain unaware of unsupported parameters.
+     * Check if a field should be included for the given client version.
+     * Returns false if the field requires a higher version than the client supports.
      */
     private static boolean shouldIncludeField(String field, String clientVersion, Map<String, String> fieldRules) {
         String minVersion = fieldRules.get(field);
@@ -224,30 +105,39 @@ public class IncrementalContentUtil {
     }
 
     /**
-     * Resolve field-level version rules by combining default baseline, runtime metadata from the
-     * parameter object, and metadata embedded in the JSON payload. Fields without explicit metadata
-     * are assigned a default minimum version based on the current protocol.
+     * Build field-to-version mapping by priority:
+     * 1. Core/identifier fields → UNKNOWN_VERSION (visible to all clients)
+     * 2. Registry fields → pre-registered version in FieldVersionInitializer
+     * 3. Runtime metadata → for testing or manual override
+     * 4. Unregistered fields → current server version (with warning)
      *
-     * @param parameter thread pool parameter (may carry metadata)
-     * @param raw       parsed JSON payload (may contain fieldVersionMetadata)
-     * @return mapping of field name to minimum semantic version
+     * @param parameter thread pool parameter
+     * @param raw       parsed JSON map
+     * @return field name to minimum required version mapping
      */
     private static Map<String, String> resolveFieldRules(ThreadPoolParameter parameter, Map<String, Object> raw) {
         Map<String, String> fieldRules = new LinkedHashMap<>();
-        // Identifier and core fields visible to all clients (since version 1.0.0)
+
+        // Core and identifier fields (visible to all versions)
         IDENTIFIER_FIELDS.forEach(field -> fieldRules.put(field, VersionUtil.UNKNOWN_VERSION));
         CORE_PARAMETER_LIST.forEach(field -> fieldRules.put(field, VersionUtil.UNKNOWN_VERSION));
 
-        // Merge metadata from parameter object (e.g., Server-side configuration)
-        mergeFieldMetadata(fieldRules, extractMetadataFromParameter(parameter));
-        // Merge metadata from JSON payload (e.g., Client receiving Server's dynamic metadata)
-        mergeFieldMetadata(fieldRules, extractMetadataFromPayload(raw));
+        // Load from global registry
+        Map<String, String> registryVersions = FieldVersionRegistry.getAllFieldVersions();
+        registryVersions.forEach((field, version) -> {
+            if (!fieldRules.containsKey(field)) {
+                fieldRules.put(field, version);
+            }
+        });
 
-        // Assign default version to unconfigured fields (prevents old clients from seeing new fields)
-        // Default to "2.0.0" for new fields to maintain backward compatibility
+        // Handle unregistered fields
+        String currentServerVersion = getCurrentServerVersion();
         raw.keySet().forEach(field -> {
             if (!fieldRules.containsKey(field)) {
-                fieldRules.put(field, "2.0.0"); // Default: visible to clients >= 2.0
+                log.warn("Unregistered field '{}' detected. Binding to current server version '{}'. " +
+                        "To fix: Add to FieldVersionInitializer or CORE_PARAMETERS if essential.",
+                        field, currentServerVersion);
+                fieldRules.put(field, currentServerVersion);
             }
         });
 
@@ -255,73 +145,22 @@ public class IncrementalContentUtil {
     }
 
     /**
-     * Extract field version metadata from the parameter object if it implements
-     * {@link IncrementalFieldMetadataProvider}. This is typically used on the Server side where
-     * configuration objects can dynamically declare which fields were introduced in which version.
+     * Get current server version from package metadata (set by Maven during build).
+     * Falls back to DEFAULT_SERVER_VERSION if not available (e.g., in development/test environments).
      *
-     * @param parameter thread pool parameter
-     * @return field-to-version mapping, or empty map if not available
+     * @return server semantic version string
      */
-    private static Map<String, String> extractMetadataFromParameter(ThreadPoolParameter parameter) {
-        if (parameter instanceof IncrementalFieldMetadataProvider) {
-            Map<String, String> metadata = ((IncrementalFieldMetadataProvider) parameter).getFieldVersionMetadata();
-            if (metadata != null && !metadata.isEmpty()) {
-                Map<String, String> copied = new LinkedHashMap<>();
-                metadata.forEach((field, version) -> {
-                    if (StringUtil.isNotBlank(field) && StringUtil.isNotBlank(version)) {
-                        copied.put(field, version.trim());
-                    }
-                });
-                return copied;
+    private static String getCurrentServerVersion() {
+        Package pkg = IncrementalContentUtil.class.getPackage();
+        if (pkg != null) {
+            String implVersion = pkg.getImplementationVersion();
+            if (StringUtil.isNotBlank(implVersion)) {
+                return implVersion.trim();
             }
         }
-        return Collections.emptyMap();
-    }
-
-    /**
-     * Extract field version metadata from the JSON payload and remove metadata keys from the raw map
-     * so they do not participate in MD5 calculation. This is typically used on the Client side to
-     * receive dynamic metadata from the Server.
-     *
-     * @param raw parsed JSON map (will be modified: metadata keys removed)
-     * @return field-to-version mapping extracted from the payload, or empty map if not present
-     */
-    @SuppressWarnings("unchecked")
-    private static Map<String, String> extractMetadataFromPayload(Map<String, Object> raw) {
-        Object metadataObject = raw.remove(FIELD_VERSION_METADATA_KEY);
-        raw.remove(FIELD_METADATA_VERSION_KEY);
-        if (metadataObject instanceof Map<?, ?>) {
-            Map<String, String> metadata = new LinkedHashMap<>();
-            ((Map<?, ?>) metadataObject).forEach((key, value) -> {
-                if (key == null || value == null) {
-                    return;
-                }
-                String field = String.valueOf(key);
-                String version = String.valueOf(value).trim();
-                if (StringUtil.isNotBlank(field) && StringUtil.isNotBlank(version)) {
-                    metadata.put(field, version);
-                }
-            });
-            return metadata;
-        }
-        return Collections.emptyMap();
-    }
-
-    /**
-     * Merge additional field version metadata into the target map. Existing entries in the target
-     * will be overwritten by additions. This enables layered metadata resolution (base → parameter → payload).
-     *
-     * @param target    target map to merge into
-     * @param additions additional metadata to merge (may be null or empty)
-     */
-    private static void mergeFieldMetadata(Map<String, String> target, Map<String, String> additions) {
-        if (additions == null || additions.isEmpty()) {
-            return;
-        }
-        additions.forEach((field, version) -> {
-            if (StringUtil.isNotBlank(field) && StringUtil.isNotBlank(version)) {
-                target.put(field, version.trim());
-            }
-        });
+        log.warn("Unable to read Implementation-Version from MANIFEST.MF. " +
+                "Falling back to default version '{}'. " +
+                "Please ensure maven-jar-plugin is properly configured.", DEFAULT_SERVER_VERSION);
+        return DEFAULT_SERVER_VERSION;
     }
 }

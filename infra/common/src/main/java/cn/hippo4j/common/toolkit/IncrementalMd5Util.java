@@ -28,27 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 public class IncrementalMd5Util {
 
     /**
-     * Get core MD5 for essential parameters only
-     *
-     * @param config thread pool parameter
-     * @return core MD5 hash
-     */
-    public static String getCoreMd5(ThreadPoolParameter config) {
-        String coreContent = IncrementalContentUtil.getCoreContent(config);
-        return Md5Util.md5Hex(coreContent, "UTF-8");
-    }
-
-    /**
-     * Get full MD5 for all parameters (legacy compatibility)
-     *
-     * @param config thread pool parameter
-     * @return full MD5 hash
-     */
-    public static String getFullMd5(ThreadPoolParameter config) {
-        return Md5Util.getTpContentMd5(config);
-    }
-
-    /**
      * Get versioned MD5 based on client semantic version.
      *
      * @param config        thread pool parameter
@@ -67,58 +46,4 @@ public class IncrementalMd5Util {
         return md5;
     }
 
-    /**
-     * Compare MD5 with version support using semantic version string.
-     */
-    public static boolean isDifferent(ThreadPoolParameter oldConfig, ThreadPoolParameter newConfig, String clientVersion) {
-        if (oldConfig == null || newConfig == null) {
-            return true;
-        }
-        String oldMd5 = getVersionedMd5(oldConfig, clientVersion);
-        String newMd5 = getVersionedMd5(newConfig, clientVersion);
-        boolean different = !oldMd5.equals(newMd5);
-        if (different && log.isDebugEnabled()) {
-            log.debug("Configuration changed - Old MD5: {}, New MD5: {}, Client Version: {}",
-                    oldMd5, newMd5, clientVersion);
-        }
-        return different;
-    }
-
-    /**
-     * Check if only extended parameters changed (non-core)
-     *
-     * @param oldConfig old configuration
-     * @param newConfig new configuration
-     * @return true if only extended parameters changed
-     */
-    public static boolean onlyExtendedChanged(ThreadPoolParameter oldConfig, ThreadPoolParameter newConfig) {
-        if (oldConfig == null || newConfig == null) {
-            return false;
-        }
-        boolean coreChanged = IncrementalContentUtil.hasCoreChanges(oldConfig, newConfig);
-        boolean extendedChanged = IncrementalContentUtil.hasExtendedChanges(oldConfig, newConfig);
-        return !coreChanged && extendedChanged;
-    }
-
-    /**
-     * Get change type for logging and monitoring
-     *
-     * @param oldConfig old configuration
-     * @param newConfig new configuration
-     * @return change type string
-     */
-    public static String getChangeType(ThreadPoolParameter oldConfig, ThreadPoolParameter newConfig) {
-        if (oldConfig == null || newConfig == null) {
-            return "INITIAL";
-        }
-        boolean coreChanged = IncrementalContentUtil.hasCoreChanges(oldConfig, newConfig);
-        boolean extendedChanged = IncrementalContentUtil.hasExtendedChanges(oldConfig, newConfig);
-        if (coreChanged) {
-            return "CORE";
-        } else if (extendedChanged) {
-            return "EXTENDED";
-        } else {
-            return "NONE";
-        }
-    }
 }
