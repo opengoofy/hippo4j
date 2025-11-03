@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * Thread pool parameter info.
@@ -35,7 +34,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializable, IncrementalFieldMetadataProvider {
+public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializable {
 
     private static final long serialVersionUID = -7123935122108553864L;
 
@@ -127,16 +126,6 @@ public class ThreadPoolParameterInfo implements ThreadPoolParameter, Serializabl
      * Allow core thread timeout
      */
     private Integer allowCoreThreadTimeOut;
-
-    /**
-     * Field-to-minimum-version mapping used by clients to filter unsupported fields.
-     */
-    private Map<String, String> fieldVersionMetadata;
-
-    /**
-     * Optional metadata version identifier for diagnostics or caching.
-     */
-    private String fieldMetadataVersion;
 
     public Integer corePoolSizeAdapt() {
         return this.corePoolSize == null ? this.coreSize : this.corePoolSize;

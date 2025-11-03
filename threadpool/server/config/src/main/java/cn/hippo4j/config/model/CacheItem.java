@@ -64,9 +64,16 @@ public class CacheItem {
         this.versionMd5Cache.put(VersionUtil.UNKNOWN_VERSION, this.md5);
     }
 
+    /**
+     * Get MD5 for specific client version.
+     * Returns cached version-specific MD5 if available, or null to trigger recalculation.
+     *
+     * @param clientVersion client semantic version
+     * @return version-specific MD5, or null if not cached (caller should recalculate)
+     */
     public String getMd5(String clientVersion) {
         String key = normalizeVersionKey(clientVersion);
-        return versionMd5Cache.getOrDefault(key, md5);
+        return versionMd5Cache.get(key);
     }
 
     public void setMd5(String clientVersion, String value) {
