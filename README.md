@@ -13,21 +13,10 @@
 [![codecov](https://codecov.io/gh/opengoofy/hippo4j/branch/develop/graph/badge.svg?token=WBUVJN107I)](https://codecov.io/gh/opengoofy/hippo4j)
 [![EN doc](https://img.shields.io/badge/readme-English-orange.svg)](https://github.com/opengoofy/hippo4j/blob/develop/README-EN.md)
 
-| **Stargazers Over Time**                                                                                              | **Contributors Over Time**                                                                                                                                                                                                                       |
-|:---------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| [![Stargazers over time](https://api.star-history.com/svg?repos=opengoofy/hippo4j&type=Date)](https://api.star-history.com/svg?repos=opengoofy/hippo4j&type=Date) | [![Contributor over time](https://contributor-graph-api.apiseven.com/contributors-svg?chart=contributorOverTime&repo=opengoofy/hippo4j)](https://www.apiseven.com/en/contributor-graph?chart=contributorOverTime&repo=opengoofy/hippo4j) |
+> 📢 新项目
+> 
+> [Ragent AI](https://nageoffer.com/ragent) —— 企业级 Agentic RAG 项目，拿个 offer 社群在 AI 领域的首个开源作品。架构设计、代码实现保持一贯的高标准，适合写进校招/社招简历。毕竟现在哪家公司不关注 AI？
 
-### 开源地址
-
----
-
-GitHub：[opengoofy/hippo4j](https://github.com/opengoofy/hippo4j)
-
-Gitee：[opengoofy/hippo4j](https://gitee.com/magestack/hippo4j)
-
-GitCode：[opengoofy/hippo4j](https://gitcode.com/opengoofy/hippo4j)
-
-For full documentation & more details, visit: [Docs](https://www.hippo4j.cn)
 
 ### 线程池痛点
 
