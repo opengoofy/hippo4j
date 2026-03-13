@@ -72,7 +72,7 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
         checkThreadPoolParameter(registerParameter);
         String threadPoolId = registerParameter.getThreadPoolId();
         try {
-            failDynamicThreadPoolRegisterWrapper(registerWrapper);
+            fillDynamicThreadPoolRegisterWrapper(registerWrapper);
             Result registerResult = httpAgent.httpPost(REGISTER_DYNAMIC_THREAD_POOL_PATH, registerWrapper);
             if (registerResult == null || !registerResult.isSuccess()) {
                 throw new RuntimeException("Dynamic thread pool registration returns error."
@@ -109,7 +109,7 @@ public class DynamicThreadPoolConfigService extends AbstractDynamicThreadPoolSer
         Assert.isTrue(!registerParameter.getThreadPoolId().contains("+"), "The thread pool contains sensitive characters.");
     }
 
-    private void failDynamicThreadPoolRegisterWrapper(DynamicThreadPoolRegisterWrapper registerWrapper) {
+    private void fillDynamicThreadPoolRegisterWrapper(DynamicThreadPoolRegisterWrapper registerWrapper) {
         registerWrapper.setTenantId(properties.getNamespace());
         registerWrapper.setItemId(properties.getItemId());
     }
