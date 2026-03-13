@@ -19,8 +19,10 @@ package cn.hippo4j.common.executor.support;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Synchronous put queue policy.
@@ -28,13 +30,39 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Slf4j
 public class SyncPutQueuePolicy implements RejectedExecutionHandler {
 
+    // The timeout value for the offer method (ms).
+    private int timeout;
+
+    private final boolean enableTimeout;
+
+    public SyncPutQueuePolicy(int timeout){
+        if (timeout < 0){
+            throw new IllegalArgumentException("timeout must be greater than 0");
+        }
+        this.timeout = timeout;
+        this.enableTimeout = true;
+    }
+
+    public SyncPutQueuePolicy (){
+        this.enableTimeout = false;
+    }
+
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
         if (executor.isShutdown()) {
             return;
         }
         try {
-            executor.getQueue().put(r);
+            if (enableTimeout) {
+                if (!executor.getQueue().offer(r, timeout, TimeUnit.MILLISECONDS)) {
+                    throw new RejectedExecutionException("Task " + r.toString() +
+                            " rejected from " +
+                            executor.toString() + " with timeout " + timeout + "ms.");
+                }
+            }
+            else {
+                executor.getQueue().put(r);
+            }
         } catch (InterruptedException e) {
             log.error("Adding Queue task to thread pool failed.", e);
         }
