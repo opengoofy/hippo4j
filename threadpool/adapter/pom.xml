@@ -21,6 +21,7 @@
         <module>hystrix</module>
         <module>stream-rocketmq</module>
         <module>stream-rabbitmq</module>
+        <module>redisson</module>
         <module>web</module>
     </modules>
 </project>
