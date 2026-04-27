@@ -130,6 +130,26 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>com.nanolaba</groupId>
+                <artifactId>nrg-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <file>
+                        <item>README.src.md</item>
+                    </file>
+                    <check>false</check>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>create-files</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <inherited>false</inherited>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${maven.jar.plugin.version}</version>
