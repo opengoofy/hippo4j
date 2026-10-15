@@ -23,7 +23,10 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +42,37 @@ public class JwtTokenUtil {
 
     public static final String TOKEN_PREFIX = "Bearer ";
 
-    public static final String SECRET = "SecretKey039245678901232039487623456783092349288901402967890140939827";
+    private static final Key SIGNING_KEY = loadSigningKey();
+
+    public static Key getSigningKey() {
+        return SIGNING_KEY;
+    }
+
+    private static Key loadSigningKey() {
+        String secret = System.getProperty("hippo4j.core.auth.jwt-secret");
+        if (secret == null) {
+            secret = System.getenv("HIPPO4J_JWT_SECRET");
+        }
+        return parseSigningKey(secret);
+    }
+
+    static Key parseSigningKey(String secret) {
+        String message = "JWT signing key must be Base64-encoded with at least 64 decoded bytes; "
+                + "set HIPPO4J_JWT_SECRET or -Dhippo4j.core.auth.jwt-secret before starting the server";
+        if (secret == null || secret.trim().isEmpty()) {
+            throw new IllegalArgumentException(message);
+        }
+        byte[] key;
+        try {
+            key = Base64.getDecoder().decode(secret);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(message);
+        }
+        if (key.length < 64) {
+            throw new IllegalArgumentException(message);
+        }
+        return new SecretKeySpec(key, "HmacSHA512");
+    }
 
     public static final String ISS = "admin";
 
@@ -72,7 +105,7 @@ public class JwtTokenUtil {
         HashMap<String, Object> map = new HashMap(MAP_INITIAL_CAPACITY);
         map.put(ROLE_CLAIMS, role);
         return Jwts.builder()
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(SignatureAlgorithm.HS512, SIGNING_KEY)
                 .setClaims(map)
                 .setIssuer(ISS)
                 .setSubject(id + Constants.SPLIT_COMMA + username)
@@ -128,6 +161,6 @@ public class JwtTokenUtil {
     }
 
     private static Claims getTokenBody(String token) {
-        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(SIGNING_KEY).parseClaimsJws(token).getBody();
     }
 }

@@ -23,14 +23,26 @@ import cn.hippo4j.common.toolkit.CollectionUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Test;
+import org.junit.BeforeClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+import java.util.Base64;
+import java.security.SecureRandom;
 
 public final class JwtTokenManagerTest {
 
     private static final String USERNAME = "test";
+
+    @BeforeClass
+    public static void configureSigningKey() {
+        if (System.getProperty("hippo4j.core.auth.jwt-secret") == null) {
+            byte[] key = new byte[64];
+            new SecureRandom().nextBytes(key);
+            System.setProperty("hippo4j.core.auth.jwt-secret", Base64.getEncoder().encodeToString(key));
+        }
+    }
 
     @Test
     public void createTokenTest() {
