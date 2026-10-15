@@ -17,6 +17,7 @@
 
 package cn.hippo4j.auth.security;
 
+import cn.hippo4j.auth.toolkit.JwtTokenUtil;
 import cn.hippo4j.common.toolkit.StringUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -33,7 +34,6 @@ import java.util.List;
 
 import static cn.hippo4j.auth.constant.Constants.STEP;
 import static cn.hippo4j.auth.constant.Constants.TOKEN_VALIDITY_IN_SECONDS;
-import static cn.hippo4j.auth.toolkit.JwtTokenUtil.SECRET;
 import static cn.hippo4j.common.constant.Constants.AUTHORITIES_KEY;
 
 /**
@@ -41,6 +41,10 @@ import static cn.hippo4j.common.constant.Constants.AUTHORITIES_KEY;
  */
 @Component
 public class JwtTokenManager {
+
+    public JwtTokenManager() {
+        JwtTokenUtil.getSigningKey();
+    }
 
     /**
      * Create token.
@@ -56,7 +60,7 @@ public class JwtTokenManager {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(SignatureAlgorithm.HS512, JwtTokenUtil.getSigningKey())
                 .compact();
     }
 
@@ -66,7 +70,7 @@ public class JwtTokenManager {
      * @param token token
      */
     public void validateToken(String token) {
-        Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+        Jwts.parser().setSigningKey(JwtTokenUtil.getSigningKey()).parseClaimsJws(token);
     }
 
     /**
@@ -76,7 +80,7 @@ public class JwtTokenManager {
      * @return auth info
      */
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey(JwtTokenUtil.getSigningKey()).parseClaimsJws(token).getBody();
         List<GrantedAuthority> authorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList((String) claims.get(AUTHORITIES_KEY));
         User principal = new User(claims.getSubject(), StringUtil.EMPTY, authorities);

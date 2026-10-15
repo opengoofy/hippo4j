@@ -67,6 +67,14 @@
 
 对于本地演示目的，请参阅 [Quick start](https://hippo4j.cn/docs/user_docs/user_guide/quick-start)
 
+启动服务端前，配置当前部署独立的 JWT 签名密钥：
+
+```bash
+export HIPPO4J_JWT_SECRET="$(openssl rand -base64 64 | tr -d '\n')"
+```
+
+只生成一次，安全保存，并在重启和同一部署的多个实例间复用。Docker 部署需将该变量传入容器，也可在 `-jar` 前提供 JVM 系统参数 `-Dhippo4j.core.auth.jwt-secret=...`，其优先级高于环境变量。该密钥不从 Spring 配置文件读取。缺失、Base64 格式错误或解码后不足 64 字节会阻止启动。替换原公开密钥后，已有 token 将失效。
+
 演示环境： [http://console.hippo4j.cn/index.html](http://console.hippo4j.cn/index.html)
 
 ### 接入登记

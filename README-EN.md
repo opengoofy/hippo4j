@@ -61,6 +61,14 @@ The following functional support is provided:
 
 For local presentation purposes, see [Quick start](https://hippo4j.cn/docs/user_docs/user_guide/quick-start).
 
+Before starting the server, configure a deployment-specific JWT signing key:
+
+```bash
+export HIPPO4J_JWT_SECRET="$(openssl rand -base64 64 | tr -d '\n')"
+```
+
+Generate it once, store it securely, and reuse it across restarts and instances. Docker deployments must pass this variable into the container. Alternatively, supply the JVM system property `-Dhippo4j.core.auth.jwt-secret=...` before `-jar`; it takes precedence over the environment variable. This key is not read from Spring configuration files. Missing secrets, invalid Base64, or keys shorter than 64 decoded bytes prevent startup. Replacing the former public key invalidates existing tokens.
+
 Demo Environment: [http://console.hippo4j.cn/index.html](http://console.hippo4j.cn/index.html).
 
 ### Who is using

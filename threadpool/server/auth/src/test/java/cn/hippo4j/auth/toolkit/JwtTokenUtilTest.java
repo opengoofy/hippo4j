@@ -19,7 +19,14 @@ package cn.hippo4j.auth.toolkit;
 
 import cn.hippo4j.common.toolkit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.security.SecureRandom;
+import java.util.Base64;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class JwtTokenUtilTest {
 
@@ -32,6 +39,15 @@ public final class JwtTokenUtilTest {
     private boolean isRememberMe = true;
 
     private String token;
+
+    @BeforeClass
+    public static void configureSigningKey() {
+        if (System.getProperty("hippo4j.core.auth.jwt-secret") == null) {
+            byte[] key = new byte[64];
+            new SecureRandom().nextBytes(key);
+            System.setProperty("hippo4j.core.auth.jwt-secret", Base64.getEncoder().encodeToString(key));
+        }
+    }
 
     @Before
     public void setUp() {
@@ -71,5 +87,16 @@ public final class JwtTokenUtilTest {
     public void isExpiration() {
         boolean isExpiration = JwtTokenUtil.isExpiration(token);
         Assert.isTrue(!isExpiration);
+    }
+
+    @Test
+    public void validatesSigningKey() {
+        byte[] shortKey = new byte[63];
+        new SecureRandom().nextBytes(shortKey);
+        String formerSecret = "SecretKey039245678901232039487623456783092349288901402967890140939827";
+        for (String secret : new String[]{null, "", " ", "!", Base64.getEncoder().encodeToString(shortKey), formerSecret}) {
+            assertThrows(IllegalArgumentException.class, () -> JwtTokenUtil.parseSigningKey(secret));
+        }
+        assertDoesNotThrow(() -> JwtTokenUtil.parseSigningKey(System.getProperty("hippo4j.core.auth.jwt-secret")));
     }
 }
