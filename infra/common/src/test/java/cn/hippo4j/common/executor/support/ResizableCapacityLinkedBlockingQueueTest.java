@@ -22,7 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -84,6 +88,93 @@ public class ResizableCapacityLinkedBlockingQueueTest {
         Assert.assertEquals(0, threadPoolExecutor.getCompletedTaskCount());
         Assert.assertEquals(4, myRejectedExecutionHandler.getCount());
 
+    }
+
+    @Test
+    public void testOfferAfterRemovingLastElement() {
+        ResizableCapacityLinkedBlockingQueue<String> queue = new ResizableCapacityLinkedBlockingQueue<>(10);
+        queue.offer("a");
+        queue.offer("b");
+        Assert.assertTrue(queue.remove("b"));
+        queue.offer("c");
+        Assert.assertEquals(Arrays.asList("a", "c"), Arrays.asList(queue.toArray()));
+        Assert.assertEquals("a", queue.poll());
+        Assert.assertEquals("c", queue.poll());
+        Assert.assertNull(queue.poll());
+    }
+
+    @Test
+    public void testOfferAfterIteratorRemovesLastElement() {
+        ResizableCapacityLinkedBlockingQueue<String> queue = new ResizableCapacityLinkedBlockingQueue<>(10);
+        queue.offer("a");
+        Iterator<String> iterator = queue.iterator();
+        Assert.assertEquals("a", iterator.next());
+        iterator.remove();
+        queue.offer("b");
+        Assert.assertEquals("b", queue.peek());
+        Assert.assertEquals("b", queue.poll());
+        Assert.assertEquals(0, queue.size());
+    }
+
+    @Test
+    public void testOfferAfterClear() {
+        ResizableCapacityLinkedBlockingQueue<String> queue = new ResizableCapacityLinkedBlockingQueue<>(10);
+        queue.offer("a");
+        queue.clear();
+        queue.offer("b");
+        Assert.assertEquals("b", queue.peek());
+        Assert.assertEquals("b", queue.poll());
+        Assert.assertEquals(0, queue.size());
+    }
+
+    @Test
+    public void testOfferAfterDrainTo() {
+        ResizableCapacityLinkedBlockingQueue<String> queue = new ResizableCapacityLinkedBlockingQueue<>(10);
+        queue.offer("a");
+        List<String> drained = new ArrayList<>();
+        Assert.assertEquals(1, queue.drainTo(drained));
+        queue.offer("b");
+        Assert.assertEquals("b", queue.poll());
+
+        queue.offer("c");
+        queue.offer("d");
+        drained.clear();
+        Assert.assertEquals(2, queue.drainTo(drained, 5));
+        Assert.assertEquals(Arrays.asList("c", "d"), drained);
+        queue.offer("e");
+        Assert.assertEquals("e", queue.poll());
+
+        queue.offer("f");
+        queue.offer("g");
+        drained.clear();
+        Assert.assertEquals(1, queue.drainTo(drained, 1));
+        queue.offer("h");
+        Assert.assertEquals(Arrays.asList("g", "h"), Arrays.asList(queue.toArray()));
+    }
+
+    @Test
+    public void testExecutorRemoveLastQueuedTask() throws InterruptedException {
+        ResizableCapacityLinkedBlockingQueue<Runnable> queue = new ResizableCapacityLinkedBlockingQueue<>(10);
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1,
+                60, TimeUnit.SECONDS, queue);
+        CountDownLatch release = new CountDownLatch(1);
+        threadPoolExecutor.execute(() -> {
+            try {
+                release.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        Runnable cancelled = () -> {
+        };
+        threadPoolExecutor.execute(cancelled);
+        Assert.assertTrue(threadPoolExecutor.remove(cancelled));
+        AtomicInteger ran = new AtomicInteger();
+        threadPoolExecutor.execute(ran::incrementAndGet);
+        release.countDown();
+        threadPoolExecutor.shutdown();
+        Assert.assertTrue(threadPoolExecutor.awaitTermination(5, TimeUnit.SECONDS));
+        Assert.assertEquals(1, ran.get());
     }
 }
 
