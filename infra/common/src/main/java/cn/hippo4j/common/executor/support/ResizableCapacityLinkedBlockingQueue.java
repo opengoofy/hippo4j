@@ -558,6 +558,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
             if (removed) {
                 p.item = null;
                 trail.next = p.next;
+                if (last == p) {
+                    last = trail;
+                }
                 if (count.getAndDecrement() >= capacity) {
                     notFull.signalAll();
                 }
@@ -618,6 +621,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         fullyLock();
         try {
             head.next = null;
+            last = head;
             if (count.getAndSet(0) >= capacity) {
                 notFull.signalAll();
             }
@@ -639,6 +643,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
         try {
             first = head.next;
             head.next = null;
+            last = head;
             if (count.getAndSet(0) >= capacity) {
                 notFull.signalAll();
             }
@@ -678,6 +683,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
             }
             if (n != 0) {
                 head.next = p;
+                if (p == null) {
+                    last = head;
+                }
                 if (count.getAndAdd(-n) >= capacity) {
                     notFull.signalAll();
                 }
@@ -780,6 +788,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E>
                 if (p == node) {
                     p.item = null;
                     trail.next = p.next;
+                    if (last == p) {
+                        last = trail;
+                    }
                     int c = count.getAndDecrement();
                     if (c >= capacity) {
                         notFull.signalAll();
